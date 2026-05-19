@@ -1,0 +1,235 @@
+S.No,Module,Activity,Type,Owner,Status,Priority,Dependency,Notes
+1,System Setup,Frappe v16 staging environment setup,DevOps,DevOps,Completed,P0,,stgprime-rural.dhwaniris.in
+2,System Setup,Production environment setup + SSL + domain,DevOps,DevOps,Not Started,P0,,Needed before go-live
+3,System Setup,Master: District + Block + Village,Backend,Backend Dev,Completed,P0,1,Geographic hierarchy
+4,System Setup,Master: Sector + Business Basket + Product Type,Backend,Backend Dev,Completed,P0,1,
+5,System Setup,Master: Cohort,Backend,Backend Dev,Completed,P0,1,
+6,System Setup,Master: Packaging Master (12 types),Backend,Backend Dev,Completed,P0,1,Glass Jar through Other
+7,System Setup,Master: Registration Master (20 types),Backend,Backend Dev,Completed,P0,1,Repo: registration_master doctype exists. Data population may be partial.
+8,System Setup,Master: Test Type Master (14 types),Backend,Backend Dev,Completed,P0,1,Repo: df_module_test_type + product_testing_master exist
+9,System Setup,Master: Lab Master (12 labs),Backend,Backend Dev,Completed,P0,1,Repo: product_testing_master covers lab field
+10,System Setup,Master: Standardisation Type Master (13 types),Backend,Backend Dev,Completed,P0,1,Repo: standardization_type doctype exists
+11,System Setup,Master: Scheme Master (17 schemes),Backend,Backend Dev,Completed,P0,1,Repo: df_funding_scheme_master doctype exists
+12,System Setup,Role setup: 6 roles with permission rules,Backend,Tech Lead,Completed,P0,1,"Core IT, Core Prog, Fessociate, Designer, SELCO, DC"
+13,System Setup,Welcome email custom template,Backend,Backend Dev,Not Started,P1,12,Set-password link + role-based pointers
+14,System Setup,Google SSO configuration,Backend,DevOps,Not Started,P0,12,For Gmail-based user emails
+15,System Setup,MSG91 OTP integration,Backend,Backend Dev,Completed,P0,,Mobile app auth
+16,Entrepreneur Profile,EP doctype backend (all fields),Backend,Backend Dev,Completed,P0,,"Name, Gender, Phone, DOB, Education, Income, Sector etc."
+17,Entrepreneur Profile,Vue: Profile Dashboard (9 sub-components),Frontend,Frontend Dev,Completed,P0,16,"BasicBusiness, CollapsibleCard, DiagnosticFramework, ProductsShelf, StatsCards etc."
+18,Entrepreneur Profile,Vue: Selection tab (10 rating fields + Rural E-Champ),Frontend,Frontend Dev,Completed,P0,16,Average rating auto-calc
+19,Entrepreneur Profile,Vue: Prioritisation tab,Frontend,Frontend Dev,Completed,P0,16,Priority 0 default. Cards reorder on dashboard.
+20,Entrepreneur Profile,Vue: Location & Contact + Geolocation,Frontend,Frontend Dev,Completed,P0,16,Map pin for geo-coordinates
+21,Entrepreneur Profile,Vue: Documents tab + photo gallery,Frontend,Frontend Dev,Completed,P0,16,
+22,Entrepreneur Profile,Vue: Intervention Logs (read-only sync from Activity Logger),Frontend,Frontend Dev,In Progress,P0,16,Depends on Activity Logger completion
+23,Entrepreneur Profile,EP naming rule: EP-.{name}-.#####,Backend,Backend Dev,Completed,P0,16,
+24,Entrepreneur Profile,Vue: Networking & Mentoring tab,Frontend,Frontend Dev,Completed,P0,16,Inline add intro + log meetings
+25,Product Portfolio,Product doctype backend,Backend,Backend Dev,Completed,P0,,
+26,Product Portfolio,Vue: Product Details tab (12 fields),Frontend,Frontend Dev,Completed,P0,25,Repo: product.js with flow table population + product type integration
+27,Product Portfolio,Vue: Product Variants tab (SKU auto-gen + Volume calc),Frontend,Frontend Dev,Completed,P0,25,Repo: product_sku doctype + product.js. SKU = VARIANT-SUBVARIANT-WEIGHT-UNIT
+28,Product Portfolio,Vue: Process Flow tab (drag-drop reorderable steps),Frontend,Frontend Dev,Completed,P0,25,Repo: process_flow + process_flow_master + machinery_flow doctypes
+29,Product Portfolio,Vue: Production Capacity tab (conditional agri + monthly tracker),Frontend,Frontend Dev,In Progress,P0,25,Dynamic table from Available Months x Variants. Needs verification.
+30,Product Portfolio,Available Months checkbox logic -> tracker generation,Frontend,Frontend Dev,In Progress,P0,29,Needs verification against BRD spec
+31,Product Portfolio,Cross-module: Variants -> Labels + Packaging auto-populate,Integration,Backend Dev,Not Started,P0,"27,75,93",Golden Thread
+32,Product Portfolio,Cross-module: Process Flow machines -> Machinery Existing,Integration,Backend Dev,Not Started,P0,"28,35",Golden Thread
+33,Product Portfolio,Cross-module: Ingredients -> Raw Materials auto-populate,Integration,Backend Dev,Not Started,P0,"26,34",Golden Thread
+34,Manufacturing - Raw Materials,DF Raw Material doctype backend,Backend,Backend Dev,Completed,P0,,
+35,Manufacturing - Raw Materials,Vue: Existing tab (per-product cards + Cost/Batch calc),Frontend,Frontend Dev,Completed,P0,34,Repo: df_raw_material.js 866 lines. Repeaters for Existing vs Required phases.
+36,Manufacturing - Raw Materials,Vue: Required tab (bridging + implementation status),Frontend,Frontend Dev,Completed,P0,35,Repo: same JS handles Required phase with intervention bridge logic
+37,Manufacturing - Raw Materials,Vue: Summary tab (auto-generated on first save),Frontend,Frontend Dev,Completed,P1,35,Repo: summary rendering in df_raw_material.js
+38,Manufacturing - Raw Materials,Cross-module: Cost/Batch feeds Unit Pricing Section I,Integration,Backend Dev,Not Started,P0,"35,56",Golden Thread
+39,Manufacturing - Raw Materials,Log Book tab (standard pattern),Frontend,Frontend Dev,Completed,P1,35,Repo: log book pattern via direct_log_book_child
+40,Manufacturing - Machinery,DF Machinery doctype backend,Backend,Backend Dev,Completed,P0,,
+41,Manufacturing - Machinery,Vue: Existing tab (22 fields + 7 calcs),Frontend,Frontend Dev,Completed,P0,40,Repo: df_machinery.js 531 lines. Classification + specs + solarization + costing.
+42,Manufacturing - Machinery,Vue: Required tab (SELCO price + quotation + impl status),Frontend,Frontend Dev,Completed,P0,41,Repo: same JS handles Required with phasing + wattage validation
+43,Manufacturing - Machinery,Vue: Summary tab,Frontend,Frontend Dev,Completed,P1,41,Repo: summary in df_machinery.js
+44,Manufacturing - Machinery,Cross-module: Required machines -> Infrastructure EE,Integration,Backend Dev,Not Started,P0,"42,78",Golden Thread
+45,Manufacturing - Machinery,Cross-module: Dep/Unit feeds Unit Pricing Section V,Integration,Backend Dev,Not Started,P0,"41,56",Golden Thread
+46,Manufacturing - Human Resource,DF HR doctype backend,Backend,Backend Dev,Completed,P0,,
+47,Manufacturing - Human Resource,Vue: Existing tab (3 wage formulas + GoM compliance),Frontend,Frontend Dev,Completed,P0,46,Repo: df_human_resource.js 311 lines. GoM compliance warnings built.
+48,Manufacturing - Human Resource,Vue: Required tab (8 intervention types),Frontend,Frontend Dev,Completed,P0,47,Repo: same JS handles Required repeaters
+49,Manufacturing - Human Resource,Vue: Summary tab,Frontend,Frontend Dev,Completed,P1,47,Repo: dashboard indicators in df_human_resource.js
+50,Manufacturing - Human Resource,Cross-module: Labour cost feeds Unit Pricing Section II,Integration,Backend Dev,Not Started,P0,"47,56",Golden Thread
+51,Pricing - Unit Pricing,DF Unit Pricing doctype backend,Backend,Backend Dev,Completed,P0,,Repo: df_unit_pricing doctype exists with JSON definition
+52,Pricing - Unit Pricing,Vue: Sections I-VI cost tables (RM + HR + Pkg + Transport + Machine Dep + Gas),Frontend,Frontend Dev,Completed,P0,51,Repo: df_unit_pricing.js 1682 lines. Complex pricing entry repeaters.
+53,Pricing - Unit Pricing,Vue: Section VII Others (Rent/unit + Electricity/unit from Infrastructure),Frontend,Frontend Dev,Completed,P0,51,Repo: same JS. Auto-fetch from BE tab.
+54,Pricing - Unit Pricing,Vue: Section VIII Unit Cost calculation,Frontend,Frontend Dev,Completed,P0,"52,53",Repo: before-save calculation hooks in df_unit_pricing.js
+55,Pricing - Unit Pricing,Vue: Section IX Pricing Strategy - Cost Plus (2 channels),Frontend,Frontend Dev,Completed,P0,54,Repo: pricing strategy rendering in same JS
+56,Pricing - Unit Pricing,Vue: Section IX Pricing Strategy - Competitor Based (auto-fetch + 7 positions),Frontend,Frontend Dev,Completed,P0,54,Repo: competitor-based rendering exists. Auto-fetch from Market Research pending cross-module wiring.
+57,Pricing - Unit Pricing,Vue: Section IX Pricing Strategy - Value Based,Frontend,Frontend Dev,Completed,P1,54,Repo: value-based section in same JS
+58,Pricing - Unit Pricing,Cross-module: Selling Price feeds back to Product Variant Retail Price,Integration,Backend Dev,Not Started,P0,"55,27",Golden Thread - bidirectional
+59,Market - Market Research,DF Market Research doctype backend,Backend,Backend Dev,Completed,P0,,Repo: df_cataloguing doctype (renamed/repurposed per framework restructuring)
+60,Market - Market Research,Vue: Market Landscape (3 geo-scopes + multi-select chip pickers),Frontend,Frontend Dev,Completed,P0,59,Repo: df_cataloguing.js 513 lines covers market landscape
+61,Market - Market Research,Vue: Channel Research (repeater + 8 outlet types),Frontend,Frontend Dev,Completed,P0,59,Repo: channel research repeaters in df_cataloguing.js
+62,Market - Market Research,Vue: Key Brands Research (repeater),Frontend,Frontend Dev,Completed,P0,59,Repo: brand research repeaters in same JS
+63,Market - Market Research,Vue: Customer Research (conditional Purchase Frequency),Frontend,Frontend Dev,Completed,P1,59,Repo: conditional fields in same JS
+64,Market - Market Research,Vue: Competitive Pricing Assessment (3 scopes x 2 channels + auto-avg),Frontend,Frontend Dev,In Progress,P0,59,Repo: form exists. Auto-avg cross-module feed to Unit Pricing pending.
+65,Market - Market Research,Vue: SWOT Analysis (2x2 grid),Frontend,Frontend Dev,Completed,P1,59,Repo: SWOT section in df_cataloguing.js
+66,Market - Customer Analysis,DF Customer Analysis doctype backend,Backend,Backend Dev,Completed,P0,,
+67,Market - Customer Analysis,Vue: 6 segmentation sections with multi-select chips,Frontend,Frontend Dev,Completed,P0,66,Repo: df_customer_analysis.js 223 lines. Age/gender/family/education/income/occupation.
+68,Market - Customer Analysis,Vue: Existing (intervention toggle) + Required (impl status),Frontend,Frontend Dev,Completed,P0,67,Repo: Existing vs Optimized repeaters in same JS
+69,Market - Market Linkage,DF Market Linkage backend + frontend,Backend,Backend Dev,Completed,P0,,COMPLETE
+70,Market - Market Linkage,Vue: Market Linkage frontend,Frontend,Frontend Dev,Completed,P0,,Repo: df_market_linkage.js 273 lines. Channel tracking + annualized revenue calc. COMPLETE
+71,Market - Promotions,DF Promotions doctype backend,Backend,Backend Dev,Completed,P0,,Repo: df_promotional_marketing doctype + 145 lines JS exist
+72,Market - Promotions,Vue: Existing + Required tabs (table with type + frequency),Frontend,Frontend Dev,Completed,P1,71,Repo: df_promotional_marketing.js. Channel/mode/platform tracking. COMPLETE
+73,Product Dev - Registration,DF Registration doctype backend,Backend,Backend Dev,Completed,P0,,
+74,Product Dev - Registration,Vue: Existing tab (20-type master + Lifetime Validity conditional + status chips),Frontend,Frontend Dev,Completed,P0,73,Repo: df_registration.js 306 lines. Registration details + govt cert tracking.
+75,Product Dev - Registration,Vue: Required tab (5-status pipeline + bridging logic),Frontend,Frontend Dev,Completed,P0,74,Repo: Existing vs Required repeaters in same JS
+76,Product Dev - Registration,Notification: license expiry 30-day warning,Backend,Backend Dev,Not Started,P1,74,Scheduled job
+77,Product Dev - Prototyping,DF Prototyping doctype backend,Backend,Backend Dev,Completed,P0,,
+78,Product Dev - Prototyping,Vue: Conditional dropdown (Packaging->Packing Master / Product->Business Basket),Frontend,Frontend Dev,Completed,P0,77,Repo: df_design_experiment.js 280 lines. Dynamic doctype mapping.
+79,Product Dev - Prototyping,Vue: Iteration child table,Frontend,Frontend Dev,Completed,P0,78,Repo: design file + photo attachments in same JS
+80,Product Dev - Testing,DF Testing doctype backend,Backend,Backend Dev,Completed,P0,,
+81,Product Dev - Testing,Vue: Existing tab (14 test types + 12 labs),Frontend,Frontend Dev,Completed,P0,80,Repo: df_product_testing.js 398 lines. Product/SKU linking + test type + lab.
+82,Product Dev - Testing,Vue: Required tab (consent management + date chain validation),Frontend,Frontend Dev,Completed,P0,81,Repo: date tracking + report attachment + feedback in same JS
+83,Product Dev - Standardization,DF Standardization doctype backend,Backend,Backend Dev,Completed,P0,,
+84,Product Dev - Standardization,Vue: 13 SOP types + auto Product Sector + Yes/No conditional,Frontend,Frontend Dev,Completed,P0,83,Repo: df_standardization.js 783 lines. Three-phase repeater + version tracking.
+85,Product Dev - Quality Control,DF QC doctype backend,Backend,Backend Dev,Completed,P0,,Repo: df_quality_control doctype + 507 lines JS
+86,Product Dev - Quality Control,Vue: 23-question star rating system + avg + maturity tier,Frontend,Frontend Dev,Completed,P0,85,Repo: QC Master cache + dynamic field rendering. Rating 1-4 scale.
+87,Product Dev - Quality Control,Vue: Summary (metrics + distribution chart),Frontend,Frontend Dev,Completed,P1,86,Repo: assessment vs post-implementation phases in same JS
+88,Product Dev - Quality Control,Vue: Resources tab (6 reference tiles),Frontend,Frontend Dev,Not Started,P2,86,FSSAI Schedule 4 etc.
+89,Product Dev - Packaging,DF Packaging doctype backend,Backend,Backend Dev,Completed,P0,,Repo: df_packaging doctype + 1294 lines JS
+90,Product Dev - Packaging,Vue: Per-product variant packaging detail + Cost calc,Frontend,Frontend Dev,Completed,P0,89,Repo: df_packaging.js. Complex packaging info repeaters + cost calculation.
+91,Product Dev - Packaging,Vue: Monthly Quantity table (12-month x type matrix),Frontend,Frontend Dev,Completed,P0,90,Repo: annual summary rendering + currency parsing in same JS
+92,Product Dev - Packaging,Vue: Sealing types multi-select + dual intervention toggles,Frontend,Frontend Dev,Completed,P0,90,Repo: material specification (inner/outer/cushion) in same JS
+93,Product Dev - Packaging,Cross-module: feeds Unit Pricing Section III,Integration,Backend Dev,Not Started,P0,"90,52",Golden Thread
+94,Marketing Tools - Branding,DF Branding Identity doctype backend,Backend,Backend Dev,Completed,P0,,Repo: marketing_brand + marketing_logo + marketing_business_card doctypes exist
+95,Marketing Tools - Branding,Vue: Brand tab (dual approval + market scope chips),Frontend,Frontend Dev,Completed,P0,94,Repo: marketing_brand.js 81 lines. Log book + textarea auto-sizing.
+96,Marketing Tools - Branding,Vue: Logo tab (designer assignment + 3 drafts + dual approval),Frontend,Frontend Dev,Completed,P0,94,Repo: marketing_logo.js 75 lines
+97,Marketing Tools - Branding,Vue: Business Card tab (auto-populated + QR uploads),Frontend,Frontend Dev,Completed,P0,94,Repo: marketing_business_card.js 91 lines
+98,Marketing Tools - Branding,Designer role: restricted sidebar + upload-only permissions,Backend,Tech Lead,Not Started,P0,12,
+99,Marketing Tools - Labels,DF Labels doctype backend,Backend,Backend Dev,Completed,P0,,Repo: marketing_label doctype + JS exist
+100,Marketing Tools - Labels,Vue: Existing tab (per-variant table),Frontend,Frontend Dev,Completed,P0,99,Repo: marketing_label.js 81 lines. Label-specific fields.
+101,Marketing Tools - Labels,Vue: Required - Label Content (AI Generate storyline + alcohol toggle),Frontend,Frontend Dev,In Progress,P0,99,Repo: form structure exists. AI Generate depends on Apoorva AI integration.
+102,Marketing Tools - Labels,Vue: Variant Content table (volume calc L x B x H),Frontend,Frontend Dev,Completed,P0,100,Repo: variant content handling in marketing_label.js
+103,Marketing Tools - Labels,Vue: Label Status (designer + 3 drafts x per-variant + 5-status),Frontend,Frontend Dev,Not Started,P0,100,Designer workflow + multi-variant draft management
+104,Marketing Tools - Brochure,DF Brochure doctype backend,Backend,Backend Dev,Completed,P0,,Repo: marketing_brochure doctype + 196 lines JS
+105,Marketing Tools - Brochure,Vue: Brochure Setup + Product Listings + Status,Frontend,Frontend Dev,Completed,P0,104,Repo: marketing_brochure.js. Document attachment + log book. COMPLETE
+106,Skilling - Digital Literacy,DF Digital Literacy doctype backend,Backend,Backend Dev,Completed,P0,,
+107,Skilling - Digital Literacy,Vue: Access & Devices + 9-platform star rating,Frontend,Frontend Dev,Completed,P0,106,Repo: df_digital_literacy.js 174 lines. Smartphone/internet + platform skills.
+108,Skilling - Digital Literacy,Vue: Required (target skills + device needs),Frontend,Frontend Dev,Completed,P0,107,Repo: Existing vs Required repeaters + intervention flags in same JS
+109,Skilling - Digital Literacy,Resources (6 tiles) + Task Log (10 pre-seeded),Frontend,Frontend Dev,Not Started,P2,107,
+110,Skilling - Capacity Building,DF Capacity Building doctype backend,Backend,Backend Dev,Completed,P0,,
+111,Skilling - Capacity Building,Vue: Details tab (scorecard Gap = Target - Current),Frontend,Frontend Dev,Completed,P0,110,Repo: df_capacity_building.js 798 lines. Past vs Required training repeaters.
+112,Skilling - Capacity Building,Vue: Past Trainings (Skill Type filtering + 6-dim star assessment),Frontend,Frontend Dev,Completed,P0,110,Repo: Training Master linking + 15+ skill areas in same JS
+113,Skilling - Capacity Building,Vue: Required (gap analysis + 6 intervention types),Frontend,Frontend Dev,Completed,P0,112,Repo: gap analysis + financial source tracking in same JS
+114,Skilling - Business Plan Canvas,DF BPC doctype backend,Backend,Backend Dev,Completed,P0,,
+115,Skilling - Business Plan Canvas,Vue: BPC form,Frontend,Frontend Dev,Completed,P0,114,Repo: df_business_plan_canvas.js 57 lines. 9 Canvas sections + SWOT + textarea auto-sizing.
+116,Logistics - Packing,DF Logistic Packing doctype backend,Backend,Backend Dev,Completed,P0,,
+117,Logistics - Packing,Vue: Per-product transit packaging + monthly volume table,Frontend,Frontend Dev,Completed,P0,116,Repo: df_logistic_packing.js 1192 lines. Material specs + cost calc + annual summary.
+118,Logistics - Packing,Vue: Required (intervention + new),Frontend,Frontend Dev,Completed,P0,117,Repo: Existing vs Suggested phase repeaters in same JS
+119,Logistics - Service,DF Logistic Service doctype backend,Backend,Backend Dev,Completed,P0,,
+120,Logistics - Service,Vue: Connectivity Assessment + Available Services checkboxes,Frontend,Frontend Dev,Completed,P0,119,Repo: df_logistic_service.js 328 lines. RM logistics + dispatch logistics.
+121,Logistics - Service,Vue: Route Blocks with Leg Tables (trip + monthly cost calc),Frontend,Frontend Dev,Completed,P0,119,Repo: frequency tracking + cost per trip in same JS
+122,Logistics - Service,Vue: Required (upgrade routes + new routes),Frontend,Frontend Dev,Completed,P0,121,Repo: availability rating + route handling in same JS
+123,Infrastructure,DF Infrastructure doctype backend (combined BE+EE+CE),Backend,Backend Dev,Completed,P0,,
+124,Infrastructure,Vue: Summary dashboard (entry point),Frontend,Frontend Dev,Completed,P0,123,Repo: InfrastructureMonitor.vue + 10 sub-components deployed. 11 Vue total.
+125,Infrastructure,Vue: BE tab (Rent/unit calc + water + land + MSOR plinth rate lookup),Frontend,Frontend Dev,In Progress,P0,123,Repo: df_infrastructure_be_ee_ce.js 238 lines. Basic form exists. MSOR matrix may need refinement.
+126,Infrastructure,Vue: BE Estimation (SQM/SQF conversion + estimated cost),Frontend,Frontend Dev,In Progress,P0,125,Repo: basic form handler exists. Plinth Rate x SQM logic needs verification.
+127,Infrastructure,Vue: BE Implementation Status (design/drawing log + NOC),Frontend,Frontend Dev,In Progress,P0,126,Repo: form fields exist. Design/drawing log workflow needs verification.
+128,Infrastructure,Vue: EE tab (auto from Machinery + SELCO pricing),Frontend,Frontend Dev,Not Started,P0,"123,44",SELCO Executive fills pricing. Depends on cross-module machinery link.
+129,Infrastructure,Vue: CE tab (Electricity/unit + solarisation table + SELCO approval),Frontend,Frontend Dev,Not Started,P0,123,
+130,Infrastructure,Vue: Financial Model - PRIME SELCO mode (slabs + EMI),Frontend,Frontend Dev,Not Started,P0,123,"3 slabs: A(<5L)/B(<10L)/C(<25L). EMI = LIFCOM/36 or /60"
+131,Infrastructure,Vue: Financial Model - Innovation/Scale mode (editable % + validation),Frontend,Frontend Dev,Not Started,P0,123,Sum must = 100%. Others field.
+132,Infrastructure,Cross-module: Rent/unit + Elec/unit -> Unit Pricing Section VII,Integration,Backend Dev,Not Started,P0,"125,129,53",Golden Thread
+133,Infrastructure,SELCO Executive role: restricted to EE tab only,Backend,Tech Lead,Not Started,P0,12,
+134,Funding - Pitch Deck,DF Pitch Deck doctype backend,Backend,Backend Dev,Completed,P0,,
+135,Funding - Pitch Deck,Vue: Summary (progress X/11) + Existing + Required (11 slides),Frontend,Frontend Dev,Completed,P0,134,Repo: df_pitch_deck.js 22 lines. Minimal form handler + log book + df_drive resource links.
+136,Funding - Pitch Deck,Resources (5 tiles) + Task Log (18 pre-seeded),Frontend,Frontend Dev,Not Started,P2,135,
+137,Funding - Schemes,DF Schemes Funding doctype backend,Backend,Backend Dev,Completed,P0,,
+138,Funding - Schemes,Vue: Existing (17-scheme master + loan details + EMI calc),Frontend,Frontend Dev,Completed,P0,137,Repo: df_schemes_funding.js 424 lines. Scheme linking + application pipeline + loan terms.
+139,Funding - Schemes,Vue: Required (eligibility + application pipeline),Frontend,Frontend Dev,Completed,P0,138,Repo: Existing vs Required repeaters + document upload in same JS
+140,Networking & Mentoring,Mentor Master doctype,Backend,Backend Dev,Completed,P0,,COMPLETE
+141,Networking & Mentoring,Entrepreneur Introduction child table,Backend,Backend Dev,Completed,P0,,COMPLETE
+142,Networking & Mentoring,Entrepreneur Meeting Log doctype,Backend,Backend Dev,Completed,P0,,COMPLETE
+143,Networking & Mentoring,Vue: NetworkingMentoring component,Frontend,Frontend Dev,Completed,P0,,Repo: NetworkingMentoring.vue + bundle. COMPLETE
+144,Networking & Mentoring,API: 8 whitelisted endpoints,Backend,Backend Dev,Completed,P0,,COMPLETE
+145,Networking & Mentoring,Auto-sync controller (meeting count/date/outcome),Backend,Backend Dev,Completed,P0,,COMPLETE
+146,Fellow Activity Logger,Replace Tasks workspace with Activity Logger,Frontend,Frontend Dev,Completed,P0,,Repo: task_manager + task_manager_app + task_manager_grid pages exist
+147,Fellow Activity Logger,Vue: Calendar view (default),Frontend,Frontend Dev,Completed,P0,146,Repo: TaskManagerApp.vue + CalendarFilterPanel.vue + bundle
+148,Fellow Activity Logger,Vue: Board view + toggle,Frontend,Frontend Dev,Completed,P0,146,Repo: TaskManagerGrid.vue + bundle exists
+149,Fellow Activity Logger,Activity form: branching logic (3 paths),Frontend,Frontend Dev,Not Started,P0,146,"Entrepreneur-Framework, Entrepreneur-NonFramework, NonEntrepreneur"
+150,Fellow Activity Logger,6 cascading filters (District->Block->EP->Module->Framework->Task),Frontend,Frontend Dev,In Progress,P0,146,Repo: CalendarFilterPanel.vue has filter logic. Full 6-level cascade needs verification.
+151,Fellow Activity Logger,Sync: framework activities -> Log Book tabs,Integration,Backend Dev,Not Started,P0,149,
+152,Fellow Activity Logger,Sync: all EP activities -> Intervention Logs (read-only),Integration,Backend Dev,Not Started,P0,149,
+153,Fellow Activity Logger,Framework completion tracking (Not Started -> Completed -> xN),Integration,Backend Dev,Not Started,P0,152,EP Dashboard update
+154,Village Survey,Village Survey doctype backend,Backend,Backend Dev,Completed,P0,,
+155,Village Survey,Vue: Survey form (17 fields + geolocation),Frontend,Frontend Dev,Completed,P0,154,Repo: village_visit doctype with 16 picker child doctypes fully built
+156,Village Survey,Geo-tag -> Landscape Map integration (village pins),Integration,Backend Dev,Not Started,P0,155,
+157,Village Survey,Master pickers: crops + forest resources + livelihoods,Backend,Backend Dev,Completed,P0,,Repo: 16 picker doctypes confirmed in repo
+158,Research Notes,Research Notes doctype backend,Backend,Backend Dev,Completed,P0,,
+159,Research Notes,Vue: Research Notes form (11 fields),Frontend,Frontend Dev,Completed,P1,158,Repo: research_note doctype exists. Standard Frappe form with 11 fields.
+160,Research Notes,EP Profile linking (optional),Integration,Backend Dev,Not Started,P1,159,
+161,Dashboards,Vue: Entrepreneurial Landscape Map (6 filters + clustering + popup),Frontend,Frontend Dev,In Progress,P0,,Repo: EntrepreneurialLandscapeMap.vue + bundle. Filters need expansion.
+162,Dashboards,Vue: Intervention Dashboard (KPIs + Sankey + charts),Frontend,Frontend Dev,In Progress,P0,,Repo: InterventionSummary.vue + ISDonutChart + ISHBarChart + SankeyFlow. KPI wiring in progress.
+163,Dashboards,Vue: Milestone Tracker (4 tabs + lollipop + Gantt),Frontend,Frontend Dev,Completed,P0,,Repo: MilestoneTrackerDashboard.vue + 8 sub-components. COMPLETE
+164,Dashboards,Vue: EP Status Monitor (filters + geographic + status donut),Frontend,Frontend Dev,In Progress,P0,,Repo: ep_grid page exists. Partially built.
+165,Dashboards,Vue: Entrepreneur Progress Report,Frontend,Frontend Dev,Not Started,P0,,Pending spec from client
+166,Dashboards,Vue: Infrastructure Monitor,Frontend,Frontend Dev,In Progress,P0,,Repo: 11 Vue components built. Form integration pending.
+167,Dashboards,Vue: Sankey Dashboard,Frontend,Frontend Dev,Completed,P0,,Repo: SankeyDashboard.vue + bundle. COMPLETE
+168,Dashboards,Dashboard data reconciliation (KPI = DB query),QA,QA Engineer,Not Started,P0,"163,164",BRD SV-DASH-001
+169,Notifications,Notification Workspace + left menu entry (Core Team IT),Backend,Backend Dev,Not Started,P0,,Per user journey doc: Core Team IT sees Notifications in left menu
+170,Notifications,Notification Log table (history of all sent notifications),Frontend,Frontend Dev,Not Started,P0,169,Shows statuses and all relevant tracking fields for past notifications
+171,Notifications,Send Notification form (District->Block->Role->Users->Message),Frontend,Frontend Dev,Not Started,P0,169,Cascading filters. Send + Cancel buttons. Used by Core Team IT to notify field users.
+172,Notifications,Push/force notification popup on login,Frontend,Frontend Dev,Not Started,P0,169,Notification bar on every login showing new unread notifications
+173,Notifications,Notification tracking view for recipients,Frontend,Frontend Dev,Not Started,P0,169,Recipients see all received notifications in one module
+180,User Management,Add User form (6 fields),Frontend,Frontend Dev,In Progress,P0,,BRD PR-XC-001
+181,User Management,Role assignment logic (6 roles -> sidebar menu),Backend,Tech Lead,In Progress,P0,180,
+182,User Management,Block assignment for Fessociates -> auto-fill District/Block,Backend,Backend Dev,Not Started,P0,180,
+183,User Management,Login flow: email + password,Backend,Backend Dev,Completed,P0,,
+184,User Management,Login flow: Google SSO for Gmail users,Backend,DevOps,Not Started,P0,,
+185,User Management,District Coordinator: view-all edit-none permission,Backend,Tech Lead,Not Started,P0,12,
+186,Cross-Module Integration,Product -> RM: ingredients auto-populate,Integration,Backend Dev,Not Started,P0,"25,34",Golden Thread
+187,Cross-Module Integration,Product -> Machinery: process flow machines,Integration,Backend Dev,Not Started,P0,"25,40",Golden Thread
+188,Cross-Module Integration,RM -> Unit Pricing: cost/batch,Integration,Backend Dev,Not Started,P0,"34,51",Golden Thread
+189,Cross-Module Integration,Machinery -> Infrastructure EE: required machines,Integration,Backend Dev,Not Started,P0,"40,123",Golden Thread
+190,Cross-Module Integration,Infrastructure BE -> Unit Pricing: rent/unit,Integration,Backend Dev,Not Started,P0,"123,51",Golden Thread
+191,Cross-Module Integration,Infrastructure CE -> Unit Pricing: elec/unit,Integration,Backend Dev,Not Started,P0,"123,51",Golden Thread
+192,Cross-Module Integration,Market Research -> Unit Pricing: competitor avg,Integration,Backend Dev,Not Started,P0,"59,51",Golden Thread
+193,Cross-Module Integration,Unit Pricing -> Product Variants: retail price,Integration,Backend Dev,Not Started,P0,"51,25",Golden Thread - bidirectional
+194,Cross-Module Integration,Activity Logger -> Log Books + EP Intervention Logs,Integration,Backend Dev,Not Started,P0,146,3-way sync
+195,Cross-Module Integration,Village Survey -> Landscape Map: geo pins,Integration,Backend Dev,Not Started,P0,"154,161",
+196,Apoorva AI,Chatbot widget integration on portal,Frontend,Frontend Dev,Not Started,P2,,Client's proprietary LLM
+197,Apoorva AI,AI Generate: Label Storyline,Integration,Backend Dev,Not Started,P2,,Labels Required tab
+198,Apoorva AI,AI Generate: Brochure Storyline,Integration,Backend Dev,Not Started,P2,,Brochure Required tab
+199,Apoorva AI,Context-aware responses (entrepreneur data),Integration,Backend Dev,Not Started,P2,,
+200,VAPT & Security,OWASP ZAP automated scan,QA,Security Eng,Not Started,P0,,Before go-live
+201,VAPT & Security,Broken Access Control testing (3 role-specific tests),QA,Security Eng,Not Started,P0,,BRD NF-VAPT-001 to 003
+202,VAPT & Security,SQL injection + XSS testing (all fields),QA,Security Eng,Not Started,P0,,BRD NF-VAPT-006/007
+203,VAPT & Security,Authentication testing (brute force + session fixation),QA,Security Eng,Not Started,P0,,BRD NF-VAPT-011/012
+204,VAPT & Security,HTTPS enforcement + HSTS headers,DevOps,DevOps,Not Started,P0,,
+205,VAPT & Security,File upload security (type + size validation),QA,QA Engineer,Not Started,P0,,BRD SV-FILE-001/002
+206,VAPT & Security,Dependency CVE scan (Frappe + Vue + npm),QA,Security Eng,Not Started,P0,,BRD NF-VAPT-013
+207,VAPT & Security,VAPT report generation (internal),Documentation,Security Eng,Not Started,P0,,Keep for AMC records
+208,Load & Performance,Setup load test scripts (k6 or Locust),QA,QA Engineer,Not Started,P0,,
+209,Load & Performance,Baseline: 60 concurrent users + 800 EPs,QA,QA Engineer,Not Started,P0,208,Page load < 3s. API < 1s.
+210,Load & Performance,Peak: 80 concurrent users,QA,QA Engineer,Not Started,P0,208,No 502/504 errors
+211,Load & Performance,3-month projection: 80 concurrent + 1200 EPs,QA,QA Engineer,Not Started,P0,208,Map with 1200 pins < 5s
+212,Load & Performance,1-year projection: 150 concurrent + 2000 EPs,QA,QA Engineer,Not Started,P1,208,
+213,Load & Performance,Stress test: 200 concurrent (breaking point),QA,QA Engineer,Not Started,P1,208,Document max before degradation
+214,Load & Performance,Database index optimization,Backend,Tech Lead,Not Started,P0,208,No full table scans on 30K+ records
+215,Load & Performance,Map rendering: 2000 EP pins + 500 village pins,QA,QA Engineer,Not Started,P1,208,Clustering + zoom smooth
+216,QA & TDD,Unit tests: 28 calculated field formulas,QA,QA Engineer,Not Started,P0,,BRD F-CALC-001 to 028
+217,QA & TDD,Integration tests: 14 cross-module data flows,QA,QA Engineer,Not Started,P0,,BRD F-FLOW-001 to 014
+218,QA & TDD,E2E: Fessociate 25-step journey,QA,QA Engineer,Not Started,P0,,BRD E2E-FES-001 to 025
+219,QA & TDD,E2E: Core Team IT 12-step journey,QA,QA Engineer,Not Started,P0,,BRD E2E-CIT-001 to 012
+220,QA & TDD,E2E: Designer 8-step journey,QA,QA Engineer,Not Started,P0,,BRD E2E-DES-001 to 008
+221,QA & TDD,E2E: SELCO 6-step journey,QA,QA Engineer,Not Started,P0,,BRD E2E-SEL-001 to 006
+222,QA & TDD,E2E: District Coordinator 6-step journey,QA,QA Engineer,Not Started,P0,,BRD E2E-DC-001 to 006
+223,QA & TDD,E2E: Core Team Program 8-step journey,QA,QA Engineer,Not Started,P0,,BRD E2E-CTP-001 to 008
+224,QA & TDD,Conditional logic tests: 18 scenarios,QA,QA Engineer,Not Started,P0,,BRD F-COND-001 to 018
+225,QA & TDD,Intervention bridging tests: 8 scenarios,QA,QA Engineer,Not Started,P0,,BRD F-BRIDGE-001 to 008
+226,QA & TDD,Standard validation tests: 24 rules,QA,QA Engineer,Not Started,P0,,BRD SV-DATE through SV-SQL
+227,QA & TDD,UI/UX tests: 18 design system compliance,QA,QA Engineer,Not Started,P0,,BRD UI-DS through UI-NAV
+228,QA & TDD,Dashboard data reconciliation tests,QA,QA Engineer,Not Started,P0,,BRD SV-DASH-001 to 003
+229,QA & TDD,Test automation setup (Cypress or Playwright),QA,QA Engineer,Not Started,P0,,CI/CD integration
+230,QA & TDD,Regression test suite,QA,QA Engineer,Not Started,P0,229,Run on every PR
+231,UAT & Go-Live,UAT environment setup,DevOps,DevOps,Not Started,P0,,Separate from staging
+232,UAT & Go-Live,UAT test scripts (derived from BRD E2E tests),QA,QA Engineer,Not Started,P0,"218-228",
+233,UAT & Go-Live,Client UAT: MBMA team,QA,PM,Not Started,P0,232,
+234,UAT & Go-Live,Bug fixing sprint (post-UAT),Backend,Tech Lead,Not Started,P0,233,
+235,UAT & Go-Live,Production deployment,DevOps,DevOps,Not Started,P0,234,
+236,UAT & Go-Live,DNS + SSL for production domain,DevOps,DevOps,Not Started,P0,235,
+237,UAT & Go-Live,Data migration: Google Sheets -> Frappe,Backend,Backend Dev,Not Started,P0,235,Legacy 32-framework data
+238,UAT & Go-Live,User onboarding: 80 fellows + coordinators,Documentation,PM,Not Started,P0,236,
+239,UAT & Go-Live,Training sessions for field users,Documentation,PM,Not Started,P0,238,
+240,UAT & Go-Live,Go-live sign-off from MBMA,Documentation,PM,Not Started,P0,239,
