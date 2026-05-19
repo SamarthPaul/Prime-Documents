@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>PRIME Rural - Project Plan</title>
+<link rel="stylesheet" href="styles.css">
+<style>
+body { font-family: var(--font); background: var(--bg); color: var(--text); margin: 0; line-height: 1.5; }
+.page-header { background: var(--card); border-bottom: 1px solid var(--border); padding: 20px 24px; }
+.page-header h1 { font-size: 20px; color: var(--prime-green); margin-bottom: 2px; }
+.page-header .sub { font-size: 12px; color: var(--text-secondary); }
+
+.summary-strip {
+  display: flex; gap: 12px; flex-wrap: wrap;
+  padding: 16px 24px; background: var(--card);
+  border-bottom: 1px solid var(--border);
+}
+.sum-card {
+  background: var(--bg); border-radius: 8px; padding: 10px 18px;
+  border-left: 3px solid var(--prime-green); min-width: 120px;
+}
+.sum-card .val { font-size: 22px; font-weight: 700; }
+.sum-card .lbl { font-size: 10px; text-transform: uppercase; letter-spacing: .4px; color: var(--text-secondary); }
+.sum-card.green .val { color: var(--prime-green); }
+.sum-card.blue .val { color: var(--blue); }
+.sum-card.amber .val { color: var(--amber); }
+
+.filters {
+  display: flex; gap: 10px; flex-wrap: wrap;
+  padding: 14px 24px; background: var(--card);
+  border-bottom: 1px solid var(--border);
+}
+.filters select, .filters input {
+  padding: 6px 12px; border: 1px solid var(--border);
+  border-radius: 6px; font-size: 12px; font-family: var(--font);
+  background: #fff; color: var(--text);
+}
+.filters input { flex: 1; min-width: 160px; }
+.filters .reset-btn {
+  padding: 6px 14px; border: 1px solid var(--border);
+  border-radius: 6px; background: #fff; cursor: pointer;
+  font-size: 12px; color: var(--text-secondary);
+}
+.filters .reset-btn:hover { background: var(--bg); }
+
+.table-wrap { overflow-x: auto; padding: 0 24px 40px; }
+table { width: 100%; border-collapse: collapse; font-size: 12px; margin-top: 16px; background: var(--card); border-radius: 8px; overflow: hidden; border: 1px solid var(--border); }
+thead { background: var(--prime-green); color: #fff; }
+th { padding: 10px 12px; text-align: left; font-weight: 600; font-size: 11px; text-transform: uppercase; letter-spacing: .3px; cursor: pointer; white-space: nowrap; user-select: none; }
+th:hover { background: var(--prime-green-dark); }
+th .sort-arrow { font-size: 9px; margin-left: 3px; opacity: .6; }
+td { padding: 8px 12px; border-bottom: 1px solid var(--border); vertical-align: top; }
+tr:last-child td { border-bottom: none; }
+tr:hover td { background: #f8faf9; }
+.module-group-row td { background: var(--prime-green-light); font-weight: 700; font-size: 13px; color: var(--prime-green); padding: 10px 12px; cursor: pointer; }
+.module-group-row:hover td { background: #d4edda; }
+.module-group-row .toggle-icon { display: inline-block; transition: transform .2s; margin-right: 6px; font-size: 10px; }
+.module-group-row.collapsed .toggle-icon { transform: rotate(-90deg); }
+
+.status-badge { padding: 2px 8px; border-radius: 10px; font-size: 10px; font-weight: 600; white-space: nowrap; }
+.status-completed { background: var(--prime-green-light); color: var(--prime-green); }
+.status-inprogress { background: #dbeafe; color: var(--blue); }
+.status-notstarted { background: #fef3c7; color: #92400e; }
+.priority-p0 { color: var(--red); font-weight: 700; }
+.priority-p1 { color: var(--amber); font-weight: 600; }
+.priority-p2 { color: var(--text-secondary); }
+.type-badge { font-size: 10px; color: var(--text-secondary); background: var(--bg); padding: 1px 6px; border-radius: 3px; }
+.no-results { text-align: center; padding: 40px; color: var(--text-secondary); font-size: 14px; }
+.count-label { font-size: 11px; color: var(--text-secondary); padding: 14px 24px 0; }
+
+@media print {
+  .filters, .summary-strip { break-inside: avoid; }
+  th { background: var(--prime-green) !important; color: #fff !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+}
+@media (max-width: 640px) {
+  .summary-strip { gap: 8px; padding: 12px 16px; }
+  .sum-card { padding: 8px 12px; min-width: 90px; }
+  .sum-card .val { font-size: 18px; }
+  .filters { padding: 10px 16px; }
+  .table-wrap { padding: 0 8px 24px; }
+}
+</style>
+</head>
+<body>
+<script src="nav.js"></script>
+<script src="data/project-plan.js"></script>
+
+<div class="page-header">
+  <h1>Project Plan</h1>
+  <div class="sub">PRIME Rural CRM | 234 activities across all modules</div>
+</div>
+
+<div class="summary-strip" id="summaryStrip"></div>
+
+<div class="filters">
+  <select id="fModule"><option value="">All Modules</option></select>
+  <select id="fStatus">
+    <option value="">All Status</option>
+    <option value="Completed">Completed</option>
+    <option value="In Progress">In Progress</option>
+    <option value="Not Started">Not Started</option>
+  </select>
+  <select id="fPriority">
+    <option value="">All Priority</option>
+    <option value="P0">P0</option>
+    <option value="P1">P1</option>
+    <option value="P2">P2</option>
+  </select>
+  <select id="fType">
+    <option value="">All Types</option>
+    <option value="Backend">Backend</option>
+    <option value="Frontend">Frontend</option>
+    <option value="Integration">Integration</option>
+    <option value="DevOps">DevOps</option>
+    <option value="QA">QA</option>
+    <option value="Documentation">Documentation</option>
+  </select>
+  <select id="fOwner"><option value="">All Owners</option></select>
+  <input type="text" id="fSearch" placeholder="Search activities...">
+  <button class="reset-btn" onclick="resetFilters()">Reset</button>
+</div>
+
+<div class="count-label" id="countLabel"></div>
+<div class="table-wrap">
+  <table>
+    <thead>
+      <tr>
+        <th onclick="sortBy('sno')"># <span class="sort-arrow" id="sort-sno"></span></th>
+        <th onclick="sortBy('activity')">Activity <span class="sort-arrow" id="sort-activity"></span></th>
+        <th onclick="sortBy('type')">Type <span class="sort-arrow" id="sort-type"></span></th>
+        <th onclick="sortBy('owner')">Owner <span class="sort-arrow" id="sort-owner"></span></th>
+        <th onclick="sortBy('status')">Status <span class="sort-arrow" id="sort-status"></span></th>
+        <th onclick="sortBy('priority')">Pri <span class="sort-arrow" id="sort-priority"></span></th>
+        <th>Dep</th>
+        <th>Notes</th>
+      </tr>
+    </thead>
+    <tbody id="planBody"></tbody>
+  </table>
+  <div class="no-results" id="noResults" style="display:none;">No activities match your filters.</div>
+</div>
+
+<script>
+(function() {
+  var data = typeof PROJECT_PLAN !== 'undefined' ? PROJECT_PLAN : [];
+  var sortCol = 'sno', sortAsc = true;
+  var collapsedModules = {};
+
+  // Populate filter dropdowns
+  var modules = {}, owners = {};
+  for (var i = 0; i < data.length; i++) {
+    modules[data[i].module] = 1;
+    owners[data[i].owner] = 1;
+  }
+  var mSel = document.getElementById('fModule');
+  Object.keys(modules).sort().forEach(function(m) {
+    var o = document.createElement('option'); o.value = m; o.textContent = m; mSel.appendChild(o);
+  });
+  var oSel = document.getElementById('fOwner');
+  Object.keys(owners).sort().forEach(function(o_) {
+    var o = document.createElement('option'); o.value = o_; o.textContent = o_; oSel.appendChild(o);
+  });
+
+  // Summary
+  function updateSummary(filtered) {
+    var c = 0, ip = 0, ns = 0;
+    for (var i = 0; i < filtered.length; i++) {
+      if (filtered[i].status === 'Completed') c++;
+      else if (filtered[i].status === 'In Progress') ip++;
+      else ns++;
+    }
+    var pct = filtered.length > 0 ? Math.round((c / filtered.length) * 100) : 0;
+    document.getElementById('summaryStrip').innerHTML =
+      '<div class="sum-card"><div class="val">' + filtered.length + '</div><div class="lbl">Total</div></div>' +
+      '<div class="sum-card green"><div class="val">' + c + '</div><div class="lbl">Completed</div></div>' +
+      '<div class="sum-card blue"><div class="val">' + ip + '</div><div class="lbl">In Progress</div></div>' +
+      '<div class="sum-card amber"><div class="val">' + ns + '</div><div class="lbl">Not Started</div></div>' +
+      '<div class="sum-card green"><div class="val">' + pct + '%</div><div class="lbl">Done</div></div>';
+    document.getElementById('countLabel').textContent = 'Showing ' + filtered.length + ' of ' + data.length + ' activities';
+  }
+
+  // Filter
+  function getFiltered() {
+    var fm = document.getElementById('fModule').value;
+    var fs = document.getElementById('fStatus').value;
+    var fp = document.getElementById('fPriority').value;
+    var ft = document.getElementById('fType').value;
+    var fo = document.getElementById('fOwner').value;
+    var fq = document.getElementById('fSearch').value.toLowerCase();
+    return data.filter(function(r) {
+      if (fm && r.module !== fm) return false;
+      if (fs && r.status !== fs) return false;
+      if (fp && r.priority !== fp) return false;
+      if (ft && r.type !== ft) return false;
+      if (fo && r.owner !== fo) return false;
+      if (fq && (r.activity + ' ' + r.notes + ' ' + r.module).toLowerCase().indexOf(fq) === -1) return false;
+      return true;
+    });
+  }
+
+  // Sort
+  function compare(a, b) {
+    var va = a[sortCol], vb = b[sortCol];
+    if (sortCol === 'sno') { va = parseInt(va) || 0; vb = parseInt(vb) || 0; }
+    if (va < vb) return sortAsc ? -1 : 1;
+    if (va > vb) return sortAsc ? 1 : -1;
+    return 0;
+  }
+
+  window.sortBy = function(col) {
+    if (sortCol === col) sortAsc = !sortAsc;
+    else { sortCol = col; sortAsc = true; }
+    render();
+  };
+
+  // Render
+  function render() {
+    var filtered = getFiltered();
+    filtered.sort(compare);
+    updateSummary(filtered);
+
+    // Update sort arrows
+    document.querySelectorAll('.sort-arrow').forEach(function(el) { el.textContent = ''; });
+    var arrow = document.getElementById('sort-' + sortCol);
+    if (arrow) arrow.textContent = sortAsc ? '\u25B2' : '\u25BC';
+
+    var body = document.getElementById('planBody');
+    var html = '';
+    var currentModule = '';
+    var moduleFiltered = !!document.getElementById('fModule').value;
+
+    for (var i = 0; i < filtered.length; i++) {
+      var r = filtered[i];
+
+      // Module group header (only when not filtering by module and sorting by sno)
+      if (!moduleFiltered && sortCol === 'sno' && r.module !== currentModule) {
+        currentModule = r.module;
+        var isCollapsed = collapsedModules[currentModule];
+        html += '<tr class="module-group-row' + (isCollapsed ? ' collapsed' : '') + '" onclick="toggleModule(\'' + currentModule.replace(/'/g, "\\'") + '\')">' +
+          '<td colspan="8"><span class="toggle-icon">\u25BC</span>' + currentModule + '</td></tr>';
+      }
+
+      var hidden = (!moduleFiltered && sortCol === 'sno' && collapsedModules[r.module]) ? ' style="display:none"' : '';
+      var statusCls = r.status === 'Completed' ? 'completed' : r.status === 'In Progress' ? 'inprogress' : 'notstarted';
+      var priCls = r.priority === 'P0' ? 'p0' : r.priority === 'P1' ? 'p1' : 'p2';
+
+      html += '<tr data-module="' + r.module + '"' + hidden + '>' +
+        '<td>' + r.sno + '</td>' +
+        '<td>' + r.activity + '</td>' +
+        '<td><span class="type-badge">' + r.type + '</span></td>' +
+        '<td>' + r.owner + '</td>' +
+        '<td><span class="status-badge status-' + statusCls + '">' + r.status + '</span></td>' +
+        '<td><span class="priority-' + priCls + '">' + r.priority + '</span></td>' +
+        '<td>' + r.dependency + '</td>' +
+        '<td>' + r.notes + '</td>' +
+        '</tr>';
+    }
+
+    body.innerHTML = html;
+    document.getElementById('noResults').style.display = filtered.length === 0 ? 'block' : 'none';
+  }
+
+  window.toggleModule = function(mod) {
+    collapsedModules[mod] = !collapsedModules[mod];
+    render();
+  };
+
+  window.resetFilters = function() {
+    document.getElementById('fModule').value = '';
+    document.getElementById('fStatus').value = '';
+    document.getElementById('fPriority').value = '';
+    document.getElementById('fType').value = '';
+    document.getElementById('fOwner').value = '';
+    document.getElementById('fSearch').value = '';
+    collapsedModules = {};
+    sortCol = 'sno'; sortAsc = true;
+    render();
+  };
+
+  // Bind filter events
+  ['fModule','fStatus','fPriority','fType','fOwner'].forEach(function(id) {
+    document.getElementById(id).addEventListener('change', render);
+  });
+  document.getElementById('fSearch').addEventListener('input', render);
+
+  render();
+})();
+</script>
+</body>
+</html>

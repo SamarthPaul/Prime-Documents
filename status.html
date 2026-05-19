@@ -1,0 +1,939 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PRIME Rural CRM - Project Status Summary</title>
+<link rel="stylesheet" href="styles.css">
+<style>
+  :root {
+    --prime-green: #1a6b3c;
+    --prime-green-light: #e8f5ec;
+    --bg: #F0F2F5;
+    --card: #fff;
+    --text: #1a1a2e;
+    --text-secondary: #5a6270;
+    --border: #e2e5ea;
+    --red: #dc3545;
+    --amber: #f59e0b;
+    --blue: #3b82f6;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: var(--bg); color: var(--text); line-height: 1.5; }
+  .page-bar { height: 3px; background: var(--prime-green); }
+  .container { max-width: 1020px; margin: 0 auto; padding: 24px 20px; }
+
+  .header { background: var(--card); border-radius: 8px; padding: 28px 32px; margin-bottom: 20px; border: 1px solid var(--border); }
+  .header h1 { font-size: 20px; color: var(--prime-green); margin-bottom: 4px; }
+  .header .subtitle { font-size: 13px; color: var(--text-secondary); }
+  .header .date { font-size: 12px; color: var(--text-secondary); margin-top: 8px; }
+
+  .kpi-strip { display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px; margin-bottom: 20px; }
+  .kpi-card { background: var(--card); border-radius: 8px; padding: 16px 20px; border: 1px solid var(--border); border-left: 3px solid var(--prime-green); }
+  .kpi-card .label { font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px; color: var(--text-secondary); margin-bottom: 4px; }
+  .kpi-card .value { font-size: 26px; font-weight: 700; }
+  .kpi-card .value.green { color: var(--prime-green); }
+  .kpi-card .value.amber { color: var(--amber); }
+  .kpi-card .value.blue { color: var(--blue); }
+
+  .type-section { background: var(--card); border-radius: 8px; margin-bottom: 16px; border: 1px solid var(--border); overflow: hidden; }
+  .type-header { display: flex; align-items: center; justify-content: space-between; padding: 16px 24px; background: var(--prime-green); color: #fff; }
+  .type-header h2 { font-size: 15px; font-weight: 600; }
+  .type-header .pct { font-size: 22px; font-weight: 700; }
+
+  .module-row { display: grid; grid-template-columns: 2.2fr 60px 60px 60px 1fr 60px; align-items: center; padding: 12px 24px; border-bottom: 1px solid var(--border); font-size: 13px; cursor: pointer; }
+  .module-row:hover { background: #fafbfc; }
+  .module-row.subheader { background: var(--prime-green-light); font-weight: 600; font-size: 11px; text-transform: uppercase; letter-spacing: 0.3px; color: var(--text-secondary); padding: 8px 24px; cursor: default; }
+  .module-row.subheader:hover { background: var(--prime-green-light); }
+  .module-name { font-weight: 500; }
+  .module-name .chevron { font-size: 10px; color: var(--text-secondary); margin-right: 4px; transition: transform 0.2s; display: inline-block; }
+  .module-name .chevron.open { transform: rotate(90deg); }
+  .count { text-align: center; font-size: 12px; }
+  .count.completed { color: var(--prime-green); font-weight: 600; }
+  .count.inprogress { color: var(--blue); font-weight: 600; }
+  .count.notstarted { color: var(--text-secondary); }
+
+  .progress-wrap { padding: 0 8px; }
+  .progress-bar { height: 8px; background: #e9ecef; border-radius: 4px; overflow: hidden; }
+  .progress-fill { height: 100%; border-radius: 4px; }
+  .progress-fill.green { background: var(--prime-green); }
+  .progress-fill.amber { background: var(--amber); }
+  .progress-fill.blue-fill { background: var(--blue); }
+
+  .pct-cell { text-align: center; font-weight: 700; font-size: 13px; }
+  .pct-cell.high { color: var(--prime-green); }
+  .pct-cell.mid { color: var(--amber); }
+  .pct-cell.low { color: var(--red); }
+  .pct-cell.zero { color: var(--text-secondary); }
+
+  .type-subtotal { display: grid; grid-template-columns: 2.2fr 60px 60px 60px 1fr 60px; align-items: center; padding: 10px 24px; background: #f8f9fa; font-size: 13px; font-weight: 600; border-top: 2px solid var(--border); }
+
+  /* Remaining items drawer */
+  .remaining-drawer { display: none; padding: 8px 24px 12px 42px; background: #f8faf9; border-bottom: 1px solid var(--border); font-size: 12px; color: var(--text-secondary); }
+  .remaining-drawer.open { display: block; }
+  .remaining-drawer ul { margin: 0; padding-left: 16px; }
+  .remaining-drawer li { margin-bottom: 2px; }
+  .remaining-drawer .ri-done { color: var(--prime-green); }
+  .remaining-drawer .ri-pending { color: var(--red); font-weight: 500; }
+
+  .legend { display: flex; gap: 20px; padding: 12px 24px; font-size: 11px; color: var(--text-secondary); background: var(--card); border-radius: 8px; border: 1px solid var(--border); margin-bottom: 16px; }
+  .legend span { display: flex; align-items: center; gap: 4px; }
+  .legend .dot { width: 8px; height: 8px; border-radius: 50%; display: inline-block; }
+  .legend .dot.c { background: var(--prime-green); }
+  .legend .dot.ip { background: var(--blue); }
+  .legend .dot.ns { background: #e9ecef; }
+
+  .notes { background: var(--card); border-radius: 8px; padding: 20px 24px; border: 1px solid var(--border); margin-top: 16px; }
+  .notes h3 { font-size: 14px; margin-bottom: 8px; color: var(--prime-green); }
+  .notes ul { padding-left: 18px; font-size: 13px; color: var(--text-secondary); }
+  .notes li { margin-bottom: 4px; }
+
+  .tech-badge { display: inline-block; background: var(--prime-green-light); color: var(--prime-green); font-size: 10px; font-weight: 600; padding: 1px 6px; border-radius: 3px; margin-left: 4px; }
+
+  .remaining-section { background: var(--card); border-radius: 8px; padding: 20px 24px; border: 1px solid var(--border); margin-top: 16px; }
+  .remaining-section h3 { font-size: 14px; margin-bottom: 12px; color: var(--prime-green); }
+  .remaining-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .remaining-item { padding: 10px 14px; background: #f8f9fa; border-radius: 6px; font-size: 12px; }
+  .remaining-item .ri-label { font-weight: 600; color: var(--text); margin-bottom: 2px; }
+  .remaining-item .ri-count { color: var(--red); font-weight: 700; font-size: 14px; }
+  .remaining-item .ri-desc { color: var(--text-secondary); font-size: 11px; }
+
+  @media print {
+    body { background: #fff; }
+    .container { max-width: 100%; padding: 10px; }
+    .type-header { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    .kpi-card { border-left-color: var(--prime-green) !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    .remaining-drawer { display: block !important; }
+  }
+  @media (max-width: 700px) {
+    .kpi-strip { grid-template-columns: repeat(2, 1fr); }
+    .module-row, .module-row.subheader, .type-subtotal { grid-template-columns: 1.5fr 40px 40px 40px 1fr 50px; font-size: 11px; padding: 10px 12px; }
+    .remaining-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+<script src="nav.js"></script>
+<div class="page-bar"></div>
+<div class="container">
+
+  <div class="header">
+    <h1>PRIME Rural CRM - Project Status Summary</h1>
+    <div class="subtitle">MBMA Meghalaya | Dhwani Rural Information Services</div>
+    <div class="date">As on: 15 May 2026 | Click any module row to see remaining items</div>
+  </div>
+
+
+  <!-- Overall KPIs -->
+  <div class="kpi-strip">
+    <div class="kpi-card">
+      <div class="label">Total Activities</div>
+      <div class="value">234</div>
+    </div>
+    <div class="kpi-card">
+      <div class="label">Completed</div>
+      <div class="value green">150</div>
+    </div>
+    <div class="kpi-card">
+      <div class="label">In Progress</div>
+      <div class="value blue">11</div>
+    </div>
+    <div class="kpi-card">
+      <div class="label">Remaining</div>
+      <div class="value amber">73</div>
+    </div>
+    <div class="kpi-card">
+      <div class="label">Overall Completion</div>
+      <div class="value green">64%</div>
+    </div>
+  </div>
+
+  <div class="legend">
+    <span><span class="dot c"></span> Completed</span>
+    <span><span class="dot ip"></span> In Progress</span>
+    <span><span class="dot ns"></span> Not Started</span>
+    <span style="margin-left:auto; font-size:10px; color:#999;">Click rows to expand remaining items</span>
+  </div>
+
+  <!-- ============ DASHBOARDS ============ -->
+  <div class="type-section">
+    <div class="type-header">
+      <h2>Dashboards</h2>
+      <div class="pct">29%</div>
+    </div>
+    <div class="module-row subheader">
+      <div>Dashboard</div>
+      <div class="count">Done</div>
+      <div class="count">WIP</div>
+      <div class="count">Pend</div>
+      <div>Progress</div>
+      <div class="count">%</div>
+    </div>
+
+    <div class="module-row" onclick="toggle('d1')">
+      <div class="module-name"><span class="chevron" id="d1c">&#9654;</span>Entrepreneurial Landscape Map</div>
+      <div class="count completed">0</div>
+      <div class="count inprogress">1</div>
+      <div class="count notstarted">0</div>
+      <div class="progress-wrap"><div class="progress-bar"><div class="progress-fill blue-fill" style="width:70%"></div></div></div>
+      <div class="pct-cell mid">70%</div>
+    </div>
+    <div class="remaining-drawer" id="d1">
+      <ul><li class="ri-pending">Filter expansion needed (6 filters + clustering + popup). Vue component + bundle exist.</li></ul>
+    </div>
+
+    <div class="module-row" onclick="toggle('d2')">
+      <div class="module-name"><span class="chevron" id="d2c">&#9654;</span>Intervention Dashboard</div>
+      <div class="count completed">0</div>
+      <div class="count inprogress">0</div>
+      <div class="count notstarted">1</div>
+      <div class="progress-wrap"><div class="progress-bar"><div class="progress-fill green" style="width:0%"></div></div></div>
+      <div class="pct-cell zero">0%</div>
+    </div>
+    <div class="remaining-drawer" id="d2">
+      <ul><li class="ri-pending">KPIs to be defined by client first. Will be rebuilt from scratch after KPI spec arrives.</li></ul>
+    </div>
+
+    <div class="module-row">
+      <div class="module-name">Milestone Tracker <span class="tech-badge">10 Vue components</span></div>
+      <div class="count completed">1</div>
+      <div class="count inprogress">0</div>
+      <div class="count notstarted">0</div>
+      <div class="progress-wrap"><div class="progress-bar"><div class="progress-fill green" style="width:100%"></div></div></div>
+      <div class="pct-cell high">100%</div>
+    </div>
+
+    <div class="module-row" onclick="toggle('d4')">
+      <div class="module-name"><span class="chevron" id="d4c">&#9654;</span>EP Status Monitor <span class="tech-badge">ep_grid page</span></div>
+      <div class="count completed">0</div>
+      <div class="count inprogress">1</div>
+      <div class="count notstarted">0</div>
+      <div class="progress-wrap"><div class="progress-bar"><div class="progress-fill blue-fill" style="width:80%"></div></div></div>
+      <div class="pct-cell mid">80%</div>
+    </div>
+    <div class="remaining-drawer" id="d4">
+      <ul>
+        <li class="ri-done">ep_grid page deployed with district/block/status/selection filters, KPI cards, DF completion matrix</li>
+        <li class="ri-pending">P1 bugs: filter reset issue, district pre-fill, geographic donut pending</li>
+      </ul>
+    </div>
+
+    <div class="module-row">
+      <div class="module-name">Entrepreneur Progress Report</div>
+      <div class="count completed">0</div>
+      <div class="count inprogress">0</div>
+      <div class="count notstarted">1</div>
+      <div class="progress-wrap"><div class="progress-bar"><div class="progress-fill green" style="width:0%"></div></div></div>
+      <div class="pct-cell zero">0%</div>
+    </div>
+
+    <div class="module-row" onclick="toggle('d6')">
+      <div class="module-name"><span class="chevron" id="d6c">&#9654;</span>Infrastructure Monitor <span class="tech-badge">11 Vue components</span></div>
+      <div class="count completed">0</div>
+      <div class="count inprogress">1</div>
+      <div class="count notstarted">0</div>
+      <div class="progress-wrap"><div class="progress-bar"><div class="progress-fill blue-fill" style="width:75%"></div></div></div>
+      <div class="pct-cell mid">75%</div>
+    </div>
+    <div class="remaining-drawer" id="d6">
+      <ul>
+        <li class="ri-done">11 Vue components: Overview, Funding, Payments, Donut, Sankey, Drawer, KPI, StatusChip, TierPopover</li>
+        <li class="ri-pending">Live data wiring to DF Infrastructure form fields (currently mock data)</li>
+      </ul>
+    </div>
+
+    <div class="module-row">
+      <div class="module-name">Dashboard Data Reconciliation (QA)</div>
+      <div class="count completed">0</div>
+      <div class="count inprogress">0</div>
+      <div class="count notstarted">1</div>
+      <div class="progress-wrap"><div class="progress-bar"><div class="progress-fill green" style="width:0%"></div></div></div>
+      <div class="pct-cell zero">0%</div>
+    </div>
+
+    <div class="type-subtotal">
+      <div>Dashboards Total (7)</div>
+      <div class="count completed">1</div>
+      <div class="count inprogress">3</div>
+      <div class="count notstarted">3</div>
+      <div class="progress-wrap"><div class="progress-bar"><div class="progress-fill green" style="width:29%"></div></div></div>
+      <div class="pct-cell mid">29%</div>
+    </div>
+  </div>
+
+  <!-- ============ FRAMEWORK FORMS ============ -->
+  <div class="type-section">
+    <div class="type-header">
+      <h2>Framework Forms (Diagnostic Modules)</h2>
+      <div><span class="pct">74%</span></div>
+    </div>
+    <div class="module-row subheader">
+      <div>Module</div>
+      <div class="count">Done</div>
+      <div class="count">WIP</div>
+      <div class="count">Pend</div>
+      <div>Progress</div>
+      <div class="count">%</div>
+    </div>
+
+    <!-- Product Portfolio -->
+    <div class="module-row" onclick="toggle('f1')">
+      <div class="module-name"><span class="chevron" id="f1c">&#9654;</span>Product Portfolio <span class="tech-badge">product.js</span></div>
+      <div class="count completed">5</div>
+      <div class="count inprogress">1</div>
+      <div class="count notstarted">3</div>
+      <div class="progress-wrap"><div class="progress-bar"><div class="progress-fill green" style="width:56%"></div></div></div>
+      <div class="pct-cell mid">56%</div>
+    </div>
+    <div class="remaining-drawer" id="f1">
+      <ul>
+        <li class="ri-done">Backend, Product Details, Variants (SKU), Process Flow tabs</li>
+        <li class="ri-pending">Production Capacity tab (conditional agri + monthly tracker) - needs verification</li>
+        <li class="ri-pending">Cross-module: Variants &rarr; Labels + Packaging auto-populate</li>
+        <li class="ri-pending">Cross-module: Process Flow machines &rarr; Machinery Existing</li>
+        <li class="ri-pending">Cross-module: Ingredients &rarr; Raw Materials auto-populate</li>
+      </ul>
+    </div>
+
+    <!-- Manufacturing -->
+    <div class="module-row" onclick="toggle('f2')">
+      <div class="module-name"><span class="chevron" id="f2c">&#9654;</span>Manufacturing - Raw Materials <span class="tech-badge">866 lines</span></div>
+      <div class="count completed">5</div>
+      <div class="count inprogress">0</div>
+      <div class="count notstarted">1</div>
+      <div class="progress-wrap"><div class="progress-bar"><div class="progress-fill green" style="width:83%"></div></div></div>
+      <div class="pct-cell high">83%</div>
+    </div>
+    <div class="remaining-drawer" id="f2">
+      <ul>
+        <li class="ri-done">Backend, Existing tab, Required tab, Summary tab, Log Book tab</li>
+        <li class="ri-pending">Cross-module: Cost/Batch feeds Unit Pricing Section I</li>
+      </ul>
+    </div>
+
+    <div class="module-row" onclick="toggle('f3')">
+      <div class="module-name"><span class="chevron" id="f3c">&#9654;</span>Manufacturing - Machinery <span class="tech-badge">531 lines</span></div>
+      <div class="count completed">4</div>
+      <div class="count inprogress">0</div>
+      <div class="count notstarted">2</div>
+      <div class="progress-wrap"><div class="progress-bar"><div class="progress-fill green" style="width:67%"></div></div></div>
+      <div class="pct-cell mid">67%</div>
+    </div>
+    <div class="remaining-drawer" id="f3">
+      <ul>
+        <li class="ri-done">Backend, Existing tab (22 fields + 7 calcs), Required tab, Summary tab</li>
+        <li class="ri-pending">Cross-module: Required machines &rarr; Infrastructure EE</li>
+        <li class="ri-pending">Cross-module: Dep/Unit feeds Unit Pricing Section V</li>
+      </ul>
+    </div>
+
+    <div class="module-row" onclick="toggle('f4')">
+      <div class="module-name"><span class="chevron" id="f4c">&#9654;</span>Manufacturing - Human Resource <span class="tech-badge">311 lines</span></div>
+      <div class="count completed">4</div>
+      <div class="count inprogress">0</div>
+      <div class="count notstarted">1</div>
+      <div class="progress-wrap"><div class="progress-bar"><div class="progress-fill green" style="width:80%"></div></div></div>
+      <div class="pct-cell high">80%</div>
+    </div>
+    <div class="remaining-drawer" id="f4">
+      <ul>
+        <li class="ri-done">Backend, Existing (GoM compliance), Required, Summary</li>
+        <li class="ri-pending">Cross-module: Labour cost feeds Unit Pricing Section II</li>
+      </ul>
+    </div>
+
+    <!-- Pricing -->
+    <div class="module-row" onclick="toggle('f5')">
+      <div class="module-name"><span class="chevron" id="f5c">&#9654;</span>Pricing - Unit Pricing <span class="tech-badge">1,682 lines</span></div>
+      <div class="count completed">7</div>
+      <div class="count inprogress">0</div>
+      <div class="count notstarted">1</div>
+      <div class="progress-wrap"><div class="progress-bar"><div class="progress-fill green" style="width:88%"></div></div></div>
+      <div class="pct-cell high">88%</div>
+    </div>
+    <div class="remaining-drawer" id="f5">
+      <ul>
+        <li class="ri-done">Backend, Sections I-IX (all 3 pricing strategies), Unit Cost calc, INR formatting</li>
+        <li class="ri-pending">Cross-module: Selling Price feeds back to Product Variant Retail Price (bidirectional)</li>
+      </ul>
+    </div>
+
+    <!-- Market -->
+    <div class="module-row" onclick="toggle('f6')">
+      <div class="module-name"><span class="chevron" id="f6c">&#9654;</span>Market - Research <span class="tech-badge">513 lines</span></div>
+      <div class="count completed">5</div>
+      <div class="count inprogress">1</div>
+      <div class="count notstarted">1</div>
+      <div class="progress-wrap"><div class="progress-bar"><div class="progress-fill green" style="width:71%"></div></div></div>
+      <div class="pct-cell mid">71%</div>
+    </div>
+    <div class="remaining-drawer" id="f6">
+      <ul>
+        <li class="ri-done">Backend, Market Landscape, Channel Research, Key Brands, Customer Research, SWOT</li>
+        <li class="ri-pending">Competitive Pricing auto-avg feed to Unit Pricing (cross-module)</li>
+      </ul>
+    </div>
+
+    <div class="module-row">
+      <div class="module-name">Market - Customer Analysis <span class="tech-badge">223 lines</span></div>
+      <div class="count completed">3</div>
+      <div class="count inprogress">0</div>
+      <div class="count notstarted">0</div>
+      <div class="progress-wrap"><div class="progress-bar"><div class="progress-fill green" style="width:100%"></div></div></div>
+      <div class="pct-cell high">100%</div>
+    </div>
+
+    <div class="module-row">
+      <div class="module-name">Market - Linkage <span class="tech-badge">273 lines</span></div>
+      <div class="count completed">2</div>
+      <div class="count inprogress">0</div>
+      <div class="count notstarted">0</div>
+      <div class="progress-wrap"><div class="progress-bar"><div class="progress-fill green" style="width:100%"></div></div></div>
+      <div class="pct-cell high">100%</div>
+    </div>
+
+    <div class="module-row">
+      <div class="module-name">Market - Promotions <span class="tech-badge">145 lines</span></div>
+      <div class="count completed">2</div>
+      <div class="count inprogress">0</div>
+      <div class="count notstarted">0</div>
+      <div class="progress-wrap"><div class="progress-bar"><div class="progress-fill green" style="width:100%"></div></div></div>
+      <div class="pct-cell high">100%</div>
+    </div>
+
+    <!-- Product Development -->
+    <div class="module-row" onclick="toggle('f10')">
+      <div class="module-name"><span class="chevron" id="f10c">&#9654;</span>Product Dev - Registration <span class="tech-badge">306 lines</span></div>
+      <div class="count completed">3</div>
+      <div class="count inprogress">0</div>
+      <div class="count notstarted">1</div>
+      <div class="progress-wrap"><div class="progress-bar"><div class="progress-fill green" style="width:75%"></div></div></div>
+      <div class="pct-cell mid">75%</div>
+    </div>
+    <div class="remaining-drawer" id="f10">
+      <ul>
+        <li class="ri-done">Backend, Existing tab (20 types + validity), Required tab (5-status pipeline)</li>
+        <li class="ri-pending">Notification: license expiry 30-day warning (scheduled job)</li>
+      </ul>
+    </div>
+
+    <div class="module-row">
+      <div class="module-name">Product Dev - Prototyping <span class="tech-badge">280 lines</span></div>
+      <div class="count completed">3</div>
+      <div class="count inprogress">0</div>
+      <div class="count notstarted">0</div>
+      <div class="progress-wrap"><div class="progress-bar"><div class="progress-fill green" style="width:100%"></div></div></div>
+      <div class="pct-cell high">100%</div>
+    </div>
+
+    <div class="module-row">
+      <div class="module-name">Product Dev - Testing <span class="tech-badge">398 lines</span></div>
+      <div class="count completed">3</div>
+      <div class="count inprogress">0</div>
+      <div class="count notstarted">0</div>
+      <div class="progress-wrap"><div class="progress-bar"><div class="progress-fill green" style="width:100%"></div></div></div>
+      <div class="pct-cell high">100%</div>
+    </div>
+
+    <div class="module-row">
+      <div class="module-name">Product Dev - Standardization <span class="tech-badge">783 lines</span></div>
+      <div class="count completed">2</div>
+      <div class="count inprogress">0</div>
+      <div class="count notstarted">0</div>
+      <div class="progress-wrap"><div class="progress-bar"><div class="progress-fill green" style="width:100%"></div></div></div>
+      <div class="pct-cell high">100%</div>
+    </div>
+
+    <div class="module-row" onclick="toggle('f14')">
+      <div class="module-name"><span class="chevron" id="f14c">&#9654;</span>Product Dev - Quality Control <span class="tech-badge">507 lines</span></div>
+      <div class="count completed">3</div>
+      <div class="count inprogress">0</div>
+      <div class="count notstarted">1</div>
+      <div class="progress-wrap"><div class="progress-bar"><div class="progress-fill green" style="width:75%"></div></div></div>
+      <div class="pct-cell mid">75%</div>
+    </div>
+    <div class="remaining-drawer" id="f14">
+      <ul>
+        <li class="ri-done">Backend, Star rating system, Summary metrics</li>
+        <li class="ri-pending">Resources tab (6 reference tiles - FSSAI Schedule 4 etc.) [P2]</li>
+      </ul>
+    </div>
+
+    <div class="module-row" onclick="toggle('f15')">
+      <div class="module-name"><span class="chevron" id="f15c">&#9654;</span>Product Dev - Packaging <span class="tech-badge">1,294 lines</span></div>
+      <div class="count completed">4</div>
+      <div class="count inprogress">0</div>
+      <div class="count notstarted">1</div>
+      <div class="progress-wrap"><div class="progress-bar"><div class="progress-fill green" style="width:80%"></div></div></div>
+      <div class="pct-cell high">80%</div>
+    </div>
+    <div class="remaining-drawer" id="f15">
+      <ul>
+        <li class="ri-done">Backend, Per-product packaging, Monthly Quantity, Sealing types</li>
+        <li class="ri-pending">Cross-module: feeds Unit Pricing Section III</li>
+      </ul>
+    </div>
+
+    <!-- Marketing Tools -->
+    <div class="module-row" onclick="toggle('f16')">
+      <div class="module-name"><span class="chevron" id="f16c">&#9654;</span>Marketing Tools - Branding <span class="tech-badge">3 form handlers</span></div>
+      <div class="count completed">4</div>
+      <div class="count inprogress">0</div>
+      <div class="count notstarted">1</div>
+      <div class="progress-wrap"><div class="progress-bar"><div class="progress-fill green" style="width:80%"></div></div></div>
+      <div class="pct-cell high">80%</div>
+    </div>
+    <div class="remaining-drawer" id="f16">
+      <ul>
+        <li class="ri-done">Backend (3 doctypes), Brand tab, Logo tab, Business Card tab</li>
+        <li class="ri-pending">Designer role: restricted sidebar + upload-only permissions</li>
+      </ul>
+    </div>
+
+    <div class="module-row" onclick="toggle('f17')">
+      <div class="module-name"><span class="chevron" id="f17c">&#9654;</span>Marketing Tools - Labels <span class="tech-badge">label JS</span></div>
+      <div class="count completed">3</div>
+      <div class="count inprogress">1</div>
+      <div class="count notstarted">1</div>
+      <div class="progress-wrap"><div class="progress-bar"><div class="progress-fill green" style="width:60%"></div></div></div>
+      <div class="pct-cell mid">60%</div>
+    </div>
+    <div class="remaining-drawer" id="f17">
+      <ul>
+        <li class="ri-done">Backend, Existing tab, Variant Content table</li>
+        <li class="ri-pending">Label Content AI Generate storyline (depends on Apoorva AI)</li>
+        <li class="ri-pending">Label Status: designer + 3 drafts per-variant + 5-status workflow</li>
+      </ul>
+    </div>
+
+    <div class="module-row">
+      <div class="module-name">Marketing Tools - Brochure <span class="tech-badge">196 lines</span></div>
+      <div class="count completed">2</div>
+      <div class="count inprogress">0</div>
+      <div class="count notstarted">0</div>
+      <div class="progress-wrap"><div class="progress-bar"><div class="progress-fill green" style="width:100%"></div></div></div>
+      <div class="pct-cell high">100%</div>
+    </div>
+
+    <!-- Skilling -->
+    <div class="module-row" onclick="toggle('f19')">
+      <div class="module-name"><span class="chevron" id="f19c">&#9654;</span>Skilling - Digital Literacy <span class="tech-badge">174 lines</span></div>
+      <div class="count completed">3</div>
+      <div class="count inprogress">0</div>
+      <div class="count notstarted">1</div>
+      <div class="progress-wrap"><div class="progress-bar"><div class="progress-fill green" style="width:75%"></div></div></div>
+      <div class="pct-cell mid">75%</div>
+    </div>
+    <div class="remaining-drawer" id="f19">
+      <ul>
+        <li class="ri-done">Backend, Access & Devices + 9-platform rating, Required tab</li>
+        <li class="ri-pending">Resources (6 tiles) + Task Log (10 pre-seeded) [P2]</li>
+      </ul>
+    </div>
+
+    <div class="module-row">
+      <div class="module-name">Skilling - Capacity Building <span class="tech-badge">798 lines</span></div>
+      <div class="count completed">4</div>
+      <div class="count inprogress">0</div>
+      <div class="count notstarted">0</div>
+      <div class="progress-wrap"><div class="progress-bar"><div class="progress-fill green" style="width:100%"></div></div></div>
+      <div class="pct-cell high">100%</div>
+    </div>
+
+    <div class="module-row">
+      <div class="module-name">Skilling - Business Plan Canvas <span class="tech-badge">57 lines</span></div>
+      <div class="count completed">2</div>
+      <div class="count inprogress">0</div>
+      <div class="count notstarted">0</div>
+      <div class="progress-wrap"><div class="progress-bar"><div class="progress-fill green" style="width:100%"></div></div></div>
+      <div class="pct-cell high">100%</div>
+    </div>
+
+    <!-- Logistics -->
+    <div class="module-row">
+      <div class="module-name">Logistics - Packing <span class="tech-badge">1,192 lines</span></div>
+      <div class="count completed">3</div>
+      <div class="count inprogress">0</div>
+      <div class="count notstarted">0</div>
+      <div class="progress-wrap"><div class="progress-bar"><div class="progress-fill green" style="width:100%"></div></div></div>
+      <div class="pct-cell high">100%</div>
+    </div>
+
+    <div class="module-row">
+      <div class="module-name">Logistics - Service <span class="tech-badge">328 lines</span></div>
+      <div class="count completed">4</div>
+      <div class="count inprogress">0</div>
+      <div class="count notstarted">0</div>
+      <div class="progress-wrap"><div class="progress-bar"><div class="progress-fill green" style="width:100%"></div></div></div>
+      <div class="pct-cell high">100%</div>
+    </div>
+
+    <!-- Infrastructure -->
+    <div class="module-row" onclick="toggle('f24')">
+      <div class="module-name"><span class="chevron" id="f24c">&#9654;</span>Infrastructure (BE + EE + CE) <span class="tech-badge">238 lines + 11 Vue</span></div>
+      <div class="count completed">4</div>
+      <div class="count inprogress">3</div>
+      <div class="count notstarted">4</div>
+      <div class="progress-wrap"><div class="progress-bar"><div class="progress-fill green" style="width:36%"></div></div></div>
+      <div class="pct-cell mid">36%</div>
+    </div>
+    <div class="remaining-drawer" id="f24">
+      <ul>
+        <li class="ri-done">Backend, Summary dashboard (11 Vue), BE basic form, Disbursement form</li>
+        <li class="ri-pending">BE: MSOR plinth rate lookup, SQM/SQF estimation, Implementation Status - in progress</li>
+        <li class="ri-pending">EE tab (auto from Machinery + SELCO pricing)</li>
+        <li class="ri-pending">CE tab (Electricity/unit + solarisation)</li>
+        <li class="ri-pending">Financial Model - PRIME SELCO mode (slabs + EMI)</li>
+        <li class="ri-pending">Financial Model - Innovation/Scale mode</li>
+        <li class="ri-pending">SELCO Executive role restriction</li>
+      </ul>
+    </div>
+
+    <!-- Funding -->
+    <div class="module-row" onclick="toggle('f25')">
+      <div class="module-name"><span class="chevron" id="f25c">&#9654;</span>Funding - Pitch Deck <span class="tech-badge">22 lines</span></div>
+      <div class="count completed">2</div>
+      <div class="count inprogress">0</div>
+      <div class="count notstarted">1</div>
+      <div class="progress-wrap"><div class="progress-bar"><div class="progress-fill green" style="width:67%"></div></div></div>
+      <div class="pct-cell mid">67%</div>
+    </div>
+    <div class="remaining-drawer" id="f25">
+      <ul>
+        <li class="ri-done">Backend, Summary + Existing + Required form</li>
+        <li class="ri-pending">Resources (5 tiles) + Task Log (18 pre-seeded) [P2]</li>
+      </ul>
+    </div>
+
+    <div class="module-row">
+      <div class="module-name">Funding - Schemes <span class="tech-badge">424 lines</span></div>
+      <div class="count completed">3</div>
+      <div class="count inprogress">0</div>
+      <div class="count notstarted">0</div>
+      <div class="progress-wrap"><div class="progress-bar"><div class="progress-fill green" style="width:100%"></div></div></div>
+      <div class="pct-cell high">100%</div>
+    </div>
+
+    <div class="type-subtotal">
+      <div>Framework Forms Total (115)</div>
+      <div class="count completed">85</div>
+      <div class="count inprogress">5</div>
+      <div class="count notstarted">25</div>
+      <div class="progress-wrap"><div class="progress-bar"><div class="progress-fill green" style="width:74%"></div></div></div>
+      <div class="pct-cell high">74%</div>
+    </div>
+  </div>
+
+  <!-- ============ ACTIVITY LOGGER ============ -->
+  <div class="type-section">
+    <div class="type-header">
+      <h2>Fellow Activity Logger</h2>
+      <div><span class="pct">38%</span></div>
+    </div>
+    <div class="module-row subheader">
+      <div>Component</div>
+      <div class="count">Done</div>
+      <div class="count">WIP</div>
+      <div class="count">Pend</div>
+      <div>Progress</div>
+      <div class="count">%</div>
+    </div>
+    <div class="module-row" onclick="toggle('a1')">
+      <div class="module-name"><span class="chevron" id="a1c">&#9654;</span>Views + Core</div>
+      <div class="count completed">3</div>
+      <div class="count inprogress">1</div>
+      <div class="count notstarted">0</div>
+      <div class="progress-wrap"><div class="progress-bar"><div class="progress-fill green" style="width:75%"></div></div></div>
+      <div class="pct-cell mid">75%</div>
+    </div>
+    <div class="remaining-drawer" id="a1">
+      <ul>
+        <li class="ri-done">Task workspace replacement, Calendar view, Board view</li>
+        <li class="ri-pending">6 cascading filters (District&rarr;Block&rarr;EP&rarr;Module&rarr;Framework&rarr;Task) - partial</li>
+      </ul>
+    </div>
+    <div class="module-row" onclick="toggle('a2')">
+      <div class="module-name"><span class="chevron" id="a2c">&#9654;</span>Branching + Sync</div>
+      <div class="count completed">0</div>
+      <div class="count inprogress">0</div>
+      <div class="count notstarted">4</div>
+      <div class="progress-wrap"><div class="progress-bar"><div class="progress-fill green" style="width:0%"></div></div></div>
+      <div class="pct-cell zero">0%</div>
+    </div>
+    <div class="remaining-drawer" id="a2">
+      <ul>
+        <li class="ri-pending">Activity form: branching logic (3 paths: EP-Framework, EP-NonFramework, NonEntrepreneur)</li>
+        <li class="ri-pending">Sync: framework activities &rarr; Log Book tabs</li>
+        <li class="ri-pending">Sync: all EP activities &rarr; Intervention Logs (read-only)</li>
+        <li class="ri-pending">Framework completion tracking (Not Started &rarr; Completed &rarr; xN)</li>
+      </ul>
+    </div>
+    <div class="type-subtotal">
+      <div>Activity Logger Total (8)</div>
+      <div class="count completed">3</div>
+      <div class="count inprogress">1</div>
+      <div class="count notstarted">4</div>
+      <div class="progress-wrap"><div class="progress-bar"><div class="progress-fill green" style="width:38%"></div></div></div>
+      <div class="pct-cell mid">38%</div>
+    </div>
+  </div>
+
+  <!-- ============ INDIVIDUAL MODULES ============ -->
+  <div class="type-section">
+    <div class="type-header">
+      <h2>Individual Modules</h2>
+      <div><span class="pct">51%</span></div>
+    </div>
+    <div class="module-row subheader">
+      <div>Module</div>
+      <div class="count">Done</div>
+      <div class="count">WIP</div>
+      <div class="count">Pend</div>
+      <div>Progress</div>
+      <div class="count">%</div>
+    </div>
+
+    <div class="module-row" onclick="toggle('i1')">
+      <div class="module-name"><span class="chevron" id="i1c">&#9654;</span>System Setup</div>
+      <div class="count completed">12</div>
+      <div class="count inprogress">0</div>
+      <div class="count notstarted">3</div>
+      <div class="progress-wrap"><div class="progress-bar"><div class="progress-fill green" style="width:80%"></div></div></div>
+      <div class="pct-cell high">80%</div>
+    </div>
+    <div class="remaining-drawer" id="i1">
+      <ul>
+        <li class="ri-pending">Production environment setup + SSL + domain</li>
+        <li class="ri-pending">Welcome email custom template</li>
+        <li class="ri-pending">Google SSO configuration</li>
+      </ul>
+    </div>
+
+    <div class="module-row" onclick="toggle('i2')">
+      <div class="module-name"><span class="chevron" id="i2c">&#9654;</span>Entrepreneur Profile <span class="tech-badge">10 Vue components</span></div>
+      <div class="count completed">8</div>
+      <div class="count inprogress">1</div>
+      <div class="count notstarted">0</div>
+      <div class="progress-wrap"><div class="progress-bar"><div class="progress-fill green" style="width:89%"></div></div></div>
+      <div class="pct-cell high">89%</div>
+    </div>
+    <div class="remaining-drawer" id="i2">
+      <ul><li class="ri-pending">Intervention Logs tab (read-only sync - depends on Activity Logger)</li></ul>
+    </div>
+
+    <div class="module-row">
+      <div class="module-name">Networking &amp; Mentoring <span class="tech-badge">SHIPPED</span></div>
+      <div class="count completed">6</div>
+      <div class="count inprogress">0</div>
+      <div class="count notstarted">0</div>
+      <div class="progress-wrap"><div class="progress-bar"><div class="progress-fill green" style="width:100%"></div></div></div>
+      <div class="pct-cell high">100%</div>
+    </div>
+
+    <div class="module-row" onclick="toggle('i4')">
+      <div class="module-name"><span class="chevron" id="i4c">&#9654;</span>Village Survey <span class="tech-badge">16 picker doctypes</span></div>
+      <div class="count completed">3</div>
+      <div class="count inprogress">0</div>
+      <div class="count notstarted">1</div>
+      <div class="progress-wrap"><div class="progress-bar"><div class="progress-fill green" style="width:75%"></div></div></div>
+      <div class="pct-cell mid">75%</div>
+    </div>
+    <div class="remaining-drawer" id="i4">
+      <ul><li class="ri-pending">Geo-tag &rarr; Landscape Map integration (village pins)</li></ul>
+    </div>
+
+    <div class="module-row" onclick="toggle('i5')">
+      <div class="module-name"><span class="chevron" id="i5c">&#9654;</span>Research Notes</div>
+      <div class="count completed">2</div>
+      <div class="count inprogress">0</div>
+      <div class="count notstarted">1</div>
+      <div class="progress-wrap"><div class="progress-bar"><div class="progress-fill green" style="width:67%"></div></div></div>
+      <div class="pct-cell mid">67%</div>
+    </div>
+    <div class="remaining-drawer" id="i5">
+      <ul><li class="ri-pending">EP Profile linking (optional)</li></ul>
+    </div>
+
+    <div class="module-row" onclick="toggle('i6')">
+      <div class="module-name"><span class="chevron" id="i6c">&#9654;</span>User Management</div>
+      <div class="count completed">2</div>
+      <div class="count inprogress">2</div>
+      <div class="count notstarted">2</div>
+      <div class="progress-wrap"><div class="progress-bar"><div class="progress-fill green" style="width:33%"></div></div></div>
+      <div class="pct-cell mid">33%</div>
+    </div>
+    <div class="remaining-drawer" id="i6">
+      <ul>
+        <li class="ri-pending">Add User form - in progress</li>
+        <li class="ri-pending">Role assignment logic - in progress</li>
+        <li class="ri-pending">Block assignment for Fessociates &rarr; auto-fill District/Block</li>
+        <li class="ri-pending">Google SSO for Gmail users</li>
+        <li class="ri-pending">District Coordinator: view-all edit-none permission</li>
+      </ul>
+    </div>
+
+    <div class="module-row" onclick="toggle('i7')">
+      <div class="module-name"><span class="chevron" id="i7c">&#9654;</span>Notifications</div>
+      <div class="count completed">0</div>
+      <div class="count inprogress">0</div>
+      <div class="count notstarted">5</div>
+      <div class="progress-wrap"><div class="progress-bar"><div class="progress-fill green" style="width:0%"></div></div></div>
+      <div class="pct-cell zero">0%</div>
+    </div>
+    <div class="remaining-drawer" id="i7">
+      <ul>
+        <li class="ri-pending">Notification Workspace + left menu (Core Team IT)</li>
+        <li class="ri-pending">Notification Log table (history of all sent notifications)</li>
+        <li class="ri-pending">Send Notification form (District &rarr; Block &rarr; Role &rarr; Users &rarr; Message)</li>
+        <li class="ri-pending">Push/force notification popup on login</li>
+        <li class="ri-pending">Notification tracking view for recipients</li>
+      </ul>
+    </div>
+
+    <div class="module-row">
+      <div class="module-name">Cross-Module Integration (Golden Thread)</div>
+      <div class="count completed">0</div>
+      <div class="count inprogress">0</div>
+      <div class="count notstarted">10</div>
+      <div class="progress-wrap"><div class="progress-bar"><div class="progress-fill green" style="width:0%"></div></div></div>
+      <div class="pct-cell zero">0%</div>
+    </div>
+
+    <div class="module-row">
+      <div class="module-name">Apoorva AI (Chatbot)</div>
+      <div class="count completed">0</div>
+      <div class="count inprogress">0</div>
+      <div class="count notstarted">4</div>
+      <div class="progress-wrap"><div class="progress-bar"><div class="progress-fill green" style="width:0%"></div></div></div>
+      <div class="pct-cell zero">0%</div>
+    </div>
+
+    <div class="type-subtotal">
+      <div>Individual Modules Total (62)</div>
+      <div class="count completed">33</div>
+      <div class="count inprogress">3</div>
+      <div class="count notstarted">26</div>
+      <div class="progress-wrap"><div class="progress-bar"><div class="progress-fill green" style="width:53%"></div></div></div>
+      <div class="pct-cell mid">53%</div>
+    </div>
+  </div>
+
+  <!-- ============ QA, SECURITY & GO-LIVE ============ -->
+  <div class="type-section">
+    <div class="type-header">
+      <h2>QA, Security & Go-Live</h2>
+      <div class="pct">0%</div>
+    </div>
+    <div class="module-row subheader">
+      <div>Module</div>
+      <div class="count">Done</div>
+      <div class="count">WIP</div>
+      <div class="count">Pend</div>
+      <div>Progress</div>
+      <div class="count">%</div>
+    </div>
+    <div class="module-row">
+      <div class="module-name">VAPT & Security</div>
+      <div class="count completed">0</div>
+      <div class="count inprogress">0</div>
+      <div class="count notstarted">8</div>
+      <div class="progress-wrap"><div class="progress-bar"><div class="progress-fill green" style="width:0%"></div></div></div>
+      <div class="pct-cell zero">0%</div>
+    </div>
+    <div class="module-row">
+      <div class="module-name">Load & Performance Testing</div>
+      <div class="count completed">0</div>
+      <div class="count inprogress">0</div>
+      <div class="count notstarted">8</div>
+      <div class="progress-wrap"><div class="progress-bar"><div class="progress-fill green" style="width:0%"></div></div></div>
+      <div class="pct-cell zero">0%</div>
+    </div>
+    <div class="module-row">
+      <div class="module-name">QA & TDD</div>
+      <div class="count completed">0</div>
+      <div class="count inprogress">0</div>
+      <div class="count notstarted">15</div>
+      <div class="progress-wrap"><div class="progress-bar"><div class="progress-fill green" style="width:0%"></div></div></div>
+      <div class="pct-cell zero">0%</div>
+    </div>
+    <div class="module-row">
+      <div class="module-name">UAT & Go-Live</div>
+      <div class="count completed">0</div>
+      <div class="count inprogress">0</div>
+      <div class="count notstarted">10</div>
+      <div class="progress-wrap"><div class="progress-bar"><div class="progress-fill green" style="width:0%"></div></div></div>
+      <div class="pct-cell zero">0%</div>
+    </div>
+    <div class="type-subtotal">
+      <div>QA/Security/Go-Live Total (41)</div>
+      <div class="count completed">0</div>
+      <div class="count inprogress">0</div>
+      <div class="count notstarted">41</div>
+      <div class="progress-wrap"><div class="progress-bar"><div class="progress-fill green" style="width:0%"></div></div></div>
+      <div class="pct-cell zero">0%</div>
+    </div>
+  </div>
+
+  <!-- Key Remaining Work -->
+  <div class="remaining-section">
+    <h3>Key Remaining Work (73 activities)</h3>
+    <div class="remaining-grid">
+      <div class="remaining-item">
+        <div class="ri-label">QA, VAPT, Load Testing</div>
+        <div class="ri-count">31 items</div>
+        <div class="ri-desc">All testing, security scans, performance benchmarks - post-build phase</div>
+      </div>
+      <div class="remaining-item">
+        <div class="ri-label">Cross-Module Integration (Golden Thread)</div>
+        <div class="ri-count">10 items</div>
+        <div class="ri-desc">RM&rarr;Pricing, Machinery&rarr;Infra, Product&rarr;Labels etc.</div>
+      </div>
+      <div class="remaining-item">
+        <div class="ri-label">Notifications Module</div>
+        <div class="ri-count">5 items</div>
+        <div class="ri-desc">Workspace, Log table, Send form, Push popup, Recipient tracking</div>
+      </div>
+      <div class="remaining-item">
+        <div class="ri-label">UAT & Go-Live</div>
+        <div class="ri-count">10 items</div>
+        <div class="ri-desc">UAT environment, client testing, migration, training, sign-off</div>
+      </div>
+      <div class="remaining-item">
+        <div class="ri-label">Infrastructure Advanced</div>
+        <div class="ri-count">7 items</div>
+        <div class="ri-desc">EE/CE tabs, Financial Model (2 modes), MSOR matrix, SELCO role</div>
+      </div>
+      <div class="remaining-item">
+        <div class="ri-label">Activity Logger Sync</div>
+        <div class="ri-count">4 items</div>
+        <div class="ri-desc">3-path branching, Log Book sync, Intervention Logs sync</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Notes -->
+  <div class="notes">
+    <h3>Key Highlights</h3>
+    <ul>
+      <li><strong>14 modules at 100%:</strong> Customer Analysis, Market Linkage, Promotions, Prototyping, Testing, Standardization, Brochure, Capacity Building, BPC, Logistics Packing, Logistics Service, Schemes Funding, Networking & Mentoring, Milestone Tracker</li>
+      <li><strong>Unit Pricing (1,682 lines)</strong> and <strong>Packaging (1,294 lines)</strong> are the most complex forms - both fully built with pricing calculations and INR formatting.</li>
+      <li><strong>Biggest remaining blocks:</strong> Cross-Module Integration (10 Golden Thread data flows), Notifications (5 items - send form + push popup + tracking), QA/Security/Go-Live pipeline (41 items).</li>
+      <li><strong>Infrastructure</strong> is the lowest framework form at 36% - needs EE/CE tabs and Financial Model (2 modes).</li>
+      <li><strong>Intervention Dashboard reset to 0%</strong> - will be rebuilt after KPI spec from client.</li>
+    </ul>
+  </div>
+
+</div>
+
+<script>
+function toggle(id) {
+  var el = document.getElementById(id);
+  var ch = document.getElementById(id + 'c');
+  if (el) {
+    el.classList.toggle('open');
+    if (ch) ch.classList.toggle('open');
+  }
+}
+</script>
+</body>
+</html>
