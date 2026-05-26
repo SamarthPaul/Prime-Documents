@@ -734,6 +734,7 @@ body > .site-nav { position: fixed; top: 0; left: 0; right: 0; z-index: 9999; }
       <div class="nav-group-items">
         <a class="nav-item active" onclick="scrollTo_('sec-welcome')">Welcome</a>
         <a class="nav-item" onclick="scrollTo_('sec-arch')">System Architecture</a>
+        <a class="nav-item" onclick="scrollTo_('sec-network')">Network Architecture</a>
         <a class="nav-item" onclick="scrollTo_('sec-modules')">Module &amp; Framework Map</a>
         <a class="nav-item" onclick="scrollTo_('sec-roles')">Role &amp; Permission Matrix</a>
         <a class="nav-item" onclick="scrollTo_('sec-lifecycle')">Entrepreneur Lifecycle</a>
@@ -770,6 +771,13 @@ body > .site-nav { position: fixed; top: 0; left: 0; right: 0; z-index: 9999; }
       <div class="nav-group-label" onclick="toggleGroup(this)">Product <span class="arrow">&#9654;</span></div>
       <div class="nav-group-items">
         <a class="nav-item" onclick="scrollTo_('m-product')">Product Profile</a>
+      </div>
+    </div>
+
+    <div class="nav-group">
+      <div class="nav-group-label" onclick="toggleGroup(this)">Accounts <span class="arrow">&#9654;</span></div>
+      <div class="nav-group-items">
+        <a class="nav-item" onclick="scrollTo_('m-financials')">Financials</a>
       </div>
     </div>
 
@@ -811,7 +819,6 @@ body > .site-nav { position: fixed; top: 0; left: 0; right: 0; z-index: 9999; }
     <div class="nav-group">
       <div class="nav-group-label" onclick="toggleGroup(this)">Product Development <span class="arrow">&#9654;</span></div>
       <div class="nav-group-items">
-        <a class="nav-item" onclick="scrollTo_('m-reg-lic')">Registration &amp; Licensing</a>
         <a class="nav-item" onclick="scrollTo_('m-prototyping')">Product Prototyping</a>
         <a class="nav-item" onclick="scrollTo_('m-testing')">Product Testing</a>
         <a class="nav-item" onclick="scrollTo_('m-standardization')">Product Standardization</a>
@@ -840,7 +847,7 @@ body > .site-nav { position: fixed; top: 0; left: 0; right: 0; z-index: 9999; }
     <div class="nav-group">
       <div class="nav-group-label" onclick="toggleGroup(this)">Infrastructure <span class="arrow">&#9654;</span></div>
       <div class="nav-group-items">
-        <a class="nav-item" onclick="scrollTo_('m-infra')">BE + EE + CE (Combined)</a>
+        <a class="nav-item" onclick="scrollTo_('m-infra')">Infrastructure (BE / EE / CE tabs)</a>
       </div>
     </div>
 
@@ -849,6 +856,14 @@ body > .site-nav { position: fixed; top: 0; left: 0; right: 0; z-index: 9999; }
       <div class="nav-group-items">
         <a class="nav-item" onclick="scrollTo_('m-pitch')">Pitch Deck</a>
         <a class="nav-item" onclick="scrollTo_('m-schemes')">Schemes &amp; Funding</a>
+      </div>
+    </div>
+
+    <div class="nav-group">
+      <div class="nav-group-label" onclick="toggleGroup(this)">Legal Compliance <span class="arrow">&#9654;</span></div>
+      <div class="nav-group-items">
+        <a class="nav-item" onclick="scrollTo_('m-product-compliance')">Product Compliance</a>
+        <a class="nav-item" onclick="scrollTo_('m-reg-lic')">Business Registration</a>
       </div>
     </div>
 
@@ -868,6 +883,7 @@ body > .site-nav { position: fixed; top: 0; left: 0; right: 0; z-index: 9999; }
       <div class="nav-group-items">
         <a class="nav-item" onclick="scrollTo_('x-usermgmt')">User Management</a>
         <a class="nav-item" onclick="scrollTo_('x-activity')">Fellow Activity Logger</a>
+        <a class="nav-item" onclick="scrollTo_('x-task-master')">Framework Task Master</a>
         <a class="nav-item" onclick="scrollTo_('x-research')">Research Notes</a>
         <a class="nav-item" onclick="scrollTo_('x-village')">Village Survey</a>
         <a class="nav-item" onclick="scrollTo_('x-notif')">Notifications</a>
@@ -986,7 +1002,7 @@ body > .site-nav { position: fixed; top: 0; left: 0; right: 0; z-index: 9999; }
             <li>Offline-first data capture</li>
             <li>Field user (Fessociate) focused</li>
             <li>Auto-sync when online</li>
-            <li>MSG91 OTP authentication</li>
+            <li>Google SSO authentication (single sign-on, no password / OTP)</li>
           </ul>
         </div>
         <div class="arch-connector">&lrarr;</div>
@@ -1008,7 +1024,7 @@ body > .site-nav { position: fixed; top: 0; left: 0; right: 0; z-index: 9999; }
             <li>Monsoon Court design system</li>
             <li>45+ Vue components</li>
             <li>Dashboards, forms, reports</li>
-            <li>Google SSO + email login</li>
+            <li>Email ID + password <em>or</em> Google SSO login</li>
           </ul>
         </div>
       </div>
@@ -1022,7 +1038,8 @@ body > .site-nav { position: fixed; top: 0; left: 0; right: 0; z-index: 9999; }
             <tr><td>Frontend</td><td>Vue.js 3</td><td>3.x</td><td>SPA with Monsoon Court design system</td></tr>
             <tr><td>Styling</td><td>Tailwind CSS + Monsoon Court tokens</td><td>--</td><td>Georgia serif, teal/terracotta/cream palette</td></tr>
             <tr><td>Mobile</td><td>Flutter</td><td>--</td><td>Offline-first with background sync</td></tr>
-            <tr><td>Auth</td><td>MSG91 OTP + Frappe auth</td><td>--</td><td>Google SSO for Gmail users</td></tr>
+            <tr><td>Auth — Mobile</td><td>Google SSO</td><td>--</td><td>Single sign-on only; no password / no OTP on Flutter app</td></tr>
+            <tr><td>Auth — Web CRM</td><td>Email ID + password <em>or</em> Google SSO</td><td>--</td><td>Two parallel options; both land on the same Frappe session</td></tr>
             <tr><td>AI Chatbot</td><td>Apoorva AI</td><td>--</td><td>Client's proprietary LLM</td></tr>
             <tr><td>Database</td><td>MariaDB</td><td>--</td><td>Via Frappe ORM</td></tr>
           </tbody>
@@ -1049,6 +1066,76 @@ body > .site-nav { position: fixed; top: 0; left: 0; right: 0; z-index: 9999; }
       </div>
     </div>
 
+    <!-- NETWORK ARCHITECTURE -->
+    <div class="brd-section" id="sec-network">
+      <div class="section-header">
+        <span class="section-id">PR-OV-002b</span>
+        <h2 class="section-title">Network Architecture</h2>
+      </div>
+      <div class="section-desc">
+        Every external service, third-party platform, and internal node that the PRIME Rural CRM and mobile app depend on at runtime. This is the end-of-day deployment surface that must all be reachable, monitored and provisioned for the product to be functional in production.
+      </div>
+
+      <h3 style="font-size:16px;color:var(--teal);margin:16px 0 10px;">Service Inventory</h3>
+      <table class="brd-table">
+        <thead>
+          <tr>
+            <th>Layer</th>
+            <th>Service / Component</th>
+            <th>Provider / Tech</th>
+            <th>Purpose</th>
+            <th>Failure Mode if Unreachable</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>Authentication</td><td>Google SSO (OAuth 2.0)</td><td>Google Identity</td><td>Sign-in for mobile (only) and web (optional)</td><td>Mobile app cannot log in at all; web CRM falls back to email + password</td></tr>
+          <tr><td>Authentication</td><td>Frappe Auth (email + password)</td><td>Frappe</td><td>Web CRM password login</td><td>Web CRM login broken (Google SSO still works)</td></tr>
+          <tr><td>Application</td><td>Web CRM (Vue 3 SPA + Frappe v15/v16)</td><td>Dhwani-hosted (staging: stgprime-rural.dhwaniris.in)</td><td>Primary application for core team, designer, SELCO, DC</td><td>Full system outage</td></tr>
+          <tr><td>Application</td><td>Flutter Mobile App</td><td>Dhwani build, Android (Play Store / sideload)</td><td>Fessociate field data capture, offline-first</td><td>No new field capture; existing offline buffer holds until reconnect</td></tr>
+          <tr><td>Database</td><td>MariaDB</td><td>Via Frappe ORM</td><td>All transactional + master data</td><td>Total outage</td></tr>
+          <tr><td>File storage</td><td>Frappe File doctype on application volume</td><td>Local FS / object store</td><td>Photo uploads, attachments, exports</td><td>Uploads fail; existing files cached client-side</td></tr>
+          <tr><td>Sync</td><td>Frappe REST API + whitelisted endpoints</td><td>Frappe</td><td>Mobile &harr; backend sync, web data fetches</td><td>Mobile cannot sync; web cannot load lists</td></tr>
+          <tr><td>AI Chatbot</td><td>Apoorva AI</td><td>Client (MBMA) proprietary LLM</td><td>In-app chatbot helper for users</td><td>Chatbot disabled; rest of system unaffected</td></tr>
+          <tr><td>Map tiles</td><td>OpenStreetMap / Leaflet tiles</td><td>OSM / chosen tile provider</td><td>Entrepreneurial Landscape map, village geo-pins</td><td>Map renders blank; pin overlays still work</td></tr>
+          <tr><td>Email</td><td>SMTP relay</td><td>Provider TBD (e.g. Postmark, SES, Google Workspace SMTP)</td><td>Welcome email on user creation; notification emails</td><td>No outbound email; in-app notifications still work</td></tr>
+          <tr><td>Notifications &mdash; in-app</td><td>Frappe Notification Log + websocket</td><td>Frappe</td><td>Real-time bell-icon alerts</td><td>Notifications delayed until next poll</td></tr>
+          <tr><td>Notifications &mdash; mobile push <em>(if used)</em></td><td>Firebase Cloud Messaging</td><td>Google FCM</td><td>Mobile push for assigned tasks / mentions</td><td>No push delivery; in-app notifications still work</td></tr>
+          <tr><td>Hosting</td><td>Application server</td><td>Cloud VM (provider TBD &mdash; AWS / GCP / Azure)</td><td>Frappe app + MariaDB + Redis</td><td>Total outage</td></tr>
+          <tr><td>Cache / Queue</td><td>Redis</td><td>Frappe stack</td><td>Background jobs, real-time, cache</td><td>Slow responses; background jobs (emails, syncs) queued</td></tr>
+          <tr><td>CDN / Static</td><td>Static asset host</td><td>Same origin or external CDN</td><td>Vue bundle, fonts, icons</td><td>UI loads slowly; degrades to cached version</td></tr>
+          <tr><td>MCP server <em>(internal tooling)</em></td><td>Prime Rural MCP</td><td>Google Cloud Run</td><td>AI tool surface for Claude / internal team</td><td>AI tooling unavailable; product unaffected for end users</td></tr>
+          <tr><td>Source control</td><td>GitHub</td><td>github.com/dhwani-ris/frappe_prime_rural</td><td>Code, deployments, CI</td><td>No new deploys; runtime unaffected</td></tr>
+          <tr><td>Observability</td><td>Application logs + uptime monitor</td><td>Provider TBD (e.g. CloudWatch, Grafana, Better Uptime)</td><td>Operational visibility</td><td>Blind to outages until users report</td></tr>
+        </tbody>
+      </table>
+
+      <div class="callout callout-amber" style="margin-top:14px">
+        <strong>Provisioning checklist:</strong> Before go-live, each row above must have a confirmed provider, credentials in a secret manager, monitoring/alerts wired, and a runbook entry for failure recovery. Items marked <em>TBD</em> need a decision from the delivery team.
+      </div>
+      <div class="callout callout-teal" style="margin-top:10px">
+        <strong>Notably <em>not</em> in scope:</strong> MSG91 OTP (previously planned) has been removed &mdash; mobile auth is Google SSO only; web auth is email/password or Google SSO. Third-party payment gateways are not in scope; all disbursements are recorded post-facto via the Infrastructure Disbursement doctype.
+      </div>
+
+      <div class="review-panel" data-section="sec-network">
+        <div class="review-strip">
+          <span style="font-size:12px;color:var(--ink-soft);font-weight:500;">Section Review:</span>
+          <button class="review-status-btn" onclick="setReview('sec-network','draft',this)">Draft</button>
+          <button class="review-status-btn" onclick="setReview('sec-network','review',this)">In Review</button>
+          <button class="review-status-btn" onclick="setReview('sec-network','changes',this)">Needs Changes</button>
+          <button class="review-status-btn" onclick="setReview('sec-network','approved',this)">Approved</button>
+          <button style="margin-left:auto;background:none;border:none;font-size:12px;color:var(--sea);cursor:pointer;font-family:var(--font);text-decoration:underline;" onclick="copyLink('sec-network')">Copy Link</button>
+        </div>
+        <div class="review-comments">
+          <div class="comment-list" id="comments-sec-network"></div>
+          <div class="comment-input-row">
+            <input type="text" placeholder="Your name" style="max-width:120px" id="name-sec-network">
+            <textarea rows="1" placeholder="Add a comment..." id="text-sec-network"></textarea>
+            <button class="comment-add-btn" onclick="addComment('sec-network')">Add</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <!-- MODULE & FRAMEWORK MAP -->
     <div class="brd-section" id="sec-modules">
       <div class="section-header">
@@ -1056,18 +1143,24 @@ body > .site-nav { position: fixed; top: 0; left: 0; right: 0; z-index: 9999; }
         <h2 class="section-title">Module &amp; Framework Map</h2>
       </div>
       <div class="section-desc">
-        The portal is organized into <strong>11 modules</strong> containing <strong>27 diagnostic frameworks</strong>. Each framework is a form that field users fill for entrepreneurs. Frameworks removed in the latest client update are shown struck through.
+        The portal is organized into <strong>13 modules</strong> containing <strong>27 diagnostic frameworks</strong>, plus the standalone <strong>Entrepreneur Progress Report</strong>. Each framework is a form that field users fill for entrepreneurs. Source of truth: <a href="https://docs.google.com/spreadsheets/d/1kNkr0NiOMgNGtcpx9fboXkHZmKjs_q-IwRLBalnchm4/edit?gid=0#gid=0" target="_blank">Module Master Google Sheet</a>.
       </div>
 
       <div class="module-tree">
         <div class="tree-module">
           <div class="tree-module-name">Entrepreneur Progress Report</div>
-          <div class="tree-fw">Standalone progress tracker</div>
+          <div class="tree-fw">Entrepreneur Progress Report <span style="color:var(--ink-faint);font-weight:400">(standalone, not under a module)</span></div>
+          <div style="font-size:11px;color:var(--ink-faint);padding-left:14px;margin-top:2px">Tabs: Entrepreneur Progress Report</div>
         </div>
         <div class="tree-module">
           <div class="tree-module-name">Product</div>
           <div class="tree-fw">Product Profile</div>
-          <div style="font-size:11px;color:var(--ink-faint);padding-left:14px;margin-top:2px">(Details, Process Flow, Variants, Capacity)</div>
+          <div style="font-size:11px;color:var(--ink-faint);padding-left:14px;margin-top:2px">Tabs: Product Details, Process Flow, Product Variants, Production Capacity, Resources</div>
+        </div>
+        <div class="tree-module">
+          <div class="tree-module-name">Accounts</div>
+          <div class="tree-fw">Financials</div>
+          <div style="font-size:11px;color:var(--ink-faint);padding-left:14px;margin-top:2px">Tabs: Business Model Calculator, Resources</div>
         </div>
         <div class="tree-module">
           <div class="tree-module-name">Manufacturing</div>
@@ -1076,40 +1169,40 @@ body > .site-nav { position: fixed; top: 0; left: 0; right: 0; z-index: 9999; }
           <div class="tree-fw">Human Resource</div>
         </div>
         <div class="tree-module">
+          <div class="tree-module-name">Infrastructure</div>
+          <div class="tree-fw">Infrastructure <span style="color:var(--ink-faint);font-weight:400">(single framework, three tabs)</span></div>
+          <div style="font-size:11px;color:var(--ink-faint);padding-left:14px;margin-top:2px">Tabs: Summary | Built Environment | Energy Efficient Machinery | Clean Energy | Log Book | Resources</div>
+        </div>
+        <div class="tree-module">
           <div class="tree-module-name">Marketing Tools</div>
-          <div class="tree-fw">Branding Identity</div>
+          <div class="tree-fw">Branding Identity <span style="color:var(--ink-faint);font-weight:400">(Brand, Logo, Business Card tabs)</span></div>
           <div class="tree-fw">Labels</div>
           <div class="tree-fw">Brochure</div>
         </div>
         <div class="tree-module">
           <div class="tree-module-name">Pricing</div>
           <div class="tree-fw">Unit Pricing</div>
-          <div class="tree-fw removed">Shelving (removed)</div>
         </div>
         <div class="tree-module">
           <div class="tree-module-name">Market</div>
-          <div class="tree-fw">Market Research</div>
+          <div class="tree-fw">Market Research <span style="color:var(--ink-faint);font-weight:400">(Market Research, Competitive Pricing tabs)</span></div>
           <div class="tree-fw">Customer Analysis</div>
           <div class="tree-fw">Market Linkage</div>
           <div class="tree-fw">Promotions</div>
-          <div class="tree-fw removed">Cataloguing (removed)</div>
         </div>
         <div class="tree-module">
           <div class="tree-module-name">Product Development</div>
-          <div class="tree-fw">Registration &amp; Licensing</div>
           <div class="tree-fw">Product Prototyping</div>
           <div class="tree-fw">Product Testing</div>
           <div class="tree-fw">Product Standardization</div>
           <div class="tree-fw">Quality Control</div>
           <div class="tree-fw">Product Packaging</div>
-          <div class="tree-fw removed">Design Experiment (removed)</div>
         </div>
         <div class="tree-module">
           <div class="tree-module-name">Skilling</div>
           <div class="tree-fw">Digital Literacy</div>
           <div class="tree-fw">Capacity Building</div>
-          <div class="tree-fw">Business Plan Canvas</div>
-          <div class="tree-fw removed">Design Thinking (removed)</div>
+          <div class="tree-fw">Business Plan Canvas <span style="color:var(--ink-faint);font-weight:400">(single Canvas tab)</span></div>
         </div>
         <div class="tree-module">
           <div class="tree-module-name">Logistics</div>
@@ -1117,19 +1210,22 @@ body > .site-nav { position: fixed; top: 0; left: 0; right: 0; z-index: 9999; }
           <div class="tree-fw">Logistic Service</div>
         </div>
         <div class="tree-module">
-          <div class="tree-module-name">Infrastructure</div>
-          <div class="tree-fw">Built Environment + Energy Efficient Machinery + Clean Energy</div>
-          <div style="font-size:11px;color:var(--ink-faint);padding-left:14px;margin-top:2px">(Combined single framework)</div>
-        </div>
-        <div class="tree-module">
           <div class="tree-module-name">Funding</div>
           <div class="tree-fw">Pitch Deck</div>
           <div class="tree-fw">Schemes &amp; Funding</div>
         </div>
+        <div class="tree-module">
+          <div class="tree-module-name">Legal Compliance</div>
+          <div class="tree-fw">Product Compliance</div>
+          <div class="tree-fw">Business Registration</div>
+        </div>
       </div>
 
       <div class="callout callout-teal">
-        <strong>Framework Tab Pattern:</strong> Each framework form follows a standard tab structure: <strong>Summary</strong> | <strong>Data Point Tabs</strong> (Existing / Required or specific content tabs) | <strong>Log Book</strong> | <strong>Resources</strong>. The Task tab has been <strong>removed</strong> per latest requirements; activity logging is now handled via the Fellow Activity Logger workspace.
+        <strong>Standard Framework Tab Pattern:</strong> <strong>Summary</strong> &rsaquo; <strong>Data Point tabs</strong> (Existing / Required, or framework-specific tabs) &rsaquo; <strong>Log Book</strong> &rsaquo; <strong>Resources</strong>. Exceptions: <em>Entrepreneur Progress Report</em>, <em>Product Profile</em> and <em>Financials</em> do <strong>not</strong> have a Summary tab; <em>Business Plan Canvas</em> uses a single <em>Canvas</em> tab; <em>Infrastructure</em> consolidates BE / EE / CE as three tabs inside one framework. The Task tab has been <strong>removed</strong> across all frameworks — activity logging is handled via the Fellow Activity Logger.
+      </div>
+      <div class="callout callout-amber" style="margin-top:10px">
+        <strong>Renames from previous BRD:</strong> Upskilling &rarr; <em>Skilling</em> &middot; Marketing &rarr; <em>Market</em> &middot; Financial Bookkeeping &rarr; <em>Financials</em> (under new <em>Accounts</em> module) &middot; Registration &amp; Licensing &rarr; <em>Business Registration</em> (moved to new <em>Legal Compliance</em> module). New module added: <em>Legal Compliance</em> (Product Compliance + Business Registration). New module added: <em>Product</em> (Product Profile separated as its own module).
       </div>
 
       <div class="review-panel" data-section="sec-modules">
@@ -1159,7 +1255,7 @@ body > .site-nav { position: fixed; top: 0; left: 0; right: 0; z-index: 9999; }
         <h2 class="section-title">Role &amp; Permission Matrix</h2>
       </div>
       <div class="section-desc">
-        Six roles access the portal. Each role sees a different sidebar menu and has different create/edit/view permissions.
+        Six roles access the portal. Each role sees a different sidebar menu and has different create/edit/view permissions. Landing page per role is marked with the <em>primary</em> pill below.
       </div>
 
       <table class="brd-table">
@@ -1188,7 +1284,7 @@ body > .site-nav { position: fixed; top: 0; left: 0; right: 0; z-index: 9999; }
             <td><strong>Intervention Dashboard</strong></td>
             <td class="perm-check">View + Edit</td>
             <td class="perm-check">View + Edit</td>
-            <td class="perm-check">View</td>
+            <td class="perm-cross">--</td>
             <td class="perm-cross">--</td>
             <td class="perm-cross">--</td>
             <td class="perm-view">View only</td>
@@ -1197,7 +1293,7 @@ body > .site-nav { position: fixed; top: 0; left: 0; right: 0; z-index: 9999; }
             <td><strong>Milestone Tracker</strong></td>
             <td class="perm-check">View + Create + Edit</td>
             <td class="perm-check">View + Create + Edit</td>
-            <td class="perm-check">View</td>
+            <td class="perm-cross">--</td>
             <td class="perm-cross">--</td>
             <td class="perm-cross">--</td>
             <td class="perm-view">View only</td>
@@ -1239,12 +1335,12 @@ body > .site-nav { position: fixed; top: 0; left: 0; right: 0; z-index: 9999; }
             <td class="perm-view">View only</td>
           </tr>
           <tr>
-            <td><strong>Infrastructure &rarr; EE (Machinery)</strong></td>
+            <td><strong>Diagnostics &rarr; Infrastructure module</strong></td>
             <td class="perm-check">Full CRUD</td>
             <td class="perm-check">Full CRUD</td>
-            <td class="perm-check">Create + Edit</td>
+            <td class="perm-check">Create + Edit (own block)</td>
             <td class="perm-cross">--</td>
-            <td class="perm-check">Update EE pricing + status</td>
+            <td class="perm-check">View all tabs (BE / EE / CE); edit only SELCO-relevant fields (pricing, equipment status, disbursement)</td>
             <td class="perm-view">View only</td>
           </tr>
           <tr>
@@ -1277,16 +1373,16 @@ body > .site-nav { position: fixed; top: 0; left: 0; right: 0; z-index: 9999; }
           <tr>
             <td><strong>User Management</strong></td>
             <td class="perm-check">Full CRUD</td>
-            <td class="perm-check">Create + Edit</td>
+            <td class="perm-view">View only</td>
             <td class="perm-cross">--</td>
             <td class="perm-cross">--</td>
             <td class="perm-cross">--</td>
             <td class="perm-cross">--</td>
           </tr>
           <tr>
-            <td><strong>Masters</strong></td>
+            <td><strong>Masters</strong> <span style="font-size:11px;color:var(--ink-faint);font-weight:400">(incl. Framework Task Master, Sector, Cohort, etc.)</span></td>
             <td class="perm-check">Full CRUD</td>
-            <td class="perm-check">View + Edit</td>
+            <td class="perm-view">View only</td>
             <td class="perm-cross">--</td>
             <td class="perm-cross">--</td>
             <td class="perm-cross">--</td>
@@ -1294,8 +1390,8 @@ body > .site-nav { position: fixed; top: 0; left: 0; right: 0; z-index: 9999; }
           </tr>
           <tr>
             <td><strong>Notifications</strong></td>
-            <td class="perm-check">Receive + Manage</td>
-            <td class="perm-check">Receive + Manage</td>
+            <td class="perm-check">Receive + Send + Manage</td>
+            <td class="perm-view">Receive only (cannot send)</td>
             <td class="perm-check">Receive</td>
             <td class="perm-check">Receive</td>
             <td class="perm-check">Receive</td>
@@ -1312,9 +1408,9 @@ body > .site-nav { position: fixed; top: 0; left: 0; right: 0; z-index: 9999; }
       <h3 style="font-size:18px;color:var(--teal);margin:24px 0 14px;">Sidebar Menu per Role</h3>
 
       <div class="journey-lane" data-role="core-it">
-        <div class="journey-lane-title"><span class="chip chip-teal">Core Team IT</span> Left Menu</div>
+        <div class="journey-lane-title"><span class="chip chip-teal">Core Team IT</span> Left Menu &middot; <em style="font-weight:400;color:var(--ink-soft)">landing page = Entrepreneurial Landscape</em></div>
         <div class="journey-steps">
-          <span class="journey-step-pill primary">Entrepreneurial Landscape</span>
+          <span class="journey-step-pill primary">Entrepreneurial Landscape (landing)</span>
           <span class="journey-step-pill">Intervention Dashboard</span>
           <span class="journey-step-pill">Milestone Tracker</span>
           <span class="journey-step-pill">Entrepreneur (List + Status Monitor)</span>
@@ -1330,9 +1426,9 @@ body > .site-nav { position: fixed; top: 0; left: 0; right: 0; z-index: 9999; }
       </div>
 
       <div class="journey-lane" data-role="core-prog">
-        <div class="journey-lane-title"><span class="chip chip-teal">Core Team Program</span> Left Menu</div>
+        <div class="journey-lane-title"><span class="chip chip-teal">Core Team Program</span> Left Menu &middot; <em style="font-weight:400;color:var(--ink-soft)">landing page = Entrepreneurial Landscape</em></div>
         <div class="journey-steps">
-          <span class="journey-step-pill primary">Entrepreneurial Landscape</span>
+          <span class="journey-step-pill primary">Entrepreneurial Landscape (landing)</span>
           <span class="journey-step-pill">Intervention Dashboard</span>
           <span class="journey-step-pill">Milestone Tracker</span>
           <span class="journey-step-pill">Entrepreneur (List + Status Monitor)</span>
@@ -1341,16 +1437,16 @@ body > .site-nav { position: fixed; top: 0; left: 0; right: 0; z-index: 9999; }
           <span class="journey-step-pill">Diagnostics (all modules)</span>
           <span class="journey-step-pill">Research Notes</span>
           <span class="journey-step-pill">Village Survey</span>
-          <span class="journey-step-pill">Notifications</span>
+          <span class="journey-step-pill">Notifications (receive only)</span>
+          <span class="journey-step-pill">User Management (view only)</span>
+          <span class="journey-step-pill">Masters (view only)</span>
         </div>
       </div>
 
       <div class="journey-lane" data-role="fessociate">
-        <div class="journey-lane-title"><span class="chip chip-sea">Fessociate</span> Left Menu</div>
+        <div class="journey-lane-title"><span class="chip chip-sea">Fessociate</span> Left Menu &middot; <em style="font-weight:400;color:var(--ink-soft)">no Milestone Tracker, no Intervention Dashboard</em></div>
         <div class="journey-steps">
-          <span class="journey-step-pill primary">Entrepreneurial Landscape (landing page)</span>
-          <span class="journey-step-pill">Intervention Dashboard</span>
-          <span class="journey-step-pill">Milestone Tracker</span>
+          <span class="journey-step-pill primary">Entrepreneurial Landscape (landing)</span>
           <span class="journey-step-pill">Entrepreneur (List + Status Monitor)</span>
           <span class="journey-step-pill">Diagnostics (all modules)</span>
           <span class="journey-step-pill">Fellow Activity Logger</span>
@@ -1361,20 +1457,19 @@ body > .site-nav { position: fixed; top: 0; left: 0; right: 0; z-index: 9999; }
       </div>
 
       <div class="journey-lane" data-role="designer">
-        <div class="journey-lane-title"><span class="chip chip-terra">Designer</span> Left Menu</div>
+        <div class="journey-lane-title"><span class="chip chip-terra">Designer</span> Left Menu &middot; <em style="font-weight:400;color:var(--ink-soft)">landing page = Marketing Tools &rsaquo; Branding Identity</em></div>
         <div class="journey-steps">
-          <span class="journey-step-pill primary">Diagnostics &rarr; Marketing Tools only</span>
-          <span class="journey-step-pill">Branding Identity</span>
-          <span class="journey-step-pill">Labels</span>
-          <span class="journey-step-pill">Brochure</span>
+          <span class="journey-step-pill primary">Marketing Tools &rsaquo; Branding Identity (landing)</span>
+          <span class="journey-step-pill">Marketing Tools &rsaquo; Labels</span>
+          <span class="journey-step-pill">Marketing Tools &rsaquo; Brochure</span>
           <span class="journey-step-pill">Notifications</span>
         </div>
       </div>
 
       <div class="journey-lane" data-role="selco">
-        <div class="journey-lane-title"><span class="chip chip-sea">SELCO Executive</span> Left Menu</div>
+        <div class="journey-lane-title"><span class="chip chip-sea">SELCO Executive</span> Left Menu &middot; <em style="font-weight:400;color:var(--ink-soft)">edits only SELCO-relevant fields</em></div>
         <div class="journey-steps">
-          <span class="journey-step-pill primary">Infrastructure &rarr; EE Machinery</span>
+          <span class="journey-step-pill primary">Infrastructure (Summary + BE + EE + CE + Log Book + Resources)</span>
           <span class="journey-step-pill">Notifications</span>
         </div>
       </div>
@@ -1418,7 +1513,7 @@ body > .site-nav { position: fixed; top: 0; left: 0; right: 0; z-index: 9999; }
         <h2 class="section-title">Entrepreneur Lifecycle</h2>
       </div>
       <div class="section-desc">
-        Every entrepreneur in the system follows a 3-state status model. There is no "Rejected" or "Pending" state.
+        Every entrepreneur in the system follows a 3-state status model. There is no "Rejected" or "Pending" state. The final status (Incubated / Supported) is set <strong>only by Core Team IT</strong> via a dropdown on the entrepreneur record, after Selection &amp; Evaluation is complete.
       </div>
 
       <div class="lifecycle">
@@ -1430,12 +1525,12 @@ body > .site-nav { position: fixed; top: 0; left: 0; right: 0; z-index: 9999; }
         <div class="lc-fork">
           <div class="lc-node incubated">
             Incubated
-            <span class="lc-label">Post jury selection</span>
+            <span class="lc-label">Set by Core Team IT post-selection</span>
           </div>
           <div style="text-align:center;font-size:11px;color:var(--ink-faint);padding:2px 0;">or</div>
           <div class="lc-node supported">
             Supported
-            <span class="lc-label">Post final selection</span>
+            <span class="lc-label">Set by Core Team IT post-selection</span>
           </div>
         </div>
       </div>
@@ -1450,33 +1545,36 @@ body > .site-nav { position: fixed; top: 0; left: 0; right: 0; z-index: 9999; }
           <div class="flow-arrow">&rarr;</div>
           <div class="flow-step">
             <div class="flow-box">Profile created on CRM</div>
-            <div class="flow-label">Status = MET</div>
-          </div>
-          <div class="flow-arrow">&rarr;</div>
-          <div class="flow-step">
-            <div class="flow-box">Products added</div>
-            <div class="flow-label">Linked to profile</div>
-          </div>
-          <div class="flow-arrow">&rarr;</div>
-          <div class="flow-step">
-            <div class="flow-box">Frameworks filled</div>
-            <div class="flow-label">Diagnostic assessment</div>
+            <div class="flow-label">Status = MET &middot; Fellow fills 10Q + Rural E-Champ score during profiling</div>
           </div>
           <div class="flow-arrow">&rarr;</div>
           <div class="flow-step">
             <div class="flow-box accent">Selection &amp; Evaluation</div>
-            <div class="flow-label">Pitching + Rural E-Champ score</div>
+            <div class="flow-label">Pitching + scoring review by Core Team</div>
           </div>
           <div class="flow-arrow">&rarr;</div>
           <div class="flow-step">
-            <div class="flow-box highlight">Incubated / Supported</div>
-            <div class="flow-label">Final status</div>
+            <div class="flow-box highlight">Core Team IT sets final status</div>
+            <div class="flow-label">Incubated or Supported (dropdown on EP record)</div>
           </div>
+          <div class="flow-arrow">&rarr;</div>
+          <div class="flow-step">
+            <div class="flow-box">Framework Selection &amp; Prioritisation</div>
+            <div class="flow-label">In EP Profile form &middot; by Core Team IT <em>or</em> Fellow</div>
+          </div>
+          <div class="flow-arrow">&rarr;</div>
+          <div class="flow-step">
+            <div class="flow-box">Diagnostic Assessment</div>
+            <div class="flow-label">Framework forms filled in priority order</div>
+          </div>
+        </div>
+        <div style="font-size:12px;color:var(--ink-faint);margin-top:12px">
+          <strong>Products</strong> can be added to the profile at any point from <em>Profile created</em> onward (independent of selection), since several frameworks reference the product catalogue (Golden Thread).
         </div>
       </div>
 
       <div class="callout callout-teal">
-        <strong>Prioritisation logic:</strong> After selection, all applicable frameworks are listed with priority = 0 by default. Core team or fellow can change priorities. Dashboard cards reorder automatically based on priority number (lower = higher priority).
+        <strong>Prioritisation logic:</strong> Once an entrepreneur is marked Incubated / Supported, the EP Profile form exposes a Framework Selection &amp; Prioritisation section. All 27 frameworks are listed with priority = 0 by default. Core Team IT <em>or</em> the Fellow can flip a framework to "Applicable" and assign a priority number. Dashboard cards reorder automatically by priority (lower number = higher priority). Diagnostic assessment proceeds in this order.
       </div>
 
       <div class="review-panel" data-section="sec-lifecycle">
@@ -1531,16 +1629,16 @@ body > .site-nav { position: fixed; top: 0; left: 0; right: 0; z-index: 9999; }
           <div class="rule-text">Summary tab content is <strong>generated only after the form is saved for the first time</strong>. Before first save, the summary tab shows an empty state with a prompt to save.</div>
         </div>
         <div class="rule-card">
-          <div class="rule-num">Rule 6 &mdash; Intervention Comments</div>
-          <div class="rule-text">Every Intervention Details section (in the Required tab) must have both <strong>Pre-Intervention Comments</strong> and <strong>Post-Intervention Comments</strong> text boxes.</div>
+          <div class="rule-num">Rule 6 &mdash; Intervention Details Tab</div>
+          <div class="rule-text"><strong>Intervention Details is its own tab</strong> in every framework form &mdash; <em>not</em> a section inside the Required tab. It contains <strong>Pre-Intervention Comments</strong> and <strong>Post-Intervention Comments</strong> text boxes plus any other intervention-level metadata. Sitting at the framework level (not the row level) means it captures the overall intervention narrative for that entrepreneur in that framework.</div>
         </div>
         <div class="rule-card">
           <div class="rule-num">Rule 7 &mdash; Task Tab Removed</div>
           <div class="rule-text">The Task tab shown in some HTML mockups has been <strong>removed</strong>. Activity logging is handled via the Fellow Activity Logger workspace instead. Framework forms only have the <strong>Log Book</strong> tab for logging.</div>
         </div>
         <div class="rule-card">
-          <div class="rule-num">Rule 8 &mdash; Log Book Structure</div>
-          <div class="rule-text">Log Book tab contains a table with columns: <strong>Fessociate</strong> (autofill), <strong>Entrepreneur</strong> (autofill), <strong>Task</strong> (dropdown from master filtered by framework), <strong>Upload/View</strong> (photo), <strong>Comments</strong>. Activities from Fellow Activity Logger also reflect here.</div>
+          <div class="rule-num">Rule 8 &mdash; Log Book Structure (per-framework scope)</div>
+          <div class="rule-text">Every framework has its own Log Book tab. Columns: <strong>Date</strong>, <strong>Fessociate</strong> (autofill), <strong>Entrepreneur</strong> (autofill), <strong>Task</strong> (dropdown from <em>Framework Task Master</em>, filtered to <em>that framework only</em>), <strong>Upload / View</strong> (photo), <strong>Comments</strong>. <strong>Scope:</strong> the Log Book for framework X shows <em>only</em> activities logged against framework X &mdash; whether the activity was added directly inside that framework's Log Book (with framework/entrepreneur prefilled) <em>or</em> created via the Fellow Activity Logger workspace. Activities from other frameworks never appear here. Activity Logger entries also carry through automatically.</div>
         </div>
         <div class="rule-card">
           <div class="rule-num">Rule 9 &mdash; Framework Completion</div>
@@ -1549,6 +1647,10 @@ body > .site-nav { position: fixed; top: 0; left: 0; right: 0; z-index: 9999; }
         <div class="rule-card">
           <div class="rule-num">Rule 10 &mdash; Block Restriction</div>
           <div class="rule-text">Field users see data from all blocks but can <strong>only create/edit for their own assigned block</strong>. District and block fields auto-fill from logged-in user's profile when creating new records.</div>
+        </div>
+        <div class="rule-card">
+          <div class="rule-num">Rule 11 &mdash; Cohort-Scoped Monthly Trackers</div>
+          <div class="rule-text">Any monthly tracker shown anywhere in any framework (any tab) must render <strong>month-rows for every year</strong> spanning the entrepreneur's <em>cohort start date</em> to <em>cohort end date</em>. The cohort is resolved from the entrepreneur's <code>cohort</code> link on the EP Profile; cohort dates are read from the Cohort master. Example: if the cohort runs Apr 2026 &rarr; Mar 2029, the tracker shows 36 month-rows grouped by year. Trackers must never be hard-coded to a single year.</div>
         </div>
       </div>
 
@@ -1627,10 +1729,16 @@ body > .site-nav { position: fixed; top: 0; left: 0; right: 0; z-index: 9999; }
             <span class="df-field">Ingredients list auto-populates as rows in Existing tab</span>
           </div>
           <div class="df-row">
-            <span class="df-source">Product Profile</span>
+            <span class="df-source">Product Profile &rarr; Process Flow</span>
             <span class="df-arrow-right">&rarr;</span>
-            <span class="df-target">Machinery</span>
-            <span class="df-field">Process flow machines populate Existing tab</span>
+            <span class="df-target">Raw Materials &rarr; Existing</span>
+            <span class="df-field">Machines marked in process flow under <em>Existing Machinery</em> are added as <strong>pre-created rows</strong> in the Raw Materials Existing tab (editable, removable)</span>
+          </div>
+          <div class="df-row">
+            <span class="df-source">Product Profile &rarr; Process Flow</span>
+            <span class="df-arrow-right">&rarr;</span>
+            <span class="df-target">Machinery &rarr; Existing</span>
+            <span class="df-field">Process flow machines populate Existing tab as pre-created rows (editable)</span>
           </div>
           <div class="df-row">
             <span class="df-source">Raw Materials</span>
@@ -1642,7 +1750,7 @@ body > .site-nav { position: fixed; top: 0; left: 0; right: 0; z-index: 9999; }
             <span class="df-source">Machinery (Required)</span>
             <span class="df-arrow-right">&rarr;</span>
             <span class="df-target">Infrastructure &rarr; EE</span>
-            <span class="df-field">Required machines auto-populate EE tab with SELCO pricing</span>
+            <span class="df-field">Required machines exposed as a <strong>dropdown</strong> in EE tab &mdash; fellow selects machines to add; SELCO pricing is fetched on selection (not auto-pushed)</span>
           </div>
           <div class="df-row">
             <span class="df-source">Infrastructure &rarr; BE</span>
@@ -1660,13 +1768,13 @@ body > .site-nav { position: fixed; top: 0; left: 0; right: 0; z-index: 9999; }
             <span class="df-source">Product Profile &rarr; Variants</span>
             <span class="df-arrow-right">&rarr;</span>
             <span class="df-target">Labels</span>
-            <span class="df-field">Variant list populates label variant content table</span>
+            <span class="df-field">Variants exposed as a <strong>dropdown</strong> in label variant content table &mdash; fellow selects which variants to add (not auto-prepopulated)</span>
           </div>
           <div class="df-row">
             <span class="df-source">Product Profile &rarr; Variants</span>
             <span class="df-arrow-right">&rarr;</span>
             <span class="df-target">Packaging</span>
-            <span class="df-field">Variant list populates packaging detail table</span>
+            <span class="df-field">Variants exposed as a <strong>dropdown</strong> in packaging detail table &mdash; fellow selects which variants to add (not auto-prepopulated)</span>
           </div>
           <div class="df-row">
             <span class="df-source">Unit Pricing</span>
@@ -1753,9 +1861,9 @@ body > .site-nav { position: fixed; top: 0; left: 0; right: 0; z-index: 9999; }
       <h3 style="font-size:18px;color:var(--teal);margin-bottom:12px;">What Core Team IT Does</h3>
       <div class="stat-strip cols-4">
         <div class="stat-card"><div class="stat-label">Primary Actions</div><div style="font-size:13px;margin-top:6px;color:var(--ink)">User creation, role assignment, master data management</div></div>
-        <div class="stat-card"><div class="stat-label">Secondary Actions</div><div style="font-size:13px;margin-top:6px;color:var(--ink)">Milestone creation, activity monitoring, data exports</div></div>
-        <div class="stat-card"><div class="stat-label">Approval Actions</div><div style="font-size:13px;margin-top:6px;color:var(--ink)">Entrepreneur selection, framework approvals, intervention sign-off</div></div>
-        <div class="stat-card accent"><div class="stat-label">Unique Capability</div><div style="font-size:13px;margin-top:6px;color:var(--ink)">User Management + Masters (only role with full access)</div></div>
+        <div class="stat-card"><div class="stat-label">Secondary Actions</div><div style="font-size:13px;margin-top:6px;color:var(--ink)">Create milestones, create activities <em>inside</em> milestones, then manage both milestones and activities; data exports</div></div>
+        <div class="stat-card"><div class="stat-label">Framework Prioritisations</div><div style="font-size:13px;margin-top:6px;color:var(--ink)">For each Incubated / Supported entrepreneur, mark applicable frameworks and assign priority numbers in the EP Profile form. Can also be done by Fellow.</div></div>
+        <div class="stat-card accent"><div class="stat-label">Unique Capability</div><div style="font-size:13px;margin-top:6px;color:var(--ink)">Set the final <em>Incubated / Supported</em> status (only role that can); only role with full User Management + Masters access</div></div>
       </div>
 
       <h3 style="font-size:18px;color:var(--teal);margin:20px 0 12px;">Journey 1: User Management</h3>
@@ -1797,16 +1905,19 @@ body > .site-nav { position: fixed; top: 0; left: 0; right: 0; z-index: 9999; }
         <div class="flow-container">
           <div class="flow-step"><div class="flow-box">Open EP Profile</div><div class="flow-label">Selection tab</div></div>
           <div class="flow-arrow">&rarr;</div>
-          <div class="flow-step"><div class="flow-box">Rate 10 parameters</div><div class="flow-label">Field evaluation (1-10 each)</div></div>
+          <div class="flow-step"><div class="flow-box">Review Fellow's inputs</div><div class="flow-label">10-question rating + Rural E-Champ score &mdash; <strong>both filled by Fellow during profiling</strong>, not by Core Team IT</div></div>
           <div class="flow-arrow">&rarr;</div>
-          <div class="flow-step"><div class="flow-box accent">Pitching Competition</div><div class="flow-label">Rural E-Champ score + attachment</div></div>
+          <div class="flow-step"><div class="flow-box accent">Pitching review</div><div class="flow-label">Review pitching attachment / round outcome</div></div>
           <div class="flow-arrow">&rarr;</div>
-          <div class="flow-step"><div class="flow-box">Final Selection</div><div class="flow-label">Set status: Incubated or Supported</div></div>
+          <div class="flow-step"><div class="flow-box highlight">Final Selection (CTIT only)</div><div class="flow-label">Set status: Incubated or Supported via dropdown</div></div>
           <div class="flow-arrow">&rarr;</div>
-          <div class="flow-step"><div class="flow-box highlight">Prioritisation</div><div class="flow-label">Set framework priorities (0 = default)</div></div>
+          <div class="flow-step"><div class="flow-box">Framework Prioritisation</div><div class="flow-label">Mark applicable frameworks &amp; set priority numbers &middot; <strong>can be done by CTIT <em>or</em> Fellow</strong></div></div>
         </div>
         <div class="callout callout-teal" style="margin-top:12px">
-          <strong>Prioritisation logic:</strong> All frameworks listed with priority 0 by default. User sets numeric priority. Dashboard cards reorder in ascending priority order. Changes reflect immediately on the Entrepreneur Profile Dashboard.
+          <strong>Who does what:</strong><br>
+          &middot; <strong>Fellow</strong> &mdash; fills the 10-question rating <em>and</em> the Rural E-Champ score during profiling. Both inputs land on the EP Profile and are visible to Core Team.<br>
+          &middot; <strong>Core Team IT</strong> &mdash; reviews Fellow's inputs + pitching outcome, then marks <em>Incubated</em> or <em>Supported</em> via the final status dropdown. <strong>Only CTIT can set this final status.</strong><br>
+          &middot; <strong>Framework Prioritisation</strong> &mdash; happens inside the EP Profile form after final status is set. All 27 frameworks listed with priority = 0 by default. Either CTIT <em>or</em> the Fellow can flip a framework to Applicable and assign a priority number. Lower number = higher priority. Dashboard cards reorder automatically.
         </div>
       </div>
 
@@ -2029,18 +2140,22 @@ body > .site-nav { position: fixed; top: 0; left: 0; right: 0; z-index: 9999; }
           </div>
 
           <h4 style="font-size:14px;color:var(--teal);margin:14px 0 8px;">Diagnostics Left Menu Structure</h4>
+          <div style="font-size:12px;color:var(--ink-soft);margin-bottom:6px">Source of truth: <a href="https://docs.google.com/spreadsheets/d/1kNkr0NiOMgNGtcpx9fboXkHZmKjs_q-IwRLBalnchm4/edit?gid=0#gid=0" target="_blank">Module Master Google Sheet</a>. 13 modules &middot; 27 frameworks (in addition to the standalone <em>Entrepreneur Progress Report</em>).</div>
           <table class="brd-table">
             <thead><tr><th>Module (Level 1)</th><th>Frameworks (Level 2)</th></tr></thead>
             <tbody>
+              <tr><td>Product</td><td>Product Profile</td></tr>
+              <tr><td>Accounts</td><td>Financials</td></tr>
               <tr><td>Manufacturing</td><td>Raw Materials, Machinery, Human Resource</td></tr>
+              <tr><td>Infrastructure</td><td>Infrastructure <span style="color:var(--ink-faint)">(single framework with Summary &middot; BE &middot; EE &middot; CE &middot; Log Book &middot; Resources tabs &mdash; dashboard view first, then form)</span></td></tr>
               <tr><td>Marketing Tools</td><td>Branding Identity, Labels, Brochure</td></tr>
               <tr><td>Pricing</td><td>Unit Pricing</td></tr>
               <tr><td>Market</td><td>Market Research, Customer Analysis, Market Linkage, Promotions</td></tr>
-              <tr><td>Product Development</td><td>Registration &amp; Licensing, Product Prototyping, Product Testing, Product Standardization, Quality Control, Product Packaging</td></tr>
+              <tr><td>Product Development</td><td>Product Prototyping, Product Testing, Product Standardization, Quality Control, Product Packaging</td></tr>
               <tr><td>Skilling</td><td>Digital Literacy, Capacity Building, Business Plan Canvas</td></tr>
               <tr><td>Logistics</td><td>Logistic Packing, Logistic Service</td></tr>
-              <tr><td>Infrastructure</td><td>Built Environment + EE + CE (combined &mdash; dashboard view first, then forms)</td></tr>
               <tr><td>Funding</td><td>Pitch Deck, Schemes &amp; Funding</td></tr>
+              <tr><td>Legal Compliance</td><td>Product Compliance, Business Registration</td></tr>
             </tbody>
           </table>
         </div>
@@ -2060,6 +2175,18 @@ body > .site-nav { position: fixed; top: 0; left: 0; right: 0; z-index: 9999; }
             <div class="flow-step"><div class="flow-box accent">Click "Add Activity"</div><div class="flow-label">Top right button</div></div>
             <div class="flow-arrow">&rarr;</div>
             <div class="flow-step"><div class="flow-box highlight">Fill activity form</div><div class="flow-label">See branching logic below</div></div>
+          </div>
+
+          <h4 style="font-size:14px;color:var(--teal);margin:14px 0 8px;">View Behaviour</h4>
+          <div class="rules-grid">
+            <div class="rule-card">
+              <div class="rule-num">Calendar View (default)</div>
+              <div class="rule-text">All activities the fellow has logged render as tiles on the date they were logged for. Multi-activity days show stacked chips. Click a date to expand its activities inline.</div>
+            </div>
+            <div class="rule-card">
+              <div class="rule-num">Board View (block-wise card view)</div>
+              <div class="rule-text">Toggled from the top-right view switch. Activities are grouped <strong>block-wise</strong> as cards (per the HTML wireframe). Within each block group, cards are sorted in <strong>descending order of logging date &mdash; latest activities at the top</strong>. Each card shows entrepreneur, framework / non-framework, task, comments preview, photo thumb.</div>
+            </div>
           </div>
 
           <h4 style="font-size:14px;color:var(--teal);margin:14px 0 8px;">Activity Form Branching Logic</h4>
@@ -3403,10 +3530,10 @@ body > .site-nav { position: fixed; top: 0; left: 0; right: 0; z-index: 9999; }
     <!-- REGISTRATION & LICENSING -->
     <div class="brd-section" id="m-reg-lic">
       <div class="section-header">
-        <span class="section-id">PR-PD-001</span>
-        <h2 class="section-title">Registration &amp; Licensing</h2>
+        <span class="section-id">PR-LC-002</span>
+        <h2 class="section-title">Business Registration <span style="font-size:13px;color:var(--ink-faint);font-weight:400">(Legal Compliance module)</span></h2>
       </div>
-      <div class="section-desc"><strong>Entrepreneur-level framework.</strong> Track all registrations/licenses held and required. Features intervention bridging &mdash; flagging in Existing auto-creates linked entry in Required.</div>
+      <div class="section-desc"><strong>Entrepreneur-level framework, now under the <em>Legal Compliance</em> module</strong> (previously named "Registration &amp; Licensing" under Product Development). Tracks all business registrations and licences held and required. Features intervention bridging &mdash; flagging in Existing auto-creates linked entry in Required. The companion <em>Product Compliance</em> framework (same module) handles product-level certifications &mdash; spec to be drafted in a follow-up pass.</div>
 
       <h3 style="font-size:16px;color:var(--teal);margin:12px 0 8px;">Tab Structure: Existing | Required</h3>
 
@@ -4509,6 +4636,27 @@ body > .site-nav { position: fixed; top: 0; left: 0; right: 0; z-index: 9999; }
       </div>
     </div>
 
+    <!-- NEW FRAMEWORK PLACEHOLDERS (per updated Google Sheet) -->
+    <div class="brd-section" id="m-financials">
+      <div class="section-header">
+        <span class="section-id">PR-AC-001</span>
+        <h2 class="section-title">Financials <span style="font-size:13px;color:var(--ink-faint);font-weight:400">(Accounts module)</span></h2>
+      </div>
+      <div class="callout callout-teal">
+        New framework introduced via the updated Module Master Google Sheet. Tabs: <strong>Business Model Calculator</strong> &middot; <strong>Resources</strong> (no Summary, no Log Book per the sheet). Detailed field-level spec to be drafted in a follow-up pass &mdash; will replace the legacy <em>Financial Bookkeeping</em> spec.
+      </div>
+    </div>
+
+    <div class="brd-section" id="m-product-compliance">
+      <div class="section-header">
+        <span class="section-id">PR-LC-001</span>
+        <h2 class="section-title">Product Compliance <span style="font-size:13px;color:var(--ink-faint);font-weight:400">(Legal Compliance module)</span></h2>
+      </div>
+      <div class="callout callout-teal">
+        New framework introduced via the updated Module Master Google Sheet. Tabs follow the standard pattern: <strong>Summary</strong> &middot; <strong>Existing</strong> &middot; <strong>Required</strong> &middot; <strong>Log Book</strong> &middot; <strong>Resources</strong>. Tracks product-level certifications and compliance (FSSAI, BIS, AGMARK, etc.) separately from business registrations. Detailed field-level spec to be drafted in a follow-up pass.
+      </div>
+    </div>
+
     <!-- DASHBOARDS -->
     <!-- ============================================================ -->
     <!-- LAYER 4: DASHBOARDS & VIEWS                                  -->
@@ -4730,11 +4878,17 @@ body > .site-nav { position: fixed; top: 0; left: 0; right: 0; z-index: 9999; }
         <tbody>
           <tr><td>District</td><td>Select</td><td>Pre-fills based on user's assigned district (for Fessociate)</td></tr>
           <tr><td>Block</td><td>Select</td><td>Filtered by district</td></tr>
+          <tr><td>Cohort</td><td>Select</td><td>From Cohort master &mdash; e.g. <em>Cohort 1 (Apr 2026 &ndash; Mar 2029)</em>. Independent filter.</td></tr>
+          <tr><td>Sector</td><td>Select</td><td>From Sector master. <strong>Independent</strong> filter &mdash; can be applied alone.</td></tr>
+          <tr><td>Business Basket</td><td>Select</td><td>From Business Basket master. <strong>Independent</strong> filter &mdash; can be applied alone. <strong>Cascading behaviour:</strong> if a Sector is also selected, the Business Basket dropdown is filtered to baskets within that sector. If Sector is cleared, all baskets become available again.</td></tr>
           <tr><td>Time Range</td><td>Tabs: All / Today / This Week / This Month / This Year</td><td>Filters by visit date or creation date</td></tr>
           <tr><td>Activity Status</td><td>Select</td><td>Active, Inactive</td></tr>
           <tr><td>Selection Status</td><td>Select</td><td>MET, Incubated, Supported</td></tr>
         </tbody>
       </table>
+      <div class="callout callout-teal" style="margin-top:10px">
+        <strong>Filter combination logic:</strong> All filters are AND-combined for the result set. Sector and Business Basket each work independently &mdash; either can be applied alone &mdash; but when both are selected, Business Basket is constrained to the chosen Sector.
+      </div>
 
       <h3 style="font-size:16px;color:var(--teal);margin:16px 0 10px;">Dashboard Content</h3>
       <div class="rules-grid">
@@ -4788,8 +4942,8 @@ body > .site-nav { position: fixed; top: 0; left: 0; right: 0; z-index: 9999; }
       <h3 style="font-size:16px;color:var(--teal);margin:16px 0 10px;">Expected Content (from Journey Doc + Profile Dashboard)</h3>
       <div class="rules-grid">
         <div class="rule-card">
-          <div class="rule-num">Product Photo Cards</div>
-          <div class="rule-text">All products show as clickable photo cards. Click to navigate to Product Profile form.</div>
+          <div class="rule-num">Product Photo Cards + Add New</div>
+          <div class="rule-text">All products for the entrepreneur show as <strong>clickable photo cards</strong>. Clicking a card opens that product's <em>Product Profile</em> form. After the last card, an additional <strong>"+ Add New Product"</strong> tile is rendered &mdash; clicking it opens a fresh <em>Product</em> doctype form, pre-filled with the entrepreneur reference, ready for a new product to be added.</div>
         </div>
         <div class="rule-card">
           <div class="rule-num">Framework Completion</div>
@@ -4928,11 +5082,11 @@ body > .site-nav { position: fixed; top: 0; left: 0; right: 0; z-index: 9999; }
       <div class="rules-grid">
         <div class="rule-card">
           <div class="rule-num">Calendar View (Default)</div>
-          <div class="rule-text">Activities show as calendar tiles with preview details (date, type, entrepreneur name, framework). Click tile to expand details. Default view on workspace load.</div>
+          <div class="rule-text">All activities the fellow has logged render as calendar tiles on the date they were logged for. Tile preview shows date, type, entrepreneur name, framework. Multi-activity days show stacked chips. Click a tile to expand details inline. This is the landing view on workspace open.</div>
         </div>
         <div class="rule-card">
-          <div class="rule-num">Board View</div>
-          <div class="rule-text">Card-based view of activities. Toggle via top-right switch. Same data, different layout.</div>
+          <div class="rule-num">Board View (Block-wise Cards)</div>
+          <div class="rule-text">Toggled via the top-right view switch. Activities are grouped <strong>block-wise</strong> into card columns per the HTML wireframe. Within each block, cards are sorted in <strong>descending order of logging date &mdash; latest activities at the top</strong>. Each card shows entrepreneur, framework / non-framework chip, task, comments preview, and photo thumbnail.</div>
         </div>
       </div>
 
@@ -5009,6 +5163,98 @@ body > .site-nav { position: fixed; top: 0; left: 0; right: 0; z-index: 9999; }
         </div>
         <div class="review-comments"><div class="comment-list" id="comments-x-activity"></div>
           <div class="comment-input-row"><input type="text" placeholder="Your name" style="max-width:120px" id="name-x-activity"><textarea rows="1" placeholder="Add a comment..." id="text-x-activity"></textarea><button class="comment-add-btn" onclick="addComment('x-activity')">Add</button></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- FRAMEWORK TASK MASTER -->
+    <div class="brd-section" id="x-task-master">
+      <div class="section-header">
+        <span class="section-id">PR-XC-002b</span>
+        <h2 class="section-title">Framework Task Master</h2>
+      </div>
+      <div class="section-desc">
+        Single master that feeds the Task dropdown wherever a fellow logs an activity &mdash; both inside any framework form's <em>Log Book</em> tab and inside the Fellow Activity Logger workspace. The source-of-truth data lives in <a href="../from-client/Final%20PRIME%20Rural%20Task%20Dropdowns%20Master.xlsx" target="_blank"><code>from-client/Final PRIME Rural Task Dropdowns Master.xlsx</code></a> &mdash; 27 framework sheets, 351+ tasks.
+      </div>
+
+      <h3 style="font-size:16px;color:var(--teal);margin:16px 0 10px;">DocType: <code>Framework Task Master</code></h3>
+      <table class="brd-table">
+        <thead>
+          <tr>
+            <th>Field</th>
+            <th>Type</th>
+            <th>Values / Source</th>
+            <th>Visibility</th>
+            <th>Logic</th>
+            <th>Validation</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>Module</td><td>Link</td><td>Module master (13 modules)</td><td>Core Team IT only (master entry)</td><td>Filters the Framework dropdown</td><td>Required</td></tr>
+          <tr><td>Framework</td><td>Link</td><td>Diagnostic Framework master (27 frameworks)</td><td>Core Team IT only (master entry)</td><td>Filtered by selected Module</td><td>Required</td></tr>
+          <tr><td>Task No.</td><td>Data</td><td>Two-digit string ("01", "02"&hellip;)</td><td>Core Team IT only</td><td>Auto-increments within framework on new entry; editable to allow reordering</td><td>Required, unique within (Module, Framework)</td></tr>
+          <tr><td>Task Name</td><td>Data</td><td>Free text</td><td><strong>Visible to Fellow</strong> &mdash; this is the <em>only</em> field shown in the activity-log task dropdown</td><td>--</td><td>Required, unique within (Module, Framework)</td></tr>
+          <tr><td>Description</td><td>Small Text</td><td>Free text</td><td>Core Team IT enters; shown on hover/expand in the activity log dropdown</td><td>--</td><td>Recommended (not strictly required)</td></tr>
+          <tr><td>Phase</td><td>Select</td><td>Awareness &middot; Assessment &middot; Training &middot; Implementation &middot; Follow-up &middot; Other</td><td><strong>Core Team IT only</strong> &mdash; not shown to Fellow anywhere</td><td>Internal taxonomy for core-team reporting; never surfaces in the fellow's activity log</td><td>Required</td></tr>
+        </tbody>
+      </table>
+
+      <h3 style="font-size:16px;color:var(--teal);margin:18px 0 10px;">The "Other" Task &mdash; One Per Framework</h3>
+      <div class="callout callout-teal">
+        Every framework's task list <strong>must</strong> contain exactly one row whose <code>Task Name</code> is "Other". Phase for this row is <code>Other</code>. This is the catch-all the fellow selects when their on-ground activity does not match any predefined task.
+        <ul style="margin:10px 0 0 18px;line-height:1.8">
+          <li><strong>What fellow sees:</strong> "Other" appears as the last option in the Task dropdown for that framework.</li>
+          <li><strong>What fellow does:</strong> picks "Other", then writes free-text in the existing <em>Comments</em> column of the activity logging table to explain what the activity actually was. <em>No new field is needed</em> &mdash; the Comments column already serves this purpose.</li>
+          <li><strong>What core team sees later:</strong> in reports / dashboards, "Other" rows are easy to filter; the Comments give the qualitative context.</li>
+        </ul>
+      </div>
+
+      <h3 style="font-size:16px;color:var(--teal);margin:18px 0 10px;">Master Entry Flow (Core Team IT)</h3>
+      <div class="card">
+        <div class="flow-container">
+          <div class="flow-step"><div class="flow-box highlight">Masters &rarr; Framework Task Master</div><div class="flow-label">Left menu (CTIT only)</div></div>
+          <div class="flow-arrow">&rarr;</div>
+          <div class="flow-step"><div class="flow-box">Add New Task</div><div class="flow-label">Top-right button</div></div>
+          <div class="flow-arrow">&rarr;</div>
+          <div class="flow-step"><div class="flow-box accent">Select Module &rarr; Framework</div><div class="flow-label">Cascading dropdowns</div></div>
+          <div class="flow-arrow">&rarr;</div>
+          <div class="flow-step"><div class="flow-box">Type Task Name + Description</div><div class="flow-label">Both go into the master</div></div>
+          <div class="flow-arrow">&rarr;</div>
+          <div class="flow-step"><div class="flow-box">Pick Phase</div><div class="flow-label">Internal taxonomy &mdash; not shown to Fellow</div></div>
+          <div class="flow-arrow">&rarr;</div>
+          <div class="flow-step"><div class="flow-box highlight">Save</div><div class="flow-label">Immediately available in fellow dropdowns</div></div>
+        </div>
+      </div>
+
+      <h3 style="font-size:16px;color:var(--teal);margin:18px 0 10px;">Fellow Surfaces (Where the Dropdown Appears)</h3>
+      <table class="brd-table">
+        <thead><tr><th>Surface</th><th>Filter applied to Task dropdown</th><th>Required fields on submit</th></tr></thead>
+        <tbody>
+          <tr><td>Framework form &rarr; <strong>Log Book</strong> tab &rarr; Add Log row</td><td>Tasks filtered to <em>that framework only</em>; sorted by <code>Task No.</code></td><td>Fessociate (autofill), Entrepreneur (autofill), Task (this dropdown), Comments (required if Task = "Other"), Photo (optional)</td></tr>
+          <tr><td>Fellow Activity Logger &rarr; Add Activity &rarr; Branch A (Entrepreneur + Framework Activity)</td><td>After fellow picks Module + Framework, Task dropdown filters to that framework's tasks (incl. "Other")</td><td>Date, Entrepreneur, Framework, Task, Comments (required if Task = "Other"), Photo (optional)</td></tr>
+        </tbody>
+      </table>
+
+      <div class="callout callout-amber" style="margin-top:14px">
+        <strong>Permissions recap:</strong> Only Core Team IT can create / edit Framework Task Master records (see Role Matrix &mdash; Masters row). Core Team Program has <em>view-only</em> access. Fellows never see the master directly &mdash; they only ever see the filtered Task Name dropdown in the surfaces above.
+      </div>
+
+      <h3 style="font-size:16px;color:var(--teal);margin:18px 0 10px;">Initial Seed Data</h3>
+      <div class="callout callout-teal">
+        Initial seed comes from <code>Final PRIME Rural Task Dropdowns Master.xlsx</code> &mdash; <strong>351+ tasks across 27 sheets</strong>. On data migration, each sheet maps to a framework; rows map to <code>Framework Task Master</code> records. The em-dash (<code>&mdash;</code>) phase rows in the source spreadsheet (already present in 26 of 27 sheets) are imported with <code>Phase = "Other"</code> and <code>Task Name = "Other"</code>. The missing "Other" row for <em>Logistic Service</em> is added during migration.
+      </div>
+
+      <div class="review-panel" data-section="x-task-master">
+        <div class="review-strip">
+          <span style="font-size:12px;color:var(--ink-soft);font-weight:500;">Section Review:</span>
+          <button class="review-status-btn" onclick="setReview('x-task-master','draft',this)">Draft</button>
+          <button class="review-status-btn" onclick="setReview('x-task-master','review',this)">In Review</button>
+          <button class="review-status-btn" onclick="setReview('x-task-master','changes',this)">Needs Changes</button>
+          <button class="review-status-btn" onclick="setReview('x-task-master','approved',this)">Approved</button>
+          <button style="margin-left:auto;background:none;border:none;font-size:12px;color:var(--sea);cursor:pointer;font-family:var(--font);text-decoration:underline;" onclick="copyLink('x-task-master')">Copy Link</button>
+        </div>
+        <div class="review-comments"><div class="comment-list" id="comments-x-task-master"></div>
+          <div class="comment-input-row"><input type="text" placeholder="Your name" style="max-width:120px" id="name-x-task-master"><textarea rows="1" placeholder="Add a comment..." id="text-x-task-master"></textarea><button class="comment-add-btn" onclick="addComment('x-task-master')">Add</button></div>
         </div>
       </div>
     </div>
@@ -5733,22 +5979,84 @@ function scrollTo_(id) {
   var el = document.getElementById(id);
   if (el) {
     el.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    // Update active nav
-    var items = document.querySelectorAll('.nav-item');
-    for (var i = 0; i < items.length; i++) items[i].classList.remove('active');
-    // Find the nav item that targets this id
-    var navItems = document.querySelectorAll('.nav-item');
-    for (var j = 0; j < navItems.length; j++) {
-      if (navItems[j].getAttribute('onclick') && navItems[j].getAttribute('onclick').indexOf(id) > -1) {
-        navItems[j].classList.add('active');
-      }
-    }
-    // Update breadcrumb
-    var sec = el.querySelector('.section-title');
-    if (sec) document.getElementById('breadcrumbCurrent').textContent = sec.textContent;
+    highlightNavForSection(id);
     // Close mobile sidebar
     document.getElementById('sidebar').classList.remove('open');
   }
+}
+
+// Highlights the nav item whose onclick targets the given section id,
+// scrolls the nav-tree so the active item is visible, and opens its parent group.
+function highlightNavForSection(id) {
+  var items = document.querySelectorAll('.nav-item');
+  var matched = null;
+  for (var i = 0; i < items.length; i++) {
+    items[i].classList.remove('active');
+    var oc = items[i].getAttribute('onclick') || '';
+    if (oc.indexOf("'" + id + "'") > -1) matched = items[i];
+  }
+  if (matched) {
+    matched.classList.add('active');
+    // Open the parent nav group so the highlight is visible
+    var group = matched.closest('.nav-group');
+    if (group && !group.classList.contains('open')) group.classList.add('open');
+    // Keep the nav item in view inside the sidebar
+    if (matched.scrollIntoView) {
+      var tree = document.getElementById('navTree');
+      if (tree) {
+        var iRect = matched.getBoundingClientRect();
+        var tRect = tree.getBoundingClientRect();
+        if (iRect.top < tRect.top || iRect.bottom > tRect.bottom) {
+          matched.scrollIntoView({ block: 'nearest' });
+        }
+      }
+    }
+    // Update breadcrumb
+    var target = document.getElementById(id);
+    if (target) {
+      var sec = target.querySelector('.section-title');
+      if (sec) {
+        var crumb = document.getElementById('breadcrumbCurrent');
+        if (crumb) crumb.textContent = sec.textContent;
+      }
+    }
+  }
+}
+
+// --- Scroll-spy ---
+// Auto-highlights the left nav as the user scrolls through sections.
+// Uses IntersectionObserver to find the section closest to the top of the viewport.
+function initScrollSpy() {
+  if (!('IntersectionObserver' in window)) return; // graceful no-op on very old browsers
+  var sections = document.querySelectorAll('.brd-section[id]');
+  if (!sections.length) return;
+  var visible = {};
+  var observer = new IntersectionObserver(function(entries) {
+    for (var i = 0; i < entries.length; i++) {
+      var id = entries[i].target.id;
+      if (entries[i].isIntersecting) {
+        visible[id] = entries[i].intersectionRatio;
+      } else {
+        delete visible[id];
+      }
+    }
+    // Pick the section that is most visible (highest intersectionRatio).
+    // Ties are broken by the section that starts closest to the top of the viewport.
+    var bestId = null, bestRatio = 0, bestTop = Infinity;
+    for (var key in visible) {
+      var elTop = document.getElementById(key).getBoundingClientRect().top;
+      if (visible[key] > bestRatio || (visible[key] === bestRatio && elTop < bestTop)) {
+        bestId = key; bestRatio = visible[key]; bestTop = elTop;
+      }
+    }
+    if (bestId) highlightNavForSection(bestId);
+  }, {
+    // Top-anchor band: a section is "active" while its top sits in the
+    // upper third of the viewport. Avoids flicker between adjacent sections.
+    rootMargin: '-80px 0px -60% 0px',
+    threshold: [0, 0.1, 0.25, 0.5, 0.75, 1]
+  });
+  for (var i = 0; i < sections.length; i++) observer.observe(sections[i]);
 }
 
 // --- Search ---
@@ -5894,6 +6202,9 @@ function init() {
   // Open first nav group
   var firstGroup = document.querySelector('.nav-group');
   if (firstGroup) firstGroup.classList.add('open');
+
+  // Auto-highlight left nav as user scrolls through sections
+  initScrollSpy();
 }
 
 document.addEventListener('DOMContentLoaded', init);
