@@ -5000,193 +5000,730 @@ body > .site-nav { position: fixed; top: 0; left: 0; right: 0; z-index: 9999; }
 
     <!-- CUSTOMER ANALYSIS -->
     <div class="brd-section" id="m-cust-analysis">
-      <div class="section-header">
-        <span class="section-id">PR-MKT-002</span>
-        <h2 class="section-title">Customer Analysis</h2>
-      </div>
-      <div class="section-desc">Customer segmentation and target market definition per product. <strong>Product-level framework</strong> with Existing/Required tabs.</div>
+  <div class="section-header"><span class="section-id">PR-MKT-002</span><h2 class="section-title">Customer Analysis</h2></div>
+  <div class="section-desc">Market module framework where the field facilitator maps each product's current customer base across demographic, geographic, psychographic and behavioural segmentation, defines the existing target market, flags products needing an upgrade, and captures an aspirational (Required) target market with an implementation pipeline.</div>
 
-      <h3 style="font-size:16px;color:var(--teal);margin:12px 0 8px;">Tab Structure: Existing | Required</h3>
+  <h3 style="font-size:16px;color:var(--teal);margin:18px 0 10px;">On-Screen UI Structure</h3>
+  <div class="card"><div style="font-size:13px;line-height:1.9;color:var(--ink)">
+    <strong>Top bar:</strong> teal header reading &ldquo;Customer Analysis&rdquo; with breadcrumb &ldquo;PRIME Rural &middot; Marketing Framework&rdquo;. Below it an <em>entrepreneur chip</em> showing initials avatar and &ldquo;Auto-fetched from profile&rdquo; (the entrepreneur is auto-linked, not chosen on this screen).<br>
+    <strong>Tab rail (5 tabs):</strong> Summary &middot; Existing &middot; Required &middot; Resources &middot; Task Log. The active tab is solid teal; Existing is the default working tab; Summary opens on load.<br>
+    <strong>Body &mdash; Existing &amp; Required tabs:</strong> a stacked list of collapsible <em>product blocks</em>. Each product block (sea-green header with product dropdown + status chip + Remove) expands into six numbered sub-sections (I&ndash;VI). Sub-sections I&ndash;V use a <em>multi-select chip picker</em> (pick one or more values from a master, each shown as a removable chip). Sub-section VI uses single-select dropdowns plus a free-text persona. The Existing block ends with an <em>Intervention Need</em> toggle; the Required block ends with an <em>Implementation Status</em> block.<br>
+    <strong>Special widgets:</strong> chip multi-picker (demographic/geographic/psychographic/behavioural/segmentation fields); toggle switch (intervention flag) that reveals a justification box and lights an &ldquo;Intervention Flagged&rdquo; chip in the product header; status chip (Pending / In Progress / Completed / Not Feasible) on Required products.<br>
+    <strong>Summary tab</strong> is <em>fully calculated</em> &mdash; product-wise Existing-vs-Required comparison table, four aggregate cards, and four intervention-flag tiles, all auto-populated from the Existing and Required tabs. Calculated fields are shown <em>in italic on cream-deep background with a tooltip explaining the source</em> (Rule 1). <strong>Resources</strong> holds a reference-material table; <strong>Task Log</strong> holds a dated activity log against a fixed task master.
+  </div></div>
+  <div class="flow-container" style="margin-top:12px"><span class="tab-pill">Summary</span><div class="flow-arrow">&rarr;</div><span class="tab-pill">Existing</span><div class="flow-arrow">&rarr;</div><span class="tab-pill">Required</span><div class="flow-arrow">&rarr;</div><span class="tab-pill">Resources</span><div class="flow-arrow">&rarr;</div><span class="tab-pill">Task Log</span></div>
 
-      <div class="accordion">
-        <div class="accordion-trigger" onclick="this.parentElement.classList.toggle('open')">
-          6 Segmentation Sections (both tabs) <span class="acc-arrow">&#9660;</span>
-        </div>
-        <div class="accordion-body">
-          <table class="brd-table">
-            <thead><tr><th>Section</th><th>Fields</th><th>Input Type</th></tr></thead>
-            <tbody>
-              <tr><td><strong>I. Demographic</strong></td><td>Age Group, Gender, Family Size, Occupation, Income Bracket, Education Level, Notes</td><td>Multi-select chip pickers + textarea</td></tr>
-              <tr><td><strong>II. Geographic</strong></td><td>Primary Geography, Key Cities, Location Type, Notes</td><td>Multi-select chips + textarea</td></tr>
-              <tr><td><strong>III. Psychographic</strong></td><td>Values &amp; Lifestyle, Buying Motivation, Notes</td><td>Multi-select chips + textarea</td></tr>
-              <tr><td><strong>IV. Behavioural</strong></td><td>Purchase Behaviour, Usage Rate, Loyalty Status, Occasion, Notes</td><td>Multi-select chips + textarea</td></tr>
-              <tr><td><strong>V. Customer Segmentation</strong></td><td>Primary Customers, Secondary Customers</td><td>Select from 9 segment options</td></tr>
-              <tr><td><strong>VI. Target Market</strong></td><td>Primary Target Segment, Secondary Target Segment, Market Readiness, Target Customer Persona</td><td>Selects + textarea</td></tr>
-            </tbody>
-          </table>
-          <div style="margin-top:8px;font-size:12px;">
-            <strong>Existing tab</strong> adds: Intervention Need toggle ("Upgrade Target Customers?") + justification.<br>
-            <strong>Required tab</strong> adds: Implementation Status block (Pending/In Progress/Completed/Not Feasible) + Notes.
-          </div>
-        </div>
-      </div>
+  <h3 style="font-size:16px;color:var(--teal);margin:18px 0 10px;">User Journey</h3>
+  <div class="card"><div class="flow-container">
+    <div class="flow-step"><div class="flow-box">1</div><div class="flow-label">Open Customer Analysis; entrepreneur auto-fetched from profile</div></div>
+    <div class="flow-arrow">&rarr;</div>
+    <div class="flow-step"><div class="flow-box">2</div><div class="flow-label">On Existing tab, Add Product and pick it from the product master</div></div>
+    <div class="flow-arrow">&rarr;</div>
+    <div class="flow-step"><div class="flow-box">3</div><div class="flow-label">Fill segmentation I&ndash;V (demographic, geographic, psychographic, behavioural, customer segments)</div></div>
+    <div class="flow-arrow">&rarr;</div>
+    <div class="flow-step"><div class="flow-box">4</div><div class="flow-label">Define Target Market (VI) &mdash; segment, readiness, persona &mdash; then flag Intervention Need if upgrade required</div></div>
+    <div class="flow-arrow">&rarr;</div>
+    <div class="flow-step"><div class="flow-box">5</div><div class="flow-label">On Required tab, add the same/new product, define aspirational target &amp; set Implementation Status</div></div>
+    <div class="flow-arrow">&rarr;</div>
+    <div class="flow-step"><div class="flow-box">6</div><div class="flow-label">Attach references (Resources), log activity (Task Log), review the auto Summary comparison</div></div>
+  </div></div>
 
-      <div class="review-panel" data-section="m-cust-analysis">
-        <div class="review-strip">
-          <span style="font-size:12px;color:var(--ink-soft);font-weight:500;">Section Review:</span>
-          <button class="review-status-btn" onclick="setReview('m-cust-analysis','draft',this)">Draft</button>
-          <button class="review-status-btn" onclick="setReview('m-cust-analysis','review',this)">In Review</button>
-          <button class="review-status-btn" onclick="setReview('m-cust-analysis','changes',this)">Needs Changes</button>
-          <button class="review-status-btn" onclick="setReview('m-cust-analysis','approved',this)">Approved</button>
-          <button style="margin-left:auto;background:none;border:none;font-size:12px;color:var(--sea);cursor:pointer;font-family:var(--font);text-decoration:underline;" onclick="copyLink('m-cust-analysis')">Copy Link</button>
-        </div>
-        <div class="review-comments">
-          <div class="comment-list" id="comments-m-cust-analysis"></div>
-          <div class="comment-input-row">
-            <input type="text" placeholder="Your name" style="max-width:120px" id="name-m-cust-analysis">
-            <textarea rows="1" placeholder="Add a comment..." id="text-m-cust-analysis"></textarea>
-            <button class="comment-add-btn" onclick="addComment('m-cust-analysis')">Add</button>
-          </div>
-        </div>
-      </div>
+  <!-- ============ TAB 1: EXISTING ============ -->
+  <div class="accordion open">
+    <div class="accordion-trigger" onclick="this.parentElement.classList.toggle('open')">Tab 1 &mdash; Existing (current customer base, per product)</div>
+    <div class="accordion-body">
+      <div class="section-desc" style="margin-top:0;">Caption on screen: &ldquo;Map the current customer base for each product the entrepreneur is selling. Each product holds its own customer segmentation and target market definition.&rdquo; The tab renders a list of collapsible product blocks plus an <strong>+ Add Product</strong> bar. Each block carries the six sub-sections below plus an Intervention Need toggle.</div>
+
+      <h4 style="font-size:14px;color:var(--teal);margin-bottom:10px;">Product Block Header</h4>
+      <table class="field-table">
+        <thead><tr><th>Field Name</th><th>Field Type</th><th>Input Values</th><th>Input</th><th>Autofill</th><th>Logic</th><th>Validation &amp; Error Messages</th></tr></thead>
+        <tbody>
+          <tr><td>Product</td><td>Select (Link to Product Master)</td><td>Bamboo Shoot Pickle, Lemongrass Tea, Lakadong Turmeric, Eri Silk Muffler, Bamboo Earring, Local Honey, Jadoh Spice Mix (placeholder master &mdash; final list from Product master)</td><td>Yes</td><td>No</td><td>Header dropdown that names the block; selecting blank leaves an unnamed block. One product block per product.</td><td>Product required before the block counts toward Summary. Error: &ldquo;Select a product.&rdquo;</td></tr>
+          <tr><td>Intervention Flagged (chip)</td><td>Status chip (read-only)</td><td>&ldquo;&#8635; Intervention Flagged&rdquo; (hidden until flagged)</td><td>No</td><td>Yes</td><td><em>Auto-shown</em> when the Intervention Need toggle is ON for this product.</td><td>&mdash;</td></tr>
+          <tr><td>Remove</td><td>Button</td><td>&mdash;</td><td>Yes</td><td>No</td><td>Removes the product block after confirmation &ldquo;Remove this product's customer analysis?&rdquo;; clears its picker state.</td><td>&mdash;</td></tr>
+        </tbody>
+      </table>
+
+      <h4 style="font-size:14px;color:var(--teal);margin-bottom:10px;">I. Demographic Segmentation</h4>
+      <table class="field-table">
+        <thead><tr><th>Field Name</th><th>Field Type</th><th>Input Values</th><th>Input</th><th>Autofill</th><th>Logic</th><th>Validation &amp; Error Messages</th></tr></thead>
+        <tbody>
+          <tr><td>Age Group</td><td>Multi-select chip picker</td><td>Below 18; 18&ndash;25; 26&ndash;35; 36&ndash;45; 46&ndash;55; 56&ndash;65; Above 65</td><td>Yes</td><td>No</td><td>Pick one or more; each value shown as a removable chip.</td><td>No duplicate values; at least one demographic field recommended.</td></tr>
+          <tr><td>Gender</td><td>Multi-select chip picker</td><td>Female; Male; Non-binary; Prefer not to say</td><td>Yes</td><td>No</td><td>Pick one or more.</td><td>No duplicate values.</td></tr>
+          <tr><td>Family Size</td><td>Multi-select chip picker</td><td>1 (Single); 2 (Couple); 3&ndash;4 (Small Family); 5&ndash;6 (Mid Family); 7+ (Joint Family)</td><td>Yes</td><td>No</td><td>Pick one or more.</td><td>No duplicate values.</td></tr>
+          <tr><td>Occupation</td><td>Multi-select chip picker</td><td>Salaried; Self-employed; Farmer; Student; Homemaker; Retired; Daily Wage; Government Employee</td><td>Yes</td><td>No</td><td>Pick one or more.</td><td>No duplicate values.</td></tr>
+          <tr><td>Income Bracket</td><td>Multi-select chip picker</td><td>Below &#8377;15,000; &#8377;15,000&ndash;&#8377;30,000; &#8377;30,000&ndash;&#8377;60,000; &#8377;60,000&ndash;&#8377;1,00,000; Above &#8377;1,00,000</td><td>Yes</td><td>No</td><td>Pick one or more; Indian number formatting on bands.</td><td>No duplicate values.</td></tr>
+          <tr><td>Education Level</td><td>Multi-select chip picker</td><td>No formal education; Primary; Secondary; Higher Secondary; Diploma; Graduate; Postgraduate</td><td>Yes</td><td>No</td><td>Pick one or more.</td><td>No duplicate values.</td></tr>
+          <tr><td>Notes</td><td>Text area (multi-line)</td><td>Free text &mdash; &ldquo;Additional observations on demographic segmentation&rdquo;</td><td>Yes</td><td>No</td><td>Optional qualitative notes.</td><td>&mdash;</td></tr>
+        </tbody>
+      </table>
+
+      <h4 style="font-size:14px;color:var(--teal);margin-bottom:10px;">II. Geographic</h4>
+      <table class="field-table">
+        <thead><tr><th>Field Name</th><th>Field Type</th><th>Input Values</th><th>Input</th><th>Autofill</th><th>Logic</th><th>Validation &amp; Error Messages</th></tr></thead>
+        <tbody>
+          <tr><td>Primary Geography</td><td>Multi-select chip picker</td><td>Local (Block); District; State; Inter-state; National; International</td><td>Yes</td><td>No</td><td>Feeds the Existing &ldquo;Geography&rdquo; column in the Summary table (first two picks shown).</td><td>No duplicate values; at least one value recommended.</td></tr>
+          <tr><td>Key Cities</td><td>Multi-select chip picker</td><td>Shillong; Tura; Jowai; Nongpoh; Williamnagar; Baghmara; Guwahati; Kolkata; Delhi; Mumbai</td><td>Yes</td><td>No</td><td>Pick one or more cities.</td><td>No duplicate values.</td></tr>
+          <tr><td>Location Type</td><td>Multi-select chip picker</td><td>Rural; Semi-urban; Urban; Tier-1 City; Tier-2 City; Tier-3 City</td><td>Yes</td><td>No</td><td>Pick one or more.</td><td>No duplicate values.</td></tr>
+          <tr><td>Notes</td><td>Text area</td><td>Free text &mdash; &ldquo;Additional observations on geography&rdquo;</td><td>Yes</td><td>No</td><td>Optional.</td><td>&mdash;</td></tr>
+        </tbody>
+      </table>
+
+      <h4 style="font-size:14px;color:var(--teal);margin-bottom:10px;">III. Psychographic</h4>
+      <table class="field-table">
+        <thead><tr><th>Field Name</th><th>Field Type</th><th>Input Values</th><th>Input</th><th>Autofill</th><th>Logic</th><th>Validation &amp; Error Messages</th></tr></thead>
+        <tbody>
+          <tr><td>Values &amp; Lifestyle</td><td>Multi-select chip picker</td><td>Health-conscious; Eco-conscious; Traditional; Modern; Premium / Luxury; Budget-conscious; Convenience-driven; Adventurous</td><td>Yes</td><td>No</td><td>Pick one or more.</td><td>No duplicate values.</td></tr>
+          <tr><td>Buying Motivation</td><td>Multi-select chip picker</td><td>Quality; Price; Local Origin; Brand; Health Benefits; Convenience; Social Status; Recommendation</td><td>Yes</td><td>No</td><td>Pick one or more.</td><td>No duplicate values.</td></tr>
+          <tr><td>Notes</td><td>Text area</td><td>Free text &mdash; &ldquo;Additional observations on psychographics&rdquo;</td><td>Yes</td><td>No</td><td>Optional.</td><td>&mdash;</td></tr>
+        </tbody>
+      </table>
+
+      <h4 style="font-size:14px;color:var(--teal);margin-bottom:10px;">IV. Behavioural</h4>
+      <table class="field-table">
+        <thead><tr><th>Field Name</th><th>Field Type</th><th>Input Values</th><th>Input</th><th>Autofill</th><th>Logic</th><th>Validation &amp; Error Messages</th></tr></thead>
+        <tbody>
+          <tr><td>Purchase Behaviour</td><td>Multi-select chip picker</td><td>First-time Buyer; Repeat Purchase; Bulk Buyer; Occasional; Seasonal; Impulse</td><td>Yes</td><td>No</td><td>Pick one or more.</td><td>No duplicate values.</td></tr>
+          <tr><td>Usage Rate</td><td>Multi-select chip picker</td><td>Heavy User; Moderate User; Light User; Non-user</td><td>Yes</td><td>No</td><td>Pick one or more.</td><td>No duplicate values.</td></tr>
+          <tr><td>Loyalty Status</td><td>Multi-select chip picker</td><td>Hard-core Loyal; Soft-core Loyal; Shifting Loyal; Switcher</td><td>Yes</td><td>No</td><td>Pick one or more.</td><td>No duplicate values.</td></tr>
+          <tr><td>Occasion</td><td>Multi-select chip picker</td><td>Daily Use; Festive; Gifting; Special Occasion; Travel; Health Need</td><td>Yes</td><td>No</td><td>Pick one or more.</td><td>No duplicate values.</td></tr>
+          <tr><td>Notes</td><td>Text area</td><td>Free text &mdash; &ldquo;Additional observations on customer behaviour&rdquo;</td><td>Yes</td><td>No</td><td>Optional.</td><td>&mdash;</td></tr>
+        </tbody>
+      </table>
+
+      <h4 style="font-size:14px;color:var(--teal);margin-bottom:10px;">V. Customer Segmentation</h4>
+      <table class="field-table">
+        <thead><tr><th>Field Name</th><th>Field Type</th><th>Input Values</th><th>Input</th><th>Autofill</th><th>Logic</th><th>Validation &amp; Error Messages</th></tr></thead>
+        <tbody>
+          <tr><td>Primary Customers</td><td>Multi-select chip picker</td><td>Households; Restaurants &amp; Cafes; Hotels; Retail Stores; Wholesalers; Tourists; Online Buyers; Institutional Buyers; Health-conscious Consumers</td><td>Yes</td><td>No</td><td>Feeds the Existing &ldquo;Customers&rdquo; column in the Summary table (first two picks shown).</td><td>At least one primary customer recommended; no duplicates.</td></tr>
+          <tr><td>Secondary Customers</td><td>Multi-select chip picker</td><td>Same master as Primary Customers (Households &hellip; Health-conscious Consumers)</td><td>Yes</td><td>No</td><td>Optional broader/secondary base.</td><td>No duplicate values.</td></tr>
+        </tbody>
+      </table>
+
+      <h4 style="font-size:14px;color:var(--teal);margin-bottom:10px;">VI. Target Market Definition</h4>
+      <table class="field-table">
+        <thead><tr><th>Field Name</th><th>Field Type</th><th>Input Values</th><th>Input</th><th>Autofill</th><th>Logic</th><th>Validation &amp; Error Messages</th></tr></thead>
+        <tbody>
+          <tr><td>Primary Target Segment</td><td>Select (single)</td><td>Not applicable; Urban health-conscious women, 26&ndash;45; Tourists &amp; diaspora; Institutional / HoReCa buyers; Export / B2B buyers; Gift buyers (festive); Local daily consumers; Pan-India e-commerce buyers</td><td>Yes</td><td>No</td><td>Derived from the segmentation above; counts toward &ldquo;Target Segment Set&rdquo; aggregate when not &ldquo;Not applicable&rdquo;.</td><td>Recommended once segmentation done.</td></tr>
+          <tr><td>Secondary Target Segment</td><td>Select (single)</td><td>Same master as Primary Target Segment</td><td>Yes</td><td>No</td><td>Optional second segment.</td><td>&mdash;</td></tr>
+          <tr><td>Market Readiness</td><td>Select (single)</td><td>Not applicable; High &mdash; immediate market exists; Medium &mdash; needs awareness building; Low &mdash; market development needed</td><td>Yes</td><td>No</td><td>Drives the Existing Market Readiness badge and the High/Medium/Low/Not Set aggregates.</td><td>&mdash;</td></tr>
+          <tr><td>Target Customer Persona</td><td>Text area</td><td>Free text &mdash; &ldquo;Describe the typical customer in 3&ndash;4 sentences&hellip;&rdquo;</td><td>Yes</td><td>No</td><td>Qualitative persona narrative.</td><td>&mdash;</td></tr>
+        </tbody>
+      </table>
+
+      <h4 style="font-size:14px;color:var(--teal);margin-bottom:10px;">Intervention Need (Existing only)</h4>
+      <table class="field-table">
+        <thead><tr><th>Field Name</th><th>Field Type</th><th>Input Values</th><th>Input</th><th>Autofill</th><th>Logic</th><th>Validation &amp; Error Messages</th></tr></thead>
+        <tbody>
+          <tr><td>Upgrade Target Customers?</td><td>Toggle (on/off)</td><td>Off (default) / On</td><td>Yes</td><td>No</td><td>When ON: flag note changes to &ldquo;&#8635; Flagged &rarr; Aspirational profile in Required tab&rdquo;, the &ldquo;Intervention Flagged&rdquo; header chip appears, the Justification box is revealed, and the product is counted as &ldquo;Upgrade Needed&rdquo; in Summary.</td><td>&mdash;</td></tr>
+          <tr><td>Justification</td><td>Text area (conditional)</td><td>Free text &mdash; &ldquo;Reason for upgrading the target customer profile for this product&hellip;&rdquo;</td><td>Yes</td><td>No</td><td><em>Shown only when the toggle is ON.</em></td><td>Recommended when flagged: explain why an upgrade is needed.</td></tr>
+        </tbody>
+      </table>
+      <div class="callout">A flagged Existing product signals that a matching aspirational profile should be created on the Required tab. The flag lights the &ldquo;&#8635; Upgrade&rdquo; badge and the &rarr; arrow in the Summary comparison row.</div>
     </div>
+  </div>
+
+  <!-- ============ TAB 2: REQUIRED ============ -->
+  <div class="accordion">
+    <div class="accordion-trigger" onclick="this.parentElement.classList.toggle('open')">Tab 2 &mdash; Required (aspirational target market + implementation)</div>
+    <div class="accordion-body">
+      <div class="section-desc" style="margin-top:0;">Caption on screen: &ldquo;Define the aspirational target market for each product. Track Implementation Status as interventions move through the pipeline.&rdquo; A Required product block uses the <strong>same product header and the same six sub-sections (I&ndash;VI) as Existing</strong>, but the closing block is <strong>Implementation Status</strong> instead of Intervention Need. Required rows are matched to Existing rows by product name in the Summary comparison; unmatched Required products appear as &ldquo;+ New Target Only&rdquo;.</div>
+
+      <h4 style="font-size:14px;color:var(--teal);margin-bottom:10px;">Segmentation I&ndash;VI (aspirational)</h4>
+      <div class="callout">Sub-sections I&ndash;VI are identical in structure to the Existing tab (Demographic, Geographic, Psychographic, Behavioural, Customer Segmentation, Target Market Definition), but here they describe the <em>aspirational future</em> customer rather than the current base. The same masters and validations apply. See the Existing tab tables above for field-level detail.</div>
+
+      <h4 style="font-size:14px;color:var(--teal);margin-bottom:10px;">Product Block Header (Required)</h4>
+      <table class="field-table">
+        <thead><tr><th>Field Name</th><th>Field Type</th><th>Input Values</th><th>Input</th><th>Autofill</th><th>Logic</th><th>Validation &amp; Error Messages</th></tr></thead>
+        <tbody>
+          <tr><td>Product</td><td>Select (Link to Product Master)</td><td>Same product master as Existing</td><td>Yes</td><td>No</td><td>If the product name matches an Existing block, the Summary pairs them in one comparison row; otherwise the row is tagged &ldquo;+ New Target Only&rdquo;.</td><td>Product required. Error: &ldquo;Select a product.&rdquo;</td></tr>
+          <tr><td>Status (chip)</td><td>Status chip (read-only)</td><td>Pending (default) / In Progress / Completed / Not Feasible</td><td>No</td><td>Yes</td><td><em>Mirrors the Implementation Status select below;</em> colour-coded chip in the product header.</td><td>&mdash;</td></tr>
+        </tbody>
+      </table>
+
+      <h4 style="font-size:14px;color:var(--teal);margin-bottom:10px;">Implementation Status (Required only)</h4>
+      <table class="field-table">
+        <thead><tr><th>Field Name</th><th>Field Type</th><th>Input Values</th><th>Input</th><th>Autofill</th><th>Logic</th><th>Validation &amp; Error Messages</th></tr></thead>
+        <tbody>
+          <tr><td>Status</td><td>Select (single)</td><td>Pending; In Progress; Completed; Not Feasible</td><td>Yes</td><td>No</td><td>On change, updates the header status chip colour and the Implementation Status aggregates (Completed/In Progress/Pending/Not Feasible) and the Summary &ldquo;Impl. Status&rdquo; badge.</td><td>&mdash;</td></tr>
+          <tr><td>Notes</td><td>Text area</td><td>Free text &mdash; &ldquo;Implementation notes, blockers, next steps&hellip;&rdquo;</td><td>Yes</td><td>No</td><td>Optional progress log.</td><td>&mdash;</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ============ TAB 3: SUMMARY ============ -->
+  <div class="accordion">
+    <div class="accordion-trigger" onclick="this.parentElement.classList.toggle('open')">Tab 3 &mdash; Summary (auto-calculated)</div>
+    <div class="accordion-body">
+      <div class="section-desc" style="margin-top:0;">Entirely read-only and auto-populated from the Existing and Required tabs. Opens by default on load. Three blocks: a product-wise comparison table, four aggregate cards, and four intervention-flag tiles. <em>All values are calculated; none are entered here.</em></div>
+
+      <h4 style="font-size:14px;color:var(--teal);margin-bottom:10px;">&#9312; Product-wise Customer Overview (calculated table)</h4>
+      <table class="field-table">
+        <thead><tr><th>Column</th><th>Field Type</th><th>Source / Logic</th><th>Notes</th></tr></thead>
+        <tbody>
+          <tr><td>Product</td><td>Text + flag badge</td><td>Product name; badge shows &ldquo;&#8635; Upgrade&rdquo; if Existing flagged, or &ldquo;+ New Target Only&rdquo; if Required has no Existing match.</td><td>One row per product (Existing-led; unmatched Required appended).</td></tr>
+          <tr><td>Existing &mdash; Geography</td><td><em>Calculated</em></td><td>First two picks of Existing Primary Geography.</td><td>Peach (Existing) background.</td></tr>
+          <tr><td>Existing &mdash; Customers</td><td><em>Calculated</em></td><td>First two picks of Existing Primary Customers.</td><td>Peach background.</td></tr>
+          <tr><td>Existing &mdash; Market Readiness</td><td><em>Calculated</em> badge</td><td>Existing Market Readiness (High/Medium/Low label).</td><td>Green/amber/red badge.</td></tr>
+          <tr><td>Required &mdash; Geography</td><td><em>Calculated</em></td><td>First two picks of Required Primary Geography.</td><td>Mint (Required) background; &ldquo;Not set&rdquo; if blank.</td></tr>
+          <tr><td>Required &mdash; Target Segment</td><td><em>Calculated</em></td><td>Required Primary Target Segment (excludes &ldquo;Not applicable&rdquo;).</td><td>Mint background.</td></tr>
+          <tr><td>Required &mdash; Market Readiness</td><td><em>Calculated</em> badge</td><td>Required Market Readiness label.</td><td>Mint background.</td></tr>
+          <tr><td>Impl. Status</td><td><em>Calculated</em> badge</td><td>Required Implementation Status (Pending/In Progress/Completed/Not Feasible).</td><td>Colour-coded.</td></tr>
+        </tbody>
+      </table>
+
+      <h4 style="font-size:14px;color:var(--teal);margin-bottom:10px;">&#9313; Aggregate Cards (calculated)</h4>
+      <table class="field-table">
+        <thead><tr><th>Card</th><th>Metric</th><th>Source / Logic</th></tr></thead>
+        <tbody>
+          <tr><td>Existing</td><td>Products Analysed; Intervention Flagged; Not Flagged</td><td><em>Counts of Existing product blocks; flagged = toggle ON.</em></td></tr>
+          <tr><td>Market</td><td>High / Medium / Low Market Readiness; Not Set</td><td><em>Counts of Existing products by their Market Readiness band.</em></td></tr>
+          <tr><td>Interventions</td><td>Required Profiles Added; Target Segment Set; Persona Written</td><td><em>Count of Required blocks; with a target segment set; with a persona text filled.</em></td></tr>
+          <tr><td>Implementation Status</td><td>Completed; In Progress; Pending; Not Feasible</td><td><em>Counts of Required products by Implementation Status.</em></td></tr>
+        </tbody>
+      </table>
+
+      <h4 style="font-size:14px;color:var(--teal);margin-bottom:10px;">&#9314; Intervention Flag Tiles (calculated)</h4>
+      <table class="field-table">
+        <thead><tr><th>Tile</th><th>Source / Logic</th></tr></thead>
+        <tbody>
+          <tr><td>Products Analysed</td><td><em>Total Existing product blocks.</em></td></tr>
+          <tr><td>Upgrade Needed</td><td><em>Existing products with the Intervention toggle ON.</em></td></tr>
+          <tr><td>High Market Readiness</td><td><em>Existing products with High readiness.</em></td></tr>
+          <tr><td>New Target Profiles</td><td><em>Total Required product blocks.</em></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ============ TAB 4: RESOURCES ============ -->
+  <div class="accordion">
+    <div class="accordion-trigger" onclick="this.parentElement.classList.toggle('open')">Tab 4 &mdash; Resources (reference materials)</div>
+    <div class="accordion-body">
+      <div class="section-desc" style="margin-top:0;">An add-row table of supporting evidence used to build the customer analysis. Each row has Resource Title, Category, Type, Notes, a File upload, and a delete control.</div>
+      <table class="field-table">
+        <thead><tr><th>Field Name</th><th>Field Type</th><th>Input Values</th><th>Input</th><th>Autofill</th><th>Logic</th><th>Validation &amp; Error Messages</th></tr></thead>
+        <tbody>
+          <tr><td>Resource Title</td><td>Text</td><td>Free text</td><td>Yes</td><td>No</td><td>Name of the reference.</td><td>Recommended.</td></tr>
+          <tr><td>Category</td><td>Select</td><td>Consumer Survey Data; Market Research Report; Customer Interview Transcript; Competitor Customer Profile; Census / Demographics Data; Platform Analytics; Other</td><td>Yes</td><td>No</td><td>Classifies the source.</td><td>&mdash;</td></tr>
+          <tr><td>Type</td><td>Select</td><td>Report / Study; Transcript; Reference; Template; Data</td><td>Yes</td><td>No</td><td>Format of the file.</td><td>&mdash;</td></tr>
+          <tr><td>Notes</td><td>Text</td><td>Free text</td><td>Yes</td><td>No</td><td>Optional context.</td><td>&mdash;</td></tr>
+          <tr><td>File</td><td>Attach (Upload button)</td><td>Uploaded document</td><td>Yes</td><td>No</td><td>Attach the source file.</td><td>&mdash;</td></tr>
+          <tr><td>(Delete)</td><td>Button</td><td>&mdash;</td><td>Yes</td><td>No</td><td>Removes the row; &ldquo;+ Add Resource&rdquo; appends a new blank row.</td><td>&mdash;</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ============ TAB 5: TASK LOG ============ -->
+  <div class="accordion">
+    <div class="accordion-trigger" onclick="this.parentElement.classList.toggle('open')">Tab 5 &mdash; Task Log (activity log)</div>
+    <div class="accordion-body">
+      <div class="section-desc" style="margin-top:0;">A numbered, dated log of customer-analysis activities. Header shows a live entry count. Each &ldquo;+ Add Entry&rdquo; appends an auto-numbered row; deleting a row re-numbers the rest.</div>
+      <table class="field-table">
+        <thead><tr><th>Field Name</th><th>Field Type</th><th>Input Values</th><th>Input</th><th>Autofill</th><th>Logic</th><th>Validation &amp; Error Messages</th></tr></thead>
+        <tbody>
+          <tr><td>No.</td><td>Auto number</td><td>01, 02, &hellip; (zero-padded)</td><td>No</td><td>Yes</td><td><em>Auto-sequenced; re-numbers on delete.</em></td><td>&mdash;</td></tr>
+          <tr><td>Date</td><td>Date</td><td>Calendar picker</td><td>Yes</td><td>No</td><td>Date the activity was carried out.</td><td>&mdash;</td></tr>
+          <tr><td>Task Name</td><td>Select (task master)</td><td>01 Awareness on Importance of Customer Analysis; 02 Identify Products for Customer Analysis; 03&ndash;06 Map Existing Customer Base (Demographic / Geographic / Psychographic / Behavioural); 07 Define Primary Customer Segmentation; 08 Define Secondary Customer Segmentation; 09 Define Primary Target Segment (Existing); 10 Assess Market Readiness (Existing); 11 Write Customer Persona (Existing); 12 Identify Gaps &mdash; Flag for Intervention; 13 Define Aspirational Target Segment (Required); 14 Set Market Readiness (Required); 15 Write Aspirational Customer Persona; 16 Link to Market Research Module; 17 Link to Market Linkage Module; 18 Review and Update Status in Module; If other, specify in comments</td><td>Yes</td><td>No</td><td>Fixed task master driving the log.</td><td>Select a task; use &ldquo;If other&rdquo; for ad-hoc activities.</td></tr>
+          <tr><td>Notes / Outcome</td><td>Text</td><td>Free text</td><td>Yes</td><td>No</td><td>Outcome of the activity.</td><td>&mdash;</td></tr>
+          <tr><td>(Delete)</td><td>Button</td><td>&mdash;</td><td>Yes</td><td>No</td><td>Removes the row and re-sequences numbering.</td><td>&mdash;</td></tr>
+        </tbody>
+      </table>
+      <div class="callout">Cross-module links: tasks 16 and 17 connect this analysis to the Market Research and Market Linkage modules respectively, keeping the customer definition consistent across the Market framework.</div>
+    </div>
+  </div>
+
+  <div class="callout callout-danger">Key validations (whole form): (1) Each product block requires a Product selection before it counts toward the Summary &mdash; &ldquo;Select a product.&rdquo; (2) Multi-select chip pickers reject duplicate values within the same field. (3) When the Existing Intervention toggle is ON, a Justification is expected and a matching aspirational profile should exist on the Required tab. (4) Income brackets follow Indian number formatting (&#8377;1,00,000 not &#8377;100,000). (5) The Summary tab and all header status/flag chips are calculated &mdash; never edited directly; they recompute whenever Existing/Required data changes. (6) Required products are matched to Existing by exact product name; an unmatched Required product is surfaced as &ldquo;+ New Target Only&rdquo; rather than silently dropped.</div>
+
+  <div class="review-panel" data-section="m-cust-analysis">
+    <div class="review-strip"><span style="font-size:12px;color:var(--ink-soft);font-weight:500;">Section Review:</span>
+      <button class="review-status-btn" onclick="setReview('m-cust-analysis','draft',this)">Draft</button>
+      <button class="review-status-btn" onclick="setReview('m-cust-analysis','review',this)">In Review</button>
+      <button class="review-status-btn" onclick="setReview('m-cust-analysis','changes',this)">Needs Changes</button>
+      <button class="review-status-btn" onclick="setReview('m-cust-analysis','approved',this)">Approved</button>
+      <button style="margin-left:auto;background:none;border:none;font-size:12px;color:var(--sea);cursor:pointer;font-family:var(--font);text-decoration:underline;" onclick="copyLink('m-cust-analysis')">Copy Link</button></div>
+    <div class="review-comments"><div class="comment-list" id="comments-m-cust-analysis"></div>
+      <div class="comment-input-row"><input type="text" placeholder="Your name" style="max-width:120px" id="name-m-cust-analysis"><textarea rows="1" placeholder="Add a comment..." id="text-m-cust-analysis"></textarea><button class="comment-add-btn" onclick="addComment('m-cust-analysis')">Add</button></div></div>
+  </div>
+</div>
 
     <!-- MARKET LINKAGE -->
     <div class="brd-section" id="m-mkt-linkage">
-      <div class="section-header">
-        <span class="section-id">PR-MKT-003</span>
-        <h2 class="section-title">Market Linkage</h2>
-      </div>
-      <div class="section-desc">Map existing sales channels and plan new market linkages. <strong>Entrepreneur-level framework.</strong></div>
+  <div class="section-header"><span class="section-id">PR-MKT-003</span><h2 class="section-title">Market Linkage</h2></div>
+  <div class="section-desc">Part of the Market module, the Market Linkage framework captures where an entrepreneur sells today (Existing channels with revenue), the new channels recommended as an intervention (each holding its own nested product-mapping table with an implementation status), and a month-by-month Sales Tracker of actual recorded sales. A Summary tab rolls everything up into a channel-wise overview, aggregate cards and intervention-flag tiles.</div>
+  <div class="callout callout-terra"><strong>Channel-status aggregate rule:</strong> Each recommended channel carries a single status chip whose value is computed from the implementation status of its nested product rows &mdash; <strong>Completed</strong> only when <em>every</em> product row is Completed; <strong>Not Feasible</strong> if any row is Not Feasible; <strong>In Progress</strong> if any row is In Progress; otherwise <strong>Pending</strong> (also the value when a channel has no product rows yet). Type and Selling Mode are set once at the channel level and apply to all products inside it.</div>
 
-      <h3 style="font-size:16px;color:var(--teal);margin:12px 0 8px;">Tab Structure: Existing | Required</h3>
+  <h3 style="font-size:16px;color:var(--teal);margin:18px 0 10px;">On-Screen UI Structure</h3>
+  <div class="card"><div style="font-size:13px;line-height:1.9;color:var(--ink)">
+    <strong>Top bar:</strong> forest-teal header "Market Linkage" with a "PRIME Rural &middot; Marketing Framework" crumb, and an entrepreneur chip below it (avatar + name <em>auto-fetched from profile</em>).<br>
+    <strong>Tab rail</strong> (uppercase pills): <strong>Summary</strong> &middot; <strong>Existing</strong> &middot; <strong>Required</strong> &middot; <strong>Sales Tracker</strong> &middot; <strong>Resources</strong> &middot; <strong>Task Log</strong>. Active tab is teal-filled; opening Summary triggers a roll-up refresh.<br>
+    <strong>Body:</strong> The <strong>Existing</strong> tab is a flat channel grid plus an "Intervention Need" toggle block; the <strong>Required</strong> tab is a <em>channel repeater</em> where each "+ Add Recommended Channel" creates a collapsible <em>channel card</em> with a nested product table; the <strong>Sales Tracker</strong> is a set of twelve collapsible <em>month accordions</em>, each holding a CRM-style inner table of one row per SKU-per-channel.<br>
+    <strong>Special widgets:</strong> (1) collapsible <em>channel cards</em> (sea-coloured header) carrying channel-level Name / Type / Mode / Location / Identified-By plus an aggregate <em>status chip</em>; (2) <em>nested product tables</em> inside each channel with a per-row Implementation Status select; (3) a <em>toggle switch</em> for "Upgrade / Add New Channels?" that reveals a Justification box; (4) <em>source tags</em> (Existing / Recommended / Self-initiated); (5) twelve <em>month accordions</em> each with a header showing the month's auto Qty + Revenue totals; (6) a Summary tab with a channel-wise overview table, four aggregate cards and four intervention-flag tiles.<br>
+    <strong>Calculated fields</strong> (Avg Revenue/Month, Annual Revenue, Annual Total Revenue, per-row Tracker Revenue, all month totals, the channel status chip, and every Summary aggregate) render <em>italic on cream-deep background, read-only, with a tooltip</em> per Rule 1.
+  </div></div>
+  <div class="flow-container" style="margin-top:12px">
+    <div class="flow-step"><div class="flow-box">Summary</div><div class="flow-label">Auto roll-up</div></div>
+    <div class="flow-arrow">&rarr;</div>
+    <div class="flow-step"><div class="flow-box">Existing</div><div class="flow-label">Current channels + revenue</div></div>
+    <div class="flow-arrow">&rarr;</div>
+    <div class="flow-step"><div class="flow-box">Required</div><div class="flow-label">Recommended channels + nested products</div></div>
+    <div class="flow-arrow">&rarr;</div>
+    <div class="flow-step"><div class="flow-box">Sales Tracker</div><div class="flow-label">Monthly actual sales</div></div>
+    <div class="flow-arrow">&rarr;</div>
+    <div class="flow-step"><div class="flow-box">Resources</div><div class="flow-label">Reference materials</div></div>
+    <div class="flow-arrow">&rarr;</div>
+    <div class="flow-step"><div class="flow-box">Task Log</div><div class="flow-label">Activity register</div></div>
+  </div>
 
-      <div class="accordion">
-        <div class="accordion-trigger" onclick="this.parentElement.classList.toggle('open')">
-          Existing Tab &mdash; Current Selling Channels <span class="acc-arrow">&#9660;</span>
-        </div>
-        <div class="accordion-body">
-          <table class="brd-table">
-            <thead><tr><th>Column</th><th>Type</th><th>Values</th><th>Logic</th><th>Validation</th></tr></thead>
-            <tbody>
-              <tr><td>#</td><td>Int (auto)</td><td>Row number</td><td>--</td><td>--</td></tr>
-              <tr><td>Channel Name &amp; Type</td><td>Data + Select</td><td>Text + Online/Offline</td><td>Name input + type dropdown</td><td>Required</td></tr>
-              <tr><td>Location</td><td>Select</td><td>Block master</td><td>--</td><td>--</td></tr>
-              <tr><td>Price (INR)</td><td>Currency</td><td>Numeric</td><td>Feeds revenue calc</td><td>Must be &ge; 0</td></tr>
-              <tr><td>Avg Units / Month</td><td>Int</td><td>Numeric</td><td>Feeds revenue calc</td><td>Must be &ge; 0</td></tr>
-              <tr><td>Avg Revenue / Month</td><td>Currency (calc)</td><td>--</td><td><strong>= Price x Avg Units</strong></td><td>Read-only</td></tr>
-              <tr><td>Annual Revenue</td><td>Currency (calc)</td><td>--</td><td><strong>= Avg Revenue x 12</strong></td><td>Read-only</td></tr>
-            </tbody>
-          </table>
-          <p style="font-size:12px;margin-top:8px;"><strong>Annual Total Revenue</strong> = Sum of all channels' Annual Revenue (auto). Intervention Need toggle + justification.</p>
-        </div>
-      </div>
+  <h3 style="font-size:16px;color:var(--teal);margin:18px 0 10px;">User Journey</h3>
+  <div class="card"><div class="flow-container">
+    <div class="flow-step"><div class="flow-box">1. Map Existing Channels</div><div class="flow-label">Name / Type / Mode / Location, price &amp; units</div></div>
+    <div class="flow-arrow">&rarr;</div>
+    <div class="flow-step"><div class="flow-box">2. Flag Upgrade Need</div><div class="flow-label">Toggle on &rarr; justify &rarr; go to Required</div></div>
+    <div class="flow-arrow">&rarr;</div>
+    <div class="flow-step"><div class="flow-box">3. Add Recommended Channels</div><div class="flow-label">Channel card + nested product table</div></div>
+    <div class="flow-arrow">&rarr;</div>
+    <div class="flow-step"><div class="flow-box">4. Set Product Status</div><div class="flow-label">Per-row status drives channel chip</div></div>
+    <div class="flow-arrow">&rarr;</div>
+    <div class="flow-step"><div class="flow-box">5. Record Monthly Sales</div><div class="flow-label">Add rows per month; revenue auto-calcs</div></div>
+    <div class="flow-arrow">&rarr;</div>
+    <div class="flow-step"><div class="flow-box">6. Review Summary</div><div class="flow-label">Overview + aggregates + flags</div></div>
+  </div></div>
 
-      <div class="accordion">
-        <div class="accordion-trigger" onclick="this.parentElement.classList.toggle('open')">
-          Required Tab &mdash; Recommended Channels + Sales Tracker <span class="acc-arrow">&#9660;</span>
-        </div>
-        <div class="accordion-body">
-          <h4 style="font-size:13px;color:var(--teal);margin-bottom:8px;">Section I: Recommended Channels (Repeater)</h4>
-          <table class="brd-table">
-            <thead><tr><th>Field</th><th>Type</th><th>Logic</th></tr></thead>
-            <tbody>
-              <tr><td>Channel Name</td><td>Data</td><td>Free text</td></tr>
-              <tr><td>Type</td><td>Select: Online/Offline</td><td>--</td></tr>
-              <tr><td>Location</td><td>Select (Block master)</td><td>--</td></tr>
-              <tr><td>Identified By</td><td>Select</td><td>Ground Team, Core Team, Entrepreneur</td></tr>
-              <tr><td>Nested Product Table</td><td>Child table per channel</td><td>Product Name, SKU (filtered), Price, Notes, Implementation Status</td></tr>
-              <tr><td>Channel Status Chip</td><td>Aggregate (calc)</td><td><strong>= "Completed" only when ALL products in channel are Completed</strong></td></tr>
-            </tbody>
-          </table>
+  <!-- ===== TAB 1: EXISTING ===== -->
+  <div class="accordion open">
+    <div class="accordion-trigger" onclick="this.parentElement.classList.toggle('open')">Tab 1 &mdash; Existing (Current Selling Channels + Intervention Need)</div>
+    <div class="accordion-body">
+      <p style="font-size:13px;color:var(--ink);margin:4px 0 12px;">Maps where the entrepreneur is currently selling &mdash; all offline, online and exhibition channels &mdash; in a flat repeater grid (caption: "Map where the entrepreneur is currently selling"). "+ Add Channel" appends a row; the three revenue columns auto-calculate. Below the grid sits the <strong>Intervention Need</strong> block.</p>
 
-          <h4 style="font-size:13px;color:var(--teal);margin:14px 0 8px;">Section II: Sales Tracker (Monthly)</h4>
-          <table class="brd-table">
-            <thead><tr><th>Column</th><th>Type</th><th>Logic</th></tr></thead>
-            <tbody>
-              <tr><td>Channel</td><td>Select (auto from Section I)</td><td>Dropdown populated from recommended channels</td></tr>
-              <tr><td>Product Name</td><td>Select</td><td>From entrepreneur's products</td></tr>
-              <tr><td>Product SKU</td><td>Select (filtered)</td><td>Filtered by product selection</td></tr>
-              <tr><td>Price</td><td>Currency</td><td>Input</td></tr>
-              <tr><td>Jan-Dec Quantity</td><td>12x Int inputs</td><td>Monthly qty inputs</td></tr>
-              <tr><td>Total Units</td><td>Int (calc)</td><td><strong>Sum of Jan-Dec quantities</strong></td></tr>
-              <tr><td>Annual Revenue</td><td>Currency (calc)</td><td><strong>= Price x Total Units</strong></td></tr>
-              <tr><td>Grand Totals (footer)</td><td>Calc</td><td>Sum per month + total units + total revenue</td></tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
+      <h4 style="color:var(--sea);margin:14px 0 6px;">Current Selling Channels (child table)</h4>
+      <table class="field-table">
+        <thead><tr><th>Field Name</th><th>Field Type</th><th>Input Values</th><th>Input</th><th>Autofill</th><th>Logic</th><th>Validation &amp; Error Messages</th></tr></thead>
+        <tbody>
+          <tr><td>#</td><td>Auto number</td><td>01, 02, &hellip;</td><td>Calculated</td><td>Row index (zero-padded)</td><td>Renumbers on add/delete.</td><td>Non-editable.</td></tr>
+          <tr><td>Channel Name</td><td>Data</td><td>Free text, e.g., "Mawkynrew Weekly Market", "Shillong Grocery Store", "WhatsApp Direct Orders"</td><td>Manual</td><td>&mdash;</td><td>Rows with a blank name are skipped in the Summary roll-up.</td><td>Required for the row to count. Error: "Enter the channel name."</td></tr>
+          <tr><td>Type</td><td>Select</td><td>Online; Offline</td><td>Manual</td><td>&mdash;</td><td>Drives the Existing Online / Offline split in the Summary.</td><td>Optional.</td></tr>
+          <tr><td>Selling Mode</td><td>Select</td><td>B2B; B2C; D2C; Exhibition</td><td>Manual</td><td>&mdash;</td><td>Counted into the Summary B2B / B2C / D2C / Exhibition tallies (existing + recommended).</td><td>Optional.</td></tr>
+          <tr><td>Location</td><td>Select</td><td>Block Master: Mawkynrew, Mawphlang, Pynursla, Mylliem, Sohra (Cherrapunji), Mawsynram, Khliehriat, Jowai, Resubelpara, Tura, Williamnagar, Baghmara, Other</td><td>Manual</td><td>&mdash;</td><td>&mdash;</td><td>Optional.</td></tr>
+          <tr><td>Price (&#8377;)</td><td>Float (step 0.01)</td><td>Numeric per unit</td><td>Manual</td><td>&mdash;</td><td>Drives Avg Revenue/Month (= Price &times; units). Recalculates live on input.</td><td>Optional; numeric &ge; 0. Error on negative: "Price cannot be negative."</td></tr>
+          <tr><td>Avg Revenue / Month (&#8377;)</td><td>Number / units (input)</td><td>Numeric average units sold per month</td><td>Manual</td><td>&mdash;</td><td>Despite the label this cell takes the average monthly <em>units</em>; multiplied by Price to derive the calculated revenue figures.</td><td>Optional; numeric &ge; 0.</td></tr>
+          <tr><td><em>Annual Revenue (&#8377;)</em></td><td>Currency (read-only)</td><td>Auto</td><td>Calculated</td><td>= (Price &times; units) &times; 12</td><td>Italic on cream-deep, tooltip (Rule 1). The Summary Best Channel and Total Annual Revenue read from here.</td><td>Non-editable.</td></tr>
+          <tr><td><em>Annual Total Revenue (&#8377;)</em></td><td>Currency (read-only)</td><td>Auto</td><td>Calculated</td><td>= Price &times; units &times; 12</td><td>Italic on cream-deep, tooltip (Rule 1); the annualised total for the channel.</td><td>Non-editable.</td></tr>
+        </tbody>
+      </table>
+      <div class="callout callout-terra">Caption under the grid: "Avg Revenue/Month, Annual Revenue and Annual Total Revenue auto-calculate." Existing channels surface in the Summary overview with a blue <em>Existing</em> source tag and an "Active" status chip.</div>
 
-      <div class="review-panel" data-section="m-mkt-linkage">
-        <div class="review-strip">
-          <span style="font-size:12px;color:var(--ink-soft);font-weight:500;">Section Review:</span>
-          <button class="review-status-btn" onclick="setReview('m-mkt-linkage','draft',this)">Draft</button>
-          <button class="review-status-btn" onclick="setReview('m-mkt-linkage','review',this)">In Review</button>
-          <button class="review-status-btn" onclick="setReview('m-mkt-linkage','changes',this)">Needs Changes</button>
-          <button class="review-status-btn" onclick="setReview('m-mkt-linkage','approved',this)">Approved</button>
-          <button style="margin-left:auto;background:none;border:none;font-size:12px;color:var(--sea);cursor:pointer;font-family:var(--font);text-decoration:underline;" onclick="copyLink('m-mkt-linkage')">Copy Link</button>
-        </div>
-        <div class="review-comments">
-          <div class="comment-list" id="comments-m-mkt-linkage"></div>
-          <div class="comment-input-row">
-            <input type="text" placeholder="Your name" style="max-width:120px" id="name-m-mkt-linkage">
-            <textarea rows="1" placeholder="Add a comment..." id="text-m-mkt-linkage"></textarea>
-            <button class="comment-add-btn" onclick="addComment('m-mkt-linkage')">Add</button>
-          </div>
-        </div>
-      </div>
+      <h4 style="color:var(--sea);margin:14px 0 6px;">Intervention Need block</h4>
+      <table class="field-table">
+        <thead><tr><th>Field Name</th><th>Field Type</th><th>Input Values</th><th>Input</th><th>Autofill</th><th>Logic</th><th>Validation &amp; Error Messages</th></tr></thead>
+        <tbody>
+          <tr><td>Upgrade / Add New Channels?</td><td>Toggle (On / Off)</td><td>Off (default) / On</td><td>Manual</td><td>&mdash;</td><td><strong>Conditional:</strong> Off shows the note "Not flagged"; On switches the note to "Flagged &mdash; add recommended channels in Required tab" and reveals the Justification box. Sets the Summary "Upgrade Needed" flag to Yes/No.</td><td>Optional.</td></tr>
+          <tr><td>Justification</td><td>Small Text (conditional)</td><td>Reason for upgrading or adding new channels</td><td>Manual</td><td>&mdash;</td><td>Shown only when the toggle is On.</td><td>Optional; only relevant when shown.</td></tr>
+        </tbody>
+      </table>
     </div>
+  </div>
+
+  <!-- ===== TAB 2: REQUIRED ===== -->
+  <div class="accordion">
+    <div class="accordion-trigger" onclick="this.parentElement.classList.toggle('open')">Tab 2 &mdash; Required (Recommended Channels &rarr; nested product tables)</div>
+    <div class="accordion-body">
+      <p style="font-size:13px;color:var(--ink);margin:4px 0 12px;">Channel repeater (heading "I. Recommended Channels"). "+ Add Recommended Channel" creates a collapsible channel card that holds its own product-mapping table; a new card seeds one product row automatically. Note shown: "Each channel holds its own product mapping table. Type and Selling Mode are set at the channel level and apply to all products within it."</p>
+
+      <h4 style="color:var(--sea);margin:14px 0 6px;">Channel Card Header</h4>
+      <table class="field-table">
+        <thead><tr><th>Field Name</th><th>Field Type</th><th>Input Values</th><th>Input</th><th>Autofill</th><th>Logic</th><th>Validation &amp; Error Messages</th></tr></thead>
+        <tbody>
+          <tr><td>Channel Name</td><td>Data</td><td>Free text, e.g., "Amazon India", "Shillong Mela 2025"</td><td>Manual</td><td>&mdash;</td><td>Cards with a blank name are skipped in the Summary roll-up.</td><td>Required before save. Error: "Enter the channel name."</td></tr>
+          <tr><td>Type</td><td>Select</td><td>Online; Offline</td><td>Manual</td><td>&mdash;</td><td>Channel-level; applies to all products in the card.</td><td>Optional.</td></tr>
+          <tr><td>Selling Mode</td><td>Select</td><td>B2B; B2C; D2C; Exhibition</td><td>Manual</td><td>&mdash;</td><td>Channel-level; counted into the Summary mode tallies.</td><td>Optional.</td></tr>
+          <tr><td>Location</td><td>Select</td><td>Block Master (Mawkynrew &hellip; Baghmara, Other)</td><td>Manual</td><td>&mdash;</td><td>&mdash;</td><td>Optional.</td></tr>
+          <tr><td>Identified By</td><td>Select</td><td>Ground Team; Core Team; Entrepreneur</td><td>Manual</td><td>&mdash;</td><td>Records who recommended the channel.</td><td>Optional.</td></tr>
+          <tr><td><em>Status Chip</em></td><td>Chip (read-only, aggregate)</td><td>Pending / In Progress / Completed / Not Feasible</td><td>Calculated</td><td>Derived from the Implementation Status of every product row in this card</td><td>Italic-equivalent read-only aggregate (Rule 1). <strong>Completed only when all product rows are Completed</strong>; Not Feasible if any row is Not Feasible; In Progress if any row is In Progress; else Pending (also when no product rows exist). Recomputes on status change, row add and row delete.</td><td>Non-editable.</td></tr>
+          <tr><td>Remove (channel)</td><td>Action button</td><td>&mdash;</td><td>Manual</td><td>&mdash;</td><td>Deletes the channel and all its product rows.</td><td>Confirm prompt: "Remove this channel and all its products?"</td></tr>
+        </tbody>
+      </table>
+
+      <h4 style="color:var(--sea);margin:14px 0 6px;">Products Sold via this Channel (nested child table per channel)</h4>
+      <p style="font-size:12px;color:var(--ink-soft);margin:2px 0 6px;">"+ Add Product" appends a row; "x" deletes it. Each row's status feeds the channel aggregate chip above.</p>
+      <table class="field-table">
+        <thead><tr><th>Field Name</th><th>Field Type</th><th>Input Values</th><th>Input</th><th>Autofill</th><th>Logic</th><th>Validation &amp; Error Messages</th></tr></thead>
+        <tbody>
+          <tr><td>#</td><td>Auto number</td><td>01, 02, &hellip;</td><td>Calculated</td><td>Row index (zero-padded)</td><td>Renumbers on add/delete.</td><td>Non-editable.</td></tr>
+          <tr><td>Product Name</td><td>Select (Link)</td><td>Distinct Product Master names: Bamboo Shoot Pickle, Lemongrass Tea, Lakadong Turmeric, Eri Silk Muffler</td><td>Manual</td><td>&mdash;</td><td><strong>Cascading:</strong> on change, filters the SKU dropdown to that product's SKUs. Counts toward "Products Mapped" / "Unique Products" in the Summary.</td><td>Optional per row.</td></tr>
+          <tr><td>Product SKU</td><td>Select (cascading)</td><td>SKUs for the chosen product, e.g., BST-PCK-200-G &mdash; 200g Standard; BST-PCK-500-G &mdash; 500g Family; LMG-TEA-50-G &mdash; 50g Pouch; LMG-TEA-100-G &mdash; 100g Tin; LKD-TUR-100-G &mdash; 100g Pouch; LKD-TUR-250-G &mdash; 250g Jar; ERI-MUF-001 &mdash; 180x30 cm</td><td>Manual</td><td>&mdash;</td><td>Shows "Select Product first" until a Product Name is chosen.</td><td>Optional.</td></tr>
+          <tr><td>Price (&#8377;)</td><td>Float (step 0.01)</td><td>Numeric per unit</td><td>Manual</td><td>&mdash;</td><td>Reference / target price for this SKU via this channel.</td><td>Optional; numeric &ge; 0.</td></tr>
+          <tr><td>Notes</td><td>Data</td><td>Free text</td><td>Manual</td><td>&mdash;</td><td>&mdash;</td><td>Optional.</td></tr>
+          <tr><td>Implementation Status</td><td>Select</td><td>Pending; In Progress; Completed; Not Feasible</td><td>Manual</td><td>&mdash;</td><td><strong>Drives the channel aggregate chip</strong> (see Channel Card Header) and the Summary Intervention-Status counters.</td><td>Optional; defaults to Pending.</td></tr>
+        </tbody>
+      </table>
+      <div class="callout callout-terra"><strong>Aggregate logic restated:</strong> the channel chip is Completed <em>only</em> when every product row reads Completed. A single Not Feasible row makes the channel Not Feasible; any In Progress row (with none Not Feasible) makes it In Progress; otherwise it stays Pending.</div>
+    </div>
+  </div>
+
+  <!-- ===== TAB 3: SALES TRACKER ===== -->
+  <div class="accordion">
+    <div class="accordion-trigger" onclick="this.parentElement.classList.toggle('open')">Tab 3 &mdash; Sales Tracker (monthly accordions, actual recorded sales)</div>
+    <div class="accordion-body">
+      <p style="font-size:13px;color:var(--ink);margin:4px 0 12px;">Twelve collapsible month accordions (January &hellip; December). Each accordion header shows that month's auto Qty and Revenue totals; the section header shows grand Total Units and Annual Revenue chips. Caption: "Each month is a collapsible section. Each row = one SKU via one channel. Price can differ per month. Revenue auto-calculates." "+ Add Row" appends a row inside the open month.</p>
+      <div class="callout callout-terra"><strong>Cohort-year span (Rule 11):</strong> the tracker is read against the entrepreneur's cohort / fellowship year &mdash; the twelve month buckets belong to the active cohort year, and historical buckets remain visible across the cohort span rather than resetting on calendar year-end. Tracker totals represent <em>actual recorded sales</em> and are kept distinct from the Existing-tab projected revenue in the Summary.</div>
+
+      <h4 style="color:var(--sea);margin:14px 0 6px;">Per-Month Sales Row (inner table; one per SKU-per-channel)</h4>
+      <table class="field-table">
+        <thead><tr><th>Field Name</th><th>Field Type</th><th>Input Values</th><th>Input</th><th>Autofill</th><th>Logic</th><th>Validation &amp; Error Messages</th></tr></thead>
+        <tbody>
+          <tr><td>#</td><td>Auto number</td><td>01, 02, &hellip;</td><td>Calculated</td><td>Row index within the month (zero-padded)</td><td>Renumbers on add/delete within that month.</td><td>Non-editable.</td></tr>
+          <tr><td>Source</td><td>Select</td><td>Existing; Recommended; Self-initiated</td><td>Manual</td><td>&mdash;</td><td>On select, renders a coloured <em>source tag</em> under the cell (Existing = blue, Recommended = green, Self-initiated = terracotta).</td><td>Optional.</td></tr>
+          <tr><td>Channel Name</td><td>Data</td><td>Free text, e.g., "Mawkynrew Weekly Market"</td><td>Manual</td><td>&mdash;</td><td>Identifies which channel the sale went through.</td><td>Optional.</td></tr>
+          <tr><td>Type</td><td>Select</td><td>Online; Offline</td><td>Manual</td><td>&mdash;</td><td>&mdash;</td><td>Optional.</td></tr>
+          <tr><td>Selling Mode</td><td>Select</td><td>B2B; B2C; D2C; Exhibition</td><td>Manual</td><td>&mdash;</td><td>&mdash;</td><td>Optional.</td></tr>
+          <tr><td>Product</td><td>Select (Link)</td><td>Distinct Product Master names (Bamboo Shoot Pickle, Lemongrass Tea, Lakadong Turmeric, Eri Silk Muffler)</td><td>Manual</td><td>&mdash;</td><td><strong>Cascading:</strong> filters the SKU dropdown to that product.</td><td>Optional.</td></tr>
+          <tr><td>SKU</td><td>Select (cascading)</td><td>SKUs for the chosen product (BST-PCK-200-G &hellip; ERI-MUF-001)</td><td>Manual</td><td>&mdash;</td><td>Shows "Select Product first" until a Product is chosen.</td><td>Optional.</td></tr>
+          <tr><td>Quantity</td><td>Number (min 0)</td><td>Units sold this month</td><td>Manual</td><td>&mdash;</td><td>Drives row Revenue (= Quantity &times; Price) and month Qty total.</td><td>Optional; numeric &ge; 0.</td></tr>
+          <tr><td>Price (&#8377;)</td><td>Float (step 0.01)</td><td>Numeric per unit; may differ per month</td><td>Manual</td><td>&mdash;</td><td>Drives row Revenue.</td><td>Optional; numeric &ge; 0.</td></tr>
+          <tr><td><em>Revenue</em></td><td>Currency (read-only)</td><td>"&mdash;" when zero, else "Rs &lt;amount&gt;"</td><td>Calculated</td><td>= Quantity &times; Price</td><td>Italic-equivalent read-only (Rule 1); recalculates live and rolls into the month Qty/Revenue totals and the grand Annual Revenue.</td><td>Non-editable.</td></tr>
+        </tbody>
+      </table>
+
+      <h4 style="color:var(--sea);margin:14px 0 6px;">Month &amp; Grand Totals (read-only)</h4>
+      <table class="field-table">
+        <thead><tr><th>Metric</th><th>Field Type</th><th>Source</th><th>Input</th><th>Autofill</th><th>Logic</th><th>Validation &amp; Error Messages</th></tr></thead>
+        <tbody>
+          <tr><td><em>Month Qty</em></td><td>Read-only</td><td>Month rows</td><td>Calculated</td><td>Sum of row Quantity for that month</td><td>"&mdash;" when the month has no rows; shown in the accordion header.</td><td>Non-editable.</td></tr>
+          <tr><td><em>Month Revenue</em></td><td>Read-only currency</td><td>Month rows</td><td>Calculated</td><td>Sum of row Revenue for that month</td><td>"&mdash;" when empty; shown in the accordion header.</td><td>Non-editable.</td></tr>
+          <tr><td><em>Total Units (grand)</em></td><td>Read-only</td><td>All months</td><td>Calculated</td><td>Sum of all month Qty totals</td><td>Shown in the section header chip; "0" when no data.</td><td>Non-editable.</td></tr>
+          <tr><td><em>Annual Revenue (grand)</em></td><td>Read-only currency</td><td>All months</td><td>Calculated</td><td>Sum of all month Revenue totals</td><td>Shown in the section header chip ("Rs 0.00" when no data); also surfaces as the Summary "Tracker Annual Revenue".</td><td>Non-editable.</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ===== TAB 4: SUMMARY ===== -->
+  <div class="accordion">
+    <div class="accordion-trigger" onclick="this.parentElement.classList.toggle('open')">Tab 4 &mdash; Summary (auto roll-up, read-only)</div>
+    <div class="accordion-body">
+      <p style="font-size:13px;color:var(--ink);margin:4px 0 12px;">Entirely calculated &mdash; no manual entry; refreshes on open. Comprises (1) a Channel-wise Overview table (existing + recommended), (2) four Aggregate cards (Existing / Revenue / Interventions / Intervention Status), (3) four Intervention-flag tiles.</p>
+
+      <h4 style="color:var(--sea);margin:10px 0 6px;">Channel-wise Overview (one row per channel; existing then recommended)</h4>
+      <p style="font-size:12px;color:var(--ink-soft);margin:2px 0 6px;">Caption: "Existing channels with revenue. Recommended channels show alongside with their implementation status." Recommended rows are highlighted; a TOTAL row sums annual revenue when existing channels exist.</p>
+      <table class="field-table">
+        <thead><tr><th>Column</th><th>Field Type</th><th>Source</th><th>Input</th><th>Autofill</th><th>Logic</th><th>Validation &amp; Error Messages</th></tr></thead>
+        <tbody>
+          <tr><td><em>Channel</em></td><td>Read-only</td><td>Existing grid / Required card</td><td>Calculated</td><td>Channel name (bold)</td><td>Row keyed to the channel.</td><td>&mdash;</td></tr>
+          <tr><td><em>Type</em></td><td>Read-only pill</td><td>Channel</td><td>Calculated</td><td>Online (blue) / Offline (amber) pill</td><td>"&mdash;" if blank.</td><td>&mdash;</td></tr>
+          <tr><td><em>Mode</em></td><td>Read-only</td><td>Channel</td><td>Calculated</td><td>Selling Mode</td><td>&mdash;</td><td>&mdash;</td></tr>
+          <tr><td><em>Location</em></td><td>Read-only</td><td>Channel</td><td>Calculated</td><td>Block</td><td>&mdash;</td><td>&mdash;</td></tr>
+          <tr><td><em>Avg Rev / Month (&#8377;)</em></td><td>Read-only currency</td><td>Existing grid</td><td>Calculated</td><td>Avg monthly revenue (teal)</td><td>"&mdash;" for recommended channels (no revenue captured).</td><td>&mdash;</td></tr>
+          <tr><td><em>Annual Revenue (&#8377;)</em></td><td>Read-only currency</td><td>Existing grid</td><td>Calculated</td><td>Annual revenue (green)</td><td>"&mdash;" for recommended channels.</td><td>&mdash;</td></tr>
+          <tr><td><em>Source</em></td><td>Read-only tag</td><td>System</td><td>Calculated</td><td>Existing (blue) or Recommended (green) source tag</td><td>&mdash;</td><td>&mdash;</td></tr>
+          <tr><td><em>Intervention Status</em></td><td>Read-only chip</td><td>Channel</td><td>Calculated</td><td>"Active" for existing; aggregate status chip for recommended</td><td>Recommended uses the channel aggregate (Completed / In Progress / Pending / Not Feasible).</td><td>&mdash;</td></tr>
+        </tbody>
+      </table>
+
+      <h4 style="color:var(--sea);margin:12px 0 6px;">Aggregate Cards &amp; Intervention Flags (all read-only counters)</h4>
+      <table class="field-table">
+        <thead><tr><th>Metric</th><th>Field Type</th><th>Group</th><th>Input</th><th>Autofill</th><th>Logic</th><th>Validation &amp; Error Messages</th></tr></thead>
+        <tbody>
+          <tr><td><em>Total Channels</em></td><td>Read-only count</td><td>Existing</td><td>Calculated</td><td>Count of existing channels with a name</td><td>&mdash;</td><td>&mdash;</td></tr>
+          <tr><td><em>Online</em></td><td>Read-only count</td><td>Existing</td><td>Calculated</td><td>Existing channels with Type = Online</td><td>&mdash;</td><td>&mdash;</td></tr>
+          <tr><td><em>Offline</em></td><td>Read-only count</td><td>Existing</td><td>Calculated</td><td>Existing channels with Type = Offline</td><td>&mdash;</td><td>&mdash;</td></tr>
+          <tr><td><em>Upgrade Needed</em></td><td>Read-only flag</td><td>Existing</td><td>Calculated</td><td>Yes / No from the Intervention-Need toggle</td><td>Amber when Yes; also a flag tile.</td><td>&mdash;</td></tr>
+          <tr><td><em>Total Annual Revenue (&#8377;)</em></td><td>Read-only currency</td><td>Revenue</td><td>Calculated</td><td>Sum of existing Annual Revenue (green)</td><td>"&mdash;" if no existing channels.</td><td>&mdash;</td></tr>
+          <tr><td><em>Avg Revenue / Month (&#8377;)</em></td><td>Read-only currency</td><td>Revenue</td><td>Calculated</td><td>= Total Annual Revenue &divide; 12</td><td>&mdash;</td><td>&mdash;</td></tr>
+          <tr><td><em>Best Channel</em></td><td>Read-only</td><td>Revenue</td><td>Calculated</td><td>Existing channel with the highest annual revenue</td><td>Truncated with ellipsis.</td><td>&mdash;</td></tr>
+          <tr><td><em>Tracker Annual Revenue (&#8377;)</em></td><td>Read-only currency</td><td>Revenue</td><td>Calculated</td><td>Sum of Sales-Tracker month revenues (green)</td><td>Caption: "Tracker = actual recorded sales." Kept distinct from projected revenue.</td><td>&mdash;</td></tr>
+          <tr><td><em>Recommended Channels Added</em></td><td>Read-only count</td><td>Interventions</td><td>Calculated</td><td>Count of named recommended channels</td><td>Also a flag tile.</td><td>&mdash;</td></tr>
+          <tr><td><em>Products Mapped</em></td><td>Read-only count</td><td>Interventions</td><td>Calculated</td><td>Total product rows (with a product) across recommended channels</td><td>&mdash;</td><td>&mdash;</td></tr>
+          <tr><td><em>Unique Products</em></td><td>Read-only count</td><td>Interventions</td><td>Calculated</td><td>Distinct product names mapped</td><td>&mdash;</td><td>&mdash;</td></tr>
+          <tr><td><em>B2B / B2C / D2C / Exhibition</em></td><td>Read-only counts</td><td>Interventions</td><td>Calculated</td><td>Selling-Mode tallies across existing + recommended channels</td><td>Four separate counters.</td><td>&mdash;</td></tr>
+          <tr><td><em>Status &mdash; Completed</em></td><td>Read-only count</td><td>Intervention Status</td><td>Calculated</td><td>Product rows with status Completed (green)</td><td>Counted across all recommended product rows.</td><td>&mdash;</td></tr>
+          <tr><td><em>Status &mdash; In Progress</em></td><td>Read-only count</td><td>Intervention Status</td><td>Calculated</td><td>Product rows In Progress (amber)</td><td>&mdash;</td><td>&mdash;</td></tr>
+          <tr><td><em>Status &mdash; Pending</em></td><td>Read-only count</td><td>Intervention Status</td><td>Calculated</td><td>Product rows Pending (or unset)</td><td>&mdash;</td><td>&mdash;</td></tr>
+          <tr><td><em>Status &mdash; Not Feasible</em></td><td>Read-only count</td><td>Intervention Status</td><td>Calculated</td><td>Product rows Not Feasible (red)</td><td>&mdash;</td><td>&mdash;</td></tr>
+          <tr><td><em>Flag &mdash; Annual Revenue / Channels Active / Upgrade Needed / Recommended Channels</em></td><td>Read-only flag tiles</td><td>Flags</td><td>Calculated</td><td>Annual revenue (&#8377;); count of active existing channels; Yes/No upgrade; recommended channel count</td><td>Four tiles mirroring the cards above.</td><td>&mdash;</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ===== TAB 5: RESOURCES ===== -->
+  <div class="accordion">
+    <div class="accordion-trigger" onclick="this.parentElement.classList.toggle('open')">Tab 5 &mdash; Resources (Reference Materials child table)</div>
+    <div class="accordion-body">
+      <p style="font-size:13px;color:var(--ink);margin:4px 0 12px;">Single child table; at least one row required.</p>
+      <table class="field-table">
+        <thead><tr><th>Field Name</th><th>Field Type</th><th>Input Values</th><th>Input</th><th>Autofill</th><th>Logic</th><th>Validation &amp; Error Messages</th></tr></thead>
+        <tbody>
+          <tr><td>Resource Title</td><td>Data</td><td>Free text</td><td>Manual</td><td>&mdash;</td><td>&mdash;</td><td>Required if row kept. Error: "Enter a resource title."</td></tr>
+          <tr><td>Category</td><td>Select</td><td>Buyer / Retailer Contact; Wholesale Market Directory; E-commerce Platform Guide; Exhibition / Mela Calendar; Govt Scheme / Subsidy; Packaging &amp; Branding Reference; Pricing Benchmarks; SHG / FPO Linkage; Other</td><td>Manual</td><td>&mdash;</td><td>&mdash;</td><td>Optional.</td></tr>
+          <tr><td>Type</td><td>Select</td><td>Contact; Reference; Quotation; Agreement / MOU; Map / Location; Photo / Evidence</td><td>Manual</td><td>&mdash;</td><td>&mdash;</td><td>Optional.</td></tr>
+          <tr><td>Description / Notes</td><td>Data</td><td>Free text notes</td><td>Manual</td><td>&mdash;</td><td>&mdash;</td><td>Optional.</td></tr>
+          <tr><td>File</td><td>Attach (Upload / View)</td><td>File upload</td><td>Manual</td><td>&mdash;</td><td>Upload and View actions.</td><td>Optional.</td></tr>
+        </tbody>
+      </table>
+      <div class="callout callout-terra">Delete is blocked when only one row remains. Error: "At least one row is required."</div>
+    </div>
+  </div>
+
+  <!-- ===== TAB 6: TASK LOG ===== -->
+  <div class="accordion">
+    <div class="accordion-trigger" onclick="this.parentElement.classList.toggle('open')">Tab 6 &mdash; Task Log (Market Linkage Activities register)</div>
+    <div class="accordion-body">
+      <p style="font-size:13px;color:var(--ink);margin:4px 0 12px;">Activity register with a live entry counter. Each entry below.</p>
+      <table class="field-table">
+        <thead><tr><th>Field Name</th><th>Field Type</th><th>Input Values</th><th>Input</th><th>Autofill</th><th>Logic</th><th>Validation &amp; Error Messages</th></tr></thead>
+        <tbody>
+          <tr><td>No.</td><td>Auto number</td><td>01, 02, &hellip;</td><td>Calculated</td><td>Sequential, zero-padded</td><td>Renumbers on delete; drives the entry counter.</td><td>Non-editable.</td></tr>
+          <tr><td>Date</td><td>Date</td><td>Date picker</td><td>Manual</td><td>&mdash;</td><td>&mdash;</td><td>Optional.</td></tr>
+          <tr><td>Task Name</td><td>Select</td><td>ML task list: 01 Map Existing Selling Channels; 02 Record Channel Revenue Data; 03 Identify Channel Upgrade / Expansion Need; 04 Research New Market Channels; 05 Identify Potential Buyers / Retailers; 06 Contact Potential Buyer / Retailer; 07 Conduct Buyer Meeting; 08 Negotiate Terms / Pricing; 09 Finalise Channel Agreement / MOU; 10 Set Up Online Channel (e-commerce / social); 11 Register for Exhibition / Mela; 12 Prepare Products for New Channel; 13 First Dispatch / Delivery to New Channel; 14 Monitor Channel Sales Performance; 15 Review Pricing Strategy by Channel; 16 Update Sales Tracker; "If other, specify in comments"</td><td>Manual</td><td>&mdash;</td><td>&mdash;</td><td>Required per entry. Error: "Select a task."</td></tr>
+          <tr><td>Notes / Outcome</td><td>Data</td><td>Free text</td><td>Manual</td><td>&mdash;</td><td>&mdash;</td><td>Optional.</td></tr>
+          <tr><td>Attachment</td><td>Attach (Upload)</td><td>File upload</td><td>Manual</td><td>&mdash;</td><td>&mdash;</td><td>Optional.</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="callout callout-danger"><strong>Key validations (whole form):</strong> (1) A channel row/card counts only when Channel Name is filled &mdash; "Enter the channel name." (2) The recommended channel <em>status chip is system-calculated and read-only</em>: Completed only when all nested product rows are Completed, Not Feasible if any row is Not Feasible, In Progress if any row is In Progress, else Pending &mdash; it must never be hand-edited. (3) All numeric fields (Price, Avg Revenue/Month units, Quantity) must be &ge; 0; negatives rejected ("Price cannot be negative"). (4) Existing revenue columns (Avg Revenue/Month, Annual Revenue, Annual Total Revenue) and every Tracker Revenue / month total / grand total are auto-calculated and non-editable. (5) Justification is only valid / shown when the "Upgrade / Add New Channels?" toggle is On. (6) Product SKU is enabled only after a Product Name is chosen (cascading). (7) Tracker month buckets belong to the active cohort year (Rule 11) and Tracker revenue (actual) is kept distinct from projected Existing-channel revenue. (8) Removing a channel deletes all its products (confirm prompt). (9) Resources table must retain at least one row. (10) Task Log entries require a Task Name. (11) All Indian currency uses &#8377; with Indian number formatting (e.g., &#8377; 1,00,000).</div>
+
+  <div class="review-panel" data-section="m-mkt-linkage">
+    <div class="review-strip"><span style="font-size:12px;color:var(--ink-soft);font-weight:500;">Section Review:</span>
+      <button class="review-status-btn" onclick="setReview('m-mkt-linkage','draft',this)">Draft</button>
+      <button class="review-status-btn" onclick="setReview('m-mkt-linkage','review',this)">In Review</button>
+      <button class="review-status-btn" onclick="setReview('m-mkt-linkage','changes',this)">Needs Changes</button>
+      <button class="review-status-btn" onclick="setReview('m-mkt-linkage','approved',this)">Approved</button>
+      <button style="margin-left:auto;background:none;border:none;font-size:12px;color:var(--sea);cursor:pointer;font-family:var(--font);text-decoration:underline;" onclick="copyLink('m-mkt-linkage')">Copy Link</button></div>
+    <div class="review-comments"><div class="comment-list" id="comments-m-mkt-linkage"></div>
+      <div class="comment-input-row"><input type="text" placeholder="Your name" style="max-width:120px" id="name-m-mkt-linkage"><textarea rows="1" placeholder="Add a comment..." id="text-m-mkt-linkage"></textarea><button class="comment-add-btn" onclick="addComment('m-mkt-linkage')">Add</button></div></div>
+  </div>
+</div>
 
     <!-- PROMOTIONS -->
     <div class="brd-section" id="m-promotions">
-      <div class="section-header">
-        <span class="section-id">PR-MKT-004</span>
-        <h2 class="section-title">Promotions</h2>
-      </div>
-      <div class="section-desc">Map existing and recommended promotion activities. <strong>Entrepreneur-level framework</strong> with simple Existing/Required pattern.</div>
+  <div class="section-header"><span class="section-id">PR-MKT-004</span><h2 class="section-title">Promotions</h2></div>
+  <div class="section-desc">Part of the Market module, the Promotions framework maps how an entrepreneur currently promotes their products across all offline and online (digital) channels, flags whether new promotion methods are needed, proposes recommended channels with an implementation status, and tracks promotional / digital-marketing activities through a task log and resource library. Backed by <strong>DF Promotional Marketing</strong> (one record per entrepreneur) with <strong>Promotional Marketing Entry</strong> child rows phased Existing / Required.</div>
 
-      <h3 style="font-size:16px;color:var(--teal);margin:12px 0 8px;">Tab Structure: Existing | Required</h3>
+  <h3 style="font-size:16px;color:var(--teal);margin:18px 0 10px;">On-Screen UI Structure</h3>
+  <div class="card"><div style="font-size:13px;line-height:1.9;color:var(--ink)">
+    <strong>Top bar:</strong> forest-teal header "Promotions" with a "PRIME Rural &middot; Marketing Framework" crumb, and an entrepreneur chip below it (avatar + name <em>auto-fetched from the Entrepreneur Profile</em>).<br>
+    <strong>Tab rail</strong> (uppercase pills): <strong>Summary</strong> &middot; <strong>Existing</strong> &middot; <strong>Required</strong> &middot; <strong>Resources</strong> &middot; <strong>Task Log</strong>. Active tab is teal-filled; the form opens on the Summary tab (which refreshes on open).<br>
+    <strong>Body:</strong> the <strong>Existing</strong> and <strong>Required</strong> tabs are channel <em>repeaters</em> ("+ Add Promotion" appends a row) backed by the same Promotional Marketing Entry child table, differentiated by a <em>Phase</em> field (Existing vs Required). The Existing tab additionally carries an <em>Intervention Need</em> block (toggle + justification). The Required tab adds an Implementation Status column. Resources and Task Log are independent child-table registers.<br>
+    <strong>Special widgets:</strong> (1) an <em>Intervention Need toggle</em> (forest-green when on) that reveals a justification textarea and flags the record for new promotion methods; (2) a <em>conditional Digital Platform Category</em> column that becomes relevant only when Channel Type = Online (NA when Offline); (3) an Implementation Status pill (Pending / In Progress / Completed / Not Feasible) on Required rows; (4) a Summary tab with a Promotion-wise Overview table, four Aggregate cards (Existing / Cost-Frequency / Interventions / Intervention Status) and four Intervention-flag tiles; (5) Upload / View file actions on Resources and Task Log rows.<br>
+    <strong>Calculated fields</strong> (entrepreneur chip, all Summary overview rows, aggregate counters and flag tiles, the live Task Log entry counter) render <em>italic on cream-deep background, read-only, with a tooltip</em> per Rule 1.
+  </div></div>
+  <div class="flow-container" style="margin-top:12px">
+    <div class="flow-step"><div class="flow-box">Summary</div><div class="flow-label">Auto roll-up</div></div>
+    <div class="flow-arrow">&rarr;</div>
+    <div class="flow-step"><div class="flow-box">Existing</div><div class="flow-label">Current channels + Intervention flag</div></div>
+    <div class="flow-arrow">&rarr;</div>
+    <div class="flow-step"><div class="flow-box">Required</div><div class="flow-label">Recommended channels + status</div></div>
+    <div class="flow-arrow">&rarr;</div>
+    <div class="flow-step"><div class="flow-box">Resources</div><div class="flow-label">Reference materials</div></div>
+    <div class="flow-arrow">&rarr;</div>
+    <div class="flow-step"><div class="flow-box">Task Log</div><div class="flow-label">Activity register</div></div>
+  </div>
 
-      <div class="accordion">
-        <div class="accordion-trigger" onclick="this.parentElement.classList.toggle('open')">
-          Both Tabs &mdash; Promotion Table <span class="acc-arrow">&#9660;</span>
-        </div>
-        <div class="accordion-body">
-          <table class="brd-table">
-            <thead><tr><th>Column</th><th>Type</th><th>Values</th><th>Tab</th><th>Validation</th></tr></thead>
-            <tbody>
-              <tr><td>#</td><td>Int (auto)</td><td>Row number</td><td>Both</td><td>--</td></tr>
-              <tr><td>Promotion Name</td><td>Data</td><td>Free text</td><td>Both</td><td>Required</td></tr>
-              <tr><td>Type</td><td>Select</td><td>Offline, Online</td><td>Both</td><td>Required</td></tr>
-              <tr><td>Handled by / Suggested Handled by</td><td>Data</td><td>Free text</td><td>Existing / Required</td><td>--</td></tr>
-              <tr><td>Frequency</td><td>Select</td><td>Daily, Weekly, Monthly, Yearly</td><td>Both</td><td>--</td></tr>
-              <tr><td>Notes</td><td>Textarea</td><td>Free text</td><td>Both</td><td>--</td></tr>
-            </tbody>
-          </table>
-          <p style="font-size:12px;margin-top:8px;"><strong>Existing tab</strong>: + Add Promotion button. Intervention Need toggle ("Need New Promotion Methods?") + justification.<br>
-          <strong>Required tab</strong>: + Add Promotion button for recommended promotions.</p>
-        </div>
-      </div>
+  <h3 style="font-size:16px;color:var(--teal);margin:18px 0 10px;">User Journey</h3>
+  <div class="card"><div class="flow-container">
+    <div class="flow-step"><div class="flow-box">1. Open Profile</div><div class="flow-label">Entrepreneur, District, Block auto-fetched</div></div>
+    <div class="flow-arrow">&rarr;</div>
+    <div class="flow-step"><div class="flow-box">2. Map Existing</div><div class="flow-label">Add current offline / online promotions</div></div>
+    <div class="flow-arrow">&rarr;</div>
+    <div class="flow-step"><div class="flow-box">3. Flag Need</div><div class="flow-label">Toggle "Need new methods?" + justify</div></div>
+    <div class="flow-arrow">&rarr;</div>
+    <div class="flow-step"><div class="flow-box">4. Recommend</div><div class="flow-label">Propose channels; set Implementation Status</div></div>
+    <div class="flow-arrow">&rarr;</div>
+    <div class="flow-step"><div class="flow-box">5. Resources</div><div class="flow-label">Attach guides, templates, evidence</div></div>
+    <div class="flow-arrow">&rarr;</div>
+    <div class="flow-step"><div class="flow-box">6. Log &amp; Review</div><div class="flow-label">Record tasks; Summary rolls up</div></div>
+  </div></div>
 
-      <div class="review-panel" data-section="m-promotions">
-        <div class="review-strip">
-          <span style="font-size:12px;color:var(--ink-soft);font-weight:500;">Section Review:</span>
-          <button class="review-status-btn" onclick="setReview('m-promotions','draft',this)">Draft</button>
-          <button class="review-status-btn" onclick="setReview('m-promotions','review',this)">In Review</button>
-          <button class="review-status-btn" onclick="setReview('m-promotions','changes',this)">Needs Changes</button>
-          <button class="review-status-btn" onclick="setReview('m-promotions','approved',this)">Approved</button>
-          <button style="margin-left:auto;background:none;border:none;font-size:12px;color:var(--sea);cursor:pointer;font-family:var(--font);text-decoration:underline;" onclick="copyLink('m-promotions')">Copy Link</button>
-        </div>
-        <div class="review-comments">
-          <div class="comment-list" id="comments-m-promotions"></div>
-          <div class="comment-input-row">
-            <input type="text" placeholder="Your name" style="max-width:120px" id="name-m-promotions">
-            <textarea rows="1" placeholder="Add a comment..." id="text-m-promotions"></textarea>
-            <button class="comment-add-btn" onclick="addComment('m-promotions')">Add</button>
-          </div>
-        </div>
-      </div>
+  <!-- ===== TAB 1: EXISTING ===== -->
+  <div class="accordion open">
+    <div class="accordion-trigger" onclick="this.parentElement.classList.toggle('open')">Tab 1 &mdash; Existing (current promotion channels + Intervention Need)</div>
+    <div class="accordion-body">
+      <p style="font-size:13px;color:var(--ink);margin:4px 0 12px;">Caption: <em>"Map how the entrepreneur currently promotes their products &mdash; all offline and online activities."</em> A channel repeater ("+ Add Promotion") writes Promotional Marketing Entry rows with <strong>Phase = Existing</strong>. Below the table sits the <strong>Intervention Need</strong> block. Two demo rows are seeded (Facebook Page Posts, WhatsApp Status Updates).</p>
+
+      <h4 style="color:var(--sea);margin:14px 0 6px;">Header &mdash; Auto-fetched context (read-only)</h4>
+      <table class="field-table">
+        <thead><tr><th>Field Name</th><th>Field Type</th><th>Input Values</th><th>Input</th><th>Autofill</th><th>Logic</th><th>Validation &amp; Error Messages</th></tr></thead>
+        <tbody>
+          <tr><td>Entrepreneur</td><td>Link (Enterprenur Profile)</td><td>Entrepreneur Profile master</td><td>Manual (set on create)</td><td>Drives the chip &amp; all fetches</td><td>Unique &mdash; one DF Promotional Marketing record per entrepreneur. Autoname <code>PRM-.{enterprenur_name}.-.#####</code>.</td><td>Required. Duplicate entrepreneur rejected (unique).</td></tr>
+          <tr><td><em>Module</em></td><td>Select (read-only)</td><td>Accounts / Manufacturing / Product Development / Marketing</td><td>Calculated</td><td>Default "Marketing"</td><td>Fixed for this framework.</td><td>Non-editable.</td></tr>
+          <tr><td><em>Applicable To</em></td><td>Select (read-only)</td><td>Product / Enterpreneur</td><td>Calculated</td><td>Default "Product"</td><td>Fixed for this framework.</td><td>Non-editable.</td></tr>
+          <tr><td><em>District</em></td><td>Link (read-only, hidden)</td><td>District Master</td><td>Calculated</td><td>Fetched from Entrepreneur &rarr; district</td><td>Italic on cream-deep, tooltip (Rule 1).</td><td>Non-editable.</td></tr>
+          <tr><td><em>Block</em></td><td>Link (read-only, hidden)</td><td>Block Master</td><td>Calculated</td><td>Fetched from Entrepreneur &rarr; block</td><td>Italic on cream-deep, tooltip (Rule 1).</td><td>Non-editable.</td></tr>
+        </tbody>
+      </table>
+
+      <h4 style="color:var(--sea);margin:14px 0 6px;">Existing Promotions (Promotional Marketing Entry, Phase = Existing)</h4>
+      <p style="font-size:12px;color:var(--ink-soft);margin:2px 0 6px;">Repeater grid. Mockup columns: Promotion Name / Type / Handled by / Frequency / Notes. Backed by the richer child doctype below (Channel Type, Promotion Mode, Digital Platform Category, Platform Name, Handled By, Contact, Details / Impact, Tools Used).</p>
+      <table class="field-table">
+        <thead><tr><th>Field Name</th><th>Field Type</th><th>Input Values</th><th>Input</th><th>Autofill</th><th>Logic</th><th>Validation &amp; Error Messages</th></tr></thead>
+        <tbody>
+          <tr><td>#</td><td>Auto number</td><td>01, 02, &hellip;</td><td>Calculated</td><td>Row index (zero-padded)</td><td>Renumbers on add / delete.</td><td>Non-editable.</td></tr>
+          <tr><td><em>Phase</em></td><td>Select (read-only here)</td><td>Existing / Required</td><td>Calculated</td><td>Set to "Existing" for all rows on this tab</td><td>Required by the child doctype; segregates this tab's rows from the Required tab.</td><td>Required (system-set).</td></tr>
+          <tr><td>Promotion Name</td><td>Data</td><td>e.g., "Facebook Page Posts", "WhatsApp Status Updates"</td><td>Manual</td><td>&mdash;</td><td>Stored as Platform Name on the child row; primary label in Summary &amp; overview.</td><td>Required for the row to count in Summary. Error: "Enter the promotion name."</td></tr>
+          <tr><td>Type (Channel Type)</td><td>Select</td><td>Offline; Online</td><td>Manual</td><td>&mdash;</td><td>Drives the Online / Offline aggregate split. When Online, Digital Platform Category becomes relevant; when Offline it may be NA.</td><td>Optional; recommended. Counts toward Online / Offline tallies.</td></tr>
+          <tr><td>Promotion Mode</td><td>Select</td><td>Retail; Exhibitions; Hospitality; Direct; Festivals; Shops; Pop-ups; Social Media; Videos; Ads; Other</td><td>Manual</td><td>&mdash;</td><td>Categorises the promotion activity.</td><td>Optional.</td></tr>
+          <tr><td>Digital Platform Category</td><td>Select (conditional)</td><td>NA; WhatsApp; YouTube; Facebook; Instagram; Other</td><td>Manual</td><td>&mdash;</td><td><strong>Conditional:</strong> relevant when Channel Type = Online; "Can be NA if Channel Type is Offline."</td><td>Optional; set to NA for offline channels.</td></tr>
+          <tr><td>Handled by</td><td>Select / Data</td><td>Self; Family; Paid 3rd Party (mockup free-text e.g., "Self / Daughter")</td><td>Manual</td><td>&mdash;</td><td>Who runs the channel.</td><td>Optional.</td></tr>
+          <tr><td>Contact</td><td>Small Text</td><td>Manager / agency contact info</td><td>Manual</td><td>&mdash;</td><td>Relevant mainly when Handled by = Paid 3rd Party.</td><td>Optional.</td></tr>
+          <tr><td>Frequency</td><td>Select</td><td>Daily; Weekly; Monthly; Yearly</td><td>Manual</td><td>&mdash;</td><td>Drives the Cost / Frequency aggregate counts (Daily / Weekly / Monthly / Yearly).</td><td>Optional.</td></tr>
+          <tr><td>Notes (Details / Impact)</td><td>Small Text</td><td>e.g., "Product photos, occasional videos"; reach, spend, engagement, generated sales</td><td>Manual</td><td>&mdash;</td><td>Free observation field; "Generated sales or engagement accomplished from the channel."</td><td>Optional.</td></tr>
+          <tr><td>Tools Used</td><td>Select</td><td>Business Card; Brochure; Catalogue; Photos; Videos</td><td>Manual</td><td>&mdash;</td><td>Collateral used on the channel.</td><td>Optional.</td></tr>
+          <tr><td>Delete</td><td>Action (&times;)</td><td>&mdash;</td><td>Manual</td><td>&mdash;</td><td>Removes the row and renumbers.</td><td>&mdash;</td></tr>
+        </tbody>
+      </table>
+
+      <h4 style="color:var(--sea);margin:14px 0 6px;">Intervention Need block (terracotta panel)</h4>
+      <table class="field-table">
+        <thead><tr><th>Field Name</th><th>Field Type</th><th>Input Values</th><th>Input</th><th>Autofill</th><th>Logic</th><th>Validation &amp; Error Messages</th></tr></thead>
+        <tbody>
+          <tr><td>Need New Promotion Methods?</td><td>Toggle (Check)</td><td>Off / On</td><td>Manual</td><td>&mdash;</td><td>When On: note flips to "&#8635; Flagged &rarr; Add new promotion methods in Required tab", reveals the Justification field, and sets the "New Methods Needed" Summary flag to Yes. When Off: note reads "Not flagged" and the Justification is hidden.</td><td>Optional.</td></tr>
+          <tr><td>Justification</td><td>Small Text (conditional)</td><td>Reason for needing new promotion methods</td><td>Manual</td><td>&mdash;</td><td>Shown only when the toggle is On.</td><td>Recommended when the toggle is On.</td></tr>
+        </tbody>
+      </table>
+      <div class="callout callout-terra">A row counts in Summary only once its Promotion Name is filled. Channel Type drives the Online / Offline split; Frequency drives the Daily / Weekly / Monthly / Yearly cost counts. Turning on the Intervention toggle is the trigger to populate the Required tab.</div>
     </div>
+  </div>
+
+  <!-- ===== TAB 2: REQUIRED ===== -->
+  <div class="accordion">
+    <div class="accordion-trigger" onclick="this.parentElement.classList.toggle('open')">Tab 2 &mdash; Required (recommended promotion channels + Implementation Status)</div>
+    <div class="accordion-body">
+      <p style="font-size:13px;color:var(--ink);margin:4px 0 12px;">Caption: <em>"Propose promotion strategies to add or upgrade based on identified gaps."</em> Same repeater, writing Promotional Marketing Entry rows with <strong>Phase = Required</strong>, plus a Suggested Handled by column and an Implementation Status column. Rows appear highlighted ("+ New") in the Summary overview. A demo row is seeded (Instagram Reels, In Progress).</p>
+      <table class="field-table">
+        <thead><tr><th>Field Name</th><th>Field Type</th><th>Input Values</th><th>Input</th><th>Autofill</th><th>Logic</th><th>Validation &amp; Error Messages</th></tr></thead>
+        <tbody>
+          <tr><td>#</td><td>Auto number</td><td>01, 02, &hellip;</td><td>Calculated</td><td>Row index (zero-padded)</td><td>Renumbers on add / delete.</td><td>Non-editable.</td></tr>
+          <tr><td><em>Phase</em></td><td>Select (read-only here)</td><td>Existing / Required</td><td>Calculated</td><td>Set to "Required" for all rows on this tab</td><td>Required by the child doctype; segregates these rows from the Existing tab.</td><td>Required (system-set).</td></tr>
+          <tr><td>Promotion Name</td><td>Data</td><td>e.g., "Instagram Reels"</td><td>Manual</td><td>&mdash;</td><td>Stored as Platform Name; primary label in Summary (shown with a "+ New" badge).</td><td>Required for the row to count. Error: "Enter the promotion name."</td></tr>
+          <tr><td>Type (Channel Type)</td><td>Select</td><td>Offline; Online</td><td>Manual</td><td>&mdash;</td><td>Drives Online / Offline additions in the Interventions aggregate card.</td><td>Optional; recommended.</td></tr>
+          <tr><td>Promotion Mode</td><td>Select</td><td>Retail; Exhibitions; Hospitality; Direct; Festivals; Shops; Pop-ups; Social Media; Videos; Ads; Other</td><td>Manual</td><td>&mdash;</td><td>Categorises the proposed activity.</td><td>Optional.</td></tr>
+          <tr><td>Digital Platform Category</td><td>Select (conditional)</td><td>NA; WhatsApp; YouTube; Facebook; Instagram; Other</td><td>Manual</td><td>&mdash;</td><td><strong>Conditional:</strong> relevant when Channel Type = Online; NA for Offline.</td><td>Optional.</td></tr>
+          <tr><td>Suggested Handled by</td><td>Select / Data</td><td>Self; Family; Paid 3rd Party (mockup free-text e.g., "Marketing Intern / Family")</td><td>Manual</td><td>&mdash;</td><td>Distinct values surface as "Suggested Handled By" in the Interventions card.</td><td>Optional.</td></tr>
+          <tr><td>Contact</td><td>Small Text</td><td>Manager / agency contact info</td><td>Manual</td><td>&mdash;</td><td>Relevant when a paid third party is suggested.</td><td>Optional.</td></tr>
+          <tr><td>Frequency</td><td>Select</td><td>Daily; Weekly; Monthly; Yearly</td><td>Manual</td><td>&mdash;</td><td>Proposed cadence.</td><td>Optional.</td></tr>
+          <tr><td>Notes (Details / Impact)</td><td>Small Text</td><td>e.g., "Short videos showing process and product"; tactics, budget, justification</td><td>Manual</td><td>&mdash;</td><td>Free field for the proposed tactics.</td><td>Optional.</td></tr>
+          <tr><td>Tools Used</td><td>Select</td><td>Business Card; Brochure; Catalogue; Photos; Videos</td><td>Manual</td><td>&mdash;</td><td>Collateral planned.</td><td>Optional.</td></tr>
+          <tr><td>Implementation Status</td><td>Select</td><td>Pending; In Progress; Completed; Not Feasible <span style="color:var(--ink-soft)">(child doctype underlying values: Suggested / Implemented)</span></td><td>Manual</td><td>&mdash;</td><td>Colour-coded pill (green / amber / cream / terracotta). Drives the Intervention Status card (Completed / In Progress / Pending / Not Feasible) and recalculates the Summary on change. Mandatory on the child row when Phase = Required.</td><td>Required when Phase = Required. Error: "Set the implementation status."</td></tr>
+          <tr><td>Delete</td><td>Action (&times;)</td><td>&mdash;</td><td>Manual</td><td>&mdash;</td><td>Removes the row and renumbers.</td><td>&mdash;</td></tr>
+        </tbody>
+      </table>
+      <div class="callout callout-terra">Required rows are the "intervention" recommendations &mdash; they roll up into "New Methods Recommended", Online / Offline Additions and the Intervention Status counts on the Summary. Blank / unset status is treated as Pending.</div>
+    </div>
+  </div>
+
+  <!-- ===== TAB 3: SUMMARY ===== -->
+  <div class="accordion">
+    <div class="accordion-trigger" onclick="this.parentElement.classList.toggle('open')">Tab 3 &mdash; Summary (auto roll-up, read-only)</div>
+    <div class="accordion-body">
+      <p style="font-size:13px;color:var(--ink);margin:4px 0 12px;">Entirely calculated &mdash; no manual entry; refreshes on open. Comprises (1) a Promotion-wise Overview table, (2) four Aggregate cards, (3) four Intervention-flag tiles. Caption: <em>"One row per existing promotion. Recommended new methods appear highlighted below."</em></p>
+
+      <h4 style="color:var(--sea);margin:10px 0 6px;">Promotion-wise Overview (one row per Existing promotion; Required rows appended &amp; highlighted)</h4>
+      <table class="field-table">
+        <thead><tr><th>Column</th><th>Field Type</th><th>Source</th><th>Input</th><th>Autofill</th><th>Logic</th><th>Validation &amp; Error Messages</th></tr></thead>
+        <tbody>
+          <tr><td><em>Promotion Name</em></td><td>Read-only</td><td>Existing / Required</td><td>Calculated</td><td>Promotion Name</td><td>Bold. Row skipped if name blank.</td><td>&mdash;</td></tr>
+          <tr><td><em>Type</em></td><td>Read-only badge</td><td>Channel Type</td><td>Calculated</td><td>Online (blue) / Offline (cream)</td><td>Colour-coded pill.</td><td>&mdash;</td></tr>
+          <tr><td><em>Handled By</em></td><td>Read-only</td><td>Handled by</td><td>Calculated</td><td>Handler value</td><td>"&mdash;" if blank.</td><td>&mdash;</td></tr>
+          <tr><td><em>Frequency</em></td><td>Read-only</td><td>Frequency</td><td>Calculated</td><td>Daily / Weekly / Monthly / Yearly</td><td>"&mdash;" if blank.</td><td>&mdash;</td></tr>
+          <tr><td><em>Notes</em></td><td>Read-only</td><td>Notes</td><td>Calculated</td><td>Notes text</td><td>Soft-ink colour.</td><td>&mdash;</td></tr>
+          <tr><td><em>Intervention Type</em></td><td>Read-only badge</td><td>Phase</td><td>Calculated</td><td>"&mdash;" for Existing rows; "+ New" (blue) for Required rows</td><td>Terracotta-tinted cell.</td><td>&mdash;</td></tr>
+          <tr><td><em>Implementation Status</em></td><td>Read-only badge</td><td>Required &middot; Implementation Status</td><td>Calculated</td><td>"&mdash;" for Existing; Pending / In Progress / Completed / Not Feasible pill for Required</td><td>Green-tinted cell; colour-coded pill.</td><td>&mdash;</td></tr>
+        </tbody>
+      </table>
+
+      <h4 style="color:var(--sea);margin:12px 0 6px;">Aggregate Cards (four cards, all read-only counters)</h4>
+      <table class="field-table">
+        <thead><tr><th>Metric</th><th>Field Type</th><th>Card</th><th>Input</th><th>Autofill</th><th>Logic</th><th>Validation &amp; Error Messages</th></tr></thead>
+        <tbody>
+          <tr><td><em>Total Promotions</em></td><td>Read-only count</td><td>Existing</td><td>Calculated</td><td>Count of named Existing rows</td><td>&mdash;</td><td>&mdash;</td></tr>
+          <tr><td><em>Online</em></td><td>Read-only count</td><td>Existing</td><td>Calculated</td><td>Existing rows with Type = Online</td><td>Blue.</td><td>&mdash;</td></tr>
+          <tr><td><em>Offline</em></td><td>Read-only count</td><td>Existing</td><td>Calculated</td><td>Existing rows with Type = Offline</td><td>&mdash;</td><td>&mdash;</td></tr>
+          <tr><td><em>Intervention Flagged</em></td><td>Read-only (Yes / No)</td><td>Existing</td><td>Calculated</td><td>State of the Intervention toggle</td><td>Amber "Yes" when flagged.</td><td>&mdash;</td></tr>
+          <tr><td><em>Daily Frequency</em></td><td>Read-only count</td><td>Cost</td><td>Calculated</td><td>Existing rows with Frequency = Daily</td><td>&mdash;</td><td>&mdash;</td></tr>
+          <tr><td><em>Weekly Frequency</em></td><td>Read-only count</td><td>Cost</td><td>Calculated</td><td>Existing rows with Frequency = Weekly</td><td>&mdash;</td><td>&mdash;</td></tr>
+          <tr><td><em>Monthly Frequency</em></td><td>Read-only count</td><td>Cost</td><td>Calculated</td><td>Existing rows with Frequency = Monthly</td><td>&mdash;</td><td>&mdash;</td></tr>
+          <tr><td><em>Yearly Frequency</em></td><td>Read-only count</td><td>Cost</td><td>Calculated</td><td>Existing rows with Frequency = Yearly</td><td>&mdash;</td><td>&mdash;</td></tr>
+          <tr><td><em>New Methods Recommended</em></td><td>Read-only count</td><td>Interventions</td><td>Calculated</td><td>Count of named Required rows</td><td>&mdash;</td><td>&mdash;</td></tr>
+          <tr><td><em>Online Additions</em></td><td>Read-only count</td><td>Interventions</td><td>Calculated</td><td>Required rows with Type = Online</td><td>Blue.</td><td>&mdash;</td></tr>
+          <tr><td><em>Offline Additions</em></td><td>Read-only count</td><td>Interventions</td><td>Calculated</td><td>Required rows with Type = Offline</td><td>&mdash;</td><td>&mdash;</td></tr>
+          <tr><td><em>Suggested Handled By</em></td><td>Read-only list</td><td>Interventions</td><td>Calculated</td><td>Distinct handler values across Required rows (comma-joined)</td><td>Truncated with ellipsis; "&mdash;" if none.</td><td>&mdash;</td></tr>
+          <tr><td><em>Completed</em></td><td>Read-only count</td><td>Intervention Status</td><td>Calculated</td><td>Required rows with status Completed</td><td>Green.</td><td>&mdash;</td></tr>
+          <tr><td><em>In Progress</em></td><td>Read-only count</td><td>Intervention Status</td><td>Calculated</td><td>Required rows with status In Progress</td><td>Amber.</td><td>&mdash;</td></tr>
+          <tr><td><em>Pending</em></td><td>Read-only count</td><td>Intervention Status</td><td>Calculated</td><td>Required rows with status Pending / unset</td><td>&mdash;</td><td>&mdash;</td></tr>
+          <tr><td><em>Not Feasible</em></td><td>Read-only count</td><td>Intervention Status</td><td>Calculated</td><td>Required rows with status Not Feasible</td><td>Deep terracotta.</td><td>&mdash;</td></tr>
+        </tbody>
+      </table>
+
+      <h4 style="color:var(--sea);margin:12px 0 6px;">Intervention Flag Tiles (four read-only tiles)</h4>
+      <table class="field-table">
+        <thead><tr><th>Tile</th><th>Field Type</th><th>Source</th><th>Input</th><th>Autofill</th><th>Logic</th><th>Validation &amp; Error Messages</th></tr></thead>
+        <tbody>
+          <tr><td><em>Existing Promotions</em></td><td>Read-only count</td><td>Existing</td><td>Calculated</td><td>Total named Existing rows</td><td>Green tile.</td><td>&mdash;</td></tr>
+          <tr><td><em>New Methods Needed</em></td><td>Read-only (Yes / No)</td><td>Intervention toggle</td><td>Calculated</td><td>Yes when flagged, else No</td><td>Terracotta tile.</td><td>&mdash;</td></tr>
+          <tr><td><em>Online (Total)</em></td><td>Read-only count</td><td>Existing + Required</td><td>Calculated</td><td>Online rows across both phases</td><td>Blue tile.</td><td>&mdash;</td></tr>
+          <tr><td><em>Offline (Total)</em></td><td>Read-only count</td><td>Existing + Required</td><td>Calculated</td><td>Offline rows across both phases</td><td>Cream tile.</td><td>&mdash;</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ===== TAB 4: RESOURCES ===== -->
+  <div class="accordion">
+    <div class="accordion-trigger" onclick="this.parentElement.classList.toggle('open')">Tab 4 &mdash; Resources (Reference Materials child table)</div>
+    <div class="accordion-body">
+      <p style="font-size:13px;color:var(--ink);margin:4px 0 12px;">Single child table of reference materials; at least one row required. Also surfaced as a Drive Resources / link in the underlying doctype.</p>
+      <table class="field-table">
+        <thead><tr><th>Field Name</th><th>Field Type</th><th>Input Values</th><th>Input</th><th>Autofill</th><th>Logic</th><th>Validation &amp; Error Messages</th></tr></thead>
+        <tbody>
+          <tr><td>Resource Title</td><td>Data</td><td>Free text</td><td>Manual</td><td>&mdash;</td><td>&mdash;</td><td>Required if row kept. Error: "Enter a resource title."</td></tr>
+          <tr><td>Category</td><td>Select</td><td>Social Media Guide; Platform Reference; Content Template; Budget Estimate; Campaign Tracker; Competitor Promotion; Govt. Scheme for Promotion; Other</td><td>Manual</td><td>&mdash;</td><td>&mdash;</td><td>Optional.</td></tr>
+          <tr><td>Type</td><td>Select</td><td>Guide / Manual; Template; Reference; Contact; Photo / Evidence</td><td>Manual</td><td>&mdash;</td><td>&mdash;</td><td>Optional.</td></tr>
+          <tr><td>Description / Notes</td><td>Data</td><td>Free text notes</td><td>Manual</td><td>&mdash;</td><td>&mdash;</td><td>Optional.</td></tr>
+          <tr><td>File</td><td>Attach (Upload / View)</td><td>File upload</td><td>Manual</td><td>&mdash;</td><td>Upload and View actions.</td><td>Optional.</td></tr>
+          <tr><td>Delete</td><td>Action (&times;)</td><td>&mdash;</td><td>Manual</td><td>&mdash;</td><td>Removes the row.</td><td>Blocked when only one row remains. Error: "At least one row is required."</td></tr>
+        </tbody>
+      </table>
+      <div class="callout callout-terra">Delete is blocked when only one row remains.</div>
+    </div>
+  </div>
+
+  <!-- ===== TAB 5: TASK LOG ===== -->
+  <div class="accordion">
+    <div class="accordion-trigger" onclick="this.parentElement.classList.toggle('open')">Tab 5 &mdash; Task Log (Promotions Activities register)</div>
+    <div class="accordion-body">
+      <p style="font-size:13px;color:var(--ink);margin:4px 0 12px;">Activity register ("Task Log &mdash; Promotions Activities") with a live entry counter. Each entry below.</p>
+      <table class="field-table">
+        <thead><tr><th>Field Name</th><th>Field Type</th><th>Input Values</th><th>Input</th><th>Autofill</th><th>Logic</th><th>Validation &amp; Error Messages</th></tr></thead>
+        <tbody>
+          <tr><td>No.</td><td>Auto number</td><td>01, 02, &hellip;</td><td>Calculated</td><td>Sequential, zero-padded</td><td>Renumbers on delete; drives the "&lt;n&gt; entries" counter.</td><td>Non-editable.</td></tr>
+          <tr><td>Date</td><td>Date</td><td>Date picker</td><td>Manual</td><td>&mdash;</td><td>&mdash;</td><td>Optional.</td></tr>
+          <tr><td>Task Name</td><td>Select</td><td>Promotions task list: 01 Awareness on Importance of Promotions; 02 Document Existing Promotion Activities; 03 Assess Reach and Effectiveness of Existing Promotions; 04 Identify Gaps in Promotion Coverage; 05 Research Platform Options (Online); 06 Recommend New Promotion Methods; 07 Set Up Social Media Profile / Page; 08 Create First Content Piece (Photo / Video); 09 Publish First Post / Campaign; 10 Train Entrepreneur on Content Creation; 11 Review First Month Promotion Performance; 12 Plan Next Promotion Cycle; 13 Coordinate with Marketing / Design Partners; 14 Track Leads / Inquiries from Promotions; 15 Update Promotions Module in CRM; "If other, specify in comments"</td><td>Manual</td><td>&mdash;</td><td>&mdash;</td><td>Required per entry. Error: "Select a task."</td></tr>
+          <tr><td>Notes / Outcome</td><td>Data</td><td>Free text</td><td>Manual</td><td>&mdash;</td><td>&mdash;</td><td>Optional.</td></tr>
+          <tr><td>Attachment</td><td>Attach (Upload)</td><td>File upload</td><td>Manual</td><td>&mdash;</td><td>&mdash;</td><td>Optional.</td></tr>
+          <tr><td>Delete</td><td>Action (&times;)</td><td>&mdash;</td><td>Manual</td><td>&mdash;</td><td>Removes the row, renumbers, updates the counter.</td><td>&mdash;</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="callout callout-danger"><strong>Key validations (whole form):</strong> (1) Entrepreneur is required and unique &mdash; one DF Promotional Marketing record per entrepreneur; duplicate rejected. (2) Module ("Marketing") and Applicable To ("Product") are read-only system defaults; District &amp; Block are read-only fetches from the Entrepreneur Profile and must never be hand-edited. (3) Every promotion row needs a Promotion Name to count in the Summary &mdash; "Enter the promotion name." (4) Phase is system-set (Existing on the Existing tab, Required on the Required tab). (5) Implementation Status is mandatory on Required rows ("Set the implementation status"); blank is treated as Pending. (6) Digital Platform Category is conditional &mdash; relevant when Channel Type = Online, NA when Offline. (7) When the Intervention toggle is On, a Justification is expected and the record is flagged "New Methods Needed = Yes". (8) Resources table must retain at least one row ("At least one row is required."). (9) Task Log entries require a Task Name ("Select a task."). (10) All Summary figures are system-calculated, read-only, and refresh on open; counts use Indian number formatting.</div>
+
+  <div class="review-panel" data-section="m-promotions">
+    <div class="review-strip"><span style="font-size:12px;color:var(--ink-soft);font-weight:500;">Section Review:</span>
+      <button class="review-status-btn" onclick="setReview('m-promotions','draft',this)">Draft</button>
+      <button class="review-status-btn" onclick="setReview('m-promotions','review',this)">In Review</button>
+      <button class="review-status-btn" onclick="setReview('m-promotions','changes',this)">Needs Changes</button>
+      <button class="review-status-btn" onclick="setReview('m-promotions','approved',this)">Approved</button>
+      <button style="margin-left:auto;background:none;border:none;font-size:12px;color:var(--sea);cursor:pointer;font-family:var(--font);text-decoration:underline;" onclick="copyLink('m-promotions')">Copy Link</button></div>
+    <div class="review-comments"><div class="comment-list" id="comments-m-promotions"></div>
+      <div class="comment-input-row"><input type="text" placeholder="Your name" style="max-width:120px" id="name-m-promotions"><textarea rows="1" placeholder="Add a comment..." id="text-m-promotions"></textarea><button class="comment-add-btn" onclick="addComment('m-promotions')">Add</button></div></div>
+  </div>
+</div>
 
     <!-- ===== PRODUCT DEVELOPMENT MODULE ===== -->
 
@@ -5265,124 +5802,495 @@ body > .site-nav { position: fixed; top: 0; left: 0; right: 0; z-index: 9999; }
 
     <!-- PRODUCT PROTOTYPING -->
     <div class="brd-section" id="m-prototyping">
-      <div class="section-header">
-        <span class="section-id">PR-PD-002</span>
-        <h2 class="section-title">Product Prototyping</h2>
-      </div>
-      <div class="section-desc"><strong>Product-level framework.</strong> Track prototyping iterations for products (packaging or product type). No Existing/Required split &mdash; single view with collapsible product cards.</div>
+  <div class="section-header"><span class="section-id">PR-PD-002</span><h2 class="section-title">Product Prototyping</h2></div>
+  <div class="section-desc">Part of the Product Development module, this framework lets the Fessociate track every prototyping iteration for each of an entrepreneur's products &mdash; covering both packaging prototypes and product prototypes &mdash; from first concept through to scale implementation. One product card is added per product, and each prototype version (v1, v2, &hellip;) is logged inside that product's child table with a design upload and key learnings.</div>
 
-      <div class="accordion">
-        <div class="accordion-trigger" onclick="this.parentElement.classList.toggle('open')">
-          Per-Product Prototyping Card <span class="acc-arrow">&#9660;</span>
-        </div>
-        <div class="accordion-body">
-          <table class="brd-table">
-            <thead><tr><th>Field</th><th>Type</th><th>Values</th><th>Logic</th><th>Validation</th></tr></thead>
-            <tbody>
-              <tr><td>Product</td><td>Select</td><td>Product Master</td><td>Card header</td><td>Required</td></tr>
-              <tr><td>Implementation Status</td><td>Select</td><td>Ideating, Iteration, Pilot Implemented, Scale Implementation</td><td>Color chip in header</td><td>--</td></tr>
-              <tr><td>Type of Prototyping</td><td>Select</td><td>Packaging, Product</td><td><strong>Changes the "Type Name" dropdown options</strong></td><td>Required</td></tr>
-              <tr><td>Prototyping Type Name</td><td>Select (conditional)</td><td><strong>If Packaging:</strong> Packing Master list. <strong>If Product:</strong> Business Basket Master list</td><td>Options change based on Type selection</td><td>Required</td></tr>
-            </tbody>
-          </table>
+  <h3 style="font-size:16px;color:var(--teal);margin:18px 0 10px;">On-Screen UI Structure</h3>
+  <div class="card"><div style="font-size:13px;line-height:1.9;color:var(--ink)">
+    The screen header reads <strong>Product Prototyping</strong> with breadcrumb <em>PRIME Rural &middot; Product Development</em>. A horizontal <strong>tab rail</strong> sits directly below the header with four tabs: <strong>Summary</strong>, <strong>Prototypes</strong>, <strong>Resources</strong> and <strong>Task Log</strong>.
+    <br><br>
+    The <strong>Prototypes</strong> tab is the data-entry body. It opens with an auto-fetched entrepreneur chip (read-only, pulled from the profile) and a guidance caption. Below sits a repeatable list of <strong>collapsible product blocks</strong>, each added via a <em>+ Add Product</em> button. Every product block has a coloured header carrying three controls: a <strong>Product</strong> dropdown, an <strong>Implementation Status</strong> dropdown, and a status chip that mirrors the chosen status. The block body holds two subsections: <em>Prototype Configuration</em> and a <em>Prototype Iterations</em> child table.
+    <br><br>
+    A <strong>conditional dropdown</strong> drives the configuration: <em>Type of Prototyping</em> (Packaging / Product) changes the prompt and expected values of the <em>Prototyping Type Name</em> field below it &mdash; Packaging guides the user toward the Packing Master list, Product toward the Business Basket list.
+    <br><br>
+    The <strong>Summary</strong> tab is fully <span style="font-style:italic;background:var(--cream-deep);padding:1px 6px;border-radius:4px;" title="Calculated field &mdash; system-derived, never typed by the user (Rule 1).">read-only and auto-calculated</span> from the Prototypes tab: a product-wise overview table, four aggregate cards (Products, Iterations, Progress, Intervention Status) and four intervention-flag tiles. The <strong>Resources</strong> and <strong>Task Log</strong> tabs each hold a single flat child table for reference materials and dated activity entries respectively.
+  </div></div>
+  <div class="flow-container" style="margin-top:12px">
+    <span style="display:inline-block;padding:6px 14px;border-radius:16px;background:var(--teal);color:var(--cream);font-size:12px;font-weight:600;">Summary</span>
+    <div class="flow-arrow">&rarr;</div>
+    <span style="display:inline-block;padding:6px 14px;border-radius:16px;background:var(--cream-deep);color:var(--teal);font-size:12px;font-weight:600;border:1px solid var(--border);">Prototypes</span>
+    <div class="flow-arrow">&rarr;</div>
+    <span style="display:inline-block;padding:6px 14px;border-radius:16px;background:var(--cream-deep);color:var(--teal);font-size:12px;font-weight:600;border:1px solid var(--border);">Resources</span>
+    <div class="flow-arrow">&rarr;</div>
+    <span style="display:inline-block;padding:6px 14px;border-radius:16px;background:var(--cream-deep);color:var(--teal);font-size:12px;font-weight:600;border:1px solid var(--border);">Task Log</span>
+  </div>
 
-          <h4 style="font-size:13px;color:var(--teal);margin:12px 0 8px;">Prototype Iterations (child table per product)</h4>
-          <table class="brd-table">
-            <thead><tr><th>Column</th><th>Type</th><th>Logic</th></tr></thead>
-            <tbody>
-              <tr><td>#</td><td>Int (auto)</td><td>Row number</td></tr>
-              <tr><td>Prototype Version</td><td>Data</td><td>e.g. "v1.0", "v2.1"</td></tr>
-              <tr><td>Design Upload</td><td>Attach</td><td>File upload with pill display</td></tr>
-              <tr><td>Key Learnings</td><td>Data</td><td>Free text</td></tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
+  <h3 style="font-size:16px;color:var(--teal);margin:18px 0 10px;">User Journey</h3>
+  <div class="card"><div class="flow-container">
+    <div class="flow-step"><div class="flow-box">Open Prototypes tab</div><div class="flow-label">Entrepreneur auto-fetched</div></div>
+    <div class="flow-arrow">&rarr;</div>
+    <div class="flow-step"><div class="flow-box accent">+ Add Product</div><div class="flow-label">Pick product, set implementation status</div></div>
+    <div class="flow-arrow">&rarr;</div>
+    <div class="flow-step"><div class="flow-box">Configure prototype</div><div class="flow-label">Type (Packaging/Product) &rarr; Type Name</div></div>
+    <div class="flow-arrow">&rarr;</div>
+    <div class="flow-step"><div class="flow-box">+ Add Iteration</div><div class="flow-label">Version, design upload, key learnings</div></div>
+    <div class="flow-arrow">&rarr;</div>
+    <div class="flow-step"><div class="flow-box">Repeat per version</div><div class="flow-label">v1 &rarr; v2 &rarr; Final/Pilot</div></div>
+    <div class="flow-arrow">&rarr;</div>
+    <div class="flow-step"><div class="flow-box highlight">Save</div><div class="flow-label">Summary tab auto-aggregates all products</div></div>
+  </div></div>
 
-      <div class="review-panel" data-section="m-prototyping">
-        <div class="review-strip">
-          <span style="font-size:12px;color:var(--ink-soft);font-weight:500;">Section Review:</span>
-          <button class="review-status-btn" onclick="setReview('m-prototyping','draft',this)">Draft</button>
-          <button class="review-status-btn" onclick="setReview('m-prototyping','review',this)">In Review</button>
-          <button class="review-status-btn" onclick="setReview('m-prototyping','changes',this)">Needs Changes</button>
-          <button class="review-status-btn" onclick="setReview('m-prototyping','approved',this)">Approved</button>
-          <button style="margin-left:auto;background:none;border:none;font-size:12px;color:var(--sea);cursor:pointer;font-family:var(--font);text-decoration:underline;" onclick="copyLink('m-prototyping')">Copy Link</button>
-        </div>
-        <div class="review-comments"><div class="comment-list" id="comments-m-prototyping"></div>
-          <div class="comment-input-row"><input type="text" placeholder="Your name" style="max-width:120px" id="name-m-prototyping"><textarea rows="1" placeholder="Add a comment..." id="text-m-prototyping"></textarea><button class="comment-add-btn" onclick="addComment('m-prototyping')">Add</button></div>
-        </div>
-      </div>
+  <!-- ===== TAB 1: PROTOTYPES (data entry) ===== -->
+  <div class="accordion open">
+    <div class="accordion-trigger" onclick="this.parentElement.classList.toggle('open')">
+      Tab 1 &mdash; Prototypes (Data Entry) <span class="acc-arrow">&#9660;</span>
     </div>
+    <div class="accordion-body">
+      <h4 style="font-size:14px;color:var(--teal);margin:0 0 8px;">Product Block Header</h4>
+      <p style="font-size:12px;color:var(--ink-soft);margin-bottom:10px;">Each product is a collapsible block. The header carries the product, implementation status and a mirroring status chip. Blocks are repeatable via <em>+ Add Product</em> and removable via <em>Remove</em> (with confirm prompt).</p>
+      <table class="brd-table">
+        <thead><tr><th>Field Name</th><th>Field Type</th><th>Input Values</th><th>Input</th><th>Autofill</th><th>Logic</th><th>Validation &amp; Error Messages</th></tr></thead>
+        <tbody>
+          <tr>
+            <td><strong>Entrepreneur</strong></td>
+            <td>Link (read-only chip)</td>
+            <td>From Entrepreneur master</td>
+            <td>No</td>
+            <td>Yes &mdash; auto-fetched from profile context</td>
+            <td>Displayed as a chip at top of tab; identifies whose products are shown.</td>
+            <td>Mandatory; if context missing, block entry: &ldquo;Entrepreneur not resolved &mdash; open from a profile.&rdquo;</td>
+          </tr>
+          <tr>
+            <td><strong>Product</strong></td>
+            <td>Select</td>
+            <td>Product Master (e.g. Bamboo Shoot Pickle, Lemongrass Tea, Lakadong Turmeric, Eri Silk Muffler, Bamboo Earring, Local Honey, Jadoh Spice Mix)</td>
+            <td>Yes</td>
+            <td>No</td>
+            <td>Identifies the product being prototyped; feeds the Summary product-wise overview (one row per product).</td>
+            <td>Mandatory before save: &ldquo;Select a product.&rdquo; A product not yet selected is excluded from Summary aggregates.</td>
+          </tr>
+          <tr>
+            <td><strong>Implementation Status</strong></td>
+            <td>Select</td>
+            <td>Ideating &middot; Iteration &middot; Pilot Implemented &middot; Scale Implementation</td>
+            <td>Yes</td>
+            <td>No</td>
+            <td>On change, renders the status chip beside it (Ideating = neutral, Iteration = amber, Pilot = blue, Scale = green). Drives the Progress / Intervention Flags counters and &ldquo;Furthest Stage Reached&rdquo; on Summary (stage order: Ideating &lt; Iteration &lt; Pilot Implemented &lt; Scale Implementation).</td>
+            <td>Optional; blank counts toward &ldquo;No Status Set&rdquo; on Summary.</td>
+          </tr>
+          <tr>
+            <td><em>Status Chip</em></td>
+            <td><em>Display (calculated)</em></td>
+            <td><em>Mirrors Implementation Status</em></td>
+            <td>No</td>
+            <td>Yes</td>
+            <td><em>Hidden when status is blank; otherwise shows the status text colour-coded.</em></td>
+            <td>&mdash;</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h4 style="font-size:14px;color:var(--teal);margin:16px 0 8px;">Subsection A &mdash; Prototype Configuration</h4>
+      <table class="brd-table">
+        <thead><tr><th>Field Name</th><th>Field Type</th><th>Input Values</th><th>Input</th><th>Autofill</th><th>Logic</th><th>Validation &amp; Error Messages</th></tr></thead>
+        <tbody>
+          <tr>
+            <td><strong>Type of Prototyping</strong></td>
+            <td>Select (conditional driver)</td>
+            <td>Packaging &middot; Product</td>
+            <td>Yes</td>
+            <td>No</td>
+            <td>Conditional dropdown &mdash; the selected value re-points the <em>Prototyping Type Name</em> field below to the relevant master list and updates its prompt. Also classified on Summary as a Packaging or Product badge and counted in &ldquo;Packaging Prototypes&rdquo; vs &ldquo;Product Prototypes&rdquo;.</td>
+            <td>Mandatory before Type Name is meaningful: &ldquo;Select prototyping type.&rdquo;</td>
+          </tr>
+          <tr>
+            <td><strong>Prototyping Type Name</strong></td>
+            <td>Text / Select (conditional target)</td>
+            <td>If Packaging &rarr; Packing Master (Glass jar, Tin can, Kraft paper pouch, Standard plastic pouch, PET bottle, HDPE bottle, Aluminium foil pouch, Cardboard box, Cloth pouch, Vacuum-sealed, Gift hamper, Other). If Product &rarr; Business Basket (Food &amp; Beverages, Spices &amp; Herbs, Handloom &amp; Textile, Handicraft &amp; Bamboo, Personal Care &amp; Wellness, Honey &amp; Apiary, Dairy &amp; Allied, Agro-processed Foods, Snacks &amp; Ready-to-eat, Health Foods, Other)</td>
+            <td>Yes</td>
+            <td>No</td>
+            <td>Value set / prompt switches based on <em>Type of Prototyping</em>: Packaging prompts &ldquo;e.g., Kraft paper pouch, Glass jar, Tin can&hellip;&rdquo;; Product prompts &ldquo;e.g., Food &amp; Beverages, Spices &amp; Herbs&hellip;&rdquo;. Shown in the Summary &ldquo;Type Name&rdquo; column.</td>
+            <td>Mandatory once Type is chosen: &ldquo;Enter / select the prototyping type name.&rdquo;</td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="callout callout-terra"><strong>Conditional dropdown logic:</strong> <em>Type of Prototyping</em> is the driver field. Selecting <strong>Packaging</strong> binds <em>Prototyping Type Name</em> to the Packing Master; selecting <strong>Product</strong> binds it to the Business Basket. Changing the driver after a name is entered must re-validate the name against the newly applicable list and clear it if it no longer matches.</div>
+
+      <h4 style="font-size:14px;color:var(--teal);margin:16px 0 8px;">Subsection B &mdash; Prototype Iterations (Child Table)</h4>
+      <p style="font-size:12px;color:var(--ink-soft);margin-bottom:10px;">Repeatable rows logging each prototype version. Seeded with one row; rows added via <em>+ Add Iteration</em>, deleted via the row &times; control, and auto-renumbered (01, 02, &hellip;).</p>
+      <table class="brd-table">
+        <thead><tr><th>Field Name</th><th>Field Type</th><th>Input Values</th><th>Input</th><th>Autofill</th><th>Logic</th><th>Validation &amp; Error Messages</th></tr></thead>
+        <tbody>
+          <tr>
+            <td><strong>#</strong></td>
+            <td><em>Auto-number (calculated)</em></td>
+            <td>01, 02, 03&hellip;</td>
+            <td>No</td>
+            <td>Yes</td>
+            <td><em>Sequential serial, zero-padded; re-numbers on add/delete.</em></td>
+            <td>&mdash;</td>
+          </tr>
+          <tr>
+            <td><strong>Prototype Version</strong></td>
+            <td>Text</td>
+            <td>Free text (e.g., v1, v2, Final, v3 (Pilot))</td>
+            <td>Yes</td>
+            <td>No</td>
+            <td>Label for this iteration; counted as one iteration per row in Summary (&ldquo;Total Iterations Logged&rdquo;, &ldquo;Avg Iterations / Product&rdquo;).</td>
+            <td>Recommended; an empty version row still counts as an iteration but should warn: &ldquo;Name this prototype version.&rdquo;</td>
+          </tr>
+          <tr>
+            <td><strong>Design Upload</strong></td>
+            <td>File attachment</td>
+            <td>.pdf, .jpg, .jpeg, .png, .svg, .ai, .psd</td>
+            <td>Yes</td>
+            <td>No</td>
+            <td>One file per row; on upload a file pill appears and the <em>View</em> button enables. Rows with an attachment are counted in Summary &ldquo;Uploads Attached&rdquo; and shown with a clip indicator in the overview.</td>
+            <td>Optional; restrict to the accepted file types &mdash; &ldquo;Unsupported file type.&rdquo;</td>
+          </tr>
+          <tr>
+            <td><strong>Key Learnings</strong></td>
+            <td>Text (long)</td>
+            <td>Free text (what worked / what didn't / what changed for next version)</td>
+            <td>Yes</td>
+            <td>No</td>
+            <td>Captures iteration insight; rows with non-empty learnings are tallied as &ldquo;Learnings Captured&rdquo; on Summary.</td>
+            <td>Optional; encouraged for every iteration.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ===== TAB 2: SUMMARY (read-only) ===== -->
+  <div class="accordion">
+    <div class="accordion-trigger" onclick="this.parentElement.classList.toggle('open')">
+      Tab 2 &mdash; Summary (Read-Only / Calculated) <span class="acc-arrow">&#9660;</span>
+    </div>
+    <div class="accordion-body">
+      <p style="font-size:12px;color:var(--ink-soft);margin-bottom:10px;">Entirely auto-populated from the Prototypes tab; no inputs. Refreshes whenever the tab is opened. Comprises a product-wise overview table, four aggregate cards and four intervention-flag tiles.</p>
+      <h4 style="font-size:14px;color:var(--teal);margin:0 0 8px;">Product-wise Overview (one row per selected product)</h4>
+      <table class="brd-table">
+        <thead><tr><th>Field Name</th><th>Field Type</th><th>Input Values</th><th>Input</th><th>Autofill</th><th>Logic</th><th>Validation &amp; Error Messages</th></tr></thead>
+        <tbody>
+          <tr><td><em>Product</em></td><td><em>Display</em></td><td><em>From product block</em></td><td>No</td><td>Yes</td><td><em>One row per product where a Product is selected.</em></td><td>&mdash;</td></tr>
+          <tr><td><em>Prototype Type</em></td><td><em>Display (badge)</em></td><td><em>Packaging / Product</em></td><td>No</td><td>Yes</td><td><em>Colour-coded badge from Type of Prototyping.</em></td><td>&mdash;</td></tr>
+          <tr><td><em>Type Name</em></td><td><em>Display</em></td><td><em>Packing Master / Business Basket value</em></td><td>No</td><td>Yes</td><td><em>Mirrors Prototyping Type Name; shows &ldquo;&mdash;&rdquo; if blank.</em></td><td>&mdash;</td></tr>
+          <tr><td><em>Iterations</em></td><td><em>Count (calculated)</em></td><td><em>Integer</em></td><td>No</td><td>Yes</td><td><em>Number of iteration rows logged for the product.</em></td><td>&mdash;</td></tr>
+          <tr><td><em>Uploads</em></td><td><em>Count (calculated)</em></td><td><em>Integer + clip indicator</em></td><td>No</td><td>Yes</td><td><em>Count of iteration rows that have a design file attached.</em></td><td>&mdash;</td></tr>
+          <tr><td><em>Implementation Status</em></td><td><em>Display (chip)</em></td><td><em>Ideating / Iteration / Pilot Implemented / Scale Implementation</em></td><td>No</td><td>Yes</td><td><em>Colour-coded chip mirroring the block status.</em></td><td>&mdash;</td></tr>
+        </tbody>
+      </table>
+      <h4 style="font-size:14px;color:var(--teal);margin:16px 0 8px;">Aggregate Cards &amp; Intervention Flags (all calculated)</h4>
+      <table class="brd-table">
+        <thead><tr><th>Field Name</th><th>Field Type</th><th>Input Values</th><th>Input</th><th>Autofill</th><th>Logic</th><th>Validation &amp; Error Messages</th></tr></thead>
+        <tbody>
+          <tr><td><em>Total Products</em></td><td><em>Count</em></td><td><em>Integer</em></td><td>No</td><td>Yes</td><td><em>Count of product blocks with a Product selected.</em></td><td>&mdash;</td></tr>
+          <tr><td><em>Packaging Prototypes / Product Prototypes</em></td><td><em>Count</em></td><td><em>Integer</em></td><td>No</td><td>Yes</td><td><em>Split of products by Type of Prototyping.</em></td><td>&mdash;</td></tr>
+          <tr><td><em>Total Iterations Logged</em></td><td><em>Count</em></td><td><em>Integer</em></td><td>No</td><td>Yes</td><td><em>Sum of all iteration rows across products.</em></td><td>&mdash;</td></tr>
+          <tr><td><em>Uploads Attached</em></td><td><em>Count</em></td><td><em>Integer</em></td><td>No</td><td>Yes</td><td><em>Sum of iteration rows with a file attached.</em></td><td>&mdash;</td></tr>
+          <tr><td><em>Avg Iterations / Product</em></td><td><em>Number (calculated)</em></td><td><em>1 decimal, or &ldquo;&mdash;&rdquo;</em></td><td>No</td><td>Yes</td><td><em>Total Iterations &divide; Total Products; &ldquo;&mdash;&rdquo; when no products.</em></td><td>&mdash;</td></tr>
+          <tr><td><em>Ideating / Iteration / Pilot Implemented / Scale Implementation</em></td><td><em>Count + flag tile</em></td><td><em>Integer</em></td><td>No</td><td>Yes</td><td><em>Per-status product counts; mirrored in the four Intervention Flag tiles.</em></td><td>&mdash;</td></tr>
+          <tr><td><em>Furthest Stage Reached</em></td><td><em>Display (calculated)</em></td><td><em>Highest status by stage order</em></td><td>No</td><td>Yes</td><td><em>Max of Ideating &lt; Iteration &lt; Pilot Implemented &lt; Scale Implementation across all products.</em></td><td>&mdash;</td></tr>
+          <tr><td><em>Learnings Captured</em></td><td><em>Count</em></td><td><em>Integer</em></td><td>No</td><td>Yes</td><td><em>Iteration rows with non-empty Key Learnings.</em></td><td>&mdash;</td></tr>
+          <tr><td><em>No Status Set</em></td><td><em>Count</em></td><td><em>Integer</em></td><td>No</td><td>Yes</td><td><em>Products with a blank Implementation Status.</em></td><td>&mdash;</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ===== TAB 3: RESOURCES ===== -->
+  <div class="accordion">
+    <div class="accordion-trigger" onclick="this.parentElement.classList.toggle('open')">
+      Tab 3 &mdash; Resources (Reference Materials) <span class="acc-arrow">&#9660;</span>
+    </div>
+    <div class="accordion-body">
+      <p style="font-size:12px;color:var(--ink-soft);margin-bottom:10px;">A single flat child table of reference materials supporting prototyping. At least one row is always retained. Rows added via <em>+ Add Resource</em>, deleted via the row &times; (blocked at the last remaining row).</p>
+      <table class="brd-table">
+        <thead><tr><th>Field Name</th><th>Field Type</th><th>Input Values</th><th>Input</th><th>Autofill</th><th>Logic</th><th>Validation &amp; Error Messages</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Resource Title</strong></td><td>Text</td><td>Free text</td><td>Yes</td><td>No</td><td>Name of the reference material.</td><td>Recommended; warn on empty row before save.</td></tr>
+          <tr><td><strong>Category</strong></td><td>Select</td><td>Packaging Supplier &middot; Material Sample &middot; Design Reference &middot; Testing / Lab Report &middot; Costing Sheet &middot; Competitor Product &middot; Govt. Scheme / Support &middot; Other</td><td>Yes</td><td>No</td><td>Classifies the resource.</td><td>Optional; default &ldquo;&mdash; Select &mdash;&rdquo;.</td></tr>
+          <tr><td><strong>Type</strong></td><td>Select</td><td>Contact &middot; Reference &middot; Quotation &middot; Specification &middot; Photo / Evidence &middot; Report</td><td>Yes</td><td>No</td><td>Nature of the material.</td><td>Optional; default &ldquo;&mdash; Select &mdash;&rdquo;.</td></tr>
+          <tr><td><strong>Description / Notes</strong></td><td>Text</td><td>Free text</td><td>Yes</td><td>No</td><td>Notes about the resource.</td><td>Optional.</td></tr>
+          <tr><td><strong>File</strong></td><td>File attachment</td><td>Upload + View</td><td>Yes</td><td>No</td><td>Attach the supporting file; View opens it.</td><td>Optional.</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ===== TAB 4: TASK LOG ===== -->
+  <div class="accordion">
+    <div class="accordion-trigger" onclick="this.parentElement.classList.toggle('open')">
+      Tab 4 &mdash; Task Log (Prototyping Activities) <span class="acc-arrow">&#9660;</span>
+    </div>
+    <div class="accordion-body">
+      <p style="font-size:12px;color:var(--ink-soft);margin-bottom:10px;">A dated log of prototyping activities, with an entry count shown in the header. Rows added via <em>+ Add Entry</em>, auto-numbered (01, 02, &hellip;) and re-numbered on delete.</p>
+      <table class="brd-table">
+        <thead><tr><th>Field Name</th><th>Field Type</th><th>Input Values</th><th>Input</th><th>Autofill</th><th>Logic</th><th>Validation &amp; Error Messages</th></tr></thead>
+        <tbody>
+          <tr><td><strong>No.</strong></td><td><em>Auto-number (calculated)</em></td><td>01, 02, 03&hellip;</td><td>No</td><td>Yes</td><td><em>Sequential serial; re-numbers on delete.</em></td><td>&mdash;</td></tr>
+          <tr><td><strong>Date</strong></td><td>Date</td><td>Date picker</td><td>Yes</td><td>No</td><td>When the activity took place.</td><td>Recommended.</td></tr>
+          <tr><td><strong>Task Name</strong></td><td>Select</td><td>01 Awareness on Importance of Product Prototyping &middot; 02 Identify Products Requiring Prototyping &middot; 03 Define Prototyping Type (Packaging / Product) &middot; 04 Research Packaging Options / Business Basket &middot; 05 Procure Prototype Sample / Material &middot; 06 Create First Prototype (v1) &middot; 07 Review Prototype with Entrepreneur &middot; 08 Document Key Learnings from v1 &middot; 09 Create Revised Prototype (v2) &middot; 10 Review Revised Prototype &middot; 11 Document Key Learnings from v2 &middot; 12 Finalise Prototype Design &middot; 13 Pilot Production Run &middot; 14 Evaluate Pilot Outcome &middot; 15 Approve for Scale Implementation &middot; 16 Coordinate with Supplier / Vendor &middot; 17 Update Prototype Records in CRM &middot; If other, specify in comments</td><td>Yes</td><td>No</td><td>Predefined activity selected from the task master.</td><td>Mandatory per entry: &ldquo;Select a task.&rdquo;</td></tr>
+          <tr><td><strong>Notes / Outcome</strong></td><td>Text</td><td>Free text</td><td>Yes</td><td>No</td><td>Outcome / detail of the activity; required when Task Name is &ldquo;If other, specify in comments&rdquo;.</td><td>Conditional: required when task = &ldquo;If other&rdquo; &mdash; &ldquo;Specify the task in comments.&rdquo;</td></tr>
+          <tr><td><strong>Attachment</strong></td><td>File attachment</td><td>Upload</td><td>Yes</td><td>No</td><td>Optional evidence for the activity.</td><td>Optional.</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="callout callout-danger"><strong>Key validations (whole form):</strong> &bull; Each product block requires a <strong>Product</strong> before it counts toward Summary &mdash; &ldquo;Select a product.&rdquo; &bull; Once <strong>Type of Prototyping</strong> is chosen, <strong>Prototyping Type Name</strong> becomes mandatory and must belong to the correct master (Packing Master for Packaging, Business Basket for Product); changing the type re-validates and clears a non-matching name. &bull; Design uploads are restricted to .pdf / .jpg / .jpeg / .png / .svg / .ai / .psd. &bull; The Resources table must always retain at least one row. &bull; Task Log entries require a <strong>Task Name</strong>, and the &ldquo;If other&rdquo; option requires <strong>Notes / Outcome</strong> to be filled.</div>
+
+  <div class="review-panel" data-section="m-prototyping">
+    <div class="review-strip"><span style="font-size:12px;color:var(--ink-soft);font-weight:500;">Section Review:</span>
+      <button class="review-status-btn" onclick="setReview('m-prototyping','draft',this)">Draft</button>
+      <button class="review-status-btn" onclick="setReview('m-prototyping','review',this)">In Review</button>
+      <button class="review-status-btn" onclick="setReview('m-prototyping','changes',this)">Needs Changes</button>
+      <button class="review-status-btn" onclick="setReview('m-prototyping','approved',this)">Approved</button>
+      <button style="margin-left:auto;background:none;border:none;font-size:12px;color:var(--sea);cursor:pointer;font-family:var(--font);text-decoration:underline;" onclick="copyLink('m-prototyping')">Copy Link</button></div>
+    <div class="review-comments"><div class="comment-list" id="comments-m-prototyping"></div>
+      <div class="comment-input-row"><input type="text" placeholder="Your name" style="max-width:120px" id="name-m-prototyping"><textarea rows="1" placeholder="Add a comment..." id="text-m-prototyping"></textarea><button class="comment-add-btn" onclick="addComment('m-prototyping')">Add</button></div></div>
+  </div>
+</div>
 
     <!-- PRODUCT TESTING -->
     <div class="brd-section" id="m-testing">
-      <div class="section-header">
-        <span class="section-id">PR-PD-003</span>
-        <h2 class="section-title">Product Testing</h2>
-      </div>
-      <div class="section-desc"><strong>Product-level framework.</strong> Track product tests conducted and required, with lab tracking and consent management.</div>
+  <div class="section-header"><span class="section-id">PR-PD-003</span><h2 class="section-title">Product Testing</h2></div>
+  <div class="section-desc">Part of the Product Development module &mdash; captures every lab test conducted on an entrepreneur&rsquo;s product (existing &amp; required), the NABL / accredited lab, the consent letter signed with the entrepreneur, and the full sample-to-result date chain (sample deposited to office &rarr; deposited to lab &rarr; test results received). Tests that fail a parameter are flagged for retesting, automatically bridging from the Existing tab into the Required tab.</div>
 
-      <div class="callout callout-teal">
-        <strong>Test Type Master (14):</strong> Microbiological, Heavy Metal, Pesticide Residue, Nutritional Analysis, Shelf Life, Moisture, pH, Curcumin HPLC, Aflatoxin, Sensory, Packaging Integrity, Fibre Strength, Colour Fastness, Other.<br>
-        <strong>Lab Master (12):</strong> NIFTEM, CFTRI, Spices Board, various NABL labs, etc.
-      </div>
+  <div class="callout callout-terra"><strong>Key behaviour &mdash; the Existing &rarr; Required intervention bridge.</strong> A test conducted is recorded ONCE in the Existing tab. Toggling its &ldquo;Need Retesting?&rdquo; flag does not capture any consent or new test data &mdash; it only raises a flag and auto-creates a linked card in the Required tab (Product + Test Type locked / sourced from Existing, with the justification carried across read-only). New tests not previously conducted are added manually in the Required tab. The Required tab is where consent management (core-team approval, consent-letter signed toggle + conditional reason, consent letter upload) and the full date chain live; the Existing tab carries only a shorter date chain (deposit &rarr; result).</div>
 
-      <div class="accordion">
-        <div class="accordion-trigger" onclick="this.parentElement.classList.toggle('open')">
-          Existing Tab &mdash; Tests Conducted <span class="acc-arrow">&#9660;</span>
-        </div>
-        <div class="accordion-body">
-          <table class="brd-table">
-            <thead><tr><th>Field</th><th>Type</th><th>Values</th><th>Logic</th><th>Validation</th></tr></thead>
-            <tbody>
-              <tr><td>Product</td><td>Select</td><td>Product Master</td><td>Card header</td><td>Required</td></tr>
-              <tr><td>Test Type</td><td>Select</td><td>14 types from master</td><td>--</td><td>Required</td></tr>
-              <tr><td>Purpose for Testing</td><td>Data</td><td>Free text</td><td>--</td><td>--</td></tr>
-              <tr><td>Lab Name</td><td>Select</td><td>12 labs from master</td><td>--</td><td>--</td></tr>
-              <tr><td>Date of Sample Deposit</td><td>Date</td><td>--</td><td>Input</td><td>&le; today</td></tr>
-              <tr><td>Date of Test Results</td><td>Date</td><td>--</td><td>Input</td><td>&ge; Sample Deposit date</td></tr>
-              <tr><td>Testing Report</td><td>Attach</td><td>.pdf, .jpg, .png</td><td>Input</td><td>--</td></tr>
-              <tr><td>Need Retesting?</td><td>Toggle</td><td>On/Off</td><td>Input</td><td>Bridges to Required tab with justification</td></tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
+  <h3 style="font-size:16px;color:var(--teal);margin:18px 0 10px;">On-Screen UI Structure</h3>
+  <div class="card"><div style="font-size:13px;line-height:1.9;color:var(--ink)">
+    <strong>Top bar:</strong> teal header &ldquo;Product Testing&rdquo; with crumb &ldquo;PRIME Rural &middot; Quality &amp; Compliance&rdquo;, and an entrepreneur chip (avatar + name) auto-fetched from the profile. <br>
+    <strong>Tab rail:</strong> horizontal pill bar with five tabs &mdash; Summary &middot; Existing &middot; Required &middot; Resources &middot; Task Log; the active tab renders teal-on-white (Existing opens by default). <br>
+    <strong>Body layout:</strong> each tab is a panel. <em>Summary</em> is read-only: a Test-wise Overview table (one row per test), four Aggregate cards (Existing / Cost / Interventions / Implementation Status), and a 4-cell Intervention-flag strip. <em>Existing</em> and <em>Required</em> render each test as a collapsible &ldquo;test block&rdquo; (sea-blue header carrying Product + Test Type selectors, a status / flag chip, and a Remove button) with a Test Details sub-section. <br>
+    <strong>Special widgets:</strong> (1) <em>Consent toggle</em> &mdash; in the Required tab, a &ldquo;Consent Letter Signed&rdquo; checkbox (default on) that reveals a conditional &ldquo;If not signed, reason&rdquo; textarea when unchecked, plus a Consent Letter upload / view control and a separate &ldquo;Approved by Core Team&rdquo; checkbox. (2) <em>Date chain</em> &mdash; ordered date fields: Existing = Date of Sample Deposit &rarr; Date of Test Results; Required = Date of Sample Deposit to Office &rarr; Date of Sample Deposit to Lab &rarr; Date of Test Results. (3) <em>Retesting toggle</em> &mdash; a terracotta &ldquo;Intervention Need&rdquo; panel in Existing with a &ldquo;Need Retesting?&rdquo; toggle + Justification, which bridges to Required. (4) <em>Implementation Status</em> selector + chip on each Required card (Pending / In Progress / Completed / On Hold / Not Feasible). (5) File upload / view pills for Testing Report and Consent Letter. <br>
+    Per Rule&nbsp;1, every calculated / autofilled field (all Summary aggregates, the overview table cells, bridged Product / Test Type / Justification, the Reference cells) renders <em>italic on a cream-deep background</em> and is non-editable, with a tooltip describing its source / formula.
+  </div></div>
+  <div class="flow-container" style="margin-top:12px">
+    <div class="flow-step"><div class="flow-box">Summary</div></div>
+    <div class="flow-arrow">&rarr;</div>
+    <div class="flow-step"><div class="flow-box">Existing</div></div>
+    <div class="flow-arrow">&rarr;</div>
+    <div class="flow-step"><div class="flow-box">Required</div></div>
+    <div class="flow-arrow">&rarr;</div>
+    <div class="flow-step"><div class="flow-box">Resources</div></div>
+    <div class="flow-arrow">&rarr;</div>
+    <div class="flow-step"><div class="flow-box">Task Log</div></div>
+  </div>
 
-      <div class="accordion">
-        <div class="accordion-trigger" onclick="this.parentElement.classList.toggle('open')">
-          Required Tab &mdash; Tests Needed <span class="acc-arrow">&#9660;</span>
-        </div>
-        <div class="accordion-body">
-          <table class="brd-table">
-            <thead><tr><th>Additional Fields</th><th>Type</th><th>Logic</th></tr></thead>
-            <tbody>
-              <tr><td>Approved by Core Team</td><td>Checkbox</td><td>Core Team IT or Program fills this</td></tr>
-              <tr><td>Consent Letter Signed</td><td>Checkbox</td><td><strong>If unchecked:</strong> show "Reason for no consent" textarea</td></tr>
-              <tr><td>Upload Consent Letter</td><td>Attach</td><td>--</td></tr>
-              <tr><td>Date of Sample Deposit to Office</td><td>Date</td><td>&le; today</td></tr>
-              <tr><td>Date of Sample Deposit to Lab</td><td>Date</td><td>&ge; Office deposit date</td></tr>
-              <tr><td>Date of Test Results</td><td>Date</td><td>&ge; Lab deposit date</td></tr>
-              <tr><td>Testing Report</td><td>Attach</td><td>--</td></tr>
-              <tr><td>Implementation Status</td><td>Select: Pending, In Progress, Completed, On Hold, Not Feasible</td><td>Chip in header</td></tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
+  <h3 style="font-size:16px;color:var(--teal);margin:18px 0 10px;">User Journey</h3>
+  <div class="card"><div class="flow-container">
+    <div class="flow-step"><div class="flow-box">Open</div><div class="flow-label">Diagnostics &rarr; Product Development &rarr; Product Testing (entrepreneur auto-fetched)</div></div>
+    <div class="flow-arrow">&rarr;</div>
+    <div class="flow-step"><div class="flow-box">Record Existing</div><div class="flow-label">Add each test already conducted; product, test type, lab, deposit &amp; result dates, report upload</div></div>
+    <div class="flow-arrow">&rarr;</div>
+    <div class="flow-step"><div class="flow-box">Flag Retesting</div><div class="flow-label">Toggle &ldquo;Need Retesting?&rdquo; with justification on any failed / expired test &mdash; bridges to Required</div></div>
+    <div class="flow-arrow">&rarr;</div>
+    <div class="flow-step"><div class="flow-box">Plan Required</div><div class="flow-label">Required tab &rarr; get core-team approval, sign &amp; upload consent, pick lab, run the date chain</div></div>
+    <div class="flow-arrow">&rarr;</div>
+    <div class="flow-step"><div class="flow-box">Track &amp; Upload</div><div class="flow-label">Update Implementation Status, upload the test report, attach Resources</div></div>
+    <div class="flow-arrow">&rarr;</div>
+    <div class="flow-step"><div class="flow-box">Log &amp; Save</div><div class="flow-label">Capture activities in Task Log; review Summary roll-up; save</div></div>
+  </div></div>
 
-      <div class="review-panel" data-section="m-testing">
-        <div class="review-strip">
-          <span style="font-size:12px;color:var(--ink-soft);font-weight:500;">Section Review:</span>
-          <button class="review-status-btn" onclick="setReview('m-testing','draft',this)">Draft</button>
-          <button class="review-status-btn" onclick="setReview('m-testing','review',this)">In Review</button>
-          <button class="review-status-btn" onclick="setReview('m-testing','changes',this)">Needs Changes</button>
-          <button class="review-status-btn" onclick="setReview('m-testing','approved',this)">Approved</button>
-          <button style="margin-left:auto;background:none;border:none;font-size:12px;color:var(--sea);cursor:pointer;font-family:var(--font);text-decoration:underline;" onclick="copyLink('m-testing')">Copy Link</button>
-        </div>
-        <div class="review-comments"><div class="comment-list" id="comments-m-testing"></div>
-          <div class="comment-input-row"><input type="text" placeholder="Your name" style="max-width:120px" id="name-m-testing"><textarea rows="1" placeholder="Add a comment..." id="text-m-testing"></textarea><button class="comment-add-btn" onclick="addComment('m-testing')">Add</button></div>
-        </div>
-      </div>
+  <!-- ============ TAB 1: SUMMARY ============ -->
+  <div class="accordion open">
+    <div class="accordion-trigger" onclick="this.parentElement.classList.toggle('open')">Tab 1 &mdash; Summary (read-only roll-up)</div>
+    <div class="accordion-body">
+      <p style="font-size:13px;color:var(--ink);margin-bottom:10px;">Entirely auto-populated from the Existing and Required tabs &mdash; no data entry on this tab. It contains three blocks: (1) a Test-wise Overview table, (2) four Aggregate cards, (3) an Intervention-flag strip. The Intervention Type and Implementation Status columns reflect the Required tab; rows for manually-added Required tests render on a highlighted background.</p>
+
+      <p style="font-size:14px;font-weight:600;color:var(--teal);margin:12px 0 6px;">1.1 Test-wise Overview table (one row per test; Existing + manual Required; auto-built)</p>
+      <table class="brd-field-table">
+        <thead><tr><th>Field Name</th><th>Field Type</th><th>Input Values</th><th>Input / Autofill</th><th>Logic</th><th>Validation &amp; Error Messages</th></tr></thead>
+        <tbody>
+          <tr><td>Product</td><td>Read-only text</td><td>&mdash;</td><td>Autofill</td><td>Product name from each Existing block (and any manual Required test). Manual Required tests render on a highlighted row. Rows with neither Product nor Test Type set are skipped.</td><td>&mdash;</td></tr>
+          <tr><td>Test Type</td><td>Read-only text</td><td>&mdash;</td><td>Autofill</td><td>Test Type from the block; &ldquo;&mdash;&rdquo; if unset.</td><td>&mdash;</td></tr>
+          <tr><td>Lab</td><td>Read-only text</td><td>&mdash;</td><td>Autofill</td><td>Lab Name from the Existing block; &ldquo;&mdash;&rdquo; if unset.</td><td>&mdash;</td></tr>
+          <tr><td>Result Date</td><td>Read-only date</td><td>&mdash;</td><td>Autofill</td><td>Date of Test Results from the block; &ldquo;&mdash;&rdquo; if unset.</td><td>&mdash;</td></tr>
+          <tr><td>Report</td><td>Read-only badge</td><td>Yes / &mdash;</td><td>Calculated</td><td>&ldquo;Yes&rdquo; (green, with attachment icon) when a Testing Report file is attached on the block; else &ldquo;&mdash;&rdquo;.</td><td>&mdash;</td></tr>
+          <tr><td>Retesting Flagged</td><td>Read-only badge</td><td>Yes / &mdash;</td><td>Calculated</td><td>&ldquo;Yes&rdquo; (amber, warning icon) when the block&rsquo;s &ldquo;Need Retesting?&rdquo; toggle is on; else &ldquo;&mdash;&rdquo;.</td><td>&mdash;</td></tr>
+          <tr><td>Intervention Type</td><td>Read-only badge</td><td>Retesting / + New Test / &mdash;</td><td>Autofill</td><td>Flagged Existing rows show &ldquo;Retesting&rdquo;; manual Required tests show &ldquo;+ New Test&rdquo;; else &ldquo;&mdash;&rdquo;. Cell on a cream / peach background.</td><td>&mdash;</td></tr>
+          <tr><td>Implementation Status</td><td>Read-only badge</td><td>Pending / In Progress / Completed / On Hold / Not Feasible</td><td>Autofill</td><td>Mirrors the linked Required card&rsquo;s status chip. Colour: Completed=green, In Progress=amber, On Hold=blue, Not Feasible=red, Pending=cream. &ldquo;&mdash;&rdquo; if no linked Required card.</td><td>&mdash;</td></tr>
+        </tbody>
+      </table>
+
+      <p style="font-size:14px;font-weight:600;color:var(--teal);margin:14px 0 6px;">1.2 Aggregate cards (four, all read-only / calculated)</p>
+      <table class="brd-field-table">
+        <thead><tr><th>Field Name</th><th>Field Type</th><th>Input Values</th><th>Input / Autofill</th><th>Logic</th><th>Validation &amp; Error Messages</th></tr></thead>
+        <tbody>
+          <tr><td>Existing &middot; Total Tests Logged</td><td>Read-only count</td><td>&mdash;</td><td>Calculated</td><td>Count of Existing blocks with a Product or Test Type set.</td><td>&mdash;</td></tr>
+          <tr><td>Existing &middot; Unique Products Tested</td><td>Read-only count</td><td>&mdash;</td><td>Calculated</td><td>Distinct count of products across Existing tests.</td><td>&mdash;</td></tr>
+          <tr><td>Existing &middot; Reports Uploaded</td><td>Read-only count (green)</td><td>&mdash;</td><td>Calculated</td><td>Count of Existing tests with a Testing Report attached.</td><td>&mdash;</td></tr>
+          <tr><td>Existing &middot; Results Received</td><td>Read-only count (green)</td><td>&mdash;</td><td>Calculated</td><td>Count of Existing tests with a Date of Test Results filled.</td><td>&mdash;</td></tr>
+          <tr><td>Existing &middot; Flagged for Retesting</td><td>Read-only count (amber)</td><td>&mdash;</td><td>Calculated</td><td>Count of Existing tests with the retesting toggle on.</td><td>&mdash;</td></tr>
+          <tr><td>Cost &middot; Most Used Lab</td><td>Read-only text</td><td>&mdash;</td><td>Calculated</td><td>Lab with the highest test count across Existing tests; &ldquo;&mdash;&rdquo; if none.</td><td>&mdash;</td></tr>
+          <tr><td>Cost &middot; Unique Labs Used</td><td>Read-only count</td><td>&mdash;</td><td>Calculated</td><td>Distinct count of labs used (ignoring &ldquo;&mdash; Select &mdash;&rdquo;).</td><td>&mdash;</td></tr>
+          <tr><td>Cost &middot; Tests with Deposit Date</td><td>Read-only count</td><td>&mdash;</td><td>Calculated</td><td>Count of Existing tests with a Date of Sample Deposit filled.</td><td>&mdash;</td></tr>
+          <tr><td>Cost &middot; Tests Awaiting Results</td><td>Read-only count (amber)</td><td>&mdash;</td><td>Calculated</td><td>Count of Existing tests with a deposit date but NO result date.</td><td>&mdash;</td></tr>
+          <tr><td>Interventions &middot; Required Tests (Total)</td><td>Read-only count</td><td>&mdash;</td><td>Calculated</td><td>Count of all Required cards (bridged + manual).</td><td>&mdash;</td></tr>
+          <tr><td>Interventions &middot; Bridged from Existing</td><td>Read-only count (amber)</td><td>&mdash;</td><td>Calculated</td><td>Count of Required cards auto-created from a flagged Existing test.</td><td>&mdash;</td></tr>
+          <tr><td>Interventions &middot; Added Manually</td><td>Read-only count</td><td>&mdash;</td><td>Calculated</td><td>Count of Required cards added directly via &ldquo;+ Add New Test&rdquo;.</td><td>&mdash;</td></tr>
+          <tr><td>Interventions &middot; Consent Signed</td><td>Read-only count (green)</td><td>&mdash;</td><td>Calculated</td><td>Count of Required cards whose Consent Letter Signed checkbox is checked.</td><td>&mdash;</td></tr>
+          <tr><td>Interventions &middot; Approved by Core Team</td><td>Read-only count (green)</td><td>&mdash;</td><td>Calculated</td><td>Count of Required cards whose &ldquo;Approved by Core Team&rdquo; checkbox is checked.</td><td>&mdash;</td></tr>
+          <tr><td>Implementation Status &middot; Completed / In Progress / Pending / On Hold / Not Feasible</td><td>Read-only counts (Completed green, In Progress amber, Not Feasible red)</td><td>&mdash;</td><td>Calculated</td><td>Count of Required cards by their Implementation Status value.</td><td>&mdash;</td></tr>
+        </tbody>
+      </table>
+
+      <p style="font-size:14px;font-weight:600;color:var(--teal);margin:14px 0 6px;">1.3 Intervention Flag strip (four count cards)</p>
+      <table class="brd-field-table">
+        <thead><tr><th>Field Name</th><th>Field Type</th><th>Input Values</th><th>Input / Autofill</th><th>Logic</th><th>Validation &amp; Error Messages</th></tr></thead>
+        <tbody>
+          <tr><td>Tests Logged</td><td>Read-only count card</td><td>&mdash;</td><td>Calculated</td><td>= Existing &middot; Total Tests Logged.</td><td>&mdash;</td></tr>
+          <tr><td>Retesting Flagged</td><td>Read-only count card</td><td>&mdash;</td><td>Calculated</td><td>= Existing &middot; Flagged for Retesting.</td><td>&mdash;</td></tr>
+          <tr><td>Tests Required</td><td>Read-only count card</td><td>&mdash;</td><td>Calculated</td><td>= Interventions &middot; Required Tests (Total).</td><td>&mdash;</td></tr>
+          <tr><td>Completed</td><td>Read-only count card</td><td>&mdash;</td><td>Calculated</td><td>= Implementation Status &middot; Completed.</td><td>&mdash;</td></tr>
+        </tbody>
+      </table>
     </div>
+  </div>
+
+  <!-- ============ TAB 2: EXISTING ============ -->
+  <div class="accordion">
+    <div class="accordion-trigger" onclick="this.parentElement.classList.toggle('open')">Tab 2 &mdash; Existing (tests already conducted; child table of test blocks)</div>
+    <div class="accordion-body">
+      <p style="font-size:13px;color:var(--ink);margin-bottom:10px;">Caption: &ldquo;Map all product tests already conducted. Flag any that need retesting via the per-card Intervention toggle &mdash; flagged tests automatically appear in the Required tab.&rdquo; Repeating child table: each row is a collapsible &ldquo;test block&rdquo; added via <em>+ Add Test</em> (one seed block on load). The block header carries a Product selector, a Test Type selector, a &ldquo;Retesting Flagged&rdquo; chip (shown only when flagged) and a Remove button (confirm prompt). Below are all fields of one test row.</p>
+
+      <p style="font-size:14px;font-weight:600;color:var(--teal);margin:12px 0 6px;">2.1 Block header</p>
+      <table class="brd-field-table">
+        <thead><tr><th>Field Name</th><th>Field Type</th><th>Input Values</th><th>Input / Autofill</th><th>Logic</th><th>Validation &amp; Error Messages</th></tr></thead>
+        <tbody>
+          <tr><td>Product</td><td>Select</td><td>&mdash; Select Product &mdash; / &lt;Product Master&gt; (Bamboo Shoot Pickle, Lemongrass Tea, Lakadong Turmeric, Eri Silk Muffler, Bamboo Earring, Local Honey, Jadoh Spice Mix &hellip;)</td><td>Input</td><td>Identifies the tested product. On change, cascades to the bridged Required card&rsquo;s (locked) Product if one exists.</td><td>Required to count in Summary: a block with neither Product nor Test Type is ignored in aggregates.</td></tr>
+          <tr><td>Test Type</td><td>Select</td><td>&mdash; Test Type &mdash; / Microbiological Test / Heavy Metal Test / Pesticide Residue Test / Nutritional Analysis / Shelf Life Test / Moisture Content / pH Test / Curcumin Content (HPLC) / Aflatoxin Test / Sensory / Organoleptic / Packaging Integrity / Fibre Strength (Textile) / Colour Fastness (Textile) / Other</td><td>Input</td><td>The test performed. Cascades to the bridged Required card&rsquo;s (locked) Test Type if one exists.</td><td>&mdash;</td></tr>
+          <tr><td>Retesting Flagged (chip)</td><td>Read-only chip</td><td>&mdash;</td><td>Calculated</td><td>Hidden until the &ldquo;Need Retesting?&rdquo; toggle is on; then shows &ldquo;Retesting Flagged&rdquo; in terracotta.</td><td>&mdash;</td></tr>
+        </tbody>
+      </table>
+
+      <p style="font-size:14px;font-weight:600;color:var(--teal);margin:14px 0 6px;">2.2 Test Details (sub-section) &mdash; includes the Existing date chain</p>
+      <table class="brd-field-table">
+        <thead><tr><th>Field Name</th><th>Field Type</th><th>Input Values</th><th>Input / Autofill</th><th>Logic</th><th>Validation &amp; Error Messages</th></tr></thead>
+        <tbody>
+          <tr><td>Purpose for Testing</td><td>Text</td><td>Free text (e.g. &ldquo;Pre-FSSAI compliance, export sample, shelf life validation&rdquo;)</td><td>Input</td><td>Why the test was conducted.</td><td>&mdash;</td></tr>
+          <tr><td>Lab Name</td><td>Select</td><td>&mdash; Select &mdash; / &lt;Lab Master&gt; (NIFTEM Sonipat / CFTRI Mysuru / Spices Board Lab Cochin / NABL Accredited Local Lab &mdash; Shillong / &mdash; Guwahati / IIT Guwahati Food Lab / Assam Agricultural University / NEHU Lab / Govt Agmark Lab / NTH North-East / Private Testing Lab / Other)</td><td>Input</td><td>Lab that conducted the test; feeds Summary &ldquo;Most Used Lab&rdquo; and &ldquo;Unique Labs&rdquo;.</td><td>&mdash;</td></tr>
+          <tr><td>Date of Sample Deposit <span style="color:var(--terracotta)">[chain&nbsp;1]</span></td><td>Date</td><td>Calendar date</td><td>Input</td><td>First link in the Existing date chain &mdash; when the sample was deposited to the lab.</td><td>Must be on or before Date of Test Results: &ldquo;Sample deposit date cannot be after the result date.&rdquo;</td></tr>
+          <tr><td>Date of Test Results <span style="color:var(--terracotta)">[chain&nbsp;2]</span></td><td>Date</td><td>Calendar date</td><td>Input</td><td>Second link &mdash; when results were received. Feeds Summary &ldquo;Results Received&rdquo; and the overview Result Date column.</td><td>Must be on or after Date of Sample Deposit: &ldquo;Result date cannot be before the sample deposit date.&rdquo;</td></tr>
+          <tr><td>Testing Report</td><td>Attach (Upload / View)</td><td>File (.pdf / .jpg / .jpeg / .png)</td><td>Input</td><td>Lab report upload; shows a file pill with remove (&times;) and enables the View button once attached. Drives Summary &ldquo;Reports Uploaded&rdquo;.</td><td>&mdash;</td></tr>
+        </tbody>
+      </table>
+
+      <div class="callout callout-terra"><strong>Date chain (Existing).</strong> The two date fields must be ordered: <em>Date of Sample Deposit &le; Date of Test Results</em>. A test with a deposit date but no result date is counted in Summary as &ldquo;Awaiting Results&rdquo;.</div>
+
+      <p style="font-size:14px;font-weight:600;color:var(--teal);margin:14px 0 6px;">2.3 Intervention Need &mdash; Retesting toggle (terracotta panel; raises flag, bridges to Required)</p>
+      <table class="brd-field-table">
+        <thead><tr><th>Field Name</th><th>Field Type</th><th>Input Values</th><th>Input / Autofill</th><th>Logic</th><th>Validation &amp; Error Messages</th></tr></thead>
+        <tbody>
+          <tr><td>Need Retesting?</td><td>Toggle (on/off)</td><td>Off (default) / On</td><td>Input</td><td>When On: the flag note reads &ldquo;Flagged &rarr; Required tab&rdquo;, the header &ldquo;Retesting Flagged&rdquo; chip appears, the Justification field is revealed, and a linked Required card is auto-created (Product, Test Type, Purpose, Lab and Justification copied across). When toggled Off, the linked Required card is removed.</td><td>&mdash;</td></tr>
+          <tr><td>Justification</td><td>Textarea (conditional)</td><td>Free text (e.g. &ldquo;failed parameter, expired report, regulator change, new batch&rdquo;)</td><td>Input</td><td>Shown only when the toggle is on. Live-syncs into the bridged Required card&rsquo;s read-only &ldquo;Justification (from Existing)&rdquo; field.</td><td>&mdash;</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ============ TAB 3: REQUIRED ============ -->
+  <div class="accordion">
+    <div class="accordion-trigger" onclick="this.parentElement.classList.toggle('open')">Tab 3 &mdash; Required (tests to be conducted &mdash; consent management + full date chain)</div>
+    <div class="accordion-body">
+      <p style="font-size:13px;color:var(--ink);margin-bottom:10px;">Caption: &ldquo;Tests required &mdash; auto-populated from the Existing tab when retesting is flagged, or added manually for new tests to be conducted.&rdquo; Empty state: &ldquo;No tests required yet. Flag a test in the Existing tab, or add a new one manually below.&rdquo; Each card is a collapsible test block added via <em>+ Add New Test</em>; header carries Product + Test Type selectors (locked / disabled for bridged cards, title &ldquo;Locked &mdash; sourced from Existing&rdquo;), a &ldquo;Bridged from Existing&rdquo; marker on bridged cards, an Implementation Status chip and a Remove button.</p>
+
+      <div class="callout callout-terra"><strong>Consent management lives here.</strong> Before a required test proceeds, the Fessociate records core-team approval, signs a consent letter with the entrepreneur (toggle), and uploads the signed letter. The consent toggle defaults to ON; un-checking it reveals a mandatory reason. The full date chain (sample &rarr; office &rarr; lab &rarr; result) is also captured on this tab.</div>
+
+      <p style="font-size:14px;font-weight:600;color:var(--teal);margin:12px 0 6px;">3.1 Block header</p>
+      <table class="brd-field-table">
+        <thead><tr><th>Field Name</th><th>Field Type</th><th>Input Values</th><th>Input / Autofill</th><th>Logic</th><th>Validation &amp; Error Messages</th></tr></thead>
+        <tbody>
+          <tr><td>Product</td><td>Select (locked if bridged)</td><td>&mdash; Select Product &mdash; / &lt;Product Master&gt;</td><td>Input / Autofill</td><td>Manual cards: editable. Bridged cards: disabled and sourced from the linked Existing test (cascades on change there).</td><td>&mdash;</td></tr>
+          <tr><td>Test Type</td><td>Select (locked if bridged)</td><td>&mdash; Test Type &mdash; / &lt;Test Type Master&gt;</td><td>Input / Autofill</td><td>Manual cards: editable. Bridged cards: disabled and sourced from the linked Existing test.</td><td>&mdash;</td></tr>
+          <tr><td>Bridged from Existing (marker)</td><td>Read-only marker</td><td>&mdash;</td><td>Autofill</td><td>Shown only on cards auto-created from a flagged Existing test.</td><td>&mdash;</td></tr>
+          <tr><td>Implementation Status (chip)</td><td>Read-only chip</td><td>Pending / In Progress / Completed / On Hold / Not Feasible</td><td>Autofill</td><td>Mirrors the Implementation Status selector in 3.3; colour-coded.</td><td>&mdash;</td></tr>
+        </tbody>
+      </table>
+
+      <p style="font-size:14px;font-weight:600;color:var(--teal);margin:14px 0 6px;">3.2 Test Details (sub-section) &mdash; consent management + full date chain</p>
+      <table class="brd-field-table">
+        <thead><tr><th>Field Name</th><th>Field Type</th><th>Input Values</th><th>Input / Autofill</th><th>Logic</th><th>Validation &amp; Error Messages</th></tr></thead>
+        <tbody>
+          <tr><td>Purpose for Testing</td><td>Text</td><td>Free text (e.g. &ldquo;Pre-FSSAI compliance, export sample&rdquo;)</td><td>Input / Autofill</td><td>Prefilled from the source Existing test on bridged cards; editable.</td><td>&mdash;</td></tr>
+          <tr><td>Lab Name</td><td>Select</td><td>&mdash; Select &mdash; / &lt;Lab Master&gt;</td><td>Input / Autofill</td><td>Lab chosen for the required test; prefilled from source on bridged cards.</td><td>&mdash;</td></tr>
+          <tr><td>Approved by Core Team</td><td>Checkbox</td><td>Unchecked (default) / Checked &mdash; &ldquo;Yes &mdash; approved by core team&rdquo;</td><td>Input</td><td>Records core-team sign-off for the test. Feeds Summary &ldquo;Approved by Core Team&rdquo; count.</td><td>&mdash;</td></tr>
+          <tr><td>Consent Letter Signed</td><td>Checkbox (consent toggle)</td><td>Checked (default) / Unchecked &mdash; &ldquo;Yes &mdash; consent letter signed&rdquo;</td><td>Input</td><td>Defaults to checked. When UNCHECKED, reveals the &ldquo;If not signed, reason&rdquo; row below; when re-checked, hides it. Feeds Summary &ldquo;Consent Signed&rdquo; count.</td><td>&mdash;</td></tr>
+          <tr><td>If not signed, reason</td><td>Textarea (conditional)</td><td>Free text (e.g. &ldquo;Reason for missing consent&hellip;&rdquo;)</td><td>Input</td><td>Hidden by default; shown only when Consent Letter Signed is unchecked.</td><td>Required when consent is unchecked: &ldquo;Provide a reason if the consent letter is not signed.&rdquo;</td></tr>
+          <tr><td>Upload Consent Letter</td><td>Attach (Upload / View)</td><td>File (.pdf / .jpg / .jpeg / .png)</td><td>Input</td><td>Signed consent letter upload; file pill with remove (&times;) and a View button enabled once attached.</td><td>&mdash;</td></tr>
+          <tr><td>Date of Sample Deposit to Office <span style="color:var(--terracotta)">[chain&nbsp;1]</span></td><td>Date</td><td>Calendar date</td><td>Input</td><td>First link in the full date chain &mdash; sample handed to the PRIME office.</td><td>Must be &le; Date of Sample Deposit to Lab: &ldquo;Office deposit date cannot be after the lab deposit date.&rdquo;</td></tr>
+          <tr><td>Date of Sample Deposit to Lab <span style="color:var(--terracotta)">[chain&nbsp;2]</span></td><td>Date</td><td>Calendar date</td><td>Input</td><td>Second link &mdash; sample forwarded from office to the lab.</td><td>Must be &ge; office deposit and &le; result date: &ldquo;Lab deposit date must fall between the office deposit and the result date.&rdquo;</td></tr>
+          <tr><td>Date of Test Results <span style="color:var(--terracotta)">[chain&nbsp;3]</span></td><td>Date</td><td>Calendar date</td><td>Input</td><td>Final link &mdash; results received from the lab.</td><td>Must be &ge; Date of Sample Deposit to Lab: &ldquo;Result date cannot be before the lab deposit date.&rdquo;</td></tr>
+          <tr><td>Testing Report</td><td>Attach (Upload / View)</td><td>File (.pdf / .jpg / .jpeg / .png)</td><td>Input</td><td>Lab report upload; file pill with remove and View.</td><td>&mdash;</td></tr>
+          <tr><td>Justification (from Existing)</td><td>Read-only textarea (bridged only, cream-deep)</td><td>&mdash;</td><td>Autofill</td><td>Shown only on bridged cards; live-synced from the Existing test&rsquo;s Justification field.</td><td>&mdash;</td></tr>
+        </tbody>
+      </table>
+
+      <div class="callout callout-terra"><strong>Date chain (Required, three links).</strong> The dates must be strictly ordered: <em>Date of Sample Deposit to Office &le; Date of Sample Deposit to Lab &le; Date of Test Results</em>. Any out-of-order entry is rejected with the field-specific message above.</div>
+
+      <p style="font-size:14px;font-weight:600;color:var(--teal);margin:14px 0 6px;">3.3 Implementation Status (terracotta panel)</p>
+      <table class="brd-field-table">
+        <thead><tr><th>Field Name</th><th>Field Type</th><th>Input Values</th><th>Input / Autofill</th><th>Logic</th><th>Validation &amp; Error Messages</th></tr></thead>
+        <tbody>
+          <tr><td>Status</td><td>Select</td><td>Pending (default) / In Progress / Completed / On Hold / Not Feasible</td><td>Input</td><td>On change, updates the header chip (colour-coded) and feeds the Summary Implementation Status counts and the overview table.</td><td>&mdash;</td></tr>
+          <tr><td>Notes</td><td>Textarea</td><td>Free text (&ldquo;Implementation notes, blockers, next steps&hellip;&rdquo;)</td><td>Input</td><td>Free-form progress notes for this required test.</td><td>&mdash;</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ============ TAB 4: RESOURCES ============ -->
+  <div class="accordion">
+    <div class="accordion-trigger" onclick="this.parentElement.classList.toggle('open')">Tab 4 &mdash; Resources (reference materials child table)</div>
+    <div class="accordion-body">
+      <p style="font-size:13px;color:var(--ink);margin-bottom:10px;">Block title &ldquo;Reference Materials&rdquo;. Repeating child table added via <em>+ Add Resource</em>; at least one row must remain (&ldquo;At least one row is required.&rdquo;). Per row:</p>
+      <table class="brd-field-table">
+        <thead><tr><th>Field Name</th><th>Field Type</th><th>Input Values</th><th>Input / Autofill</th><th>Logic</th><th>Validation &amp; Error Messages</th></tr></thead>
+        <tbody>
+          <tr><td>Resource Title</td><td>Text</td><td>Free text</td><td>Input</td><td>Name of the reference material.</td><td>&mdash;</td></tr>
+          <tr><td>Category</td><td>Select</td><td>&mdash; Select &mdash; / Lab Contact / Quotation / Previous Test Report / FSSAI / Regulatory Guideline / NABL Lab List / Consent Letter Template / Test Parameter Reference / Packaging / Shelf Life Standard / Export / Certification Standard / Other</td><td>Input</td><td>Classifies the resource.</td><td>&mdash;</td></tr>
+          <tr><td>Type</td><td>Select</td><td>&mdash; Select &mdash; / Report / Study / Contact / Template / Guideline / Photo / Evidence / Quotation</td><td>Input</td><td>Resource format / nature.</td><td>&mdash;</td></tr>
+          <tr><td>Description / Notes</td><td>Text</td><td>Free text</td><td>Input</td><td>Notes about the resource.</td><td>&mdash;</td></tr>
+          <tr><td>File</td><td>Attach (Upload / View)</td><td>File</td><td>Input</td><td>Upload a file or View the attached one.</td><td>&mdash;</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ============ TAB 5: TASK LOG ============ -->
+  <div class="accordion">
+    <div class="accordion-trigger" onclick="this.parentElement.classList.toggle('open')">Tab 5 &mdash; Task Log (Product Testing activities child table)</div>
+    <div class="accordion-body">
+      <p style="font-size:13px;color:var(--ink);margin-bottom:10px;">Block title &ldquo;Task Log &mdash; Product Testing Activities&rdquo; with a live &ldquo;N entries&rdquo; counter. Repeating child table added via <em>+ Add Entry</em>. Row No. auto-renumbers (01, 02, &hellip;) on add / delete. Per row:</p>
+      <table class="brd-field-table">
+        <thead><tr><th>Field Name</th><th>Field Type</th><th>Input Values</th><th>Input / Autofill</th><th>Logic</th><th>Validation &amp; Error Messages</th></tr></thead>
+        <tbody>
+          <tr><td>No.</td><td>Read-only auto-number</td><td>&mdash;</td><td>Calculated</td><td>Sequential index, zero-padded; re-numbers on row delete.</td><td>&mdash;</td></tr>
+          <tr><td>Date</td><td>Date</td><td>Calendar date</td><td>Input</td><td>Date the activity occurred.</td><td>&mdash;</td></tr>
+          <tr><td>Task Name</td><td>Select</td><td>&mdash; Select Task &mdash; + the 17 master tasks: 01 Awareness on Importance of Product Testing / 02 Identify Products Requiring Testing / 03 Define Test Parameters Required / 04 Identify Suitable NABL / Accredited Lab / 05 Obtain Lab Quotation / Estimate / 06 Get Core Team Approval for Testing / 07 Prepare and Sign Consent Letter with Entrepreneur / 08 Collect Product Sample from Entrepreneur / 09 Deposit Sample to PRIME Office / 10 Deposit Sample to Lab / 11 Follow Up with Lab on Timeline / 12 Receive and Review Test Report / 13 Share Test Report with Entrepreneur / 14 Document Results in CRM / 15 Flag Failed Parameters &mdash; Retesting Required / 16 Initiate Retesting Process / 17 Update Final Status in Module / If other, specify in comments</td><td>Input</td><td>Standardised activity picklist mirroring the product-testing process flow.</td><td>&mdash;</td></tr>
+          <tr><td>Notes / Outcome</td><td>Text</td><td>Free text</td><td>Input</td><td>Outcome / remarks; required when Task Name = &ldquo;If other, specify in comments&rdquo;.</td><td>Conditionally required for &ldquo;If other&rdquo;: &ldquo;Specify the task in notes.&rdquo;</td></tr>
+          <tr><td>Attachment</td><td>Attach (Upload)</td><td>File</td><td>Input</td><td>Optional supporting file.</td><td>&mdash;</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="callout callout-danger"><strong>Key validations (whole form):</strong> The date chain must be strictly ordered everywhere &mdash; in Existing, Date of Sample Deposit &le; Date of Test Results; in Required, Date of Sample Deposit to Office &le; Date of Sample Deposit to Lab &le; Date of Test Results (out-of-order dates are rejected). Consent-required rules: when &ldquo;Consent Letter Signed&rdquo; is unchecked on a Required test, the &ldquo;If not signed, reason&rdquo; field is mandatory; the signed consent letter should be uploaded and core-team approval recorded before a required test proceeds to the lab. A flagged Existing test must carry a Justification, which bridges (read-only) into the auto-created Required card; toggling the flag off removes that card, and toggling it on re-creates it with Product / Test Type locked. Required cards added manually keep Product / Test Type editable. Resources require at least one row. File uploads accept .pdf / .jpg / .jpeg / .png only.</div>
+
+  <div class="review-panel" data-section="m-testing">
+    <div class="review-strip"><span style="font-size:12px;color:var(--ink-soft);font-weight:500;">Section Review:</span>
+      <button class="review-status-btn" onclick="setReview('m-testing','draft',this)">Draft</button>
+      <button class="review-status-btn" onclick="setReview('m-testing','review',this)">In Review</button>
+      <button class="review-status-btn" onclick="setReview('m-testing','changes',this)">Needs Changes</button>
+      <button class="review-status-btn" onclick="setReview('m-testing','approved',this)">Approved</button>
+      <button style="margin-left:auto;background:none;border:none;font-size:12px;color:var(--sea);cursor:pointer;font-family:var(--font);text-decoration:underline;" onclick="copyLink('m-testing')">Copy Link</button></div>
+    <div class="review-comments"><div class="comment-list" id="comments-m-testing"></div>
+      <div class="comment-input-row"><input type="text" placeholder="Your name" style="max-width:120px" id="name-m-testing"><textarea rows="1" placeholder="Add a comment..." id="text-m-testing"></textarea><button class="comment-add-btn" onclick="addComment('m-testing')">Add</button></div></div>
+  </div>
+</div>
 
     <!-- PRODUCT STANDARDIZATION -->
     <div class="brd-section" id="m-standardization">
