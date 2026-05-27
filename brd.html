@@ -2449,7 +2449,310 @@ body > .site-nav { position: fixed; top: 0; left: 0; right: 0; z-index: 9999; }
     </div>
 
     <!-- MODULE SECTIONS (placeholders) -->
-    <div class="brd-section" id="m-ep"><div class="section-header"><span class="section-id">PR-EP-001</span><h2 class="section-title">Entrepreneur Profile Form</h2></div><div class="callout callout-teal">Detailed form spec coming in Phase 3.</div></div>
+    <div class="brd-section" id="m-ep">
+      <div class="section-header">
+        <span class="section-id">PR-EP-001</span>
+        <h2 class="section-title">Entrepreneur Profile Form</h2>
+      </div>
+      <div class="section-desc">
+        The Entrepreneur Profile (DocType: <code>Enterprenur Profile</code>, autoname <code>EP-.{enterprenur_name}-.#####</code>) is the <strong>root record</strong> of the entire system. Every product, framework form, activity log, introduction and selection decision hangs off one EP record. It is the first thing a Fessociate creates on ground and the object Core Team IT acts on at selection time. 139 fields across <strong>8 tabs</strong>.
+      </div>
+
+      <div class="callout callout-terra">
+        <strong>Status anchor:</strong> Saving any profile sets status = <strong>MET</strong>. The <em>Final Selection</em> dropdown (Incubated / Supported) on the Selection tab is editable <strong>only by Core Team IT</strong>. The 10-question rating and Rural E-Champ score are filled by the <strong>Fellow during profiling</strong> — not Core Team. See <a style="color:var(--sea);cursor:pointer" onclick="scrollTo_('sec-lifecycle')">Entrepreneur Lifecycle</a>.
+      </div>
+
+      <!-- ON-SCREEN UI STRUCTURE -->
+      <h3 style="font-size:16px;color:var(--teal);margin:18px 0 10px;">On-Screen UI Structure</h3>
+      <div class="card">
+        <div style="font-size:13px;line-height:1.9;color:var(--ink)">
+          <strong>Top bar:</strong> Entrepreneur name + EP code (left), status chip (MET / Incubated / Supported) + Active/Inactive toggle (right), Save / New buttons.<br>
+          <strong>Left:</strong> sticky vertical <em>tab rail</em> with the 8 tabs.<br>
+          <strong>Body:</strong> the active tab. Form tabs use the standard two-column Frappe section/column-break layout; calculated fields (e.g. Average Rating) render italic on cream-deep background with a formula tooltip (General Rule 1).<br>
+          <strong>Profile Dashboard tab</strong> is a read-only visual canvas (KPI cards + product photo cards + framework-completion grid), not a form.
+        </div>
+      </div>
+      <div class="flow-container" style="margin-top:12px">
+        <div class="flow-step"><div class="flow-box highlight">Profile</div></div>
+        <div class="flow-arrow">&rarr;</div>
+        <div class="flow-step"><div class="flow-box">Location &amp; Contact</div></div>
+        <div class="flow-arrow">&rarr;</div>
+        <div class="flow-step"><div class="flow-box">Documents</div></div>
+        <div class="flow-arrow">&rarr;</div>
+        <div class="flow-step"><div class="flow-box">Prioritisation</div></div>
+        <div class="flow-arrow">&rarr;</div>
+        <div class="flow-step"><div class="flow-box accent">Selection</div></div>
+        <div class="flow-arrow">&rarr;</div>
+        <div class="flow-step"><div class="flow-box">Connections</div></div>
+        <div class="flow-arrow">&rarr;</div>
+        <div class="flow-step"><div class="flow-box">Profile Dashboard</div></div>
+        <div class="flow-arrow">&rarr;</div>
+        <div class="flow-step"><div class="flow-box">Intervention Logs</div></div>
+      </div>
+
+      <!-- USER JOURNEY -->
+      <h3 style="font-size:16px;color:var(--teal);margin:18px 0 10px;">User Journey</h3>
+      <div class="card">
+        <div class="flow-container">
+          <div class="flow-step"><div class="flow-box highlight">Fellow: Add Entrepreneur</div><div class="flow-label">Entrepreneur list &rarr; top-right button</div></div>
+          <div class="flow-arrow">&rarr;</div>
+          <div class="flow-step"><div class="flow-box">Fill Profile + Location + Docs</div><div class="flow-label">District/Block auto from user</div></div>
+          <div class="flow-arrow">&rarr;</div>
+          <div class="flow-step"><div class="flow-box">Fellow rates 10 parameters + Rural E-Champ</div><div class="flow-label">During profiling (Selection tab)</div></div>
+          <div class="flow-arrow">&rarr;</div>
+          <div class="flow-step"><div class="flow-box">Save &rarr; Status MET</div><div class="flow-label">Dashboard generates</div></div>
+          <div class="flow-arrow">&rarr;</div>
+          <div class="flow-step"><div class="flow-box accent">Core Team IT: set Final Selection</div><div class="flow-label">Incubated / Supported (CTIT only)</div></div>
+          <div class="flow-arrow">&rarr;</div>
+          <div class="flow-step"><div class="flow-box">Framework Selection &amp; Prioritisation</div><div class="flow-label">CTIT or Fellow</div></div>
+        </div>
+      </div>
+
+      <!-- TAB 1: PROFILE -->
+      <div class="accordion open">
+        <div class="accordion-trigger" onclick="this.parentElement.classList.toggle('open')">
+          Tab 1: Profile <span class="acc-arrow">&#9660;</span>
+        </div>
+        <div class="accordion-body">
+          <h4 style="font-size:14px;color:var(--teal);margin-bottom:10px;">Section I: About Entrepreneur</h4>
+          <table class="brd-table">
+            <thead><tr><th>Field Name</th><th>Field Type</th><th>Input Values</th><th>Input / Autofill</th><th>Logic</th><th>Validation &amp; Error Messages</th></tr></thead>
+            <tbody>
+              <tr><td>Entrepreneur Name</td><td>Data</td><td>Free text</td><td>Input</td><td>Feeds autoname <code>EP-{name}-#####</code></td><td>Required. "Entrepreneur name is required"</td></tr>
+              <tr><td>Gender</td><td>Link (Gender)</td><td>From Gender master</td><td>Input</td><td>--</td><td>--</td></tr>
+              <tr><td>Date of Birth</td><td>Date</td><td>Date picker</td><td>Input</td><td>--</td><td>Must be in the past; age &ge; 18 warning</td></tr>
+              <tr><td>Education Level</td><td>Select</td><td>10th, 12th, Graduate, Post-Graduate</td><td>Input</td><td>Feeds rating_three (Age &amp; Education)</td><td>--</td></tr>
+              <tr><td>Family Size</td><td>Select</td><td>&lt;5, 5-10, &gt;10</td><td>Input</td><td>--</td><td>--</td></tr>
+              <tr><td>Language Spoken</td><td>Table MultiSelect (Language Picker)</td><td>Multiple languages</td><td>Input</td><td>--</td><td>--</td></tr>
+              <tr><td>Marital Status</td><td>Select</td><td>Single, Married, Divorced</td><td>Input</td><td>--</td><td>--</td></tr>
+              <tr><td>Annual Family Income</td><td>Select</td><td>&lt;3,00,000, 3,00,000-7,00,000, 7,00,000-10,00,000, &gt;10,00,000</td><td>Input</td><td>Indian number formatting</td><td>--</td></tr>
+              <tr><td>Phone Number</td><td>Phone</td><td>10-digit</td><td>Input</td><td>--</td><td>Required. Valid 10-digit Indian mobile. "Enter a valid phone number"</td></tr>
+              <tr><td>Email</td><td>Data</td><td>Email</td><td>Input</td><td>--</td><td>Valid email format if entered</td></tr>
+              <tr><td>Website / Instagram / Facebook</td><td>Data</td><td>URL / handle</td><td>Input</td><td>Social presence</td><td>--</td></tr>
+              <tr><td>Is PwD?</td><td>Select</td><td>Yes, No</td><td>Input</td><td>Person-with-disability flag for reporting</td><td>--</td></tr>
+            </tbody>
+          </table>
+
+          <h4 style="font-size:14px;color:var(--teal);margin:16px 0 10px;">Section II: About Enterprise</h4>
+          <table class="brd-table">
+            <thead><tr><th>Field Name</th><th>Field Type</th><th>Input Values</th><th>Input / Autofill</th><th>Logic</th><th>Validation</th></tr></thead>
+            <tbody>
+              <tr><td>Enterprise Name</td><td>Data</td><td>Free text</td><td>Input</td><td>--</td><td>--</td></tr>
+              <tr><td>When Did You Start the Business?</td><td>Date</td><td>Date picker</td><td>Input</td><td>Drives enterprise-age derivations</td><td>&le; today</td></tr>
+              <tr><td>Position in Business</td><td>Select</td><td>Founder, Co-Founder, Employee, Manager, Partner</td><td>Input</td><td>--</td><td>--</td></tr>
+              <tr><td>Organization Type</td><td>Link (Organization Type)</td><td>From master</td><td>Input</td><td>--</td><td>--</td></tr>
+              <tr><td>Designation in Organization</td><td>Small Text</td><td>Free text</td><td>Input</td><td>--</td><td>--</td></tr>
+              <tr><td>Sector</td><td>Select</td><td>Food Processing, Agriculture, Handicrafts</td><td>Input</td><td>Filters Business Basket on products; Landscape/Status filters</td><td>Required</td></tr>
+              <tr><td>Enterprise Stage</td><td>Select</td><td>Idea, Startup, Growth, Maturity</td><td>Input</td><td>--</td><td>--</td></tr>
+              <tr><td>Market Accessibility</td><td>Select</td><td>Local, Regional, State, National, International</td><td>Input</td><td>--</td><td>--</td></tr>
+              <tr><td>Business Progress</td><td>Select</td><td>On Track, Meeting Expectations, Declining</td><td>Input</td><td>--</td><td>--</td></tr>
+              <tr><td>Cohort</td><td>Link (Cohort)</td><td>From Cohort master</td><td>Input</td><td><strong>Drives cohort-scoped monthly trackers (General Rule 11)</strong> and Status Monitor cohort filter</td><td>Required for cohort-scoped trackers to render</td></tr>
+              <tr><td>Team</td><td>Link (User Group)</td><td>From User Group</td><td>Input</td><td>Assigns owning fellow team</td><td>--</td></tr>
+            </tbody>
+          </table>
+          <div class="callout callout-teal" style="margin-top:8px"><strong>Product Profiling link:</strong> the Profile tab also surfaces the entrepreneur's linked Product (Link &rarr; Product), Process Flow and Machinery Flow references — these tie the EP to the <a style="color:var(--sea);cursor:pointer" onclick="scrollTo_('m-product')">Product Profile</a> Golden Thread.</div>
+        </div>
+      </div>
+
+      <!-- TAB 2: LOCATION & CONTACT -->
+      <div class="accordion">
+        <div class="accordion-trigger" onclick="this.parentElement.classList.toggle('open')">
+          Tab 2: Location &amp; Contact <span class="acc-arrow">&#9660;</span>
+        </div>
+        <div class="accordion-body">
+          <table class="brd-table">
+            <thead><tr><th>Field Name</th><th>Field Type</th><th>Input Values</th><th>Input / Autofill</th><th>Logic</th><th>Validation</th></tr></thead>
+            <tbody>
+              <tr><td>District</td><td>Link (District)</td><td>From District master</td><td><strong>Autofill from logged-in user</strong></td><td>Block restriction (General Rule 10)</td><td>Required</td></tr>
+              <tr><td>Block</td><td>Link (Block)</td><td>From Block master</td><td><strong>Autofill from logged-in user</strong></td><td>Filtered by District; gates create/edit rights</td><td>Required</td></tr>
+              <tr><td>Village</td><td>Link (Village)</td><td>From Village master</td><td>Input</td><td>Filtered by Block</td><td>--</td></tr>
+              <tr><td>Residence Address</td><td>Small Text</td><td>Free text</td><td>Input</td><td>--</td><td>--</td></tr>
+              <tr><td>Work Address</td><td>Small Text</td><td>Free text</td><td>Input</td><td>--</td><td>--</td></tr>
+              <tr><td>Location Coordinates</td><td>Geolocation</td><td>Lat/Lng (map pin / GPS)</td><td>Input</td><td><strong>Renders the entrepreneur pin on the Entrepreneurial Landscape map</strong>. Defaults to Meghalaya centroid until set</td><td>--</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- TAB 3: DOCUMENTS -->
+      <div class="accordion">
+        <div class="accordion-trigger" onclick="this.parentElement.classList.toggle('open')">
+          Tab 3: Documents <span class="acc-arrow">&#9660;</span>
+        </div>
+        <div class="accordion-body">
+          <table class="brd-table">
+            <thead><tr><th>Field Name</th><th>Field Type</th><th>Input Values</th><th>Input / Autofill</th><th>Logic</th><th>Validation</th></tr></thead>
+            <tbody>
+              <tr><td>Profile Picture</td><td>Attach Image</td><td>.jpg/.png</td><td>Input</td><td>Shows on profile header + dashboard</td><td>--</td></tr>
+              <tr><td>Photo Gallery &rarr; Upload</td><td>Attach</td><td>Image / file</td><td>Input</td><td>Field-visit photos</td><td>--</td></tr>
+              <tr><td>List of Documents</td><td>Table (Documents Table)</td><td>Child rows</td><td>Input</td><td>Per row: document type, file, notes</td><td>File required per row</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- TAB 4: PRIORITISATION -->
+      <div class="accordion">
+        <div class="accordion-trigger" onclick="this.parentElement.classList.toggle('open')">
+          Tab 4: Prioritisation <span class="acc-arrow">&#9660;</span>
+        </div>
+        <div class="accordion-body">
+          <div class="callout callout-teal">Exposed after Final Selection is set. Lists all 27 frameworks; either Core Team IT <em>or</em> the Fellow flips a framework to Applicable and assigns a priority number. Dashboard framework cards reorder by priority (lower = higher). See <a style="color:var(--sea);cursor:pointer" onclick="scrollTo_('j-coreit')">Journey 3</a>.</div>
+          <table class="brd-table">
+            <thead><tr><th>Column</th><th>Type</th><th>Input Values</th><th>Logic</th><th>Validation</th></tr></thead>
+            <tbody>
+              <tr><td>Framework</td><td>Link / label</td><td>One of 27 frameworks</td><td>Pre-seeded list</td><td>--</td></tr>
+              <tr><td>Applicable?</td><td>Check</td><td>TRUE / FALSE</td><td>Marks framework as in-scope for this entrepreneur</td><td>--</td></tr>
+              <tr><td>Priority</td><td>Int</td><td>0 = default</td><td>Diagnostic assessment order; dashboard reorders ascending</td><td>&ge; 0</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- TAB 5: SELECTION -->
+      <div class="accordion">
+        <div class="accordion-trigger" onclick="this.parentElement.classList.toggle('open')">
+          Tab 5: Selection <span class="acc-arrow">&#9660;</span>
+        </div>
+        <div class="accordion-body">
+          <h4 style="font-size:14px;color:var(--teal);margin-bottom:10px;">Section I: Field Evaluation (10-Question Rating)</h4>
+          <div class="callout callout-terra" style="margin-bottom:10px"><strong>Filled by Fellow during profiling</strong> (not Core Team). Each is a 1&ndash;5 star Rating field. <code>avg_rating</code> auto-calculates.</div>
+          <table class="brd-table">
+            <thead><tr><th>Field</th><th>Type</th><th>Logic</th><th>Validation</th></tr></thead>
+            <tbody>
+              <tr><td>1. Business Understanding</td><td>Rating (1-5)</td><td rowspan="10" style="vertical-align:middle">All 10 feed <code>avg_rating</code></td><td rowspan="10" style="vertical-align:middle">Each 0&ndash;5</td></tr>
+              <tr><td>2. Potential for Entrepreneurship Ecosystem Development</td><td>Rating</td></tr>
+              <tr><td>3. Age &amp; Education</td><td>Rating</td></tr>
+              <tr><td>4. Innovation</td><td>Rating</td></tr>
+              <tr><td>5. Openness to Change &amp; Experiment</td><td>Rating</td></tr>
+              <tr><td>6. Entrepreneur Responsiveness</td><td>Rating</td></tr>
+              <tr><td>7. Scalability</td><td>Rating</td></tr>
+              <tr><td>8. Sustainability</td><td>Rating</td></tr>
+              <tr><td>9. Promotes State USP</td><td>Rating</td></tr>
+              <tr><td>10. Cultural Significance</td><td>Rating</td></tr>
+              <tr><td><strong>Average Rating</strong></td><td>Data (read-only, calc)</td><td><strong>= mean of the 10 ratings</strong></td><td>Read-only</td></tr>
+            </tbody>
+          </table>
+
+          <h4 style="font-size:14px;color:var(--teal);margin:16px 0 10px;">Section II: Pitching Competition Evaluation</h4>
+          <table class="brd-table">
+            <thead><tr><th>Field</th><th>Type</th><th>Input / Autofill</th><th>Logic</th><th>Validation</th></tr></thead>
+            <tbody>
+              <tr><td>Rural E-Champ Score</td><td>Int</td><td>Input (Fellow)</td><td>Pitching round score</td><td>&ge; 0</td></tr>
+              <tr><td>Attachment</td><td>Attach</td><td>Input</td><td>Pitch deck / evidence</td><td>--</td></tr>
+            </tbody>
+          </table>
+
+          <h4 style="font-size:14px;color:var(--teal);margin:16px 0 10px;">Section III: Final Selection &amp; Status</h4>
+          <table class="brd-table">
+            <thead><tr><th>Field</th><th>Type</th><th>Input Values</th><th>Logic</th><th>Validation</th></tr></thead>
+            <tbody>
+              <tr><td>Final Selection</td><td>Select</td><td>Incubated, Supported</td><td><strong>Editable by Core Team IT only.</strong> Setting it moves status from MET. Empty = remains MET</td><td>Permission-guarded to CTIT role</td></tr>
+              <tr><td>Status</td><td>Select</td><td>Active, Inactive</td><td>Activity flag for Status Monitor</td><td>--</td></tr>
+              <tr><td>Any Other Intervention</td><td>Text</td><td>Free text</td><td>Catch-all notes</td><td>--</td></tr>
+            </tbody>
+          </table>
+
+          <h4 style="font-size:14px;color:var(--teal);margin:16px 0 10px;">Section IV: Framework Selection (Needs Assessment)</h4>
+          <div class="callout callout-teal" style="margin-bottom:10px">18 yes/no support flags. Each ticked checkbox reveals a dependent <em>Note</em> text box (<code>depends_on</code>). These feed the Prioritisation tab's applicable-framework list.</div>
+          <table class="brd-table">
+            <thead><tr><th>Support Flag (Check)</th><th>Reveals on tick</th></tr></thead>
+            <tbody>
+              <tr><td>Needs Financial Bookkeeping Support?</td><td rowspan="18" style="vertical-align:top;font-size:12px">Each checkbox, when ticked, shows a dependent <strong>Small Text note</strong> field (e.g. "Financial Bookkeeping Note") via <code>depends_on: eval:doc.&lt;flag&gt;==1</code>. Notes are optional context for the prioritisation conversation.</td></tr>
+              <tr><td>Needs Unit Pricing Support?</td></tr>
+              <tr><td>Needs Raw Material Procurement Support?</td></tr>
+              <tr><td>Needs Machinery Support?</td></tr>
+              <tr><td>Needs Registration / Licensing Support?</td></tr>
+              <tr><td>Needs Product Testing Support?</td></tr>
+              <tr><td>Needs Standardization Support?</td></tr>
+              <tr><td>Needs Packaging Support?</td></tr>
+              <tr><td>Needs Quality Control Support?</td></tr>
+              <tr><td>Needs Market Linkage Support?</td></tr>
+              <tr><td>Needs Branding &amp; Marketing Support?</td></tr>
+              <tr><td>Needs Logistic Support?</td></tr>
+              <tr><td>Needs Digital Literacy Support?</td></tr>
+              <tr><td>Needs Training Support?</td></tr>
+              <tr><td>Needs Infrastructure Support?</td></tr>
+              <tr><td>Needs Pitch Deck Support?</td></tr>
+              <tr><td>Needs Funding / Schemes Support?</td></tr>
+              <tr><td>(+ Any Other Intervention free-text)</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- TAB 6: CONNECTIONS -->
+      <div class="accordion">
+        <div class="accordion-trigger" onclick="this.parentElement.classList.toggle('open')">
+          Tab 6: Connections (Networking &amp; Mentoring) <span class="acc-arrow">&#9660;</span>
+        </div>
+        <div class="accordion-body">
+          <div class="callout callout-teal">Full spec at <a style="color:var(--sea);cursor:pointer" onclick="scrollTo_('m-ep-networking')">PR-EP-004 Networking &amp; Mentoring</a>. Inline Add-Introduction form + per-introduction meeting logs.</div>
+          <table class="brd-table">
+            <thead><tr><th>Field</th><th>Type</th><th>Logic</th><th>Validation</th></tr></thead>
+            <tbody>
+              <tr><td>Introductions</td><td>Table (Entrepreneur Introduction)</td><td>Child rows: mentor (from Mentor Master, read-only for Fellow), introduced by, date, objective, meeting status</td><td>Mentor + objective required per row</td></tr>
+              <tr><td>Networking Component</td><td>HTML</td><td>Inline meeting-log panel per introduction; auto-syncs meeting_count, last/next meeting date, latest outcome to parent</td><td>--</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- TAB 7: PROFILE DASHBOARD -->
+      <div class="accordion">
+        <div class="accordion-trigger" onclick="this.parentElement.classList.toggle('open')">
+          Tab 7: Profile Dashboard (read-only) <span class="acc-arrow">&#9660;</span>
+        </div>
+        <div class="accordion-body">
+          <div class="callout callout-teal">Auto-generated after first save (General Rule 5). Rendered from HTML fields (<code>information_header</code>, <code>cards</code>, <code>basic_business</code>, <code>diagnostic_framework</code>).</div>
+          <div class="rules-grid">
+            <div class="rule-card"><div class="rule-num">Information Header</div><div class="rule-text">Name, photo, status chip, block, sector, cohort, contact quick-glance.</div></div>
+            <div class="rule-card"><div class="rule-num">Product Photo Cards + Add New</div><div class="rule-text">All products as clickable photo cards &rarr; open Product Profile. Trailing <strong>"+ Add New Product"</strong> tile opens a fresh Product doctype prefilled with this entrepreneur. (See <a style="color:var(--sea);cursor:pointer" onclick="scrollTo_('d-ep-progress')">PR-DB-005</a>.)</div></div>
+            <div class="rule-card"><div class="rule-num">Basic Business</div><div class="rule-text">Enterprise snapshot — stage, market access, progress, avg rating, Rural E-Champ score.</div></div>
+            <div class="rule-card"><div class="rule-num">Diagnostic Framework Grid</div><div class="rule-text">Per applicable framework (priority order): Not Started &rarr; Completed &rarr; Completed xN. Summary popup shows % completion (General Rule 9).</div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- TAB 8: INTERVENTION LOGS -->
+      <div class="accordion">
+        <div class="accordion-trigger" onclick="this.parentElement.classList.toggle('open')">
+          Tab 8: Intervention Logs (read-only) <span class="acc-arrow">&#9660;</span>
+        </div>
+        <div class="accordion-body">
+          <table class="brd-table">
+            <thead><tr><th>Field</th><th>Type</th><th>Logic</th><th>Validation</th></tr></thead>
+            <tbody>
+              <tr><td>Logs</td><td>Table (Task Logs)</td><td><strong>Read-only mirror</strong> of all Fellow Activity Logger entries for this entrepreneur (framework + non-framework). Synced automatically. See <a style="color:var(--sea);cursor:pointer" onclick="scrollTo_('x-activity')">Activity Logger</a></td><td>System-populated</td></tr>
+              <tr><td>Visit Date / Intervention Date</td><td>Date</td><td>Most recent visit / intervention stamps</td><td>&le; today</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="callout callout-danger" style="margin-top:14px">
+        <strong>Key validations (whole form):</strong> Entrepreneur Name + Phone + District + Block required to save (sets MET). District/Block auto-fill and gate edit rights to the user's own block (Rule 10). Final Selection writable by CTIT only. Cohort required for monthly trackers to render across cohort years (Rule 11). Phone must be a valid 10-digit number; Email valid format; DOB &amp; business start date &le; today.
+      </div>
+
+      <div class="review-panel" data-section="m-ep">
+        <div class="review-strip">
+          <span style="font-size:12px;color:var(--ink-soft);font-weight:500;">Section Review:</span>
+          <button class="review-status-btn" onclick="setReview('m-ep','draft',this)">Draft</button>
+          <button class="review-status-btn" onclick="setReview('m-ep','review',this)">In Review</button>
+          <button class="review-status-btn" onclick="setReview('m-ep','changes',this)">Needs Changes</button>
+          <button class="review-status-btn" onclick="setReview('m-ep','approved',this)">Approved</button>
+          <button style="margin-left:auto;background:none;border:none;font-size:12px;color:var(--sea);cursor:pointer;font-family:var(--font);text-decoration:underline;" onclick="copyLink('m-ep')">Copy Link</button>
+        </div>
+        <div class="review-comments">
+          <div class="comment-list" id="comments-m-ep"></div>
+          <div class="comment-input-row">
+            <input type="text" placeholder="Your name" style="max-width:120px" id="name-m-ep">
+            <textarea rows="1" placeholder="Add a comment..." id="text-m-ep"></textarea>
+            <button class="comment-add-btn" onclick="addComment('m-ep')">Add</button>
+          </div>
+        </div>
+      </div>
+    </div>
     <div class="brd-section" id="m-ep-selection"><div class="section-header"><span class="section-id">PR-EP-002</span><h2 class="section-title">Selection &amp; Prioritisation</h2></div><div class="callout callout-teal">Coming in Phase 7.</div></div>
     <div class="brd-section" id="m-ep-dashboard"><div class="section-header"><span class="section-id">PR-EP-003</span><h2 class="section-title">Entrepreneur Profile Dashboard</h2></div><div class="callout callout-teal">Coming in Phase 6.</div></div>
     <div class="brd-section" id="m-ep-networking"><div class="section-header"><span class="section-id">PR-EP-004</span><h2 class="section-title">Networking &amp; Mentoring</h2></div><div class="callout callout-teal">Coming in Phase 7.</div></div>
