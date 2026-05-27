@@ -8455,182 +8455,334 @@ body > .site-nav { position: fixed; top: 0; left: 0; right: 0; z-index: 9999; }
 
     <!-- PITCH DECK -->
     <div class="brd-section" id="m-pitch">
-      <div class="section-header">
-        <span class="section-id">PR-FN-001</span>
-        <h2 class="section-title">Pitch Deck</h2>
-      </div>
-      <div class="section-desc"><strong>Entrepreneur-level framework.</strong> Guide entrepreneurs through creating an 11-slide pitch deck with existing assessment, content creation, and implementation tracking.</div>
+  <div class="section-header"><span class="section-id">PR-FN-001</span><h2 class="section-title">Pitch Deck</h2></div>
+  <div class="section-desc"><strong>Entrepreneur-level framework</strong> (Funding module) that guides the entrepreneur through building an <strong>11-slide investor pitch deck</strong>. The Existing tab records any deck already held and flags whether help is needed; the Required tab is a structured <strong>slide-by-slide content workspace</strong> plus the finished-deck upload and implementation status.</div>
+  <div class="callout callout-terra"><strong>Existing &rarr; Required bridge (Rule 3).</strong> Toggling <em>Does Entrepreneur need a Pitch Deck?</em> ON in Existing flags the intervention and activates the Required tab&rsquo;s slide workspace. The eleven slides are: <strong>Vision &amp; Impact &middot; Problem Statement &middot; Solution (USP) &middot; Business Model &middot; Financial Projections &middot; Milestones &middot; Competition &middot; Marketing Strategy &middot; Team Overview &middot; Expectations from Incubation &middot; Ask (Funding)</strong>. Slide-fill progress and the final-deck upload feed the Summary aggregates.</div>
 
-      <h3 style="font-size:16px;color:var(--teal);margin:12px 0 8px;">Tab Structure: Summary | Existing | Required | Resources | Log Book</h3>
+  <h3 style="font-size:16px;color:var(--teal);margin:18px 0 10px;">On-Screen UI Structure</h3>
+  <div class="card"><div style="font-size:13px;line-height:1.9;color:var(--ink)">A teal title bar reads <em>Pitch Deck</em>; a horizontal <strong>tab rail</strong> &mdash; <em>Summary &middot; Existing &middot; Required &middot; Resources &middot; Task Log &middot; Log Book</em> &mdash; sits below, active tab teal, entrepreneur chip on every panel (Rule 2).<br><br><strong>Existing</strong> has two cards: Section&nbsp;I <em>Pitch Deck</em> (upload existing deck .pdf/.ppt/.pptx with a View button, Pitch Video Link with Open&nbsp;&#8599;, Last Updated date) and a terracotta Section&nbsp;II <em>Intervention Need</em> (Need-a-deck toggle + Justify). <strong>Required</strong> has Section&nbsp;I <em>Assessment</em> &mdash; an <strong>11-slide content grid</strong> (each slide is a colour-coded card with title, guiding description, and a content textarea) &mdash; and a terracotta Section&nbsp;II <em>Implementation Status</em> (status select, final-deck upload, video link, last updated). <strong>Summary</strong> is read-only: a slide-wise overview table, aggregate cards (Existing Assets / Slide Progress / Interventions / Slide Breakdown) and four intervention-flag tiles (Slides Filled, Intervention Needed, Required Deck Uploaded, Tasks Completed). <strong>Resources</strong>, <strong>Task Log</strong> and <strong>Log Book</strong> close the rail.</div></div>
+  <div class="flow-container" style="margin-top:12px"><div class="flow-step"><div class="flow-box">Summary</div></div><div class="flow-arrow">&rarr;</div><div class="flow-step"><div class="flow-box">Existing</div></div><div class="flow-arrow">&rarr;</div><div class="flow-step"><div class="flow-box">Required</div></div><div class="flow-arrow">&rarr;</div><div class="flow-step"><div class="flow-box">Resources</div></div><div class="flow-arrow">&rarr;</div><div class="flow-step"><div class="flow-box">Task Log</div></div><div class="flow-arrow">&rarr;</div><div class="flow-step"><div class="flow-box">Log Book</div></div></div>
 
-      <div class="accordion">
-        <div class="accordion-trigger" onclick="this.parentElement.classList.toggle('open')">
-          Summary Tab <span class="acc-arrow">&#9660;</span>
-        </div>
-        <div class="accordion-body">
-          <div class="stat-strip cols-3">
-            <div class="stat-card"><div class="stat-label">Progress</div><div style="font-size:12px;margin-top:4px;">Slides filled X/11, percentage bar</div></div>
-            <div class="stat-card"><div class="stat-label">Slide Status</div><div style="font-size:12px;margin-top:4px;">Per-slide filled/empty + impl status + last updated</div></div>
-            <div class="stat-card accent"><div class="stat-label">Existing Assets</div><div style="font-size:12px;margin-top:4px;">Deck uploaded?, Video link?, Intervention needed?</div></div>
-          </div>
-          <p style="font-size:12px;color:var(--ink-soft);">Slide Snapshots showing first 180 chars of each slide content.</p>
-        </div>
-      </div>
+  <h3 style="font-size:16px;color:var(--teal);margin:18px 0 10px;">User Journey</h3>
+  <div class="card"><div class="flow-container">
+    <div class="flow-step"><div class="flow-box">Open Pitch Deck</div><div class="flow-label">EP dashboard &middot; Diagnostics &rarr; Funding</div></div>
+    <div class="flow-arrow">&rarr;</div>
+    <div class="flow-step"><div class="flow-box">Record existing deck</div><div class="flow-label">Existing &mdash; upload / video link, or none</div></div>
+    <div class="flow-arrow">&rarr;</div>
+    <div class="flow-step"><div class="flow-box">Flag need &amp; justify</div><div class="flow-label">Section II toggle &rarr; activates slide workspace</div></div>
+    <div class="flow-arrow">&rarr;</div>
+    <div class="flow-step"><div class="flow-box">Fill 11 slides</div><div class="flow-label">Required &mdash; Assessment content grid</div></div>
+    <div class="flow-arrow">&rarr;</div>
+    <div class="flow-step"><div class="flow-box">Upload deck &amp; Save</div><div class="flow-label">Implementation Status; Summary progress updates</div></div>
+  </div></div>
 
-      <div class="accordion">
-        <div class="accordion-trigger" onclick="this.parentElement.classList.toggle('open')">
-          Existing Tab <span class="acc-arrow">&#9660;</span>
-        </div>
-        <div class="accordion-body">
-          <table class="brd-table">
-            <thead><tr><th>Field</th><th>Type</th><th>Logic</th></tr></thead>
-            <tbody>
-              <tr><td>Upload existing Pitch Deck</td><td>Attach (.pdf, .ppt, .pptx)</td><td>Input</td></tr>
-              <tr><td>Pitch Video Link</td><td>URL + "Open" button</td><td>Input</td></tr>
-              <tr><td>Last Updated</td><td>Date</td><td>Input</td></tr>
-              <tr><td>Does Entrepreneur need a Pitch Deck?</td><td>Toggle</td><td>Intervention Need + Justification</td></tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
+  <!-- ============ TAB 1: SUMMARY ============ -->
+  <div class="accordion open"><div class="accordion-trigger" onclick="this.parentElement.classList.toggle('open')">Tab 1: Summary <span class="acc-arrow">&#9660;</span></div>
+    <div class="accordion-body">
+      <p style="font-size:13px;color:var(--ink-soft);margin-bottom:12px;">Read-only. Auto-populated from Existing and Required; recalculates on switch back.</p>
 
-      <div class="accordion">
-        <div class="accordion-trigger" onclick="this.parentElement.classList.toggle('open')">
-          Required Tab &mdash; 11 Slide Blocks + Implementation <span class="acc-arrow">&#9660;</span>
-        </div>
-        <div class="accordion-body">
-          <h4 style="font-size:13px;color:var(--teal);margin-bottom:8px;">Section I: Assessment (11 Slides in 2-Column Grid)</h4>
-          <table class="brd-table">
-            <thead><tr><th>#</th><th>Slide Title</th><th>Content Field</th></tr></thead>
-            <tbody>
-              <tr><td>1</td><td>Vision &amp; Impact</td><td>Textarea</td></tr>
-              <tr><td>2</td><td>Problem Statement</td><td>Textarea</td></tr>
-              <tr><td>3</td><td>Solution (USP)</td><td>Textarea</td></tr>
-              <tr><td>4</td><td>Business Model</td><td>Textarea</td></tr>
-              <tr><td>5</td><td>Financial Projections</td><td>Textarea</td></tr>
-              <tr><td>6</td><td>Milestones</td><td>Textarea</td></tr>
-              <tr><td>7</td><td>Competition</td><td>Textarea</td></tr>
-              <tr><td>8</td><td>Marketing Strategy</td><td>Textarea</td></tr>
-              <tr><td>9</td><td>Team Overview</td><td>Textarea</td></tr>
-              <tr><td>10</td><td>Expectations from Incubation</td><td>Textarea</td></tr>
-              <tr><td>11</td><td>Ask (Funding)</td><td>Textarea</td></tr>
-            </tbody>
-          </table>
+      <h4 style="font-size:14px;color:var(--teal);margin-bottom:10px;">Slide-wise Overview Table</h4>
+      <p style="font-size:12px;color:var(--ink-soft);font-style:italic;margin-bottom:8px;">One row per slide (11 rows) showing fill status.</p>
+      <table class="brd-table"><thead><tr><th>Field Name</th><th>Field Type</th><th>Input Values</th><th>Input / Autofill</th><th>Logic</th><th>Validation &amp; Error Messages</th></tr></thead>
+      <tbody>
+        <tr><td>Slide</td><td>Read-only text</td><td>11 slide titles (Vision &amp; Impact &hellip; Ask)</td><td>System</td><td>Fixed slide list.</td><td>&mdash; (display only)</td></tr>
+        <tr><td>Status</td><td>Read-only badge</td><td>Filled / Empty</td><td>Calculated</td><td>Filled (green) when the slide&rsquo;s content textarea is non-blank; Empty (amber) otherwise.</td><td>&mdash;</td></tr>
+        <tr><td>Content Preview</td><td>Read-only text</td><td>&mdash;</td><td>Autofill</td><td>Truncated first line of the slide&rsquo;s content.</td><td>&mdash;</td></tr>
+      </tbody></table>
 
-          <h4 style="font-size:13px;color:var(--teal);margin:14px 0 8px;">Section II: Implementation</h4>
-          <p style="font-size:12px;color:var(--ink-soft);">Status (Pending/In Progress/Implemented/Not Feasible), Upload Pitch Deck, Pitch Video Link, Last Updated.</p>
+      <h4 style="font-size:14px;color:var(--teal);margin:16px 0 10px;">Aggregate Cards (4)</h4>
+      <table class="brd-table"><thead><tr><th>Card / Metric</th><th>Field Type</th><th>Input / Autofill</th><th>Logic</th></tr></thead>
+      <tbody>
+        <tr><td>Existing Assets &rarr; Deck Uploaded / Video Link / Last Updated</td><td>Read-only</td><td>Autofill</td><td>Whether an existing deck file / video link exists and when it was last updated.</td></tr>
+        <tr><td>Slide Progress &rarr; Slides Filled</td><td>Read-only number (green)</td><td>Calculated</td><td>Count of the 11 slides with content.</td></tr>
+        <tr><td>Slide Progress &rarr; Slides Empty</td><td>Read-only number (amber)</td><td>Calculated</td><td><em>= 11 &minus; Slides Filled</em>.</td></tr>
+        <tr><td>Slide Progress &rarr; Completion %</td><td>Read-only (green)</td><td>Calculated</td><td><em>= Slides Filled &divide; 11</em>.</td></tr>
+        <tr><td>Interventions &rarr; Needed / Implementation Status</td><td>Read-only</td><td>Autofill</td><td>Reflects the Existing need-toggle and the Required Implementation Status.</td></tr>
+        <tr><td>Slide Breakdown &rarr; per-slide filled flags</td><td>Read-only list</td><td>Calculated</td><td>Compact per-slide filled/empty indicator.</td></tr>
+      </tbody></table>
 
-          <p style="font-size:12px;margin-top:8px;"><strong>Resources:</strong> 5 tiles (Pitch Deck Skeleton, Sequoia Framework, Sample Decks, Financial Projection Worksheet, 5-Minute Pitch video).<br>
-          <strong>Task Log:</strong> 18 pre-seeded tasks across 3 phases (Existing/Assessment/Implementation).<br>
-          <strong>Log Book:</strong> Date, Activity, Visit Type (Site Visit/Phone Call/Pitch Rehearsal/Investor Meeting/Mentoring/Workshop/Other), Discussion, Person Met, Evidence upload.</p>
-        </div>
-      </div>
+      <h4 style="font-size:14px;color:var(--teal);margin:16px 0 10px;">Intervention Flags Strip (4 tiles)</h4>
+      <table class="brd-table"><thead><tr><th>Tile</th><th>Field Type</th><th>Input / Autofill</th><th>Logic</th></tr></thead>
+      <tbody>
+        <tr><td>&#128202; Slides Filled</td><td>Read-only count (green)</td><td>Calculated</td><td>= slides with content (of 11).</td></tr>
+        <tr><td>&#8635; Intervention Needed</td><td>Read-only Yes/No (amber)</td><td>Autofill</td><td>= Existing need-a-deck toggle state.</td></tr>
+        <tr><td>&#128193; Required Deck Uploaded</td><td>Read-only Yes/No (blue)</td><td>Autofill</td><td>= whether the Required final deck file is attached.</td></tr>
+        <tr><td>&#10003; Tasks Completed</td><td>Read-only count (green)</td><td>Calculated</td><td>= Task Log rows marked Completed.</td></tr>
+      </tbody></table>
+    </div></div>
 
-      <div class="review-panel" data-section="m-pitch">
-        <div class="review-strip">
-          <span style="font-size:12px;color:var(--ink-soft);font-weight:500;">Section Review:</span>
-          <button class="review-status-btn" onclick="setReview('m-pitch','draft',this)">Draft</button>
-          <button class="review-status-btn" onclick="setReview('m-pitch','review',this)">In Review</button>
-          <button class="review-status-btn" onclick="setReview('m-pitch','changes',this)">Needs Changes</button>
-          <button class="review-status-btn" onclick="setReview('m-pitch','approved',this)">Approved</button>
-          <button style="margin-left:auto;background:none;border:none;font-size:12px;color:var(--sea);cursor:pointer;font-family:var(--font);text-decoration:underline;" onclick="copyLink('m-pitch')">Copy Link</button>
-        </div>
-        <div class="review-comments"><div class="comment-list" id="comments-m-pitch"></div>
-          <div class="comment-input-row"><input type="text" placeholder="Your name" style="max-width:120px" id="name-m-pitch"><textarea rows="1" placeholder="Add a comment..." id="text-m-pitch"></textarea><button class="comment-add-btn" onclick="addComment('m-pitch')">Add</button></div>
-        </div>
-      </div>
-    </div>
+  <!-- ============ TAB 2: EXISTING ============ -->
+  <div class="accordion"><div class="accordion-trigger" onclick="this.parentElement.classList.toggle('open')">Tab 2: Existing <span class="acc-arrow">&#9660;</span></div>
+    <div class="accordion-body">
+      <h4 style="font-size:14px;color:var(--teal);margin-bottom:10px;">Section I &mdash; Pitch Deck (existing assets)</h4>
+      <table class="brd-table"><thead><tr><th>Field Name</th><th>Field Type</th><th>Input Values</th><th>Input / Autofill</th><th>Logic</th><th>Validation &amp; Error Messages</th></tr></thead>
+      <tbody>
+        <tr><td>Upload Pitch Deck (if available)</td><td>Attach (Upload / View)</td><td>.pdf / .ppt / .pptx</td><td>Input</td><td>Existing deck file; View enabled once attached. Feeds the Existing Assets aggregate.</td><td>&mdash;</td></tr>
+        <tr><td>Pitch Video Link (if available)</td><td>URL</td><td>https://&hellip;</td><td>Input</td><td>An &ldquo;Open &#8599;&rdquo; link appears when a valid URL is entered.</td><td>Valid URL.</td></tr>
+        <tr><td>Last Updated</td><td>Date</td><td>&mdash;</td><td>Input</td><td>When the existing deck was last revised.</td><td>&mdash;</td></tr>
+      </tbody></table>
+
+      <h4 style="font-size:14px;color:var(--teal);margin:16px 0 10px;">Section II &mdash; Intervention Need</h4>
+      <table class="brd-table"><thead><tr><th>Field Name</th><th>Field Type</th><th>Input Values</th><th>Input / Autofill</th><th>Logic</th><th>Validation &amp; Error Messages</th></tr></thead>
+      <tbody>
+        <tr><td>Does Entrepreneur need a Pitch Deck?</td><td>Toggle</td><td>Yes / No</td><td>Input</td><td>ON flags the intervention, activates the Required slide workspace and sets the Summary Intervention Needed flag.</td><td>&mdash;</td></tr>
+        <tr><td>Justify</td><td>Textarea</td><td>Free text</td><td>Input</td><td>Why a deck is (or isn&rsquo;t) required &mdash; investor outreach, grant application, incubator entry.</td><td>Recommended when toggle ON.</td></tr>
+      </tbody></table>
+    </div></div>
+
+  <!-- ============ TAB 3: REQUIRED ============ -->
+  <div class="accordion"><div class="accordion-trigger" onclick="this.parentElement.classList.toggle('open')">Tab 3: Required <span class="acc-arrow">&#9660;</span></div>
+    <div class="accordion-body">
+      <h4 style="font-size:14px;color:var(--teal);margin-bottom:10px;">Section I &mdash; Assessment (11-slide content grid)</h4>
+      <p style="font-size:12px;color:var(--ink-soft);font-style:italic;margin-bottom:8px;">A high-level data-entry workspace for the eleven primary slides of the pitch. Each slide is a colour-coded card with a guiding description and a free-text content area.</p>
+      <table class="brd-table"><thead><tr><th>Slide (card)</th><th>Field Type</th><th>Guiding Prompt</th><th>Logic</th></tr></thead>
+      <tbody>
+        <tr><td>1. Vision &amp; Impact</td><td>Textarea</td><td>Long-term vision &amp; the environmental / social / economic impact.</td><td>Filled state feeds Slide Progress.</td></tr>
+        <tr><td>2. Problem Statement</td><td>Textarea</td><td>The specific, painful problem the customer faces; quantify where possible.</td><td>&mdash;</td></tr>
+        <tr><td>3. Solution (USP)</td><td>Textarea</td><td>The product / service &amp; the unique selling proposition (origin, craft, ingredient, certification).</td><td>&mdash;</td></tr>
+        <tr><td>4. Business Model</td><td>Textarea</td><td>Revenue model, pricing, channels, key partners &mdash; how value is created &amp; captured.</td><td>&mdash;</td></tr>
+        <tr><td>5. Financial Projections</td><td>Textarea</td><td>3-year revenue, gross margin, break-even &amp; key assumptions.</td><td>&mdash;</td></tr>
+        <tr><td>6. Milestones</td><td>Textarea</td><td>Achievements to date + a 6 / 12 / 18-month roadmap.</td><td>&mdash;</td></tr>
+        <tr><td>7. Competition</td><td>Textarea</td><td>Direct &amp; indirect competitors and your differentiation.</td><td>&mdash;</td></tr>
+        <tr><td>8. Marketing Strategy</td><td>Textarea</td><td>Acquisition channels &amp; brand-building (online/offline mix, exhibitions, partnerships).</td><td>&mdash;</td></tr>
+        <tr><td>9. Team Overview</td><td>Textarea</td><td>Founders, key hires, advisors &amp; gaps still to fill.</td><td>&mdash;</td></tr>
+        <tr><td>10. Expectations from Incubation</td><td>Textarea</td><td>Mentorship, market linkages, infrastructure, specific introductions sought.</td><td>&mdash;</td></tr>
+        <tr><td>11. Ask (Funding)</td><td>Textarea</td><td>Amount sought, instrument (equity / grant / debt) &amp; line-by-line deployment.</td><td>&mdash;</td></tr>
+      </tbody></table>
+
+      <h4 style="font-size:14px;color:var(--teal);margin:16px 0 10px;">Section II &mdash; Implementation Status</h4>
+      <table class="brd-table"><thead><tr><th>Field Name</th><th>Field Type</th><th>Input Values</th><th>Input / Autofill</th><th>Logic</th><th>Validation &amp; Error Messages</th></tr></thead>
+      <tbody>
+        <tr><td>Implementation Status</td><td>Select</td><td>Pending / In Progress / Implemented / Not Feasible</td><td>Input</td><td>Status badge; surfaces in Summary.</td><td>&mdash;</td></tr>
+        <tr><td>Upload Pitch Deck</td><td>Attach (Upload / View)</td><td>.pdf / .ppt / .pptx</td><td>Input</td><td>The finished deck; sets the Required Deck Uploaded flag.</td><td>&mdash;</td></tr>
+        <tr><td>Pitch Video Link</td><td>URL</td><td>https://&hellip;</td><td>Input</td><td>Open &#8599; link when valid.</td><td>Valid URL.</td></tr>
+        <tr><td>Last Updated</td><td>Date</td><td>&mdash;</td><td>Input</td><td>&mdash;</td><td>&mdash;</td></tr>
+      </tbody></table>
+    </div></div>
+
+  <!-- ============ TAB 4: RESOURCES ============ -->
+  <div class="accordion"><div class="accordion-trigger" onclick="this.parentElement.classList.toggle('open')">Tab 4: Resources <span class="acc-arrow">&#9660;</span></div>
+    <div class="accordion-body">
+      <p style="font-size:13px;color:var(--ink-soft);margin-bottom:12px;">Reference materials &mdash; deck templates, sample pitches, investor lists, recorded pitch sessions. &ldquo;+ Add Resource&rdquo; appends a row.</p>
+      <table class="brd-table"><thead><tr><th>Field Name</th><th>Field Type</th><th>Input Values</th><th>Input / Autofill</th><th>Logic</th><th>Validation &amp; Error Messages</th></tr></thead>
+      <tbody>
+        <tr><td>Resource Title</td><td>Text</td><td>Free text</td><td>Input</td><td>&mdash;</td><td>&mdash;</td></tr>
+        <tr><td>Category</td><td>Select</td><td>Deck Template / Sample Pitch / Investor List / Recording / Reference</td><td>Input</td><td>&mdash;</td><td>&mdash;</td></tr>
+        <tr><td>Description / Notes</td><td>Text</td><td>Free text</td><td>Input</td><td>&mdash;</td><td>&mdash;</td></tr>
+        <tr><td>File / Link</td><td>Attach / URL</td><td>Any file or URL</td><td>Input</td><td>Drive-linked resource.</td><td>&mdash;</td></tr>
+      </tbody></table>
+    </div></div>
+
+  <!-- ============ TAB 5: TASK LOG ============ -->
+  <div class="accordion"><div class="accordion-trigger" onclick="this.parentElement.classList.toggle('open')">Tab 5: Task Log <span class="acc-arrow">&#9660;</span></div>
+    <div class="accordion-body">
+      <p style="font-size:13px;color:var(--ink-soft);margin-bottom:12px;">Seeded pitch-prep activities (e.g. Slides Drafted, Financials Validated, Deck Designed, Mock Pitch Done, Investor Shared) drive a read-only Progress field &amp; the Tasks Completed flag; each row carries Status, Owner, Due Date, Notes.</p>
+      <table class="brd-table"><thead><tr><th>Field Name</th><th>Field Type</th><th>Input Values</th><th>Input / Autofill</th><th>Logic</th><th>Validation &amp; Error Messages</th></tr></thead>
+      <tbody>
+        <tr><td>No. / Task Name / Phase</td><td>Read-only</td><td>Seeded list; Existing / Intervention / Required</td><td>System</td><td>Fixed seeded tasks with colour-coded phase badge.</td><td>&mdash;</td></tr>
+        <tr><td>Status</td><td>Select</td><td>Pending / In Progress / Completed / Blocked</td><td>Input</td><td>Aggregates into read-only Progress (%) &amp; Tasks Completed.</td><td>&mdash;</td></tr>
+        <tr><td>Owner / Due Date / Notes</td><td>Text / Date / Text</td><td>Free</td><td>Input</td><td>&mdash;</td><td>&mdash;</td></tr>
+      </tbody></table>
+    </div></div>
+
+  <!-- ============ TAB 6: LOG BOOK ============ -->
+  <div class="accordion"><div class="accordion-trigger" onclick="this.parentElement.classList.toggle('open')">Tab 6: Log Book <span class="acc-arrow">&#9660;</span></div>
+    <div class="accordion-body">
+      <p style="font-size:13px;color:var(--ink-soft);margin-bottom:12px;">Free-form activity diary (child table <em>DF Log Book Child</em>). &ldquo;+ Add Entry&rdquo; appends a row.</p>
+      <table class="brd-table"><thead><tr><th>Field Name</th><th>Field Type</th><th>Input Values</th><th>Input / Autofill</th><th>Logic</th><th>Validation &amp; Error Messages</th></tr></thead>
+      <tbody>
+        <tr><td>Date</td><td>Date</td><td>&mdash;</td><td>Input</td><td>&mdash;</td><td>&mdash;</td></tr>
+        <tr><td>Activity</td><td>Select</td><td>Drafting / Review / Mentor Session / Mock Pitch / Investor Meeting</td><td>Input</td><td>&mdash;</td><td>&mdash;</td></tr>
+        <tr><td>Notes / Observations</td><td>Text</td><td>Free text</td><td>Input</td><td>&mdash;</td><td>&mdash;</td></tr>
+        <tr><td>Logged By / Evidence</td><td>Text / Attach</td><td>Name / file</td><td>Input</td><td>&mdash;</td><td>&mdash;</td></tr>
+      </tbody></table>
+    </div></div>
+
+  <div class="callout callout-danger"><strong>Key validations (whole form):</strong> Entrepreneur is required and unique (one Pitch Deck form per entrepreneur). Video links must be valid URLs; deck uploads accept .pdf / .ppt / .pptx only. Slides Filled, Slides Empty and Completion % are computed read-only from the 11-slide grid (Rule 1). The Existing need-a-deck toggle activates the Required slide workspace; the Required Implementation Status and final-deck upload drive the Summary flags. Slide content and the Ask feed the entrepreneur&rsquo;s funding narrative (links conceptually to Scheme Funding).</div>
+
+  <div class="review-panel" data-section="m-pitch">
+    <div class="review-strip"><span style="font-size:12px;color:var(--ink-soft);font-weight:500;">Section Review:</span>
+      <button class="review-status-btn" onclick="setReview('m-pitch','draft',this)">Draft</button>
+      <button class="review-status-btn" onclick="setReview('m-pitch','review',this)">In Review</button>
+      <button class="review-status-btn" onclick="setReview('m-pitch','changes',this)">Needs Changes</button>
+      <button class="review-status-btn" onclick="setReview('m-pitch','approved',this)">Approved</button>
+      <button style="margin-left:auto;background:none;border:none;font-size:12px;color:var(--sea);cursor:pointer;font-family:var(--font);text-decoration:underline;" onclick="copyLink('m-pitch')">Copy Link</button></div>
+    <div class="review-comments"><div class="comment-list" id="comments-m-pitch"></div>
+      <div class="comment-input-row"><input type="text" placeholder="Your name" style="max-width:120px" id="name-m-pitch"><textarea rows="1" placeholder="Add a comment..." id="text-m-pitch"></textarea><button class="comment-add-btn" onclick="addComment('m-pitch')">Add</button></div></div>
+  </div>
+</div>
 
     <!-- SCHEMES & FUNDING -->
     <div class="brd-section" id="m-schemes">
-      <div class="section-header">
-        <span class="section-id">PR-FN-002</span>
-        <h2 class="section-title">Schemes &amp; Funding</h2>
-      </div>
-      <div class="section-desc"><strong>Entrepreneur-level framework.</strong> Track government schemes and funding opportunities — existing benefits and required applications.</div>
+  <div class="section-header"><span class="section-id">PR-FN-002</span><h2 class="section-title">Schemes &amp; Funding</h2></div>
+  <div class="section-desc"><strong>Entrepreneur-level framework</strong> (Funding module) that tracks every <strong>government scheme, grant and loan</strong> the entrepreneur has accessed or should pursue &mdash; eligibility, application status, disbursed amounts and full <strong>loan-repayment / EMI</strong> details. Schemes flagged for follow-up bridge into the Required tab; loan repayment figures conceptually align with the Financials framework.</div>
+  <div class="callout callout-teal"><strong>Scheme Master (config-driven, 19 + Other).</strong> Includes PMEGP, MUDRA (Shishu / Kishore / Tarun), Stand-Up India, Startup India Seed Fund, MOVCDNER, NABARD (Capital Investment Subsidy / Rural Innovation Fund), KVIB Loan, DIC Loan, CMEGP Meghalaya, MBMA Livelihood Programme, SELCO Foundation Grant, LIFCOM Loan, NEHHDC Marketing Support, MSME Champions, CGTMSE, NSIC Single Point Registration, and <em>Other</em>.</div>
+  <div class="callout callout-terra"><strong>Intervention bridge (Rule 3) &amp; EMI calc.</strong> Toggling the per-scheme Intervention block ON auto-creates a row in Required &rarr; Section&nbsp;I (carrying scheme + justification); Section&nbsp;II is for genuinely new applications. <strong>EMI / Month</strong> is computed (flat) as <em>Loan Amount &divide; Loan Term (months)</em> and is read-only. Status options: Applied / Sanctioned / Disbursed / Rejected / Under Review; Eligibility: Eligible / Not Eligible / Document Pending.</div>
 
-      <h3 style="font-size:16px;color:var(--teal);margin:12px 0 8px;">Tab Structure: Summary | Existing | Required | Resources | Log Book</h3>
+  <h3 style="font-size:16px;color:var(--teal);margin:18px 0 10px;">On-Screen UI Structure</h3>
+  <div class="card"><div style="font-size:13px;line-height:1.9;color:var(--ink)">A teal title bar reads <em>Schemes &amp; Funding</em>; a horizontal <strong>tab rail</strong> &mdash; <em>Summary &middot; Existing &middot; Required &middot; Resources &middot; Task &middot; Log Book</em> &mdash; sits below, active tab teal, entrepreneur chip on every panel (Rule 2).<br><br><strong>Existing</strong> renders each scheme as a row/card with three subsections: <em>(a) Scheme &amp; Eligibility</em>, <em>(b) Application &amp; Amounts</em> (status, dates, disbursed &amp; loan amount), and <em>(c) Loan Repayment Details</em> (loan no., amount, interest, outstanding, term, EMI/month, start/end dates, contribution %), plus a terracotta Intervention block. <strong>Required</strong> has Section&nbsp;I <em>Flagged</em> (bridge-populated) and Section&nbsp;II <em>New</em> scheme applications. <strong>Summary</strong> is read-only: Existing vs Required stat cards (count, disbursed &#8377;, total EMI/month) plus an Existing status-distribution strip (Applied / Sanctioned / Disbursed / Rejected / Under Review). <strong>Resources</strong> (Scheme Master List, MUDRA reference, Loan Documentation Checklist), <strong>Task</strong> and <strong>Log Book</strong> close the rail. Computed fields (EMI, outstanding, totals) render italic on cream-deep with formula tooltips (Rule 1).</div></div>
+  <div class="flow-container" style="margin-top:12px"><div class="flow-step"><div class="flow-box">Summary</div></div><div class="flow-arrow">&rarr;</div><div class="flow-step"><div class="flow-box">Existing</div></div><div class="flow-arrow">&rarr;</div><div class="flow-step"><div class="flow-box">Required</div></div><div class="flow-arrow">&rarr;</div><div class="flow-step"><div class="flow-box">Resources</div></div><div class="flow-arrow">&rarr;</div><div class="flow-step"><div class="flow-box">Task</div></div><div class="flow-arrow">&rarr;</div><div class="flow-step"><div class="flow-box">Log Book</div></div></div>
 
-      <div class="accordion">
-        <div class="accordion-trigger" onclick="this.parentElement.classList.toggle('open')">
-          Existing Tab &mdash; Scheme Cards <span class="acc-arrow">&#9660;</span>
-        </div>
-        <div class="accordion-body">
-          <div class="callout callout-teal" style="margin-bottom:10px">
-            <strong>Scheme Master (17):</strong> PMEGP, MUDRA (Shishu/Kishore/Tarun), Stand-Up India, Startup India Seed Fund, MOVCDNER, NABARD (CISS + RIF), KVIB Loan, DIC Loan, CMEGP Meghalaya, MBMA Livelihood Programme, SELCO Foundation Grant, LIFCOM Loan, NEHHDC Marketing Support, MSME Champions, CGTMSE, NSIC SPR, Other.
-          </div>
-          <table class="brd-table">
-            <thead><tr><th>Field</th><th>Type</th><th>Values</th><th>Logic</th></tr></thead>
-            <tbody>
-              <tr><td>Scheme Name</td><td>Select</td><td>17 from Scheme Master</td><td>Card header. Required.</td></tr>
-              <tr><td>Status</td><td>Select</td><td>Applied, Sanctioned, Disbursed, Rejected, Under Review</td><td>Color chip in header</td></tr>
-              <tr><td>Department / Agency</td><td>Data</td><td>Free text</td><td>e.g. "Ministry of MSME"</td></tr>
-              <tr><td>Eligibility Status</td><td>Select</td><td>Eligible, Not Eligible, Document Pending</td><td>--</td></tr>
-              <tr><td>Application Date</td><td>Date</td><td>--</td><td>&le; today</td></tr>
-              <tr><td>Disbursement Date</td><td>Date</td><td>--</td><td>&ge; Application Date</td></tr>
-              <tr><td>Total Sanction Amount</td><td>Currency</td><td>Numeric</td><td>--</td></tr>
-              <tr><td>Disbursed Amount</td><td>Currency</td><td>Numeric</td><td>&le; Sanction Amount</td></tr>
-              <tr><td>Loan Amount / Grant Amount / User Contribution</td><td>3x Currency</td><td>Numeric</td><td>Split of sanction</td></tr>
-            </tbody>
-          </table>
+  <h3 style="font-size:16px;color:var(--teal);margin:18px 0 10px;">User Journey</h3>
+  <div class="card"><div class="flow-container">
+    <div class="flow-step"><div class="flow-box">Open Schemes &amp; Funding</div><div class="flow-label">EP dashboard &middot; Diagnostics &rarr; Funding</div></div>
+    <div class="flow-arrow">&rarr;</div>
+    <div class="flow-step"><div class="flow-box">Add accessed schemes</div><div class="flow-label">Existing &mdash; pick scheme, eligibility, status, amounts</div></div>
+    <div class="flow-arrow">&rarr;</div>
+    <div class="flow-step"><div class="flow-box">Record loan &amp; EMI</div><div class="flow-label">Subsection c &mdash; EMI auto-calcs</div></div>
+    <div class="flow-arrow">&rarr;</div>
+    <div class="flow-step"><div class="flow-box">Flag follow-ups</div><div class="flow-label">Intervention toggle &rarr; Required Section I</div></div>
+    <div class="flow-arrow">&rarr;</div>
+    <div class="flow-step"><div class="flow-box">Add new applications &amp; Save</div><div class="flow-label">Required Section II; Summary &amp; status strip update</div></div>
+  </div></div>
 
-          <h4 style="font-size:13px;color:var(--teal);margin:14px 0 8px;">Loan Details Section (per scheme)</h4>
-          <table class="brd-table">
-            <thead><tr><th>Field</th><th>Type</th><th>Logic</th></tr></thead>
-            <tbody>
-              <tr><td>Loan No.</td><td>Data</td><td>Reference number</td></tr>
-              <tr><td>Loan Amount (Rs.)</td><td>Currency</td><td>Input</td></tr>
-              <tr><td>Loan Interest (% p.a.)</td><td>Float</td><td>Input</td></tr>
-              <tr><td>Outstanding Loan (Rs.)</td><td>Currency</td><td>Input</td></tr>
-              <tr><td>Loan Term (months)</td><td>Int</td><td>Input</td></tr>
-              <tr><td><strong>EMI / Month</strong></td><td>Currency (calc)</td><td><strong>= Loan Amount / Loan Term</strong> (flat)</td></tr>
-              <tr><td>Loan Start / End Date</td><td>2x Date</td><td>End &ge; Start</td></tr>
-              <tr><td>Loan Contribution %</td><td>Percent (0-100)</td><td>Input</td></tr>
-              <tr><td>Moratorium Period (months)</td><td>Int</td><td>Input</td></tr>
-              <tr><td>Collateral Provided</td><td>Textarea</td><td>Input</td></tr>
-              <tr><td>Security &amp; Documents</td><td>Attach</td><td>.pdf, .jpg, .doc</td></tr>
-            </tbody>
-          </table>
-          <p style="font-size:12px;margin-top:8px;">Intervention Need toggle + Justification. Bridges to Required tab.</p>
-        </div>
-      </div>
+  <!-- ============ TAB 1: SUMMARY ============ -->
+  <div class="accordion open"><div class="accordion-trigger" onclick="this.parentElement.classList.toggle('open')">Tab 1: Summary <span class="acc-arrow">&#9660;</span></div>
+    <div class="accordion-body">
+      <p style="font-size:13px;color:var(--ink-soft);margin-bottom:12px;">Live snapshot of every scheme accessed or applied for. Read-only; edit Existing / Required to update.</p>
 
-      <div class="accordion">
-        <div class="accordion-trigger" onclick="this.parentElement.classList.toggle('open')">
-          Required Tab <span class="acc-arrow">&#9660;</span>
-        </div>
-        <div class="accordion-body">
-          <table class="brd-table">
-            <thead><tr><th>Field</th><th>Type</th><th>Values</th><th>Logic</th></tr></thead>
-            <tbody>
-              <tr><td>Scheme Name</td><td>Data</td><td>Free text</td><td>Required</td></tr>
-              <tr><td>Sponsoring Agency</td><td>Data</td><td>Free text</td><td>--</td></tr>
-              <tr><td>Scheme Type</td><td>Select</td><td>Same 7 types</td><td>--</td></tr>
-              <tr><td>Eligibility Assessment</td><td>Textarea</td><td>Free text</td><td>Criteria check</td></tr>
-              <tr><td>Amount Applied For</td><td>Currency</td><td>Numeric</td><td>--</td></tr>
-              <tr><td>Application Date</td><td>Date</td><td>--</td><td>--</td></tr>
-              <tr><td>Application Status</td><td>Select</td><td>Identified, Applied, Under Review, Approved, Rejected, Disbursed</td><td>Color chip in header</td></tr>
-              <tr><td>Implementation Status</td><td>Select</td><td>Pending, In Progress, Completed, Not Feasible</td><td>--</td></tr>
-              <tr><td>Pre/Post Intervention Comments</td><td>2x Textarea</td><td>Free text</td><td>Per General Rule 6</td></tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
+      <h4 style="font-size:14px;color:var(--teal);margin-bottom:10px;">Stat Cards (Existing &amp; Required)</h4>
+      <table class="brd-table"><thead><tr><th>Card / Metric</th><th>Field Type</th><th>Input / Autofill</th><th>Logic</th></tr></thead>
+      <tbody>
+        <tr><td>Existing &rarr; Schemes Count</td><td>Read-only number</td><td>Calculated</td><td>Number of Existing scheme rows.</td></tr>
+        <tr><td>Existing &rarr; Disbursed (&#8377;)</td><td>Read-only currency (green)</td><td>Calculated</td><td>&Sigma; Disbursed Amount across Existing schemes. Indian formatting.</td></tr>
+        <tr><td>Existing &rarr; Total EMI / month (&#8377;)</td><td>Read-only currency</td><td>Calculated</td><td>&Sigma; of each scheme&rsquo;s EMI/Month (= Loan Amount &divide; Term).</td></tr>
+        <tr><td>Required &rarr; Schemes Count / Target Amount (&#8377;)</td><td>Read-only</td><td>Calculated</td><td>Count of Required rows and the funding sought.</td></tr>
+      </tbody></table>
 
-      <div class="review-panel" data-section="m-schemes">
-        <div class="review-strip">
-          <span style="font-size:12px;color:var(--ink-soft);font-weight:500;">Section Review:</span>
-          <button class="review-status-btn" onclick="setReview('m-schemes','draft',this)">Draft</button>
-          <button class="review-status-btn" onclick="setReview('m-schemes','review',this)">In Review</button>
-          <button class="review-status-btn" onclick="setReview('m-schemes','changes',this)">Needs Changes</button>
-          <button class="review-status-btn" onclick="setReview('m-schemes','approved',this)">Approved</button>
-          <button style="margin-left:auto;background:none;border:none;font-size:12px;color:var(--sea);cursor:pointer;font-family:var(--font);text-decoration:underline;" onclick="copyLink('m-schemes')">Copy Link</button>
-        </div>
-        <div class="review-comments"><div class="comment-list" id="comments-m-schemes"></div>
-          <div class="comment-input-row"><input type="text" placeholder="Your name" style="max-width:120px" id="name-m-schemes"><textarea rows="1" placeholder="Add a comment..." id="text-m-schemes"></textarea><button class="comment-add-btn" onclick="addComment('m-schemes')">Add</button></div>
-        </div>
-      </div>
-    </div>
+      <h4 style="font-size:14px;color:var(--teal);margin:16px 0 10px;">Existing &mdash; Status Distribution</h4>
+      <table class="brd-table"><thead><tr><th>Status</th><th>Field Type</th><th>Input / Autofill</th><th>Logic</th></tr></thead>
+      <tbody>
+        <tr><td>Applied</td><td>Read-only count (blue)</td><td>Calculated</td><td>Existing schemes with status Applied.</td></tr>
+        <tr><td>Sanctioned</td><td>Read-only count (amber)</td><td>Calculated</td><td>Status Sanctioned.</td></tr>
+        <tr><td>Disbursed</td><td>Read-only count (green)</td><td>Calculated</td><td>Status Disbursed.</td></tr>
+        <tr><td>Rejected</td><td>Read-only count (red)</td><td>Calculated</td><td>Status Rejected.</td></tr>
+        <tr><td>Under Review</td><td>Read-only count</td><td>Calculated</td><td>Status Under Review.</td></tr>
+      </tbody></table>
+    </div></div>
+
+  <!-- ============ TAB 2: EXISTING ============ -->
+  <div class="accordion"><div class="accordion-trigger" onclick="this.parentElement.classList.toggle('open')">Tab 2: Existing <span class="acc-arrow">&#9660;</span></div>
+    <div class="accordion-body">
+      <p style="font-size:13px;color:var(--ink-soft);margin-bottom:12px;">Every scheme / grant / loan the entrepreneur has accessed, as a row with three subsections + an Intervention block. Loan repayment fields auto-fetch from the Financials module where available. &ldquo;+ Add Scheme&rdquo; appends a row.</p>
+
+      <h4 style="font-size:14px;color:var(--teal);margin-bottom:10px;">Subsection a &mdash; Scheme &amp; Eligibility</h4>
+      <table class="brd-table"><thead><tr><th>Field Name</th><th>Field Type</th><th>Input Values</th><th>Input / Autofill</th><th>Logic</th><th>Validation &amp; Error Messages</th></tr></thead>
+      <tbody>
+        <tr><td>Scheme / Funding *</td><td>Select</td><td>Scheme Master (19 + Other)</td><td>Input</td><td>Labels the row &amp; Summary; choosing &ldquo;Other&rdquo; reveals a free-text name.</td><td>&ldquo;Select a scheme.&rdquo;</td></tr>
+        <tr><td>Eligibility Status</td><td>Select</td><td>Eligible / Not Eligible / Document Pending</td><td>Input</td><td>Drives an eligibility chip.</td><td>&mdash;</td></tr>
+        <tr><td>Eligibility Notes</td><td>Textarea</td><td>Free text</td><td>Input</td><td>Criteria met / pending documents.</td><td>&mdash;</td></tr>
+      </tbody></table>
+
+      <h4 style="font-size:14px;color:var(--teal);margin:16px 0 10px;">Subsection b &mdash; Application &amp; Amounts</h4>
+      <table class="brd-table"><thead><tr><th>Field Name</th><th>Field Type</th><th>Input Values</th><th>Input / Autofill</th><th>Logic</th><th>Validation &amp; Error Messages</th></tr></thead>
+      <tbody>
+        <tr><td>Status</td><td>Select</td><td>Applied / Sanctioned / Disbursed / Rejected / Under Review</td><td>Input</td><td>Header status chip; feeds the Status Distribution.</td><td>&mdash;</td></tr>
+        <tr><td>Application Date</td><td>Date</td><td>&mdash;</td><td>Input</td><td>&mdash;</td><td>&le; today.</td></tr>
+        <tr><td>Disbursement Date</td><td>Date</td><td>&mdash;</td><td>Input</td><td>Shown / relevant once status is Disbursed.</td><td>&ge; Application Date.</td></tr>
+        <tr><td>Disbursed Amount (&#8377;)</td><td>Currency</td><td>&ge; 0</td><td>Input</td><td>Feeds the Disbursed (&#8377;) summary stat.</td><td>Must be &ge; 0.</td></tr>
+        <tr><td>Loan Amount (&#8377;)</td><td>Currency</td><td>&ge; 0</td><td>Input</td><td>If the scheme is a loan; mirrors into subsection c.</td><td>Must be &ge; 0.</td></tr>
+        <tr><td>Sanction Letter / Proof</td><td>Attach (Upload / View)</td><td>Any file</td><td>Input</td><td>Supporting document.</td><td>&mdash;</td></tr>
+      </tbody></table>
+
+      <h4 style="font-size:14px;color:var(--teal);margin:16px 0 10px;">Subsection c &mdash; Loan Repayment Details</h4>
+      <table class="brd-table"><thead><tr><th>Field Name</th><th>Field Type</th><th>Input Values</th><th>Input / Autofill</th><th>Logic</th><th>Validation &amp; Error Messages</th></tr></thead>
+      <tbody>
+        <tr><td>Loan No.</td><td>Text</td><td>Free text</td><td>Input</td><td>Loan account / reference number.</td><td>&mdash;</td></tr>
+        <tr><td>Loan Amount (&#8377;)</td><td>Currency</td><td>&ge; 0</td><td>Input</td><td>Drives the EMI calc.</td><td>Must be &ge; 0.</td></tr>
+        <tr><td>Loan Interest (% p.a.)</td><td>Number</td><td>&ge; 0</td><td>Input</td><td>Recorded for reference.</td><td>Must be &ge; 0.</td></tr>
+        <tr><td>Outstanding Loan (&#8377;)</td><td>Currency</td><td>&ge; 0</td><td>Input</td><td>Current balance.</td><td>Must be &ge; 0.</td></tr>
+        <tr><td>Loan Term (months)</td><td>Number</td><td>&ge; 1</td><td>Input</td><td>Divides Loan Amount to compute EMI.</td><td>Integer &ge; 1.</td></tr>
+        <tr><td>EMI / Month (&#8377;)</td><td>Read-only currency</td><td>Calculated</td><td><em>= Loan Amount &divide; Loan Term</em> (flat); feeds Total EMI/month.</td><td>&mdash;</td></tr>
+        <tr><td>Loan Start / End Date</td><td>Date</td><td>&mdash;</td><td>Input</td><td>Repayment window.</td><td>End &gt; Start.</td></tr>
+        <tr><td>Loan Contribution %</td><td>Number</td><td>0&ndash;100</td><td>Input</td><td>Share of project cost funded by this loan.</td><td>0&ndash;100.</td></tr>
+      </tbody></table>
+
+      <h4 style="font-size:14px;color:var(--teal);margin:16px 0 10px;">Intervention Block</h4>
+      <table class="brd-table"><thead><tr><th>Field Name</th><th>Field Type</th><th>Input Values</th><th>Input / Autofill</th><th>Logic</th><th>Validation &amp; Error Messages</th></tr></thead>
+      <tbody>
+        <tr><td>Flag for Intervention?</td><td>Toggle</td><td>On / Off</td><td>Input</td><td>ON auto-creates a Required Section&nbsp;I row (bridge, Rule 3); OFF removes it.</td><td>&mdash;</td></tr>
+        <tr><td>Justify</td><td>Textarea</td><td>Free text</td><td>Input</td><td>Why follow-up is needed &mdash; partial disbursement, EMI burden, eligibility re-assessment. Two-way synced.</td><td>Required when toggle ON.</td></tr>
+      </tbody></table>
+    </div></div>
+
+  <!-- ============ TAB 3: REQUIRED ============ -->
+  <div class="accordion"><div class="accordion-trigger" onclick="this.parentElement.classList.toggle('open')">Tab 3: Required <span class="acc-arrow">&#9660;</span></div>
+    <div class="accordion-body">
+      <p style="font-size:13px;color:var(--ink-soft);margin-bottom:12px;">Section&nbsp;I auto-populates from Existing schemes flagged for intervention; Section&nbsp;II is for genuinely new applications identified for this entrepreneur.</p>
+
+      <h4 style="font-size:14px;color:var(--teal);margin-bottom:10px;">Section I &mdash; Schemes / Funding (Flagged, bridge-populated)</h4>
+      <table class="brd-table"><thead><tr><th>Field Name</th><th>Field Type</th><th>Input Values</th><th>Input / Autofill</th><th>Logic</th><th>Validation &amp; Error Messages</th></tr></thead>
+      <tbody>
+        <tr><td>Scheme (source)</td><td>Read-only text</td><td>&mdash;</td><td>Autofill</td><td>Mirrored from the flagged Existing scheme.</td><td>&mdash;</td></tr>
+        <tr><td>Justification</td><td>Read-only / Textarea</td><td>Free text</td><td>Autofill</td><td>Two-way synced with the Existing Intervention justify.</td><td>&mdash;</td></tr>
+        <tr><td>Action Required / Next Step</td><td>Textarea</td><td>Free text</td><td>Input</td><td>Concrete follow-up to pursue.</td><td>&mdash;</td></tr>
+        <tr><td>Implementation Status</td><td>Select</td><td>Pending / On hold / Applied / Rejected</td><td>Input</td><td>Tracks the follow-up.</td><td>&mdash;</td></tr>
+      </tbody></table>
+      <div class="callout callout-teal">Removing a Section&nbsp;I row toggles OFF the corresponding Existing Intervention flag (two-way sync).</div>
+
+      <h4 style="font-size:14px;color:var(--teal);margin:16px 0 10px;">Section II &mdash; Schemes / Funding (New applications)</h4>
+      <table class="brd-table"><thead><tr><th>Field Name</th><th>Field Type</th><th>Input Values</th><th>Input / Autofill</th><th>Logic</th><th>Validation &amp; Error Messages</th></tr></thead>
+      <tbody>
+        <tr><td>Scheme / Funding *</td><td>Select</td><td>Scheme Master (19 + Other)</td><td>Input</td><td>New scheme to apply for.</td><td>&ldquo;Select a scheme.&rdquo;</td></tr>
+        <tr><td>Eligibility Status</td><td>Select</td><td>Eligible / Not Eligible / Document Pending</td><td>Input</td><td>&mdash;</td><td>&mdash;</td></tr>
+        <tr><td>Target Amount (&#8377;)</td><td>Currency</td><td>&ge; 0</td><td>Input</td><td>Funding sought.</td><td>Must be &ge; 0.</td></tr>
+        <tr><td>Implementation Status</td><td>Select</td><td>Pending / On hold / Applied / Rejected</td><td>Input</td><td>&mdash;</td><td>&mdash;</td></tr>
+        <tr><td>Notes</td><td>Textarea</td><td>Free text</td><td>Input</td><td>&mdash;</td><td>&mdash;</td></tr>
+      </tbody></table>
+    </div></div>
+
+  <!-- ============ TAB 4: RESOURCES ============ -->
+  <div class="accordion"><div class="accordion-trigger" onclick="this.parentElement.classList.toggle('open')">Tab 4: Resources <span class="acc-arrow">&#9660;</span></div>
+    <div class="accordion-body">
+      <p style="font-size:13px;color:var(--ink-soft);margin-bottom:12px;">Reference material &amp; templates for scheme identification, application and disbursement tracking &mdash; includes a Scheme Master List, a MUDRA loan reference (SC/ST &amp; women eligibility, Composite Loan up to &#8377;1&nbsp;Crore) and a Loan Documentation Checklist. &ldquo;+ Add Resource&rdquo; appends a row.</p>
+      <table class="brd-table"><thead><tr><th>Field Name</th><th>Field Type</th><th>Input Values</th><th>Input / Autofill</th><th>Logic</th><th>Validation &amp; Error Messages</th></tr></thead>
+      <tbody>
+        <tr><td>Resource Title</td><td>Text</td><td>Free text</td><td>Input</td><td>&mdash;</td><td>&mdash;</td></tr>
+        <tr><td>Category</td><td>Select</td><td>Scheme Reference / Loan Reference / Documentation Checklist / Application Form / Contact</td><td>Input</td><td>&mdash;</td><td>&mdash;</td></tr>
+        <tr><td>Description / Notes</td><td>Text</td><td>Free text</td><td>Input</td><td>&mdash;</td><td>&mdash;</td></tr>
+        <tr><td>File / Link</td><td>Attach / URL</td><td>Any file or URL</td><td>Input</td><td>Drive-linked resource.</td><td>&mdash;</td></tr>
+      </tbody></table>
+    </div></div>
+
+  <!-- ============ TAB 5: TASK ============ -->
+  <div class="accordion"><div class="accordion-trigger" onclick="this.parentElement.classList.toggle('open')">Tab 5: Task <span class="acc-arrow">&#9660;</span></div>
+    <div class="accordion-body">
+      <p style="font-size:13px;color:var(--ink-soft);margin-bottom:12px;">Log every action taken on a scheme &mdash; application submission, follow-up, document handover, sanction-letter receipt. Seeded tasks drive a read-only Progress field.</p>
+      <table class="brd-table"><thead><tr><th>Field Name</th><th>Field Type</th><th>Input Values</th><th>Input / Autofill</th><th>Logic</th><th>Validation &amp; Error Messages</th></tr></thead>
+      <tbody>
+        <tr><td>No. / Task Name / Phase</td><td>Read-only</td><td>Seeded list; Existing / Intervention / Required</td><td>System</td><td>Fixed seeded tasks with colour-coded phase badge.</td><td>&mdash;</td></tr>
+        <tr><td>Status</td><td>Select</td><td>Pending / In Progress / Completed / Blocked</td><td>Input</td><td>Aggregates into read-only Progress (%).</td><td>&mdash;</td></tr>
+        <tr><td>Owner / Due Date / Notes</td><td>Text / Date / Text</td><td>Free</td><td>Input</td><td>&mdash;</td><td>&mdash;</td></tr>
+      </tbody></table>
+    </div></div>
+
+  <!-- ============ TAB 6: LOG BOOK ============ -->
+  <div class="accordion"><div class="accordion-trigger" onclick="this.parentElement.classList.toggle('open')">Tab 6: Log Book <span class="acc-arrow">&#9660;</span></div>
+    <div class="accordion-body">
+      <p style="font-size:13px;color:var(--ink-soft);margin-bottom:12px;">Free-form record of every visit, interview or observation related to scheme applications (child table <em>DF Log Book Child</em>). &ldquo;+ Add Entry&rdquo; appends a row.</p>
+      <table class="brd-table"><thead><tr><th>Field Name</th><th>Field Type</th><th>Input Values</th><th>Input / Autofill</th><th>Logic</th><th>Validation &amp; Error Messages</th></tr></thead>
+      <tbody>
+        <tr><td>Date</td><td>Date</td><td>&mdash;</td><td>Input</td><td>&mdash;</td><td>&mdash;</td></tr>
+        <tr><td>Scheme / Activity</td><td>Text</td><td>Scheme / bank / office</td><td>Input</td><td>&mdash;</td><td>&mdash;</td></tr>
+        <tr><td>Activity Type</td><td>Select</td><td>Bank Visit / Office Visit / Document Handover / Follow-up / Interview</td><td>Input</td><td>&mdash;</td><td>&mdash;</td></tr>
+        <tr><td>Notes / Logged By / Evidence</td><td>Text / Text / Attach</td><td>Free / Name / file</td><td>Input</td><td>&mdash;</td><td>&mdash;</td></tr>
+      </tbody></table>
+    </div></div>
+
+  <div class="callout callout-danger"><strong>Key validations (whole form):</strong> Entrepreneur is required and unique (one Schemes &amp; Funding form per entrepreneur). Each Existing row needs a Scheme selected; Disbursed Amount, Loan Amount, Outstanding and Interest must be &ge; 0; Loan Term &ge; 1 (months). EMI/Month (= Loan Amount &divide; Term) and the disbursed / EMI totals are read-only with formula tooltips (Rule 1). Disbursement Date &ge; Application Date; Loan End &gt; Start. Flagging an Intervention creates exactly one Required Section&nbsp;I row and stays two-way synced. Loan repayment figures align with the Financials framework where present.</div>
+
+  <div class="review-panel" data-section="m-schemes">
+    <div class="review-strip"><span style="font-size:12px;color:var(--ink-soft);font-weight:500;">Section Review:</span>
+      <button class="review-status-btn" onclick="setReview('m-schemes','draft',this)">Draft</button>
+      <button class="review-status-btn" onclick="setReview('m-schemes','review',this)">In Review</button>
+      <button class="review-status-btn" onclick="setReview('m-schemes','changes',this)">Needs Changes</button>
+      <button class="review-status-btn" onclick="setReview('m-schemes','approved',this)">Approved</button>
+      <button style="margin-left:auto;background:none;border:none;font-size:12px;color:var(--sea);cursor:pointer;font-family:var(--font);text-decoration:underline;" onclick="copyLink('m-schemes')">Copy Link</button></div>
+    <div class="review-comments"><div class="comment-list" id="comments-m-schemes"></div>
+      <div class="comment-input-row"><input type="text" placeholder="Your name" style="max-width:120px" id="name-m-schemes"><textarea rows="1" placeholder="Add a comment..." id="text-m-schemes"></textarea><button class="comment-add-btn" onclick="addComment('m-schemes')">Add</button></div></div>
+  </div>
+</div>
 
     <!-- NEW FRAMEWORK PLACEHOLDERS (per updated Google Sheet) -->
     <div class="brd-section" id="m-financials">
@@ -8897,15 +9049,151 @@ body > .site-nav { position: fixed; top: 0; left: 0; right: 0; z-index: 9999; }
   </div>
 </div>
 
+    <!-- PRODUCT COMPLIANCE -->
     <div class="brd-section" id="m-product-compliance">
-      <div class="section-header">
-        <span class="section-id">PR-LC-001</span>
-        <h2 class="section-title">Product Compliance <span style="font-size:13px;color:var(--ink-faint);font-weight:400">(Legal Compliance module)</span></h2>
-      </div>
-      <div class="callout callout-teal">
-        New framework introduced via the updated Module Master Google Sheet. Tabs follow the standard pattern: <strong>Summary</strong> &middot; <strong>Existing</strong> &middot; <strong>Required</strong> &middot; <strong>Log Book</strong> &middot; <strong>Resources</strong>. Tracks product-level certifications and compliance (FSSAI, BIS, AGMARK, etc.) separately from business registrations. Detailed field-level spec to be drafted in a follow-up pass.
-      </div>
-    </div>
+  <div class="section-header"><span class="section-id">PR-LC-001</span><h2 class="section-title">Product Compliance <span style="font-size:13px;color:var(--ink-faint);font-weight:400">(Legal Compliance module)</span></h2></div>
+  <div class="section-desc"><strong>Product-level framework</strong> under the <em>Legal Compliance</em> module that tracks every <strong>product certification &amp; standard</strong> the enterprise&rsquo;s products hold or need &mdash; FSSAI, AGMARK, BIS, organic marks, craft marks, GI, and more. It is the product-scoped companion to <em>Business Registration</em> (which covers entrepreneur / business-level registrations): same card-based engine and intervention bridge, but each certification is tied to a product and to the relevant authority &amp; validity.</div>
+  <div class="callout callout-teal"><strong>Certification Master (product level, grouped).</strong> A single dropdown grouped into six buckets &mdash; <strong>Food &amp; Beverage</strong> (FSSAI Basic / State / Central, AGMARK, Spices Board, APEDA, ISO&nbsp;22000), <strong>Organic &amp; Natural</strong> (Organic NPOP, India Organic, PGS-India Organic), <strong>Craft &amp; Textile</strong> (Khadi Mark, Handloom Mark, Handicraft Mark, Silk Mark), <strong>Quality &amp; Standards</strong> (BIS Certification, ISO&nbsp;9001), <strong>IP &amp; Market</strong> (Trademark, Geographical Indication, IEC), <strong>Jewellery</strong> (Hallmark BIS) &mdash; plus <em>Other</em>. The master is config-driven; the same certification cannot be added twice for the same product on Existing.</div>
+  <div class="callout callout-terra"><strong>Intervention bridge (Rule 3).</strong> Toggling <em>Need Certification Intervention?</em> ON in an Existing card auto-creates a linked card in <em>Required</em>, carrying the certification, product, validity and justification across; the Existing <em>Type</em> (Renewal / Reapply) maps to the Required <em>Phase</em> (Renewal / New Registration). Bridged Required cards are <strong>locked</strong> (&ldquo;&#8635; Bridged from Existing&rdquo; marker, read-only justification); removing either side un-links the other (two-way sync).</div>
+
+  <h3 style="font-size:16px;color:var(--teal);margin:18px 0 10px;">On-Screen UI Structure</h3>
+  <div class="card"><div style="font-size:13px;line-height:1.9;color:var(--ink)">A teal title bar reads <em>Product Compliance</em> with crumb <em>PRIME Rural &middot; Product-level Certifications</em>. A horizontal <strong>tab rail</strong> &mdash; <em>Summary &middot; Existing &middot; Required &middot; Resources &middot; Task Log</em> &mdash; sits below it, active tab teal, entrepreneur chip on every panel (Rule 2).<br><br><strong>Existing</strong> and <strong>Required</strong> render each certification as a <strong>collapsible card</strong> (sea-green header with a grouped certification selector + status chip; a &ldquo;&#9888; Intervention Flagged&rdquo; chip appears when toggled). &ldquo;+ Add Certification&rdquo; / &ldquo;+ Add New Certification&rdquo; append a card. Each card carries an <em>Applicable Product</em> link, certification details (ID, authority, dates, validity, govt-certified, status, scanned copy) and &mdash; on Existing &mdash; an intervention block. <strong>Summary</strong> is read-only (certification-wise overview table, aggregate cards, intervention-flag tiles). <strong>Resources</strong> and <strong>Task Log</strong> are editable grids. As in Business Registration, a <em>Lifetime Validity</em> checkbox hides <em>Valid Till</em>, and certifications expiring within <strong>90 days</strong> surface amber / expired red in Summary.</div></div>
+  <div class="flow-container" style="margin-top:12px"><div class="flow-step"><div class="flow-box">Summary</div></div><div class="flow-arrow">&rarr;</div><div class="flow-step"><div class="flow-box">Existing</div></div><div class="flow-arrow">&rarr;</div><div class="flow-step"><div class="flow-box">Required</div></div><div class="flow-arrow">&rarr;</div><div class="flow-step"><div class="flow-box">Resources</div></div><div class="flow-arrow">&rarr;</div><div class="flow-step"><div class="flow-box">Task Log</div></div></div>
+
+  <h3 style="font-size:16px;color:var(--teal);margin:18px 0 10px;">User Journey</h3>
+  <div class="card"><div class="flow-container">
+    <div class="flow-step"><div class="flow-box">Open Product Compliance</div><div class="flow-label">EP dashboard &middot; Diagnostics &rarr; Legal Compliance</div></div>
+    <div class="flow-arrow">&rarr;</div>
+    <div class="flow-step"><div class="flow-box">Add &amp; map certifications</div><div class="flow-label">Existing &mdash; product + grouped master + ID / authority / validity</div></div>
+    <div class="flow-arrow">&rarr;</div>
+    <div class="flow-step"><div class="flow-box">Attach certificate</div><div class="flow-label">upload scan, set Govt. Certified &amp; Status</div></div>
+    <div class="flow-arrow">&rarr;</div>
+    <div class="flow-step"><div class="flow-box">Flag intervention</div><div class="flow-label">toggle &rarr; Type + Justification &rarr; bridges to Required</div></div>
+    <div class="flow-arrow">&rarr;</div>
+    <div class="flow-step"><div class="flow-box">Track in Required &amp; Save</div><div class="flow-label">Phase + Status; Summary &amp; flags recompute</div></div>
+  </div></div>
+
+  <!-- ============ TAB 1: SUMMARY ============ -->
+  <div class="accordion open"><div class="accordion-trigger" onclick="this.parentElement.classList.toggle('open')">Tab 1: Summary <span class="acc-arrow">&#9660;</span></div>
+    <div class="accordion-body">
+      <p style="font-size:13px;color:var(--ink-soft);margin-bottom:12px;">Entirely read-only. Auto-populated from the Existing and Required tabs; recalculates on switch back.</p>
+
+      <h4 style="font-size:14px;color:var(--teal);margin-bottom:10px;">Certification-wise Overview Table</h4>
+      <p style="font-size:12px;color:var(--ink-soft);font-style:italic;margin-bottom:8px;">One row per certification &mdash; Existing first, then Required (bridged + new) highlighted below.</p>
+      <table class="brd-table"><thead><tr><th>Field Name</th><th>Field Type</th><th>Input Values</th><th>Input / Autofill</th><th>Logic</th><th>Validation &amp; Error Messages</th></tr></thead>
+      <tbody>
+        <tr><td>Certification</td><td>Read-only text (bold)</td><td>&mdash;</td><td>Autofill</td><td>Certification name from the card&rsquo;s selector; a &#128206; clip icon shows when a scanned copy is attached.</td><td>&mdash; (display only)</td></tr>
+        <tr><td>Product</td><td>Read-only text</td><td>&mdash;</td><td>Autofill</td><td>The Applicable Product the certification covers.</td><td>&mdash;</td></tr>
+        <tr><td>Issuing Authority</td><td>Read-only text</td><td>&mdash;</td><td>Autofill</td><td>From the card&rsquo;s authority field; &ldquo;&mdash;&rdquo; if blank.</td><td>&mdash;</td></tr>
+        <tr><td>Valid Till</td><td>Read-only badge</td><td>Lifetime / date / Expired</td><td>Calculated</td><td>Lifetime (green) when checked; amber &ldquo;&#9200; date&rdquo; within 90 days; red &ldquo;Expired date&rdquo; when past; else plain date.</td><td>&mdash;</td></tr>
+        <tr><td>Govt. Certified</td><td>Read-only</td><td>&#10003; Yes / No / &mdash;</td><td>Autofill</td><td>Green &ldquo;&#10003; Yes&rdquo; / muted &ldquo;No&rdquo; / &ldquo;&mdash;&rdquo;.</td><td>&mdash;</td></tr>
+        <tr><td>Status</td><td>Read-only badge</td><td>Received / Not yet Received / Rejected</td><td>Autofill</td><td>Existing card status; Received&rarr;green, Not yet Received&rarr;amber, Rejected&rarr;red.</td><td>&mdash;</td></tr>
+        <tr><td>Intervention Type</td><td>Read-only badge</td><td>&#8635; Renewal / Reapply / &mdash;</td><td>Autofill</td><td>Amber badge when the card&rsquo;s intervention toggle is ON.</td><td>&mdash;</td></tr>
+        <tr><td>Implementation Status</td><td>Read-only badge</td><td>Applied / Not Yet Applied / Received / Not yet Received / Rejected</td><td>Autofill</td><td>Mirrors the bridged Required card status (defaults &ldquo;Not Yet Applied&rdquo;); &ldquo;&mdash;&rdquo; when not flagged.</td><td>&mdash;</td></tr>
+      </tbody></table>
+
+      <h4 style="font-size:14px;color:var(--teal);margin:16px 0 10px;">Aggregate Cards (4)</h4>
+      <table class="brd-table"><thead><tr><th>Card / Metric</th><th>Field Type</th><th>Input / Autofill</th><th>Logic</th></tr></thead>
+      <tbody>
+        <tr><td>Existing &rarr; Total Certifications</td><td>Read-only number</td><td>Calculated</td><td>Count of Existing cards with a certification selected.</td></tr>
+        <tr><td>Existing &rarr; Govt. Certified / With Scanned Copy</td><td>Read-only numbers (green)</td><td>Calculated</td><td>Counts of Govt-certified cards and cards with an attached scan.</td></tr>
+        <tr><td>Existing &rarr; Lifetime Validity / Expiring within 90 Days</td><td>Read-only numbers (amber)</td><td>Calculated</td><td>Lifetime-flagged count and non-lifetime certifications expiring soon.</td></tr>
+        <tr><td>Existing &rarr; Flagged for Intervention</td><td>Read-only number (amber)</td><td>Calculated</td><td>Existing cards with the intervention toggle ON.</td></tr>
+        <tr><td>Required &rarr; Total / Bridged / New / Intervention Rate</td><td>Read-only</td><td>Calculated</td><td>Required count split by origin; rate = Flagged &divide; Total Existing.</td></tr>
+        <tr><td>Interventions &rarr; Needed / In Progress / Received / Expiring Soon</td><td>Read-only numbers</td><td>Calculated</td><td>Same logic as Business Registration (incomplete flagged / Applied+Not-yet-Received / Received / expiring-90).</td></tr>
+        <tr><td>Implementation Status &rarr; Applied / Not Yet Applied / Not yet Received / Received / Rejected</td><td>Read-only numbers</td><td>Calculated</td><td>Status counts across all Required cards.</td></tr>
+      </tbody></table>
+
+      <h4 style="font-size:14px;color:var(--teal);margin:16px 0 10px;">Intervention Flags Strip (4 tiles)</h4>
+      <table class="brd-table"><thead><tr><th>Tile</th><th>Field Type</th><th>Input / Autofill</th><th>Logic</th></tr></thead>
+      <tbody>
+        <tr><td>&#8635; Intervention Needed</td><td>Read-only count (amber)</td><td>Calculated</td><td>= flagged certifications whose required action is incomplete.</td></tr>
+        <tr><td>&#9676; In Progress</td><td>Read-only count (blue)</td><td>Calculated</td><td>= Required cards Applied / Not yet Received.</td></tr>
+        <tr><td>&#10003; Received</td><td>Read-only count (green)</td><td>Calculated</td><td>= Required cards Received.</td></tr>
+        <tr><td>! Expiring Soon</td><td>Read-only count (amber)</td><td>Calculated</td><td>= certifications expiring within 90 days.</td></tr>
+      </tbody></table>
+    </div></div>
+
+  <!-- ============ TAB 2: EXISTING ============ -->
+  <div class="accordion"><div class="accordion-trigger" onclick="this.parentElement.classList.toggle('open')">Tab 2: Existing <span class="acc-arrow">&#9660;</span></div>
+    <div class="accordion-body">
+      <p style="font-size:13px;color:var(--ink-soft);margin-bottom:12px;">One collapsible <strong>card per product certification</strong> currently held. &ldquo;+ Add Certification&rdquo; appends a card; the header carries the grouped certification selector, a Status chip and a flag chip. Each card holds <em>Certification Details</em> + an <em>Intervention Need</em> block.</p>
+      <table class="brd-table"><thead><tr><th>Field Name</th><th>Field Type</th><th>Input Values</th><th>Input / Autofill</th><th>Logic</th><th>Validation &amp; Error Messages</th></tr></thead>
+      <tbody>
+        <tr><td>Certification Type *</td><td>Select (grouped)</td><td>Certification Master &mdash; 6 grouped buckets + Other</td><td>Input</td><td>Card header selector; group headings are non-selectable. Same certification cannot be added twice for the same product.</td><td>&ldquo;Select a certification.&rdquo;</td></tr>
+        <tr><td>Applicable Product *</td><td>Link / Select</td><td>Products from the entrepreneur&rsquo;s Product Profile</td><td>Input</td><td>Ties the certification to a specific product (product-level scope).</td><td>&ldquo;Select the applicable product.&rdquo;</td></tr>
+        <tr><td>ID No.</td><td>Text</td><td>Free text</td><td>Input</td><td>Certificate / licence number.</td><td>&mdash;</td></tr>
+        <tr><td>Issuing Authority</td><td>Text</td><td>Free text</td><td>Input</td><td>e.g. FSSAI, BIS, APEDA, Spices Board.</td><td>&mdash;</td></tr>
+        <tr><td>Issued Date</td><td>Date</td><td>&mdash;</td><td>Input</td><td>Date granted.</td><td>Must be &le; today.</td></tr>
+        <tr><td>Lifetime Validity</td><td>Checkbox</td><td>On / Off</td><td>Input</td><td>When checked, hides &amp; clears Valid Till; Summary shows green &ldquo;Lifetime&rdquo;.</td><td>&mdash;</td></tr>
+        <tr><td>Valid Till</td><td>Date</td><td>&mdash;</td><td>Input</td><td>Expiry; hidden when Lifetime. Drives 90-day expiring / expired highlighting.</td><td>Must be &gt; Issued Date.</td></tr>
+        <tr><td>Govt. Certified?</td><td>Select</td><td>Yes / No</td><td>Input</td><td>Feeds the Govt. Certified aggregate.</td><td>&mdash;</td></tr>
+        <tr><td>Status</td><td>Select</td><td>Received / Not yet Received / Rejected</td><td>Input</td><td>Header chip.</td><td>&ldquo;Status is required.&rdquo;</td></tr>
+        <tr><td>Scanned Copy</td><td>Attach (Upload / View)</td><td>.pdf / .jpg / .png</td><td>Input</td><td>File pill + View; feeds &ldquo;With Scanned Copy&rdquo;.</td><td>&mdash;</td></tr>
+        <tr><td>Need Certification Intervention?</td><td>Toggle</td><td>On / Off</td><td>Input</td><td>ON reveals Type + Justification, shows the flag chip and auto-creates a bridged Required card (Rule 3); OFF removes it.</td><td>&mdash;</td></tr>
+        <tr><td>Intervention &rarr; Type</td><td>Select</td><td>Renewal / Reapply</td><td>Input</td><td>Maps to Required Phase (Renewal / New Registration).</td><td>Recommended when toggle ON.</td></tr>
+        <tr><td>Intervention &rarr; Justification</td><td>Textarea</td><td>Free text</td><td>Input</td><td>Reason &mdash; expired / missing / upgrade. Two-way synced to the bridged card.</td><td>Required when toggle ON.</td></tr>
+      </tbody></table>
+    </div></div>
+
+  <!-- ============ TAB 3: REQUIRED ============ -->
+  <div class="accordion"><div class="accordion-trigger" onclick="this.parentElement.classList.toggle('open')">Tab 3: Required <span class="acc-arrow">&#9660;</span></div>
+    <div class="accordion-body">
+      <p style="font-size:13px;color:var(--ink-soft);margin-bottom:12px;">Certifications still to acquire or renew &mdash; <strong>bridge-populated</strong> from flagged Existing cards, or added manually via &ldquo;+ Add New Certification&rdquo;. Bridged cards are locked with a &ldquo;&#8635; Bridged from Existing&rdquo; marker.</p>
+      <table class="brd-table"><thead><tr><th>Field Name</th><th>Field Type</th><th>Input Values</th><th>Input / Autofill</th><th>Logic</th><th>Validation &amp; Error Messages</th></tr></thead>
+      <tbody>
+        <tr><td>Certification Type *</td><td>Select (grouped)</td><td>Certification Master</td><td>Input / Autofill</td><td>Manual cards chosen freely; bridged cards <strong>disabled</strong> &amp; pre-set from the source.</td><td>&ldquo;Select a certification.&rdquo;</td></tr>
+        <tr><td>Applicable Product</td><td>Link / Select</td><td>Product Profile products</td><td>Input / Autofill</td><td>Carried from the source card on bridged rows.</td><td>&mdash;</td></tr>
+        <tr><td>Phase</td><td>Select</td><td>New Registration / Renewal</td><td>Input / Autofill</td><td>Bridged cards default from the Existing Type.</td><td>&mdash;</td></tr>
+        <tr><td>ID No. / Issuing Authority / Issued Date</td><td>Text / Text / Date</td><td>Free</td><td>Input</td><td>Captured once obtained.</td><td>Issued Date &le; today.</td></tr>
+        <tr><td>Lifetime Validity / Valid Till</td><td>Checkbox / Date</td><td>On-Off / date</td><td>Input / Autofill</td><td>Same hide-on-lifetime behaviour; bridged prefill validity + lifetime.</td><td>Valid Till &gt; Issued Date.</td></tr>
+        <tr><td>Govt. Certified? / Scanned Copy</td><td>Select / Attach</td><td>Yes-No / file</td><td>Input</td><td>Same as Existing.</td><td>&mdash;</td></tr>
+        <tr><td>Justification (from Existing)</td><td>Read-only textarea</td><td>&mdash;</td><td>Autofill</td><td>Bridged cards only; mirrors the Existing justification (two-way synced).</td><td>&mdash;</td></tr>
+        <tr><td>Status</td><td>Select</td><td>Applied / Not Yet Applied / Received / Not yet Received / Rejected</td><td>Input</td><td>Header chip; feeds Implementation aggregates &amp; the Existing card&rsquo;s mirrored status. Defaults &ldquo;Not Yet Applied&rdquo;.</td><td>&mdash;</td></tr>
+        <tr><td>Notes</td><td>Textarea</td><td>Free text</td><td>Input</td><td>Application notes, blockers, next steps.</td><td>&mdash;</td></tr>
+      </tbody></table>
+      <div class="callout callout-teal">Removing a bridged Required card toggles OFF the corresponding Existing intervention flag (two-way sync).</div>
+    </div></div>
+
+  <!-- ============ TAB 4: RESOURCES ============ -->
+  <div class="accordion"><div class="accordion-trigger" onclick="this.parentElement.classList.toggle('open')">Tab 4: Resources <span class="acc-arrow">&#9660;</span></div>
+    <div class="accordion-body">
+      <p style="font-size:13px;color:var(--ink-soft);margin-bottom:12px;">Reference materials &mdash; application forms, regulatory guidance, vendor directories, sample certificates. &ldquo;+ Add Resource&rdquo; appends a row.</p>
+      <table class="brd-table"><thead><tr><th>Field Name</th><th>Field Type</th><th>Input Values</th><th>Input / Autofill</th><th>Logic</th><th>Validation &amp; Error Messages</th></tr></thead>
+      <tbody>
+        <tr><td>Resource Title</td><td>Text</td><td>Free text</td><td>Input</td><td>&mdash;</td><td>&mdash;</td></tr>
+        <tr><td>Category</td><td>Select</td><td>Application Form / Regulatory Guidance / Vendor Directory / Sample Certificate / Fee Schedule / Compliance Checklist</td><td>Input</td><td>&mdash;</td><td>&mdash;</td></tr>
+        <tr><td>Type</td><td>Select</td><td>Template / Reference / Vendor / Quotation / Specification</td><td>Input</td><td>&mdash;</td><td>&mdash;</td></tr>
+        <tr><td>Description / Notes</td><td>Text</td><td>Free text</td><td>Input</td><td>&mdash;</td><td>&mdash;</td></tr>
+        <tr><td>File</td><td>Attach (Upload / View)</td><td>Any file</td><td>Input</td><td>Drive-linked resource.</td><td>&mdash;</td></tr>
+      </tbody></table>
+    </div></div>
+
+  <!-- ============ TAB 5: TASK LOG ============ -->
+  <div class="accordion"><div class="accordion-trigger" onclick="this.parentElement.classList.toggle('open')">Tab 5: Task Log <span class="acc-arrow">&#9660;</span></div>
+    <div class="accordion-body">
+      <p style="font-size:13px;color:var(--ink-soft);margin-bottom:12px;">Seeded certification activities (Record Existing Certifications, Assess Validity &amp; Status, Identify New Need, Collect Documents, Submit Application, Upload Certificate &amp; Update Module&hellip;) drive a read-only Progress field; each row carries Status, Owner, Due Date, Notes.</p>
+      <table class="brd-table"><thead><tr><th>Field Name</th><th>Field Type</th><th>Input Values</th><th>Input / Autofill</th><th>Logic</th><th>Validation &amp; Error Messages</th></tr></thead>
+      <tbody>
+        <tr><td>No. / Task Name / Phase</td><td>Read-only</td><td>Seeded list; Existing / Intervention / Required</td><td>System</td><td>Fixed seeded tasks with colour-coded phase badge.</td><td>&mdash;</td></tr>
+        <tr><td>Status</td><td>Select</td><td>Pending / In Progress / Completed / Blocked</td><td>Input</td><td>Aggregates into read-only Progress (%).</td><td>&mdash;</td></tr>
+        <tr><td>Owner / Due Date / Notes</td><td>Text / Date / Text</td><td>Free</td><td>Input</td><td>&mdash;</td><td>&mdash;</td></tr>
+      </tbody></table>
+    </div></div>
+
+  <div class="callout callout-danger"><strong>Key validations (whole form):</strong> Entrepreneur is required and unique (one Product Compliance form per entrepreneur). Every card must have a <strong>Certification Type and an Applicable Product selected</strong>; the same certification cannot be added twice for the same product on Existing. Issued Date &le; today; Valid Till &gt; Issued Date and is hidden / cleared when Lifetime Validity is checked. Existing Status is mandatory. Flagging an intervention requires a Justification and creates exactly one bridged Required card; bridged cards are locked and stay two-way synced. Expiring-within-90-days / Expired highlighting is computed. <strong>Entrepreneur / business-level registrations belong in Business Registration, not here.</strong></div>
+
+  <div class="review-panel" data-section="m-product-compliance">
+    <div class="review-strip"><span style="font-size:12px;color:var(--ink-soft);font-weight:500;">Section Review:</span>
+      <button class="review-status-btn" onclick="setReview('m-product-compliance','draft',this)">Draft</button>
+      <button class="review-status-btn" onclick="setReview('m-product-compliance','review',this)">In Review</button>
+      <button class="review-status-btn" onclick="setReview('m-product-compliance','changes',this)">Needs Changes</button>
+      <button class="review-status-btn" onclick="setReview('m-product-compliance','approved',this)">Approved</button>
+      <button style="margin-left:auto;background:none;border:none;font-size:12px;color:var(--sea);cursor:pointer;font-family:var(--font);text-decoration:underline;" onclick="copyLink('m-product-compliance')">Copy Link</button></div>
+    <div class="review-comments"><div class="comment-list" id="comments-m-product-compliance"></div>
+      <div class="comment-input-row"><input type="text" placeholder="Your name" style="max-width:120px" id="name-m-product-compliance"><textarea rows="1" placeholder="Add a comment..." id="text-m-product-compliance"></textarea><button class="comment-add-btn" onclick="addComment('m-product-compliance')">Add</button></div></div>
+  </div>
+</div>
 
     <!-- DASHBOARDS -->
     <!-- ============================================================ -->
