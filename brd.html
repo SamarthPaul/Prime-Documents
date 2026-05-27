@@ -5727,78 +5727,154 @@ body > .site-nav { position: fixed; top: 0; left: 0; right: 0; z-index: 9999; }
 
     <!-- ===== PRODUCT DEVELOPMENT MODULE ===== -->
 
-    <!-- REGISTRATION & LICENSING -->
+    <!-- BUSINESS REGISTRATION -->
     <div class="brd-section" id="m-reg-lic">
-      <div class="section-header">
-        <span class="section-id">PR-LC-002</span>
-        <h2 class="section-title">Business Registration <span style="font-size:13px;color:var(--ink-faint);font-weight:400">(Legal Compliance module)</span></h2>
-      </div>
-      <div class="section-desc"><strong>Entrepreneur-level framework, now under the <em>Legal Compliance</em> module</strong> (previously named "Registration &amp; Licensing" under Product Development). Tracks all business registrations and licences held and required. Features intervention bridging &mdash; flagging in Existing auto-creates linked entry in Required. The companion <em>Product Compliance</em> framework (same module) handles product-level certifications &mdash; spec to be drafted in a follow-up pass.</div>
+  <div class="section-header"><span class="section-id">PR-LC-002</span><h2 class="section-title">Business Registration <span style="font-size:13px;color:var(--ink-faint);font-weight:400">(Legal Compliance module)</span></h2></div>
+  <div class="section-desc"><strong>Entrepreneur / business-level framework</strong> under the <em>Legal Compliance</em> module (formerly &ldquo;Registration &amp; Licensing&rdquo; under Product Development). Records every <strong>entrepreneur- and business-level registration</strong> the enterprise holds and every one it still needs &mdash; legal structure, tax IDs, operating licences, market-access registrations and statutory NOCs. <strong>Product-level certifications (FSSAI, BIS, AGMARK, organic marks&hellip;) live in the companion <em>Product Compliance</em> framework</strong> (same module), not here. An intervention bridge carries any registration flagged in <em>Existing</em> into the <em>Required</em> tab for renewal / re-application.</div>
+  <div class="callout callout-teal"><strong>Registration Master (entrepreneur / business level, grouped).</strong> A single dropdown grouped into five buckets &mdash; <strong>Legal Structure</strong> (Sole Proprietorship, Partnership Firm, LLP, Private Limited Company, Producer Company, Cooperative Society, SHG, FPO, Section&nbsp;8 Company), <strong>Identity &amp; Tax</strong> (PAN, Aadhaar (Entrepreneur), GST, TAN), <strong>Business Operations</strong> (Udyam / MSME, Trade License (Municipal), Shop &amp; Establishment, Bank Account), <strong>Market Access</strong> (GeM, DPIIT Startup Recognition, APMC, NEHHDC, IEC), <strong>NOCs &amp; Compliance</strong> (Pollution Control NOC, Fire Safety NOC, Health &amp; Trade License) &mdash; plus <em>Other</em>. The master is config-driven; the same registration cannot be added twice on the Existing tab.</div>
+  <div class="callout callout-terra"><strong>Intervention bridge (Rule 3).</strong> Toggling <em>Need Registration / Licensing Intervention?</em> ON in an Existing card auto-creates a linked card in <em>Required</em>, carrying the registration name, validity and justification across. The Existing <em>Type</em> (Renewal / Reapply) maps to the Required <em>Phase</em> (Renewal / New Registration). Bridged Required cards are <strong>locked</strong> (registration selector disabled, &ldquo;&#8635; Bridged from Existing&rdquo; marker, read-only justification); removing either side un-links the other (two-way sync).</div>
 
-      <h3 style="font-size:16px;color:var(--teal);margin:12px 0 8px;">Tab Structure: Existing | Required</h3>
+  <h3 style="font-size:16px;color:var(--teal);margin:18px 0 10px;">On-Screen UI Structure</h3>
+  <div class="card"><div style="font-size:13px;line-height:1.9;color:var(--ink)">A teal title bar reads <em>Business Registration</em> with crumb <em>PRIME Rural &middot; Entrepreneur &amp; Business-level Registrations</em>. A horizontal <strong>tab rail</strong> &mdash; <em>Summary &middot; Existing &middot; Required &middot; Resources &middot; Task Log</em> &mdash; sits below it, active tab highlighted teal, with an <strong>entrepreneur chip</strong> (&ldquo;Auto-fetched from profile&rdquo;) on every panel (Rule 2).<br><br><strong>Existing</strong> and <strong>Required</strong> render each registration as a <strong>collapsible card</strong> (sea-green header carrying a registration-selector dropdown + status chip; a &ldquo;&#9888; Intervention Flagged&rdquo; chip appears when toggled). &ldquo;+ Add Registration&rdquo; / &ldquo;+ Add New Registration&rdquo; append a card. Each Existing card holds a <em>Registration Details</em> subsection and a terracotta <em>Intervention Need</em> block; each Required card holds the same details plus a <em>Phase</em> field and a <em>Status</em> block. <strong>Summary</strong> is read-only (overview table + four aggregate cards + four intervention-flag tiles). <strong>Resources</strong> and <strong>Task Log</strong> are editable child-table grids.<br><br><strong>Validity-aware highlighting:</strong> a <em>Lifetime Validity</em> checkbox hides the <em>Valid Till</em> date; registrations expiring within <strong>90 days</strong> surface amber (&ldquo;&#9200;&rdquo;), expired ones red, in the Summary overview.</div></div>
+  <div class="flow-container" style="margin-top:12px"><div class="flow-step"><div class="flow-box">Summary</div></div><div class="flow-arrow">&rarr;</div><div class="flow-step"><div class="flow-box">Existing</div></div><div class="flow-arrow">&rarr;</div><div class="flow-step"><div class="flow-box">Required</div></div><div class="flow-arrow">&rarr;</div><div class="flow-step"><div class="flow-box">Resources</div></div><div class="flow-arrow">&rarr;</div><div class="flow-step"><div class="flow-box">Task Log</div></div></div>
 
-      <div class="callout callout-teal">
-        <strong>Registration Master (20 types):</strong> FSSAI, Udyam, GST, Trade License, Shop &amp; Establishment, Trademark, GI, Organic Certification, India Organic, Khadi Mark, Hallmark, BIS, PAN, Aadhaar, Bank Account, Pollution NOC, Fire Safety NOC, Health &amp; Trade License, IEC, Other.
-      </div>
+  <h3 style="font-size:16px;color:var(--teal);margin:18px 0 10px;">User Journey</h3>
+  <div class="card"><div class="flow-container">
+    <div class="flow-step"><div class="flow-box">Open Business Registration</div><div class="flow-label">EP dashboard &middot; Diagnostics &rarr; Legal Compliance</div></div>
+    <div class="flow-arrow">&rarr;</div>
+    <div class="flow-step"><div class="flow-box">Add &amp; map each registration</div><div class="flow-label">Existing &mdash; pick from grouped master, fill ID / authority / validity</div></div>
+    <div class="flow-arrow">&rarr;</div>
+    <div class="flow-step"><div class="flow-box">Attach scanned copy</div><div class="flow-label">upload certificate / licence, set Govt. Certified &amp; Status</div></div>
+    <div class="flow-arrow">&rarr;</div>
+    <div class="flow-step"><div class="flow-box">Flag intervention</div><div class="flow-label">toggle &rarr; Type + Justification &rarr; bridges to Required</div></div>
+    <div class="flow-arrow">&rarr;</div>
+    <div class="flow-step"><div class="flow-box">Track in Required &amp; Save</div><div class="flow-label">Phase + Status; Summary &amp; flags recompute</div></div>
+  </div></div>
 
-      <div class="accordion">
-        <div class="accordion-trigger" onclick="this.parentElement.classList.toggle('open')">
-          Existing Tab &mdash; Registration Cards <span class="acc-arrow">&#9660;</span>
-        </div>
-        <div class="accordion-body">
-          <table class="brd-table">
-            <thead><tr><th>Field</th><th>Type</th><th>Values</th><th>Input / Autofill</th><th>Logic</th><th>Validation</th></tr></thead>
-            <tbody>
-              <tr><td>Registration Type</td><td>Select</td><td>20 types from master</td><td>Input</td><td>Collapsible card header</td><td>Required</td></tr>
-              <tr><td>Registration Level</td><td>Select</td><td>Product, Entrepreneur</td><td>Input</td><td>--</td><td>Required</td></tr>
-              <tr><td>ID No.</td><td>Data</td><td>Free text</td><td>Input</td><td>Registration/license number</td><td>--</td></tr>
-              <tr><td>Issuing Authority</td><td>Data</td><td>Free text</td><td>Input</td><td>--</td><td>--</td></tr>
-              <tr><td>Issued Date</td><td>Date</td><td>--</td><td>Input</td><td>--</td><td>Must be &le; today</td></tr>
-              <tr><td>Lifetime Validity</td><td>Checkbox</td><td>Yes/No</td><td>Input</td><td><strong>If checked: hides "Valid Till" field</strong></td><td>--</td></tr>
-              <tr><td>Valid Till</td><td>Date</td><td>--</td><td>Input</td><td>Hidden when Lifetime Validity checked</td><td>Must be &gt; Issued Date</td></tr>
-              <tr><td>Govt Certified?</td><td>Select</td><td>Yes, No</td><td>Input</td><td>--</td><td>--</td></tr>
-              <tr><td>Status</td><td>Select</td><td>Received, Not yet Received, Rejected</td><td>Input</td><td>Color chip: Received=green, Not yet=amber, Rejected=red</td><td>Required</td></tr>
-              <tr><td>Scanned Copy</td><td>Attach</td><td>.pdf, .jpg, .png</td><td>Input</td><td>Upload + View + file pill display</td><td>--</td></tr>
-              <tr><td>Intervention Need</td><td>Toggle</td><td>On/Off</td><td>Input</td><td><strong>If ON: show Type (Renewal/Reapply) + Justification. Auto-creates bridged entry in Required tab.</strong></td><td>Justification required if ON</td></tr>
-            </tbody>
-          </table>
-          <div class="callout callout-terra" style="margin-top:8px">
-            <strong>Bridging logic:</strong> Flagged entries auto-create linked Required entries. Bridged entries in Required are locked (disabled selects) with a "Bridged from Existing" marker. Removing either side un-links the other.
-          </div>
-        </div>
-      </div>
+  <!-- ============ TAB 1: SUMMARY ============ -->
+  <div class="accordion open"><div class="accordion-trigger" onclick="this.parentElement.classList.toggle('open')">Tab 1: Summary <span class="acc-arrow">&#9660;</span></div>
+    <div class="accordion-body">
+      <p style="font-size:13px;color:var(--ink-soft);margin-bottom:12px;">Entirely read-only. Auto-populated from the Existing and Required tabs; recalculates on every switch back to Summary.</p>
 
-      <div class="accordion">
-        <div class="accordion-trigger" onclick="this.parentElement.classList.toggle('open')">
-          Required Tab <span class="acc-arrow">&#9660;</span>
-        </div>
-        <div class="accordion-body">
-          <p style="font-size:12px;color:var(--ink-soft);margin-bottom:8px;">Same registration fields plus:</p>
-          <table class="brd-table">
-            <thead><tr><th>Additional Field</th><th>Type</th><th>Values</th><th>Logic</th></tr></thead>
-            <tbody>
-              <tr><td>Phase</td><td>Select</td><td>New Registration, Renewal</td><td>--</td></tr>
-              <tr><td>Status</td><td>Select</td><td>Applied, Not Yet Applied, Received, Not yet Received, Rejected</td><td>Chip in header. Bridged entries show source marker.</td></tr>
-              <tr><td>Notes</td><td>Textarea</td><td>Free text</td><td>--</td></tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
+      <h4 style="font-size:14px;color:var(--teal);margin-bottom:10px;">Registration-wise Overview Table</h4>
+      <p style="font-size:12px;color:var(--ink-soft);font-style:italic;margin-bottom:8px;">One row per registration &mdash; Existing first, then Required (bridged + new) highlighted below. The two right-most columns (Intervention Type / Implementation Status) are shaded.</p>
+      <table class="brd-table"><thead><tr><th>Field Name</th><th>Field Type</th><th>Input Values</th><th>Input / Autofill</th><th>Logic</th><th>Validation &amp; Error Messages</th></tr></thead>
+      <tbody>
+        <tr><td>Registration</td><td>Read-only text (bold)</td><td>&mdash;</td><td>Autofill</td><td>Registration name from the card&rsquo;s selector; a &#128206; clip icon shows when a scanned copy is attached.</td><td>&mdash; (display only)</td></tr>
+        <tr><td>Issuing Authority</td><td>Read-only text</td><td>&mdash;</td><td>Autofill</td><td>From the card&rsquo;s Issuing Authority field; &ldquo;&mdash;&rdquo; if blank.</td><td>&mdash;</td></tr>
+        <tr><td>Valid Till</td><td>Read-only badge</td><td>Lifetime / date / Expired</td><td>Calculated</td><td><em>Lifetime</em> (green) when Lifetime Validity is checked; amber &ldquo;&#9200; date&rdquo; when within 90 days; red &ldquo;Expired date&rdquo; when past; else plain date.</td><td>&mdash;</td></tr>
+        <tr><td>Govt. Certified</td><td>Read-only</td><td>&#10003; Yes / No / &mdash;</td><td>Autofill</td><td>Green &ldquo;&#10003; Yes&rdquo; / muted &ldquo;No&rdquo; / &ldquo;&mdash;&rdquo;.</td><td>&mdash;</td></tr>
+        <tr><td>Status</td><td>Read-only badge</td><td>Received / Not yet Received / Rejected</td><td>Autofill</td><td>Existing card status. Received&rarr;green, Not yet Received&rarr;amber, Rejected&rarr;red.</td><td>&mdash;</td></tr>
+        <tr><td>Intervention Type <span style="color:var(--fair-ink)">[shaded]</span></td><td>Read-only badge</td><td>&#8635; Renewal / Reapply / &mdash;</td><td>Autofill</td><td>Amber badge when the card&rsquo;s intervention toggle is ON (shows the chosen Type); else &ldquo;&mdash;&rdquo;.</td><td>&mdash;</td></tr>
+        <tr><td>Implementation Status <span style="color:var(--good-ink)">[shaded]</span></td><td>Read-only badge</td><td>Applied / Not Yet Applied / Received / Not yet Received / Rejected</td><td>Autofill</td><td>Mirrors the status of the bridged Required card (defaults &ldquo;Not Yet Applied&rdquo;); &ldquo;&mdash;&rdquo; when not flagged.</td><td>&mdash;</td></tr>
+      </tbody></table>
+      <div class="callout callout-teal">Empty state: &ldquo;Auto-populated from Existing and Required tabs&rdquo;.</div>
 
-      <div class="review-panel" data-section="m-reg-lic">
-        <div class="review-strip">
-          <span style="font-size:12px;color:var(--ink-soft);font-weight:500;">Section Review:</span>
-          <button class="review-status-btn" onclick="setReview('m-reg-lic','draft',this)">Draft</button>
-          <button class="review-status-btn" onclick="setReview('m-reg-lic','review',this)">In Review</button>
-          <button class="review-status-btn" onclick="setReview('m-reg-lic','changes',this)">Needs Changes</button>
-          <button class="review-status-btn" onclick="setReview('m-reg-lic','approved',this)">Approved</button>
-          <button style="margin-left:auto;background:none;border:none;font-size:12px;color:var(--sea);cursor:pointer;font-family:var(--font);text-decoration:underline;" onclick="copyLink('m-reg-lic')">Copy Link</button>
-        </div>
-        <div class="review-comments"><div class="comment-list" id="comments-m-reg-lic"></div>
-          <div class="comment-input-row"><input type="text" placeholder="Your name" style="max-width:120px" id="name-m-reg-lic"><textarea rows="1" placeholder="Add a comment..." id="text-m-reg-lic"></textarea><button class="comment-add-btn" onclick="addComment('m-reg-lic')">Add</button></div>
-        </div>
-      </div>
-    </div>
+      <h4 style="font-size:14px;color:var(--teal);margin:16px 0 10px;">Aggregate Cards (4)</h4>
+      <table class="brd-table"><thead><tr><th>Card / Metric</th><th>Field Type</th><th>Input / Autofill</th><th>Logic</th></tr></thead>
+      <tbody>
+        <tr><td>Existing &rarr; Total Registrations</td><td>Read-only number</td><td>Calculated</td><td>Count of Existing cards with a registration selected.</td></tr>
+        <tr><td>Existing &rarr; Govt. Certified</td><td>Read-only number (green)</td><td>Calculated</td><td>Count where Govt. Certified = Yes.</td></tr>
+        <tr><td>Existing &rarr; Lifetime Validity</td><td>Read-only number</td><td>Calculated</td><td>Count where Lifetime Validity is checked.</td></tr>
+        <tr><td>Existing &rarr; With Scanned Copy</td><td>Read-only number (green)</td><td>Calculated</td><td>Count of cards with a file attached.</td></tr>
+        <tr><td>Existing &rarr; Expiring within 90 Days</td><td>Read-only number (amber)</td><td>Calculated</td><td>Non-lifetime cards whose Valid Till is between today and today+90 days.</td></tr>
+        <tr><td>Existing &rarr; Flagged for Intervention</td><td>Read-only number (amber)</td><td>Calculated</td><td>Count of Existing cards with the intervention toggle ON.</td></tr>
+        <tr><td>Required &rarr; Total Required</td><td>Read-only number</td><td>Calculated</td><td>Count of Required cards. Footer: &ldquo;Required = flagged renewals + new registrations to acquire.&rdquo;</td></tr>
+        <tr><td>Required &rarr; Bridged from Existing / New Additions</td><td>Read-only numbers</td><td>Calculated</td><td>Split of Required cards by origin (bridged vs manually added).</td></tr>
+        <tr><td>Required &rarr; Intervention Rate</td><td>Read-only (green)</td><td>Calculated</td><td><em>= Flagged &divide; Total Existing</em> as a %.</td></tr>
+        <tr><td>Interventions &rarr; Needed / In Progress / Received / Expiring Soon</td><td>Read-only numbers</td><td>Calculated</td><td>Intervention Needed = flagged whose bridged status is not Received/Rejected; In Progress = Applied + Not yet Received; Received = bridged Received; Expiring Soon = expiring-within-90 count.</td></tr>
+        <tr><td>Implementation Status &rarr; Applied / Not Yet Applied / Not yet Received / Received / Rejected</td><td>Read-only numbers</td><td>Calculated</td><td>Status counts across all Required cards. Applied&rarr;blue, Received&rarr;green, Rejected&rarr;red.</td></tr>
+      </tbody></table>
+
+      <h4 style="font-size:14px;color:var(--teal);margin:16px 0 10px;">Intervention Flags Strip (4 tiles)</h4>
+      <table class="brd-table"><thead><tr><th>Tile</th><th>Field Type</th><th>Input / Autofill</th><th>Logic</th></tr></thead>
+      <tbody>
+        <tr><td>&#8635; Intervention Needed</td><td>Read-only count (amber icon)</td><td>Calculated</td><td>= flagged registrations whose required action is incomplete.</td></tr>
+        <tr><td>&#9676; In Progress</td><td>Read-only count (blue icon)</td><td>Calculated</td><td>= Required cards with status Applied or Not yet Received.</td></tr>
+        <tr><td>&#10003; Received</td><td>Read-only count (green icon)</td><td>Calculated</td><td>= Required cards with status Received.</td></tr>
+        <tr><td>! Expiring Soon</td><td>Read-only count (amber icon)</td><td>Calculated</td><td>= Existing registrations expiring within 90 days.</td></tr>
+      </tbody></table>
+    </div></div>
+
+  <!-- ============ TAB 2: EXISTING ============ -->
+  <div class="accordion"><div class="accordion-trigger" onclick="this.parentElement.classList.toggle('open')">Tab 2: Existing <span class="acc-arrow">&#9660;</span></div>
+    <div class="accordion-body">
+      <p style="font-size:13px;color:var(--ink-soft);margin-bottom:12px;">One collapsible <strong>card per registration</strong> currently held. &ldquo;+ Add Registration&rdquo; appends a card; the header carries the grouped registration selector, a Status chip and a flag chip. Each card holds a <em>Registration Details</em> subsection and an <em>Intervention Need</em> block.</p>
+      <table class="brd-table"><thead><tr><th>Field Name</th><th>Field Type</th><th>Input Values</th><th>Input / Autofill</th><th>Logic</th><th>Validation &amp; Error Messages</th></tr></thead>
+      <tbody>
+        <tr><td>Registration Type *</td><td>Select (grouped)</td><td>Registration Master &mdash; 5 grouped buckets + Other</td><td>Input</td><td>Card header selector; labels the card and drives Summary. Group headings (&ldquo;&mdash; Legal Structure &mdash;&rdquo; etc.) are non-selectable.</td><td>&ldquo;Select a registration.&rdquo; Same registration cannot be added twice.</td></tr>
+        <tr><td>ID No.</td><td>Text</td><td>Free text</td><td>Input</td><td>Registration / licence number (e.g. GSTIN, Udyam no.).</td><td>&mdash;</td></tr>
+        <tr><td>Issuing Authority</td><td>Text</td><td>Free text</td><td>Input</td><td>e.g. GSTN, Govt. of Meghalaya, Municipal Board. Surfaces in Summary.</td><td>&mdash;</td></tr>
+        <tr><td>Issued Date</td><td>Date</td><td>&mdash;</td><td>Input</td><td>Date the registration was granted.</td><td>Must be &le; today.</td></tr>
+        <tr><td>Lifetime Validity</td><td>Checkbox</td><td>On / Off</td><td>Input</td><td><strong>When checked, hides the Valid Till field</strong> and clears it; Summary shows a green &ldquo;Lifetime&rdquo; badge.</td><td>&mdash;</td></tr>
+        <tr><td>Valid Till</td><td>Date</td><td>&mdash;</td><td>Input</td><td>Expiry date; hidden when Lifetime Validity is on. Drives the 90-day expiring / expired highlighting.</td><td>Must be &gt; Issued Date.</td></tr>
+        <tr><td>Govt. Certified?</td><td>Select</td><td>Yes / No</td><td>Input</td><td>Feeds the Govt. Certified aggregate.</td><td>&mdash;</td></tr>
+        <tr><td>Status</td><td>Select</td><td>Received / Not yet Received / Rejected</td><td>Input</td><td>Header chip: Received&rarr;green, Not yet Received&rarr;amber, Rejected&rarr;red.</td><td>&ldquo;Status is required.&rdquo;</td></tr>
+        <tr><td>Scanned Copy</td><td>Attach (Upload / View)</td><td>.pdf / .jpg / .png</td><td>Input</td><td>Upload shows a file pill + enables View; feeds the &ldquo;With Scanned Copy&rdquo; aggregate.</td><td>&mdash;</td></tr>
+        <tr><td>Need Registration / Licensing Intervention?</td><td>Toggle</td><td>On / Off</td><td>Input</td><td>ON reveals Type + Justification, shows the flag chip, and <strong>auto-creates a bridged Required card</strong> (Rule 3); OFF removes it.</td><td>&mdash;</td></tr>
+        <tr><td>Intervention &rarr; Type</td><td>Select</td><td>Renewal / Reapply</td><td>Input</td><td>Maps to Required Phase (Renewal &rarr; Renewal, Reapply &rarr; New Registration).</td><td>Recommended when toggle ON.</td></tr>
+        <tr><td>Intervention &rarr; Justification</td><td>Textarea</td><td>Free text</td><td>Input</td><td>Reason &mdash; expired / missing / needs upgrade. Two-way synced to the bridged Required card.</td><td>Required when toggle ON.</td></tr>
+      </tbody></table>
+    </div></div>
+
+  <!-- ============ TAB 3: REQUIRED ============ -->
+  <div class="accordion"><div class="accordion-trigger" onclick="this.parentElement.classList.toggle('open')">Tab 3: Required <span class="acc-arrow">&#9660;</span></div>
+    <div class="accordion-body">
+      <p style="font-size:13px;color:var(--ink-soft);margin-bottom:12px;">Registrations still to be acquired or renewed &mdash; <strong>bridge-populated</strong> from flagged Existing cards, or added manually via &ldquo;+ Add New Registration&rdquo;. Bridged cards are locked with a &ldquo;&#8635; Bridged from Existing&rdquo; marker. Empty state: &ldquo;No registration interventions required yet.&rdquo;</p>
+      <table class="brd-table"><thead><tr><th>Field Name</th><th>Field Type</th><th>Input Values</th><th>Input / Autofill</th><th>Logic</th><th>Validation &amp; Error Messages</th></tr></thead>
+      <tbody>
+        <tr><td>Registration Type *</td><td>Select (grouped)</td><td>Registration Master</td><td>Input / Autofill</td><td>Manual cards: chosen freely. Bridged cards: <strong>disabled</strong>, pre-set from the source Existing card (renames cascade from Existing).</td><td>&ldquo;Select a registration.&rdquo;</td></tr>
+        <tr><td>Phase</td><td>Select</td><td>New Registration / Renewal</td><td>Input / Autofill</td><td>Bridged cards default from the Existing Type (Renewal / Reapply&rarr;New Registration).</td><td>&mdash;</td></tr>
+        <tr><td>ID No. / Issuing Authority / Issued Date</td><td>Text / Text / Date</td><td>Free</td><td>Input</td><td>Captured once the registration is obtained.</td><td>Issued Date &le; today.</td></tr>
+        <tr><td>Lifetime Validity / Valid Till</td><td>Checkbox / Date</td><td>On-Off / date</td><td>Input / Autofill</td><td>Same hide-on-lifetime behaviour as Existing; bridged cards prefill validity + lifetime from the source.</td><td>Valid Till &gt; Issued Date.</td></tr>
+        <tr><td>Govt. Certified? / Scanned Copy</td><td>Select / Attach</td><td>Yes-No / file</td><td>Input</td><td>Same as Existing.</td><td>&mdash;</td></tr>
+        <tr><td>Justification (from Existing)</td><td>Read-only textarea</td><td>&mdash;</td><td>Autofill</td><td>Shown only on bridged cards; mirrors the Existing card&rsquo;s justification (two-way synced).</td><td>&mdash;</td></tr>
+        <tr><td>Status</td><td>Select</td><td>Applied / Not Yet Applied / Received / Not yet Received / Rejected</td><td>Input</td><td>Header chip; feeds Implementation Status aggregates and the Existing card&rsquo;s mirrored Implementation Status. Defaults &ldquo;Not Yet Applied&rdquo;.</td><td>&mdash;</td></tr>
+        <tr><td>Notes</td><td>Textarea</td><td>Free text</td><td>Input</td><td>Application notes, blockers, next steps.</td><td>&mdash;</td></tr>
+      </tbody></table>
+      <div class="callout callout-teal">Removing a bridged Required card toggles OFF the corresponding Existing intervention flag (bridge stays in sync both ways).</div>
+    </div></div>
+
+  <!-- ============ TAB 4: RESOURCES ============ -->
+  <div class="accordion"><div class="accordion-trigger" onclick="this.parentElement.classList.toggle('open')">Tab 4: Resources <span class="acc-arrow">&#9660;</span></div>
+    <div class="accordion-body">
+      <p style="font-size:13px;color:var(--ink-soft);margin-bottom:12px;">Reference materials &mdash; application forms, regulatory guidance, vendor directories, sample certificates. &ldquo;+ Add Resource&rdquo; appends a row.</p>
+      <table class="brd-table"><thead><tr><th>Field Name</th><th>Field Type</th><th>Input Values</th><th>Input / Autofill</th><th>Logic</th><th>Validation &amp; Error Messages</th></tr></thead>
+      <tbody>
+        <tr><td>Resource Title</td><td>Text</td><td>Free text</td><td>Input</td><td>&mdash;</td><td>&mdash;</td></tr>
+        <tr><td>Category</td><td>Select</td><td>Application Form / Regulatory Guidance / Vendor Directory / Sample Certificate / Fee Schedule / Compliance Checklist</td><td>Input</td><td>&mdash;</td><td>&mdash;</td></tr>
+        <tr><td>Type</td><td>Select</td><td>Template / Reference / Vendor / Quotation / Specification</td><td>Input</td><td>&mdash;</td><td>&mdash;</td></tr>
+        <tr><td>Description / Notes</td><td>Text</td><td>Free text</td><td>Input</td><td>&mdash;</td><td>&mdash;</td></tr>
+        <tr><td>File</td><td>Attach (Upload / View)</td><td>Any file</td><td>Input</td><td>Drive-linked resource.</td><td>&mdash;</td></tr>
+      </tbody></table>
+    </div></div>
+
+  <!-- ============ TAB 5: TASK LOG ============ -->
+  <div class="accordion"><div class="accordion-trigger" onclick="this.parentElement.classList.toggle('open')">Tab 5: Task Log <span class="acc-arrow">&#9660;</span></div>
+    <div class="accordion-body">
+      <p style="font-size:13px;color:var(--ink-soft);margin-bottom:12px;">Free-form diary of registration activities &mdash; applications submitted, follow-ups, vendor calls, document collection. &ldquo;+ Add Entry&rdquo; appends a row.</p>
+      <table class="brd-table"><thead><tr><th>Field Name</th><th>Field Type</th><th>Input Values</th><th>Input / Autofill</th><th>Logic</th><th>Validation &amp; Error Messages</th></tr></thead>
+      <tbody>
+        <tr><td>Date</td><td>Date</td><td>&mdash;</td><td>Input</td><td>&mdash;</td><td>&mdash;</td></tr>
+        <tr><td>Task Name</td><td>Text / Select</td><td>Application Submitted / Document Collection / Vendor Meeting / Follow-up / Inspection / Renewal / Other</td><td>Input</td><td>Activity descriptor.</td><td>&mdash;</td></tr>
+        <tr><td>Notes / Outcome</td><td>Text</td><td>Free text</td><td>Input</td><td>&mdash;</td><td>&mdash;</td></tr>
+        <tr><td>Attachment</td><td>Attach (Upload)</td><td>Any file</td><td>Input</td><td>Supporting document.</td><td>&mdash;</td></tr>
+      </tbody></table>
+    </div></div>
+
+  <div class="callout callout-danger"><strong>Key validations (whole form):</strong> Entrepreneur is required and unique (one Business Registration form per entrepreneur). Every card must have a <strong>Registration Type selected</strong> and the same registration cannot be added twice on Existing. Issued Date &le; today; Valid Till &gt; Issued Date and is hidden / cleared when Lifetime Validity is checked. Existing Status is mandatory. Toggling the intervention ON requires a Justification and creates exactly one bridged Required card; bridged cards are locked (selector disabled, justification read-only) and stay two-way synced &mdash; removing either side un-links the other. Expiring-within-90-days and Expired highlighting are computed, never stored. <strong>Product-level certifications belong in Product Compliance, not here.</strong></div>
+
+  <div class="review-panel" data-section="m-reg-lic">
+    <div class="review-strip"><span style="font-size:12px;color:var(--ink-soft);font-weight:500;">Section Review:</span>
+      <button class="review-status-btn" onclick="setReview('m-reg-lic','draft',this)">Draft</button>
+      <button class="review-status-btn" onclick="setReview('m-reg-lic','review',this)">In Review</button>
+      <button class="review-status-btn" onclick="setReview('m-reg-lic','changes',this)">Needs Changes</button>
+      <button class="review-status-btn" onclick="setReview('m-reg-lic','approved',this)">Approved</button>
+      <button style="margin-left:auto;background:none;border:none;font-size:12px;color:var(--sea);cursor:pointer;font-family:var(--font);text-decoration:underline;" onclick="copyLink('m-reg-lic')">Copy Link</button></div>
+    <div class="review-comments"><div class="comment-list" id="comments-m-reg-lic"></div>
+      <div class="comment-input-row"><input type="text" placeholder="Your name" style="max-width:120px" id="name-m-reg-lic"><textarea rows="1" placeholder="Add a comment..." id="text-m-reg-lic"></textarea><button class="comment-add-btn" onclick="addComment('m-reg-lic')">Add</button></div></div>
+  </div>
+</div>
 
     <!-- PRODUCT PROTOTYPING -->
     <div class="brd-section" id="m-prototyping">
@@ -7551,129 +7627,379 @@ body > .site-nav { position: fixed; top: 0; left: 0; right: 0; z-index: 9999; }
 
     <!-- LOGISTIC PACKING -->
     <div class="brd-section" id="m-log-pack">
-      <div class="section-header">
-        <span class="section-id">PR-LG-001</span>
-        <h2 class="section-title">Logistic Packing</h2>
-      </div>
-      <div class="section-desc"><strong>Product-level framework.</strong> Track outer/transit packaging for shipping products. Distinct from Product Packaging (which covers primary product packaging).</div>
+  <div class="section-header"><span class="section-id">PR-LG-001</span><h2 class="section-title">Logistic Packing</h2></div>
+  <div class="section-desc"><strong>Product-level framework</strong> (Logistics module) that records the <strong>outer / transit packing</strong> used to ship each product &mdash; box type, material, dimensions, transport mode, load &amp; stacking limits, damage history and per-unit cost &mdash; together with a months-as-rows <strong>monthly shipment-quantity grid</strong>. Distinct from <em>Product Packaging</em> (which covers primary consumer packaging). An intervention bridge carries flagged packing into a Required tab for a recommended replacement spec.</div>
+  <div class="callout callout-terra"><strong>Golden Thread &amp; pattern.</strong> Mirrors Product Packaging: products are added as collapsible blocks (Product Name + SKU), each holding Section&nbsp;I packing-detail rows and Section&nbsp;III intervention need; a shared <strong>Section&nbsp;II Monthly Shipment Quantities</strong> grid (months &darr; rows, each product&rsquo;s packing type &rarr; column) spans cohort years (Rule 11) and computes annual transit-packing cost (<em>&Sigma; month qty &times; price/unit</em>). Toggling <em>Packing Intervention Needed?</em> auto-creates a linked row in Required Section&nbsp;I (bridge, Rule 3); removing it clears the flag (two-way).</div>
 
-      <h3 style="font-size:16px;color:var(--teal);margin:12px 0 8px;">Tab Structure: Summary | Existing | Required | Resources | Log Book</h3>
+  <h3 style="font-size:16px;color:var(--teal);margin:18px 0 10px;">On-Screen UI Structure</h3>
+  <div class="card"><div style="font-size:13px;line-height:1.9;color:var(--ink)">A teal title bar reads <em>Logistic Packing</em>; a horizontal <strong>tab rail</strong> &mdash; <em>Summary &middot; Existing &middot; Required &middot; Resources &middot; Task Log &middot; Log Book</em> &mdash; sits below, active tab teal, with the entrepreneur chip on every panel (Rule 2).<br><br><strong>Existing</strong> renders each product as a collapsible <strong>block</strong> (sea-green header with Product Name + SKU). Section&nbsp;I is a repeating <strong>packing-detail grid</strong> (4-column cells per row) capturing type, material, source, dimensions, capacity, price, transport mode, load/stacking limits, damage observed, picture, a four-pill <em>Properties</em> group (Fragile Suitable / Reusable / Waterproof / Cold Chain) and a note. Section&nbsp;III is a terracotta <em>Intervention Need</em> block per packing type. The shared <strong>Section&nbsp;II Monthly Shipment Quantities</strong> grid sits below all blocks.<br><br><strong>Required</strong> holds Section&nbsp;I <em>Recommended Replacement Specification</em> (bridge-populated), Section&nbsp;II <em>New Packing</em> (standalone) and Section&nbsp;III <em>Monthly Shipment Quantities &mdash; Required</em>. <strong>Summary</strong> is read-only (overview table with a Damage Risk column, aggregate cards, intervention-flag tiles incl. Damage Risk Flagged &amp; Reusable Packing). <strong>Resources</strong>, <strong>Task Log</strong> and <strong>Log Book</strong> close the rail. Calculated fields render italic on cream-deep with formula tooltips (Rule 1).</div></div>
+  <div class="flow-container" style="margin-top:12px"><div class="flow-step"><div class="flow-box">Summary</div></div><div class="flow-arrow">&rarr;</div><div class="flow-step"><div class="flow-box">Existing</div></div><div class="flow-arrow">&rarr;</div><div class="flow-step"><div class="flow-box">Required</div></div><div class="flow-arrow">&rarr;</div><div class="flow-step"><div class="flow-box">Resources</div></div><div class="flow-arrow">&rarr;</div><div class="flow-step"><div class="flow-box">Task Log</div></div><div class="flow-arrow">&rarr;</div><div class="flow-step"><div class="flow-box">Log Book</div></div></div>
 
-      <div class="accordion">
-        <div class="accordion-trigger" onclick="this.parentElement.classList.toggle('open')">
-          Existing Tab &mdash; Per-Product Variant Packing <span class="acc-arrow">&#9660;</span>
-        </div>
-        <div class="accordion-body">
-          <table class="brd-table">
-            <thead><tr><th>Field</th><th>Type</th><th>Values</th><th>Logic</th><th>Validation</th></tr></thead>
-            <tbody>
-              <tr><td>Product</td><td>Select</td><td>Product Master</td><td>Card header filter</td><td>Required</td></tr>
-              <tr><td>Outer Box Type</td><td>Select</td><td>Corrugated Box, Kraft Box, Thermocol Box, Wooden Crate, Jute Bag, Other</td><td>Input</td><td>--</td></tr>
-              <tr><td>Cushioning Material</td><td>Select</td><td>Bubble Wrap, Foam, Paper Shred, Thermocol, Air Pillows, None</td><td>Input</td><td>--</td></tr>
-              <tr><td>Weight Capacity (kg)</td><td>Float</td><td>Numeric</td><td>Input</td><td>&gt; 0</td></tr>
-              <tr><td>Dimensions (L x B x H)</td><td>3x Float + unit</td><td>mm/cm</td><td>Input</td><td>--</td></tr>
-              <tr><td>Cost per Shipment (Rs.)</td><td>Currency</td><td>Numeric</td><td>Input</td><td>&ge; 0</td></tr>
-              <tr><td>Supplier</td><td>Data</td><td>Free text</td><td>Input</td><td>--</td></tr>
-              <tr><td>Intervention Need</td><td>Toggle + Textarea</td><td>On/Off + Justification</td><td>Bridges to Required tab</td><td>Justification if ON</td></tr>
-            </tbody>
-          </table>
-          <p style="font-size:12px;margin-top:8px;"><strong>Packing material child table:</strong> Material Type, Quantity, Cost (Rs.), Supplier per material row.</p>
-        </div>
-      </div>
+  <h3 style="font-size:16px;color:var(--teal);margin:18px 0 10px;">User Journey</h3>
+  <div class="card"><div class="flow-container">
+    <div class="flow-step"><div class="flow-box">Open Logistic Packing</div><div class="flow-label">EP dashboard &middot; Diagnostics &rarr; Logistics</div></div>
+    <div class="flow-arrow">&rarr;</div>
+    <div class="flow-step"><div class="flow-box">Add product &amp; packing rows</div><div class="flow-label">Existing &mdash; type, material, dims, mode, load, damage</div></div>
+    <div class="flow-arrow">&rarr;</div>
+    <div class="flow-step"><div class="flow-box">Fill Monthly Shipment grid</div><div class="flow-label">Section II &mdash; per month &times; type; annual cost auto-calcs</div></div>
+    <div class="flow-arrow">&rarr;</div>
+    <div class="flow-step"><div class="flow-box">Flag intervention</div><div class="flow-label">Section III toggle &rarr; Required replacement row</div></div>
+    <div class="flow-arrow">&rarr;</div>
+    <div class="flow-step"><div class="flow-box">Spec replacement &amp; Save</div><div class="flow-label">Required + New Packing; Task Log / Log Book; Summary updates</div></div>
+  </div></div>
 
-      <div class="accordion">
-        <div class="accordion-trigger" onclick="this.parentElement.classList.toggle('open')">
-          Required Tab <span class="acc-arrow">&#9660;</span>
-        </div>
-        <div class="accordion-body">
-          <p style="font-size:12px;color:var(--ink-soft);">Target packaging specifications with same field structure + Implementation Status (Pending/In Progress/Completed/Not Feasible) + Pre/Post Intervention Comments.</p>
-        </div>
-      </div>
+  <!-- ============ TAB 1: SUMMARY ============ -->
+  <div class="accordion open"><div class="accordion-trigger" onclick="this.parentElement.classList.toggle('open')">Tab 1: Summary <span class="acc-arrow">&#9660;</span></div>
+    <div class="accordion-body">
+      <p style="font-size:13px;color:var(--ink-soft);margin-bottom:12px;">Read-only. Auto-populated from Existing and Required; recalculates on switch back.</p>
 
-      <div class="review-panel" data-section="m-log-pack">
-        <div class="review-strip">
-          <span style="font-size:12px;color:var(--ink-soft);font-weight:500;">Section Review:</span>
-          <button class="review-status-btn" onclick="setReview('m-log-pack','draft',this)">Draft</button>
-          <button class="review-status-btn" onclick="setReview('m-log-pack','review',this)">In Review</button>
-          <button class="review-status-btn" onclick="setReview('m-log-pack','changes',this)">Needs Changes</button>
-          <button class="review-status-btn" onclick="setReview('m-log-pack','approved',this)">Approved</button>
-          <button style="margin-left:auto;background:none;border:none;font-size:12px;color:var(--sea);cursor:pointer;font-family:var(--font);text-decoration:underline;" onclick="copyLink('m-log-pack')">Copy Link</button>
-        </div>
-        <div class="review-comments"><div class="comment-list" id="comments-m-log-pack"></div>
-          <div class="comment-input-row"><input type="text" placeholder="Your name" style="max-width:120px" id="name-m-log-pack"><textarea rows="1" placeholder="Add a comment..." id="text-m-log-pack"></textarea><button class="comment-add-btn" onclick="addComment('m-log-pack')">Add</button></div>
-        </div>
-      </div>
-    </div>
+      <h4 style="font-size:14px;color:var(--teal);margin-bottom:10px;">Packing-wise Overview Table</h4>
+      <p style="font-size:12px;color:var(--ink-soft);font-style:italic;margin-bottom:8px;">One row per packing type per product; Required (replacement / new) rows highlighted below.</p>
+      <table class="brd-table"><thead><tr><th>Field Name</th><th>Field Type</th><th>Input Values</th><th>Input / Autofill</th><th>Logic</th><th>Validation &amp; Error Messages</th></tr></thead>
+      <tbody>
+        <tr><td>Product</td><td>Read-only text (bold)</td><td>&mdash;</td><td>Autofill</td><td>Product Name from the Existing block (or Product / Purpose for new packing).</td><td>&mdash; (display only)</td></tr>
+        <tr><td>Packing Type</td><td>Read-only text</td><td>Corrugated Box / Wooden Crate / Jute Bag / HDPE Sack / Thermocol Box / &hellip;</td><td>Autofill</td><td>From Type of Packing on the detail row.</td><td>&mdash;</td></tr>
+        <tr><td>Material / Transport Mode</td><td>Read-only text</td><td>&mdash;</td><td>Autofill</td><td>From the row&rsquo;s Material and Transport Mode (Road / Rail / Air / Water / Cold Chain).</td><td>&mdash;</td></tr>
+        <tr><td>Price / Unit (&#8377;)</td><td>Read-only currency</td><td>&mdash;</td><td>Autofill</td><td>Row&rsquo;s Price Per Unit; Indian formatting.</td><td>&mdash;</td></tr>
+        <tr><td>Avg Monthly Qty</td><td>Read-only number</td><td>&mdash;</td><td>Calculated</td><td><em>= Annual Qty for this product+type &divide; 12</em>.</td><td>&mdash;</td></tr>
+        <tr><td>Damage Risk</td><td>Read-only badge</td><td>None / Minor / Moderate / Severe</td><td>Autofill</td><td>From Damage Observed; Severe&rarr;red, Moderate&rarr;amber, None&rarr;green.</td><td>&mdash;</td></tr>
+        <tr><td>Intervention Type</td><td>Read-only badge</td><td>&#8635; Replacement / + New Packing / &mdash;</td><td>Autofill</td><td>From the type&rsquo;s intervention toggle / Section&nbsp;II new rows.</td><td>&mdash;</td></tr>
+        <tr><td>Implementation Status</td><td>Read-only badge</td><td>Pending / In Progress / Completed / Not Feasible</td><td>Autofill</td><td>Mirrors the linked Required row status.</td><td>&mdash;</td></tr>
+      </tbody></table>
+
+      <h4 style="font-size:14px;color:var(--teal);margin:16px 0 10px;">Aggregate Cards (4)</h4>
+      <table class="brd-table"><thead><tr><th>Card / Metric</th><th>Field Type</th><th>Input / Autofill</th><th>Logic</th></tr></thead>
+      <tbody>
+        <tr><td>Existing &rarr; Products with Packing</td><td>Read-only number</td><td>Calculated</td><td>Count of product blocks with at least one packing row.</td></tr>
+        <tr><td>Existing &rarr; Total Packing Types</td><td>Read-only number</td><td>Calculated</td><td>Total packing detail rows across products.</td></tr>
+        <tr><td>Existing &rarr; Annual Qty / Annual Cost (&#8377;)</td><td>Read-only</td><td>Calculated</td><td>&Sigma; of the monthly grid and <em>&Sigma;(month qty &times; price/unit)</em>.</td></tr>
+        <tr><td>Existing &rarr; Damage Risk Flagged</td><td>Read-only number (amber)</td><td>Calculated</td><td>Count of rows with Damage Observed = Moderate or Severe.</td></tr>
+        <tr><td>Cost &rarr; Products / Items / Annual Cost</td><td>Read-only</td><td>Calculated</td><td>Mirror of the counts + total transit-packing spend.</td></tr>
+        <tr><td>Interventions &rarr; Flagged / Bridged / New Packing Added / Total</td><td>Read-only numbers</td><td>Calculated</td><td>Counts across Required Section&nbsp;I (replacements) and Section&nbsp;II (new packing).</td></tr>
+        <tr><td>Status &rarr; Pending / In Progress / Completed / Not Feasible</td><td>Read-only numbers</td><td>Calculated</td><td>Implementation-status counts across all Required rows.</td></tr>
+      </tbody></table>
+
+      <h4 style="font-size:14px;color:var(--teal);margin:16px 0 10px;">Intervention Flags Strip (4 tiles)</h4>
+      <table class="brd-table"><thead><tr><th>Tile</th><th>Field Type</th><th>Input / Autofill</th><th>Logic</th></tr></thead>
+      <tbody>
+        <tr><td>&#8635; Intervention Needed</td><td>Read-only count (amber)</td><td>Calculated</td><td>= packing rows whose intervention toggle is ON.</td></tr>
+        <tr><td>! Damage Risk Flagged</td><td>Read-only count (red)</td><td>Calculated</td><td>= rows with Damage Observed Moderate / Severe.</td></tr>
+        <tr><td>&#8634; Reusable Packing</td><td>Read-only count (green)</td><td>Calculated</td><td>= rows with the Reusable property pill ON.</td></tr>
+        <tr><td>+ New Packing Added</td><td>Read-only count (blue)</td><td>Calculated</td><td>= Required Section&nbsp;II new packing rows.</td></tr>
+      </tbody></table>
+    </div></div>
+
+  <!-- ============ TAB 2: EXISTING ============ -->
+  <div class="accordion"><div class="accordion-trigger" onclick="this.parentElement.classList.toggle('open')">Tab 2: Existing <span class="acc-arrow">&#9660;</span></div>
+    <div class="accordion-body">
+      <p style="font-size:13px;color:var(--ink-soft);margin-bottom:12px;">One collapsible <strong>block per product</strong> (Product Name + SKU in the header). &ldquo;+ Add Product&rdquo; appends a block; &ldquo;+ Add Row&rdquo; appends a packing item. Section&nbsp;I rows + Section&nbsp;III intervention sit inside each block; the shared Section&nbsp;II grid sits below all blocks.</p>
+
+      <h4 style="font-size:14px;color:var(--teal);margin-bottom:10px;">Section I &mdash; Packing Details (repeating row per packing type)</h4>
+      <table class="brd-table"><thead><tr><th>Field Name</th><th>Field Type</th><th>Input Values</th><th>Input / Autofill</th><th>Logic</th><th>Validation &amp; Error Messages</th></tr></thead>
+      <tbody>
+        <tr><td>Type of Packing *</td><td>Select</td><td>Corrugated Box / Wooden Crate / Jute Bag / HDPE Sack / Thermocol Box / Bubble Wrap Pack / Carton / Plastic Crate / Gunny Bag / Tin Container</td><td>Input</td><td>Drives the product&rsquo;s column in the shared monthly grid and the Section&nbsp;III group.</td><td>&ldquo;Type of Packing is required.&rdquo;</td></tr>
+        <tr><td>Material</td><td>Select</td><td>Corrugated Board / Wood / Jute / HDPE / Thermocol / Bubble Wrap / Cardboard / Plastic / Gunny / Tin</td><td>Input</td><td>Surfaces in Summary &amp; the bridged Required row.</td><td>&mdash;</td></tr>
+        <tr><td>Purchase Source</td><td>Select</td><td>Local Market / Online / Manufacturer Direct / Wholesaler</td><td>Input</td><td>&mdash;</td><td>&mdash;</td></tr>
+        <tr><td>Dimensions (L &times; B &times; H)</td><td>Three numeric + unit Select</td><td>L, B, H; cm / mm / m / in</td><td>Input</td><td>Physical spec of the transit pack.</td><td>Values &ge; 0.</td></tr>
+        <tr><td>Capacity / Volume + Unit</td><td>Number + Select</td><td>&ge; 0; pcs / kg / L / dozen / bundle</td><td>Input</td><td>Pack size descriptor.</td><td>Must be &ge; 0.</td></tr>
+        <tr><td>Price / Unit (&#8377;)</td><td>Currency</td><td>&ge; 0</td><td>Input</td><td>Multiplied by each month&rsquo;s shipment qty to compute Month Total &amp; Annual Cost.</td><td>Must be &ge; 0. Indian formatting.</td></tr>
+        <tr><td>Transport Mode</td><td>Select</td><td>Road / Rail / Air / Water / Cold Chain</td><td>Input</td><td>Primary mode this packing is used for.</td><td>&mdash;</td></tr>
+        <tr><td>Max Load (kg)</td><td>Number</td><td>&ge; 0</td><td>Input</td><td>Load rating of the pack.</td><td>Must be &ge; 0.</td></tr>
+        <tr><td>Stacking Layers</td><td>Number</td><td>&ge; 1</td><td>Input</td><td>How many can be safely stacked.</td><td>Integer &ge; 1.</td></tr>
+        <tr><td>Damage Observed</td><td>Select</td><td>None / Minor / Moderate / Severe</td><td>Input</td><td>Drives Damage Risk badge &amp; the Damage Risk Flagged aggregate (Moderate/Severe).</td><td>&mdash;</td></tr>
+        <tr><td>Picture</td><td>Attach (Upload)</td><td>Image file</td><td>Input</td><td>Reference photo.</td><td>&mdash;</td></tr>
+        <tr><td>Properties</td><td>Multi-select pills</td><td>Fragile Suitable / Reusable / Waterproof / Cold Chain</td><td>Input (toggle pills)</td><td>Reusable feeds the Reusable Packing flag tile.</td><td>&mdash;</td></tr>
+        <tr><td>Note / Observations</td><td>Textarea</td><td>Free text</td><td>Input</td><td>&mdash;</td><td>&mdash;</td></tr>
+      </tbody></table>
+
+      <h4 style="font-size:14px;color:var(--teal);margin:16px 0 10px;">Section II &mdash; Monthly Shipment Quantities (shared, all products)</h4>
+      <p style="font-size:12px;color:var(--ink-soft);font-style:italic;margin-bottom:8px;">Transposed grid: <strong>months are rows</strong> (Apr&hellip;Mar), each product&rsquo;s packing type is a <strong>column</strong> (auto-populated from every block&rsquo;s Section&nbsp;I). Spans cohort years (Rule 11).</p>
+      <table class="brd-table"><thead><tr><th>Field Name</th><th>Field Type</th><th>Input Values</th><th>Input / Autofill</th><th>Logic</th><th>Validation &amp; Error Messages</th></tr></thead>
+      <tbody>
+        <tr><td>Shipment Month</td><td>Row label</td><td>Apr &hellip; Mar</td><td>System</td><td>Fixed 12-month axis.</td><td>&mdash;</td></tr>
+        <tr><td>Quantity Shipped (per month &times; type)</td><td>Number</td><td>&ge; 0</td><td>Input</td><td>One editable cell per month per product-type column; entries preserved on re-render.</td><td>Must be &ge; 0 integer.</td></tr>
+        <tr><td>Month Total (&#8377;)</td><td>Read-only currency</td><td>&mdash;</td><td>Calculated</td><td><em>= &Sigma; over types (month qty &times; type price/unit)</em>.</td><td>&mdash;</td></tr>
+        <tr><td>Annual Total per Type / Grand Total (&#8377;)</td><td>Read-only</td><td>&mdash;</td><td>Calculated</td><td>Column-wise units sum and overall annual transit-packing cost.</td><td>&mdash;</td></tr>
+      </tbody></table>
+
+      <h4 style="font-size:14px;color:var(--teal);margin:16px 0 10px;">Section III &mdash; Intervention Need (per product, per type)</h4>
+      <table class="brd-table"><thead><tr><th>Field Name</th><th>Field Type</th><th>Input Values</th><th>Input / Autofill</th><th>Logic</th><th>Validation &amp; Error Messages</th></tr></thead>
+      <tbody>
+        <tr><td>Packing Intervention Needed?</td><td>Toggle</td><td>On / Off</td><td>Input</td><td>ON auto-creates a linked Required Section&nbsp;I replacement row (bridge, Rule 3); OFF removes it.</td><td>&mdash;</td></tr>
+        <tr><td>Justification</td><td>Textarea</td><td>Free text</td><td>Input</td><td>Reason &mdash; damage / cost / unsuitable mode. Two-way synced to the Required row.</td><td>Recommended when toggle ON.</td></tr>
+      </tbody></table>
+    </div></div>
+
+  <!-- ============ TAB 3: REQUIRED ============ -->
+  <div class="accordion"><div class="accordion-trigger" onclick="this.parentElement.classList.toggle('open')">Tab 3: Required <span class="acc-arrow">&#9660;</span></div>
+    <div class="accordion-body">
+      <p style="font-size:13px;color:var(--ink-soft);margin-bottom:12px;">Three sections: Section&nbsp;I bridge-populated replacement specs, Section&nbsp;II standalone new packing, Section&nbsp;III the required-side monthly grid. Empty state until a packing type is flagged or a new pack added.</p>
+
+      <h4 style="font-size:14px;color:var(--teal);margin-bottom:10px;">Section I &mdash; Recommended Replacement Specification (bridge-populated)</h4>
+      <table class="brd-table"><thead><tr><th>Field Name</th><th>Field Type</th><th>Input Values</th><th>Input / Autofill</th><th>Logic</th><th>Validation &amp; Error Messages</th></tr></thead>
+      <tbody>
+        <tr><td>Product / Current Type / Material</td><td>Read-only text</td><td>&mdash;</td><td>Autofill</td><td>Mirrored from the originating Existing block + packing row (italic on cream-deep).</td><td>&mdash;</td></tr>
+        <tr><td>Justification</td><td>Read-only / Textarea</td><td>Free text</td><td>Autofill</td><td>Two-way synced with the Existing Section&nbsp;III justify.</td><td>&mdash;</td></tr>
+        <tr><td>Recommended Packing Details (Type *, Material, Source, Dimensions, Capacity/Unit, Price/Unit, Transport Mode, Max Load, Stacking, Properties)</td><td>Same field set as Existing Section&nbsp;I</td><td>As per Existing row</td><td>Input</td><td>The target replacement spec; Price/Unit feeds Saving and the required monthly grid.</td><td>&ldquo;Type of Packing is required.&rdquo;</td></tr>
+        <tr><td>Implementation Status</td><td>Select</td><td>Pending / In Progress / Completed / Not Feasible</td><td>Input</td><td>Drives Summary status badge &amp; counts.</td><td>&mdash;</td></tr>
+        <tr><td>Implementation Notes</td><td>Textarea</td><td>Free text</td><td>Input</td><td>&mdash;</td><td>&mdash;</td></tr>
+      </tbody></table>
+      <div class="callout callout-teal">Removing a Section&nbsp;I row toggles OFF the corresponding Existing packing-intervention flag (two-way sync).</div>
+
+      <h4 style="font-size:14px;color:var(--teal);margin:16px 0 10px;">Section II &mdash; New Packing (standalone)</h4>
+      <p style="font-size:13px;color:var(--ink-soft);margin-bottom:8px;">Same packing field set as Section&nbsp;I, added freely for transit packing not linked to any existing product/type, with its own Implementation Status (Pending / In Progress / Completed / On Hold).</p>
+
+      <h4 style="font-size:14px;color:var(--teal);margin:16px 0 10px;">Section III &mdash; Monthly Shipment Quantities (Required)</h4>
+      <p style="font-size:13px;color:var(--ink-soft);margin-bottom:0;">Mirrors the Existing monthly grid for the required side (months &darr; rows, required packing types &rarr; columns); Month Total = <em>&Sigma;(qty &times; required price/unit)</em>. Spans cohort years (Rule 11).</p>
+    </div></div>
+
+  <!-- ============ TAB 4: RESOURCES ============ -->
+  <div class="accordion"><div class="accordion-trigger" onclick="this.parentElement.classList.toggle('open')">Tab 4: Resources <span class="acc-arrow">&#9660;</span></div>
+    <div class="accordion-body">
+      <p style="font-size:13px;color:var(--ink-soft);margin-bottom:12px;">Reference materials &mdash; supplier directories, material samples, transit-packing standards, quotations. &ldquo;+ Add Resource&rdquo; appends a row.</p>
+      <table class="brd-table"><thead><tr><th>Field Name</th><th>Field Type</th><th>Input Values</th><th>Input / Autofill</th><th>Logic</th><th>Validation &amp; Error Messages</th></tr></thead>
+      <tbody>
+        <tr><td>Resource Title</td><td>Text</td><td>Free text</td><td>Input</td><td>&mdash;</td><td>&mdash;</td></tr>
+        <tr><td>Category</td><td>Select</td><td>Supplier Directory / Material Sample / Packing Standard / Quotation / Specification Sheet</td><td>Input</td><td>&mdash;</td><td>&mdash;</td></tr>
+        <tr><td>Type</td><td>Select</td><td>Contact / Reference / Quotation / Specification / Photo &middot; Sample</td><td>Input</td><td>&mdash;</td><td>&mdash;</td></tr>
+        <tr><td>Description / Notes</td><td>Text</td><td>Free text</td><td>Input</td><td>&mdash;</td><td>&mdash;</td></tr>
+        <tr><td>File</td><td>Attach (Upload / View)</td><td>Any file</td><td>Input</td><td>Drive-linked resource.</td><td>&mdash;</td></tr>
+      </tbody></table>
+    </div></div>
+
+  <!-- ============ TAB 5: TASK LOG ============ -->
+  <div class="accordion"><div class="accordion-trigger" onclick="this.parentElement.classList.toggle('open')">Tab 5: Task Log <span class="acc-arrow">&#9660;</span></div>
+    <div class="accordion-body">
+      <p style="font-size:13px;color:var(--ink-soft);margin-bottom:12px;">Seeded packing activities (e.g. Existing Packing Recorded, Monthly Shipment Volumes Logged, Damage Inspection, Replacement Spec Finalised, Procurement Switched) drive a read-only Progress field; each row carries Status, Owner, Due Date, Notes.</p>
+      <table class="brd-table"><thead><tr><th>Field Name</th><th>Field Type</th><th>Input Values</th><th>Input / Autofill</th><th>Logic</th><th>Validation &amp; Error Messages</th></tr></thead>
+      <tbody>
+        <tr><td>No. / Task Name / Phase</td><td>Read-only</td><td>Seeded list; Existing / Intervention / Required</td><td>System</td><td>Fixed seeded tasks with colour-coded phase badge.</td><td>&mdash;</td></tr>
+        <tr><td>Status</td><td>Select</td><td>Pending / In Progress / Completed / Blocked</td><td>Input</td><td>Aggregates into read-only Progress (%).</td><td>&mdash;</td></tr>
+        <tr><td>Owner / Due Date / Notes</td><td>Text / Date / Text</td><td>Free</td><td>Input</td><td>&mdash;</td><td>&mdash;</td></tr>
+      </tbody></table>
+    </div></div>
+
+  <!-- ============ TAB 6: LOG BOOK ============ -->
+  <div class="accordion"><div class="accordion-trigger" onclick="this.parentElement.classList.toggle('open')">Tab 6: Log Book <span class="acc-arrow">&#9660;</span></div>
+    <div class="accordion-body">
+      <p style="font-size:13px;color:var(--ink-soft);margin-bottom:12px;">Free-form activity diary (child table <em>DF Log Book Child</em>). &ldquo;+ Add Entry&rdquo; appends a row.</p>
+      <table class="brd-table"><thead><tr><th>Field Name</th><th>Field Type</th><th>Input Values</th><th>Input / Autofill</th><th>Logic</th><th>Validation &amp; Error Messages</th></tr></thead>
+      <tbody>
+        <tr><td>Date</td><td>Date</td><td>&mdash;</td><td>Input</td><td>&mdash;</td><td>&mdash;</td></tr>
+        <tr><td>Product / Activity</td><td>Text</td><td>Product / supplier</td><td>Input</td><td>&mdash;</td><td>&mdash;</td></tr>
+        <tr><td>Activity Type</td><td>Select</td><td>Site Visit / Supplier Meeting / Damage Inspection / Sample Review / Procurement</td><td>Input</td><td>&mdash;</td><td>&mdash;</td></tr>
+        <tr><td>Notes / Observations</td><td>Text</td><td>Free text</td><td>Input</td><td>&mdash;</td><td>&mdash;</td></tr>
+        <tr><td>Logged By / Evidence</td><td>Text / Attach</td><td>Name / file</td><td>Input</td><td>&mdash;</td><td>&mdash;</td></tr>
+      </tbody></table>
+    </div></div>
+
+  <div class="callout callout-danger"><strong>Key validations (whole form):</strong> Entrepreneur is required and unique (one Logistic Packing form per entrepreneur). Each product block needs a name and at least one packing row; Type of Packing is mandatory on every row (Existing &amp; Required). Capacity, Price/Unit, Max Load, Quantity Shipped must be &ge; 0; Stacking Layers &ge; 1. Calculated fields (Month Total, Annual qty/type, Annual Cost, Avg Monthly Qty, Saving) are read-only with formula tooltips (Rule 1) and the monthly grid spans cohort years (Rule 11). Toggling an intervention ON creates exactly one bridged Required replacement row; removing it clears the flag (two-way sync). Distinct from Product Packaging &mdash; this framework records outer / transit packing only.</div>
+
+  <div class="review-panel" data-section="m-log-pack">
+    <div class="review-strip"><span style="font-size:12px;color:var(--ink-soft);font-weight:500;">Section Review:</span>
+      <button class="review-status-btn" onclick="setReview('m-log-pack','draft',this)">Draft</button>
+      <button class="review-status-btn" onclick="setReview('m-log-pack','review',this)">In Review</button>
+      <button class="review-status-btn" onclick="setReview('m-log-pack','changes',this)">Needs Changes</button>
+      <button class="review-status-btn" onclick="setReview('m-log-pack','approved',this)">Approved</button>
+      <button style="margin-left:auto;background:none;border:none;font-size:12px;color:var(--sea);cursor:pointer;font-family:var(--font);text-decoration:underline;" onclick="copyLink('m-log-pack')">Copy Link</button></div>
+    <div class="review-comments"><div class="comment-list" id="comments-m-log-pack"></div>
+      <div class="comment-input-row"><input type="text" placeholder="Your name" style="max-width:120px" id="name-m-log-pack"><textarea rows="1" placeholder="Add a comment..." id="text-m-log-pack"></textarea><button class="comment-add-btn" onclick="addComment('m-log-pack')">Add</button></div></div>
+  </div>
+</div>
 
     <!-- LOGISTIC SERVICE -->
     <div class="brd-section" id="m-log-serv">
-      <div class="section-header">
-        <span class="section-id">PR-LG-002</span>
-        <h2 class="section-title">Logistic Service</h2>
-      </div>
-      <div class="section-desc"><strong>Entrepreneur-level framework.</strong> Track shipping/logistics service providers and delivery capability.</div>
+  <div class="section-header"><span class="section-id">PR-LG-002</span><h2 class="section-title">Logistic Service</h2></div>
+  <div class="section-desc"><strong>Entrepreneur-level framework</strong> (Logistics module) that assesses the enterprise&rsquo;s <strong>connectivity and delivery capability</strong> and maps every <strong>shipping route</strong> the entrepreneur uses &mdash; leg by leg, with mode, time, cost and contact &mdash; computing per-trip, monthly and annual logistics spend. Routes that under-perform are flagged for a service upgrade, bridging into the Required tab.</div>
+  <div class="callout callout-terra"><strong>Route-based model.</strong> Unlike the Existing/Required-grid frameworks, Logistic Service is organised around <strong>routes</strong>. Each route holds a <em>leg table</em> (From &rarr; To hops) whose costs sum to <strong>Total Cost Per Trip</strong>; a <strong>Frequency</strong> multiplier then yields <em>Monthly Cost = Trip Cost &times; multiplier</em> and <em>Annual Cost = Monthly Cost &times; 12</em>. Toggling <em>Service Upgrade Needed?</em> on a route bridges it into Required (Rule 3) carrying the route name, type and pain points across.</div>
 
-      <h3 style="font-size:16px;color:var(--teal);margin:12px 0 8px;">Tab Structure: Summary | Existing | Required | Resources | Log Book</h3>
+  <h3 style="font-size:16px;color:var(--teal);margin:18px 0 10px;">On-Screen UI Structure</h3>
+  <div class="card"><div style="font-size:13px;line-height:1.9;color:var(--ink)">A teal title bar reads <em>Logistic Service</em>; a horizontal <strong>tab rail</strong> &mdash; <em>Summary &middot; Assessment &middot; Existing &middot; Required &middot; Resources &middot; Task Log &middot; Log Book</em> &mdash; sits below, active tab teal, with the entrepreneur chip on every panel (Rule 2).<br><br><strong>Assessment</strong> captures one-time connectivity facts (road quality, nearest highway / rail / courier hub, last-mile access, main issue, seasonal disruption) plus an <em>Available Services</em> checkbox matrix across four families (Courier / Post, Surface Transport, E-commerce Fulfilment, Community / Govt).<br><br><strong>Existing</strong> renders each route as a collapsible <strong>block</strong> (Route Name / Purpose, Route Type, Direction in the header). Section&nbsp;I <em>Route Details</em> is a <strong>leg table</strong> (From, To, Mode, Time, Cost, Contact) footed by Total Cost Per Trip; a teal <em>calc box</em> shows Frequency &rarr; Monthly Cost &rarr; Annual Cost. Section&nbsp;II <em>Pain Points</em> offers a pill group + Delay Frequency. An <em>Intervention Need</em> block carries the Service-Upgrade toggle.<br><br><strong>Required</strong> mirrors each flagged route read-only and captures the recommended upgrade + Implementation Status. <strong>Summary</strong> is read-only (route overview table, aggregate cards, intervention flags). <strong>Resources</strong>, <strong>Task Log</strong> and <strong>Log Book</strong> close the rail. Trip / Monthly / Annual costs render italic on cream-deep with formula tooltips (Rule 1).</div></div>
+  <div class="flow-container" style="margin-top:12px"><div class="flow-step"><div class="flow-box">Summary</div></div><div class="flow-arrow">&rarr;</div><div class="flow-step"><div class="flow-box">Assessment</div></div><div class="flow-arrow">&rarr;</div><div class="flow-step"><div class="flow-box">Existing</div></div><div class="flow-arrow">&rarr;</div><div class="flow-step"><div class="flow-box">Required</div></div><div class="flow-arrow">&rarr;</div><div class="flow-step"><div class="flow-box">Resources</div></div><div class="flow-arrow">&rarr;</div><div class="flow-step"><div class="flow-box">Task Log</div></div><div class="flow-arrow">&rarr;</div><div class="flow-step"><div class="flow-box">Log Book</div></div></div>
 
-      <div class="accordion">
-        <div class="accordion-trigger" onclick="this.parentElement.classList.toggle('open')">
-          Existing Tab &mdash; Connectivity + Route-Based Tracking <span class="acc-arrow">&#9660;</span>
-        </div>
-        <div class="accordion-body">
-          <h4 style="font-size:13px;color:var(--teal);margin-bottom:8px;">Section I: Connectivity Assessment</h4>
-          <table class="brd-table">
-            <thead><tr><th>Field</th><th>Type</th><th>Values</th></tr></thead>
-            <tbody>
-              <tr><td>Road Connectivity</td><td>Select</td><td>Pucca Road (Tarred), Kutcha Road (Gravel/Dirt), Mixed, No Road Access</td></tr>
-              <tr><td>Nearest Highway / Main Road</td><td>Data</td><td>Free text</td></tr>
-              <tr><td>Nearest Rail Station</td><td>Data</td><td>Free text</td></tr>
-              <tr><td>Nearest Courier Hub / Post Office</td><td>Data</td><td>Free text</td></tr>
-              <tr><td>Last Mile Access</td><td>Select</td><td>Any vehicle, Small vehicle only, Two-wheeler/foot only, Seasonal only</td></tr>
-              <tr><td>Main Logistics Issue</td><td>Textarea</td><td>Free text</td></tr>
-              <tr><td>Seasonal Disruption</td><td>Textarea</td><td>Free text</td></tr>
-            </tbody>
-          </table>
+  <h3 style="font-size:16px;color:var(--teal);margin:18px 0 10px;">User Journey</h3>
+  <div class="card"><div class="flow-container">
+    <div class="flow-step"><div class="flow-box">Open Logistic Service</div><div class="flow-label">EP dashboard &middot; Diagnostics &rarr; Logistics</div></div>
+    <div class="flow-arrow">&rarr;</div>
+    <div class="flow-step"><div class="flow-box">Record connectivity</div><div class="flow-label">Assessment &mdash; roads, hubs, last-mile, services</div></div>
+    <div class="flow-arrow">&rarr;</div>
+    <div class="flow-step"><div class="flow-box">Add route &amp; legs</div><div class="flow-label">Existing &mdash; leg table; Trip / Monthly / Annual cost calc</div></div>
+    <div class="flow-arrow">&rarr;</div>
+    <div class="flow-step"><div class="flow-box">Log pain points</div><div class="flow-label">pills + Delay Frequency</div></div>
+    <div class="flow-arrow">&rarr;</div>
+    <div class="flow-step"><div class="flow-box">Flag upgrade &amp; Save</div><div class="flow-label">toggle &rarr; Required; recommended service + status</div></div>
+  </div></div>
 
-          <h4 style="font-size:13px;color:var(--teal);margin:14px 0 8px;">Section II: Available Services (Checkbox Groups)</h4>
-          <p style="font-size:12px;color:var(--ink-soft);margin-bottom:6px;">4 groups: <strong>Courier/Post</strong> (India Post, Blue Dart, DTDC, Delhivery, Shiprocket), <strong>Surface Transport</strong> (Own Vehicle, Hired Cab, Auto/Tempo, Mini Truck, Bus Parcel, Train Parcel), <strong>E-commerce Fulfillment</strong> (Amazon, Flipkart, Meesho, Ecomm Express, Xpressbees), <strong>Community/Govt</strong> (FPO Van, SHG Network, Cold Chain, NGO Partner, Govt Scheme).</p>
+  <!-- ============ TAB 1: SUMMARY ============ -->
+  <div class="accordion open"><div class="accordion-trigger" onclick="this.parentElement.classList.toggle('open')">Tab 1: Summary <span class="acc-arrow">&#9660;</span></div>
+    <div class="accordion-body">
+      <p style="font-size:13px;color:var(--ink-soft);margin-bottom:12px;">Read-only. Auto-populated from Assessment, Existing and Required; recalculates on switch back.</p>
 
-          <h4 style="font-size:13px;color:var(--teal);margin:14px 0 8px;">Section III: Route Blocks (Repeater)</h4>
-          <table class="brd-table">
-            <thead><tr><th>Field</th><th>Type</th><th>Values / Logic</th></tr></thead>
-            <tbody>
-              <tr><td>Route Name</td><td>Data</td><td>Card header. Required.</td></tr>
-              <tr><td>Route Type</td><td>Select</td><td>Direct, Via Hub/Market, Multi-stop</td></tr>
-              <tr><td>Direction</td><td>Select</td><td>Inbound, Outbound, Both</td></tr>
-            </tbody>
-          </table>
-          <p style="font-size:12px;color:var(--ink-soft);margin:6px 0;"><strong>Leg Table (child table within each route):</strong> From, To, Mode of Transport (16 options), Time of Travel, Cost (Rs.), Contact.</p>
-          <table class="brd-table">
-            <thead><tr><th>Calculated</th><th>Formula</th></tr></thead>
-            <tbody>
-              <tr><td><strong>Trip Cost</strong></td><td>Sum of all leg costs</td></tr>
-              <tr><td>Frequency</td><td>Select: Daily (x30), Twice/week (x12), Weekly (x4), Twice/month, Monthly, Every 2 months</td></tr>
-              <tr><td><strong>Monthly Cost</strong></td><td><strong>= Trip Cost x Frequency multiplier</strong></td></tr>
-              <tr><td>Delay Frequency</td><td>Select: Never, Sometimes, Often, Always</td></tr>
-            </tbody>
-          </table>
-          <p style="font-size:12px;margin-top:6px;">Intervention toggle per route: "Needs Service Upgrade?" + Justification. Bridges to Required tab.</p>
-        </div>
-      </div>
+      <h4 style="font-size:14px;color:var(--teal);margin-bottom:10px;">Route-wise Overview Table</h4>
+      <table class="brd-table"><thead><tr><th>Field Name</th><th>Field Type</th><th>Input Values</th><th>Input / Autofill</th><th>Logic</th><th>Validation &amp; Error Messages</th></tr></thead>
+      <tbody>
+        <tr><td>Route</td><td>Read-only text (bold)</td><td>&mdash;</td><td>Autofill</td><td>Route Name / Purpose from the Existing block.</td><td>&mdash; (display only)</td></tr>
+        <tr><td>Type / Direction</td><td>Read-only text</td><td>Direct / Via Hub / Multi-stop &middot; Inbound / Outbound / Both</td><td>Autofill</td><td>From the route header.</td><td>&mdash;</td></tr>
+        <tr><td>Trip Cost / Monthly Cost / Annual Cost (&#8377;)</td><td>Read-only currency</td><td>&mdash;</td><td>Calculated</td><td>Trip = &Sigma; leg costs; Monthly = Trip &times; frequency multiplier; Annual = Monthly &times; 12.</td><td>&mdash;</td></tr>
+        <tr><td>Delay Frequency</td><td>Read-only badge</td><td>Never / Sometimes / Often / Always</td><td>Autofill</td><td>Often / Always surface amber/red.</td><td>&mdash;</td></tr>
+        <tr><td>Intervention</td><td>Read-only badge</td><td>&#8635; Upgrade / &mdash;</td><td>Autofill</td><td>Amber when the route&rsquo;s Service-Upgrade toggle is ON.</td><td>&mdash;</td></tr>
+        <tr><td>Implementation Status</td><td>Read-only badge</td><td>Pending / In Progress / Completed / Not Feasible</td><td>Autofill</td><td>Mirrors the linked Required route status.</td><td>&mdash;</td></tr>
+      </tbody></table>
 
-      <div class="review-panel" data-section="m-log-serv">
-        <div class="review-strip">
-          <span style="font-size:12px;color:var(--ink-soft);font-weight:500;">Section Review:</span>
-          <button class="review-status-btn" onclick="setReview('m-log-serv','draft',this)">Draft</button>
-          <button class="review-status-btn" onclick="setReview('m-log-serv','review',this)">In Review</button>
-          <button class="review-status-btn" onclick="setReview('m-log-serv','changes',this)">Needs Changes</button>
-          <button class="review-status-btn" onclick="setReview('m-log-serv','approved',this)">Approved</button>
-          <button style="margin-left:auto;background:none;border:none;font-size:12px;color:var(--sea);cursor:pointer;font-family:var(--font);text-decoration:underline;" onclick="copyLink('m-log-serv')">Copy Link</button>
-        </div>
-        <div class="review-comments"><div class="comment-list" id="comments-m-log-serv"></div>
-          <div class="comment-input-row"><input type="text" placeholder="Your name" style="max-width:120px" id="name-m-log-serv"><textarea rows="1" placeholder="Add a comment..." id="text-m-log-serv"></textarea><button class="comment-add-btn" onclick="addComment('m-log-serv')">Add</button></div>
-        </div>
-      </div>
-    </div>
+      <h4 style="font-size:14px;color:var(--teal);margin:16px 0 10px;">Aggregate Cards (4)</h4>
+      <table class="brd-table"><thead><tr><th>Card / Metric</th><th>Field Type</th><th>Input / Autofill</th><th>Logic</th></tr></thead>
+      <tbody>
+        <tr><td>Existing &rarr; Total Routes / Total Legs</td><td>Read-only numbers</td><td>Calculated</td><td>Counts across the Existing tab.</td></tr>
+        <tr><td>Existing &rarr; Routes with Delays</td><td>Read-only number (amber)</td><td>Calculated</td><td>Routes with Delay Frequency Often / Always.</td></tr>
+        <tr><td>Cost &rarr; Total Monthly / Annual Logistics Cost (&#8377;)</td><td>Read-only currency</td><td>Calculated</td><td>&Sigma; of all route Monthly / Annual costs.</td></tr>
+        <tr><td>Interventions &rarr; Routes Flagged / Bridged</td><td>Read-only numbers</td><td>Calculated</td><td>Routes with the upgrade toggle ON and their bridged Required entries.</td></tr>
+        <tr><td>Status &rarr; Pending / In Progress / Completed / Not Feasible</td><td>Read-only numbers</td><td>Calculated</td><td>Implementation-status counts across Required routes.</td></tr>
+      </tbody></table>
+
+      <h4 style="font-size:14px;color:var(--teal);margin:16px 0 10px;">Intervention Flags Strip (4 tiles)</h4>
+      <table class="brd-table"><thead><tr><th>Tile</th><th>Field Type</th><th>Input / Autofill</th><th>Logic</th></tr></thead>
+      <tbody>
+        <tr><td>&#8635; Upgrade Needed</td><td>Read-only count (amber)</td><td>Calculated</td><td>= routes with Service-Upgrade toggle ON.</td></tr>
+        <tr><td>! Frequent Delays</td><td>Read-only count (red)</td><td>Calculated</td><td>= routes with Delay Frequency Often / Always.</td></tr>
+        <tr><td>&#10003; Completed Upgrades</td><td>Read-only count (green)</td><td>Calculated</td><td>= Required routes with status Completed.</td></tr>
+        <tr><td>&#9676; In Progress</td><td>Read-only count (blue)</td><td>Calculated</td><td>= Required routes with status In Progress.</td></tr>
+      </tbody></table>
+    </div></div>
+
+  <!-- ============ TAB 2: ASSESSMENT ============ -->
+  <div class="accordion"><div class="accordion-trigger" onclick="this.parentElement.classList.toggle('open')">Tab 2: Assessment <span class="acc-arrow">&#9660;</span></div>
+    <div class="accordion-body">
+      <h4 style="font-size:14px;color:var(--teal);margin-bottom:10px;">Section I &mdash; Connectivity Assessment</h4>
+      <table class="brd-table"><thead><tr><th>Field Name</th><th>Field Type</th><th>Input Values</th><th>Input / Autofill</th><th>Logic</th><th>Validation &amp; Error Messages</th></tr></thead>
+      <tbody>
+        <tr><td>Road Connectivity</td><td>Select</td><td>Pucca Road (Tarred) / Kutcha Road (Gravel-Dirt) / Mixed / No Road Access</td><td>Input</td><td>Baseline access quality.</td><td>&mdash;</td></tr>
+        <tr><td>Nearest Highway / Main Road</td><td>Text</td><td>Free text</td><td>Input</td><td>Name + approx distance.</td><td>&mdash;</td></tr>
+        <tr><td>Nearest Rail Station</td><td>Text</td><td>Free text</td><td>Input</td><td>&mdash;</td><td>&mdash;</td></tr>
+        <tr><td>Nearest Courier Hub / Post Office</td><td>Text</td><td>Free text</td><td>Input</td><td>&mdash;</td><td>&mdash;</td></tr>
+        <tr><td>Last Mile Access</td><td>Select</td><td>Any vehicle / Small vehicle only / Two-wheeler &middot; foot only / Seasonal only</td><td>Input</td><td>Constrains feasible transport modes.</td><td>&mdash;</td></tr>
+        <tr><td>Main Logistics Issue</td><td>Textarea</td><td>Free text</td><td>Input</td><td>&mdash;</td><td>&mdash;</td></tr>
+        <tr><td>Seasonal Disruption</td><td>Textarea</td><td>Free text</td><td>Input</td><td>e.g. monsoon road cut-off windows.</td><td>&mdash;</td></tr>
+      </tbody></table>
+
+      <h4 style="font-size:14px;color:var(--teal);margin:16px 0 10px;">Section II &mdash; Available Services (checkbox families)</h4>
+      <table class="brd-table"><thead><tr><th>Family</th><th>Options</th></tr></thead>
+      <tbody>
+        <tr><td>Courier / Post</td><td>India Post, Blue Dart, DTDC, Delhivery, Shiprocket</td></tr>
+        <tr><td>Surface Transport</td><td>Own Vehicle, Hired Cab, Auto / Tempo, Mini Truck, Bus Parcel, Train Parcel</td></tr>
+        <tr><td>E-commerce Fulfilment</td><td>Amazon, Flipkart, Meesho, Ecomm Express, Xpressbees</td></tr>
+        <tr><td>Community / Govt</td><td>FPO Van, SHG Network, Cold Chain, NGO Partner, Govt Scheme</td></tr>
+      </tbody></table>
+    </div></div>
+
+  <!-- ============ TAB 3: EXISTING ============ -->
+  <div class="accordion"><div class="accordion-trigger" onclick="this.parentElement.classList.toggle('open')">Tab 3: Existing <span class="acc-arrow">&#9660;</span></div>
+    <div class="accordion-body">
+      <p style="font-size:13px;color:var(--ink-soft);margin-bottom:12px;">One collapsible <strong>block per route</strong>. &ldquo;+ Add Route&rdquo; appends a block; the header carries Route Name / Purpose, Route Type and Direction.</p>
+
+      <h4 style="font-size:14px;color:var(--teal);margin-bottom:10px;">Route Header</h4>
+      <table class="brd-table"><thead><tr><th>Field Name</th><th>Field Type</th><th>Input Values</th><th>Input / Autofill</th><th>Logic</th><th>Validation &amp; Error Messages</th></tr></thead>
+      <tbody>
+        <tr><td>Route Name / Purpose *</td><td>Text</td><td>Free text</td><td>Input</td><td>Labels the route block and Summary row.</td><td>&ldquo;Route Name is required.&rdquo;</td></tr>
+        <tr><td>Route Type</td><td>Select</td><td>Direct / Via Hub-Market / Multi-stop</td><td>Input</td><td>&mdash;</td><td>&mdash;</td></tr>
+        <tr><td>Direction</td><td>Select</td><td>Inbound / Outbound / Both</td><td>Input</td><td>&mdash;</td><td>&mdash;</td></tr>
+      </tbody></table>
+
+      <h4 style="font-size:14px;color:var(--teal);margin:16px 0 10px;">Section I &mdash; Route Details (leg table)</h4>
+      <table class="brd-table"><thead><tr><th>Field Name</th><th>Field Type</th><th>Input Values</th><th>Input / Autofill</th><th>Logic</th><th>Validation &amp; Error Messages</th></tr></thead>
+      <tbody>
+        <tr><td>From / To</td><td>Text</td><td>Free text</td><td>Input</td><td>Start &amp; end of the leg; &ldquo;+ Add Row&rdquo; appends legs.</td><td>&mdash;</td></tr>
+        <tr><td>Mode of Transport</td><td>Select</td><td>16 modes: Own Vehicle / Two-Wheeler / Hired Cab / Auto-Tempo / Mini Truck-Bolero / Bus Parcel / Train Parcel / India Post-SpeedPost / Blue Dart / DTDC / Delhivery / Shiprocket / FPO-Cooperative Van / Cold Chain Truck / On Foot-Headload / Other</td><td>Input</td><td>Per-leg mode.</td><td>&mdash;</td></tr>
+        <tr><td>Time of Travel</td><td>Text</td><td>Free text</td><td>Input</td><td>Duration of the leg.</td><td>&mdash;</td></tr>
+        <tr><td>Cost (&#8377;)</td><td>Currency</td><td>&ge; 0</td><td>Input</td><td>Leg cost; summed into Total Cost Per Trip.</td><td>Must be &ge; 0.</td></tr>
+        <tr><td>Contact</td><td>Text</td><td>Free text</td><td>Input</td><td>Transporter / operator contact.</td><td>&mdash;</td></tr>
+        <tr><td>Total Cost Per Trip (&#8377;)</td><td>Read-only currency</td><td>&mdash;</td><td>Calculated</td><td><em>= &Sigma; leg costs</em> (table footer).</td><td>&mdash;</td></tr>
+      </tbody></table>
+
+      <h4 style="font-size:14px;color:var(--teal);margin:16px 0 10px;">Frequency &amp; Cost (calc box)</h4>
+      <table class="brd-table"><thead><tr><th>Field Name</th><th>Field Type</th><th>Input Values</th><th>Input / Autofill</th><th>Logic</th><th>Validation &amp; Error Messages</th></tr></thead>
+      <tbody>
+        <tr><td>Frequency</td><td>Select</td><td>Daily (&times;30) / Twice a week (&times;12) / Weekly (&times;4) / Twice a month (&times;2) / Monthly (&times;1) / Every 2 months (&times;0.5)</td><td>Input</td><td>Sets the monthly trip multiplier.</td><td>&mdash;</td></tr>
+        <tr><td>Monthly Cost (&#8377;)</td><td>Read-only currency</td><td>&mdash;</td><td>Calculated</td><td><em>= Total Cost Per Trip &times; frequency multiplier</em>.</td><td>&mdash;</td></tr>
+        <tr><td>Annual Cost (&#8377;)</td><td>Read-only currency</td><td>&mdash;</td><td>Calculated</td><td><em>= Monthly Cost &times; 12</em>; feeds the cost aggregates.</td><td>&mdash;</td></tr>
+      </tbody></table>
+
+      <h4 style="font-size:14px;color:var(--teal);margin:16px 0 10px;">Section II &mdash; Pain Points + Intervention Need</h4>
+      <table class="brd-table"><thead><tr><th>Field Name</th><th>Field Type</th><th>Input Values</th><th>Input / Autofill</th><th>Logic</th><th>Validation &amp; Error Messages</th></tr></thead>
+      <tbody>
+        <tr><td>Issues Experienced</td><td>Multi-select pills</td><td>Delays / High Cost / Damage-Loss / Unreliable / No Tracking / Limited Capacity / Seasonal Cut-off</td><td>Input</td><td>Select all that apply.</td><td>&mdash;</td></tr>
+        <tr><td>Delay Frequency</td><td>Select</td><td>Never / Sometimes / Often / Always</td><td>Input</td><td>Drives the Frequent Delays flag &amp; Summary badge.</td><td>&mdash;</td></tr>
+        <tr><td>Notes</td><td>Textarea</td><td>Free text</td><td>Input</td><td>&mdash;</td><td>&mdash;</td></tr>
+        <tr><td>Service Upgrade Needed?</td><td>Toggle</td><td>On / Off</td><td>Input</td><td>ON bridges this route into Required (Rule 3); OFF removes it.</td><td>Justification recommended when ON.</td></tr>
+      </tbody></table>
+    </div></div>
+
+  <!-- ============ TAB 4: REQUIRED ============ -->
+  <div class="accordion"><div class="accordion-trigger" onclick="this.parentElement.classList.toggle('open')">Tab 4: Required <span class="acc-arrow">&#9660;</span></div>
+    <div class="accordion-body">
+      <p style="font-size:13px;color:var(--ink-soft);margin-bottom:12px;">Routes needing a service upgrade &mdash; bridge-populated from flagged Existing routes (or added manually). Each card mirrors the source route read-only and captures the recommended upgrade.</p>
+      <table class="brd-table"><thead><tr><th>Field Name</th><th>Field Type</th><th>Input Values</th><th>Input / Autofill</th><th>Logic</th><th>Validation &amp; Error Messages</th></tr></thead>
+      <tbody>
+        <tr><td>Route Name / Purpose / Route Type (source)</td><td>Read-only text</td><td>&mdash;</td><td>Autofill</td><td>Mirrored from the originating Existing route.</td><td>&mdash;</td></tr>
+        <tr><td>Recommended Mode / Service</td><td>Select / Text</td><td>16 transport modes + service families</td><td>Input</td><td>The proposed upgrade (faster mode, aggregator, cold chain&hellip;).</td><td>&mdash;</td></tr>
+        <tr><td>Expected Trip / Monthly Cost (&#8377;)</td><td>Currency</td><td>&ge; 0</td><td>Input</td><td>Target cost after upgrade; compared to current.</td><td>Must be &ge; 0.</td></tr>
+        <tr><td>Justification</td><td>Textarea</td><td>Free text</td><td>Input / Autofill</td><td>Two-way synced with the Existing route&rsquo;s pain points / note.</td><td>&mdash;</td></tr>
+        <tr><td>Implementation Status</td><td>Select</td><td>Pending / In Progress / Completed / Not Feasible</td><td>Input</td><td>Drives Summary status &amp; flags.</td><td>&mdash;</td></tr>
+        <tr><td>Implementation Notes</td><td>Textarea</td><td>Free text</td><td>Input</td><td>&mdash;</td><td>&mdash;</td></tr>
+      </tbody></table>
+      <div class="callout callout-teal">Removing a bridged Required route toggles OFF the corresponding Existing Service-Upgrade flag (two-way sync).</div>
+    </div></div>
+
+  <!-- ============ TAB 5: RESOURCES ============ -->
+  <div class="accordion"><div class="accordion-trigger" onclick="this.parentElement.classList.toggle('open')">Tab 5: Resources <span class="acc-arrow">&#9660;</span></div>
+    <div class="accordion-body">
+      <p style="font-size:13px;color:var(--ink-soft);margin-bottom:12px;">Reference materials &mdash; courier rate cards, transporter contacts, government schemes, route maps, insurance, FPO / cooperative directories. &ldquo;+ Add Resource&rdquo; appends a row.</p>
+      <table class="brd-table"><thead><tr><th>Field Name</th><th>Field Type</th><th>Input Values</th><th>Input / Autofill</th><th>Logic</th><th>Validation &amp; Error Messages</th></tr></thead>
+      <tbody>
+        <tr><td>Resource Title</td><td>Text</td><td>Free text</td><td>Input</td><td>&mdash;</td><td>&mdash;</td></tr>
+        <tr><td>Category</td><td>Select</td><td>Courier Rate Card / Transporter Contact / Government Scheme / Route Map / Insurance / FPO &middot; Cooperative</td><td>Input</td><td>&mdash;</td><td>&mdash;</td></tr>
+        <tr><td>Description / Notes</td><td>Text</td><td>Free text</td><td>Input</td><td>&mdash;</td><td>&mdash;</td></tr>
+        <tr><td>File</td><td>Attach (Upload / View)</td><td>Any file</td><td>Input</td><td>Drive-linked resource.</td><td>&mdash;</td></tr>
+      </tbody></table>
+    </div></div>
+
+  <!-- ============ TAB 6: TASK LOG ============ -->
+  <div class="accordion"><div class="accordion-trigger" onclick="this.parentElement.classList.toggle('open')">Tab 6: Task Log <span class="acc-arrow">&#9660;</span></div>
+    <div class="accordion-body">
+      <p style="font-size:13px;color:var(--ink-soft);margin-bottom:12px;">Seeded logistics activities (e.g. Connectivity Assessed, Routes Mapped, Costs &amp; Frequency Logged, Upgrade Identified, New Service Onboarded) drive a read-only Progress field; each row carries Status, Owner, Due Date, Notes.</p>
+      <table class="brd-table"><thead><tr><th>Field Name</th><th>Field Type</th><th>Input Values</th><th>Input / Autofill</th><th>Logic</th><th>Validation &amp; Error Messages</th></tr></thead>
+      <tbody>
+        <tr><td>No. / Task Name / Phase</td><td>Read-only</td><td>Seeded list; Existing / Intervention / Required</td><td>System</td><td>Fixed seeded tasks with colour-coded phase badge.</td><td>&mdash;</td></tr>
+        <tr><td>Status</td><td>Select</td><td>Pending / In Progress / Completed / Blocked</td><td>Input</td><td>Aggregates into read-only Progress (%).</td><td>&mdash;</td></tr>
+        <tr><td>Owner / Due Date / Notes</td><td>Text / Date / Text</td><td>Free</td><td>Input</td><td>&mdash;</td><td>&mdash;</td></tr>
+      </tbody></table>
+    </div></div>
+
+  <!-- ============ TAB 7: LOG BOOK ============ -->
+  <div class="accordion"><div class="accordion-trigger" onclick="this.parentElement.classList.toggle('open')">Tab 7: Log Book <span class="acc-arrow">&#9660;</span></div>
+    <div class="accordion-body">
+      <p style="font-size:13px;color:var(--ink-soft);margin-bottom:12px;">Free-form activity diary (child table <em>DF Log Book Child</em>). Columns: Date, Route / Service, Activity, Notes, Logged By, Evidence. &ldquo;+ Add Entry&rdquo; appends a row.</p>
+      <table class="brd-table"><thead><tr><th>Field Name</th><th>Field Type</th><th>Input Values</th><th>Input / Autofill</th><th>Logic</th><th>Validation &amp; Error Messages</th></tr></thead>
+      <tbody>
+        <tr><td>Date</td><td>Date</td><td>&mdash;</td><td>Input</td><td>&mdash;</td><td>&mdash;</td></tr>
+        <tr><td>Route / Service</td><td>Text</td><td>Route / transporter</td><td>Input</td><td>&mdash;</td><td>&mdash;</td></tr>
+        <tr><td>Activity</td><td>Select</td><td>Site Visit / Transporter Meeting / Rate Negotiation / Trial Shipment / Onboarding</td><td>Input</td><td>&mdash;</td><td>&mdash;</td></tr>
+        <tr><td>Notes / Logged By / Evidence</td><td>Text / Text / Attach</td><td>Free / Name / file</td><td>Input</td><td>&mdash;</td><td>&mdash;</td></tr>
+      </tbody></table>
+    </div></div>
+
+  <div class="callout callout-danger"><strong>Key validations (whole form):</strong> Entrepreneur is required and unique (one Logistic Service form per entrepreneur). Each Existing route needs a Route Name and at least one leg row; leg Cost and route costs must be &ge; 0. Trip Cost (&Sigma; legs), Monthly Cost (Trip &times; frequency multiplier) and Annual Cost (Monthly &times; 12) are read-only with formula tooltips (Rule 1). Toggling Service Upgrade ON bridges exactly one Required route; removing it clears the flag (two-way sync). Assessment fields are recorded once at entrepreneur level; Available Services drive which transport modes are realistic for the routes.</div>
+
+  <div class="review-panel" data-section="m-log-serv">
+    <div class="review-strip"><span style="font-size:12px;color:var(--ink-soft);font-weight:500;">Section Review:</span>
+      <button class="review-status-btn" onclick="setReview('m-log-serv','draft',this)">Draft</button>
+      <button class="review-status-btn" onclick="setReview('m-log-serv','review',this)">In Review</button>
+      <button class="review-status-btn" onclick="setReview('m-log-serv','changes',this)">Needs Changes</button>
+      <button class="review-status-btn" onclick="setReview('m-log-serv','approved',this)">Approved</button>
+      <button style="margin-left:auto;background:none;border:none;font-size:12px;color:var(--sea);cursor:pointer;font-family:var(--font);text-decoration:underline;" onclick="copyLink('m-log-serv')">Copy Link</button></div>
+    <div class="review-comments"><div class="comment-list" id="comments-m-log-serv"></div>
+      <div class="comment-input-row"><input type="text" placeholder="Your name" style="max-width:120px" id="name-m-log-serv"><textarea rows="1" placeholder="Add a comment..." id="text-m-log-serv"></textarea><button class="comment-add-btn" onclick="addComment('m-log-serv')">Add</button></div></div>
+  </div>
+</div>
 
     <!-- ===== INFRASTRUCTURE MODULE (COMBINED BE+EE+CE) ===== -->
     <div class="brd-section" id="m-infra">
