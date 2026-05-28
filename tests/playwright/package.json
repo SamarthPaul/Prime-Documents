@@ -1,0 +1,25 @@
+{
+  "name": "prime-rural-e2e",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Playwright E2E tests for PRIME Rural Web CRM (staging UAT)",
+  "scripts": {
+    "test": "playwright test",
+    "test:headed": "playwright test --headed",
+    "test:debug": "playwright test --debug",
+    "test:ui": "playwright test --ui",
+    "test:auth": "playwright test tests/04-entry tests/07-auth",
+    "test:ep": "playwright test tests/15-ep-profile",
+    "test:frameworks": "playwright test tests/17-frameworks",
+    "report": "playwright show-report",
+    "codegen": "playwright codegen https://stgprime-rural.dhwaniris.in/",
+    "install:browsers": "playwright install --with-deps chromium",
+    "tsc": "tsc --noEmit"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.49.0",
+    "@types/node": "^22.10.0",
+    "dotenv": "^16.4.5",
+    "typescript": "^5.7.0"
+  }
+}
