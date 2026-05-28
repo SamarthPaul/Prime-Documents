@@ -7589,21 +7589,214 @@ body > .site-nav { position: fixed; top: 0; left: 0; right: 0; z-index: 9999; }
       <div class="section-header">
         <span class="section-id">PR-SK-003</span>
         <h2 class="section-title">Business Plan Canvas</h2>
+        <span class="section-module">Skilling</span>
       </div>
-      <div class="section-desc"><strong>Entrepreneur-level framework.</strong> Structured business planning tool based on the Business Model Canvas methodology.</div>
+      <div class="section-desc"><strong>Entrepreneur-level framework.</strong> A one-page strategic synthesis of the entrepreneur's business model across 9 building blocks, grouped into four quadrants: Infrastructure, Offering, Customer, and Financial. Each block surfaces a cross-module reference so the Fellow can draw from operational data already captured in other diagnostic frameworks. The canvas is filled collaboratively by the Fessociate with the entrepreneur and reviewed by CTIT.</div>
+
+      <div class="callout callout-teal">
+        <strong>DocType:</strong> <code>DF Business Plan Canvas</code> &mdash; single entrepreneur-level doctype, no child tables. Nine textarea fields (one per block) + a Task Log child table sourced from Framework Task Master (BPC sheet, 17 tasks). Resources child table for reference material uploads. Fields: <code>key_partners</code>, <code>key_activities</code>, <code>key_resources</code>, <code>value_propositions</code>, <code>customer_relationships</code>, <code>channels</code>, <code>customer_segments</code>, <code>cost_structure</code>, <code>revenue_streams</code>.
+      </div>
 
       <div class="callout callout-terra">
-        <strong>Pending:</strong> HTML mockup to be added by user. Form spec will be updated once the HTML is available. Current spec is derived from the repo doctype definition (DF Business Plan Canvas).
+        <strong>Cross-module references (read, not auto-populated):</strong> Key Partners &rarr; Market Linkage &bull; Key Activities &rarr; Standardisation &bull; Key Resources &rarr; HR + Infrastructure (Machinery) &bull; Channels &rarr; Promotional Marketing &bull; Customer Segments &rarr; Customer Analysis &bull; Cost Structure &rarr; Unit Pricing &bull; Revenue Streams &rarr; Financials. The Fellow reads these modules first and synthesises the insight into the canvas block manually &mdash; no field values are copied automatically.
       </div>
 
-      <div class="accordion">
+      <!-- ── ON-SCREEN UI STRUCTURE ── -->
+      <div class="accordion open">
         <div class="accordion-trigger" onclick="this.parentElement.classList.toggle('open')">
-          Expected Structure (from repo doctype) <span class="acc-arrow">&#9660;</span>
+          On-Screen UI Structure <span class="acc-arrow">&#9660;</span>
         </div>
         <div class="accordion-body">
-          <p style="font-size:12px;color:var(--ink-soft);margin-bottom:8px;">Based on the DF Business Plan Canvas doctype in the repo. Full field spec to be updated when HTML is provided.</p>
-          <div class="callout callout-teal">
-            The Business Model Canvas typically covers 9 building blocks: Key Partners, Key Activities, Key Resources, Value Propositions, Customer Relationships, Channels, Customer Segments, Cost Structure, Revenue Streams. The form will follow the standard BMC layout with Existing/Required tabs.
+
+          <!-- Tab: Summary -->
+          <div class="accordion">
+            <div class="accordion-trigger" onclick="this.parentElement.classList.toggle('open')">
+              Tab 1 &mdash; Summary <span class="acc-arrow">&#9660;</span>
+            </div>
+            <div class="accordion-body">
+              <p style="font-size:12px;color:var(--ink-soft);margin-bottom:12px;">Auto-computed read-only view of the current canvas state. Updates live as blocks are filled in the Canvas tab.</p>
+
+              <p style="font-size:12px;font-weight:bold;margin-bottom:6px;">Block-wise Overview Table</p>
+              <div style="overflow-x:auto;margin-bottom:14px">
+              <table class="field-table">
+                <thead><tr><th>Column</th><th>Content</th></tr></thead>
+                <tbody>
+                  <tr><td>Block</td><td>Coloured bar + block name (e.g. Key Partners)</td></tr>
+                  <tr><td>Quadrant</td><td>Colour-coded badge: Infrastructure / Offering / Customer / Financial</td></tr>
+                  <tr><td>Module Reference</td><td>Cross-module link label (e.g. &ldquo;&uarr; Market Linkage&rdquo;)</td></tr>
+                  <tr><td>Status</td><td>&ldquo;&#10003; Filled&rdquo; (green) or &ldquo;Empty&rdquo; (amber) badge</td></tr>
+                  <tr><td>Content Preview</td><td>First 120 characters of textarea value, or &ldquo;Not yet filled&rdquo;</td></tr>
+                </tbody>
+              </table>
+              </div>
+
+              <p style="font-size:12px;font-weight:bold;margin-bottom:6px;">Aggregates &mdash; 2&times;2 card grid</p>
+              <div style="overflow-x:auto;margin-bottom:14px">
+              <table class="field-table">
+                <thead><tr><th>Card</th><th>Fields shown</th></tr></thead>
+                <tbody>
+                  <tr><td>Canvas Status</td><td>Blocks Filled (green), Blocks Empty (amber), Last Updated, Task Log Entries</td></tr>
+                  <tr><td>Quadrant Completion</td><td>Infrastructure 0&thinsp;/&thinsp;3, Offering 0&thinsp;/&thinsp;1, Customer 0&thinsp;/&thinsp;3, Financial 0&thinsp;/&thinsp;2 &mdash; colour-coded red/amber/green by fill rate</td></tr>
+                  <tr><td>Financial Picture</td><td>Cost Structure, Revenue Streams, Value Propositions &mdash; each shows Filled/Empty badge</td></tr>
+                  <tr><td>Customer Picture</td><td>Customer Segments, Channels, Customer Relationships &mdash; each shows Filled/Empty badge</td></tr>
+                </tbody>
+              </table>
+              </div>
+
+              <p style="font-size:12px;font-weight:bold;margin-bottom:6px;">Intervention Flags &mdash; 4-icon strip</p>
+              <div style="overflow-x:auto;margin-bottom:4px">
+              <table class="field-table">
+                <thead><tr><th>Flag</th><th>Value</th></tr></thead>
+                <tbody>
+                  <tr><td>Blocks Filled</td><td>Count 0&ndash;9</td></tr>
+                  <tr><td>Value Prop Set</td><td>Yes / No</td></tr>
+                  <tr><td>Financial Blocks</td><td>X&thinsp;/&thinsp;2 (Cost Structure + Revenue Streams)</td></tr>
+                  <tr><td>Customer Blocks</td><td>X&thinsp;/&thinsp;3 (Segments + Channels + Relationships)</td></tr>
+                </tbody>
+              </table>
+              </div>
+            </div>
+          </div>
+
+          <!-- Tab: Business Plan Canvas -->
+          <div class="accordion">
+            <div class="accordion-trigger" onclick="this.parentElement.classList.toggle('open')">
+              Tab 2 &mdash; Business Plan Canvas <span class="acc-arrow">&#9660;</span>
+            </div>
+            <div class="accordion-body">
+              <p style="font-size:12px;color:var(--ink-soft);margin-bottom:12px;">The core 9-block canvas grid. 5-column layout on desktop, responsive 2-col on tablet, 1-col on mobile. Each block has a coloured top-border matching its quadrant, a cross-module reference pill, a guiding description, and a textarea for free-text entry.</p>
+
+              <div style="overflow-x:auto;margin-bottom:14px">
+              <table class="field-table">
+                <thead><tr><th>Block</th><th>Quadrant</th><th>Module Reference Pill</th><th>Placeholder hint</th></tr></thead>
+                <tbody>
+                  <tr><td><strong>Key Partners</strong></td><td>Infrastructure</td><td>Market Linkage</td><td>Suppliers, Govt bodies, critical distributors, cooperatives, certifying bodies, govt schemes</td></tr>
+                  <tr><td><strong>Key Activities</strong></td><td>Infrastructure</td><td>Standardisation</td><td>Production, packaging, marketing, distribution, QC day-to-day activities</td></tr>
+                  <tr><td><strong>Key Resources</strong></td><td>Infrastructure</td><td>HR &bull; Infrastructure (Machinery)</td><td>Workshop space, machinery, key personnel, raw materials, IP</td></tr>
+                  <tr><td><strong>Value Propositions</strong></td><td>Offering</td><td>&mdash;</td><td>Unique problem solved: origin story, GI tag, hand-craft, ingredient quality, traditional recipe, sustainability</td></tr>
+                  <tr><td><strong>Customer Relationships</strong></td><td>Customer</td><td>&mdash;</td><td>How business engages customers: direct relationships, repeat orders, referrals, social media, loyalty</td></tr>
+                  <tr><td><strong>Channels</strong></td><td>Customer</td><td>Promotional Marketing</td><td>Local markets, exhibitions, online platforms, retail partners, direct WhatsApp</td></tr>
+                  <tr><td><strong>Customer Segments</strong></td><td>Customer</td><td>Customer Analysis</td><td>Demographics, geographic focus, psychographics, key buyer personas</td></tr>
+                  <tr><td><strong>Cost Structure</strong></td><td>Financial</td><td>Unit Pricing</td><td>Biggest costs: raw materials, labour, packaging, transport, marketing, rent, overheads</td></tr>
+                  <tr><td><strong>Revenue Streams</strong></td><td>Financial</td><td>Financials</td><td>Direct retail, wholesale, online platforms, custom orders, festival/seasonal spikes</td></tr>
+                </tbody>
+              </table>
+              </div>
+
+              <p style="font-size:12px;color:var(--ink-soft);">Canvas layout: Key Partners spans rows 1&ndash;2 (col 1); Key Activities row 1 + Key Resources row 2 (col 2); Value Propositions spans rows 1&ndash;2 (col 3); Customer Relationships row 1 + Channels row 2 (col 4); Customer Segments spans rows 1&ndash;2 (col 5); Cost Structure spans cols 1&ndash;2 row 3; Revenue Streams spans cols 3&ndash;5 row 3.</p>
+            </div>
+          </div>
+
+          <!-- Tab: Resources -->
+          <div class="accordion">
+            <div class="accordion-trigger" onclick="this.parentElement.classList.toggle('open')">
+              Tab 3 &mdash; Resources <span class="acc-arrow">&#9660;</span>
+            </div>
+            <div class="accordion-body">
+              <div style="overflow-x:auto;margin-bottom:4px">
+              <table class="field-table">
+                <thead><tr><th>Column</th><th>Type</th><th>Options / Notes</th></tr></thead>
+                <tbody>
+                  <tr><td>Resource Title</td><td>Data</td><td>Free text</td></tr>
+                  <tr><td>Category</td><td>Select</td><td>Business Plan Template, BMC Worksheet, Financial Projection, Market Research, Competitor Analysis, Govt. Scheme Reference, Investor Deck Reference, Mentor / Expert Contact, Legal / Registration, Other</td></tr>
+                  <tr><td>Type</td><td>Select</td><td>Template, Reference, Contact, Quotation, Report, Specification</td></tr>
+                  <tr><td>Description / Notes</td><td>Small Text</td><td>Free text</td></tr>
+                  <tr><td>File</td><td>Attach</td><td>Upload button</td></tr>
+                </tbody>
+              </table>
+              </div>
+            </div>
+          </div>
+
+          <!-- Tab: Task Log -->
+          <div class="accordion">
+            <div class="accordion-trigger" onclick="this.parentElement.classList.toggle('open')">
+              Tab 4 &mdash; Task Log <span class="acc-arrow">&#9660;</span>
+            </div>
+            <div class="accordion-body">
+              <p style="font-size:12px;color:var(--ink-soft);margin-bottom:10px;">17 pre-seeded tasks sourced from Framework Task Master (BPC sheet). Task dropdown populated from <code>Framework Task Master</code> filtered by this framework. Entry count shown in tab header.</p>
+              <div style="overflow-x:auto;margin-bottom:12px">
+              <table class="field-table">
+                <thead><tr><th>Column</th><th>Type</th><th>Notes</th></tr></thead>
+                <tbody>
+                  <tr><td>No.</td><td>Auto</td><td>Sequential row counter</td></tr>
+                  <tr><td>Date</td><td>Date</td><td>Date of activity</td></tr>
+                  <tr><td>Task Name</td><td>Link &rarr; Framework Task Master</td><td>Filtered to BPC framework; Fellow sees Task Name only (Phase is CTIT-only)</td></tr>
+                  <tr><td>Notes / Outcome</td><td>Small Text</td><td>Free text; when Task = &ldquo;Other&rdquo; this captures freeform description</td></tr>
+                  <tr><td>Attachment</td><td>Attach</td><td>Optional file upload</td></tr>
+                </tbody>
+              </table>
+              </div>
+
+              <p style="font-size:12px;font-weight:bold;margin-bottom:6px;">Pre-seeded Task List (17 tasks)</p>
+              <div style="overflow-x:auto">
+              <table class="field-table">
+                <thead><tr><th>#</th><th>Task Name</th><th>Phase (CTIT-only)</th></tr></thead>
+                <tbody>
+                  <tr><td>01</td><td>Awareness on Business Plan Canvas</td><td>Awareness</td></tr>
+                  <tr><td>02</td><td>Introduce BMC Framework to Entrepreneur</td><td>Awareness</td></tr>
+                  <tr><td>03</td><td>Fill Key Partners Block</td><td>Assessment</td></tr>
+                  <tr><td>04</td><td>Fill Key Activities Block</td><td>Assessment</td></tr>
+                  <tr><td>05</td><td>Fill Key Resources Block</td><td>Assessment</td></tr>
+                  <tr><td>06</td><td>Fill Value Propositions Block</td><td>Assessment</td></tr>
+                  <tr><td>07</td><td>Fill Customer Relationships Block</td><td>Assessment</td></tr>
+                  <tr><td>08</td><td>Fill Channels Block</td><td>Assessment</td></tr>
+                  <tr><td>09</td><td>Fill Customer Segments Block</td><td>Assessment</td></tr>
+                  <tr><td>10</td><td>Fill Cost Structure Block</td><td>Assessment</td></tr>
+                  <tr><td>11</td><td>Fill Revenue Streams Block</td><td>Assessment</td></tr>
+                  <tr><td>12</td><td>Review Canvas with Entrepreneur</td><td>Training</td></tr>
+                  <tr><td>13</td><td>Validate Canvas with Mentor / Expert</td><td>Training</td></tr>
+                  <tr><td>14</td><td>Align Canvas with Pitch Deck</td><td>Implementation</td></tr>
+                  <tr><td>15</td><td>Update Canvas after Business Model Change</td><td>Follow-up</td></tr>
+                  <tr><td>16</td><td>Final Canvas Sign-off</td><td>Follow-up</td></tr>
+                  <tr><td>—</td><td>If other, specify in comments</td><td>Other</td></tr>
+                </tbody>
+              </table>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- ── USER JOURNEY ── -->
+      <div class="accordion">
+        <div class="accordion-trigger" onclick="this.parentElement.classList.toggle('open')">
+          User Journey <span class="acc-arrow">&#9660;</span>
+        </div>
+        <div class="accordion-body">
+          <ol style="font-size:12px;line-height:2;padding-left:18px;color:var(--ink-soft);">
+            <li>Fessociate opens entrepreneur&rsquo;s Skilling module &rarr; selects <strong>Business Plan Canvas</strong> framework.</li>
+            <li>Summary tab loads showing all 9 blocks as Empty with 0% completion.</li>
+            <li>Fessociate navigates to <strong>Business Plan Canvas</strong> tab &mdash; sees the 9-block canvas grid.</li>
+            <li>For each block, Fessociate clicks the reference pill (e.g. &ldquo;Ref: Market Linkage&rdquo;) to review operational data already captured in that module, then returns and types the synthesised insight into the textarea.</li>
+            <li>Summary tab updates live &mdash; block status flips to Filled, completion percentage rises, quadrant counts update.</li>
+            <li>Fessociate logs activity in <strong>Task Log</strong> tab, selecting task from dropdown (e.g. &ldquo;03 &mdash; Fill Key Partners Block&rdquo;).</li>
+            <li>After all 9 blocks filled, Fessociate uses Resources tab to attach any supporting templates or reference files.</li>
+            <li>CTIT reviews the completed canvas, checks Intervention Flags (especially Value Prop Set and Financial Blocks), and approves or requests revisions.</li>
+            <li>Activity syncs to Fellow Activity Logger Log Book for this framework and to Entrepreneur Profile Intervention Logs (read-only).</li>
+          </ol>
+        </div>
+      </div>
+
+      <!-- ── KEY VALIDATIONS ── -->
+      <div class="accordion">
+        <div class="accordion-trigger" onclick="this.parentElement.classList.toggle('open')">
+          Key Validations <span class="acc-arrow">&#9660;</span>
+        </div>
+        <div class="accordion-body">
+          <div style="overflow-x:auto">
+          <table class="field-table">
+            <thead><tr><th>Rule</th><th>Detail</th></tr></thead>
+            <tbody>
+              <tr><td>No auto-populate</td><td>All 9 canvas blocks are manually filled. No field values are copied from cross-module references &mdash; the Fellow synthesises the insight.</td></tr>
+              <tr><td>Canvas blocks are free text</td><td>No character limit enforced per block, but UI shows a guiding placeholder. All 9 blocks are optional on save; at least the Value Proposition block is flagged in Intervention Flags if empty.</td></tr>
+              <tr><td>Task dropdown filters to BPC</td><td>Framework Task Master dropdown is filtered to <code>framework = &ldquo;Business Plan Canvas&rdquo;</code>. Phase column hidden from Fellow view; visible to CTIT only.</td></tr>
+              <tr><td>&ldquo;Other&rdquo; task handling</td><td>When Fellow selects &ldquo;If other, specify in comments&rdquo;, the Notes / Outcome column captures the free-form description &mdash; no additional field added.</td></tr>
+              <tr><td>Summary is read-only</td><td>Summary tab values are computed from canvas textarea content; they are never directly editable by the user.</td></tr>
+              <tr><td>CTIT-only review</td><td>Final canvas review and approval recorded against CTIT role. Fessociate fills; CTIT reviews and may request revisions via BRD review panel.</td></tr>
+            </tbody>
+          </table>
           </div>
         </div>
       </div>
