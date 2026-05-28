@@ -3,82 +3,121 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>PRIME Rural - Project Plan</title>
+<title>PRIME Rural - Project Plan v6</title>
 <link rel="stylesheet" href="styles.css">
 <style>
 body { font-family: var(--font); background: var(--bg); color: var(--text); margin: 0; line-height: 1.5; }
-.page-header { background: var(--card); border-bottom: 1px solid var(--border); padding: 20px 24px; }
-.page-header h1 { font-size: 20px; color: var(--prime-green); margin-bottom: 2px; }
+.page-header { background: var(--card); border-bottom: 1px solid var(--border); padding: 18px 24px; }
+.page-header h1 { font-size: 20px; color: var(--prime-green); margin: 0 0 2px; }
 .page-header .sub { font-size: 12px; color: var(--text-secondary); }
+.page-header .badge-v { display:inline-block; background: var(--prime-green); color:#fff; font-size:11px; padding:2px 8px; border-radius:10px; margin-left:8px; vertical-align: middle; }
 
 .summary-strip {
   display: flex; gap: 12px; flex-wrap: wrap;
-  padding: 16px 24px; background: var(--card);
-  border-bottom: 1px solid var(--border);
-}
-.sum-card {
-  background: var(--bg); border-radius: 8px; padding: 10px 18px;
-  border-left: 3px solid var(--prime-green); min-width: 120px;
-}
-.sum-card .val { font-size: 22px; font-weight: 700; }
-.sum-card .lbl { font-size: 10px; text-transform: uppercase; letter-spacing: .4px; color: var(--text-secondary); }
-.sum-card.green .val { color: var(--prime-green); }
-.sum-card.blue .val { color: var(--blue); }
-.sum-card.amber .val { color: var(--amber); }
-
-.filters {
-  display: flex; gap: 10px; flex-wrap: wrap;
   padding: 14px 24px; background: var(--card);
   border-bottom: 1px solid var(--border);
 }
+.sum-card {
+  background: var(--bg); border-radius: 8px; padding: 10px 16px;
+  border-left: 3px solid var(--prime-green); min-width: 96px;
+}
+.sum-card .val { font-size: 20px; font-weight: 700; line-height:1.1; }
+.sum-card .lbl { font-size: 10px; text-transform: uppercase; letter-spacing: .4px; color: var(--text-secondary); margin-top:2px; }
+.sum-card.green     { border-left-color: #2e7d32; } .sum-card.green     .val { color: #2e7d32; }
+.sum-card.blue      { border-left-color: var(--blue); } .sum-card.blue   .val { color: var(--blue); }
+.sum-card.amber     { border-left-color: var(--amber); } .sum-card.amber  .val { color: var(--amber); }
+.sum-card.grey      { border-left-color: #9aa3b2; } .sum-card.grey      .val { color: #5a6270; }
+.sum-card.pct       { border-left-color: var(--prime-green); } .sum-card.pct .val { color: var(--prime-green); }
+
+.batch-strip {
+  display: flex; gap: 8px; flex-wrap: wrap;
+  padding: 12px 24px; background: var(--card);
+  border-bottom: 1px solid var(--border);
+}
+.batch-pill {
+  background: var(--bg); border: 1px solid var(--border);
+  border-radius: 16px; padding: 6px 12px; cursor: pointer;
+  font-size: 12px; color: var(--text); display:flex; align-items:center; gap:6px;
+}
+.batch-pill:hover { border-color: var(--prime-green); }
+.batch-pill.active { background: var(--prime-green); color:#fff; border-color: var(--prime-green); }
+.batch-pill .pill-count { font-weight: 700; }
+.batch-pill .pill-date { font-size: 10px; opacity: .8; }
+
+.filters {
+  display: flex; gap: 10px; flex-wrap: wrap;
+  padding: 12px 24px; background: var(--card);
+  border-bottom: 1px solid var(--border); align-items:center;
+}
 .filters select, .filters input {
-  padding: 6px 12px; border: 1px solid var(--border);
+  padding: 6px 10px; border: 1px solid var(--border);
   border-radius: 6px; font-size: 12px; font-family: var(--font);
   background: #fff; color: var(--text);
 }
 .filters input { flex: 1; min-width: 160px; }
-.filters .reset-btn {
-  padding: 6px 14px; border: 1px solid var(--border);
+.filters .btn {
+  padding: 6px 12px; border: 1px solid var(--border);
   border-radius: 6px; background: #fff; cursor: pointer;
   font-size: 12px; color: var(--text-secondary);
 }
-.filters .reset-btn:hover { background: var(--bg); }
+.filters .btn:hover { background: var(--bg); }
+.filters .btn.toggle-on { background: var(--prime-green); color:#fff; border-color: var(--prime-green); }
 
 .table-wrap { overflow-x: auto; padding: 0 24px 40px; }
-table { width: 100%; border-collapse: collapse; font-size: 12px; margin-top: 16px; background: var(--card); border-radius: 8px; overflow: hidden; border: 1px solid var(--border); }
-thead { background: var(--prime-green); color: #fff; }
-th { padding: 10px 12px; text-align: left; font-weight: 600; font-size: 11px; text-transform: uppercase; letter-spacing: .3px; cursor: pointer; white-space: nowrap; user-select: none; }
+table { width: 100%; border-collapse: collapse; font-size: 12px; margin-top: 14px; background: var(--card); border-radius: 8px; overflow: hidden; border: 1px solid var(--border); }
+thead { background: var(--prime-green); color: #fff; position: sticky; top: 0; }
+th { padding: 9px 10px; text-align: left; font-weight: 600; font-size: 11px; text-transform: uppercase; letter-spacing: .3px; cursor: pointer; white-space: nowrap; user-select: none; }
 th:hover { background: var(--prime-green-dark); }
 th .sort-arrow { font-size: 9px; margin-left: 3px; opacity: .6; }
-td { padding: 8px 12px; border-bottom: 1px solid var(--border); vertical-align: top; }
+td { padding: 7px 10px; border-bottom: 1px solid var(--border); vertical-align: top; }
 tr:last-child td { border-bottom: none; }
-tr:hover td { background: #f8faf9; }
-.module-group-row td { background: var(--prime-green-light); font-weight: 700; font-size: 13px; color: var(--prime-green); padding: 10px 12px; cursor: pointer; }
-.module-group-row:hover td { background: #d4edda; }
-.module-group-row .toggle-icon { display: inline-block; transition: transform .2s; margin-right: 6px; font-size: 10px; }
-.module-group-row.collapsed .toggle-icon { transform: rotate(-90deg); }
+tr.row-sub:hover td { background: #f8faf9; }
+td.col-wbs { font-family: 'Courier New', monospace; color: var(--text-secondary); white-space: nowrap; font-size: 11px; }
+td.col-activity { min-width: 240px; }
+td.col-success { font-size: 11px; color: var(--text-secondary); max-width: 320px; }
+td.col-date { white-space: nowrap; font-size: 11px; }
+td.col-owner { white-space: nowrap; font-size: 11px; font-weight: 500; }
 
-.status-badge { padding: 2px 8px; border-radius: 10px; font-size: 10px; font-weight: 600; white-space: nowrap; }
-.status-completed { background: var(--prime-green-light); color: var(--prime-green); }
-.status-inprogress { background: #dbeafe; color: var(--blue); }
-.status-notstarted { background: #fef3c7; color: #92400e; }
-.priority-p0 { color: var(--red); font-weight: 700; }
-.priority-p1 { color: var(--amber); font-weight: 600; }
-.priority-p2 { color: var(--text-secondary); }
-.type-badge { font-size: 10px; color: var(--text-secondary); background: var(--bg); padding: 1px 6px; border-radius: 3px; }
+tr.milestone-row td { font-weight: 700; font-size: 13px; cursor: pointer; }
+tr.milestone-row.status-completed td  { background: #d4edda; color: #1b5e20; }
+tr.milestone-row.status-inprogress td { background: #dbeafe; color: #1d4ed8; }
+tr.milestone-row.status-pending td    { background: #ffe7c2; color: #92400e; }
+tr.milestone-row.status-notstarted td { background: #ececec; color: #4b5563; }
+tr.milestone-row.collapsed .toggle-icon { transform: rotate(-90deg); }
+.toggle-icon { display: inline-block; transition: transform .2s; margin-right: 6px; font-size: 10px; }
+
+.status-badge { padding: 2px 8px; border-radius: 10px; font-size: 10px; font-weight: 600; white-space: nowrap; display:inline-block; }
+.status-badge.completed   { background: #d4edda; color: #1b5e20; }
+.status-badge.inprogress  { background: #dbeafe; color: #1d4ed8; }
+.status-badge.pending     { background: #ffe7c2; color: #92400e; }
+.status-badge.notstarted  { background: #ececec; color: #4b5563; }
+
+.uat-badge { padding: 2px 8px; border-radius: 10px; font-size: 10px; font-weight: 600; white-space: nowrap; display:inline-block; border:1px solid; }
+.uat-badge.b-uat1 { background:#e8f5ec; color:#1a6b3c; border-color:#1a6b3c33; }
+.uat-badge.b-uat2 { background:#e3f2fd; color:#1565c0; border-color:#1565c033; }
+.uat-badge.b-uat3 { background:#fff3e0; color:#e65100; border-color:#e6510033; }
+.uat-badge.b-pre  { background:#f3e5f5; color:#6a1b9a; border-color:#6a1b9a33; }
+.uat-badge.b-prgl { background:#fce4ec; color:#ad1457; border-color:#ad145733; }
+.uat-badge.b-gl   { background:#fbe9e7; color:#bf360c; border-color:#bf360c33; }
+
 .no-results { text-align: center; padding: 40px; color: var(--text-secondary); font-size: 14px; }
-.count-label { font-size: 11px; color: var(--text-secondary); padding: 14px 24px 0; }
+.count-label { font-size: 11px; color: var(--text-secondary); padding: 10px 24px 0; }
+.legend { padding: 8px 24px 0; font-size: 11px; color: var(--text-secondary); display:flex; gap:14px; flex-wrap:wrap; }
+.legend .leg-dot { display:inline-block; width:10px; height:10px; border-radius:2px; margin-right:4px; vertical-align:middle; }
 
 @media print {
-  .filters, .summary-strip { break-inside: avoid; }
-  th { background: var(--prime-green) !important; color: #fff !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  .filters, .batch-strip, .summary-strip { break-inside: avoid; }
+  thead { background: var(--prime-green) !important; color: #fff !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  tr.milestone-row td { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
 }
-@media (max-width: 640px) {
-  .summary-strip { gap: 8px; padding: 12px 16px; }
-  .sum-card { padding: 8px 12px; min-width: 90px; }
-  .sum-card .val { font-size: 18px; }
-  .filters { padding: 10px 16px; }
+@media (max-width: 760px) {
+  .summary-strip, .batch-strip, .filters { padding: 10px 14px; }
+  .sum-card { padding: 8px 12px; min-width: 78px; }
+  .sum-card .val { font-size: 17px; }
   .table-wrap { padding: 0 8px 24px; }
+  td.col-success { display:none; }
+  td.col-date.col-actstart { display:none; }
+  th.col-success, th.col-actstart { display:none; }
 }
 </style>
 </head>
@@ -87,53 +126,64 @@ tr:hover td { background: #f8faf9; }
 <script src="data/project-plan.js"></script>
 
 <div class="page-header">
-  <h1>Project Plan</h1>
-  <div class="sub">PRIME Rural CRM | 234 activities across all modules</div>
+  <h1>Project Plan <span class="badge-v">v6</span></h1>
+  <div class="sub">PRIME Rural CRM Web Platform · Source of truth: <code>generated/PREF_CRM_Web_Project_Plan_v6.xlsx</code> · UAT-1: Fri 29-May-2026 · UAT-2: Fri 12-Jun-2026 (proposed) · UAT-3: TBD</div>
 </div>
 
 <div class="summary-strip" id="summaryStrip"></div>
 
+<div class="batch-strip" id="batchStrip"></div>
+
 <div class="filters">
-  <select id="fModule"><option value="">All Modules</option></select>
+  <select id="fMilestone"><option value="">All Milestones</option></select>
   <select id="fStatus">
     <option value="">All Status</option>
     <option value="Completed">Completed</option>
     <option value="In Progress">In Progress</option>
+    <option value="Pending Requirements">Pending Requirements</option>
     <option value="Not Started">Not Started</option>
   </select>
-  <select id="fPriority">
-    <option value="">All Priority</option>
-    <option value="P0">P0</option>
-    <option value="P1">P1</option>
-    <option value="P2">P2</option>
-  </select>
-  <select id="fType">
-    <option value="">All Types</option>
-    <option value="Backend">Backend</option>
-    <option value="Frontend">Frontend</option>
-    <option value="Integration">Integration</option>
-    <option value="DevOps">DevOps</option>
-    <option value="QA">QA</option>
-    <option value="Documentation">Documentation</option>
+  <select id="fBatch">
+    <option value="">All UAT Batches</option>
+    <option value="Pre-UAT">Pre-UAT</option>
+    <option value="UAT-1">UAT-1</option>
+    <option value="UAT-2">UAT-2</option>
+    <option value="UAT-3">UAT-3</option>
+    <option value="Pre-Go-Live">Pre-Go-Live</option>
+    <option value="Go-Live">Go-Live</option>
   </select>
   <select id="fOwner"><option value="">All Owners</option></select>
-  <input type="text" id="fSearch" placeholder="Search activities...">
-  <button class="reset-btn" onclick="resetFilters()">Reset</button>
+  <input type="text" id="fSearch" placeholder="Search activity / WBS / success criteria...">
+  <button class="btn" id="btnPlanning" onclick="togglePlanning()">+ Planning fields</button>
+  <button class="btn" onclick="resetFilters()">Reset</button>
+</div>
+
+<div class="legend">
+  <span><span class="leg-dot" style="background:#d4edda"></span>Completed</span>
+  <span><span class="leg-dot" style="background:#dbeafe"></span>In Progress</span>
+  <span><span class="leg-dot" style="background:#ffe7c2"></span>Pending Requirements</span>
+  <span><span class="leg-dot" style="background:#ececec"></span>Not Started</span>
 </div>
 
 <div class="count-label" id="countLabel"></div>
 <div class="table-wrap">
-  <table>
+  <table id="planTable">
     <thead>
-      <tr>
-        <th onclick="sortBy('sno')"># <span class="sort-arrow" id="sort-sno"></span></th>
-        <th onclick="sortBy('activity')">Activity <span class="sort-arrow" id="sort-activity"></span></th>
-        <th onclick="sortBy('type')">Type <span class="sort-arrow" id="sort-type"></span></th>
-        <th onclick="sortBy('owner')">Owner <span class="sort-arrow" id="sort-owner"></span></th>
-        <th onclick="sortBy('status')">Status <span class="sort-arrow" id="sort-status"></span></th>
-        <th onclick="sortBy('priority')">Pri <span class="sort-arrow" id="sort-priority"></span></th>
-        <th>Dep</th>
-        <th>Notes</th>
+      <tr id="theadRow">
+        <th onclick="sortBy('sno')">#<span class="sort-arrow" id="sort-sno"></span></th>
+        <th onclick="sortBy('wbs')">WBS<span class="sort-arrow" id="sort-wbs"></span></th>
+        <th onclick="sortBy('activity')" class="col-activity">Activity<span class="sort-arrow" id="sort-activity"></span></th>
+        <th onclick="sortBy('owner')">Owner<span class="sort-arrow" id="sort-owner"></span></th>
+        <th onclick="sortBy('status')">Status<span class="sort-arrow" id="sort-status"></span></th>
+        <th onclick="sortBy('uatBatch')">UAT<span class="sort-arrow" id="sort-uatBatch"></span></th>
+        <th class="col-dur planning-col" style="display:none">Days</th>
+        <th class="col-res planning-col" style="display:none">Resources</th>
+        <th class="col-dep planning-col" style="display:none">Dep</th>
+        <th onclick="sortBy('startDate')" class="col-date">Pln Start<span class="sort-arrow" id="sort-startDate"></span></th>
+        <th onclick="sortBy('endDate')"   class="col-date">Pln End<span class="sort-arrow" id="sort-endDate"></span></th>
+        <th class="col-date col-actstart planning-col" style="display:none">Act Start</th>
+        <th class="col-date col-actend">Act End</th>
+        <th class="col-success">Success Criteria</th>
       </tr>
     </thead>
     <tbody id="planBody"></tbody>
@@ -143,18 +193,21 @@ tr:hover td { background: #f8faf9; }
 
 <script>
 (function() {
-  var data = typeof PROJECT_PLAN !== 'undefined' ? PROJECT_PLAN : [];
+  var data = (typeof PROJECT_PLAN !== 'undefined') ? PROJECT_PLAN : [];
   var sortCol = 'sno', sortAsc = true;
-  var collapsedModules = {};
+  var collapsed = {};
+  var showPlanning = false;
 
-  // Populate filter dropdowns
-  var modules = {}, owners = {};
-  for (var i = 0; i < data.length; i++) {
-    modules[data[i].module] = 1;
-    owners[data[i].owner] = 1;
+  // Populate Milestone + Owner dropdowns
+  var milestones = {}, owners = {};
+  for (var i=0; i<data.length; i++) {
+    milestones[data[i].module] = 1;
+    if (data[i].owner) owners[data[i].owner] = 1;
   }
-  var mSel = document.getElementById('fModule');
-  Object.keys(modules).sort().forEach(function(m) {
+  var milestoneOrder = []; // preserve insertion order from data
+  for (var j=0; j<data.length; j++) { if (data[j].level === 1) milestoneOrder.push(data[j].activity); }
+  var mSel = document.getElementById('fMilestone');
+  milestoneOrder.forEach(function(m) {
     var o = document.createElement('option'); o.value = m; o.textContent = m; mSel.appendChild(o);
   });
   var oSel = document.getElementById('fOwner');
@@ -162,124 +215,230 @@ tr:hover td { background: #f8faf9; }
     var o = document.createElement('option'); o.value = o_; o.textContent = o_; oSel.appendChild(o);
   });
 
-  // Summary
+  // ----- Status / Batch class helpers -----
+  function statusCls(s) {
+    if (s === 'Completed') return 'completed';
+    if (s === 'In Progress') return 'inprogress';
+    if (s === 'Pending Requirements') return 'pending';
+    return 'notstarted';
+  }
+  function batchCls(b) {
+    if (b === 'UAT-1') return 'b-uat1';
+    if (b === 'UAT-2') return 'b-uat2';
+    if (b === 'UAT-3') return 'b-uat3';
+    if (b === 'Pre-UAT') return 'b-pre';
+    if (b === 'Pre-Go-Live') return 'b-prgl';
+    if (b === 'Go-Live') return 'b-gl';
+    return '';
+  }
+
+  // ----- Summary -----
   function updateSummary(filtered) {
-    var c = 0, ip = 0, ns = 0;
-    for (var i = 0; i < filtered.length; i++) {
-      if (filtered[i].status === 'Completed') c++;
-      else if (filtered[i].status === 'In Progress') ip++;
+    var c = 0, ip = 0, pr = 0, ns = 0;
+    for (var i=0; i<filtered.length; i++) {
+      var s = filtered[i].status;
+      if (s === 'Completed') c++;
+      else if (s === 'In Progress') ip++;
+      else if (s === 'Pending Requirements') pr++;
       else ns++;
     }
-    var pct = filtered.length > 0 ? Math.round((c / filtered.length) * 100) : 0;
+    var trackable = c + ip + ns; // Pending Requirements excluded from % done
+    var pct = trackable > 0 ? Math.round((c / trackable) * 100) : 0;
     document.getElementById('summaryStrip').innerHTML =
       '<div class="sum-card"><div class="val">' + filtered.length + '</div><div class="lbl">Total</div></div>' +
       '<div class="sum-card green"><div class="val">' + c + '</div><div class="lbl">Completed</div></div>' +
       '<div class="sum-card blue"><div class="val">' + ip + '</div><div class="lbl">In Progress</div></div>' +
-      '<div class="sum-card amber"><div class="val">' + ns + '</div><div class="lbl">Not Started</div></div>' +
-      '<div class="sum-card green"><div class="val">' + pct + '%</div><div class="lbl">Done</div></div>';
-    document.getElementById('countLabel').textContent = 'Showing ' + filtered.length + ' of ' + data.length + ' activities';
+      '<div class="sum-card amber"><div class="val">' + pr + '</div><div class="lbl">Pending Req</div></div>' +
+      '<div class="sum-card grey"><div class="val">' + ns + '</div><div class="lbl">Not Started</div></div>' +
+      '<div class="sum-card pct"><div class="val">' + pct + '%</div><div class="lbl">% Done</div></div>';
+    document.getElementById('countLabel').textContent =
+      'Showing ' + filtered.length + ' of ' + data.length + ' activities · % Done excludes Pending Requirements (spec needed)';
   }
 
-  // Filter
+  // ----- Batch pills -----
+  var batchLabels = [
+    {key:'UAT-1', date:'29-May-2026'},
+    {key:'UAT-2', date:'12-Jun-2026 (proposed)'},
+    {key:'UAT-3', date:'TBD'},
+    {key:'Pre-UAT', date:'foundation work'},
+    {key:'Pre-Go-Live', date:'VAPT + load tests'},
+    {key:'Go-Live', date:'Aug 2026'}
+  ];
+  function renderBatchPills() {
+    var batchSel = document.getElementById('fBatch');
+    var counts = {};
+    for (var i=0; i<data.length; i++) counts[data[i].uatBatch] = (counts[data[i].uatBatch] || 0) + 1;
+    var html = '';
+    batchLabels.forEach(function(b) {
+      var n = counts[b.key] || 0;
+      var active = batchSel.value === b.key ? ' active' : '';
+      html += '<div class="batch-pill' + active + '" onclick="window.setBatch(\'' + b.key + '\')">' +
+              '<span>' + b.key + '</span>' +
+              '<span class="pill-count">' + n + '</span>' +
+              '<span class="pill-date">' + b.date + '</span></div>';
+    });
+    var allActive = !batchSel.value ? ' active' : '';
+    html = '<div class="batch-pill' + allActive + '" onclick="window.setBatch(\'\')"><span>All</span><span class="pill-count">' + data.length + '</span></div>' + html;
+    document.getElementById('batchStrip').innerHTML = html;
+  }
+  window.setBatch = function(b) {
+    document.getElementById('fBatch').value = b;
+    render();
+  };
+
+  // ----- Filter -----
   function getFiltered() {
-    var fm = document.getElementById('fModule').value;
+    var fm = document.getElementById('fMilestone').value;
     var fs = document.getElementById('fStatus').value;
-    var fp = document.getElementById('fPriority').value;
-    var ft = document.getElementById('fType').value;
+    var fb = document.getElementById('fBatch').value;
     var fo = document.getElementById('fOwner').value;
     var fq = document.getElementById('fSearch').value.toLowerCase();
     return data.filter(function(r) {
       if (fm && r.module !== fm) return false;
       if (fs && r.status !== fs) return false;
-      if (fp && r.priority !== fp) return false;
-      if (ft && r.type !== ft) return false;
+      if (fb && r.uatBatch !== fb) return false;
       if (fo && r.owner !== fo) return false;
-      if (fq && (r.activity + ' ' + r.notes + ' ' + r.module).toLowerCase().indexOf(fq) === -1) return false;
+      if (fq && (r.activity + ' ' + r.wbs + ' ' + r.successCriteria + ' ' + r.module).toLowerCase().indexOf(fq) === -1) return false;
       return true;
     });
   }
 
-  // Sort
-  function compare(a, b) {
+  // ----- Sort -----
+  function cmp(a, b) {
     var va = a[sortCol], vb = b[sortCol];
     if (sortCol === 'sno') { va = parseInt(va) || 0; vb = parseInt(vb) || 0; }
+    if (sortCol === 'wbs') {
+      // numeric WBS sort: 1, 1.1, 1.2, 2, 2.1...
+      var pa = String(va).split('.').map(function(x){return parseInt(x)||0;});
+      var pb = String(vb).split('.').map(function(x){return parseInt(x)||0;});
+      for (var i=0; i<Math.max(pa.length, pb.length); i++) {
+        var ai = pa[i] || 0, bi = pb[i] || 0;
+        if (ai !== bi) return sortAsc ? ai - bi : bi - ai;
+      }
+      return 0;
+    }
+    if (sortCol === 'startDate' || sortCol === 'endDate') {
+      va = parseDate(va); vb = parseDate(vb);
+    }
+    if (va == null || va === '') return sortAsc ? 1 : -1;
+    if (vb == null || vb === '') return sortAsc ? -1 : 1;
     if (va < vb) return sortAsc ? -1 : 1;
     if (va > vb) return sortAsc ? 1 : -1;
     return 0;
   }
-
+  function parseDate(s) {
+    if (!s) return null;
+    // "29-May-2026" -> Date
+    var parts = s.split('-');
+    if (parts.length !== 3) return null;
+    var months = {Jan:0,Feb:1,Mar:2,Apr:3,May:4,Jun:5,Jul:6,Aug:7,Sep:8,Oct:9,Nov:10,Dec:11};
+    return new Date(parseInt(parts[2]), months[parts[1]] || 0, parseInt(parts[0]));
+  }
   window.sortBy = function(col) {
-    if (sortCol === col) sortAsc = !sortAsc;
-    else { sortCol = col; sortAsc = true; }
+    if (sortCol === col) sortAsc = !sortAsc; else { sortCol = col; sortAsc = true; }
     render();
   };
 
-  // Render
+  // ----- Render -----
   function render() {
+    renderBatchPills();
     var filtered = getFiltered();
-    filtered.sort(compare);
+    filtered.sort(cmp);
     updateSummary(filtered);
 
-    // Update sort arrows
     document.querySelectorAll('.sort-arrow').forEach(function(el) { el.textContent = ''; });
     var arrow = document.getElementById('sort-' + sortCol);
-    if (arrow) arrow.textContent = sortAsc ? '\u25B2' : '\u25BC';
+    if (arrow) arrow.textContent = sortAsc ? '▲' : '▼';
+
+    // Toggle planning column visibility
+    document.querySelectorAll('.planning-col').forEach(function(el) {
+      el.style.display = showPlanning ? '' : 'none';
+    });
+    var btn = document.getElementById('btnPlanning');
+    btn.classList.toggle('toggle-on', showPlanning);
+    btn.textContent = (showPlanning ? '- ' : '+ ') + 'Planning fields';
 
     var body = document.getElementById('planBody');
     var html = '';
-    var currentModule = '';
-    var moduleFiltered = !!document.getElementById('fModule').value;
+    var groupByMilestone = (sortCol === 'sno' || sortCol === 'wbs') && !document.getElementById('fMilestone').value;
 
-    for (var i = 0; i < filtered.length; i++) {
-      var r = filtered[i];
-
-      // Module group header (only when not filtering by module and sorting by sno)
-      if (!moduleFiltered && sortCol === 'sno' && r.module !== currentModule) {
-        currentModule = r.module;
-        var isCollapsed = collapsedModules[currentModule];
-        html += '<tr class="module-group-row' + (isCollapsed ? ' collapsed' : '') + '" onclick="toggleModule(\'' + currentModule.replace(/'/g, "\\'") + '\')">' +
-          '<td colspan="8"><span class="toggle-icon">\u25BC</span>' + currentModule + '</td></tr>';
-      }
-
-      var hidden = (!moduleFiltered && sortCol === 'sno' && collapsedModules[r.module]) ? ' style="display:none"' : '';
-      var statusCls = r.status === 'Completed' ? 'completed' : r.status === 'In Progress' ? 'inprogress' : 'notstarted';
-      var priCls = r.priority === 'P0' ? 'p0' : r.priority === 'P1' ? 'p1' : 'p2';
-
-      html += '<tr data-module="' + r.module + '"' + hidden + '>' +
-        '<td>' + r.sno + '</td>' +
-        '<td>' + r.activity + '</td>' +
-        '<td><span class="type-badge">' + r.type + '</span></td>' +
-        '<td>' + r.owner + '</td>' +
-        '<td><span class="status-badge status-' + statusCls + '">' + r.status + '</span></td>' +
-        '<td><span class="priority-' + priCls + '">' + r.priority + '</span></td>' +
-        '<td>' + r.dependency + '</td>' +
-        '<td>' + r.notes + '</td>' +
-        '</tr>';
+    if (groupByMilestone) {
+      // Group by milestone in WBS root order
+      var bucket = {};
+      filtered.forEach(function(r) {
+        if (!bucket[r.module]) bucket[r.module] = [];
+        bucket[r.module].push(r);
+      });
+      milestoneOrder.forEach(function(m) {
+        if (!bucket[m]) return;
+        var rows = bucket[m];
+        // Find the milestone row (level 1) for display in the group header
+        var milestone = rows.find(function(r) { return r.level === 1; }) || rows[0];
+        var isCol = collapsed[m];
+        // Render milestone (parent) row
+        html += renderRow(milestone, true, isCol);
+        if (!isCol) {
+          rows.forEach(function(r) {
+            if (r.level !== 1) html += renderRow(r, false, false);
+          });
+        }
+      });
+    } else {
+      filtered.forEach(function(r) { html += renderRow(r, r.level === 1, false); });
     }
 
     body.innerHTML = html;
     document.getElementById('noResults').style.display = filtered.length === 0 ? 'block' : 'none';
   }
 
-  window.toggleModule = function(mod) {
-    collapsedModules[mod] = !collapsedModules[mod];
+  function renderRow(r, isMilestone, isCollapsed) {
+    var sCls = statusCls(r.status);
+    var bCls = batchCls(r.uatBatch);
+    var clsRow = isMilestone ? ('milestone-row status-' + sCls + (isCollapsed ? ' collapsed' : '')) : 'row-sub';
+    var click = isMilestone ? (' onclick="toggleMilestone(\'' + esc(r.module) + '\')"') : '';
+    var toggle = isMilestone ? '<span class="toggle-icon">▼</span>' : '';
+    var act = isMilestone ? (toggle + esc(r.activity)) : esc(r.activity);
+    var statusHtml = '<span class="status-badge ' + sCls + '">' + esc(r.status) + '</span>';
+    var batchHtml = r.uatBatch ? '<span class="uat-badge ' + bCls + '">' + esc(r.uatBatch) + '</span>' : '';
+    return '<tr class="' + clsRow + '"' + click + '>' +
+      '<td>' + r.sno + '</td>' +
+      '<td class="col-wbs">' + esc(r.wbs) + '</td>' +
+      '<td class="col-activity">' + act + '</td>' +
+      '<td class="col-owner">' + esc(r.owner) + '</td>' +
+      '<td>' + statusHtml + '</td>' +
+      '<td>' + batchHtml + '</td>' +
+      '<td class="planning-col" style="display:' + (showPlanning?'':'none') + '">' + (r.duration||'') + '</td>' +
+      '<td class="planning-col" style="display:' + (showPlanning?'':'none') + '">' + esc(r.resources) + '</td>' +
+      '<td class="planning-col" style="display:' + (showPlanning?'':'none') + '">' + esc(r.dependency) + '</td>' +
+      '<td class="col-date">' + esc(r.startDate) + '</td>' +
+      '<td class="col-date">' + esc(r.endDate) + '</td>' +
+      '<td class="col-date col-actstart planning-col" style="display:' + (showPlanning?'':'none') + '">' + esc(r.actualStart) + '</td>' +
+      '<td class="col-date col-actend">' + esc(r.actualEnd) + '</td>' +
+      '<td class="col-success">' + esc(r.successCriteria) + '</td>' +
+      '</tr>';
+  }
+  function esc(s) {
+    if (s == null) return '';
+    return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+  }
+
+  window.toggleMilestone = function(m) {
+    collapsed[m] = !collapsed[m];
     render();
   };
-
+  window.togglePlanning = function() {
+    showPlanning = !showPlanning;
+    render();
+  };
   window.resetFilters = function() {
-    document.getElementById('fModule').value = '';
-    document.getElementById('fStatus').value = '';
-    document.getElementById('fPriority').value = '';
-    document.getElementById('fType').value = '';
-    document.getElementById('fOwner').value = '';
+    ['fMilestone','fStatus','fBatch','fOwner'].forEach(function(id){ document.getElementById(id).value = ''; });
     document.getElementById('fSearch').value = '';
-    collapsedModules = {};
+    collapsed = {};
     sortCol = 'sno'; sortAsc = true;
     render();
   };
 
-  // Bind filter events
-  ['fModule','fStatus','fPriority','fType','fOwner'].forEach(function(id) {
+  ['fMilestone','fStatus','fBatch','fOwner'].forEach(function(id) {
     document.getElementById(id).addEventListener('change', render);
   });
   document.getElementById('fSearch').addEventListener('input', render);

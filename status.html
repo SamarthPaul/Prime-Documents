@@ -120,7 +120,7 @@
   <div class="header">
     <h1>PRIME Rural CRM - Project Status Summary</h1>
     <div class="subtitle">MBMA Meghalaya | Dhwani Rural Information Services</div>
-    <div class="date">As on: 15 May 2026 | Click any module row to see remaining items</div>
+    <div class="date">As on: 28 May 2026 | Click any module row to see remaining items</div>
   </div>
 
 
@@ -132,19 +132,19 @@
     </div>
     <div class="kpi-card">
       <div class="label">Completed</div>
-      <div class="value green">150</div>
+      <div class="value green">152</div>
     </div>
     <div class="kpi-card">
       <div class="label">In Progress</div>
-      <div class="value blue">11</div>
+      <div class="value blue">12</div>
     </div>
     <div class="kpi-card">
       <div class="label">Remaining</div>
-      <div class="value amber">73</div>
+      <div class="value amber">70</div>
     </div>
     <div class="kpi-card">
       <div class="label">Overall Completion</div>
-      <div class="value green">64%</div>
+      <div class="value green">65%</div>
     </div>
   </div>
 
@@ -821,8 +821,8 @@
   <!-- ============ QA, SECURITY & GO-LIVE ============ -->
   <div class="type-section">
     <div class="type-header">
-      <h2>QA, Security & Go-Live</h2>
-      <div class="pct">0%</div>
+      <h2>QA, Security &amp; Go-Live</h2>
+      <div class="pct">5%</div>
     </div>
     <div class="module-row subheader">
       <div>Module</div>
@@ -848,13 +848,23 @@
       <div class="progress-wrap"><div class="progress-bar"><div class="progress-fill green" style="width:0%"></div></div></div>
       <div class="pct-cell zero">0%</div>
     </div>
-    <div class="module-row">
-      <div class="module-name">QA & TDD</div>
-      <div class="count completed">0</div>
-      <div class="count inprogress">0</div>
-      <div class="count notstarted">15</div>
-      <div class="progress-wrap"><div class="progress-bar"><div class="progress-fill green" style="width:0%"></div></div></div>
-      <div class="pct-cell zero">0%</div>
+    <div class="module-row" onclick="toggle('q3')">
+      <div class="module-name"><span class="chevron" id="q3c">&#9654;</span>QA &amp; TDD <span class="tech-badge">319 test cases</span></div>
+      <div class="count completed">2</div>
+      <div class="count inprogress">1</div>
+      <div class="count notstarted">12</div>
+      <div class="progress-wrap"><div class="progress-bar"><div class="progress-fill blue-fill" style="width:13%"></div></div></div>
+      <div class="pct-cell low">13%</div>
+    </div>
+    <div class="remaining-drawer" id="q3">
+      <ul>
+        <li class="ri-done">319 TDD test cases documented in test-cases.html (6 layers: functional, non-functional, UI, API, DB, standard validations) &mdash; live on GitHub Pages</li>
+        <li class="ri-done">6 UAT test users seeded on staging (Fessociate, CTIT, Designer, SELCO Exec, Coordinator, IT Admin)</li>
+        <li class="ri-pending">Playwright E2E scaffold built (18 files, tests/ folder) &mdash; pending npm install + commit</li>
+        <li class="ri-pending">Internal dry run (UAT-1) &mdash; not started</li>
+        <li class="ri-pending">Client UAT sessions (UAT-1, UAT-2, UAT-3) &mdash; not started</li>
+        <li class="ri-pending">Bug fixing sprints post-UAT &mdash; not started</li>
+      </ul>
     </div>
     <div class="module-row">
       <div class="module-name">UAT & Go-Live</div>
@@ -866,17 +876,17 @@
     </div>
     <div class="type-subtotal">
       <div>QA/Security/Go-Live Total (41)</div>
-      <div class="count completed">0</div>
-      <div class="count inprogress">0</div>
-      <div class="count notstarted">41</div>
-      <div class="progress-wrap"><div class="progress-bar"><div class="progress-fill green" style="width:0%"></div></div></div>
-      <div class="pct-cell zero">0%</div>
+      <div class="count completed">2</div>
+      <div class="count inprogress">1</div>
+      <div class="count notstarted">38</div>
+      <div class="progress-wrap"><div class="progress-bar"><div class="progress-fill blue-fill" style="width:5%"></div></div></div>
+      <div class="pct-cell low">5%</div>
     </div>
   </div>
 
   <!-- Key Remaining Work -->
   <div class="remaining-section">
-    <h3>Key Remaining Work (73 activities)</h3>
+    <h3>Key Remaining Work (70 activities)</h3>
     <div class="remaining-grid">
       <div class="remaining-item">
         <div class="ri-label">QA, VAPT, Load Testing</div>
@@ -915,11 +925,13 @@
   <div class="notes">
     <h3>Key Highlights</h3>
     <ul>
-      <li><strong>14 modules at 100%:</strong> Customer Analysis, Market Linkage, Promotions, Prototyping, Testing, Standardization, Brochure, Capacity Building, BPC, Logistics Packing, Logistics Service, Schemes Funding, Networking & Mentoring, Milestone Tracker</li>
+      <li><strong>Living BRD 100% complete:</strong> All 27 diagnostic frameworks rebuilt mockup-faithful from client HTML files (Sessions 11-12). Live at samarthpaul.github.io/Prime-Documents/brd.html (~10,751 lines).</li>
+      <li><strong>319 TDD test cases documented</strong> across 6 layers (functional, non-functional, UI, API, DB, standard validations). Live on GitHub Pages as test-cases.html. Playwright E2E scaffold built (18 files).</li>
+      <li><strong>14 modules at 100%:</strong> Customer Analysis, Market Linkage, Promotions, Prototyping, Testing, Standardization, Brochure, Capacity Building, BPC, Logistics Packing, Logistics Service, Schemes Funding, Networking &amp; Mentoring, Milestone Tracker.</li>
       <li><strong>Unit Pricing (1,682 lines)</strong> and <strong>Packaging (1,294 lines)</strong> are the most complex forms - both fully built with pricing calculations and INR formatting.</li>
-      <li><strong>Biggest remaining blocks:</strong> Cross-Module Integration (10 Golden Thread data flows), Notifications (5 items - send form + push popup + tracking), QA/Security/Go-Live pipeline (41 items).</li>
+      <li><strong>Biggest remaining blocks:</strong> Cross-Module Integration (10 Golden Thread data flows), User Management role setup (5 items), QA/Security/Go-Live pipeline (38 items), Notifications (5 items).</li>
       <li><strong>Infrastructure</strong> is the lowest framework form at 36% - needs EE/CE tabs and Financial Model (2 modes).</li>
-      <li><strong>Intervention Dashboard reset to 0%</strong> - will be rebuilt after KPI spec from client.</li>
+      <li><strong>Intervention Dashboard at 0% (Pending KPIs)</strong> - KPI spec awaited from client (Minha + Alem); will be rebuilt from scratch once received.</li>
     </ul>
   </div>
 
