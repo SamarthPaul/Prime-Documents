@@ -18,7 +18,10 @@ test.describe('PR-TC-XC-AUTH · Email/password login', () => {
     await login.fillCredentials('uat-sm@dhwaniris.com', pw!);
     await login.submit();
 
-    await expect(page).toHaveURL(/\/app/, { timeout: 10_000 });
+    // Verified 28 May 2026: successful login lands on the Vue SPA at
+    // /primerural (NOT the Frappe desk /app). Accept /desk too in case a deep
+    // link bounced through the workspace router.
+    await expect(page).toHaveURL(/\/(primerural|app|desk)/, { timeout: 10_000 });
     const shell = new AppShell(page);
     await shell.expectShellRendered();
 
@@ -45,6 +48,26 @@ test.describe('PR-TC-XC-AUTH · Email/password login', () => {
     await login.submit();
     await login.expectStillOnLogin();
     await login.expectGenericInvalidCredsError();
+  });
+
+  test('PR-TC-XC-032b · login API returns generic 401 (no user enumeration)', async ({ request }) => {
+    // Verified live 28 May 2026: both a real user with a wrong password and a
+    // wholly non-existent user return an IDENTICAL 401 + message, so the API
+    // does not leak which emails exist. This is the robust (UI-independent)
+    // form of the no-enumeration check.
+    const wrongPw = await request.post('/api/method/login', {
+      form: { usr: 'uat-sm@dhwaniris.com', pwd: 'definitely-not-the-password-1!' },
+    });
+    const noSuchUser = await request.post('/api/method/login', {
+      form: { usr: `nobody-${Date.now()}@nowhere.invalid`, pwd: 'whatever' },
+    });
+
+    expect(wrongPw.status()).toBe(401);
+    expect(noSuchUser.status()).toBe(401);
+    const a = await wrongPw.json();
+    const b = await noSuchUser.json();
+    expect(a.message).toMatch(/invalid login credentials/i);
+    expect(b.message).toBe(a.message); // identical → no enumeration
   });
 
   test('PR-TC-XC-035 · malformed email is blocked client-side', async ({ page }) => {

@@ -10,26 +10,33 @@ test.describe('PR-TC-UM · User Management — role gates', () => {
     test.use({ storageState: '.auth/uat-fa.json' });
 
     test('PR-TC-UM-018 · FA cannot access User Management', async ({ page }) => {
-      const resp = await page.goto('/app/user');
-      // Accept 403, or a redirect away from /app/user, or a "no permission" banner
+      // Verified route: User Management is the SPA page /primerural/d/User Manager.
+      await page.goto('/primerural/d/User%20Manager');
+      await page.waitForLoadState('networkidle').catch(() => {});
       const url = page.url();
-      const status = resp?.status() ?? 200;
 
-      const blocked =
-        status === 403 ||
-        !url.includes('/app/user') ||
-        (await page.locator('text=/no permission|not permitted|access denied/i').count()) > 0;
+      // FA must be blocked: either bounced off the route, shown a no-permission
+      // notice, OR not shown the actual user-admin surface (the seeded emails /
+      // an "Add User" affordance).
+      const noPermission = (await page.locator('text=/no permission|not permitted|access denied|forbidden/i').count()) > 0;
+      const adminSurfaceVisible =
+        (await page.getByText('uat-sm@dhwaniris.com').count()) > 0 ||
+        (await page.getByRole('button', { name: /add user|new user|\+ user/i }).count()) > 0;
 
-      expect(blocked, `FA should not be able to open /app/user (status=${status}, url=${url})`).toBe(true);
+      const blocked = !url.includes('/d/User') || noPermission || !adminSurfaceVisible;
+      expect(blocked, `FA should not see User Management (url=${url}, adminSurfaceVisible=${adminSurfaceVisible})`).toBe(true);
     });
   });
 
-  test.describe('As System Manager', () => {
-    test.use({ storageState: '.auth/uat-sm.json' });
+  test.describe('As Core Team IT', () => {
+    // User Management is gated to Core Team IT (verified 29 May 2026: even a
+    // System Manager sees "Your role can't view User Manager"). So this runs as CTI.
+    test.use({ storageState: '.auth/uat-cti.json' });
 
     test('PR-TC-UM-026 · user list renders with the 6 UAT users present', async ({ page }) => {
-      await page.goto('/app/user');
-      // The 6 UAT users seeded in §3 should all be findable
+      await page.goto('/primerural/d/User%20Manager');
+      await page.waitForLoadState('networkidle').catch(() => {});
+      const search = page.getByPlaceholder(/search|filter/i).first();
       for (const email of [
         'uat-sm@dhwaniris.com',
         'uat-cti@dhwaniris.com',
@@ -38,10 +45,13 @@ test.describe('PR-TC-UM · User Management — role gates', () => {
         'uat-selco@dhwaniris.com',
         'uat-designer@dhwaniris.com',
       ]) {
-        // Frappe Desk's list view renders rows lazily — use a generous search
-        await page.getByPlaceholder(/search|filter/i).first().fill(email).catch(() => {});
+        // Use the search box if the page has one; otherwise rely on the rendered list.
+        if (await search.count()) {
+          await search.fill(email).catch(() => {});
+          await page.waitForTimeout(400);
+        }
         await expect(page.getByText(email).first()).toBeVisible({ timeout: 10_000 });
-        await page.getByPlaceholder(/search|filter/i).first().fill('').catch(() => {});
+        if (await search.count()) await search.fill('').catch(() => {});
       }
     });
   });

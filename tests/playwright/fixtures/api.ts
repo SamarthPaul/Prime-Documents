@@ -18,6 +18,11 @@ export class FrappeApi {
     if (!key || !sec) throw new Error('ADMIN_API_KEY / ADMIN_API_SECRET not set');
     const ctx = await request.newContext({
       baseURL,
+      // Force an empty cookie jar: under the test runner, newContext otherwise
+      // inherits the project's storageState (a logged-in user's `sid` cookie),
+      // and Frappe then prefers that session over the token header — which makes
+      // writes demand a CSRF token (CSRFTokenError). Token auth must be cookieless.
+      storageState: { cookies: [], origins: [] },
       extraHTTPHeaders: { Authorization: `token ${key}:${sec}` },
     });
     return new FrappeApi(ctx, baseURL);
@@ -27,6 +32,7 @@ export class FrappeApi {
     const baseURL = process.env.BASE_URL ?? 'https://stgprime-rural.dhwaniris.in';
     const ctx = await request.newContext({
       baseURL,
+      storageState: { cookies: [], origins: [] },  // cookieless → token auth honored (see asAdmin)
       extraHTTPHeaders: { Authorization: `token ${key}:${secret}` },
     });
     return new FrappeApi(ctx, baseURL);

@@ -8,6 +8,7 @@
 import { test, expect } from '@playwright/test';
 import { FrappeApi } from '../fixtures/api';
 import { seedEntrepreneur, UAT_PREFIX } from '../fixtures/data';
+import { EntrepreneurForm } from '../pages/EntrepreneurForm';
 
 test.describe('PR-TC-EP · Entrepreneur Profile — role gates & basic flows', () => {
 
@@ -47,18 +48,34 @@ test.describe('PR-TC-EP · Entrepreneur Profile — role gates & basic flows', (
     test.use({ storageState: '.auth/uat-sm.json' });
 
     test('PR-TC-EP-031 · EP list page renders', async ({ page }) => {
-      await page.goto('/app/enterprenur-profile');
-      // List shell present
-      await expect(page.locator('text=/Enterprenur Profile/i').first()).toBeVisible();
+      // Verified route 28 May 2026: the entrepreneur list is the Vue SPA route
+      // /primerural/entrepreneurs (not the Frappe desk list /app/...).
+      await page.goto('/primerural/entrepreneurs');
+      await expect(page.getByRole('navigation').getByRole('link', { name: 'Entrepreneur List' })).toBeVisible();
     });
 
-    test('PR-TC-EP-001 · create EP via UI happy path (smoke)', async ({ page }) => {
-      // This is a smoke / scaffold-validation test. The real PR-TC-EP-001 (with
-      // all 40 fields and KYC docs) will replace this once we lock the form
-      // selectors with `data-testid` attributes in the Frappe app.
-      test.fixme(true, 'Pending: stabilise selectors via data-testid on EP form.');
-      await page.goto('/app/enterprenur-profile/new');
-      // ... full form drive lands here once selectors stabilise
+    test('PR-TC-EP-001 · new EP form renders, all tabs present, required-field gates Save', async ({ page }) => {
+      // Unblocked 28 May 2026: the EP form has no data-testid, but every field
+      // wrapper carries data-fieldname="<frappe_field>" (live-verified), so we
+      // no longer need the app team to add testids. This test is intentionally
+      // side-effect-free — it never clicks Save, so it creates no record on
+      // staging. The full create+persist+cleanup flow is PR-TC-EP-001b below.
+      const form = new EntrepreneurForm(page);
+      await form.gotoNew();
+
+      // All six tabs are present.
+      for (const tab of EntrepreneurForm.TABS) {
+        await expect(form.tab(tab)).toBeVisible();
+      }
+
+      // Save is disabled until the one required field (Enterprenur Name) is set.
+      await expect(form.saveButton()).toBeDisabled();
+      await form.setName(`${UAT_PREFIX} EP-001 render check`);
+      await expect(form.saveButton()).toBeEnabled();
+
+      // A representative field from each Profile section is addressable by fieldname.
+      await expect(form.fieldWrap('enterprise_name')).toBeVisible();          // About Enterprise
+      await expect(form.fieldWrap('needs_unit_pricing_support')).toBeVisible(); // Intervention analysis
     });
   });
 

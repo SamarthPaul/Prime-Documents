@@ -6,13 +6,17 @@ import { Page, Locator, expect } from '@playwright/test';
 export class AppShell {
   constructor(private readonly page: Page) {}
 
-  readonly sidebar = (): Locator => this.page.locator('aside, [data-testid="sidebar"]').first();
-  readonly userMenu = (): Locator => this.page.locator('[data-testid="user-menu"], .avatar, .user-cluster').first();
-  readonly notificationBell = (): Locator => this.page.locator('[data-testid="notification-bell"], .bell, [aria-label*="notification" i]').first();
-  readonly searchInput = (): Locator => this.page.getByPlaceholder(/search/i).first();
+  // Live-verified (28 May 2026): the SPA shell renders the sidebar as a
+  // <aside> (role=complementary), nav as a <nav> of links, and the user menu
+  // as a button that contains the logged-in email. Notifications is a button
+  // labelled "Open notifications" plus a nav link "Notifications".
+  readonly sidebar = (): Locator => this.page.getByRole('complementary').first();
+  readonly userMenu = (): Locator => this.page.getByRole('button').filter({ hasText: /@/ }).first();
+  readonly notificationBell = (): Locator => this.page.getByRole('button', { name: /open notifications/i });
+  readonly searchInput = (): Locator => this.page.getByRole('button', { name: /search doctypes/i }).first();
 
   navLink = (label: string | RegExp): Locator =>
-    this.page.locator('aside a, [role="navigation"] a').filter({ hasText: label });
+    this.page.getByRole('navigation').getByRole('link', { name: label });
 
   async expectShellRendered(): Promise<void> {
     await expect(this.sidebar()).toBeVisible();

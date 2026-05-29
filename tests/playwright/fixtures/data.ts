@@ -32,7 +32,9 @@ export async function seedEntrepreneur(
     district:  overrides.district,
     block:     overrides.block,
     village:   overrides.village,
-    phone_number: overrides.phone_number,
+    // The doctype defaults phone_number to "+91-" which fails Frappe's phone
+    // validation, so a seed MUST supply a complete, valid number.
+    phone_number: overrides.phone_number ?? '+919876543210',
     cohort:    overrides.cohort,
   });
   return { name: ent.name, entrepreneurName: ent.enterprenur_name };

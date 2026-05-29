@@ -169,23 +169,67 @@ for (const fw of FRAMEWORKS) {
 
 ---
 
+## Live-verified findings (28 May 2026)
+
+Browsed staging via the Playwright MCP as `uat-sm`. Key facts the specs depend on:
+
+**Routes — the product is a Vue SPA at `/primerural`, NOT the Frappe desk `/app`.**
+
+| Surface              | Real route                                  |
+| -------------------- | ------------------------------------------- |
+| Landscape (landing)  | `/primerural/`                              |
+| Entrepreneur List    | `/primerural/entrepreneurs`                 |
+| Products             | `/primerural/products`                      |
+| Activity Logger      | `/primerural/calendar`                      |
+| Intervention Dash    | `/primerural/interventions`                 |
+| Milestone Tracker    | `/primerural/milestone-tracker`             |
+| Village Survey       | `/primerural/village-survey`                |
+| Masters              | `/primerural/masters`                       |
+| User Management      | `/primerural/d/User Manager`                |
+| Generic doctype form | `/primerural/d/<DocType>/new` and `/<name>` |
+
+After a successful login the app lands on `/primerural` (a deep link may bounce
+through `/desk/...`). `global-setup` mints cookies via `/app`, which is fine —
+cookies are domain-scoped, so the storageState is valid for `/primerural` too.
+
+**Login form** (`/login`): inputs use `#login_email` / `#login_password` but
+those IDs are **duplicated** (a hidden email-link form reuses them) — scope with
+`.first()`. The submit control reads **"Login"** (`button.btn-login`); Google SSO
+is a **link** ("Login with Google"), not a button.
+
+**EP form selectors — the `data-testid` blocker is RESOLVED.** The form has no
+testids, but every field wrapper carries **`data-fieldname="<frappe_field>"`**
+(unique, stable). Address controls as `[data-fieldname="x"] input|select|textarea`.
+See `pages/EntrepreneurForm.ts`. Verified: 6 tabs, 38 fields on the Profile tab,
+required `enterprenur_name` gates the Save button.
+
+**Auth API**: bad password and unknown user both return **HTTP 401** with an
+identical `{"message":"Invalid login credentials","exc_type":"AuthenticationError"}`
+→ no user enumeration (`PR-TC-XC-032b`).
+
+---
+
 ## Status
 
-This is the **initial scaffold** — 11 tests across 4 files, exercising the
-plumbing end-to-end. Specs marked `test.fail` / `test.fixme` are placeholders
-that unblock once the underlying surface (e.g. `data-testid` attributes on
-the EP form) stabilises.
+This is the **initial scaffold** — exercising the plumbing end-to-end. As of
+28 May 2026 the login + EP page objects and the auth/EP specs are aligned to the
+**live-verified** routes and selectors above; remaining `test.fixme` markers are
+for surfaces not yet browsed.
 
 Iteration order from here:
 
 1. ✅ Login + storageState (this scaffold)
-2. ⏳ Stabilise EP form selectors (request `data-testid` from dev team)
-3. ⏳ Full EP onboarding spec (`PR-TC-EP-001` ... `045`)
+2. ✅ EP form selectors stabilised via `data-fieldname` (no dev-team testids needed)
+3. ⏳ Full EP onboarding spec (`PR-TC-EP-001b` create+persist+cleanup → `...045`)
 4. ⏳ Common framework runner (`PR-TC-FW-COM-001` ... `012`) parameterised
-   across the 27 frameworks
+   across the 27 frameworks — confirm each framework's `/primerural` route + doctype
 5. ⏳ Per-framework deltas (Financials BMC, Infra dual-mode + EMI, etc.)
 6. ⏳ Dashboards + Activity Logger
-7. ⏳ Negative-auth + security suite
+7. ⏳ Negative-auth + security suite (API-level XC-032b landed)
+
+> **Note for the rest of the suite:** any spec still pointing at `/app/...` is
+> testing the raw Frappe desk, not the product. Re-point to `/primerural/...`
+> before relying on it.
 
 ---
 

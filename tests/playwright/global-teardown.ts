@@ -32,6 +32,9 @@ async function adminAuthedRequest() {
   }
   return request.newContext({
     baseURL: BASE_URL,
+    // Cookieless so the admin token is honored (not the runner's inherited
+    // session cookie, which would force CSRF on the DELETE sweep). See api.ts.
+    storageState: { cookies: [], origins: [] },
     extraHTTPHeaders: {
       Authorization: `token ${ADMIN_KEY}:${ADMIN_SECRET}`,
     },
