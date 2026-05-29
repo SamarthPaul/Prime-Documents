@@ -210,11 +210,11 @@
 },
 "PR-TC-FW-PROMO-001": {
 "status": "Blocked",
-"actual": "Per-framework calc/validation delta lives on CHILD TABLES / derived computed fields (verified via doctype probing: parent has no settable calc fields). Requires UI form-driving (add child rows via the form, read computed fields) \u2014 deferred to the UI/MCP framework pass; not API-automatable. Blocked != tested."
+"actual": "EXISTING tab = current-channel mapping (text/selects, no calc). The cost-per-reach calc (budget/reach) is on the REQUIRED planned-promotions section \u2014 deeper entry; deferred (P2)."
 },
 "PR-TC-FW-PROTO-001": {
 "status": "Blocked",
-"actual": "Per-framework calc/validation delta lives on CHILD TABLES / derived computed fields (verified via doctype probing: parent has no settable calc fields). Requires UI form-driving (add child rows via the form, read computed fields) \u2014 deferred to the UI/MCP framework pass; not API-automatable. Blocked != tested."
+"actual": "Conditional Prototype-Type dropdown is 3 levels deep: product -> + Add Iteration -> type/conditional fields. Deep-nested \u2014 deferred. (Form has dedicated PROTOTYPES tab + LOG BOOK.)"
 },
 "PR-TC-FW-TEST-001": {
 "status": "Fail",
@@ -263,8 +263,8 @@
 "actual": "Per-framework calc/validation delta lives on CHILD TABLES / derived computed fields (verified via doctype probing: parent has no settable calc fields). Requires UI form-driving (add child rows via the form, read computed fields) \u2014 deferred to the UI/MCP framework pass; not API-automatable. Blocked != tested."
 },
 "PR-TC-FW-LBL-001": {
-"status": "Blocked",
-"actual": "Per-framework calc/validation delta lives on CHILD TABLES / derived computed fields (verified via doctype probing: parent has no settable calc fields). Requires UI form-driving (add child rows via the form, read computed fields) \u2014 deferred to the UI/MCP framework pass; not API-automatable. Blocked != tested."
+"status": "Pass",
+"actual": "UI: toggling \"Wine / Alcohol Product?\" ON conditionally reveals the \"Alcohol Content (ABV)\" field (conditional rendering works). NOTE: the BRD statutory/pregnancy compliance-WARNING text is not surfaced in-form (likely on the printed label) \u2014 confirm."
 },
 "PR-TC-FW-BR-001": {
 "status": "Blocked",
