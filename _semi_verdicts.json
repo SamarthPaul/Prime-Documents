@@ -140,8 +140,8 @@
 "actual": "Per-framework calc/validation delta lives on CHILD TABLES / derived computed fields (verified via doctype probing: parent has no settable calc fields). Requires UI form-driving (add child rows via the form, read computed fields) \u2014 deferred to the UI/MCP framework pass; not API-automatable. Blocked != tested."
 },
 "PR-TC-FW-FIN-001": {
-"status": "Blocked",
-"actual": "Per-framework calc/validation delta lives on CHILD TABLES / derived computed fields (verified via doctype probing: parent has no settable calc fields). Requires UI form-driving (add child rows via the form, read computed fields) \u2014 deferred to the UI/MCP framework pass; not API-automatable. Blocked != tested."
+"status": "Pass",
+"actual": "UI form-fill (BMC tab): Total Quantity 100 + Avg Revenue/Month Rs50,000 -> Weighted Avg Selling Price/Unit auto-computed = Rs500.00 (= 50000/100). BMC computed fields work."
 },
 "PR-TC-FW-FIN-002": {
 "status": "Blocked",
@@ -225,8 +225,9 @@
 "actual": "Per-framework calc/validation delta lives on CHILD TABLES / derived computed fields (verified via doctype probing: parent has no settable calc fields). Requires UI form-driving (add child rows via the form, read computed fields) \u2014 deferred to the UI/MCP framework pass; not API-automatable. Blocked != tested."
 },
 "PR-TC-FW-QC-001": {
-"status": "Blocked",
-"actual": "Per-framework calc/validation delta lives on CHILD TABLES / derived computed fields (verified via doctype probing: parent has no settable calc fields). Requires UI form-driving (add child rows via the form, read computed fields) \u2014 deferred to the UI/MCP framework pass; not API-automatable. Blocked != tested."
+"status": "Fail",
+"title": "QC scoring model differs from BRD (23-star/115)",
+"actual": "QC EXISTING uses an \"+ Add Item\" checklist with a 4-LEVEL rating (0/33/66/100) and AVERAGE SCORE (%), NOT the BRD spec of 23 fixed stars totalling /115 (e.g. 92/115=80%). Items are manually added (not pre-loaded). Confirm whether 23 standard items should pre-load + whether the scoring model should match spec."
 },
 "PR-TC-FW-PKG-001": {
 "status": "Blocked",
