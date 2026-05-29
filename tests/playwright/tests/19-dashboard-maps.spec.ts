@@ -79,9 +79,40 @@ test('PR-TC-DB-MAP-003 · Meghalaya boundary overlay is rendered', async ({ page
   expect(hasOverlay, 'state boundary overlay (svg path or canvas) should render').toBe(true);
 });
 
+test('PR-TC-DB-MAP-005 · captured coordinates fall within Meghalaya bounds (geo validation)', async () => {
+  test.skip(!process.env.ADMIN_API_KEY, 'admin token required');
+  // Meghalaya bounding box (approx): lat 25.0–26.2, lng 89.8–92.9.
+  const LAT = [25.0, 26.2], LNG = [89.8, 92.9];
+  const api = await FrappeApi.asAdmin();
+  const eps = await api.list<{ name: string; location: string }>('Enterprenur Profile', {
+    fields: ['name', 'location'], limit: 500,
+  });
+  await api.dispose();
+
+  const bad: string[] = [];
+  let withCoords = 0;
+  for (const ep of eps) {
+    if (!ep.location || !ep.location.trim()) continue;
+    let g: any;
+    try { g = JSON.parse(ep.location); }
+    catch { bad.push(`${ep.name}: malformed GeoJSON`); continue; }
+    for (const f of g?.features ?? []) {
+      const c = f?.geometry?.coordinates;
+      if (Array.isArray(c) && c.length >= 2) {
+        withCoords++;
+        const [lng, lat] = c; // GeoJSON = [lng, lat]
+        if (!(lat >= LAT[0] && lat <= LAT[1] && lng >= LNG[0] && lng <= LNG[1])) {
+          bad.push(`${ep.name}: ${lat.toFixed(3)},${lng.toFixed(3)} outside Meghalaya`);
+        }
+      }
+    }
+  }
+  expect(withCoords, 'some EPs should have parseable coordinates').toBeGreaterThan(0);
+  expect(bad, `coordinates must be valid Meghalaya geo-tags; offenders: ${bad.slice(0, 12).join(' | ')}`).toEqual([]);
+});
+
 for (const [id, why] of [
   ['PR-TC-DB-MAP-004', 'block-level drill-down on the map — canvas interaction; visual/MCP verification'],
-  ['PR-TC-DB-MAP-005', 'pixel-accurate pin placement at captured coords — canvas; visual snapshot verification'],
   ['PR-TC-DB-MAP-006', 'Village Visits map mode pins — canvas; visual/MCP verification'],
 ] as const) {
   test(`${id} · (visual/manual map pass)`, async () => { test.skip(true, why); });
