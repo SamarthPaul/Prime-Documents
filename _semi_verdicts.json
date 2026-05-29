@@ -190,11 +190,11 @@
 },
 "PR-TC-FW-UP-001": {
 "status": "Blocked",
-"actual": "Per-framework calc/validation delta lives on CHILD TABLES / derived computed fields (verified via doctype probing: parent has no settable calc fields). Requires UI form-driving (add child rows via the form, read computed fields) \u2014 deferred to the UI/MCP framework pass; not API-automatable. Blocked != tested."
+"actual": "9-section cost buildup is per-product nested (REQUIRED -> + Add Product -> cost components -> total). Deep multi-level entry \u2014 deferred."
 },
 "PR-TC-FW-UP-002": {
 "status": "Blocked",
-"actual": "Per-framework calc/validation delta lives on CHILD TABLES / derived computed fields (verified via doctype probing: parent has no settable calc fields). Requires UI form-driving (add child rows via the form, read computed fields) \u2014 deferred to the UI/MCP framework pass; not API-automatable. Blocked != tested."
+"actual": "3 pricing methods (cost-plus/competitive/value) are per-product (add product first). Deep nested \u2014 deferred."
 },
 "PR-TC-FW-MR-001": {
 "status": "Blocked",
@@ -217,12 +217,13 @@
 "actual": "Per-framework calc/validation delta lives on CHILD TABLES / derived computed fields (verified via doctype probing: parent has no settable calc fields). Requires UI form-driving (add child rows via the form, read computed fields) \u2014 deferred to the UI/MCP framework pass; not API-automatable. Blocked != tested."
 },
 "PR-TC-FW-TEST-001": {
-"status": "Blocked",
-"actual": "Per-framework calc/validation delta lives on CHILD TABLES / derived computed fields (verified via doctype probing: parent has no settable calc fields). Requires UI form-driving (add child rows via the form, read computed fields) \u2014 deferred to the UI/MCP framework pass; not API-automatable. Blocked != tested."
+"status": "Fail",
+"title": "Test date-chain (Sent<=Received<=Reported) not validated",
+"actual": "UI form-fill: set Date of Sample Deposit to Office = 2026-06-15 and to Lab = 2026-06-01 (lab BEFORE office, out of order). NO date-order validation/warning fired (live). Spec expects rejection (Received must be on/after Sent). Confirm save-time enforcement."
 },
 "PR-TC-FW-STD-001": {
 "status": "Blocked",
-"actual": "Per-framework calc/validation delta lives on CHILD TABLES / derived computed fields (verified via doctype probing: parent has no settable calc fields). Requires UI form-driving (add child rows via the form, read computed fields) \u2014 deferred to the UI/MCP framework pass; not API-automatable. Blocked != tested."
+"actual": "SOP upload + status (Drafted/Reviewed/Approved) + versioning is file-upload-driven (P2) \u2014 needs a file fixture; deferred. (Form has LOG BOOK tab \u2014 consistent.)"
 },
 "PR-TC-FW-QC-001": {
 "status": "Fail",
@@ -288,5 +289,10 @@
 "PR-TC-FW-PC-002": {
 "status": "Blocked",
 "actual": "Per-framework calc/validation delta lives on CHILD TABLES / derived computed fields (verified via doctype probing: parent has no settable calc fields). Requires UI form-driving (add child rows via the form, read computed fields) \u2014 deferred to the UI/MCP framework pass; not API-automatable. Blocked != tested."
+},
+"PR-TC-FW-UP-003": {
+"status": "Fail",
+"title": "Unit Pricing tab structure inconsistent (TASKS tab, no Log Book)",
+"actual": "Unit Pricing form tabs = DETAILS/EXISTING/REQUIRED/LINE ITEMS/TASKS/RESOURCES \u2014 it has a TASKS tab and NO LOG BOOK, unlike the other 26 frameworks (which show LOG BOOK). Contradicts the BRD decision: Task tab removed from framework forms; Log Book remains."
 }
 }
