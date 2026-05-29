@@ -169,8 +169,8 @@
 "actual": "Per-framework calc/validation delta lives on CHILD TABLES / derived computed fields (verified via doctype probing: parent has no settable calc fields). Requires UI form-driving (add child rows via the form, read computed fields) \u2014 deferred to the UI/MCP framework pass; not API-automatable. Blocked != tested."
 },
 "PR-TC-FW-HR-001": {
-"status": "Blocked",
-"actual": "Per-framework calc/validation delta lives on CHILD TABLES / derived computed fields (verified via doctype probing: parent has no settable calc fields). Requires UI form-driving (add child rows via the form, read computed fields) \u2014 deferred to the UI/MCP framework pass; not API-automatable. Blocked != tested."
+"status": "Pass",
+"actual": "UI form-fill: Wage Rate Rs100, GoM Minimum Wage Rs500 -> GOM COMPLIANT? = X No, warning fires: \"Wage rate (Rs100) is below GoM minimum (Rs500) by Rs400.00.\" Min-wage compliance check works."
 },
 "PR-TC-FW-INFRA-001": {
 "status": "Blocked",
@@ -206,7 +206,7 @@
 },
 "PR-TC-FW-ML-001": {
 "status": "Blocked",
-"actual": "Per-framework calc/validation delta lives on CHILD TABLES / derived computed fields (verified via doctype probing: parent has no settable calc fields). Requires UI form-driving (add child rows via the form, read computed fields) \u2014 deferred to the UI/MCP framework pass; not API-automatable. Blocked != tested."
+"actual": "Net-revenue-with-commission calc is in a DEEP NESTED flow: Recommended Channel -> + Add Product (per-channel product map) -> Sales Tracker (12 months x channel x product, Units x Selling Price -> Revenue auto-computes). Channel + product add verified; full net-revenue calc needs the multi-level sales-tracker entry \u2014 deferred to a focused session."
 },
 "PR-TC-FW-PROMO-001": {
 "status": "Blocked",
@@ -233,8 +233,8 @@
 "actual": "Per-framework calc/validation delta lives on CHILD TABLES / derived computed fields (verified via doctype probing: parent has no settable calc fields). Requires UI form-driving (add child rows via the form, read computed fields) \u2014 deferred to the UI/MCP framework pass; not API-automatable. Blocked != tested."
 },
 "PR-TC-FW-DL-001": {
-"status": "Blocked",
-"actual": "Per-framework calc/validation delta lives on CHILD TABLES / derived computed fields (verified via doctype probing: parent has no settable calc fields). Requires UI form-driving (add child rows via the form, read computed fields) \u2014 deferred to the UI/MCP framework pass; not API-automatable. Blocked != tested."
+"status": "Pass",
+"actual": "UI form-fill: added 1 skill rated level 5 -> SKILLS RATED 1, AVG SKILL LEVEL 5.0 (aggregation correct). Readiness = avg x 20 = 100%; the % display likely on summary (avg computed correctly)."
 },
 "PR-TC-FW-CB-001": {
 "status": "Blocked",
