@@ -18,8 +18,8 @@
   "PR-TC-DB-EPS-004": {"status": "Blocked", "actual": "Zero-records empty state — needs a filter-to-zero observation pass."},
   "PR-TC-DB-SAN-001": {"status": "Blocked", "actual": "OUT OF SCOPE (per user 29 May): Sankey de-prioritized — skip for now."},
   "PR-TC-DB-SAN-002": {"status": "Blocked", "actual": "OUT OF SCOPE (per user 29 May): Sankey de-prioritized — skip for now."},
-  "PR-TC-DB-INF-001": {"status": "Blocked", "actual": "Infrastructure Monitor is the /app desk CHB (Infrastructure Monitor workspace), not in the SPA — separate desk pass."},
-  "PR-TC-DB-INF-002": {"status": "Blocked", "actual": "Infra funder-mix donut hover — /app desk CHB, separate pass."},
-  "PR-TC-DB-INF-003": {"status": "Blocked", "actual": "Infra disbursement hover breakdown — /app desk CHB, separate pass."},
-  "PR-TC-DB-INF-004": {"status": "Blocked", "actual": "Infra drawer DocType card grid — /app desk CHB, separate pass."}
+  "PR-TC-DB-INF-001": {"status": "Pass", "actual": "Infrastructure Monitor (/desk/infrastructure-monitor) renders the 3 tabs Overview/Funding flow/Disbursements + charts (84 canvas/svg elements). NB: 9 console errors present (CHB noise — observation)."},
+  "PR-TC-DB-INF-002": {"status": "Blocked", "actual": "Funder-mix donut hover exact-rupee tooltip — needs hover interaction; donuts render but tooltip not verified."},
+  "PR-TC-DB-INF-003": {"status": "Blocked", "actual": "Disbursement column hover breakdown — needs hover interaction (visual pass)."},
+  "PR-TC-DB-INF-004": {"status": "Blocked", "actual": "Drawer 2×2 DocType card grid + '+New' — needs drawer interaction (visual pass)."}
 }

@@ -114,6 +114,26 @@ if os.path.exists(SEMI):
         added += 1
     print(f'Folded in {added} SEMI verdicts from _semi_verdicts.json')
 
+# ---- accumulate across grouped runs -----------------------------------------
+# A single giant run rate-limits staging (late specs skip). So we ACCUMULATE:
+# each run updates only the ids it actually exercised; prior verdicts persist.
+# Run the suite in groups and re-merge to build up the full picture.
+ACC = os.path.join(HERE, '_results_accumulated.json')
+acc = {}
+if os.path.exists(ACC):
+    with open(ACC, encoding='utf-8') as f:
+        acc = json.load(f)
+for tcid, a in agg.items():
+    # don't let a Blocked/skip in this run overwrite a real prior Pass/Fail
+    prior = acc.get(tcid)
+    if prior and a['status'] == 'Blocked' and prior.get('status') in ('Pass', 'Fail', 'Flaky'):
+        continue
+    acc[tcid] = {'status': a['status'], 'error': a['error'], 'screenshot': a['screenshot'], 'title': a.get('title', tcid)}
+with open(ACC, 'w', encoding='utf-8') as f:
+    json.dump(acc, f, indent=0)
+print(f'Accumulated total: {len(acc)} ids (this run touched {len(agg)})')
+agg = {k: {**v, 'projects': {'acc'}} for k, v in acc.items()}  # workbook builds from the accumulated set
+
 # ---- update the workbook ----------------------------------------------------
 wb = load_workbook(XLSX)
 tc = wb['Test Cases']

@@ -1,0 +1,4 @@
+_results_accumulated.json
+*.png
+test-results/
+node_modules/

@@ -89,26 +89,29 @@ test('PR-TC-DB-MAP-005 · captured coordinates fall within Meghalaya bounds (geo
   });
   await api.dispose();
 
-  const bad: string[] = [];
-  let withCoords = 0;
+  // NB: report coords/counts only — never EP names (public repo / PII).
+  const offenders: string[] = []; let malformed = 0; let withCoords = 0;
   for (const ep of eps) {
     if (!ep.location || !ep.location.trim()) continue;
     let g: any;
     try { g = JSON.parse(ep.location); }
-    catch { bad.push(`${ep.name}: malformed GeoJSON`); continue; }
+    catch { malformed++; continue; }
     for (const f of g?.features ?? []) {
       const c = f?.geometry?.coordinates;
       if (Array.isArray(c) && c.length >= 2) {
         withCoords++;
         const [lng, lat] = c; // GeoJSON = [lng, lat]
         if (!(lat >= LAT[0] && lat <= LAT[1] && lng >= LNG[0] && lng <= LNG[1])) {
-          bad.push(`${ep.name}: ${lat.toFixed(3)},${lng.toFixed(3)} outside Meghalaya`);
+          offenders.push(`${lat.toFixed(3)},${lng.toFixed(3)}`);
         }
       }
     }
   }
+  const problems = offenders.length + malformed;
   expect(withCoords, 'some EPs should have parseable coordinates').toBeGreaterThan(0);
-  expect(bad, `coordinates must be valid Meghalaya geo-tags; offenders: ${bad.slice(0, 12).join(' | ')}`).toEqual([]);
+  expect(problems,
+    `all geo-tags must be valid Meghalaya coords; ${offenders.length} out-of-bounds (${[...new Set(offenders)].slice(0, 6).join(' ; ')}) + ${malformed} malformed GeoJSON`
+  ).toBe(0);
 });
 
 for (const [id, why] of [
