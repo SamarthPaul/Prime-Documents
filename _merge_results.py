@@ -27,6 +27,15 @@ RESULTS = sys.argv[1] if len(sys.argv) > 1 else os.path.join(
     HERE, 'tests', 'playwright', 'test-results', 'results.json')
 
 ID_RE = re.compile(r'PR-TC-[A-Z]+(?:-[A-Z]+)*-\d+[a-z]?')
+
+# Redact entrepreneur record names that leak into "visible on <X> (<record>):"
+# messages — the workbook ships to a PUBLIC repo, so no real PII.
+_PII_RE = re.compile(r'(visible on)\b.*?(?=:|\{|$)', re.IGNORECASE)
+def redact_pii(s):
+    if not isinstance(s, str) or 'visible on' not in s:
+        return s
+    # drop every parenthetical (record names / labels) in the leak phrase
+    return re.sub(r'\([^)]*\)', '', s).replace('  ', ' ').replace(' :', ':')
 SEVERITY_BY_PRI = {'P0': 'Critical', 'P1': 'High', 'P2': 'Medium'}
 
 STATUS_MAP = {'expected': 'Pass', 'unexpected': 'Fail', 'flaky': 'Flaky', 'skipped': 'Blocked'}
@@ -133,7 +142,7 @@ for tcid, a in agg.items():
     matched += 1
     tc.cell(r, col_status, a['status'])
     tc.cell(r, col_status).fill = status_fill.get(a['status'])
-    tc.cell(r, col_actual, a['error'] if a['status'] in ('Fail', 'Flaky') else 'OK')
+    tc.cell(r, col_actual, redact_pii(a['error']) if a['status'] in ('Fail', 'Flaky') else 'OK')
     if a['status'] == 'Fail':
         pri = (tc.cell(r, col_pri).value or '')
         pcode = next((k for k in SEVERITY_BY_PRI if k in pri), 'P1')
@@ -179,7 +188,7 @@ for tcid, a in sorted(agg.items()):
     bugs.append([
         f'BUG-{bug_n:03d}', tcid, module, title,
         SEVERITY_BY_PRI[pcode], pri, steps, expected,
-        a['error'], a['screenshot'], brd, 'Open', '', '',
+        redact_pii(a['error']), a['screenshot'], brd, 'Open', '', '',
     ])
     rn = bugs.max_row
     for col in range(1, 15):

@@ -1,11 +1,24 @@
 {
   "PR-TC-XC-052": {"status": "Fail", "title": "No green/yellow in the UI (Monsoon Court)", "actual": "Active Entrepreneurs KPI shows a GREEN check rgb(63,107,58) (hue 114). Monsoon Court forbids green — success must be teal #0E4D4E.", "screenshot": ".playwright-mcp/bug-xc052-green-kpi.png"},
   "PR-TC-XC-053": {"status": "Pass", "actual": "Form inputs render white (rgb 255,255,255) on the EP form."},
-  "PR-TC-XC-054": {"status": "Fail", "title": "Required marker is a terracotta asterisk", "actual": "Asterisk on 'Enterprenur Name *' is taupe rgb(107,99,89) (inherits label ink-soft), NOT terracotta #C26849 (rgb 194,104,73). Marker present but wrong colour."},
-  "PR-TC-XC-055": {"status": "Blocked", "actual": "Focus-ring styling needs an interactive focus capture — deferred to manual/MCP focus pass."},
+  "PR-TC-XC-054": {"status": "Fail", "title": "Required marker is a terracotta asterisk", "actual": "Asterisk on the name label is taupe rgb(107,99,89) (inherits label ink-soft), NOT terracotta #C26849. Marker present but wrong colour."},
+  "PR-TC-XC-055": {"status": "Blocked", "actual": "Focus ring: programmatic .focus() shows outline-style:none, but that is unreliable for :focus-visible (keyboard) styling — needs a real keyboard-focus observation."},
   "PR-TC-XC-056": {"status": "Pass", "actual": "Primary button background is teal rgb(14,77,78) = #0E4D4E."},
-  "PR-TC-XC-057": {"status": "Blocked", "actual": "Sidebar vs content active-item colour not yet verified — deferred."},
+  "PR-TC-XC-057": {"status": "Pass", "actual": "Sidebar active nav item: teal bg rgb(14,77,78)=#0E4D4E + cream text rgb(251,245,229)=#FBF5E5."},
   "PR-TC-XC-058": {"status": "Pass", "actual": "No stat/KPI cards on the tabbed EP form (filters/fields appear directly)."},
   "PR-TC-XC-059": {"status": "Pass", "actual": "Currency uses Indian grouping on the Financials form (e.g. ₹1,45,000, not ₹145,000)."},
-  "PR-TC-XC-060": {"status": "Blocked", "actual": "No date display observed on sampled pages — recheck on a date-bearing view (Activity Logger / Cohort)."}
+  "PR-TC-XC-060": {"status": "Pass", "actual": "Dates render unambiguous DD-MMM-YYYY style (e.g. '20 Apr 2026'). Minor: uses spaces, not hyphens, vs the spec's 20-Apr-2026."},
+
+  "PR-TC-DB-INT-001": {"status": "Pass", "actual": "Intervention Summary renders KPIs (Mapped 40 / Incubated 11 / Blocks 6) + All/Incubated/Supported tabs."},
+  "PR-TC-DB-MS-001": {"status": "Pass", "actual": "Milestone Tracker shows 4 tabs (Overview / Milestones & Activities / Timeline / RACI Matrix) + Live Data banner (85 activities, 26 milestones)."},
+  "PR-TC-DB-EPS-002": {"status": "Pass", "actual": "Landscape filters (Sector/Basket/Cohort/Stage/Status) present; filter param persists in URL across reload (per XC-009)."},
+  "PR-TC-DB-EPS-001": {"status": "Blocked", "actual": "Landscape KPI cards are Total/Active/GPS-Verified/Districts/Village — NOT the spec's Total/MET/Incubated/Supported. Confirm which view is the canonical 'EP Status Monitor' before flagging."},
+  "PR-TC-DB-EPS-003": {"status": "Blocked", "actual": "Status-pill colours need the dedicated status-monitor view; the green-KPI violation is already raised as XC-052."},
+  "PR-TC-DB-EPS-004": {"status": "Blocked", "actual": "Zero-records empty state — needs a filter-to-zero observation pass."},
+  "PR-TC-DB-SAN-001": {"status": "Blocked", "actual": "Sankey is the older /app desk CHB (Entrepreneur Dashboard workspace), not in the /primerural SPA — needs a separate desk-side pass."},
+  "PR-TC-DB-SAN-002": {"status": "Blocked", "actual": "Sankey 'view as table' toggle — /app desk CHB, separate pass."},
+  "PR-TC-DB-INF-001": {"status": "Blocked", "actual": "Infrastructure Monitor is the /app desk CHB (Infrastructure Monitor workspace), not in the SPA — separate desk pass."},
+  "PR-TC-DB-INF-002": {"status": "Blocked", "actual": "Infra funder-mix donut hover — /app desk CHB, separate pass."},
+  "PR-TC-DB-INF-003": {"status": "Blocked", "actual": "Infra disbursement hover breakdown — /app desk CHB, separate pass."},
+  "PR-TC-DB-INF-004": {"status": "Blocked", "actual": "Infra drawer DocType card grid — /app desk CHB, separate pass."}
 }

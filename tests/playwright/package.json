@@ -17,6 +17,7 @@
     "tsc": "tsc --noEmit"
   },
   "devDependencies": {
+    "@axe-core/playwright": "^4.11.3",
     "@playwright/test": "^1.49.0",
     "@types/node": "^22.10.0",
     "dotenv": "^16.4.5",
