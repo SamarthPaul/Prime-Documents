@@ -230,7 +230,7 @@
 },
 "PR-TC-FW-PKG-001": {
 "status": "Blocked",
-"actual": "Per-framework calc/validation delta lives on CHILD TABLES / derived computed fields (verified via doctype probing: parent has no settable calc fields). Requires UI form-driving (add child rows via the form, read computed fields) \u2014 deferred to the UI/MCP framework pass; not API-automatable. Blocked != tested."
+"actual": "Explored: packaging card adds, but monthly qty sum needs a nested MONTHLY ORDER SCHEDULE (per-month qty/price rows) \u2014 multi-level entry. Deferred."
 },
 "PR-TC-FW-DL-001": {
 "status": "Pass",
@@ -250,7 +250,7 @@
 },
 "PR-TC-FW-LSVC-001": {
 "status": "Blocked",
-"actual": "Per-framework calc/validation delta lives on CHILD TABLES / derived computed fields (verified via doctype probing: parent has no settable calc fields). Requires UI form-driving (add child rows via the form, read computed fields) \u2014 deferred to the UI/MCP framework pass; not API-automatable. Blocked != tested."
+"actual": "Explored: route row (Route Type/Direction/Frequency selects) added, but cost-per-trip input is conditional/not surfaced in the basic row \u2014 monthly-cost calc needs deeper/conditional field entry. Deferred."
 },
 "PR-TC-FW-BRAND-001": {
 "status": "Blocked",
