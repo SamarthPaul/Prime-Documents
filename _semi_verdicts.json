@@ -152,16 +152,17 @@
 "actual": "Per-framework calc/validation delta lives on CHILD TABLES / derived computed fields (verified via doctype probing: parent has no settable calc fields). Requires UI form-driving (add child rows via the form, read computed fields) \u2014 deferred to the UI/MCP framework pass; not API-automatable. Blocked != tested."
 },
 "PR-TC-FW-RAWMAT-001": {
-"status": "Blocked",
-"actual": "Per-framework calc/validation delta lives on CHILD TABLES / derived computed fields (verified via doctype probing: parent has no settable calc fields). Requires UI form-driving (add child rows via the form, read computed fields) \u2014 deferred to the UI/MCP framework pass; not API-automatable. Blocked != tested."
+"status": "Pass",
+"actual": "UI form-fill as field user: Quantity 10 x Price/Unit Rs800 -> Amount/Batch = 10.00 x Rs800.00 = Rs8,000; RM Cost/Unit Rs8,000; TOTAL row updated to Rs8,000. Cost calc correct."
 },
 "PR-TC-FW-RAWMAT-002": {
 "status": "Blocked",
 "actual": "Per-framework calc/validation delta lives on CHILD TABLES / derived computed fields (verified via doctype probing: parent has no settable calc fields). Requires UI form-driving (add child rows via the form, read computed fields) \u2014 deferred to the UI/MCP framework pass; not API-automatable. Blocked != tested."
 },
 "PR-TC-FW-MACH-001": {
-"status": "Blocked",
-"actual": "Per-framework calc/validation delta lives on CHILD TABLES / derived computed fields (verified via doctype probing: parent has no settable calc fields). Requires UI form-driving (add child rows via the form, read computed fields) \u2014 deferred to the UI/MCP framework pass; not API-automatable. Blocked != tested."
+"status": "Fail",
+"title": "Machinery depreciation should use (cost - salvage)/life",
+"actual": "UI form-fill: Cost Rs50,000, Useful Life 10y -> MONTHLY DEPRECIATION Rs416.67 (= Rs5,000/yr, straight-line cost/life). NO salvage/residual-value field on the form, so it does NOT match BRD (cost-salvage)/life = Rs4,500/yr. Salvage not captured; depreciation overstated vs spec."
 },
 "PR-TC-FW-MACH-002": {
 "status": "Blocked",
