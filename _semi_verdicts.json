@@ -12,6 +12,7 @@
   "PR-TC-DB-INT-001": {"status": "Blocked", "actual": "OUT OF SCOPE (per user 29 May): Intervention Dashboard is being rebuilt from scratch with the KPI form — do not test the current version."},
   "PR-TC-DB-MS-001": {"status": "Pass", "actual": "Milestone Tracker shows 4 tabs (Overview / Milestones & Activities / Timeline / RACI Matrix) + Live Data banner (85 activities, 26 milestones)."},
   "PR-TC-DB-EPS-002": {"status": "Pass", "actual": "Landscape filters (Sector/Basket/Cohort/Stage/Status) present; filter param persists in URL across reload (per XC-009)."},
+  "PR-TC-DB-NAV-001": {"status": "Fail", "title": "Status Monitor nav link routes to the EP status view", "actual": "Sidebar 'Status Monitor' link has href=null and clicking it does not navigate (dead/placeholder link). The District/Block-filtered status-monitor view appears not to be wired in the /primerural SPA."},
   "PR-TC-DB-EPS-001": {"status": "Blocked", "actual": "Landscape KPI cards are Total/Active/GPS-Verified/Districts/Village — NOT the spec's Total/MET/Incubated/Supported. Confirm which view is the canonical 'EP Status Monitor' before flagging."},
   "PR-TC-DB-EPS-003": {"status": "Blocked", "actual": "Status-pill colours need the dedicated status-monitor view; the green-KPI violation is already raised as XC-052."},
   "PR-TC-DB-EPS-004": {"status": "Blocked", "actual": "Zero-records empty state — needs a filter-to-zero observation pass."},

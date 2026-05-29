@@ -65,10 +65,44 @@ test('PR-TC-DB-EPS-005 · Sector→Business Basket dropdown cascades (basket fil
   ).toEqual([]);
 });
 
-test('PR-TC-DB-EPS-006 · District→Block dropdown cascades (block filtered by district)', async ({ page }) => {
-  // The Landscape filter row currently exposes Sector/Basket/Cohort/Stage/Status
-  // but NO District/Block selector. District→Block cascade belongs to the
-  // "Status Monitor" view (per BRD) — pending that surface being confirmed.
-  test.fixme(true, 'No District/Block filter on /primerural Landscape; confirm Status Monitor view + re-point.');
+test('PR-TC-DB-EPS-006 · District→Block cascade filter is available on the dashboard', async ({ page }) => {
+  // Verified 29 May: the Landscape exposes only Sector/Basket/Cohort/Stage/Status —
+  // there is NO District or Block filter — and the "Status Monitor" nav link is a
+  // dead link (href=null, click does not route). So District→Block cascade cannot
+  // exist. This asserts the filter is present (currently fails = the gap).
   await page.goto('/primerural/');
+  await page.waitForLoadState('networkidle').catch(() => {});
+  const hasDistrictFilter = await page.evaluate(() =>
+    // ONLY inspect filter controls (select options / placeholders), not body text
+    // (the KPI subtitle "Across all districts" must not count as a filter).
+    [...document.querySelectorAll('main select')].some((s) =>
+      [...(s as HTMLSelectElement).options].some((o) => /^(all )?(district|block)/i.test(o.text.trim()))));
+  expect(hasDistrictFilter, 'dashboard should expose a District (and cascading Block) filter').toBe(true);
+});
+
+test('PR-TC-DB-VIS-001 · Village Visits mode updates KPIs to village-visit context (GPS pin count)', async ({ page }) => {
+  // Requirement (user 29 May): GPS-Verified should show entrepreneur GPS-pin count
+  // in Entrepreneurs mode, and VILLAGE-VISIT GPS-pin count when Village Visits is
+  // active. Verified the cards stay entrepreneur-centric (Total Entrepreneurs / GPS=6)
+  // after toggling — so this currently fails = the gap.
+  await page.goto('/primerural/');
+  await page.waitForLoadState('networkidle').catch(() => {});
+  const readGps = () => page.evaluate(() => {
+    const m = document.querySelector('main')!.innerText;
+    return {
+      gps: Number((m.match(/(\d+)\s*\n\s*GPS Verified/i) || [])[1] || -1),
+      primaryLabel: (m.match(/\d+\s*\n\s*(Total [A-Za-z ]+)/) || [])[1] || '',
+    };
+  });
+  const ent = await readGps();
+  await page.locator('main button:has-text("Village Visits")').click();
+  await page.waitForTimeout(600);
+  const vis = await readGps();
+  // In Village Visits mode the KPIs must reflect village data, not the entrepreneur
+  // counts (label should switch away from "Total Entrepreneurs", and/or GPS pin count
+  // should change to the village-visit pin count).
+  const kpiSwitched = vis.primaryLabel !== ent.primaryLabel || vis.gps !== ent.gps;
+  expect(kpiSwitched,
+    `Village Visits mode should re-scope KPIs (entrepreneurs: label="${ent.primaryLabel}",gps=${ent.gps}; village: label="${vis.primaryLabel}",gps=${vis.gps})`
+  ).toBe(true);
 });
