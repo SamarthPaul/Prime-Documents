@@ -15,8 +15,9 @@
 "actual": "Asterisk on the name label is taupe rgb(107,99,89) (inherits label ink-soft), NOT terracotta #C26849. Marker present but wrong colour."
 },
 "PR-TC-XC-055": {
-"status": "Blocked",
-"actual": "Focus ring: programmatic .focus() shows outline-style:none, but that is unreliable for :focus-visible (keyboard) styling \u2014 needs a real keyboard-focus observation."
+"status": "Fail",
+"title": "Focus ring is default browser outline, not Monsoon Court terracotta+cream",
+"actual": "Keyboard-Tab focus on buttons + links shows the default UA outline (rgb(16,16,16) auto ~0.67px), NOT the spec 2px terracotta ring with 2px cream offset. Focus IS visible (not an a11y blocker) but does not match the design system."
 },
 "PR-TC-XC-056": {
 "status": "Pass",
@@ -64,8 +65,9 @@
 "actual": "Status-pill colours need the dedicated status-monitor view; the green-KPI violation is already raised as XC-052."
 },
 "PR-TC-DB-EPS-004": {
-"status": "Blocked",
-"actual": "Zero-records empty state \u2014 needs a filter-to-zero observation pass."
+"status": "Fail",
+"title": "No empty-state message when filters yield zero",
+"actual": "Filtered Landscape to 0 records (Handicrafts + Supported + Idea): KPIs correctly show 0 and layout holds (no horizontal overflow), but NO empty-state message (\"No data matches your filters\") is shown \u2014 the map just renders empty. Spec (DB-EPS-004) expects an EmptyState message."
 },
 "PR-TC-DB-SAN-001": {
 "status": "Blocked",
