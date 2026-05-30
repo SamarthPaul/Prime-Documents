@@ -83,15 +83,15 @@
 },
 "PR-TC-DB-INF-002": {
 "status": "Blocked",
-"actual": "Funder-mix donut hover exact-rupee tooltip \u2014 needs hover interaction; donuts render but tooltip not verified."
+"actual": "NOT Playwright-drivable: Infra Monitor charts render inside the desk CHB shadow DOM (canvas + ECharts) \u2014 document.querySelector cannot reach them, and ECharts canvas hover needs pixel-precise interaction. Manual verification."
 },
 "PR-TC-DB-INF-003": {
 "status": "Blocked",
-"actual": "Disbursement column hover breakdown \u2014 needs hover interaction (visual pass)."
+"actual": "NOT Playwright-drivable (CHB shadow DOM + canvas) \u2014 manual."
 },
 "PR-TC-DB-INF-004": {
 "status": "Blocked",
-"actual": "Drawer 2\u00d72 DocType card grid + '+New' \u2014 needs drawer interaction (visual pass)."
+"actual": "NOT Playwright-drivable (CHB shadow DOM drawer) \u2014 manual."
 },
 "PR-TC-FW-COM-001": {
 "status": "Pass",
@@ -285,12 +285,13 @@
 "actual": "Per-framework calc/validation delta lives on CHILD TABLES / derived computed fields (verified via doctype probing: parent has no settable calc fields). Requires UI form-driving (add child rows via the form, read computed fields) \u2014 deferred to the UI/MCP framework pass; not API-automatable. Blocked != tested."
 },
 "PR-TC-FW-PC-001": {
-"status": "Blocked",
-"actual": "Per-framework calc/validation delta lives on CHILD TABLES / derived computed fields (verified via doctype probing: parent has no settable calc fields). Requires UI form-driving (add child rows via the form, read computed fields) \u2014 deferred to the UI/MCP framework pass; not API-automatable. Blocked != tested."
+"status": "Pass",
+"actual": "UI: + Add Registration/License row captures Issuing Authority, Valid Till date / Lifetime Validity, and a Status (Received/Not Yet Received/Rejected). Cert entry works. NOTE: file upload + 60/30/7-day expiry warning not surfaced/verified."
 },
 "PR-TC-FW-PC-002": {
-"status": "Blocked",
-"actual": "Per-framework calc/validation delta lives on CHILD TABLES / derived computed fields (verified via doctype probing: parent has no settable calc fields). Requires UI form-driving (add child rows via the form, read computed fields) \u2014 deferred to the UI/MCP framework pass; not API-automatable. Blocked != tested."
+"status": "Fail",
+"title": "Product Compliance cert has no Active/Expired status; expiry not flagged",
+"actual": "Cert Status field = Received/Not Yet Received/Rejected (+ validity date), NOT an Active/Expired status \u2014 so the spec premise \"cannot mark an expired cert Active\" does not map. Setting a PAST Valid Till date (2025-01-01) showed NO expiry warning/flag. Confirm: should expired certs be flagged/blocked?"
 },
 "PR-TC-FW-UP-003": {
 "status": "Fail",
