@@ -6436,6 +6436,206 @@ table.matrix tr:nth-child(even) td { background: var(--offwhite); }
       </div>
     </div>
 
+    <h3 style="font-size:20px;font-weight:500;color:var(--teal);border-left:4px solid var(--terracotta);padding-left:12px;margin-top:18px;">19.6 Filter Cascade, KPI Correctness &amp; Maps (added from UAT)</h3>
+
+    <div class="tc neg" data-type="func" data-pol="neg" data-pri="p0" data-role="SM/CTI/CTP">
+      <div class="tc-head">
+        <span class="tc-id">PR-TC-DB-EPS-005</span>
+        <span class="tag pol-neg">Negative</span><span class="tag pri-p0">P0</span>
+        <span class="tag tp func">Functional</span><span class="tag role">SM / CTI / CTP</span>
+      </div>
+      <div class="tc-title">Sector → Business Basket dropdown cascades (basket filtered by sector)</div>
+      <div class="tc-body">
+        <span class="label">Steps</span>
+        <ol><li>Select Sector = Food Processing on the Landscape.</li><li>Open the Business Basket dropdown.</li></ol>
+        <div class="exp">
+          <span class="label">Expected</span>
+          Basket list shows ONLY baskets whose master sector = Food Processing. (Verified UAT: cascade BROKEN — all baskets shown incl. other sectors.)
+        </div>
+        <p class="brd">BRD: dependent filters cascade (Basket.sector → Sector).</p>
+      </div>
+    </div>
+
+    <div class="tc neg" data-type="func" data-pol="neg" data-pri="p0" data-role="SM/CTI/CTP">
+      <div class="tc-head">
+        <span class="tc-id">PR-TC-DB-EPS-006</span>
+        <span class="tag pol-neg">Negative</span><span class="tag pri-p0">P0</span>
+        <span class="tag tp func">Functional</span><span class="tag role">SM / CTI / CTP</span>
+      </div>
+      <div class="tc-title">District → Block cascade filter present on the dashboard</div>
+      <div class="tc-body">
+        <span class="label">Steps</span>
+        <ol><li>Open the Landscape / EP Status Monitor filter row.</li><li>Look for District + Block filters.</li></ol>
+        <div class="exp">
+          <span class="label">Expected</span>
+          A District filter and a Block filter (cascading: Block.district = selected District) are present. (Verified UAT: NO District/Block filter on Landscape; Status Monitor link dead.)
+        </div>
+        <p class="brd">BRD: District→Block cascade.</p>
+      </div>
+    </div>
+
+    <div class="tc pos" data-type="func" data-pol="pos" data-pri="p1" data-role="SM/CTI/CTP">
+      <div class="tc-head">
+        <span class="tc-id">PR-TC-DB-EPS-007</span>
+        <span class="tag pol-pos">Positive</span><span class="tag pri-p1">P1</span>
+        <span class="tag tp func">Functional</span><span class="tag role">SM / CTI / CTP</span>
+      </div>
+      <div class="tc-title">Each filter recomputes all KPI counts</div>
+      <div class="tc-body">
+        <span class="label">Steps</span>
+        <ol><li>Note Total Entrepreneurs.</li><li>Apply Sector = Food Processing.</li></ol>
+        <div class="exp">
+          <span class="label">Expected</span>
+          KPI counts recompute to the filtered subset (Total 40 → 13 verified). Label switches to Filtered.
+        </div>
+        <p class="brd">BRD: filters recompute KPIs.</p>
+      </div>
+    </div>
+
+    <div class="tc neg" data-type="func" data-pol="neg" data-pri="p1" data-role="SM/CTI/CTP">
+      <div class="tc-head">
+        <span class="tc-id">PR-TC-DB-VIS-001</span>
+        <span class="tag pol-neg">Negative</span><span class="tag pri-p1">P1</span>
+        <span class="tag tp func">Functional</span><span class="tag role">SM / CTI / CTP</span>
+      </div>
+      <div class="tc-title">Village Visits map mode re-scopes KPIs to village-visit GPS pins</div>
+      <div class="tc-body">
+        <span class="label">Steps</span>
+        <ol><li>On the Landscape, toggle the map mode to Village Visits.</li><li>Inspect the KPI cards (esp. GPS Verified).</li></ol>
+        <div class="exp">
+          <span class="label">Expected</span>
+          KPIs reflect village-visit data — GPS Verified shows the village-visit GPS-pin count, not the entrepreneur count. (Verified UAT: KPIs stay entrepreneur-scoped — finding.)
+        </div>
+        <p class="brd">BRD/req: GPS Verified per active map mode.</p>
+      </div>
+    </div>
+
+    <div class="tc neg" data-type="func" data-pol="neg" data-pri="p1" data-role="SM/CTI/CTP">
+      <div class="tc-head">
+        <span class="tc-id">PR-TC-DB-NAV-001</span>
+        <span class="tag pol-neg">Negative</span><span class="tag pri-p1">P1</span>
+        <span class="tag tp func">Functional</span><span class="tag role">SM / CTI / CTP</span>
+      </div>
+      <div class="tc-title">Status Monitor sidebar link routes to the EP status view</div>
+      <div class="tc-body">
+        <span class="label">Steps</span>
+        <ol><li>Click the "Status Monitor" item in the sidebar.</li></ol>
+        <div class="exp">
+          <span class="label">Expected</span>
+          Navigates to the EP Status Monitor view. (Verified UAT: link has href=null, does not navigate — dead link.)
+        </div>
+        <p class="brd">BRD: Status Monitor nav.</p>
+      </div>
+    </div>
+
+    <div class="tc pos" data-type="func" data-pol="pos" data-pri="p1" data-role="SM/CTI/CTP">
+      <div class="tc-head">
+        <span class="tc-id">PR-TC-DB-MAP-001</span>
+        <span class="tag pol-pos">Positive</span><span class="tag pri-p1">P1</span>
+        <span class="tag tp func">Functional</span><span class="tag role">SM / CTI / CTP</span>
+      </div>
+      <div class="tc-title">Geo coordinates captured; count cross-checks GPS-Verified KPI</div>
+      <div class="tc-body">
+        <span class="label">Steps</span>
+        <ol><li>Read EP.location (Geolocation) values via API.</li><li>Compare count-with-coords to the GPS-Verified KPI.</li></ol>
+        <div class="exp">
+          <span class="label">Expected</span>
+          EPs with a captured location > 0; GPS-Verified KPI ≤ count-with-coords. (Obs: KPI=6 vs 12 with location — confirm GPS-only vs incl. centroid.)
+        </div>
+        <p class="brd">BRD: geo-tag capture.</p>
+      </div>
+    </div>
+
+    <div class="tc pos" data-type="ui" data-pol="pos" data-pri="p1" data-role="SM/CTI/CTP">
+      <div class="tc-head">
+        <span class="tc-id">PR-TC-DB-MAP-002</span>
+        <span class="tag pol-pos">Positive</span><span class="tag pri-p1">P1</span>
+        <span class="tag tp ui">UI / UX</span><span class="tag role">SM / CTI / CTP</span>
+      </div>
+      <div class="tc-title">Landscape map renders (Leaflet canvas + tiles)</div>
+      <div class="tc-body">
+        <span class="label">Steps</span>
+        <ol><li>Open the Landscape.</li><li>Inspect the map container.</li></ol>
+        <div class="exp">
+          <span class="label">Expected</span>
+          Leaflet map renders with base tiles + canvas renderer (pins drawn on canvas). (Verified pass.)
+        </div>
+        <p class="brd">BRD: map renders.</p>
+      </div>
+    </div>
+
+    <div class="tc pos" data-type="ui" data-pol="pos" data-pri="p1" data-role="SM/CTI/CTP">
+      <div class="tc-head">
+        <span class="tc-id">PR-TC-DB-MAP-003</span>
+        <span class="tag pol-pos">Positive</span><span class="tag pri-p1">P1</span>
+        <span class="tag tp ui">UI / UX</span><span class="tag role">SM / CTI / CTP</span>
+      </div>
+      <div class="tc-title">Meghalaya boundary overlay rendered</div>
+      <div class="tc-body">
+        <span class="label">Steps</span>
+        <ol><li>Open the Landscape map.</li></ol>
+        <div class="exp">
+          <span class="label">Expected</span>
+          State boundary overlay (svg/canvas) renders around Meghalaya. (Verified pass.)
+        </div>
+        <p class="brd">BRD: map boundaries.</p>
+      </div>
+    </div>
+
+    <div class="tc pos" data-type="ui" data-pol="pos" data-pri="p1" data-role="SM/CTI/CTP">
+      <div class="tc-head">
+        <span class="tc-id">PR-TC-DB-MAP-004</span>
+        <span class="tag pol-pos">Positive</span><span class="tag pri-p1">P1</span>
+        <span class="tag tp ui">UI / UX</span><span class="tag role">SM / CTI / CTP</span>
+      </div>
+      <div class="tc-title">Block-level drill-down works on the map</div>
+      <div class="tc-body">
+        <span class="label">Steps</span>
+        <ol><li>Click / zoom a district on the map.</li></ol>
+        <div class="exp">
+          <span class="label">Expected</span>
+          Map drills down to block-level detail. (Canvas — manual/visual verification pending.)
+        </div>
+        <p class="brd">BRD: drill down to block level.</p>
+      </div>
+    </div>
+
+    <div class="tc neg" data-type="val" data-pol="neg" data-pri="p0" data-role="SM/CTI/CTP">
+      <div class="tc-head">
+        <span class="tc-id">PR-TC-DB-MAP-005</span>
+        <span class="tag pol-neg">Negative</span><span class="tag pri-p0">P0</span>
+        <span class="tag tp val">Validation</span><span class="tag role">SM / CTI / CTP</span>
+      </div>
+      <div class="tc-title">Captured coordinates fall within Meghalaya bounds</div>
+      <div class="tc-body">
+        <span class="label">Steps</span>
+        <ol><li>Read EP.location GeoJSON coords.</li><li>Check each lat/lng against Meghalaya bounds (lat 25.0–26.2, lng 89.8–92.9).</li></ol>
+        <div class="exp">
+          <span class="label">Expected</span>
+          All coords within Meghalaya. (Verified UAT: only 1 of parseable coords in-state; default Mountain View CA + Delhi + malformed GeoJSON — finding.)
+        </div>
+        <p class="brd">BRD: coordinate validation / map boundaries.</p>
+      </div>
+    </div>
+
+    <div class="tc pos" data-type="ui" data-pol="pos" data-pri="p2" data-role="SM/CTI/CTP">
+      <div class="tc-head">
+        <span class="tc-id">PR-TC-DB-MAP-006</span>
+        <span class="tag pol-pos">Positive</span><span class="tag pri-p2">P2</span>
+        <span class="tag tp ui">UI / UX</span><span class="tag role">SM / CTI / CTP</span>
+      </div>
+      <div class="tc-title">Village Visits map mode plots village pins</div>
+      <div class="tc-body">
+        <span class="label">Steps</span>
+        <ol><li>Toggle map to Village Visits.</li></ol>
+        <div class="exp">
+          <span class="label">Expected</span>
+          Village-visit pins render on the map. (Canvas — manual/visual verification pending.)
+        </div>
+        <p class="brd">BRD: village visit pins.</p>
+      </div>
+    </div>
+
   </section>
 
   <!-- ============================================================ -->
