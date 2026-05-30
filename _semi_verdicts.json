@@ -200,11 +200,11 @@
 },
 "PR-TC-FW-MR-001": {
 "status": "Blocked",
-"actual": "Per-framework calc/validation delta lives on CHILD TABLES / derived computed fields (verified via doctype probing: parent has no settable calc fields). Requires UI form-driving (add child rows via the form, read computed fields) \u2014 deferred to the UI/MCP framework pass; not API-automatable. Blocked != tested."
+"actual": "MODEL DEVIATION (confirm): no explicit SWOT 2x2 (Strengths/Weaknesses/Opportunities/Threats) grid found on the Market Research tab \u2014 it has Product Snapshot + Key Findings + competitor Channels/Brands/Respondents. Confirm where/if SWOT 4-quadrant is captured."
 },
 "PR-TC-FW-CA-001": {
 "status": "Blocked",
-"actual": "Per-framework calc/validation delta lives on CHILD TABLES / derived computed fields (verified via doctype probing: parent has no settable calc fields). Requires UI form-driving (add child rows via the form, read computed fields) \u2014 deferred to the UI/MCP framework pass; not API-automatable. Blocked != tested."
+"actual": "Per-product nested: EXISTING -> + Add Product -> each product holds its own customer segmentation (multi-select). Deep multi-level entry \u2014 deferred to focused drive."
 },
 "PR-TC-FW-ML-001": {
 "status": "Blocked",
@@ -278,7 +278,7 @@
 },
 "PR-TC-FW-SCH-001": {
 "status": "Blocked",
-"actual": "Per-framework calc/validation delta lives on CHILD TABLES / derived computed fields (verified via doctype probing: parent has no settable calc fields). Requires UI form-driving (add child rows via the form, read computed fields) \u2014 deferred to the UI/MCP framework pass; not API-automatable. Blocked != tested."
+"actual": "MODEL DEVIATION (confirm w/ BA): scheme loan EMI is INTEREST-based \u2014 Loan Amount + Loan Interest (% p.a.) + Loan Start/End dates -> computed \"EMI / Month\" field (Loan Repayment Details). Spec FW-SCH-001 describes FLAT Loan/Term (Rs5,555.56). EMI field present & computes; interest-based is likely more correct \u2014 BA to confirm intended formula. Exact amortization value not fully driven (multi-field)."
 },
 "PR-TC-FW-REG-001": {
 "status": "Blocked",
