@@ -11,6 +11,8 @@
     "test:auth": "playwright test tests/04-entry tests/07-auth",
     "test:ep": "playwright test tests/15-ep-profile",
     "test:frameworks": "playwright test tests/17-frameworks",
+    "test:calcs": "playwright test tests/17b-framework-calcs",
+    "test:calcs:watch": "playwright test tests/17b-framework-calcs --headed",
     "report": "playwright show-report",
     "codegen": "playwright codegen https://stgprime-rural.dhwaniris.in/",
     "install:browsers": "playwright install --with-deps chromium",
