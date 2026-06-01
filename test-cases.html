@@ -5204,12 +5204,12 @@ table.matrix tr:nth-child(even) td { background: var(--offwhite); }
         <span class="label">Steps</span>
         <ol>
           <li>Open Financials → BMC tab.</li>
-          <li>Fill all 9 BMC sections (Customer Segments, Value Prop, Channels, Customer Relationships, Revenue Streams, Key Activities, Key Resources, Key Partnerships, Cost Structure).</li>
-          <li>Save.</li>
+          <li>Enter Total Quantity, Avg Revenue/Month, expenses, and a loan (amount, interest % p.a., term).</li>
+          <li>Observe the computed fields.</li>
         </ol>
         <div class="exp">
           <span class="label">Expected</span>
-          All 9 sections persist. Net cost / revenue computed at the bottom. Visualises in a 9-block Lean Canvas-style layout.
+          Weighted Avg Selling Price = Revenue ÷ Quantity; EMI = reducing-balance amortisation; Contribution/unit and break-even units = ceil((Expense + EMI) ÷ Contribution) compute; status banner shows. BMC is a break-even calculator, NOT a 9-block Lean Canvas (per journey doc + wireframe). [The 9-block canvas is the separate BPC framework.]
         </div>
       </div>
     </div>
@@ -5294,7 +5294,7 @@ table.matrix tr:nth-child(even) td { background: var(--offwhite); }
     </div>
 
     <h3 style="font-size:20px;font-weight:500;color:var(--teal);border-left:4px solid var(--terracotta);padding-left:12px;margin-top:24px;">17.3 Machinery</h3>
-    <p style="font-size:13px;color:var(--ink-soft);">22 fields per row + 7 calculated (depreciation, useful life, residual etc.).</p>
+    <p style="font-size:13px;color:var(--ink-soft);">Per-row fields + calculated (monthly output, capacity utilization/gap, condition-based depreciation).</p>
 
     <div class="tc pos" data-type="func" data-pol="pos" data-pri="p0" data-role="FA/CTP">
       <div class="tc-head">
@@ -5302,15 +5302,15 @@ table.matrix tr:nth-child(even) td { background: var(--offwhite); }
         <span class="tag pol-pos">Positive</span><span class="tag pri-p0">P0</span>
         <span class="tag tp func">Functional</span><span class="tag role">FA / CTP</span>
       </div>
-      <div class="tc-title">Add machine — depreciation auto-calculated per straight-line method</div>
+      <div class="tc-title">Add machine — depreciation auto-calculated from condition-based rate</div>
       <div class="tc-body">
         <span class="label">Steps</span>
         <ol>
-          <li>Cost = 50,000, Useful Life = 10 years, Residual = 5,000.</li>
+          <li>Cost = 50,000, Machinery Condition = Good (10% per year).</li>
         </ol>
         <div class="exp">
           <span class="label">Expected</span>
-          Annual depreciation = (50,000 - 5,000) / 10 = 4,500. Monthly = 375. Auto-displayed. (Verify formula with PM if non-SL.)
+          Monthly Depreciation = (Cost × Rate) / 12 = (50,000 × 10%) / 12 = ₹ 416.67. Condition-based rate (Good 10 / Fair 20 / Poor 30 %); there is no salvage or useful-life field (per wireframe).
         </div>
       </div>
     </div>
@@ -5534,15 +5534,16 @@ table.matrix tr:nth-child(even) td { background: var(--offwhite); }
         <span class="tag pol-pos">Positive</span><span class="tag pri-p1">P1</span>
         <span class="tag tp func">Functional</span><span class="tag role">FA / CTP</span>
       </div>
-      <div class="tc-title">Add online channel (Amazon, Flipkart) with commission %, monthly volume</div>
+      <div class="tc-title">Add a recommended channel + sales-tracker row; revenue auto-computes</div>
       <div class="tc-body">
         <span class="label">Steps</span>
         <ol>
-          <li>Online Channels tab → +Add: Amazon, commission 15%, volume 50 units/month, avg price ₹ 200.</li>
+          <li>Required → Recommended Channels: add Amazon (Online), Location from Block Master, Identified by = Core Team.</li>
+          <li>Add a product row (Product → SKU cascade, Price ₹ 200). In Sales Tracker add a row: 50 units in Jan.</li>
         </ol>
         <div class="exp">
           <span class="label">Expected</span>
-          Net revenue = 50 × 200 × (1 - 0.15) = ₹ 8,500/month. Auto-displayed.
+          Sales Tracker Revenue = Quantity × Price = 50 × ₹ 200 = ₹ 10,000; Avg Revenue/Month = Units × Price; Annual = × 12. No commission field exists — gross revenue only (per journey doc + wireframe).
         </div>
       </div>
     </div>
@@ -5556,13 +5557,13 @@ table.matrix tr:nth-child(even) td { background: var(--offwhite); }
         <span class="tag pol-pos">Positive</span><span class="tag pri-p2">P2</span>
         <span class="tag tp func">Functional</span><span class="tag role">FA / CTP</span>
       </div>
-      <div class="tc-title">Add promotion activity with budget + expected reach</div>
+      <div class="tc-title">Add a promotion (Name / Type / Handled by / Frequency)</div>
       <div class="tc-body">
         <span class="label">Steps</span>
-        <ol><li>Add row: WhatsApp campaign, ₹ 500 budget, expected 100 reach.</li></ol>
+        <ol><li>Existing → +Add: Promotion Name = WhatsApp campaign, Type = Online, Handled by, Frequency = Weekly, Notes.</li></ol>
         <div class="exp">
           <span class="label">Expected</span>
-          Cost per reach = ₹ 5/person auto-computed.
+          Row saved; Summary aggregates update (online/offline split + frequency counts). No budget, reach, or cost-per-reach field exists (per journey doc + wireframe).
         </div>
       </div>
     </div>
@@ -5576,13 +5577,13 @@ table.matrix tr:nth-child(even) td { background: var(--offwhite); }
         <span class="tag pol-pos">Positive</span><span class="tag pri-p2">P2</span>
         <span class="tag tp func">Functional</span><span class="tag role">FA / CTP</span>
       </div>
-      <div class="tc-title">Conditional dropdown: selecting Prototype Type = "Physical" reveals dimensions fields</div>
+      <div class="tc-title">Conditional dropdown: Type of Prototyping (Packaging / Product) drives the Prototyping Type Name list</div>
       <div class="tc-body">
         <span class="label">Steps</span>
-        <ol><li>Type = Physical → fields appear.</li><li>Type = Digital → those fields hide; URL field appears.</li></ol>
+        <ol><li>Type of Prototyping = Packaging → Prototyping Type Name lists the Packing Master (12 items).</li><li>Switch to Product → Prototyping Type Name lists the Business Basket (11 items).</li></ol>
         <div class="exp">
           <span class="label">Expected</span>
-          Conditional rendering. Hidden fields' values are cleared on switch (so they don't pollute save).
+          Type Name option list switches with the driver; on switching, the previous Type Name is cleared/re-validated. (No "Physical/Digital" type or dimensions/URL fields exist — per journey doc + wireframe.)
         </div>
       </div>
     </div>
@@ -5618,13 +5619,13 @@ table.matrix tr:nth-child(even) td { background: var(--offwhite); }
         <span class="tag pol-pos">Positive</span><span class="tag pri-p2">P2</span>
         <span class="tag tp func">Functional</span><span class="tag role">FA / CTP</span>
       </div>
-      <div class="tc-title">Upload SOP document + status = Drafted / Reviewed / Approved</div>
+      <div class="tc-title">SOP tracking: "Is the standardisation being followed?" = No reveals the reason field</div>
       <div class="tc-body">
         <span class="label">Steps</span>
-        <ol><li>Upload PDF. Set status = Drafted.</li></ol>
+        <ol><li>Upload SOP (Upload/View) + set SOP URL. Set "Is the standardisation being followed?" = No.</li></ol>
         <div class="exp">
           <span class="label">Expected</span>
-          SOP saved with versioning. Status pill visible.
+          SOP file + URL saved; selecting No reveals the "Give reasons" textarea (skip-logic). No Drafted/Reviewed/Approved status exists; the Required tab carries Implementation Status (Pending/In Progress/Completed/On Hold/Not Feasible).
         </div>
       </div>
     </div>
@@ -5638,13 +5639,13 @@ table.matrix tr:nth-child(even) td { background: var(--offwhite); }
         <span class="tag pol-pos">Positive</span><span class="tag pri-p1">P1</span>
         <span class="tag tp func">Functional</span><span class="tag role">FA / CTP</span>
       </div>
-      <div class="tc-title">Fill all 23 stars; total score auto-computes</div>
+      <div class="tc-title">Rate the 23 practices 1–5; average score auto-computes</div>
       <div class="tc-body">
         <span class="label">Steps</span>
-        <ol><li>Set all 23 questions to 4 stars (out of 5).</li></ol>
+        <ol><li>Rate all 23 quality practices at 4 (scale 1–5: 1 Not aware … 5 Fully implemented).</li></ol>
         <div class="exp">
           <span class="label">Expected</span>
-          Total = 92/115 (80%). Visual ring shows 80%.
+          QC Score = Average Rating = mean of rated stars = 4.00 (2 dp). Maturity tier label shows for round(avg). No /115 total and no percentage ring (mean model, per journey doc + wireframe).
         </div>
       </div>
     </div>
@@ -5680,13 +5681,13 @@ table.matrix tr:nth-child(even) td { background: var(--offwhite); }
         <span class="tag pol-pos">Positive</span><span class="tag pri-p2">P2</span>
         <span class="tag tp func">Functional</span><span class="tag role">FA / CTP</span>
       </div>
-      <div class="tc-title">Rate each of 9 platforms 0-5; readiness score auto</div>
+      <div class="tc-title">Rate platform skills 1–5; average skill level auto-computes</div>
       <div class="tc-body">
         <span class="label">Steps</span>
-        <ol><li>Pick 5 across all 9.</li></ol>
+        <ol><li>Add a Platform/Skill row and rate it 5 (scale 1–5: 1 No knowledge … 5 Proficient; ✕ clears to unrated).</li></ol>
         <div class="exp">
           <span class="label">Expected</span>
-          Readiness = average × 20 = 100% if all 5. Visualised as a radar chart.
+          Average Skill Level = sum of rated stars ÷ rated count (2 dp); unrated (0) excluded. No readiness % and no radar chart in the form (per journey doc + wireframe).
         </div>
       </div>
     </div>
@@ -5712,7 +5713,7 @@ table.matrix tr:nth-child(even) td { background: var(--offwhite); }
     </div>
 
     <h3 style="font-size:20px;font-weight:500;color:var(--teal);border-left:4px solid var(--terracotta);padding-left:12px;margin-top:24px;">17.18 Business Plan Canvas (BPC)</h3>
-    <p style="font-size:13px;color:var(--ink-soft);">Now lives in Financials (BMC tab) per recent decision. Section also exists as standalone m-bpc page (rebuild pending).</p>
+    <p style="font-size:13px;color:var(--ink-soft);">Standalone framework (m-bpc): 9 canvas blocks filled manually. Distinct from the BMC break-even calculator in Financials.</p>
 
     <div class="tc pos" data-type="func" data-pol="pos" data-pri="p2" data-role="FA/CTP">
       <div class="tc-head">
@@ -5720,15 +5721,16 @@ table.matrix tr:nth-child(even) td { background: var(--offwhite); }
         <span class="tag pol-pos">Positive</span><span class="tag pri-p2">P2</span>
         <span class="tag tp func">Functional</span><span class="tag role">FA / CTP</span>
       </div>
-      <div class="tc-title">BPC synthesises data from other DFs (Market Linkage, HR, Customer Analysis, etc.)</div>
+      <div class="tc-title">BPC: 9 canvas blocks filled manually; cross-module references are read-only links</div>
       <div class="tc-body">
         <span class="label">Steps</span>
         <ol>
-          <li>Open BPC. Verify Customer Segments are populated from Customer Analysis selections, Key Activities from Process Flow steps, Cost Structure from Unit Pricing.</li>
+          <li>Open BPC. Fill the 9 canvas blocks (Key Partners … Revenue Streams) manually.</li>
+          <li>Check the cross-module reference pills shown below the relevant headers.</li>
         </ol>
         <div class="exp">
           <span class="label">Expected</span>
-          Auto-population from upstream DFs. Editable overrides allowed but cite source.
+          Blocks are entered manually — NOT auto-populated from upstream DFs. Cross-module references appear as read-only links that redirect to the source form. Completion % = filled ÷ 9 × 100 (per journey doc + wireframe).
         </div>
       </div>
     </div>
@@ -5828,15 +5830,15 @@ table.matrix tr:nth-child(even) td { background: var(--offwhite); }
         <span class="tag pol-pos">Positive</span><span class="tag pri-p2">P2</span>
         <span class="tag tp func">Functional</span><span class="tag role">FA / CTP</span>
       </div>
-      <div class="tc-title">Alcohol toggle ON reveals "Contains alcohol — pregnancy warning" field, mandatory</div>
+      <div class="tc-title">Wine/Alcohol toggle ON reveals the statutory warning banner + Alcohol Content (ABV) field</div>
       <div class="tc-body">
         <span class="label">Steps</span>
         <ol>
-          <li>Toggle alcohol = Yes.</li>
+          <li>Toggle "Wine / Alcohol Product?" = Yes.</li>
         </ol>
         <div class="exp">
           <span class="label">Expected</span>
-          Required compliance text appears. Save without filling rejected.
+          The fixed 2-line statutory banner appears ("Consumption of alcohol is injurious to health" / "Be safe — Don't drink and drive") plus the Alcohol Content (ABV) field. ABV expected when alcohol = Yes — no "pregnancy warning" field exists (per wireframe).
         </div>
       </div>
     </div>
@@ -5953,15 +5955,15 @@ table.matrix tr:nth-child(even) td { background: var(--offwhite); }
         <span class="tag pol-neg">Negative</span><span class="tag pri-p1">P1</span>
         <span class="tag tp val">Validation</span><span class="tag role">FA / CTP</span>
       </div>
-      <div class="tc-title">Expired cert: cannot mark Active</div>
+      <div class="tc-title">Expired cert flagged by expiry highlight (no Active/Expired status exists)</div>
       <div class="tc-body">
         <span class="label">Steps</span>
         <ol>
-          <li>Add cert with Valid till = yesterday, Status = Active.</li>
+          <li>Add a certification with Valid Till = yesterday.</li>
         </ol>
         <div class="exp">
           <span class="label">Expected</span>
-          Rejected: "Cannot mark an expired certificate as Active."
+          Status options are Received / Not yet Received / Rejected (there is no "Active" state, so "cannot mark Active" does not apply). The expired cert should be highlighted in the Summary (red = expired, amber = within 90 days). Confirm with BA whether expired certs must be flagged/blocked (current build shows no flag — live finding PC-002).
         </div>
       </div>
     </div>
