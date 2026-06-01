@@ -1,0 +1,671 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>PRIME Rural — Requirement Traceability Matrix</title>
+<style>
+:root{--teal:#0E4D4E;--sea:#1A6B6D;--terracotta:#C26849;--cream:#FBF5E5;--offwhite:#FDFAF0;--ink:#2A2520;--ink-soft:#6B6359;--border:#E8DFC9}
+*{box-sizing:border-box}body{font-family:Georgia,'Times New Roman',serif;color:var(--ink);background:var(--cream);margin:0;line-height:1.5}
+.wrap{max-width:1200px;margin:0 auto;padding:28px 22px 80px}
+h1{color:var(--teal);font-size:30px;margin:0 0 4px}.sub{color:var(--ink-soft);margin:0 0 16px}
+.note{background:var(--offwhite);border-left:4px solid var(--terracotta);padding:12px 16px;border-radius:6px;margin:14px 0}
+h2{color:var(--teal);font-size:22px;border-left:4px solid var(--terracotta);padding-left:12px;margin:34px 0 6px}
+h3{color:var(--sea);font-size:16px;margin:18px 0 4px}
+table{width:100%;border-collapse:collapse;background:#fff;border:1px solid var(--border);border-radius:8px;overflow:hidden;margin-bottom:8px}
+th{background:var(--teal);color:var(--cream);text-align:left;padding:7px 9px;font-size:12px}
+td{border-top:1px solid var(--border);padding:7px 9px;font-size:12.5px;vertical-align:top}
+.ty{color:var(--sea);font-size:11px;text-transform:uppercase;letter-spacing:.4px;white-space:nowrap}
+.b{text-align:center;font-weight:bold;width:34px}
+.y{color:#2e7d32}.p{color:var(--terracotta)}.n{color:#b3402a}
+.tally{color:var(--ink-soft);font-size:12.5px;margin:2px 0 6px}
+.flag{font-size:10px;font-weight:bold;padding:1px 6px;border-radius:8px;white-space:nowrap}
+.f-stale{background:#f3d9cf;color:#9a3412}.f-gap{background:#efe7cf;color:#7a6320}.f-brd{background:#e7d6ef;color:#6b2f8a}.f-build{background:#d9e2ef;color:#274690}
+tr.stale td{background:#fdf3ee}tr.brd td,tr.build td{background:#faf4fb}
+.sumtab td,.sumtab th{font-size:12.5px}
+.bar{display:inline-block;height:9px;border-radius:5px;background:var(--sea);vertical-align:middle}
+.barbg{display:inline-block;width:90px;height:9px;border-radius:5px;background:#e8dfc9;vertical-align:middle;margin-right:6px}
+.toolbar{position:sticky;top:0;background:var(--cream);padding:10px 0;z-index:5;border-bottom:1px solid var(--border)}
+.btn{font-family:inherit;font-size:12px;border:1px solid var(--sea);background:#fff;color:var(--sea);padding:5px 12px;border-radius:16px;cursor:pointer;margin-right:6px}
+.btn.on{background:var(--sea);color:#fff}
+@media print{.toolbar{display:none}th{background:#0E4D4E!important;-webkit-print-color-adjust:exact;print-color-adjust:exact}}
+</style></head><body><div class="wrap">
+<h1>PRIME Rural — Requirement Traceability Matrix</h1>
+<p class="sub">Source of truth: <b>user journey doc</b> + <b>wireframe HTML</b> + <b>comprehensive BRD</b> (+ product repo for field/validation logic). Frameworks · Entrepreneur Profile · Product form.</p>
+<div class="note"><b>How to read:</b> each row is one rule (dropdown / validation / skip-logic / calc / journey / auto-fill) extracted from the source-of-truth. <b>In BRD</b> and <b>In Tests</b> show whether it is documented / covered (✓ full · ~ partial · ✗ missing).
+<span class="flag f-stale">STALE TEST</span> = a test case that contradicts the source (rewrite it); <span class="flag f-gap">NOT TESTED</span> = real coverage gap; <span class="flag f-brd">BRD DEFECT</span> / <span class="flag f-build">NOT BUILT</span> = BRD contradicts repo / feature absent in repo.</div>
+
+<div class="note" style="border-color:var(--sea)"><b>Headline:</b> 468 rules audited &nbsp;·&nbsp; in BRD <b>454</b> (97%) &nbsp;·&nbsp; in tests <b>109</b> (23%) &nbsp;·&nbsp; <b style="color:#9a3412">27</b> stale tests &nbsp;·&nbsp; <b style="color:#7a6320">345</b> untested rules &nbsp;·&nbsp; <b style="color:#6b2f8a">17</b> BRD/build defects.</div>
+<div class="toolbar"><button class="btn on" data-f="all" onclick="flt(this)">All rules</button><button class="btn" data-f="gap" onclick="flt(this)">Gaps only</button><button class="btn" data-f="stale" onclick="flt(this)">Stale tests</button><button class="btn" data-f="brd" onclick="flt(this)">BRD/build defects</button></div>
+<h2>Frameworks</h2>
+<table class="sumtab"><tr><th>Module</th><th>Rules</th><th>In BRD</th><th>In Tests</th><th>Test coverage</th><th>Flags</th></tr>
+<tr><td><b>— General (all forms)</b></td><td>9</td><td>9</td><td>0</td><td><span class="barbg"><span class="bar" style="width:0px"></span></span>0%</td><td></td></tr>
+<tr><td><b>Financials / BMC</b></td><td>19</td><td>19</td><td>2</td><td><span class="barbg"><span class="bar" style="width:9px"></span></span>10%</td><td><span class="flag f-stale">1 stale</span></td></tr>
+<tr><td><b>Unit Pricing</b></td><td>19</td><td>18</td><td>7</td><td><span class="barbg"><span class="bar" style="width:32px"></span></span>36%</td><td></td></tr>
+<tr><td><b>Schemes &amp; Funding</b></td><td>16</td><td>16</td><td>2</td><td><span class="barbg"><span class="bar" style="width:10px"></span></span>12%</td><td><span class="flag f-brd">2 defect</span></td></tr>
+<tr><td><b>Raw Material</b></td><td>27</td><td>27</td><td>0</td><td><span class="barbg"><span class="bar" style="width:0px"></span></span>0%</td><td></td></tr>
+<tr><td><b>Machinery</b></td><td>21</td><td>21</td><td>2</td><td><span class="barbg"><span class="bar" style="width:8px"></span></span>9%</td><td><span class="flag f-stale">1 stale</span></td></tr>
+<tr><td><b>Human Resource</b></td><td>17</td><td>17</td><td>2</td><td><span class="barbg"><span class="bar" style="width:9px"></span></span>11%</td><td></td></tr>
+<tr><td><b>Infrastructure</b></td><td>40</td><td>40</td><td>3</td><td><span class="barbg"><span class="bar" style="width:6px"></span></span>7%</td><td></td></tr>
+<tr><td><b>Product Prototyping</b></td><td>9</td><td>8</td><td>4</td><td><span class="barbg"><span class="bar" style="width:39px"></span></span>44%</td><td><span class="flag f-stale">1 stale</span></td></tr>
+<tr><td><b>Product Testing</b></td><td>11</td><td>11</td><td>3</td><td><span class="barbg"><span class="bar" style="width:24px"></span></span>27%</td><td></td></tr>
+<tr><td><b>Standardization</b></td><td>11</td><td>11</td><td>3</td><td><span class="barbg"><span class="bar" style="width:24px"></span></span>27%</td><td><span class="flag f-stale">1 stale</span></td></tr>
+<tr><td><b>Quality Control</b></td><td>10</td><td>10</td><td>3</td><td><span class="barbg"><span class="bar" style="width:27px"></span></span>30%</td><td><span class="flag f-stale">1 stale</span></td></tr>
+<tr><td><b>Business Registration</b></td><td>17</td><td>17</td><td>2</td><td><span class="barbg"><span class="bar" style="width:9px"></span></span>11%</td><td><span class="flag f-brd">1 defect</span></td></tr>
+<tr><td><b>Product Compliance</b></td><td>11</td><td>11</td><td>3</td><td><span class="barbg"><span class="bar" style="width:24px"></span></span>27%</td><td><span class="flag f-stale">1 stale</span> <span class="flag f-brd">2 defect</span></td></tr>
+<tr><td><b>Labels</b></td><td>14</td><td>14</td><td>3</td><td><span class="barbg"><span class="bar" style="width:18px"></span></span>21%</td><td><span class="flag f-stale">1 stale</span></td></tr>
+<tr><td><b>Packaging</b></td><td>16</td><td>16</td><td>2</td><td><span class="barbg"><span class="bar" style="width:10px"></span></span>12%</td><td><span class="flag f-stale">1 stale</span></td></tr>
+<tr><td><b>Logistic Packing</b></td><td>9</td><td>9</td><td>1</td><td><span class="barbg"><span class="bar" style="width:9px"></span></span>11%</td><td><span class="flag f-brd">2 defect</span></td></tr>
+<tr><td><b>Logistic Service</b></td><td>13</td><td>13</td><td>5</td><td><span class="barbg"><span class="bar" style="width:34px"></span></span>38%</td><td><span class="flag f-brd">1 defect</span></td></tr>
+<tr><td><b>Market Research</b></td><td>13</td><td>13</td><td>3</td><td><span class="barbg"><span class="bar" style="width:20px"></span></span>23%</td><td></td></tr>
+<tr><td><b>Customer Analysis</b></td><td>10</td><td>10</td><td>2</td><td><span class="barbg"><span class="bar" style="width:18px"></span></span>20%</td><td></td></tr>
+<tr><td><b>Market Linkage</b></td><td>9</td><td>8</td><td>3</td><td><span class="barbg"><span class="bar" style="width:29px"></span></span>33%</td><td><span class="flag f-stale">1 stale</span></td></tr>
+<tr><td><b>Promotions</b></td><td>8</td><td>7</td><td>1</td><td><span class="barbg"><span class="bar" style="width:10px"></span></span>12%</td><td><span class="flag f-stale">1 stale</span></td></tr>
+<tr><td><b>Branding Identity</b></td><td>16</td><td>15</td><td>3</td><td><span class="barbg"><span class="bar" style="width:16px"></span></span>18%</td><td><span class="flag f-brd">1 defect</span></td></tr>
+<tr><td><b>Marketing Brochure</b></td><td>12</td><td>11</td><td>1</td><td><span class="barbg"><span class="bar" style="width:7px"></span></span>8%</td><td></td></tr>
+<tr><td><b>Pitch Deck</b></td><td>11</td><td>8</td><td>1</td><td><span class="barbg"><span class="bar" style="width:8px"></span></span>9%</td><td><span class="flag f-stale">1 stale</span> <span class="flag f-brd">2 defect</span></td></tr>
+<tr><td><b>Digital Literacy</b></td><td>8</td><td>8</td><td>2</td><td><span class="barbg"><span class="bar" style="width:22px"></span></span>25%</td><td><span class="flag f-stale">2 stale</span></td></tr>
+<tr><td><b>Capacity Building</b></td><td>10</td><td>10</td><td>2</td><td><span class="barbg"><span class="bar" style="width:18px"></span></span>20%</td><td></td></tr>
+<tr><td><b>Business Plan Canvas</b></td><td>8</td><td>8</td><td>2</td><td><span class="barbg"><span class="bar" style="width:22px"></span></span>25%</td><td><span class="flag f-stale">1 stale</span></td></tr>
+</table>
+<h3>— General (all forms)</h3>
+<p class="tally">Rules: <b>9</b> · In BRD: 9 · In Tests: 0</p>
+<table><tr><th>Type</th><th>Rule</th><th class="b">BRD</th><th class="b">Tests</th><th>Flag / gap note</th></tr>
+<tr class="" data-flag="gap"><td class="ty">skip-logic</td><td>Task tab REMOVED from all framework forms (journey-doc change); Log Book remains</td><td class="b y">✓</td><td class="b n">✗</td><td><span class="flag f-gap">NOT TESTED</span> BRD says &#x27;Task Tab Removed&#x27;; Unit Pricing still shows a TASKS tab on staging (live bug)</td></tr>
+<tr class="" data-flag="gap"><td class="ty">field</td><td>Log Book columns: Fessociate (autofill), Entrepreneur (autofill), Task (from master, filtered by framework), Upload/view photo, Comments</td><td class="b y">✓</td><td class="b n">✗</td><td><span class="flag f-gap">NOT TESTED</span> </td></tr>
+<tr class="" data-flag="gap"><td class="ty">calc</td><td>Calculated fields visually distinct from inputs + show the formula in plain language</td><td class="b y">✓</td><td class="b n">✗</td><td><span class="flag f-gap">NOT TESTED</span> </td></tr>
+<tr class="" data-flag="gap"><td class="ty">calc</td><td>Fetched fields show source form + a redirect link to it</td><td class="b y">✓</td><td class="b n">✗</td><td><span class="flag f-gap">NOT TESTED</span> </td></tr>
+<tr class="" data-flag="gap"><td class="ty">skip-logic</td><td>Intervention-need shown in row banner (Existing); Implementation status in row banner (Required)</td><td class="b y">✓</td><td class="b n">✗</td><td><span class="flag f-gap">NOT TESTED</span> </td></tr>
+<tr class="" data-flag="gap"><td class="ty">skip-logic</td><td>Product button filters for product-level frameworks (toggle between products)</td><td class="b y">✓</td><td class="b n">✗</td><td><span class="flag f-gap">NOT TESTED</span> </td></tr>
+<tr class="" data-flag="gap"><td class="ty">calc</td><td>Summary tab generated once the form is saved for the first time</td><td class="b y">✓</td><td class="b n">✗</td><td><span class="flag f-gap">NOT TESTED</span> </td></tr>
+<tr class="" data-flag="gap"><td class="ty">field</td><td>Each Intervention Details tab has Pre- and Post-Intervention comment boxes</td><td class="b y">✓</td><td class="b n">✗</td><td><span class="flag f-gap">NOT TESTED</span> </td></tr>
+<tr class="" data-flag="gap"><td class="ty">dropdown</td><td>Implementation-status chips: Not started / In progress / Completed / On hold</td><td class="b p">~</td><td class="b n">✗</td><td><span class="flag f-gap">NOT TESTED</span> journey-doc wording is &#x27;Not started&#x27;; staging shows &#x27;Pending&#x27;</td></tr>
+</table>
+<h3>Financials / BMC</h3>
+<p class="tally">Rules: <b>19</b> · In BRD: 19 · In Tests: 2</p>
+<table><tr><th>Type</th><th>Rule</th><th class="b">BRD</th><th class="b">Tests</th><th>Flag / gap note</th></tr>
+<tr class="" data-flag="gap"><td class="ty">dropdown</td><td>Investment Source: Self-funded, Family/Friends, Bank Loan, Govt Scheme, NGO, Other (9)</td><td class="b y">✓</td><td class="b n">✗</td><td><span class="flag f-gap">NOT TESTED</span> </td></tr>
+<tr class="" data-flag="gap"><td class="ty">skip-logic</td><td>&#x27;Other Source Name&#x27; enabled only when Investment Source = Other</td><td class="b y">✓</td><td class="b n">✗</td><td><span class="flag f-gap">NOT TESTED</span> </td></tr>
+<tr class="" data-flag="gap"><td class="ty">validation</td><td>Other Source Name required when Source = Other</td><td class="b y">✓</td><td class="b n">✗</td><td><span class="flag f-gap">NOT TESTED</span> </td></tr>
+<tr class="" data-flag="gap"><td class="ty">dropdown</td><td>Bookkeeping Level (Level 1 None … Level 5 Digital — 5)</td><td class="b y">✓</td><td class="b n">✗</td><td><span class="flag f-gap">NOT TESTED</span> </td></tr>
+<tr class="" data-flag="gap"><td class="ty">dropdown</td><td>Q1 Yes/No; Q3 Frequency (Daily/Weekly/Monthly/Yearly/Occasionally)</td><td class="b y">✓</td><td class="b n">✗</td><td><span class="flag f-gap">NOT TESTED</span> </td></tr>
+<tr class="" data-flag="gap"><td class="ty">dropdown</td><td>Task Name — 16 master tasks</td><td class="b p">~</td><td class="b n">✗</td><td><span class="flag f-gap">NOT TESTED</span> BRD does not enumerate the 16 Financials task labels</td></tr>
+<tr class="" data-flag="gap"><td class="ty">calc</td><td>Avg Net Profit = Rev−Exp; Overall Rev = Rev+Add&#x27;l; Margin = NP/Overall×100</td><td class="b y">✓</td><td class="b n">✗</td><td><span class="flag f-gap">NOT TESTED</span> </td></tr>
+<tr class="" data-flag=""><td class="ty">calc</td><td>Growth averages over N months -&gt; KPI tiles + trend</td><td class="b y">✓</td><td class="b p">~</td><td>FIN-002 covers tracker, not avg/trend math</td></tr>
+<tr class="" data-flag="gap"><td class="ty">calc</td><td>BMC EMI = reducing-balance amortisation P*r(1+r)^n/((1+r)^n-1)</td><td class="b y">✓</td><td class="b n">✗</td><td><span class="flag f-gap">NOT TESTED</span> only a flat EMI is tested, and for a different module</td></tr>
+<tr class="" data-flag="gap"><td class="ty">calc</td><td>Contribution/unit; break-even units = ceil((Exp+EMI)/Contribution); rev break-even; &#x27;Not achievable&#x27;</td><td class="b y">✓</td><td class="b n">✗</td><td><span class="flag f-gap">NOT TESTED</span> </td></tr>
+<tr class="" data-flag="gap"><td class="ty">calc</td><td>Weighted Avg Selling Price = Revenue / Total Quantity</td><td class="b y">✓</td><td class="b n">✗</td><td><span class="flag f-gap">NOT TESTED</span> </td></tr>
+<tr class="" data-flag="gap"><td class="ty">calc</td><td>Total Loan = sum of checked loans; amount-weighted blended rate/tenure</td><td class="b y">✓</td><td class="b n">✗</td><td><span class="flag f-gap">NOT TESTED</span> </td></tr>
+<tr class="" data-flag="gap"><td class="ty">skip-logic</td><td>&#x27;Add to Total&#x27; checkbox includes/excludes a loan from total + EMI</td><td class="b y">✓</td><td class="b n">✗</td><td><span class="flag f-gap">NOT TESTED</span> </td></tr>
+<tr class="" data-flag="gap"><td class="ty">skip-logic</td><td>Existing Rev/Exp auto-fetch from FA, editable; manual edit sets Overridden flag</td><td class="b y">✓</td><td class="b n">✗</td><td><span class="flag f-gap">NOT TESTED</span> </td></tr>
+<tr class="" data-flag="gap"><td class="ty">auto-fill</td><td>Existing Loan 1 &amp; 2 auto-pulled from FA Loan Details</td><td class="b y">✓</td><td class="b n">✗</td><td><span class="flag f-gap">NOT TESTED</span> </td></tr>
+<tr class="" data-flag="gap"><td class="ty">auto-fill</td><td>Total Quantity Existing fetched from Production Capacity</td><td class="b y">✓</td><td class="b n">✗</td><td><span class="flag f-gap">NOT TESTED</span> </td></tr>
+<tr class="" data-flag="gap"><td class="ty">calc</td><td>Status banner: contribution&lt;=0 bad / qty&gt;=break-even good / else warn</td><td class="b y">✓</td><td class="b n">✗</td><td><span class="flag f-gap">NOT TESTED</span> </td></tr>
+<tr class="" data-flag=""><td class="ty">validation</td><td>Total Units Produced &gt; 0 else cost stays 0</td><td class="b y">✓</td><td class="b p">~</td><td>FIN-003 negative-revenue soft-warn only</td></tr>
+<tr class="stale" data-flag="stale"><td class="ty">calc</td><td>BMC is a break-even calculator (NOT a 9-block Lean Canvas)</td><td class="b y">✓</td><td class="b n">✗</td><td><span class="flag f-stale">STALE TEST</span> FIN-001/UP-002 still describe BMC as a 9-block Lean Canvas — old model; rewrite</td></tr>
+</table>
+<h3>Unit Pricing</h3>
+<p class="tally">Rules: <b>19</b> · In BRD: 18 · In Tests: 7</p>
+<table><tr><th>Type</th><th>Rule</th><th class="b">BRD</th><th class="b">Tests</th><th>Flag / gap note</th></tr>
+<tr class="" data-flag=""><td class="ty">dropdown</td><td>Pricing Method: Cost Plus / Competitor Based / Value Based</td><td class="b y">✓</td><td class="b y">✓</td><td></td></tr>
+<tr class="" data-flag="gap"><td class="ty">dropdown</td><td>Competitor Scope: Local / State / National</td><td class="b y">✓</td><td class="b n">✗</td><td><span class="flag f-gap">NOT TESTED</span> </td></tr>
+<tr class="" data-flag=""><td class="ty">dropdown</td><td>Positioning: -20/-10/Match/+10/Premium +20..+50 (8)</td><td class="b y">✓</td><td class="b p">~</td><td>only +10% tested</td></tr>
+<tr class="" data-flag="gap"><td class="ty">dropdown</td><td>RM / Labour / Packaging / Machinery row pickers (seeded REF_DATA)</td><td class="b p">~</td><td class="b n">✗</td><td><span class="flag f-gap">NOT TESTED</span> seeded master values not enumerated in BRD</td></tr>
+<tr class="" data-flag="gap"><td class="ty">dropdown</td><td>SKU selector (from Product module)</td><td class="b p">~</td><td class="b n">✗</td><td><span class="flag f-gap">NOT TESTED</span> </td></tr>
+<tr class="" data-flag=""><td class="ty">calc</td><td>Row Amount = Qty x Rate; section subtotal = sum of amounts</td><td class="b y">✓</td><td class="b p">~</td><td>UP-001 generic</td></tr>
+<tr class="" data-flag="gap"><td class="ty">auto-fill</td><td>Unit &amp; rate auto-fill from REF_DATA on material select</td><td class="b y">✓</td><td class="b n">✗</td><td><span class="flag f-gap">NOT TESTED</span> </td></tr>
+<tr class="" data-flag="gap"><td class="ty">calc</td><td>Transport subtotal = RM transport + Pkg transport</td><td class="b y">✓</td><td class="b n">✗</td><td><span class="flag f-gap">NOT TESTED</span> </td></tr>
+<tr class="" data-flag="gap"><td class="ty">calc</td><td>Gas amount = Qty x Rate</td><td class="b y">✓</td><td class="b n">✗</td><td><span class="flag f-gap">NOT TESTED</span> </td></tr>
+<tr class="" data-flag="gap"><td class="ty">calc</td><td>Rent/Unit; Electricity/Unit; Others subtotal</td><td class="b y">✓</td><td class="b n">✗</td><td><span class="flag f-gap">NOT TESTED</span> </td></tr>
+<tr class="" data-flag=""><td class="ty">calc</td><td>Cost per Unit = (Total Input / Units) + Per-Unit Overheads</td><td class="b y">✓</td><td class="b p">~</td><td>exact formula untested</td></tr>
+<tr class="" data-flag=""><td class="ty">calc</td><td>Cost Plus: Selling = Cost x (1+Markup); Retail = Selling x (1+RetMargin)</td><td class="b y">✓</td><td class="b y">✓</td><td></td></tr>
+<tr class="" data-flag=""><td class="ty">calc</td><td>Competitor: Selling = CompAvg x (1+Position); Retail = x (1+RetMargin)</td><td class="b y">✓</td><td class="b p">~</td><td>retail-margin leg untested</td></tr>
+<tr class="" data-flag="gap"><td class="ty">calc</td><td>Value Based: Selling = Target Retail / (1+RetMargin); Retail = Target</td><td class="b y">✓</td><td class="b n">✗</td><td><span class="flag f-gap">NOT TESTED</span> </td></tr>
+<tr class="" data-flag=""><td class="ty">skip-logic</td><td>Method select shows only the chosen block in both channel cards</td><td class="b y">✓</td><td class="b p">~</td><td></td></tr>
+<tr class="" data-flag="gap"><td class="ty">skip-logic</td><td>Offline card = Wholesale + Retail; Online card = Retail only</td><td class="b y">✓</td><td class="b n">✗</td><td><span class="flag f-gap">NOT TESTED</span> </td></tr>
+<tr class="" data-flag="gap"><td class="ty">skip-logic</td><td>Competitor Scope auto-fetches avg &amp; locks read-only</td><td class="b y">✓</td><td class="b n">✗</td><td><span class="flag f-gap">NOT TESTED</span> </td></tr>
+<tr class="" data-flag="gap"><td class="ty">validation</td><td>At least one row required (block deleting last cost row)</td><td class="b n">✗</td><td class="b n">✗</td><td><span class="flag f-gap">NOT TESTED</span> rule in neither BRD nor tests</td></tr>
+<tr class="" data-flag="gap"><td class="ty">calc</td><td>Summary aggregates (avg CPU, avg saving, method counts, min/max retail)</td><td class="b y">✓</td><td class="b n">✗</td><td><span class="flag f-gap">NOT TESTED</span> </td></tr>
+</table>
+<h3>Schemes &amp; Funding</h3>
+<p class="tally">Rules: <b>16</b> · In BRD: 16 · In Tests: 2</p>
+<table><tr><th>Type</th><th>Rule</th><th class="b">BRD</th><th class="b">Tests</th><th>Flag / gap note</th></tr>
+<tr class="" data-flag=""><td class="ty">dropdown</td><td>Scheme Master — 19 schemes + Other</td><td class="b y">✓</td><td class="b p">~</td><td>SCH-001 names only CGTMSE</td></tr>
+<tr class="" data-flag="gap"><td class="ty">dropdown</td><td>Status: Applied / Sanctioned / Disbursed / Rejected / Under Review</td><td class="b y">✓</td><td class="b n">✗</td><td><span class="flag f-gap">NOT TESTED</span> </td></tr>
+<tr class="" data-flag="gap"><td class="ty">dropdown</td><td>Eligibility Status: Eligible / Not Eligible / Document Pending</td><td class="b y">✓</td><td class="b n">✗</td><td><span class="flag f-gap">NOT TESTED</span> </td></tr>
+<tr class="" data-flag="gap"><td class="ty">dropdown</td><td>Implementation Status: Pending / On hold / Applied / Rejected</td><td class="b y">✓</td><td class="b n">✗</td><td><span class="flag f-gap">NOT TESTED</span> </td></tr>
+<tr class="brd" data-flag="brd"><td class="ty">dropdown</td><td>Log Book Visit Type (7: Site/Bank/DIC-Govt/Phone/Doc Handover/Mentoring/Other)</td><td class="b p">~</td><td class="b n">✗</td><td><span class="flag f-brd">BRD DEFECT</span> BRD lists a different set (adds Follow-up/Interview; omits Site Visit/Phone Call/Mentoring)</td></tr>
+<tr class="brd" data-flag="brd"><td class="ty">calc</td><td>EMI/Month (save-time computed field)</td><td class="b y">✓</td><td class="b y">✓</td><td><span class="flag f-brd">BRD DEFECT</span> BRD says flat Loan/Term; implementation computes reducing-balance amortisation (live finding) — reconcile</td></tr>
+<tr class="" data-flag="gap"><td class="ty">skip-logic</td><td>Intervention toggle ON -&gt; auto-creates Required &#x27;flagged&#x27; bridge row; OFF removes</td><td class="b y">✓</td><td class="b n">✗</td><td><span class="flag f-gap">NOT TESTED</span> </td></tr>
+<tr class="" data-flag="gap"><td class="ty">skip-logic</td><td>Intervention block on Existing only; Implementation block on Flagged/New only</td><td class="b y">✓</td><td class="b n">✗</td><td><span class="flag f-gap">NOT TESTED</span> </td></tr>
+<tr class="" data-flag="gap"><td class="ty">skip-logic</td><td>Bridged scheme name locked/synced from Existing source</td><td class="b y">✓</td><td class="b n">✗</td><td><span class="flag f-gap">NOT TESTED</span> </td></tr>
+<tr class="" data-flag="gap"><td class="ty">validation</td><td>Justification required when intervention toggle ON</td><td class="b y">✓</td><td class="b n">✗</td><td><span class="flag f-gap">NOT TESTED</span> </td></tr>
+<tr class="" data-flag="gap"><td class="ty">validation</td><td>Application Date &lt;= today; Disbursement &gt;= Application; Loan End &gt; Start</td><td class="b y">✓</td><td class="b n">✗</td><td><span class="flag f-gap">NOT TESTED</span> </td></tr>
+<tr class="" data-flag="gap"><td class="ty">validation</td><td>Loan Contribution % range 0-100</td><td class="b y">✓</td><td class="b n">✗</td><td><span class="flag f-gap">NOT TESTED</span> </td></tr>
+<tr class="" data-flag="gap"><td class="ty">validation</td><td>Sanctioned/Disbursed/Loan/Outstanding amounts &gt;= 0</td><td class="b y">✓</td><td class="b n">✗</td><td><span class="flag f-gap">NOT TESTED</span> </td></tr>
+<tr class="" data-flag="gap"><td class="ty">calc</td><td>Summary rollups (sum sanctioned/disbursed/outstanding/EMI; flagged count; status bar)</td><td class="b y">✓</td><td class="b n">✗</td><td><span class="flag f-gap">NOT TESTED</span> </td></tr>
+<tr class="" data-flag="gap"><td class="ty">auto-fill</td><td>Loan repayment fields auto-fetch from Financial module</td><td class="b y">✓</td><td class="b n">✗</td><td><span class="flag f-gap">NOT TESTED</span> </td></tr>
+<tr class="" data-flag="gap"><td class="ty">validation</td><td>scheme_name is a Link to Funding Scheme Master (rendered as a free-text box)</td><td class="b p">~</td><td class="b n">✗</td><td><span class="flag f-gap">NOT TESTED</span> UI/UX: link field looks like free text (live finding)</td></tr>
+</table>
+<h3>Raw Material</h3>
+<p class="tally">Rules: <b>27</b> · In BRD: 27 · In Tests: 0</p>
+<table><tr><th>Type</th><th>Rule</th><th class="b">BRD</th><th class="b">Tests</th><th>Flag / gap note</th></tr>
+<tr class="" data-flag="gap"><td class="ty">skip-logic</td><td>Remove Product SKU field (journey-doc change)</td><td class="b y">✓</td><td class="b n">✗</td><td><span class="flag f-gap">NOT TESTED</span> </td></tr>
+<tr class="" data-flag="gap"><td class="ty">dropdown</td><td>Current Status of Use: Yes / No</td><td class="b y">✓</td><td class="b n">✗</td><td><span class="flag f-gap">NOT TESTED</span> </td></tr>
+<tr class="" data-flag="gap"><td class="ty">dropdown</td><td>Is It Essential?: Yes / No</td><td class="b y">✓</td><td class="b n">✗</td><td><span class="flag f-gap">NOT TESTED</span> </td></tr>
+<tr class="" data-flag="gap"><td class="ty">dropdown</td><td>Availability: Easy / Moderate / Difficult</td><td class="b y">✓</td><td class="b n">✗</td><td><span class="flag f-gap">NOT TESTED</span> </td></tr>
+<tr class="" data-flag="gap"><td class="ty">dropdown</td><td>Procurement Frequency: Daily / Weekly / Monthly / Seasonal</td><td class="b y">✓</td><td class="b n">✗</td><td><span class="flag f-gap">NOT TESTED</span> </td></tr>
+<tr class="" data-flag="gap"><td class="ty">dropdown</td><td>Procurement Source (existing): Market/Wholesaler/Middleman/Farm/Forest/Online/Others (7)</td><td class="b y">✓</td><td class="b n">✗</td><td><span class="flag f-gap">NOT TESTED</span> </td></tr>
+<tr class="" data-flag="gap"><td class="ty">dropdown</td><td>New Source Type (alt): adds Cooperative/FPO/Direct Producer, drops Middleman (9)</td><td class="b y">✓</td><td class="b n">✗</td><td><span class="flag f-gap">NOT TESTED</span> differs from existing-source list</td></tr>
+<tr class="" data-flag="gap"><td class="ty">dropdown</td><td>Reason for Change: Cost/Quality/Availability/Sustainability/Local/Others (6)</td><td class="b y">✓</td><td class="b n">✗</td><td><span class="flag f-gap">NOT TESTED</span> </td></tr>
+<tr class="" data-flag="gap"><td class="ty">dropdown</td><td>Quality Trade-off: None / Minor / Moderate / Significant</td><td class="b y">✓</td><td class="b n">✗</td><td><span class="flag f-gap">NOT TESTED</span> </td></tr>
+<tr class="" data-flag="gap"><td class="ty">dropdown</td><td>Trial Status: Pending/Sample Sourced/Trial Run/Approved/Rejected</td><td class="b y">✓</td><td class="b n">✗</td><td><span class="flag f-gap">NOT TESTED</span> </td></tr>
+<tr class="" data-flag="gap"><td class="ty">dropdown</td><td>Impl Status (alt src/mat): Pending/In Progress/Completed/Not Feasible</td><td class="b y">✓</td><td class="b n">✗</td><td><span class="flag f-gap">NOT TESTED</span> </td></tr>
+<tr class="" data-flag="gap"><td class="ty">dropdown</td><td>Impl Status (new material): Pending/In Progress/Completed/On Hold</td><td class="b y">✓</td><td class="b n">✗</td><td><span class="flag f-gap">NOT TESTED</span> &#x27;On Hold&#x27; vs &#x27;Not Feasible&#x27;</td></tr>
+<tr class="" data-flag="gap"><td class="ty">dropdown</td><td>Resource Category / Type lists</td><td class="b p">~</td><td class="b n">✗</td><td><span class="flag f-gap">NOT TESTED</span> confirm BRD lists resource option values</td></tr>
+<tr class="" data-flag="gap"><td class="ty">dropdown</td><td>Task Log — 17 RM tasks</td><td class="b p">~</td><td class="b n">✗</td><td><span class="flag f-gap">NOT TESTED</span> full task list not enumerated in BRD</td></tr>
+<tr class="" data-flag="gap"><td class="ty">validation</td><td>Required: Product Name, Current Status, Material Name, Is Essential, Unit, Qty/Batch, Price/Unit, Batch Size</td><td class="b y">✓</td><td class="b n">✗</td><td><span class="flag f-gap">NOT TESTED</span> </td></tr>
+<tr class="" data-flag="gap"><td class="ty">skip-logic</td><td>Alt-source toggle auto-creates/removes a row in Required I (bidirectional bridge)</td><td class="b y">✓</td><td class="b n">✗</td><td><span class="flag f-gap">NOT TESTED</span> </td></tr>
+<tr class="" data-flag="gap"><td class="ty">skip-logic</td><td>Alt-material toggle auto-creates/removes a row in Required II</td><td class="b y">✓</td><td class="b n">✗</td><td><span class="flag f-gap">NOT TESTED</span> </td></tr>
+<tr class="" data-flag="gap"><td class="ty">skip-logic</td><td>Middleman tag when source=Middleman; Essential tag when Essential=Yes</td><td class="b y">✓</td><td class="b n">✗</td><td><span class="flag f-gap">NOT TESTED</span> </td></tr>
+<tr class="" data-flag="gap"><td class="ty">calc</td><td>Amount Per Batch = Qty/Batch x Price/Unit</td><td class="b y">✓</td><td class="b n">✗</td><td><span class="flag f-gap">NOT TESTED</span> </td></tr>
+<tr class="" data-flag="gap"><td class="ty">calc</td><td>RM Qty Per Unit = Qty/Batch / Batch Size</td><td class="b y">✓</td><td class="b n">✗</td><td><span class="flag f-gap">NOT TESTED</span> </td></tr>
+<tr class="" data-flag="gap"><td class="ty">calc</td><td>RM Cost Per Unit = Amount/Batch / Batch Size</td><td class="b y">✓</td><td class="b n">✗</td><td><span class="flag f-gap">NOT TESTED</span> </td></tr>
+<tr class="" data-flag="gap"><td class="ty">calc</td><td>Transport Cost Per Unit = Transport/Trip / Batch Size</td><td class="b y">✓</td><td class="b n">✗</td><td><span class="flag f-gap">NOT TESTED</span> </td></tr>
+<tr class="" data-flag="gap"><td class="ty">calc</td><td>Total Landed Cost/Unit = RM Cost/Unit + Transport/Unit</td><td class="b y">✓</td><td class="b n">✗</td><td><span class="flag f-gap">NOT TESTED</span> </td></tr>
+<tr class="" data-flag="gap"><td class="ty">calc</td><td>Expected Saving/Unit (alt source) = Old Price - New Price</td><td class="b y">✓</td><td class="b n">✗</td><td><span class="flag f-gap">NOT TESTED</span> </td></tr>
+<tr class="" data-flag="gap"><td class="ty">calc</td><td>Existing totals (count, essential count, monthly spend, total RM cost/unit)</td><td class="b y">✓</td><td class="b n">✗</td><td><span class="flag f-gap">NOT TESTED</span> </td></tr>
+<tr class="" data-flag="gap"><td class="ty">calc</td><td>Cost Before/After + Saving (After = avg new price of Completed only)</td><td class="b p">~</td><td class="b n">✗</td><td><span class="flag f-gap">NOT TESTED</span> confirm &#x27;Completed only&#x27; averaging in BRD</td></tr>
+<tr class="" data-flag="gap"><td class="ty">field</td><td>Cost-calc fields per external Google Sheet (gid=1632694526)</td><td class="b p">~</td><td class="b n">✗</td><td><span class="flag f-gap">NOT TESTED</span> external spec source — confirm fields landed in BRD</td></tr>
+</table>
+<h3>Machinery</h3>
+<p class="tally">Rules: <b>21</b> · In BRD: 21 · In Tests: 2</p>
+<table><tr><th>Type</th><th>Rule</th><th class="b">BRD</th><th class="b">Tests</th><th>Flag / gap note</th></tr>
+<tr class="" data-flag="gap"><td class="ty">dropdown</td><td>Power / Phase: Single Phase / III Phase</td><td class="b y">✓</td><td class="b n">✗</td><td><span class="flag f-gap">NOT TESTED</span> </td></tr>
+<tr class="" data-flag="gap"><td class="ty">dropdown</td><td>Main Usage Time: Day / Night / Both</td><td class="b y">✓</td><td class="b n">✗</td><td><span class="flag f-gap">NOT TESTED</span> </td></tr>
+<tr class="" data-flag="gap"><td class="ty">dropdown</td><td>Machinery Condition: Good (10%) / Fair (20%) / Poor (30%)</td><td class="b y">✓</td><td class="b n">✗</td><td><span class="flag f-gap">NOT TESTED</span> drives depreciation rate</td></tr>
+<tr class="" data-flag="gap"><td class="ty">dropdown</td><td>Critical / Non-Critical</td><td class="b y">✓</td><td class="b n">✗</td><td><span class="flag f-gap">NOT TESTED</span> </td></tr>
+<tr class="" data-flag="gap"><td class="ty">dropdown</td><td>Servicing Required?: Yes / No</td><td class="b y">✓</td><td class="b n">✗</td><td><span class="flag f-gap">NOT TESTED</span> </td></tr>
+<tr class="" data-flag="gap"><td class="ty">dropdown</td><td>Procurement Status (new): Pending/Vendor Selected/EE Selected/EE Completed/Procured Self (5)</td><td class="b y">✓</td><td class="b n">✗</td><td><span class="flag f-gap">NOT TESTED</span> </td></tr>
+<tr class="" data-flag="gap"><td class="ty">dropdown</td><td>Intervention flag type: Servicing / Capacity Upgrade</td><td class="b y">✓</td><td class="b n">✗</td><td><span class="flag f-gap">NOT TESTED</span> </td></tr>
+<tr class="" data-flag="gap"><td class="ty">dropdown</td><td>Impl Status: Pending / In Progress / Completed</td><td class="b y">✓</td><td class="b n">✗</td><td><span class="flag f-gap">NOT TESTED</span> </td></tr>
+<tr class="" data-flag="gap"><td class="ty">dropdown</td><td>Resource Category / Type lists</td><td class="b p">~</td><td class="b n">✗</td><td><span class="flag f-gap">NOT TESTED</span> </td></tr>
+<tr class="" data-flag="gap"><td class="ty">dropdown</td><td>Task Log — 16 MC tasks</td><td class="b p">~</td><td class="b n">✗</td><td><span class="flag f-gap">NOT TESTED</span> </td></tr>
+<tr class="" data-flag="gap"><td class="ty">validation</td><td>Required: Name of Machinery, No. of Machinery</td><td class="b y">✓</td><td class="b n">✗</td><td><span class="flag f-gap">NOT TESTED</span> </td></tr>
+<tr class="" data-flag="gap"><td class="ty">skip-logic</td><td>Solarisation + Servicing-required go into Intervention Need banner (journey change)</td><td class="b y">✓</td><td class="b n">✗</td><td><span class="flag f-gap">NOT TESTED</span> </td></tr>
+<tr class="" data-flag="gap"><td class="ty">skip-logic</td><td>Selecting a flagged machine auto-sets flag type + reference (cost/condition)</td><td class="b y">✓</td><td class="b n">✗</td><td><span class="flag f-gap">NOT TESTED</span> </td></tr>
+<tr class="" data-flag="gap"><td class="ty">calc</td><td>Monthly Output = days x hours x Current Capacity/hr</td><td class="b y">✓</td><td class="b n">✗</td><td><span class="flag f-gap">NOT TESTED</span> </td></tr>
+<tr class="" data-flag="gap"><td class="ty">calc</td><td>Capacity Utilization = Current/Max x 100</td><td class="b y">✓</td><td class="b n">✗</td><td><span class="flag f-gap">NOT TESTED</span> </td></tr>
+<tr class="" data-flag="gap"><td class="ty">calc</td><td>Capacity Gap = Max - Current cap/hr</td><td class="b y">✓</td><td class="b n">✗</td><td><span class="flag f-gap">NOT TESTED</span> </td></tr>
+<tr class="stale" data-flag="stale"><td class="ty">calc</td><td>Depreciation Rate = condition-based (Good 10 / Fair 20 / Poor 30 %)/yr</td><td class="b y">✓</td><td class="b y">✓</td><td><span class="flag f-stale">STALE TEST</span> MACH test uses straight-line (cost-salvage)/life — contradicts condition-based model</td></tr>
+<tr class="" data-flag="gap"><td class="ty">calc</td><td>Monthly Depreciation = (Cost x Rate) / 12</td><td class="b y">✓</td><td class="b n">✗</td><td><span class="flag f-gap">NOT TESTED</span> </td></tr>
+<tr class="" data-flag=""><td class="ty">calc</td><td>Depreciation / Unit = Monthly Dep / Monthly Output</td><td class="b y">✓</td><td class="b p">~</td><td>test formula differs</td></tr>
+<tr class="" data-flag="gap"><td class="ty">calc</td><td>Existing totals (count, investment, output, total dep/unit)</td><td class="b y">✓</td><td class="b n">✗</td><td><span class="flag f-gap">NOT TESTED</span> </td></tr>
+<tr class="" data-flag="gap"><td class="ty">calc</td><td>Dep/Unit Before vs After (existing vs existing+new)</td><td class="b p">~</td><td class="b n">✗</td><td><span class="flag f-gap">NOT TESTED</span> </td></tr>
+</table>
+<h3>Human Resource</h3>
+<p class="tally">Rules: <b>17</b> · In BRD: 17 · In Tests: 2</p>
+<table><tr><th>Type</th><th>Rule</th><th class="b">BRD</th><th class="b">Tests</th><th>Flag / gap note</th></tr>
+<tr class="" data-flag="gap"><td class="ty">dropdown</td><td>Worker Category: Self / Unpaid Family / Paid Family / Hired Worker</td><td class="b y">✓</td><td class="b n">✗</td><td><span class="flag f-gap">NOT TESTED</span> </td></tr>
+<tr class="" data-flag="gap"><td class="ty">dropdown</td><td>Skill Level: Unskilled / Semi-skilled / Skilled / Highly Skilled</td><td class="b y">✓</td><td class="b n">✗</td><td><span class="flag f-gap">NOT TESTED</span> sets GoM threshold</td></tr>
+<tr class="" data-flag="gap"><td class="ty">dropdown</td><td>Employment Nature: Permanent/Contract/Casual-Daily/Seasonal/Part-time</td><td class="b y">✓</td><td class="b n">✗</td><td><span class="flag f-gap">NOT TESTED</span> </td></tr>
+<tr class="" data-flag="gap"><td class="ty">dropdown</td><td>Wage Type: Per Day / Per Month / Per Hour</td><td class="b y">✓</td><td class="b n">✗</td><td><span class="flag f-gap">NOT TESTED</span> </td></tr>
+<tr class="" data-flag="gap"><td class="ty">dropdown</td><td>Intervention Type (8: Hire/Wage Revision/Skill Upgrade/Replace/Convert.../Reduce/Compliance)</td><td class="b y">✓</td><td class="b n">✗</td><td><span class="flag f-gap">NOT TESTED</span> </td></tr>
+<tr class="" data-flag="gap"><td class="ty">dropdown</td><td>Required Status: Pending/In Progress/Completed/Not Feasible</td><td class="b y">✓</td><td class="b n">✗</td><td><span class="flag f-gap">NOT TESTED</span> </td></tr>
+<tr class="" data-flag="gap"><td class="ty">dropdown</td><td>Resource Category / Type lists</td><td class="b p">~</td><td class="b n">✗</td><td><span class="flag f-gap">NOT TESTED</span> </td></tr>
+<tr class="" data-flag="gap"><td class="ty">dropdown</td><td>Task Log — 9 HR tasks</td><td class="b p">~</td><td class="b n">✗</td><td><span class="flag f-gap">NOT TESTED</span> </td></tr>
+<tr class="" data-flag="gap"><td class="ty">validation</td><td>Required: Worker Category, Skill Level, Employment Nature, Wage Type, Wage Rate</td><td class="b y">✓</td><td class="b n">✗</td><td><span class="flag f-gap">NOT TESTED</span> </td></tr>
+<tr class="" data-flag=""><td class="ty">validation</td><td>GoM minimum wage (Unskilled 360 / Semi 410 / Skilled 480 / Highly 550)/day; warn if below</td><td class="b y">✓</td><td class="b p">~</td><td>test fires a generic warning; per-skill thresholds not tested</td></tr>
+<tr class="" data-flag="gap"><td class="ty">skip-logic</td><td>Labour intervention toggle auto-creates/removes Required I row</td><td class="b y">✓</td><td class="b n">✗</td><td><span class="flag f-gap">NOT TESTED</span> </td></tr>
+<tr class="" data-flag="gap"><td class="ty">calc</td><td>Total Workers = Male + Female</td><td class="b y">✓</td><td class="b n">✗</td><td><span class="flag f-gap">NOT TESTED</span> </td></tr>
+<tr class="" data-flag="gap"><td class="ty">calc</td><td>Monthly Labour Cost per worker (per day/month/hour formula) x count</td><td class="b y">✓</td><td class="b n">✗</td><td><span class="flag f-gap">NOT TESTED</span> </td></tr>
+<tr class="" data-flag="gap"><td class="ty">calc</td><td>Labour Rate / hr</td><td class="b y">✓</td><td class="b n">✗</td><td><span class="flag f-gap">NOT TESTED</span> </td></tr>
+<tr class="" data-flag=""><td class="ty">calc</td><td>GoM compliance from implied daily wage</td><td class="b y">✓</td><td class="b p">~</td><td></td></tr>
+<tr class="" data-flag="gap"><td class="ty">calc</td><td>Cost Before/After + Jobs Created (After = Completed only)</td><td class="b p">~</td><td class="b n">✗</td><td><span class="flag f-gap">NOT TESTED</span> </td></tr>
+<tr class="" data-flag="gap"><td class="ty">field</td><td>New fields per external Google Sheet (gid=879401637)</td><td class="b p">~</td><td class="b n">✗</td><td><span class="flag f-gap">NOT TESTED</span> external spec source — confirm fields landed in BRD</td></tr>
+</table>
+<h3>Infrastructure</h3>
+<p class="tally">Rules: <b>40</b> · In BRD: 40 · In Tests: 3</p>
+<table><tr><th>Type</th><th>Rule</th><th class="b">BRD</th><th class="b">Tests</th><th>Flag / gap note</th></tr>
+<tr class="" data-flag="gap"><td class="ty">dropdown</td><td>Water Supply: Own / Locality / PHE / Buys water</td><td class="b y">✓</td><td class="b n">✗</td><td><span class="flag f-gap">NOT TESTED</span> </td></tr>
+<tr class="" data-flag="gap"><td class="ty">dropdown</td><td>RWH practiced / willing: Yes / No</td><td class="b y">✓</td><td class="b n">✗</td><td><span class="flag f-gap">NOT TESTED</span> </td></tr>
+<tr class="" data-flag="gap"><td class="ty">dropdown</td><td>Work location: Home / Separate Workspace</td><td class="b y">✓</td><td class="b n">✗</td><td><span class="flag f-gap">NOT TESTED</span> </td></tr>
+<tr class="" data-flag="gap"><td class="ty">dropdown</td><td>Space situated (7: house/premises/town/farm/complex/market/others)</td><td class="b y">✓</td><td class="b n">✗</td><td><span class="flag f-gap">NOT TESTED</span> </td></tr>
+<tr class="" data-flag="gap"><td class="ty">dropdown</td><td>Workspace condition: Dilapidated/Poor/Average/Good/Very Good</td><td class="b y">✓</td><td class="b n">✗</td><td><span class="flag f-gap">NOT TESTED</span> </td></tr>
+<tr class="" data-flag="gap"><td class="ty">dropdown</td><td>Land tenure (7: community/own-purchased/own-inherited/govt-lease/govt-rental/private-rental/others)</td><td class="b y">✓</td><td class="b n">✗</td><td><span class="flag f-gap">NOT TESTED</span> </td></tr>
+<tr class="" data-flag="gap"><td class="ty">dropdown</td><td>Soil condition: Filled / Rocky / Others</td><td class="b y">✓</td><td class="b n">✗</td><td><span class="flag f-gap">NOT TESTED</span> </td></tr>
+<tr class="" data-flag="gap"><td class="ty">dropdown</td><td>Owner (conditional): Self / Family / Relatives / Others</td><td class="b y">✓</td><td class="b n">✗</td><td><span class="flag f-gap">NOT TESTED</span> </td></tr>
+<tr class="" data-flag="gap"><td class="ty">dropdown</td><td>BE Intervention Type: Renovation / Extension / New</td><td class="b y">✓</td><td class="b n">✗</td><td><span class="flag f-gap">NOT TESTED</span> </td></tr>
+<tr class="" data-flag="gap"><td class="ty">dropdown</td><td>Hill Name: Khasi / Jaintia / Garo Hills</td><td class="b y">✓</td><td class="b n">✗</td><td><span class="flag f-gap">NOT TESTED</span> </td></tr>
+<tr class="" data-flag="gap"><td class="ty">dropdown</td><td>Building Typology: 3 RCC frames (MSOR) + Kiosks (non-MSOR)</td><td class="b y">✓</td><td class="b n">✗</td><td><span class="flag f-gap">NOT TESTED</span> </td></tr>
+<tr class="" data-flag="gap"><td class="ty">dropdown</td><td>BE Impl Status (6 stages)</td><td class="b y">✓</td><td class="b n">✗</td><td><span class="flag f-gap">NOT TESTED</span> </td></tr>
+<tr class="" data-flag="gap"><td class="ty">dropdown</td><td>CE Voltage/Phase: Phase I / Phase III</td><td class="b y">✓</td><td class="b n">✗</td><td><span class="flag f-gap">NOT TESTED</span> </td></tr>
+<tr class="" data-flag="gap"><td class="ty">dropdown</td><td>CE Intervention Type (4 lighting/solar combinations)</td><td class="b y">✓</td><td class="b n">✗</td><td><span class="flag f-gap">NOT TESTED</span> </td></tr>
+<tr class="" data-flag="gap"><td class="ty">dropdown</td><td>EE / CE Impl Status</td><td class="b y">✓</td><td class="b n">✗</td><td><span class="flag f-gap">NOT TESTED</span> </td></tr>
+<tr class="" data-flag=""><td class="ty">dropdown</td><td>Financial project type: PRIME SELCO / Innovation / Scale</td><td class="b y">✓</td><td class="b p">~</td><td>&#x27;Scale&#x27; not tested</td></tr>
+<tr class="" data-flag="gap"><td class="ty">dropdown</td><td>Calc type: Estimation / Final</td><td class="b y">✓</td><td class="b n">✗</td><td><span class="flag f-gap">NOT TESTED</span> </td></tr>
+<tr class="" data-flag="gap"><td class="ty">dropdown</td><td>Vendor MS Purpose: Machine / Solar</td><td class="b y">✓</td><td class="b n">✗</td><td><span class="flag f-gap">NOT TESTED</span> </td></tr>
+<tr class="" data-flag="gap"><td class="ty">validation</td><td>BE/CE Justification required when intervention flagged</td><td class="b y">✓</td><td class="b n">✗</td><td><span class="flag f-gap">NOT TESTED</span> </td></tr>
+<tr class="" data-flag="gap"><td class="ty">validation</td><td>Innovation/Scale editable % must sum to 100% (SELCO+MBMA+LIFCOM+User+Others)</td><td class="b y">✓</td><td class="b n">✗</td><td><span class="flag f-gap">NOT TESTED</span> </td></tr>
+<tr class="" data-flag="gap"><td class="ty">validation</td><td>Total &gt;= 25,00,000 -&gt; &#x27;Out of policy&#x27; warning</td><td class="b y">✓</td><td class="b n">✗</td><td><span class="flag f-gap">NOT TESTED</span> </td></tr>
+<tr class="" data-flag="gap"><td class="ty">validation</td><td>Funding gap warning when tranches don&#x27;t cover cost</td><td class="b y">✓</td><td class="b n">✗</td><td><span class="flag f-gap">NOT TESTED</span> </td></tr>
+<tr class="" data-flag="gap"><td class="ty">skip-logic</td><td>MSOR typologies show plinth fields; Kiosks hide them &amp; show manual cost</td><td class="b y">✓</td><td class="b n">✗</td><td><span class="flag f-gap">NOT TESTED</span> </td></tr>
+<tr class="" data-flag="gap"><td class="ty">skip-logic</td><td>Owner row shows only for community/own-purchased/own-inherited tenure</td><td class="b y">✓</td><td class="b n">✗</td><td><span class="flag f-gap">NOT TESTED</span> </td></tr>
+<tr class="" data-flag=""><td class="ty">skip-logic</td><td>Project type toggles slab/EMI/static% vs editable%/validation</td><td class="b y">✓</td><td class="b p">~</td><td>slab/EMI visibility not tested</td></tr>
+<tr class="" data-flag="gap"><td class="ty">skip-logic</td><td>BE/CE intervention detail block shown only when toggle on</td><td class="b y">✓</td><td class="b n">✗</td><td><span class="flag f-gap">NOT TESTED</span> </td></tr>
+<tr class="" data-flag="gap"><td class="ty">calc</td><td>MSOR plinth-rate matrix (9-cell Hill x Typology)</td><td class="b y">✓</td><td class="b n">✗</td><td><span class="flag f-gap">NOT TESTED</span> </td></tr>
+<tr class="" data-flag="gap"><td class="ty">calc</td><td>SQM &lt;-&gt; SQF (factor 10.7639, two-way)</td><td class="b y">✓</td><td class="b n">✗</td><td><span class="flag f-gap">NOT TESTED</span> </td></tr>
+<tr class="" data-flag="gap"><td class="ty">calc</td><td>BE Estimated Cost = Plinth Rate x SQM</td><td class="b y">✓</td><td class="b n">✗</td><td><span class="flag f-gap">NOT TESTED</span> </td></tr>
+<tr class="" data-flag="gap"><td class="ty">calc</td><td>Rent / Unit = Rent / Units/month -&gt; Unit Pricing</td><td class="b y">✓</td><td class="b n">✗</td><td><span class="flag f-gap">NOT TESTED</span> </td></tr>
+<tr class="" data-flag="gap"><td class="ty">calc</td><td>Electricity / Unit = Elec / Units/month</td><td class="b y">✓</td><td class="b n">✗</td><td><span class="flag f-gap">NOT TESTED</span> </td></tr>
+<tr class="" data-flag="gap"><td class="ty">calc</td><td>EE / CE totals</td><td class="b y">✓</td><td class="b n">✗</td><td><span class="flag f-gap">NOT TESTED</span> </td></tr>
+<tr class="" data-flag="gap"><td class="ty">calc</td><td>Total Infra Cost = BE + EE + CE</td><td class="b y">✓</td><td class="b n">✗</td><td><span class="flag f-gap">NOT TESTED</span> </td></tr>
+<tr class="" data-flag="gap"><td class="ty">calc</td><td>Slab selection (A&lt;5L / B&lt;10L / C&lt;25L distributions)</td><td class="b y">✓</td><td class="b n">✗</td><td><span class="flag f-gap">NOT TESTED</span> </td></tr>
+<tr class="" data-flag="gap"><td class="ty">calc</td><td>Funder amounts = Total x slab/editable %</td><td class="b y">✓</td><td class="b n">✗</td><td><span class="flag f-gap">NOT TESTED</span> </td></tr>
+<tr class="" data-flag=""><td class="ty">calc</td><td>EMI 5yr / 3yr = LIFCOM / 60 or / 36 (flat)</td><td class="b y">✓</td><td class="b p">~</td><td>generic flat EMI only, not the 5yr/3yr split</td></tr>
+<tr class="" data-flag="gap"><td class="ty">calc</td><td>Tranche cascade allocation (MBMA-&gt;USER-&gt;SELCO-&gt;LIFCOM; BE-&gt;EE-&gt;CE; min())</td><td class="b y">✓</td><td class="b n">✗</td><td><span class="flag f-gap">NOT TESTED</span> complex, untested</td></tr>
+<tr class="" data-flag="gap"><td class="ty">calc</td><td>Balance card = Disbursed - Paid to vendors</td><td class="b y">✓</td><td class="b n">✗</td><td><span class="flag f-gap">NOT TESTED</span> </td></tr>
+<tr class="" data-flag="gap"><td class="ty">auto-fill</td><td>BMC fetches machinery master; Infra fetches machineries from Required section</td><td class="b y">✓</td><td class="b n">✗</td><td><span class="flag f-gap">NOT TESTED</span> </td></tr>
+<tr class="" data-flag="gap"><td class="ty">skip-logic</td><td>Building Topology master: add new master renders new field (logic only for 3 values)</td><td class="b p">~</td><td class="b n">✗</td><td><span class="flag f-gap">NOT TESTED</span> </td></tr>
+</table>
+<h3>Product Prototyping</h3>
+<p class="tally">Rules: <b>9</b> · In BRD: 8 · In Tests: 4</p>
+<table><tr><th>Type</th><th>Rule</th><th class="b">BRD</th><th class="b">Tests</th><th>Flag / gap note</th></tr>
+<tr class="" data-flag="gap"><td class="ty">dropdown</td><td>Product (from Product Master)</td><td class="b p">~</td><td class="b n">✗</td><td><span class="flag f-gap">NOT TESTED</span> BRD references master generically, not re-listed</td></tr>
+<tr class="" data-flag="gap"><td class="ty">dropdown</td><td>Implementation Status: Ideating/Iteration/Pilot Implemented/Scale Implementation</td><td class="b y">✓</td><td class="b n">✗</td><td><span class="flag f-gap">NOT TESTED</span> </td></tr>
+<tr class="" data-flag=""><td class="ty">dropdown</td><td>Type of Prototyping: Packaging / Product (driver)</td><td class="b y">✓</td><td class="b y">✓</td><td></td></tr>
+<tr class="" data-flag=""><td class="ty">dropdown</td><td>Prototyping Type Name: Packing Master (12) if Packaging else Business Basket (11)</td><td class="b y">✓</td><td class="b y">✓</td><td></td></tr>
+<tr class="" data-flag="gap"><td class="ty">dropdown</td><td>Resources Category / Type lists</td><td class="b n">✗</td><td class="b n">✗</td><td><span class="flag f-gap">NOT TESTED</span> not documented in Prototyping BRD</td></tr>
+<tr class="" data-flag="gap"><td class="ty">dropdown</td><td>Task Log — 17 PP tasks</td><td class="b p">~</td><td class="b n">✗</td><td><span class="flag f-gap">NOT TESTED</span> </td></tr>
+<tr class="" data-flag=""><td class="ty">skip-logic</td><td>Type Name list switches by Type of Prototyping; clear on driver change</td><td class="b y">✓</td><td class="b p">~</td><td></td></tr>
+<tr class="" data-flag="gap"><td class="ty">calc</td><td>Total / Packaging / Product counts; Total + Avg Iterations; Furthest Stage</td><td class="b y">✓</td><td class="b n">✗</td><td><span class="flag f-gap">NOT TESTED</span> </td></tr>
+<tr class="stale" data-flag="stale"><td class="ty">validation</td><td>Prototype Type = Packaging/Product -&gt; Type Name (NOT Physical/Digital + dimensions/URL)</td><td class="b y">✓</td><td class="b y">✓</td><td><span class="flag f-stale">STALE TEST</span> PROTO-001 tests Physical/Digital + dimensions/URL — fields do not exist</td></tr>
+</table>
+<h3>Product Testing</h3>
+<p class="tally">Rules: <b>11</b> · In BRD: 11 · In Tests: 3</p>
+<table><tr><th>Type</th><th>Rule</th><th class="b">BRD</th><th class="b">Tests</th><th>Flag / gap note</th></tr>
+<tr class="" data-flag="gap"><td class="ty">skip-logic</td><td>Remove Product SKU field; remove feedback field (journey change)</td><td class="b y">✓</td><td class="b n">✗</td><td><span class="flag f-gap">NOT TESTED</span> </td></tr>
+<tr class="" data-flag="gap"><td class="ty">dropdown</td><td>Test Type (14 from master)</td><td class="b y">✓</td><td class="b n">✗</td><td><span class="flag f-gap">NOT TESTED</span> </td></tr>
+<tr class="" data-flag="gap"><td class="ty">dropdown</td><td>Lab Name (12 from master)</td><td class="b y">✓</td><td class="b n">✗</td><td><span class="flag f-gap">NOT TESTED</span> </td></tr>
+<tr class="" data-flag="gap"><td class="ty">dropdown</td><td>Implementation Status: Pending/In Progress/Completed/On Hold/Not Feasible</td><td class="b y">✓</td><td class="b n">✗</td><td><span class="flag f-gap">NOT TESTED</span> </td></tr>
+<tr class="" data-flag="gap"><td class="ty">dropdown</td><td>Resources Category / Type; Task Log 17</td><td class="b p">~</td><td class="b n">✗</td><td><span class="flag f-gap">NOT TESTED</span> </td></tr>
+<tr class="" data-flag=""><td class="ty">validation</td><td>Existing date chain: Sample Deposit &lt;= Test Results</td><td class="b y">✓</td><td class="b y">✓</td><td>TEST-001</td></tr>
+<tr class="" data-flag=""><td class="ty">validation</td><td>Required 3-link chain: Office &lt;= Lab &lt;= Result</td><td class="b y">✓</td><td class="b p">~</td><td>only 2-date Existing chain tested; live finding: no validation fires</td></tr>
+<tr class="" data-flag="gap"><td class="ty">validation</td><td>Consent unchecked -&gt; reason field required (mandatory)</td><td class="b y">✓</td><td class="b n">✗</td><td><span class="flag f-gap">NOT TESTED</span> F-COND-007 checks reveal only, not the mandatory rule</td></tr>
+<tr class="" data-flag=""><td class="ty">skip-logic</td><td>Consent defaults ON; uncheck reveals reason field</td><td class="b y">✓</td><td class="b y">✓</td><td>F-COND-007</td></tr>
+<tr class="" data-flag="gap"><td class="ty">skip-logic</td><td>Retesting toggle -&gt; auto-create Required card; bridged Product/Test Type locked</td><td class="b y">✓</td><td class="b n">✗</td><td><span class="flag f-gap">NOT TESTED</span> </td></tr>
+<tr class="" data-flag="gap"><td class="ty">calc</td><td>Summary aggregates (tests, products, reports, flagged, awaiting, consent counts)</td><td class="b y">✓</td><td class="b n">✗</td><td><span class="flag f-gap">NOT TESTED</span> </td></tr>
+</table>
+<h3>Standardization</h3>
+<p class="tally">Rules: <b>11</b> · In BRD: 11 · In Tests: 3</p>
+<table><tr><th>Type</th><th>Rule</th><th class="b">BRD</th><th class="b">Tests</th><th>Flag / gap note</th></tr>
+<tr class="" data-flag="gap"><td class="ty">dropdown</td><td>Standardisation Type (13: Recipe/SOPs/HACCP/GMP/ISO/BRC/Organic/GI/Other)</td><td class="b y">✓</td><td class="b n">✗</td><td><span class="flag f-gap">NOT TESTED</span> </td></tr>
+<tr class="" data-flag="gap"><td class="ty">dropdown</td><td>Resources Category (10) / Type</td><td class="b y">✓</td><td class="b n">✗</td><td><span class="flag f-gap">NOT TESTED</span> </td></tr>
+<tr class="" data-flag="gap"><td class="ty">dropdown</td><td>Implementation Status: Pending/In Progress/Completed/On Hold/Not Feasible</td><td class="b y">✓</td><td class="b n">✗</td><td><span class="flag f-gap">NOT TESTED</span> </td></tr>
+<tr class="" data-flag="gap"><td class="ty">dropdown</td><td>Task Log — 19 PS tasks</td><td class="b p">~</td><td class="b n">✗</td><td><span class="flag f-gap">NOT TESTED</span> </td></tr>
+<tr class="" data-flag="gap"><td class="ty">auto-fill</td><td>Product Sector auto-fetched from product-&gt;sector map</td><td class="b y">✓</td><td class="b n">✗</td><td><span class="flag f-gap">NOT TESTED</span> </td></tr>
+<tr class="" data-flag=""><td class="ty">validation</td><td>SOP URL must match ^https?:// (Open button gating)</td><td class="b y">✓</td><td class="b y">✓</td><td>SV-URL-001</td></tr>
+<tr class="" data-flag=""><td class="ty">skip-logic</td><td>&#x27;Being followed?&#x27; = No reveals reason textarea</td><td class="b y">✓</td><td class="b y">✓</td><td>F-COND-008</td></tr>
+<tr class="" data-flag="gap"><td class="ty">skip-logic</td><td>Intervention toggle -&gt; bridged Required block (Product/Type locked)</td><td class="b y">✓</td><td class="b n">✗</td><td><span class="flag f-gap">NOT TESTED</span> </td></tr>
+<tr class="" data-flag="gap"><td class="ty">checkbox</td><td>Scope for Standardisation / Approved by Core Team (Required) feed aggregates</td><td class="b y">✓</td><td class="b n">✗</td><td><span class="flag f-gap">NOT TESTED</span> </td></tr>
+<tr class="" data-flag="gap"><td class="ty">calc</td><td>Summary aggregates (SOPs uploaded, followed/not, URL count, types, flagged)</td><td class="b y">✓</td><td class="b n">✗</td><td><span class="flag f-gap">NOT TESTED</span> </td></tr>
+<tr class="stale" data-flag="stale"><td class="ty">validation</td><td>Model = Yes/No &#x27;being followed&#x27; + Impl Status (NOT a Drafted/Reviewed/Approved SOP status)</td><td class="b y">✓</td><td class="b y">✓</td><td><span class="flag f-stale">STALE TEST</span> STD-001 asserts SOP status Drafted/Reviewed/Approved — no such field</td></tr>
+</table>
+<h3>Quality Control</h3>
+<p class="tally">Rules: <b>10</b> · In BRD: 10 · In Tests: 3</p>
+<table><tr><th>Type</th><th>Rule</th><th class="b">BRD</th><th class="b">Tests</th><th>Flag / gap note</th></tr>
+<tr class="" data-flag=""><td class="ty">data</td><td>Exactly 23 fixed practice questions (count shown n/23)</td><td class="b y">✓</td><td class="b p">~</td><td></td></tr>
+<tr class="" data-flag=""><td class="ty">scale</td><td>1-5 star scale with legend (1 Not aware … 5 Fully implemented)</td><td class="b y">✓</td><td class="b p">~</td><td></td></tr>
+<tr class="stale" data-flag="stale"><td class="ty">calc</td><td>QC Score = Average Rating = mean of rated stars (2dp); NOT a /115 total or % ring</td><td class="b y">✓</td><td class="b y">✓</td><td><span class="flag f-stale">STALE TEST</span> QC-001 asserts Total 92/115 (80%) + ring — wrong model; rewrite to mean</td></tr>
+<tr class="" data-flag="gap"><td class="ty">calc</td><td>Maturity Tier = label[round(avg)] (green&gt;=4, red&lt;=2)</td><td class="b y">✓</td><td class="b n">✗</td><td><span class="flag f-gap">NOT TESTED</span> </td></tr>
+<tr class="" data-flag="gap"><td class="ty">calc</td><td>Per-practice Gap = Target - Existing (when both rated)</td><td class="b y">✓</td><td class="b n">✗</td><td><span class="flag f-gap">NOT TESTED</span> </td></tr>
+<tr class="" data-flag="gap"><td class="ty">calc</td><td>Priority badge: gap&gt;=3 Critical / &gt;=2 High / =1 Low / =0 At Target</td><td class="b y">✓</td><td class="b n">✗</td><td><span class="flag f-gap">NOT TESTED</span> </td></tr>
+<tr class="" data-flag="gap"><td class="ty">calc</td><td>High/Critical gap counts; avg gap; rating distribution (5 buckets)</td><td class="b y">✓</td><td class="b n">✗</td><td><span class="flag f-gap">NOT TESTED</span> </td></tr>
+<tr class="" data-flag="gap"><td class="ty">calc</td><td>Separate Existing vs Required (Optimized) averages</td><td class="b y">✓</td><td class="b n">✗</td><td><span class="flag f-gap">NOT TESTED</span> </td></tr>
+<tr class="" data-flag="gap"><td class="ty">skip-logic</td><td>Intervention toggle (Existing) reveals flag note + justification</td><td class="b y">✓</td><td class="b n">✗</td><td><span class="flag f-gap">NOT TESTED</span> </td></tr>
+<tr class="" data-flag="gap"><td class="ty">dropdown</td><td>Implementation Status (Optimized): Pending/In Progress/Completed/On Hold/Not Feasible</td><td class="b y">✓</td><td class="b n">✗</td><td><span class="flag f-gap">NOT TESTED</span> </td></tr>
+</table>
+<h3>Business Registration</h3>
+<p class="tally">Rules: <b>17</b> · In BRD: 17 · In Tests: 2</p>
+<table><tr><th>Type</th><th>Rule</th><th class="b">BRD</th><th class="b">Tests</th><th>Flag / gap note</th></tr>
+<tr class="" data-flag=""><td class="ty">dropdown</td><td>Registration Master — 28 values in 5 groups + Other</td><td class="b y">✓</td><td class="b p">~</td><td>TC says wrong group name &#x27;Statutory&#x27;</td></tr>
+<tr class="" data-flag="gap"><td class="ty">dropdown</td><td>Registration Level: product level / entrepreneur level</td><td class="b y">✓</td><td class="b n">✗</td><td><span class="flag f-gap">NOT TESTED</span> </td></tr>
+<tr class="" data-flag="gap"><td class="ty">dropdown</td><td>Existing Status: Received / Not yet Received / Rejected</td><td class="b y">✓</td><td class="b n">✗</td><td><span class="flag f-gap">NOT TESTED</span> </td></tr>
+<tr class="" data-flag=""><td class="ty">dropdown</td><td>Required Status: Applied / Not Yet Applied / Received / Not yet Received / Rejected</td><td class="b y">✓</td><td class="b p">~</td><td></td></tr>
+<tr class="" data-flag="gap"><td class="ty">dropdown</td><td>Phase: New Registration / Renewal</td><td class="b y">✓</td><td class="b n">✗</td><td><span class="flag f-gap">NOT TESTED</span> </td></tr>
+<tr class="" data-flag="gap"><td class="ty">dropdown</td><td>Intervention Type: Renewal / Reapply</td><td class="b y">✓</td><td class="b n">✗</td><td><span class="flag f-gap">NOT TESTED</span> </td></tr>
+<tr class="" data-flag="gap"><td class="ty">dropdown</td><td>Govt. Certified?: Yes / No</td><td class="b y">✓</td><td class="b n">✗</td><td><span class="flag f-gap">NOT TESTED</span> </td></tr>
+<tr class="" data-flag="gap"><td class="ty">dropdown</td><td>Resource Category (6) / Type (5)</td><td class="b y">✓</td><td class="b n">✗</td><td><span class="flag f-gap">NOT TESTED</span> </td></tr>
+<tr class="brd" data-flag="brd"><td class="ty">dropdown</td><td>Task Log — 12 BR tasks</td><td class="b p">~</td><td class="b n">✗</td><td><span class="flag f-brd">BRD DEFECT</span> BRD lists generic ACTIVITY_TYPES, not the 12 BR_TASKS actually rendered</td></tr>
+<tr class="" data-flag="gap"><td class="ty">validation</td><td>Registration uniqueness (cannot add same twice)</td><td class="b y">✓</td><td class="b n">✗</td><td><span class="flag f-gap">NOT TESTED</span> </td></tr>
+<tr class="" data-flag="gap"><td class="ty">validation</td><td>Issued Date &lt;= today; Valid Till &gt; Issued Date</td><td class="b y">✓</td><td class="b n">✗</td><td><span class="flag f-gap">NOT TESTED</span> BRD-added; wireframe JS does not enforce</td></tr>
+<tr class="" data-flag="gap"><td class="ty">validation</td><td>Existing Status mandatory; Justification required when toggle ON</td><td class="b y">✓</td><td class="b n">✗</td><td><span class="flag f-gap">NOT TESTED</span> </td></tr>
+<tr class="" data-flag="gap"><td class="ty">skip-logic</td><td>Lifetime Validity hides/clears Valid Till</td><td class="b y">✓</td><td class="b n">✗</td><td><span class="flag f-gap">NOT TESTED</span> </td></tr>
+<tr class="" data-flag="gap"><td class="ty">skip-logic</td><td>Intervention toggle reveals Type+Justification &amp; flag chip</td><td class="b y">✓</td><td class="b n">✗</td><td><span class="flag f-gap">NOT TESTED</span> </td></tr>
+<tr class="" data-flag="gap"><td class="ty">skip-logic</td><td>Bridge: toggle ON auto-creates locked Required card; Type-&gt;Phase; two-way sync; remove un-links</td><td class="b y">✓</td><td class="b n">✗</td><td><span class="flag f-gap">NOT TESTED</span> core mechanic untested</td></tr>
+<tr class="" data-flag="gap"><td class="ty">calc</td><td>Expiring within 90 days amber / Expired red highlighting</td><td class="b y">✓</td><td class="b n">✗</td><td><span class="flag f-gap">NOT TESTED</span> NT-004 is a 60/30/7-day notify, different rule</td></tr>
+<tr class="" data-flag="gap"><td class="ty">calc</td><td>Intervention Rate; In Progress; Intervention Needed; aggregate counts</td><td class="b y">✓</td><td class="b n">✗</td><td><span class="flag f-gap">NOT TESTED</span> </td></tr>
+</table>
+<h3>Product Compliance</h3>
+<p class="tally">Rules: <b>11</b> · In BRD: 11 · In Tests: 3</p>
+<table><tr><th>Type</th><th>Rule</th><th class="b">BRD</th><th class="b">Tests</th><th>Flag / gap note</th></tr>
+<tr class="" data-flag=""><td class="ty">dropdown</td><td>Certification Master — 22 values in 6 groups + Other</td><td class="b y">✓</td><td class="b p">~</td><td>PC-001 adds FSSAI only</td></tr>
+<tr class="brd" data-flag="brd"><td class="ty">field</td><td>&#x27;Applicable Product&#x27; field</td><td class="b y">✓</td><td class="b n">✗</td><td><span class="flag f-brd">BRD DEFECT</span> BRD invented this field — NOT in the wireframe</td></tr>
+<tr class="" data-flag="gap"><td class="ty">dropdown</td><td>Existing / Required Status; Phase; Intervention Type; Govt Certified?</td><td class="b y">✓</td><td class="b n">✗</td><td><span class="flag f-gap">NOT TESTED</span> </td></tr>
+<tr class="" data-flag="gap"><td class="ty">dropdown</td><td>Resource Category / Type (same as Business Reg)</td><td class="b y">✓</td><td class="b n">✗</td><td><span class="flag f-gap">NOT TESTED</span> </td></tr>
+<tr class="brd" data-flag="brd"><td class="ty">dropdown</td><td>Task Log — 12 PC tasks</td><td class="b p">~</td><td class="b n">✗</td><td><span class="flag f-brd">BRD DEFECT</span> BRD Task Log shows Status/Owner/Due cols the wireframe lacks; PC_TASKS not enumerated</td></tr>
+<tr class="" data-flag="gap"><td class="ty">validation</td><td>Cert uniqueness; Status mandatory; Issued&lt;=today / Valid Till&gt;Issued</td><td class="b y">✓</td><td class="b n">✗</td><td><span class="flag f-gap">NOT TESTED</span> date rules BRD-only</td></tr>
+<tr class="stale" data-flag="stale"><td class="ty">validation</td><td>Status = Received/Not Yet Received/Rejected (no Active/Expired state)</td><td class="b y">✓</td><td class="b y">✓</td><td><span class="flag f-stale">STALE TEST</span> PC-002 invents an &#x27;Active&#x27; status; expiry not flaggable as written</td></tr>
+<tr class="" data-flag="gap"><td class="ty">skip-logic</td><td>Lifetime hides/clears Valid Till; Intervention toggle reveals Type+Justification</td><td class="b y">✓</td><td class="b n">✗</td><td><span class="flag f-gap">NOT TESTED</span> </td></tr>
+<tr class="" data-flag="gap"><td class="ty">skip-logic</td><td>Per-card &#x27;Expiring Soon&#x27; chip (within 90 days) on Existing header</td><td class="b y">✓</td><td class="b n">✗</td><td><span class="flag f-gap">NOT TESTED</span> </td></tr>
+<tr class="" data-flag="gap"><td class="ty">skip-logic</td><td>Bridge + two-way sync (same engine as Business Reg)</td><td class="b y">✓</td><td class="b n">✗</td><td><span class="flag f-gap">NOT TESTED</span> </td></tr>
+<tr class="" data-flag=""><td class="ty">calc</td><td>90-day expiring amber / expired red; Intervention Rate; aggregate counts</td><td class="b y">✓</td><td class="b p">~</td><td>only 60/30/7-day notify (NT-004) exists</td></tr>
+</table>
+<h3>Labels</h3>
+<p class="tally">Rules: <b>14</b> · In BRD: 14 · In Tests: 3</p>
+<table><tr><th>Type</th><th>Rule</th><th class="b">BRD</th><th class="b">Tests</th><th>Flag / gap note</th></tr>
+<tr class="" data-flag=""><td class="ty">dropdown</td><td>Variant Content / Label Status from Product Profile (dropdown, not auto-prepopulate)</td><td class="b y">✓</td><td class="b p">~</td><td>design decision noted at 4774; no Labels exec steps</td></tr>
+<tr class="" data-flag="gap"><td class="ty">dropdown</td><td>Add Designer: Designer / Designer 1 / 2 / 3</td><td class="b y">✓</td><td class="b n">✗</td><td><span class="flag f-gap">NOT TESTED</span> </td></tr>
+<tr class="" data-flag="gap"><td class="ty">dropdown</td><td>Label Type: Sticker / Tag / Pouch Printing</td><td class="b y">✓</td><td class="b n">✗</td><td><span class="flag f-gap">NOT TESTED</span> </td></tr>
+<tr class="" data-flag="gap"><td class="ty">dropdown</td><td>Draft 1/2/3 Status: Pending/Under Review/Redo/Approved/Not Approved</td><td class="b y">✓</td><td class="b n">✗</td><td><span class="flag f-gap">NOT TESTED</span> </td></tr>
+<tr class="" data-flag="gap"><td class="ty">dropdown</td><td>Task Log — 14 LABEL tasks</td><td class="b y">✓</td><td class="b n">✗</td><td><span class="flag f-gap">NOT TESTED</span> </td></tr>
+<tr class="stale" data-flag="stale"><td class="ty">skip-logic</td><td>Wine/Alcohol toggle reveals statutory warning banner + ABV field</td><td class="b y">✓</td><td class="b p">~</td><td><span class="flag f-stale">STALE TEST</span> LBL-001 cites a &#x27;pregnancy warning&#x27; field; actual is a fixed 2-line banner + ABV</td></tr>
+<tr class="" data-flag=""><td class="ty">validation</td><td>ABV required when Alcohol = Yes</td><td class="b y">✓</td><td class="b p">~</td><td>wireframe shows field but no hard JS enforcement</td></tr>
+<tr class="" data-flag="gap"><td class="ty">validation</td><td>Statutory warning text is fixed/mandatory (exact 2 lines)</td><td class="b y">✓</td><td class="b n">✗</td><td><span class="flag f-gap">NOT TESTED</span> only test cites wrong text</td></tr>
+<tr class="" data-flag="gap"><td class="ty">calc</td><td>Volume = L x B x H (2dp)</td><td class="b y">✓</td><td class="b n">✗</td><td><span class="flag f-gap">NOT TESTED</span> </td></tr>
+<tr class="" data-flag="gap"><td class="ty">calc</td><td>Furthest draft reached; latest non-Pending draft -&gt; Implementation Status</td><td class="b y">✓</td><td class="b n">✗</td><td><span class="flag f-gap">NOT TESTED</span> </td></tr>
+<tr class="" data-flag="gap"><td class="ty">calc</td><td>Need New Label / No Change / Approved / Redo aggregates</td><td class="b y">✓</td><td class="b n">✗</td><td><span class="flag f-gap">NOT TESTED</span> </td></tr>
+<tr class="" data-flag="gap"><td class="ty">validation</td><td>At least one row must remain (delete guard)</td><td class="b y">✓</td><td class="b n">✗</td><td><span class="flag f-gap">NOT TESTED</span> </td></tr>
+<tr class="" data-flag="gap"><td class="ty">field</td><td>Master Content: Storyline AI-generate, Manufactured/Marketed by + FSSAI no., Product Pictures</td><td class="b y">✓</td><td class="b n">✗</td><td><span class="flag f-gap">NOT TESTED</span> AI-generate untested; FSSAI-format validation BRD-added</td></tr>
+<tr class="" data-flag="gap"><td class="ty">field</td><td>Variant cols: Net Wt, MFD, Best Before (after MFD), MRP, Batch No, Pkg Dims, Photo, 360 video, DPP</td><td class="b y">✓</td><td class="b n">✗</td><td><span class="flag f-gap">NOT TESTED</span> none tested</td></tr>
+</table>
+<h3>Packaging</h3>
+<p class="tally">Rules: <b>16</b> · In BRD: 16 · In Tests: 2</p>
+<table><tr><th>Type</th><th>Rule</th><th class="b">BRD</th><th class="b">Tests</th><th>Flag / gap note</th></tr>
+<tr class="" data-flag="gap"><td class="ty">dropdown</td><td>Type of Packaging: Pouch/Bottle/Box/Jar/Tin</td><td class="b y">✓</td><td class="b n">✗</td><td><span class="flag f-gap">NOT TESTED</span> </td></tr>
+<tr class="" data-flag="gap"><td class="ty">dropdown</td><td>Material: BOPP/Kraft/PET/Glass/HDPE/Aluminium Foil</td><td class="b y">✓</td><td class="b n">✗</td><td><span class="flag f-gap">NOT TESTED</span> </td></tr>
+<tr class="" data-flag="gap"><td class="ty">dropdown</td><td>Capacity Unit (gm/ml/kg/L/pcs); Dimension unit (mm/cm/m/in)</td><td class="b y">✓</td><td class="b n">✗</td><td><span class="flag f-gap">NOT TESTED</span> </td></tr>
+<tr class="" data-flag="gap"><td class="ty">dropdown</td><td>Supports Printing?: Yes/No (drives Print-Ready counts)</td><td class="b y">✓</td><td class="b n">✗</td><td><span class="flag f-gap">NOT TESTED</span> </td></tr>
+<tr class="" data-flag="gap"><td class="ty">dropdown</td><td>Type of Sealing (multi): Induction/Band/Bottleneck/ROPP/Bottle Cap</td><td class="b y">✓</td><td class="b n">✗</td><td><span class="flag f-gap">NOT TESTED</span> sealing entirely untested</td></tr>
+<tr class="" data-flag="gap"><td class="ty">dropdown</td><td>Impl Status (Intervention): Pending/In Progress/Completed/Replace Existing/Not Feasible</td><td class="b y">✓</td><td class="b n">✗</td><td><span class="flag f-gap">NOT TESTED</span> </td></tr>
+<tr class="" data-flag="gap"><td class="ty">dropdown</td><td>Impl Status (New Pkg): Pending/In Progress/Completed/On Hold</td><td class="b y">✓</td><td class="b n">✗</td><td><span class="flag f-gap">NOT TESTED</span> </td></tr>
+<tr class="" data-flag="gap"><td class="ty">dropdown</td><td>Resources Category / Type lists</td><td class="b p">~</td><td class="b n">✗</td><td><span class="flag f-gap">NOT TESTED</span> BRD omits Print Vendor / Sustainability Reference; Type list missing</td></tr>
+<tr class="" data-flag="gap"><td class="ty">dropdown</td><td>Log Book Activity Type</td><td class="b p">~</td><td class="b n">✗</td><td><span class="flag f-gap">NOT TESTED</span> BRD set shorter (omits Print Trial, Quality Check)</td></tr>
+<tr class="" data-flag="gap"><td class="ty">validation</td><td>Type of Packaging required; numeric &gt;= 0; at least one packaging row</td><td class="b y">✓</td><td class="b n">✗</td><td><span class="flag f-gap">NOT TESTED</span> </td></tr>
+<tr class="" data-flag="gap"><td class="ty">validation</td><td>A variant cannot be selected twice across blocks</td><td class="b y">✓</td><td class="b n">✗</td><td><span class="flag f-gap">NOT TESTED</span> BRD-only; wireframe does not enforce</td></tr>
+<tr class="" data-flag="gap"><td class="ty">skip-logic</td><td>Section III auto-lists an intervention group per distinct Type</td><td class="b y">✓</td><td class="b n">✗</td><td><span class="flag f-gap">NOT TESTED</span> </td></tr>
+<tr class="" data-flag="gap"><td class="ty">skip-logic</td><td>Intervention bridge (toggle -&gt; Required row; two-way) + Justify sync</td><td class="b y">✓</td><td class="b n">✗</td><td><span class="flag f-gap">NOT TESTED</span> </td></tr>
+<tr class="" data-flag=""><td class="ty">calc</td><td>Month Total (sum qty x type price); Annual per type; Annual Grand Total -&gt; Unit Pricing</td><td class="b y">✓</td><td class="b p">~</td><td>PKG-001 sums monthly qty only; grand-total feed untested</td></tr>
+<tr class="" data-flag="gap"><td class="ty">calc</td><td>Avg Monthly Qty = Annual / 12</td><td class="b y">✓</td><td class="b n">✗</td><td><span class="flag f-gap">NOT TESTED</span> </td></tr>
+<tr class="stale" data-flag="stale"><td class="ty">calc</td><td>Saving / Unit = Existing Price - New Price</td><td class="b y">✓</td><td class="b p">~</td><td><span class="flag f-stale">STALE TEST</span> live finding: saving_per_unit returned 0 (PKG-001); confirm formula/trigger</td></tr>
+</table>
+<h3>Logistic Packing</h3>
+<p class="tally">Rules: <b>9</b> · In BRD: 9 · In Tests: 1</p>
+<table><tr><th>Type</th><th>Rule</th><th class="b">BRD</th><th class="b">Tests</th><th>Flag / gap note</th></tr>
+<tr class="" data-flag="gap"><td class="ty">dropdown</td><td>Type of Packing (10) / Material (10)</td><td class="b y">✓</td><td class="b n">✗</td><td><span class="flag f-gap">NOT TESTED</span> </td></tr>
+<tr class="" data-flag="gap"><td class="ty">dropdown</td><td>Purchase Source (4); Capacity Unit (5); Dimension unit (4); Transport Mode (5)</td><td class="b y">✓</td><td class="b n">✗</td><td><span class="flag f-gap">NOT TESTED</span> </td></tr>
+<tr class="" data-flag="gap"><td class="ty">dropdown</td><td>Damage Observed: None/Minor/Moderate/Severe; Properties (multi: Fragile/Reusable/Waterproof/Cold Chain)</td><td class="b y">✓</td><td class="b n">✗</td><td><span class="flag f-gap">NOT TESTED</span> </td></tr>
+<tr class="brd" data-flag="brd"><td class="ty">dropdown</td><td>Impl Status (Intervention &amp; New)</td><td class="b p">~</td><td class="b n">✗</td><td><span class="flag f-brd">BRD DEFECT</span> BRD says &#x27;Completed&#x27; vs wireframe &#x27;Implemented&#x27;; omits &#x27;Replace Existing&#x27;</td></tr>
+<tr class="brd" data-flag="brd"><td class="ty">dropdown</td><td>Resources Category / Log Book Activity Type</td><td class="b p">~</td><td class="b n">✗</td><td><span class="flag f-brd">BRD DEFECT</span> BRD Category set differs; Log Book omits several activities</td></tr>
+<tr class="" data-flag="gap"><td class="ty">validation</td><td>Type required; at least one row; Stacking Layers &gt;= 1; numeric &gt;= 0</td><td class="b y">✓</td><td class="b n">✗</td><td><span class="flag f-gap">NOT TESTED</span> </td></tr>
+<tr class="" data-flag="gap"><td class="ty">skip-logic</td><td>Intervention bridge + Justify two-way sync; Damage Risk badge</td><td class="b y">✓</td><td class="b n">✗</td><td><span class="flag f-gap">NOT TESTED</span> </td></tr>
+<tr class="" data-flag=""><td class="ty">calc</td><td>Month Total; Annual per type + Grand Total -&gt; Logistics Pricing</td><td class="b y">✓</td><td class="b p">~</td><td>LPACK-001 expects a 3-layer transit cost, not the monthly grid</td></tr>
+<tr class="" data-flag="gap"><td class="ty">calc</td><td>Avg Monthly Qty; Saving / Unit (Implemented only feeds After)</td><td class="b y">✓</td><td class="b n">✗</td><td><span class="flag f-gap">NOT TESTED</span> </td></tr>
+</table>
+<h3>Logistic Service</h3>
+<p class="tally">Rules: <b>13</b> · In BRD: 13 · In Tests: 5</p>
+<table><tr><th>Type</th><th>Rule</th><th class="b">BRD</th><th class="b">Tests</th><th>Flag / gap note</th></tr>
+<tr class="" data-flag="gap"><td class="ty">dropdown</td><td>Mode of Transport (16)</td><td class="b y">✓</td><td class="b n">✗</td><td><span class="flag f-gap">NOT TESTED</span> </td></tr>
+<tr class="" data-flag="gap"><td class="ty">dropdown</td><td>Route Type (Direct/Via Hub/Multi-stop); Direction (Inbound/Outbound/Both)</td><td class="b y">✓</td><td class="b n">✗</td><td><span class="flag f-gap">NOT TESTED</span> </td></tr>
+<tr class="" data-flag=""><td class="ty">dropdown</td><td>Frequency + multipliers: Daily x30 / Twice-wk x12 / Weekly x4 / Twice-mo x2 / Monthly x1 / 2-mo x0.5</td><td class="b y">✓</td><td class="b p">~</td><td>only Weekly x4 tested; fractional x0.5 untested</td></tr>
+<tr class="" data-flag=""><td class="ty">dropdown</td><td>Pain Points (7 multi); Delay Frequency (4); Road Connectivity (4); Last Mile (4)</td><td class="b y">✓</td><td class="b p">~</td><td></td></tr>
+<tr class="" data-flag="gap"><td class="ty">dropdown</td><td>Available Services checkbox matrix (4 families, ~21 items)</td><td class="b p">~</td><td class="b n">✗</td><td><span class="flag f-gap">NOT TESTED</span> BRD doesn&#x27;t enumerate Courier/E-Commerce items</td></tr>
+<tr class="brd" data-flag="brd"><td class="ty">dropdown</td><td>Implementation Status</td><td class="b p">~</td><td class="b n">✗</td><td><span class="flag f-brd">BRD DEFECT</span> BRD says &#x27;Completed&#x27; vs wireframe &#x27;Implemented&#x27;</td></tr>
+<tr class="" data-flag="gap"><td class="ty">dropdown</td><td>Resources Category (6); Log Book Activity (6)</td><td class="b p">~</td><td class="b n">✗</td><td><span class="flag f-gap">NOT TESTED</span> Log Book Activity values not in BRD</td></tr>
+<tr class="" data-flag="gap"><td class="ty">validation</td><td>Route Name required; at least one leg row; Leg Cost &gt;= 0</td><td class="b y">✓</td><td class="b n">✗</td><td><span class="flag f-gap">NOT TESTED</span> </td></tr>
+<tr class="" data-flag="gap"><td class="ty">skip-logic</td><td>Direction tag; Upgrade bridge + Justify two-way sync</td><td class="b y">✓</td><td class="b n">✗</td><td><span class="flag f-gap">NOT TESTED</span> </td></tr>
+<tr class="" data-flag=""><td class="ty">calc</td><td>Total Cost Per Trip = sum leg costs</td><td class="b y">✓</td><td class="b y">✓</td><td>F-CALC-027 / LSVC-001 (verified)</td></tr>
+<tr class="" data-flag=""><td class="ty">calc</td><td>Monthly Cost = Trip Cost x frequency multiplier</td><td class="b y">✓</td><td class="b y">✓</td><td>F-CALC-027</td></tr>
+<tr class="" data-flag=""><td class="ty">calc</td><td>Annual Cost = Monthly x 12</td><td class="b y">✓</td><td class="b p">~</td><td>LSVC-001 expects 60,000; F-CALC-027 stops at monthly</td></tr>
+<tr class="" data-flag="gap"><td class="ty">calc</td><td>Existing totals; Cost After (Implemented only) + saving</td><td class="b y">✓</td><td class="b n">✗</td><td><span class="flag f-gap">NOT TESTED</span> </td></tr>
+</table>
+<h3>Market Research</h3>
+<p class="tally">Rules: <b>13</b> · In BRD: 13 · In Tests: 3</p>
+<table><tr><th>Type</th><th>Rule</th><th class="b">BRD</th><th class="b">Tests</th><th>Flag / gap note</th></tr>
+<tr class="" data-flag="gap"><td class="ty">dropdown</td><td>Product; Key Exporting Countries; Key States; Key Selling Locations (masters)</td><td class="b y">✓</td><td class="b n">✗</td><td><span class="flag f-gap">NOT TESTED</span> </td></tr>
+<tr class="" data-flag="gap"><td class="ty">dropdown</td><td>Outlet Type (12); Shelf Placement (6); Origin; Platforms (10); Packing (12)</td><td class="b y">✓</td><td class="b n">✗</td><td><span class="flag f-gap">NOT TESTED</span> </td></tr>
+<tr class="" data-flag="gap"><td class="ty">dropdown</td><td>District master (note &#x27;Eri Bhoi&#x27; typo, should be Ri Bhoi)</td><td class="b y">✓</td><td class="b n">✗</td><td><span class="flag f-gap">NOT TESTED</span> typo propagated into BRD too</td></tr>
+<tr class="" data-flag="gap"><td class="ty">dropdown</td><td>Customer-Research Age Group (journey: 16 fine-grained 5-year bands)</td><td class="b p">~</td><td class="b n">✗</td><td><span class="flag f-gap">NOT TESTED</span> wireframe/BRD use 7 broad bands; journey doc is fine-grained</td></tr>
+<tr class="" data-flag="gap"><td class="ty">dropdown</td><td>Occupation (journey: 25 items incl. Business Owner)</td><td class="b y">✓</td><td class="b n">✗</td><td><span class="flag f-gap">NOT TESTED</span> wireframe simplified to 9</td></tr>
+<tr class="" data-flag="gap"><td class="ty">dropdown</td><td>Gender; Location State/District/Block (3 selects, no real cascade in JS)</td><td class="b y">✓</td><td class="b n">✗</td><td><span class="flag f-gap">NOT TESTED</span> </td></tr>
+<tr class="" data-flag="gap"><td class="ty">dropdown</td><td>Competitor Outlet (Offline) / Platform (Online); Resource Category/Type</td><td class="b p">~</td><td class="b n">✗</td><td><span class="flag f-gap">NOT TESTED</span> Resources lists not enumerated in MR BRD</td></tr>
+<tr class="" data-flag=""><td class="ty">skip-logic</td><td>Purchase Frequency shown only when &#x27;Have you used the product? = Yes&#x27;</td><td class="b y">✓</td><td class="b p">~</td><td>generic F-COND-012, not in section 17</td></tr>
+<tr class="" data-flag="gap"><td class="ty">calc</td><td>Competitor Average Price = mean of non-zero price rows (6 tables)</td><td class="b y">✓</td><td class="b n">✗</td><td><span class="flag f-gap">NOT TESTED</span> </td></tr>
+<tr class="" data-flag=""><td class="ty">calc</td><td>6 averages auto-fed to Unit Pricing Competitor-Based</td><td class="b y">✓</td><td class="b p">~</td><td>F-FLOW-007 covers Local-offline only</td></tr>
+<tr class="" data-flag="gap"><td class="ty">calc</td><td>Summary aggregates (products/channels/brands/respondents; SWOT completed)</td><td class="b y">✓</td><td class="b n">✗</td><td><span class="flag f-gap">NOT TESTED</span> </td></tr>
+<tr class="" data-flag="gap"><td class="ty">validation</td><td>Product required; Outlet/Brand name required if entry added; Price &gt;= 0</td><td class="b y">✓</td><td class="b n">✗</td><td><span class="flag f-gap">NOT TESTED</span> negative-price guard BRD-added</td></tr>
+<tr class="" data-flag=""><td class="ty">field</td><td>SWOT 4-quadrant grid (Strengths/Weaknesses/Opportunities/Threats)</td><td class="b y">✓</td><td class="b y">✓</td><td>journey doc requires SWOT; grid confirmed present (MR-001)</td></tr>
+</table>
+<h3>Customer Analysis</h3>
+<p class="tally">Rules: <b>10</b> · In BRD: 10 · In Tests: 2</p>
+<table><tr><th>Type</th><th>Rule</th><th class="b">BRD</th><th class="b">Tests</th><th>Flag / gap note</th></tr>
+<tr class="" data-flag="gap"><td class="ty">skip-logic</td><td>Remove row-repeater logic (journey change)</td><td class="b y">✓</td><td class="b n">✗</td><td><span class="flag f-gap">NOT TESTED</span> </td></tr>
+<tr class="" data-flag=""><td class="ty">dropdown</td><td>Demographic: Age/Gender/Family Size/Occupation(25)/Income/Education (multiselect)</td><td class="b y">✓</td><td class="b p">~</td><td>CA-001 picks a couple only</td></tr>
+<tr class="" data-flag="gap"><td class="ty">dropdown</td><td>Geographic: Primary Geography (6); Key Cities; Location Type (multi)</td><td class="b y">✓</td><td class="b n">✗</td><td><span class="flag f-gap">NOT TESTED</span> </td></tr>
+<tr class="" data-flag="gap"><td class="ty">dropdown</td><td>Psychographic: Values&amp;Lifestyle (15); Buying Motivation (12)</td><td class="b y">✓</td><td class="b n">✗</td><td><span class="flag f-gap">NOT TESTED</span> </td></tr>
+<tr class="" data-flag="gap"><td class="ty">dropdown</td><td>Behavioural: Purchase Behaviour (12); Usage Rate (8); Loyalty (10); Occasion (12)</td><td class="b y">✓</td><td class="b n">✗</td><td><span class="flag f-gap">NOT TESTED</span> </td></tr>
+<tr class="" data-flag="gap"><td class="ty">dropdown</td><td>Primary / Secondary Customers; Target Segment; Market Readiness; Impl Status</td><td class="b y">✓</td><td class="b n">✗</td><td><span class="flag f-gap">NOT TESTED</span> </td></tr>
+<tr class="" data-flag="gap"><td class="ty">dropdown</td><td>Resource Category (7) / Type (5)</td><td class="b y">✓</td><td class="b n">✗</td><td><span class="flag f-gap">NOT TESTED</span> </td></tr>
+<tr class="" data-flag="gap"><td class="ty">skip-logic</td><td>Intervention toggle reveals Justification; Status chip mirrors Impl Status</td><td class="b y">✓</td><td class="b n">✗</td><td><span class="flag f-gap">NOT TESTED</span> </td></tr>
+<tr class="" data-flag="gap"><td class="ty">calc</td><td>Summary comparison Existing vs Required (match by product; readiness/impl aggregates)</td><td class="b y">✓</td><td class="b n">✗</td><td><span class="flag f-gap">NOT TESTED</span> </td></tr>
+<tr class="" data-flag=""><td class="ty">validation</td><td>Product required; no duplicate chip values</td><td class="b y">✓</td><td class="b p">~</td><td>generic UI-CHIP-001 only</td></tr>
+</table>
+<h3>Market Linkage</h3>
+<p class="tally">Rules: <b>9</b> · In BRD: 8 · In Tests: 3</p>
+<table><tr><th>Type</th><th>Rule</th><th class="b">BRD</th><th class="b">Tests</th><th>Flag / gap note</th></tr>
+<tr class="" data-flag="gap"><td class="ty">dropdown</td><td>Channel Type (Online/Offline); Selling Mode (B2B/B2C/D2C/Exhibition)</td><td class="b y">✓</td><td class="b n">✗</td><td><span class="flag f-gap">NOT TESTED</span> </td></tr>
+<tr class="" data-flag="gap"><td class="ty">dropdown</td><td>Location (Block Master); Identified By (Ground/Core/Entrepreneur)</td><td class="b y">✓</td><td class="b n">✗</td><td><span class="flag f-gap">NOT TESTED</span> </td></tr>
+<tr class="" data-flag="gap"><td class="ty">dropdown</td><td>Product Name (nested) -&gt; Product SKU (cascade); Impl Status; Source tag</td><td class="b y">✓</td><td class="b n">✗</td><td><span class="flag f-gap">NOT TESTED</span> </td></tr>
+<tr class="" data-flag="gap"><td class="ty">skip-logic</td><td>SKU populated by selected Product (&#x27;Select Product first&#x27;); Upgrade toggle reveals Justification</td><td class="b y">✓</td><td class="b n">✗</td><td><span class="flag f-gap">NOT TESTED</span> </td></tr>
+<tr class="" data-flag=""><td class="ty">calc</td><td>Avg Revenue/Month = Price x Units; Annual = x12; Annual Total = Price x total units</td><td class="b y">✓</td><td class="b p">~</td><td>F-CALC-022</td></tr>
+<tr class="" data-flag=""><td class="ty">calc</td><td>Sales Tracker Revenue = Quantity x Price; month + grand totals</td><td class="b y">✓</td><td class="b p">~</td><td>F-CALC-023; live: Revenue needs a priced Product (ML-001 blocked)</td></tr>
+<tr class="" data-flag="gap"><td class="ty">calc</td><td>Channel status-chip rollup (all Completed / any Not Feasible / any In Progress)</td><td class="b y">✓</td><td class="b n">✗</td><td><span class="flag f-gap">NOT TESTED</span> </td></tr>
+<tr class="" data-flag="gap"><td class="ty">calc</td><td>Summary aggregates (online/offline, modes, best channel, unique products)</td><td class="b y">✓</td><td class="b n">✗</td><td><span class="flag f-gap">NOT TESTED</span> </td></tr>
+<tr class="stale" data-flag="stale"><td class="ty">calc</td><td>Net revenue after commission</td><td class="b n">✗</td><td class="b y">✓</td><td><span class="flag f-stale">STALE TEST</span> ML-001 tests vol x price x (1-15%) — NO commission field exists in spec</td></tr>
+</table>
+<h3>Promotions</h3>
+<p class="tally">Rules: <b>8</b> · In BRD: 7 · In Tests: 1</p>
+<table><tr><th>Type</th><th>Rule</th><th class="b">BRD</th><th class="b">Tests</th><th>Flag / gap note</th></tr>
+<tr class="" data-flag="gap"><td class="ty">dropdown</td><td>Type: Offline / Online</td><td class="b y">✓</td><td class="b n">✗</td><td><span class="flag f-gap">NOT TESTED</span> </td></tr>
+<tr class="" data-flag="gap"><td class="ty">dropdown</td><td>Frequency: Daily / Weekly / Monthly / Yearly</td><td class="b y">✓</td><td class="b n">✗</td><td><span class="flag f-gap">NOT TESTED</span> </td></tr>
+<tr class="" data-flag="gap"><td class="ty">dropdown</td><td>Implementation Status (Pending/In Progress/Completed/Not Feasible)</td><td class="b y">✓</td><td class="b n">✗</td><td><span class="flag f-gap">NOT TESTED</span> </td></tr>
+<tr class="" data-flag="gap"><td class="ty">dropdown</td><td>Resource Category (8) / Type (5)</td><td class="b y">✓</td><td class="b n">✗</td><td><span class="flag f-gap">NOT TESTED</span> </td></tr>
+<tr class="" data-flag="gap"><td class="ty">field</td><td>Handled by / Suggested Handled by (free text)</td><td class="b y">✓</td><td class="b n">✗</td><td><span class="flag f-gap">NOT TESTED</span> BRD over-specifies a richer doctype not in wireframe</td></tr>
+<tr class="" data-flag="gap"><td class="ty">skip-logic</td><td>Intervention toggle reveals Justification; req-impl onchange refresh</td><td class="b y">✓</td><td class="b n">✗</td><td><span class="flag f-gap">NOT TESTED</span> </td></tr>
+<tr class="" data-flag="gap"><td class="ty">calc</td><td>Summary aggregates (online/offline split, frequency counts, status counts)</td><td class="b y">✓</td><td class="b n">✗</td><td><span class="flag f-gap">NOT TESTED</span> </td></tr>
+<tr class="stale" data-flag="stale"><td class="ty">calc</td><td>Cost per reach = budget / reach</td><td class="b n">✗</td><td class="b y">✓</td><td><span class="flag f-stale">STALE TEST</span> PROMO-001 tests it — NO budget/reach/cost fields exist (live finding)</td></tr>
+</table>
+<h3>Branding Identity</h3>
+<p class="tally">Rules: <b>16</b> · In BRD: 15 · In Tests: 3</p>
+<table><tr><th>Type</th><th>Rule</th><th class="b">BRD</th><th class="b">Tests</th><th>Flag / gap note</th></tr>
+<tr class="" data-flag="gap"><td class="ty">field</td><td>Brand / Logo / Business Card clubbed into one framework (3 tabs), combined task list</td><td class="b y">✓</td><td class="b n">✗</td><td><span class="flag f-gap">NOT TESTED</span> journey change; BRD captures clubbing</td></tr>
+<tr class="" data-flag=""><td class="ty">dropdown</td><td>Approval (Entrepreneur / Core Team): Approved / Pending / Rejected</td><td class="b y">✓</td><td class="b p">~</td><td>BRAND-002 tests dual-approve, not the 3 values / Rejected path</td></tr>
+<tr class="" data-flag="gap"><td class="ty">dropdown</td><td>Logo Designer: Designer A / B / AI Generated</td><td class="b y">✓</td><td class="b n">✗</td><td><span class="flag f-gap">NOT TESTED</span> </td></tr>
+<tr class="" data-flag="gap"><td class="ty">dropdown</td><td>Business Card Designer: Designer A / B (NO AI Generated)</td><td class="b y">✓</td><td class="b n">✗</td><td><span class="flag f-gap">NOT TESTED</span> difference from Logo track untested</td></tr>
+<tr class="brd" data-flag="brd"><td class="ty">dropdown</td><td>Resources Category (Brand/Logo/Card/General); Resources Type</td><td class="b p">~</td><td class="b n">✗</td><td><span class="flag f-brd">BRD DEFECT</span> Resources Type list missing from BRD</td></tr>
+<tr class="" data-flag="gap"><td class="ty">dropdown</td><td>Task Log — 24 fixed tasks</td><td class="b y">✓</td><td class="b n">✗</td><td><span class="flag f-gap">NOT TESTED</span> </td></tr>
+<tr class="" data-flag="gap"><td class="ty">skip-logic</td><td>&#x27;Need New Brand Name?&#x27; ON -&gt; New Brand Name + Justification required</td><td class="b y">✓</td><td class="b n">✗</td><td><span class="flag f-gap">NOT TESTED</span> </td></tr>
+<tr class="" data-flag="gap"><td class="ty">skip-logic</td><td>&#x27;Need New Logo?&#x27; ON -&gt; Justification required</td><td class="b y">✓</td><td class="b n">✗</td><td><span class="flag f-gap">NOT TESTED</span> </td></tr>
+<tr class="" data-flag=""><td class="ty">skip-logic</td><td>Draft Versions sequential (Draft 2/3 Pending until prior done; max 3)</td><td class="b y">✓</td><td class="b p">~</td><td>BRAND-001 uploads 3 but doesn&#x27;t test sequential lock</td></tr>
+<tr class="" data-flag="gap"><td class="ty">permission</td><td>Only Core Team assigns Designer (dropdown = designer-role users); field team views</td><td class="b y">✓</td><td class="b n">✗</td><td><span class="flag f-gap">NOT TESTED</span> </td></tr>
+<tr class="" data-flag=""><td class="ty">validation</td><td>Designer required before uploading drafts; &gt;=1 draft before approval; dual approval to finalise</td><td class="b y">✓</td><td class="b p">~</td><td>BRAND-002 happy-path only</td></tr>
+<tr class="" data-flag="gap"><td class="ty">validation</td><td>At least one row required (Resources &amp; Task Log)</td><td class="b n">✗</td><td class="b n">✗</td><td><span class="flag f-gap">NOT TESTED</span> </td></tr>
+<tr class="" data-flag="gap"><td class="ty">field</td><td>Market Scope chips (Local/State | National), single-select default</td><td class="b y">✓</td><td class="b n">✗</td><td><span class="flag f-gap">NOT TESTED</span> </td></tr>
+<tr class="" data-flag="gap"><td class="ty">auto-fetch</td><td>Enterprise Name, Storyline, Media Folder, Card Content auto-fetched read-only</td><td class="b y">✓</td><td class="b n">✗</td><td><span class="flag f-gap">NOT TESTED</span> </td></tr>
+<tr class="" data-flag="gap"><td class="ty">field</td><td>Multiselect file upload with upload/view buttons (not links); logo shows EP profile snapshot</td><td class="b y">✓</td><td class="b n">✗</td><td><span class="flag f-gap">NOT TESTED</span> </td></tr>
+<tr class="" data-flag="gap"><td class="ty">calc</td><td>Summary hero + track cards mirror Brand/Logo/Card tabs</td><td class="b y">✓</td><td class="b n">✗</td><td><span class="flag f-gap">NOT TESTED</span> </td></tr>
+</table>
+<h3>Marketing Brochure</h3>
+<p class="tally">Rules: <b>12</b> · In BRD: 11 · In Tests: 1</p>
+<table><tr><th>Type</th><th>Rule</th><th class="b">BRD</th><th class="b">Tests</th><th>Flag / gap note</th></tr>
+<tr class="" data-flag=""><td class="ty">dropdown</td><td>Brochure Type (multi 5: Single/Multi-Product/Tri-fold/Bi-fold/Flyer)</td><td class="b y">✓</td><td class="b p">~</td><td>BR-001 picks products, not the Type list</td></tr>
+<tr class="" data-flag="gap"><td class="ty">dropdown</td><td>Per-product Brochure Type (size 3, mirrors master)</td><td class="b y">✓</td><td class="b n">✗</td><td><span class="flag f-gap">NOT TESTED</span> </td></tr>
+<tr class="" data-flag="gap"><td class="ty">dropdown</td><td>Market Scope; Designer (A/B/AI); Print Format (A4/A5/DL/Custom)</td><td class="b y">✓</td><td class="b n">✗</td><td><span class="flag f-gap">NOT TESTED</span> </td></tr>
+<tr class="" data-flag="gap"><td class="ty">dropdown</td><td>Draft 1/2/3 Status (Pending/Under Review/Redo/Approved/Not Approved)</td><td class="b y">✓</td><td class="b n">✗</td><td><span class="flag f-gap">NOT TESTED</span> </td></tr>
+<tr class="" data-flag="gap"><td class="ty">dropdown</td><td>Task Log — 12 brochure tasks</td><td class="b y">✓</td><td class="b n">✗</td><td><span class="flag f-gap">NOT TESTED</span> </td></tr>
+<tr class="" data-flag="gap"><td class="ty">skip-logic</td><td>syncBrochureTypeOptions per-product to match master multiselect</td><td class="b y">✓</td><td class="b n">✗</td><td><span class="flag f-gap">NOT TESTED</span> </td></tr>
+<tr class="" data-flag="gap"><td class="ty">validation</td><td>Product Name required when a Brochure Type selected; Page Count whole &gt;= 1; Need New -&gt; Justify</td><td class="b y">✓</td><td class="b n">✗</td><td><span class="flag f-gap">NOT TESTED</span> </td></tr>
+<tr class="" data-flag="gap"><td class="ty">validation</td><td>At least one row required (3 tables)</td><td class="b n">✗</td><td class="b n">✗</td><td><span class="flag f-gap">NOT TESTED</span> </td></tr>
+<tr class="" data-flag="gap"><td class="ty">field</td><td>Dimensions L/B/H separate + Volume calc; MOQ relabel; Retail+Wholesale fetched from Unit Pricing</td><td class="b y">✓</td><td class="b n">✗</td><td><span class="flag f-gap">NOT TESTED</span> journey change; price field removed</td></tr>
+<tr class="" data-flag="gap"><td class="ty">field</td><td>Product Snapshot fetched from product; existing-brochure HD field; multiselect attachments</td><td class="b y">✓</td><td class="b n">✗</td><td><span class="flag f-gap">NOT TESTED</span> </td></tr>
+<tr class="" data-flag="gap"><td class="ty">field</td><td>Storyline &#x27;Generate with AI&#x27; (Apoorva)</td><td class="b y">✓</td><td class="b n">✗</td><td><span class="flag f-gap">NOT TESTED</span> </td></tr>
+<tr class="" data-flag="gap"><td class="ty">calc</td><td>Aggregates (Total Existing, Need New, No Change, Products Included; furthest draft; flags)</td><td class="b y">✓</td><td class="b n">✗</td><td><span class="flag f-gap">NOT TESTED</span> </td></tr>
+</table>
+<h3>Pitch Deck</h3>
+<p class="tally">Rules: <b>11</b> · In BRD: 8 · In Tests: 1</p>
+<table><tr><th>Type</th><th>Rule</th><th class="b">BRD</th><th class="b">Tests</th><th>Flag / gap note</th></tr>
+<tr class="" data-flag="gap"><td class="ty">dropdown</td><td>Implementation Status: Pending/In Progress/Implemented/Not Feasible</td><td class="b y">✓</td><td class="b n">✗</td><td><span class="flag f-gap">NOT TESTED</span> </td></tr>
+<tr class="brd" data-flag="brd"><td class="ty">dropdown</td><td>Log Book Visit Type (Site/Phone/Pitch Rehearsal/Investor Meeting/Mentoring/Workshop/Other)</td><td class="b p">~</td><td class="b n">✗</td><td><span class="flag f-brd">BRD DEFECT</span> BRD lists a DIFFERENT set (Drafting/Review/Mentor Session/Mock Pitch/Investor Meeting) — fix BRD</td></tr>
+<tr class="brd" data-flag="brd"><td class="ty">dropdown</td><td>Task Log Status: Pending/In Progress/Completed/Blocked</td><td class="b n">✗</td><td class="b n">✗</td><td><span class="flag f-brd">BRD DEFECT</span> &#x27;Blocked&#x27; option missing from BRD</td></tr>
+<tr class="" data-flag="gap"><td class="ty">skip-logic</td><td>Need-a-deck toggle ON -&gt; flags intervention, activates Required workspace</td><td class="b y">✓</td><td class="b n">✗</td><td><span class="flag f-gap">NOT TESTED</span> </td></tr>
+<tr class="" data-flag="gap"><td class="ty">skip-logic</td><td>Video link &#x27;Open&#x27; button only when URL entered; deck &#x27;View&#x27; only after file attached</td><td class="b y">✓</td><td class="b n">✗</td><td><span class="flag f-gap">NOT TESTED</span> </td></tr>
+<tr class="" data-flag="gap"><td class="ty">validation</td><td>Deck upload .pdf/.ppt/.pptx only; video must be valid URL; Entrepreneur unique</td><td class="b y">✓</td><td class="b n">✗</td><td><span class="flag f-gap">NOT TESTED</span> </td></tr>
+<tr class="" data-flag="gap"><td class="ty">validation</td><td>Log Book at least one row</td><td class="b n">✗</td><td class="b n">✗</td><td><span class="flag f-gap">NOT TESTED</span> </td></tr>
+<tr class="stale" data-flag="stale"><td class="ty">calc</td><td>11 slides; Completion % = filled/11; Slides Filled/Empty (fill = non-empty textarea)</td><td class="b y">✓</td><td class="b p">~</td><td><span class="flag f-stale">STALE TEST</span> PD-001 phrases slide state as Drafted/Reviewed/Final, not fill-based</td></tr>
+<tr class="" data-flag="gap"><td class="ty">calc</td><td>Slide Breakdown groups (Story 3 / Business 3 / Market 2 / Team-Ask 3)</td><td class="b n">✗</td><td class="b n">✗</td><td><span class="flag f-gap">NOT TESTED</span> </td></tr>
+<tr class="" data-flag="gap"><td class="ty">calc</td><td>Status badge colour map; Last Updated auto-set on edit</td><td class="b y">✓</td><td class="b n">✗</td><td><span class="flag f-gap">NOT TESTED</span> </td></tr>
+<tr class="" data-flag="gap"><td class="ty">field</td><td>Task Log seed: 18 tasks across 3 phases</td><td class="b y">✓</td><td class="b n">✗</td><td><span class="flag f-gap">NOT TESTED</span> </td></tr>
+</table>
+<h3>Digital Literacy</h3>
+<p class="tally">Rules: <b>8</b> · In BRD: 8 · In Tests: 2</p>
+<table><tr><th>Type</th><th>Rule</th><th class="b">BRD</th><th class="b">Tests</th><th>Flag / gap note</th></tr>
+<tr class="" data-flag=""><td class="ty">dropdown</td><td>Platform/Skill (9 from master)</td><td class="b y">✓</td><td class="b p">~</td><td>DL-001 says &#x27;9 platforms&#x27; but lists none</td></tr>
+<tr class="stale" data-flag="stale"><td class="ty">scale</td><td>5-star skill legend (1 No knowledge … 5 Proficient); 1-5 (no 0; X clears)</td><td class="b y">✓</td><td class="b p">~</td><td><span class="flag f-stale">STALE TEST</span> DL-001 says &#x27;0-5&#x27; scale — wrong</td></tr>
+<tr class="stale" data-flag="stale"><td class="ty">calc</td><td>Average Skill Level = sum stars / rated count (2dp); 0 excluded</td><td class="b y">✓</td><td class="b n">✗</td><td><span class="flag f-stale">STALE TEST</span> DL-001 invents Readiness = avg x 20 = 100% + radar chart — not in spec</td></tr>
+<tr class="" data-flag="gap"><td class="ty">skip-logic</td><td>Has smartphone/laptop/internet = No -&gt; &#x27;required?&#x27; question</td><td class="b y">✓</td><td class="b n">✗</td><td><span class="flag f-gap">NOT TESTED</span> </td></tr>
+<tr class="" data-flag="gap"><td class="ty">dropdown</td><td>Existing Access checkboxes; device &#x27;Needed&#x27; + status (4); Required Impl Status (5)</td><td class="b y">✓</td><td class="b n">✗</td><td><span class="flag f-gap">NOT TESTED</span> </td></tr>
+<tr class="" data-flag="gap"><td class="ty">skip-logic</td><td>Intervention toggle -&gt; bridged Required row (platform locked); two-way delete sync</td><td class="b y">✓</td><td class="b n">✗</td><td><span class="flag f-gap">NOT TESTED</span> </td></tr>
+<tr class="" data-flag="gap"><td class="ty">calc</td><td>Skill Change = Target - Existing; Device Gap; Summary aggregates</td><td class="b y">✓</td><td class="b n">✗</td><td><span class="flag f-gap">NOT TESTED</span> </td></tr>
+<tr class="" data-flag="gap"><td class="ty">dropdown</td><td>Log Book Activity Type (6); Task Log (10 fixed)</td><td class="b y">✓</td><td class="b n">✗</td><td><span class="flag f-gap">NOT TESTED</span> </td></tr>
+</table>
+<h3>Capacity Building</h3>
+<p class="tally">Rules: <b>10</b> · In BRD: 10 · In Tests: 2</p>
+<table><tr><th>Type</th><th>Rule</th><th class="b">BRD</th><th class="b">Tests</th><th>Flag / gap note</th></tr>
+<tr class="" data-flag="gap"><td class="ty">dropdown</td><td>Skill Type: Soft / Technical (mandatory)</td><td class="b y">✓</td><td class="b n">✗</td><td><span class="flag f-gap">NOT TESTED</span> </td></tr>
+<tr class="" data-flag="gap"><td class="ty">dropdown</td><td>Skill Area: Soft (8) / Technical (10) lists</td><td class="b y">✓</td><td class="b n">✗</td><td><span class="flag f-gap">NOT TESTED</span> </td></tr>
+<tr class="" data-flag="gap"><td class="ty">skip-logic</td><td>Skill Type -&gt; Skill Area filter (Soft shows soft optgroup; clears technical)</td><td class="b y">✓</td><td class="b n">✗</td><td><span class="flag f-gap">NOT TESTED</span> </td></tr>
+<tr class="" data-flag="gap"><td class="ty">dropdown</td><td>Training Format (6); Completion Status (4, mandatory); Skill Retention (4); Applied (3)</td><td class="b y">✓</td><td class="b n">✗</td><td><span class="flag f-gap">NOT TESTED</span> </td></tr>
+<tr class="" data-flag="gap"><td class="ty">dropdown</td><td>Behaviour Change (4); Improvement Seen (6); Time Since (4); Gap Severity (4)</td><td class="b y">✓</td><td class="b n">✗</td><td><span class="flag f-gap">NOT TESTED</span> </td></tr>
+<tr class="" data-flag="gap"><td class="ty">dropdown</td><td>Skill Levels (4); Intervention Type (6); Assigned To (4); Impl Status (6)</td><td class="b y">✓</td><td class="b n">✗</td><td><span class="flag f-gap">NOT TESTED</span> </td></tr>
+<tr class="" data-flag="gap"><td class="ty">skip-logic</td><td>Re-training toggle -&gt; bridges training to Required I (name/area/justification locked)</td><td class="b y">✓</td><td class="b n">✗</td><td><span class="flag f-gap">NOT TESTED</span> </td></tr>
+<tr class="" data-flag=""><td class="ty">scale</td><td>Post-Training scorecard: 6 dimensions x 1-5 stars (legend None..Excellent)</td><td class="b y">✓</td><td class="b p">~</td><td>CB-001 tests past-training only, not the 6-dim scorecard</td></tr>
+<tr class="" data-flag="gap"><td class="ty">validation</td><td>End Date &gt;= Start Date; Required Level &gt;= Current Level</td><td class="b y">✓</td><td class="b n">✗</td><td><span class="flag f-gap">NOT TESTED</span> </td></tr>
+<tr class="" data-flag=""><td class="ty">calc</td><td>Summary roll-ups (Past/Required/Capacity/Status cards; gap = Target-Current)</td><td class="b y">✓</td><td class="b p">~</td><td></td></tr>
+</table>
+<h3>Business Plan Canvas</h3>
+<p class="tally">Rules: <b>8</b> · In BRD: 8 · In Tests: 2</p>
+<table><tr><th>Type</th><th>Rule</th><th class="b">BRD</th><th class="b">Tests</th><th>Flag / gap note</th></tr>
+<tr class="" data-flag=""><td class="ty">field</td><td>9 canvas blocks (Key Partners … Revenue Streams)</td><td class="b y">✓</td><td class="b p">~</td><td>tested only generically (BPC-001)</td></tr>
+<tr class="" data-flag="gap"><td class="ty">calc</td><td>Quadrant grouping (Infra 3 / Offering 1 / Customer 3 / Financial 2)</td><td class="b y">✓</td><td class="b n">✗</td><td><span class="flag f-gap">NOT TESTED</span> </td></tr>
+<tr class="" data-flag="gap"><td class="ty">calc</td><td>Completion % = filled / 9 x 100</td><td class="b y">✓</td><td class="b n">✗</td><td><span class="flag f-gap">NOT TESTED</span> </td></tr>
+<tr class="stale" data-flag="stale"><td class="ty">validation</td><td>Blocks filled MANUALLY; cross-module refs are read-only links (no auto-copy)</td><td class="b y">✓</td><td class="b y">✓</td><td><span class="flag f-stale">STALE TEST</span> BPC-001 asserts auto-population from upstream DFs — contradicts spec</td></tr>
+<tr class="" data-flag="gap"><td class="ty">calc</td><td>Value Prop Set flag (empty Value Prop flagged)</td><td class="b y">✓</td><td class="b n">✗</td><td><span class="flag f-gap">NOT TESTED</span> </td></tr>
+<tr class="" data-flag="gap"><td class="ty">dropdown</td><td>Resources Category (10) / Type (6); Task Log (17)</td><td class="b y">✓</td><td class="b n">✗</td><td><span class="flag f-gap">NOT TESTED</span> </td></tr>
+<tr class="" data-flag="gap"><td class="ty">validation</td><td>At least one resource row</td><td class="b p">~</td><td class="b n">✗</td><td><span class="flag f-gap">NOT TESTED</span> </td></tr>
+<tr class="" data-flag="gap"><td class="ty">skip-logic</td><td>7 cross-module reference pills (read-only links + redirect)</td><td class="b y">✓</td><td class="b n">✗</td><td><span class="flag f-gap">NOT TESTED</span> </td></tr>
+</table>
+<h2>Entrepreneur Profile</h2>
+<table class="sumtab"><tr><th>Module</th><th>Rules</th><th>In BRD</th><th>In Tests</th><th>Test coverage</th><th>Flags</th></tr>
+<tr><td><b>EP Profile</b></td><td>36</td><td>32</td><td>29</td><td><span class="barbg"><span class="bar" style="width:72px"></span></span>80%</td><td><span class="flag f-stale">6 stale</span> <span class="flag f-brd">5 defect</span></td></tr>
+</table>
+<h3>EP Profile</h3>
+<p class="tally">Rules: <b>36</b> · In BRD: 32 · In Tests: 29</p>
+<table><tr><th>Type</th><th>Rule</th><th class="b">BRD</th><th class="b">Tests</th><th>Flag / gap note</th></tr>
+<tr class="brd" data-flag="brd"><td class="ty">field</td><td>Rural E Champ Score (Int, permlevel 1 = Core Team only)</td><td class="b p">~</td><td class="b y">✓</td><td><span class="flag f-brd">BRD DEFECT</span> BRD says &#x27;filled by Fellow&#x27;; repo + journey = Core Team only</td></tr>
+<tr class="stale" data-flag="stale"><td class="ty">field</td><td>Selection Attachment (permlevel 1)</td><td class="b y">✓</td><td class="b p">~</td><td><span class="flag f-stale">STALE TEST</span> EP-021 &#x27;Final Selection blocked without attachment&#x27; — no such validation</td></tr>
+<tr class="" data-flag=""><td class="ty">dropdown</td><td>Final Selection: Incubated / Supported (permlevel 1)</td><td class="b y">✓</td><td class="b y">✓</td><td></td></tr>
+<tr class="" data-flag="gap"><td class="ty">validation</td><td>final_selection mandatory once rural_e_champ_score entered</td><td class="b n">✗</td><td class="b n">✗</td><td><span class="flag f-gap">NOT TESTED</span> real repo rule, undocumented + untested</td></tr>
+<tr class="brd" data-flag="brd"><td class="ty">field</td><td>Status model: activity_status (Active/Inactive) + final_selection (Incubated/Supported); NO stored &#x27;MET&#x27;</td><td class="b y">✓</td><td class="b y">✓</td><td><span class="flag f-brd">BRD DEFECT</span> BRD/tests treat &#x27;MET&#x27; as a stored status; repo has none</td></tr>
+<tr class="" data-flag=""><td class="ty">journey</td><td>Prioritisation: frameworks auto-listed (priority 0), reorder, dashboard cards realign on save</td><td class="b y">✓</td><td class="b p">~</td><td></td></tr>
+<tr class="" data-flag=""><td class="ty">skip-logic</td><td>Prioritisation tab shown only when Incubated/Supported</td><td class="b y">✓</td><td class="b p">~</td><td>gating not explicitly tested</td></tr>
+<tr class="brd" data-flag="brd"><td class="ty">field</td><td>Priority-table &#x27;Applicable?&#x27; checkbox</td><td class="b y">✓</td><td class="b y">✓</td><td><span class="flag f-brd">BRD DEFECT</span> No &#x27;applicable&#x27; field in repo; rows auto-seeded, add/remove hidden — BRD &amp; EP-022 invented it</td></tr>
+<tr class="" data-flag=""><td class="ty">validation</td><td>Duplicate framework AND duplicate priority blocked</td><td class="b p">~</td><td class="b p">~</td><td>dup-priority not in BRD/tests; EP-023 add-twice can&#x27;t run</td></tr>
+<tr class="stale" data-flag="stale"><td class="ty">validation</td><td>Priority value: Int, 0 is the valid default</td><td class="b n">✗</td><td class="b y">✓</td><td><span class="flag f-stale">STALE TEST</span> EP-024 asserts 0/-1 rejected &amp; &gt;10 warning — not implemented</td></tr>
+<tr class="stale" data-flag="stale"><td class="ty">validation</td><td>Entrepreneur Name unique globally (case-sensitive)</td><td class="b y">✓</td><td class="b y">✓</td><td><span class="flag f-stale">STALE TEST</span> EP-006 says &#x27;unique case-insensitive within cohort&#x27; — wrong scope</td></tr>
+<tr class="" data-flag=""><td class="ty">validation</td><td>Future DOB blocked (datepicker maxDate = today)</td><td class="b y">✓</td><td class="b y">✓</td><td></td></tr>
+<tr class="stale" data-flag="stale"><td class="ty">validation</td><td>DOB min-age 14 / max-age 100</td><td class="b n">✗</td><td class="b y">✓</td><td><span class="flag f-stale">STALE TEST</span> EP-007 / section 11 assert rules not implemented in repo</td></tr>
+<tr class="" data-flag=""><td class="ty">validation</td><td>Phone required + format (default +91-)</td><td class="b y">✓</td><td class="b y">✓</td><td></td></tr>
+<tr class="" data-flag=""><td class="ty">validation</td><td>Email format</td><td class="b y">✓</td><td class="b p">~</td><td></td></tr>
+<tr class="stale" data-flag="stale"><td class="ty">validation</td><td>District / Block / Village required to save</td><td class="b p">~</td><td class="b y">✓</td><td><span class="flag f-stale">STALE TEST</span> repo: non-mandatory, auto-populated from Program Access; EP-005 &#x27;Village required&#x27; wrong</td></tr>
+<tr class="" data-flag=""><td class="ty">permission</td><td>FA sees all blocks, edits only own block (server-forced from Program Access)</td><td class="b y">✓</td><td class="b y">✓</td><td></td></tr>
+<tr class="" data-flag="gap"><td class="ty">skip-logic</td><td>Block filtered by District; Village by Block (link_filters)</td><td class="b p">~</td><td class="b n">✗</td><td><span class="flag f-gap">NOT TESTED</span> </td></tr>
+<tr class="" data-flag="gap"><td class="ty">auto-fill</td><td>Raw Materials from Product Profile -&gt; Raw Material framework rows</td><td class="b y">✓</td><td class="b n">✗</td><td><span class="flag f-gap">NOT TESTED</span> journey-mandated; zero tests</td></tr>
+<tr class="" data-flag="gap"><td class="ty">auto-fill</td><td>Process&amp;Machinery existing machines -&gt; Machinery framework Existing tab</td><td class="b y">✓</td><td class="b n">✗</td><td><span class="flag f-gap">NOT TESTED</span> journey-mandated; zero tests</td></tr>
+<tr class="" data-flag=""><td class="ty">field</td><td>Dashboard: product photo cards clickable -&gt; Product Profile</td><td class="b y">✓</td><td class="b y">✓</td><td></td></tr>
+<tr class="" data-flag=""><td class="ty">calc</td><td>Dashboard framework completion &#x27;Not started / Completed xN&#x27; from logs; summary popup %</td><td class="b y">✓</td><td class="b p">~</td><td>repetition count + popup % not tested</td></tr>
+<tr class="" data-flag=""><td class="ty">field</td><td>GPS Geolocation (location)</td><td class="b y">✓</td><td class="b y">✓</td><td></td></tr>
+<tr class="" data-flag=""><td class="ty">validation</td><td>KYC: Aadhaar (Verhoeff), PAN, EPIC, Bank patterns</td><td class="b p">~</td><td class="b y">✓</td><td>EPIC &amp; Bank patterns not in BRD</td></tr>
+<tr class="build" data-flag="build"><td class="ty">field</td><td>Networking: Mentor Master registry doctype</td><td class="b p">~</td><td class="b y">✓</td><td><span class="flag f-build">NOT BUILT</span> Mentor Master NOT built in repo; PRD specifies it; tests assume it exists</td></tr>
+<tr class="" data-flag=""><td class="ty">field</td><td>Networking: Introduction child (mentor/contact_type/introduced_by/date/objective; fetch_from mentor)</td><td class="b y">✓</td><td class="b y">✓</td><td></td></tr>
+<tr class="" data-flag="gap"><td class="ty">dropdown</td><td>Networking contact_type: Mentor / Network Contact</td><td class="b p">~</td><td class="b n">✗</td><td><span class="flag f-gap">NOT TESTED</span> </td></tr>
+<tr class="stale" data-flag="stale"><td class="ty">dropdown</td><td>Networking meeting_status (Not Yet Met/Awaiting Response/Scheduled/In Progress/Completed)</td><td class="b p">~</td><td class="b p">~</td><td><span class="flag f-stale">STALE TEST</span> EP-035 uses &#x27;Pending&#x27; — no such option</td></tr>
+<tr class="" data-flag=""><td class="ty">field</td><td>Networking: Meeting Log standalone + auto-sync count/last/next/outcome</td><td class="b y">✓</td><td class="b y">✓</td><td></td></tr>
+<tr class="" data-flag="gap"><td class="ty">dropdown</td><td>Networking outcome controlled vocabulary (7 values)</td><td class="b n">✗</td><td class="b n">✗</td><td><span class="flag f-gap">NOT TESTED</span> not in BRD or tests</td></tr>
+<tr class="" data-flag=""><td class="ty">calc</td><td>avg_rating from 10 ratings (repo scales to 0-100)</td><td class="b p">~</td><td class="b p">~</td><td>BRD says &#x27;mean of 10&#x27;; repo = (total/max)*5*10 — mismatch, exact value untested</td></tr>
+<tr class="" data-flag="gap"><td class="ty">skip-logic</td><td>18 needs-support flags with dependent note fields (depends_on reveal)</td><td class="b y">✓</td><td class="b n">✗</td><td><span class="flag f-gap">NOT TESTED</span> </td></tr>
+<tr class="" data-flag=""><td class="ty">dropdown</td><td>EP Landscape filters: District/Block/Cohort/Sector/Business Basket/Product Name</td><td class="b y">✓</td><td class="b p">~</td><td>Business Basket / Product Name map filters not tested</td></tr>
+<tr class="brd" data-flag="brd"><td class="ty">dropdown</td><td>Sector: repo = hardcoded 3-option Select</td><td class="b p">~</td><td class="b y">✓</td><td><span class="flag f-brd">BRD DEFECT</span> journey/BRD/tests assume a Sector master cascading to Business Basket; repo has neither</td></tr>
+<tr class="" data-flag=""><td class="ty">field</td><td>Cohort (Link, standard filter)</td><td class="b y">✓</td><td class="b y">✓</td><td></td></tr>
+<tr class="" data-flag=""><td class="ty">field</td><td>Autoname EP-.{name}-.#####; after save -&gt; Profile Dashboard</td><td class="b y">✓</td><td class="b y">✓</td><td></td></tr>
+</table>
+<h2>Product Form</h2>
+<table class="sumtab"><tr><th>Module</th><th>Rules</th><th>In BRD</th><th>In Tests</th><th>Test coverage</th><th>Flags</th></tr>
+<tr><td><b>Product Profile</b></td><td>38</td><td>37</td><td>13</td><td><span class="barbg"><span class="bar" style="width:30px"></span></span>34%</td><td><span class="flag f-stale">7 stale</span> <span class="flag f-brd">1 defect</span></td></tr>
+</table>
+<h3>Product Profile</h3>
+<p class="tally">Rules: <b>38</b> · In BRD: 37 · In Tests: 13</p>
+<table><tr><th>Type</th><th>Rule</th><th class="b">BRD</th><th class="b">Tests</th><th>Flag / gap note</th></tr>
+<tr class="" data-flag="gap"><td class="ty">dropdown</td><td>Product Status: New / Existing</td><td class="b y">✓</td><td class="b n">✗</td><td><span class="flag f-gap">NOT TESTED</span> </td></tr>
+<tr class="" data-flag="gap"><td class="ty">dropdown</td><td>Sector (6 options)</td><td class="b y">✓</td><td class="b n">✗</td><td><span class="flag f-gap">NOT TESTED</span> </td></tr>
+<tr class="" data-flag="gap"><td class="ty">dropdown</td><td>Business Basket (8 options)</td><td class="b y">✓</td><td class="b n">✗</td><td><span class="flag f-gap">NOT TESTED</span> </td></tr>
+<tr class="" data-flag="gap"><td class="ty">dropdown</td><td>Product Type (7 options)</td><td class="b y">✓</td><td class="b n">✗</td><td><span class="flag f-gap">NOT TESTED</span> </td></tr>
+<tr class="stale" data-flag="stale"><td class="ty">validation</td><td>Product Name required; Link to Product Master (autocomplete)</td><td class="b y">✓</td><td class="b p">~</td><td><span class="flag f-stale">STALE TEST</span> PR-002 treats it as free text + invents a duplicate-per-EP rule</td></tr>
+<tr class="" data-flag="gap"><td class="ty">auto-fetch</td><td>Entrepreneur chip auto-fetched</td><td class="b y">✓</td><td class="b n">✗</td><td><span class="flag f-gap">NOT TESTED</span> </td></tr>
+<tr class="" data-flag=""><td class="ty">field</td><td>Product Snapshot (textarea)</td><td class="b y">✓</td><td class="b p">~</td><td>labelled &#x27;Description&#x27; in PR-001</td></tr>
+<tr class="" data-flag="gap"><td class="ty">field</td><td>Product Image (attach + view)</td><td class="b y">✓</td><td class="b n">✗</td><td><span class="flag f-gap">NOT TESTED</span> </td></tr>
+<tr class="" data-flag="gap"><td class="ty">auto-fill</td><td>Ingredients = read-only pills fetched from Raw Material framework (edit product to add)</td><td class="b y">✓</td><td class="b n">✗</td><td><span class="flag f-gap">NOT TESTED</span> journey core rule; zero tests</td></tr>
+<tr class="" data-flag="gap"><td class="ty">field</td><td>USP (textarea)</td><td class="b y">✓</td><td class="b n">✗</td><td><span class="flag f-gap">NOT TESTED</span> </td></tr>
+<tr class="" data-flag="gap"><td class="ty">dropdown</td><td>Shelf Life Tested: Yes / No</td><td class="b y">✓</td><td class="b n">✗</td><td><span class="flag f-gap">NOT TESTED</span> </td></tr>
+<tr class="stale" data-flag="stale"><td class="ty">validation</td><td>Shelf Life Duration = free-text Data (&#x27;12 months&#x27;)</td><td class="b y">✓</td><td class="b y">✓</td><td><span class="flag f-stale">STALE TEST</span> PR-003 asserts positive integer; reject 0/-3/&#x27;twelve&#x27; — field is free text</td></tr>
+<tr class="stale" data-flag="stale"><td class="ty">skip-logic</td><td>Available Months = 12-row checkbox table (TRUE/FALSE); &gt;=1 to generate Tracker</td><td class="b y">✓</td><td class="b y">✓</td><td><span class="flag f-stale">STALE TEST</span> PR-004 describes a chip group / All-months quick-select — wrong control</td></tr>
+<tr class="stale" data-flag="stale"><td class="ty">calc</td><td>SKU = VARIANT-SUBVARIANT-WEIGHT-UNIT (strip, UPPERCASE, drop empty); read-only</td><td class="b y">✓</td><td class="b p">~</td><td><span class="flag f-stale">STALE TEST</span> PR-008/014 use APIC-HHF-250G-001 master-expansion format</td></tr>
+<tr class="" data-flag="gap"><td class="ty">dropdown</td><td>Variant Status: Existing / New</td><td class="b y">✓</td><td class="b n">✗</td><td><span class="flag f-gap">NOT TESTED</span> </td></tr>
+<tr class="" data-flag=""><td class="ty">validation</td><td>Variant Name required (feeds SKU)</td><td class="b y">✓</td><td class="b p">~</td><td></td></tr>
+<tr class="" data-flag="gap"><td class="ty">field</td><td>Sub Variant (free text, feeds SKU)</td><td class="b y">✓</td><td class="b n">✗</td><td><span class="flag f-gap">NOT TESTED</span> </td></tr>
+<tr class="" data-flag="gap"><td class="ty">validation</td><td>Net Weight Float &gt; 0 (feeds SKU)</td><td class="b y">✓</td><td class="b n">✗</td><td><span class="flag f-gap">NOT TESTED</span> </td></tr>
+<tr class="" data-flag="gap"><td class="ty">dropdown</td><td>Unit (variant): g/kg/ml/L/pcs/bundle (Unit Master)</td><td class="b y">✓</td><td class="b n">✗</td><td><span class="flag f-gap">NOT TESTED</span> </td></tr>
+<tr class="" data-flag="gap"><td class="ty">validation</td><td>Dimensions L x B x H (3 floats + unit)</td><td class="b y">✓</td><td class="b n">✗</td><td><span class="flag f-gap">NOT TESTED</span> </td></tr>
+<tr class="" data-flag="gap"><td class="ty">calc</td><td>Volume = L x B x H (unit^3); read-only</td><td class="b y">✓</td><td class="b n">✗</td><td><span class="flag f-gap">NOT TESTED</span> </td></tr>
+<tr class="" data-flag=""><td class="ty">auto-fetch</td><td>Retail Price (variant) read-only, fetched from Unit Pricing</td><td class="b y">✓</td><td class="b p">~</td><td></td></tr>
+<tr class="stale" data-flag="stale"><td class="ty">validation</td><td>Wholesale &lt; Unit Cost / Retail &lt; Wholesale rules</td><td class="b n">✗</td><td class="b y">✓</td><td><span class="flag f-stale">STALE TEST</span> PR-009/010 assert pricing rules on fields that don&#x27;t exist (pricing lives in Unit Pricing)</td></tr>
+<tr class="" data-flag=""><td class="ty">skip-logic</td><td>Process Flow steps: drag-reorder, auto-renumber, +Add/Remove</td><td class="b y">✓</td><td class="b y">✓</td><td></td></tr>
+<tr class="" data-flag=""><td class="ty">field</td><td>Step Detail required</td><td class="b y">✓</td><td class="b p">~</td><td></td></tr>
+<tr class="stale" data-flag="stale"><td class="ty">auto-fill</td><td>Machine Used (status Existing) -&gt; Machinery framework Existing tab</td><td class="b y">✓</td><td class="b n">✗</td><td><span class="flag f-stale">STALE TEST</span> journey: machines -&gt; Machinery; PR-007/RAWMAT-002 wrongly route machines -&gt; Raw Materials</td></tr>
+<tr class="" data-flag="gap"><td class="ty">dropdown</td><td>Machine Status (Existing/Required); Implemented? (Yes/No); Step Status (Pending/In Progress/Done)</td><td class="b y">✓</td><td class="b n">✗</td><td><span class="flag f-gap">NOT TESTED</span> </td></tr>
+<tr class="" data-flag="gap"><td class="ty">skip-logic</td><td>Agri By-Product: Yes shows agri block, No greys out</td><td class="b y">✓</td><td class="b n">✗</td><td><span class="flag f-gap">NOT TESTED</span> </td></tr>
+<tr class="" data-flag="gap"><td class="ty">dropdown</td><td>Land Ownership (4); Production Unit (5); Capacity Units (8, Unit Master)</td><td class="b y">✓</td><td class="b n">✗</td><td><span class="flag f-gap">NOT TESTED</span> </td></tr>
+<tr class="" data-flag="gap"><td class="ty">validation</td><td>Area Covered Float &gt; 0; Existing/Aspiring Capacity Int &gt;= 0</td><td class="b y">✓</td><td class="b n">✗</td><td><span class="flag f-gap">NOT TESTED</span> </td></tr>
+<tr class="" data-flag="gap"><td class="ty">field</td><td>Sowing/Harvesting/Processing Season month grids (Jan-Dec bools)</td><td class="b y">✓</td><td class="b n">✗</td><td><span class="flag f-gap">NOT TESTED</span> </td></tr>
+<tr class="" data-flag="gap"><td class="ty">skip-logic</td><td>Is Product Seasonal? Yes -&gt; Season month grid</td><td class="b y">✓</td><td class="b n">✗</td><td><span class="flag f-gap">NOT TESTED</span> </td></tr>
+<tr class="" data-flag="gap"><td class="ty">calc</td><td>Monthly Production Tracker: rows = Available Months; Selling Price from variant Retail</td><td class="b y">✓</td><td class="b n">✗</td><td><span class="flag f-gap">NOT TESTED</span> </td></tr>
+<tr class="" data-flag="gap"><td class="ty">calc</td><td>Tracker Revenue = Qty x Selling Price; row + annual totals</td><td class="b y">✓</td><td class="b n">✗</td><td><span class="flag f-gap">NOT TESTED</span> </td></tr>
+<tr class="" data-flag=""><td class="ty">field</td><td>Products show as clickable photo cards on profile dashboard</td><td class="b y">✓</td><td class="b y">✓</td><td></td></tr>
+<tr class="" data-flag=""><td class="ty">calc</td><td>General logic: calc fields show formula; fetched fields show source + redirect</td><td class="b y">✓</td><td class="b p">~</td><td></td></tr>
+<tr class="stale" data-flag="stale"><td class="ty">field</td><td>Tabs = Details / Variants / Process Flow / Production Capacity (no Financials/Compliance)</td><td class="b y">✓</td><td class="b y">✓</td><td><span class="flag f-stale">STALE TEST</span> PR-001/015 reference Financials/Compliance tabs that don&#x27;t exist</td></tr>
+<tr class="brd" data-flag="brd"><td class="ty">auto-fill</td><td>Data-flow: Ingredients -&gt; RM; Machines -&gt; Machinery</td><td class="b y">✓</td><td class="b n">✗</td><td><span class="flag f-brd">BRD DEFECT</span> BRD data-flow (~line 1735) wrongly routes process-flow machines into Raw Materials Existing</td></tr>
+</table>
+<script>
+function flt(btn){document.querySelectorAll('.btn').forEach(b=>b.classList.remove('on'));btn.classList.add('on');
+var f=btn.dataset.f;document.querySelectorAll('tbody tr,table tr').forEach(function(tr){
+ if(!tr.dataset.flag&&tr.querySelector('th')) return;
+ var fg=tr.dataset.flag||'';var show=(f==='all')||(f==='gap'&&(fg==='gap'))||(f==='stale'&&fg==='stale')||(f==='brd'&&(fg==='brd'||fg==='build'));
+ if(tr.querySelector('td')&&tr.children.length>=5&&tr.querySelector('.ty')!==null){tr.style.display=show?'':'none';}});}
+</script>
+</div></body></html>
