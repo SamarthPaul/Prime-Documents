@@ -2,7 +2,7 @@
 "PR-TC-XC-052": {
 "status": "Fail",
 "title": "No green/yellow in the UI (Monsoon Court)",
-"actual": "Active Entrepreneurs KPI shows a GREEN check rgb(63,107,58) (hue 114). Monsoon Court forbids green \u2014 success must be teal #0E4D4E.",
+"actual": "Active Entrepreneurs KPI shows a GREEN check rgb(63,107,58) (hue 114). Monsoon Court forbids green — success must be teal #0E4D4E.",
 "screenshot": ".playwright-mcp/bug-xc052-green-kpi.png"
 },
 "PR-TC-XC-053": {
@@ -33,7 +33,7 @@
 },
 "PR-TC-XC-059": {
 "status": "Pass",
-"actual": "Currency uses Indian grouping on the Financials form (e.g. \u20b91,45,000, not \u20b9145,000)."
+"actual": "Currency uses Indian grouping on the Financials form (e.g. ₹1,45,000, not ₹145,000)."
 },
 "PR-TC-XC-060": {
 "status": "Pass",
@@ -41,7 +41,7 @@
 },
 "PR-TC-DB-INT-001": {
 "status": "Blocked",
-"actual": "OUT OF SCOPE (per user 29 May): Intervention Dashboard is being rebuilt from scratch with the KPI form \u2014 do not test the current version."
+"actual": "OUT OF SCOPE (per user 29 May): Intervention Dashboard is being rebuilt from scratch with the KPI form — do not test the current version."
 },
 "PR-TC-DB-MS-001": {
 "status": "Pass",
@@ -58,7 +58,7 @@
 },
 "PR-TC-DB-EPS-001": {
 "status": "Blocked",
-"actual": "Landscape KPI cards are Total/Active/GPS-Verified/Districts/Village \u2014 NOT the spec's Total/MET/Incubated/Supported. Confirm which view is the canonical 'EP Status Monitor' before flagging."
+"actual": "Landscape KPI cards are Total/Active/GPS-Verified/Districts/Village — NOT the spec's Total/MET/Incubated/Supported. Confirm which view is the canonical 'EP Status Monitor' before flagging."
 },
 "PR-TC-DB-EPS-003": {
 "status": "Blocked",
@@ -67,79 +67,79 @@
 "PR-TC-DB-EPS-004": {
 "status": "Fail",
 "title": "No empty-state message when filters yield zero",
-"actual": "Filtered Landscape to 0 records (Handicrafts + Supported + Idea): KPIs correctly show 0 and layout holds (no horizontal overflow), but NO empty-state message (\"No data matches your filters\") is shown \u2014 the map just renders empty. Spec (DB-EPS-004) expects an EmptyState message."
+"actual": "Filtered Landscape to 0 records (Handicrafts + Supported + Idea): KPIs correctly show 0 and layout holds (no horizontal overflow), but NO empty-state message (\"No data matches your filters\") is shown — the map just renders empty. Spec (DB-EPS-004) expects an EmptyState message."
 },
 "PR-TC-DB-SAN-001": {
 "status": "Blocked",
-"actual": "OUT OF SCOPE (per user 29 May): Sankey de-prioritized \u2014 skip for now."
+"actual": "OUT OF SCOPE (per user 29 May): Sankey de-prioritized — skip for now."
 },
 "PR-TC-DB-SAN-002": {
 "status": "Blocked",
-"actual": "OUT OF SCOPE (per user 29 May): Sankey de-prioritized \u2014 skip for now."
+"actual": "OUT OF SCOPE (per user 29 May): Sankey de-prioritized — skip for now."
 },
 "PR-TC-DB-INF-001": {
 "status": "Pass",
-"actual": "Infrastructure Monitor (/desk/infrastructure-monitor) renders the 3 tabs Overview/Funding flow/Disbursements + charts (84 canvas/svg elements). NB: 9 console errors present (CHB noise \u2014 observation)."
+"actual": "Infrastructure Monitor (/desk/infrastructure-monitor) renders the 3 tabs Overview/Funding flow/Disbursements + charts (84 canvas/svg elements). NB: 9 console errors present (CHB noise — observation)."
 },
 "PR-TC-DB-INF-002": {
 "status": "Blocked",
-"actual": "NOT Playwright-drivable: Infra Monitor charts render inside the desk CHB shadow DOM (canvas + ECharts) \u2014 document.querySelector cannot reach them, and ECharts canvas hover needs pixel-precise interaction. Manual verification."
+"actual": "NOT Playwright-drivable: Infra Monitor charts render inside the desk CHB shadow DOM (canvas + ECharts) — document.querySelector cannot reach them, and ECharts canvas hover needs pixel-precise interaction. Manual verification."
 },
 "PR-TC-DB-INF-003": {
 "status": "Blocked",
-"actual": "NOT Playwright-drivable (CHB shadow DOM + canvas) \u2014 manual."
+"actual": "NOT Playwright-drivable (CHB shadow DOM + canvas) — manual."
 },
 "PR-TC-DB-INF-004": {
 "status": "Blocked",
-"actual": "NOT Playwright-drivable (CHB shadow DOM drawer) \u2014 manual."
+"actual": "NOT Playwright-drivable (CHB shadow DOM drawer) — manual."
 },
 "PR-TC-FW-COM-001": {
 "status": "Pass",
-"actual": "Framework form loads from diagnostics \u2014 verified across all 27 frameworks via the FWC common runner (17-frameworks.spec.ts)."
+"actual": "Framework form loads from diagnostics — verified across all 27 frameworks via the FWC common runner (17-frameworks.spec.ts)."
 },
 "PR-TC-FW-COM-002": {
 "status": "Pass",
-"actual": "Per-framework tabs render \u2014 verified across all 27 via the FWC common runner."
+"actual": "Per-framework tabs render — verified across all 27 via the FWC common runner."
 },
 "PR-TC-FW-COM-003": {
 "status": "Blocked",
-"actual": "Per-framework calc/validation delta lives on CHILD TABLES / derived computed fields (verified via doctype probing: parent has no settable calc fields). Requires UI form-driving (add child rows via the form, read computed fields) \u2014 deferred to the UI/MCP framework pass; not API-automatable. Blocked != tested."
+"actual": "Per-framework calc/validation delta lives on CHILD TABLES / derived computed fields (verified via doctype probing: parent has no settable calc fields). Requires UI form-driving (add child rows via the form, read computed fields) — deferred to the UI/MCP framework pass; not API-automatable. Blocked != tested."
 },
 "PR-TC-FW-COM-004": {
 "status": "Blocked",
-"actual": "Per-framework calc/validation delta lives on CHILD TABLES / derived computed fields (verified via doctype probing: parent has no settable calc fields). Requires UI form-driving (add child rows via the form, read computed fields) \u2014 deferred to the UI/MCP framework pass; not API-automatable. Blocked != tested."
+"actual": "Per-framework calc/validation delta lives on CHILD TABLES / derived computed fields (verified via doctype probing: parent has no settable calc fields). Requires UI form-driving (add child rows via the form, read computed fields) — deferred to the UI/MCP framework pass; not API-automatable. Blocked != tested."
 },
 "PR-TC-FW-COM-005": {
 "status": "Blocked",
-"actual": "Per-framework calc/validation delta lives on CHILD TABLES / derived computed fields (verified via doctype probing: parent has no settable calc fields). Requires UI form-driving (add child rows via the form, read computed fields) \u2014 deferred to the UI/MCP framework pass; not API-automatable. Blocked != tested."
+"actual": "Per-framework calc/validation delta lives on CHILD TABLES / derived computed fields (verified via doctype probing: parent has no settable calc fields). Requires UI form-driving (add child rows via the form, read computed fields) — deferred to the UI/MCP framework pass; not API-automatable. Blocked != tested."
 },
 "PR-TC-FW-COM-006": {
 "status": "Blocked",
-"actual": "Per-framework calc/validation delta lives on CHILD TABLES / derived computed fields (verified via doctype probing: parent has no settable calc fields). Requires UI form-driving (add child rows via the form, read computed fields) \u2014 deferred to the UI/MCP framework pass; not API-automatable. Blocked != tested."
+"actual": "Per-framework calc/validation delta lives on CHILD TABLES / derived computed fields (verified via doctype probing: parent has no settable calc fields). Requires UI form-driving (add child rows via the form, read computed fields) — deferred to the UI/MCP framework pass; not API-automatable. Blocked != tested."
 },
 "PR-TC-FW-COM-007": {
 "status": "Blocked",
-"actual": "Per-framework calc/validation delta lives on CHILD TABLES / derived computed fields (verified via doctype probing: parent has no settable calc fields). Requires UI form-driving (add child rows via the form, read computed fields) \u2014 deferred to the UI/MCP framework pass; not API-automatable. Blocked != tested."
+"actual": "Per-framework calc/validation delta lives on CHILD TABLES / derived computed fields (verified via doctype probing: parent has no settable calc fields). Requires UI form-driving (add child rows via the form, read computed fields) — deferred to the UI/MCP framework pass; not API-automatable. Blocked != tested."
 },
 "PR-TC-FW-COM-008": {
 "status": "Blocked",
-"actual": "Per-framework calc/validation delta lives on CHILD TABLES / derived computed fields (verified via doctype probing: parent has no settable calc fields). Requires UI form-driving (add child rows via the form, read computed fields) \u2014 deferred to the UI/MCP framework pass; not API-automatable. Blocked != tested."
+"actual": "Per-framework calc/validation delta lives on CHILD TABLES / derived computed fields (verified via doctype probing: parent has no settable calc fields). Requires UI form-driving (add child rows via the form, read computed fields) — deferred to the UI/MCP framework pass; not API-automatable. Blocked != tested."
 },
 "PR-TC-FW-COM-009": {
 "status": "Blocked",
-"actual": "Per-framework calc/validation delta lives on CHILD TABLES / derived computed fields (verified via doctype probing: parent has no settable calc fields). Requires UI form-driving (add child rows via the form, read computed fields) \u2014 deferred to the UI/MCP framework pass; not API-automatable. Blocked != tested."
+"actual": "Per-framework calc/validation delta lives on CHILD TABLES / derived computed fields (verified via doctype probing: parent has no settable calc fields). Requires UI form-driving (add child rows via the form, read computed fields) — deferred to the UI/MCP framework pass; not API-automatable. Blocked != tested."
 },
 "PR-TC-FW-COM-010": {
 "status": "Blocked",
-"actual": "Per-framework calc/validation delta lives on CHILD TABLES / derived computed fields (verified via doctype probing: parent has no settable calc fields). Requires UI form-driving (add child rows via the form, read computed fields) \u2014 deferred to the UI/MCP framework pass; not API-automatable. Blocked != tested."
+"actual": "Per-framework calc/validation delta lives on CHILD TABLES / derived computed fields (verified via doctype probing: parent has no settable calc fields). Requires UI form-driving (add child rows via the form, read computed fields) — deferred to the UI/MCP framework pass; not API-automatable. Blocked != tested."
 },
 "PR-TC-FW-COM-011": {
 "status": "Blocked",
-"actual": "Per-framework calc/validation delta lives on CHILD TABLES / derived computed fields (verified via doctype probing: parent has no settable calc fields). Requires UI form-driving (add child rows via the form, read computed fields) \u2014 deferred to the UI/MCP framework pass; not API-automatable. Blocked != tested."
+"actual": "Per-framework calc/validation delta lives on CHILD TABLES / derived computed fields (verified via doctype probing: parent has no settable calc fields). Requires UI form-driving (add child rows via the form, read computed fields) — deferred to the UI/MCP framework pass; not API-automatable. Blocked != tested."
 },
 "PR-TC-FW-COM-012": {
 "status": "Blocked",
-"actual": "Per-framework calc/validation delta lives on CHILD TABLES / derived computed fields (verified via doctype probing: parent has no settable calc fields). Requires UI form-driving (add child rows via the form, read computed fields) \u2014 deferred to the UI/MCP framework pass; not API-automatable. Blocked != tested."
+"actual": "Per-framework calc/validation delta lives on CHILD TABLES / derived computed fields (verified via doctype probing: parent has no settable calc fields). Requires UI form-driving (add child rows via the form, read computed fields) — deferred to the UI/MCP framework pass; not API-automatable. Blocked != tested."
 },
 "PR-TC-FW-FIN-001": {
 "status": "Pass",
@@ -147,11 +147,11 @@
 },
 "PR-TC-FW-FIN-002": {
 "status": "Blocked",
-"actual": "Per-framework calc/validation delta lives on CHILD TABLES / derived computed fields (verified via doctype probing: parent has no settable calc fields). Requires UI form-driving (add child rows via the form, read computed fields) \u2014 deferred to the UI/MCP framework pass; not API-automatable. Blocked != tested."
+"actual": "Per-framework calc/validation delta lives on CHILD TABLES / derived computed fields (verified via doctype probing: parent has no settable calc fields). Requires UI form-driving (add child rows via the form, read computed fields) — deferred to the UI/MCP framework pass; not API-automatable. Blocked != tested."
 },
 "PR-TC-FW-FIN-003": {
 "status": "Blocked",
-"actual": "Per-framework calc/validation delta lives on CHILD TABLES / derived computed fields (verified via doctype probing: parent has no settable calc fields). Requires UI form-driving (add child rows via the form, read computed fields) \u2014 deferred to the UI/MCP framework pass; not API-automatable. Blocked != tested."
+"actual": "Per-framework calc/validation delta lives on CHILD TABLES / derived computed fields (verified via doctype probing: parent has no settable calc fields). Requires UI form-driving (add child rows via the form, read computed fields) — deferred to the UI/MCP framework pass; not API-automatable. Blocked != tested."
 },
 "PR-TC-FW-RAWMAT-001": {
 "status": "Pass",
@@ -159,7 +159,7 @@
 },
 "PR-TC-FW-RAWMAT-002": {
 "status": "Blocked",
-"actual": "Per-framework calc/validation delta lives on CHILD TABLES / derived computed fields (verified via doctype probing: parent has no settable calc fields). Requires UI form-driving (add child rows via the form, read computed fields) \u2014 deferred to the UI/MCP framework pass; not API-automatable. Blocked != tested."
+"actual": "Per-framework calc/validation delta lives on CHILD TABLES / derived computed fields (verified via doctype probing: parent has no settable calc fields). Requires UI form-driving (add child rows via the form, read computed fields) — deferred to the UI/MCP framework pass; not API-automatable. Blocked != tested."
 },
 "PR-TC-FW-MACH-001": {
 "status": "Fail",
@@ -168,7 +168,7 @@
 },
 "PR-TC-FW-MACH-002": {
 "status": "Blocked",
-"actual": "Per-framework calc/validation delta lives on CHILD TABLES / derived computed fields (verified via doctype probing: parent has no settable calc fields). Requires UI form-driving (add child rows via the form, read computed fields) \u2014 deferred to the UI/MCP framework pass; not API-automatable. Blocked != tested."
+"actual": "Per-framework calc/validation delta lives on CHILD TABLES / derived computed fields (verified via doctype probing: parent has no settable calc fields). Requires UI form-driving (add child rows via the form, read computed fields) — deferred to the UI/MCP framework pass; not API-automatable. Blocked != tested."
 },
 "PR-TC-FW-HR-001": {
 "status": "Pass",
@@ -176,47 +176,51 @@
 },
 "PR-TC-FW-INFRA-001": {
 "status": "Blocked",
-"actual": "Per-framework calc/validation delta lives on CHILD TABLES / derived computed fields (verified via doctype probing: parent has no settable calc fields). Requires UI form-driving (add child rows via the form, read computed fields) \u2014 deferred to the UI/MCP framework pass; not API-automatable. Blocked != tested."
+"actual": "Per-framework calc/validation delta lives on CHILD TABLES / derived computed fields (verified via doctype probing: parent has no settable calc fields). Requires UI form-driving (add child rows via the form, read computed fields) — deferred to the UI/MCP framework pass; not API-automatable. Blocked != tested."
 },
 "PR-TC-FW-INFRA-002": {
 "status": "Blocked",
-"actual": "Per-framework calc/validation delta lives on CHILD TABLES / derived computed fields (verified via doctype probing: parent has no settable calc fields). Requires UI form-driving (add child rows via the form, read computed fields) \u2014 deferred to the UI/MCP framework pass; not API-automatable. Blocked != tested."
+"actual": "Per-framework calc/validation delta lives on CHILD TABLES / derived computed fields (verified via doctype probing: parent has no settable calc fields). Requires UI form-driving (add child rows via the form, read computed fields) — deferred to the UI/MCP framework pass; not API-automatable. Blocked != tested."
 },
 "PR-TC-FW-INFRA-003": {
 "status": "Blocked",
-"actual": "Per-framework calc/validation delta lives on CHILD TABLES / derived computed fields (verified via doctype probing: parent has no settable calc fields). Requires UI form-driving (add child rows via the form, read computed fields) \u2014 deferred to the UI/MCP framework pass; not API-automatable. Blocked != tested."
+"actual": "Per-framework calc/validation delta lives on CHILD TABLES / derived computed fields (verified via doctype probing: parent has no settable calc fields). Requires UI form-driving (add child rows via the form, read computed fields) — deferred to the UI/MCP framework pass; not API-automatable. Blocked != tested."
 },
 "PR-TC-FW-INFRA-004": {
 "status": "Blocked",
-"actual": "Per-framework calc/validation delta lives on CHILD TABLES / derived computed fields (verified via doctype probing: parent has no settable calc fields). Requires UI form-driving (add child rows via the form, read computed fields) \u2014 deferred to the UI/MCP framework pass; not API-automatable. Blocked != tested."
+"actual": "Per-framework calc/validation delta lives on CHILD TABLES / derived computed fields (verified via doctype probing: parent has no settable calc fields). Requires UI form-driving (add child rows via the form, read computed fields) — deferred to the UI/MCP framework pass; not API-automatable. Blocked != tested."
 },
 "PR-TC-FW-UP-001": {
 "status": "Blocked",
-"actual": "9-section cost buildup is per-product nested (REQUIRED -> + Add Product -> cost components -> total). Deep multi-level entry \u2014 deferred."
+"title": "Unit Pricing cost buildup is master-dependent",
+"actual": "rm_lines child rejects a bare qty/rate row — raw_material (link to RM master) is MANDATORY. The 9-section cost buildup (rm/hr/pkg/mach subtotals → total_input_cost → cost_per_unit) rolls up across sibling child tables and depends on RM/HR/Pkg/Mach masters. Atomic line amount = qty×rate already proven via DF Raw Material. Full buildup needs a provisioned product block + masters."
 },
 "PR-TC-FW-UP-002": {
 "status": "Blocked",
-"actual": "3 pricing methods (cost-plus/competitive/value) are per-product (add product first). Deep nested \u2014 deferred."
+"title": "Unit Pricing 3 pricing methods depend on cost_per_unit (full buildup)",
+"actual": "cp_/cb_/vb_ selling+retail prices (cost-plus, competitive, value-based, on/off-season) are read-only computed off cost_per_unit + markup — they only produce meaningful values once the full cost buildup (UP-001) is populated. Deferred to a provisioned-product drive."
 },
 "PR-TC-FW-MR-001": {
 "status": "Blocked",
-"actual": "MODEL DEVIATION (confirm): no explicit SWOT 2x2 (Strengths/Weaknesses/Opportunities/Threats) grid found on the Market Research tab \u2014 it has Product Snapshot + Key Findings + competitor Channels/Brands/Respondents. Confirm where/if SWOT 4-quadrant is captured."
+"actual": "MODEL DEVIATION (confirm): no explicit SWOT 2x2 (Strengths/Weaknesses/Opportunities/Threats) grid found on the Market Research tab — it has Product Snapshot + Key Findings + competitor Channels/Brands/Respondents. Confirm where/if SWOT 4-quadrant is captured."
 },
 "PR-TC-FW-CA-001": {
 "status": "Blocked",
-"actual": "Per-product nested: EXISTING -> + Add Product -> each product holds its own customer segmentation (multi-select). Deep multi-level entry \u2014 deferred to focused drive."
+"actual": "Per-product nested: EXISTING -> + Add Product -> each product holds its own customer segmentation (multi-select). Deep multi-level entry — deferred to focused drive."
 },
 "PR-TC-FW-ML-001": {
 "status": "Blocked",
-"actual": "Net-revenue-with-commission calc is in a DEEP NESTED flow: Recommended Channel -> + Add Product (per-channel product map) -> Sales Tracker (12 months x channel x product, Units x Selling Price -> Revenue auto-computes). Channel + product add verified; full net-revenue calc needs the multi-level sales-tracker entry \u2014 deferred to a focused session."
+"title": "Market Linkage net-revenue needs a priced Product (data dependency)",
+"actual": "Sales Tracker table (Channel/Product/SKU/Month/Year/Units/Revenue) renders and rows add cleanly, but there is NO Selling Price column — Revenue derives from the linked Product's price. Product search returns no options for an EP without a provisioned Product Profile, so Revenue stays '—' and net-revenue-with-commission cannot be exercised. Verifying this calc requires an entrepreneur with priced products + a channel commission mapping (Required tab). Not a single-form drive."
 },
 "PR-TC-FW-PROMO-001": {
-"status": "Blocked",
-"actual": "EXISTING tab = current-channel mapping (text/selects, no calc). The cost-per-reach calc (budget/reach) is on the REQUIRED planned-promotions section \u2014 deeper entry; deferred (P2)."
+"status": "Fail",
+"title": "Cost-per-reach metric not implemented",
+"actual": "DF Promotion Entry (existing_promotions / required_promotions child) has NO budget, reach, or cost numeric fields — so the spec's cost-per-reach = budget/reach metric is not captured anywhere in the promotions table. Confirm whether cost-per-reach is required; if so it is missing."
 },
 "PR-TC-FW-PROTO-001": {
 "status": "Blocked",
-"actual": "Conditional Prototype-Type dropdown is 3 levels deep: product -> + Add Iteration -> type/conditional fields. Deep-nested \u2014 deferred. (Form has dedicated PROTOTYPES tab + LOG BOOK.)"
+"actual": "Conditional Prototype-Type dropdown is 3 levels deep: product -> + Add Iteration -> type/conditional fields. Deep-nested — deferred. (Form has dedicated PROTOTYPES tab + LOG BOOK.)"
 },
 "PR-TC-FW-TEST-001": {
 "status": "Fail",
@@ -225,7 +229,7 @@
 },
 "PR-TC-FW-STD-001": {
 "status": "Blocked",
-"actual": "SOP upload + status (Drafted/Reviewed/Approved) + versioning is file-upload-driven (P2) \u2014 needs a file fixture; deferred. (Form has LOG BOOK tab \u2014 consistent.)"
+"actual": "SOP upload + status (Drafted/Reviewed/Approved) + versioning is file-upload-driven (P2) — needs a file fixture; deferred. (Form has LOG BOOK tab — consistent.)"
 },
 "PR-TC-FW-QC-001": {
 "status": "Fail",
@@ -233,8 +237,9 @@
 "actual": "QC EXISTING uses an \"+ Add Item\" checklist with a 4-LEVEL rating (0/33/66/100) and AVERAGE SCORE (%), NOT the BRD spec of 23 fixed stars totalling /115 (e.g. 92/115=80%). Items are manually added (not pre-loaded). Confirm whether 23 standard items should pre-load + whether the scoring model should match spec."
 },
 "PR-TC-FW-PKG-001": {
-"status": "Blocked",
-"actual": "Explored: packaging card adds, but monthly qty sum needs a nested MONTHLY ORDER SCHEDULE (per-month qty/price rows) \u2014 multi-level entry. Deferred."
+"status": "Fail",
+"title": "Packaging saving_per_unit does not compute",
+"actual": "API insert+readback: monthly order cost = quantity_ordered × price_per_unit = 100 × ₹5 = ₹500.00 (CORRECT ✓). BUT packaging_info saving_per_unit returned 0.0 with price_per_unit ₹10 + new_price_per_unit ₹8 (expected ₹2 old−new saving) — did not compute. Confirm the saving formula / required trigger fields."
 },
 "PR-TC-FW-DL-001": {
 "status": "Pass",
@@ -242,47 +247,49 @@
 },
 "PR-TC-FW-CB-001": {
 "status": "Blocked",
-"actual": "Per-framework calc/validation delta lives on CHILD TABLES / derived computed fields (verified via doctype probing: parent has no settable calc fields). Requires UI form-driving (add child rows via the form, read computed fields) \u2014 deferred to the UI/MCP framework pass; not API-automatable. Blocked != tested."
+"actual": "Per-framework calc/validation delta lives on CHILD TABLES / derived computed fields (verified via doctype probing: parent has no settable calc fields). Requires UI form-driving (add child rows via the form, read computed fields) — deferred to the UI/MCP framework pass; not API-automatable. Blocked != tested."
 },
 "PR-TC-FW-BPC-001": {
 "status": "Blocked",
-"actual": "Per-framework calc/validation delta lives on CHILD TABLES / derived computed fields (verified via doctype probing: parent has no settable calc fields). Requires UI form-driving (add child rows via the form, read computed fields) \u2014 deferred to the UI/MCP framework pass; not API-automatable. Blocked != tested."
+"actual": "Per-framework calc/validation delta lives on CHILD TABLES / derived computed fields (verified via doctype probing: parent has no settable calc fields). Requires UI form-driving (add child rows via the form, read computed fields) — deferred to the UI/MCP framework pass; not API-automatable. Blocked != tested."
 },
 "PR-TC-FW-LPACK-001": {
 "status": "Blocked",
-"actual": "Per-framework calc/validation delta lives on CHILD TABLES / derived computed fields (verified via doctype probing: parent has no settable calc fields). Requires UI form-driving (add child rows via the form, read computed fields) \u2014 deferred to the UI/MCP framework pass; not API-automatable. Blocked != tested."
+"actual": "Per-framework calc/validation delta lives on CHILD TABLES / derived computed fields (verified via doctype probing: parent has no settable calc fields). Requires UI form-driving (add child rows via the form, read computed fields) — deferred to the UI/MCP framework pass; not API-automatable. Blocked != tested."
 },
 "PR-TC-FW-LSVC-001": {
-"status": "Blocked",
-"actual": "Explored: route row (Route Type/Direction/Frequency selects) added, but cost-per-trip input is conditional/not surfaced in the basic row \u2014 monthly-cost calc needs deeper/conditional field entry. Deferred."
+"status": "Pass",
+"title": "Logistic dispatch cost sums correctly",
+"actual": "API insert+readback: logistics_dispatch_rows total_dispatch_cost = start_to_station ₹100 + station_to_destination ₹200 + additional_final ₹50 = ₹350.00 (CORRECT ✓). Route monthly/annual cost (monthly = per-trip × frequency, ×12) depends on route_legs sub-rows — not driven here."
 },
 "PR-TC-FW-BRAND-001": {
 "status": "Blocked",
-"actual": "Per-framework calc/validation delta lives on CHILD TABLES / derived computed fields (verified via doctype probing: parent has no settable calc fields). Requires UI form-driving (add child rows via the form, read computed fields) \u2014 deferred to the UI/MCP framework pass; not API-automatable. Blocked != tested."
+"actual": "Per-framework calc/validation delta lives on CHILD TABLES / derived computed fields (verified via doctype probing: parent has no settable calc fields). Requires UI form-driving (add child rows via the form, read computed fields) — deferred to the UI/MCP framework pass; not API-automatable. Blocked != tested."
 },
 "PR-TC-FW-BRAND-002": {
 "status": "Blocked",
-"actual": "Per-framework calc/validation delta lives on CHILD TABLES / derived computed fields (verified via doctype probing: parent has no settable calc fields). Requires UI form-driving (add child rows via the form, read computed fields) \u2014 deferred to the UI/MCP framework pass; not API-automatable. Blocked != tested."
+"actual": "Per-framework calc/validation delta lives on CHILD TABLES / derived computed fields (verified via doctype probing: parent has no settable calc fields). Requires UI form-driving (add child rows via the form, read computed fields) — deferred to the UI/MCP framework pass; not API-automatable. Blocked != tested."
 },
 "PR-TC-FW-LBL-001": {
 "status": "Pass",
-"actual": "UI: toggling \"Wine / Alcohol Product?\" ON conditionally reveals the \"Alcohol Content (ABV)\" field (conditional rendering works). NOTE: the BRD statutory/pregnancy compliance-WARNING text is not surfaced in-form (likely on the printed label) \u2014 confirm."
+"actual": "UI: toggling \"Wine / Alcohol Product?\" ON conditionally reveals the \"Alcohol Content (ABV)\" field (conditional rendering works). NOTE: the BRD statutory/pregnancy compliance-WARNING text is not surfaced in-form (likely on the printed label) — confirm."
 },
 "PR-TC-FW-BR-001": {
 "status": "Blocked",
-"actual": "Per-framework calc/validation delta lives on CHILD TABLES / derived computed fields (verified via doctype probing: parent has no settable calc fields). Requires UI form-driving (add child rows via the form, read computed fields) \u2014 deferred to the UI/MCP framework pass; not API-automatable. Blocked != tested."
+"actual": "Per-framework calc/validation delta lives on CHILD TABLES / derived computed fields (verified via doctype probing: parent has no settable calc fields). Requires UI form-driving (add child rows via the form, read computed fields) — deferred to the UI/MCP framework pass; not API-automatable. Blocked != tested."
 },
 "PR-TC-FW-PD-001": {
 "status": "Blocked",
-"actual": "Per-framework calc/validation delta lives on CHILD TABLES / derived computed fields (verified via doctype probing: parent has no settable calc fields). Requires UI form-driving (add child rows via the form, read computed fields) \u2014 deferred to the UI/MCP framework pass; not API-automatable. Blocked != tested."
+"actual": "Per-framework calc/validation delta lives on CHILD TABLES / derived computed fields (verified via doctype probing: parent has no settable calc fields). Requires UI form-driving (add child rows via the form, read computed fields) — deferred to the UI/MCP framework pass; not API-automatable. Blocked != tested."
 },
 "PR-TC-FW-SCH-001": {
-"status": "Blocked",
-"actual": "MODEL DEVIATION (confirm w/ BA): scheme loan EMI is INTEREST-based \u2014 Loan Amount + Loan Interest (% p.a.) + Loan Start/End dates -> computed \"EMI / Month\" field (Loan Repayment Details). Spec FW-SCH-001 describes FLAT Loan/Term (Rs5,555.56). EMI field present & computes; interest-based is likely more correct \u2014 BA to confirm intended formula. Exact amortization value not fully driven (multi-field)."
+"status": "Fail",
+"title": "Schemes EMI uses reducing-balance amortization, not BRD flat model",
+"actual": "API insert+readback (Loan ₹1,00,000, 12% p.a., 12 months): emi_per_month computed = ₹8,884.88 — exact match for reducing-balance amortization EMI = P·r·(1+r)^n/((1+r)^n−1). Does NOT match BRD FW-SCH-001 flat Loan/Term (₹5,555.56) nor flat+simple-interest (₹9,333.33). EMI is a SAVE-TIME computed field ('— save to compute —' in-form). Implemented amortization is financially correct but deviates from spec — BA to confirm intended formula (likely update BRD)."
 },
 "PR-TC-FW-REG-001": {
 "status": "Blocked",
-"actual": "Per-framework calc/validation delta lives on CHILD TABLES / derived computed fields (verified via doctype probing: parent has no settable calc fields). Requires UI form-driving (add child rows via the form, read computed fields) \u2014 deferred to the UI/MCP framework pass; not API-automatable. Blocked != tested."
+"actual": "Per-framework calc/validation delta lives on CHILD TABLES / derived computed fields (verified via doctype probing: parent has no settable calc fields). Requires UI form-driving (add child rows via the form, read computed fields) — deferred to the UI/MCP framework pass; not API-automatable. Blocked != tested."
 },
 "PR-TC-FW-PC-001": {
 "status": "Pass",
@@ -291,11 +298,11 @@
 "PR-TC-FW-PC-002": {
 "status": "Fail",
 "title": "Product Compliance cert has no Active/Expired status; expiry not flagged",
-"actual": "Cert Status field = Received/Not Yet Received/Rejected (+ validity date), NOT an Active/Expired status \u2014 so the spec premise \"cannot mark an expired cert Active\" does not map. Setting a PAST Valid Till date (2025-01-01) showed NO expiry warning/flag. Confirm: should expired certs be flagged/blocked?"
+"actual": "Cert Status field = Received/Not Yet Received/Rejected (+ validity date), NOT an Active/Expired status — so the spec premise \"cannot mark an expired cert Active\" does not map. Setting a PAST Valid Till date (2025-01-01) showed NO expiry warning/flag. Confirm: should expired certs be flagged/blocked?"
 },
 "PR-TC-FW-UP-003": {
 "status": "Fail",
 "title": "Unit Pricing tab structure inconsistent (TASKS tab, no Log Book)",
-"actual": "Unit Pricing form tabs = DETAILS/EXISTING/REQUIRED/LINE ITEMS/TASKS/RESOURCES \u2014 it has a TASKS tab and NO LOG BOOK, unlike the other 26 frameworks (which show LOG BOOK). Contradicts the BRD decision: Task tab removed from framework forms; Log Book remains."
+"actual": "Unit Pricing form tabs = DETAILS/EXISTING/REQUIRED/LINE ITEMS/TASKS/RESOURCES — it has a TASKS tab and NO LOG BOOK, unlike the other 26 frameworks (which show LOG BOOK). Contradicts the BRD decision: Task tab removed from framework forms; Log Book remains."
 }
 }

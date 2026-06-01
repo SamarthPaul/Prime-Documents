@@ -86,7 +86,7 @@ td{border-top:1px solid var(--border);padding:8px 10px;font-size:13px;vertical-a
 @media print{th{background:#0E4D4E!important;-webkit-print-color-adjust:exact;print-color-adjust:exact}}
 </style></head><body><div class="wrap">
 <h1>PRIME Rural — Manual QA Checklist</h1>
-<p class="sub">Items the automated Playwright suite + MCP visual pass could not verify. Companion to <b>test-cases.html</b> / the <b>Bugs Only</b> sheet (58 automated findings already filed).</p>
+<p class="sub">Items the automated Playwright suite + MCP visual pass could not verify. Companion to <b>test-cases.html</b> / the <b>Bugs Only</b> sheet (59 findings already filed).</p>
 <div class="note"><b>How to use:</b> work top-down. ✅ tick the box, mark <b>Result</b> = Pass / Fail, add Notes. Log any Fail into the bug tracker with the case ID. Sections tagged <b>[DEV]</b>/<b>[INFRA]</b>/<b>[EXTERNAL]</b> are not pure manual-QA — route to the dev/infra owner. <b>Section 3 (framework calcs)</b> is fastest if the dev provides the <b>calc input-contracts</b> (which child-table fields feed each computed field) — then they can be API-tested in bulk instead of hand-filled.</div>
 ''']
 parts.append(f'<p class="count">Total items to verify: <b>{len(rows)}</b> across {len(groups)} sections.</p>')
