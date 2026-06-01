@@ -76,3 +76,56 @@ test('PR-TC-FW-LBL-001 · Labels: alcohol toggle reveals Alcohol Content field',
   await expect(page.locator('main'), 'alcohol toggle should reveal Alcohol Content (ABV)')
     .toContainText(/Alcohol Content/i);
 });
+
+/* ---------------------------------------------------------------------------
+ * Structural / model-deviation characterisations.
+ * These assert what staging CURRENTLY does (so the suite is a regression
+ * baseline); the deviation from the BRD is called out in the comment and is
+ * already filed in the Bugs sheet. Each was confirmed in the MCP pass.
+ * ------------------------------------------------------------------------- */
+
+test('PR-TC-FW-QC-001 · Quality Control uses %-average scoring, not BRD /115 stars', async ({ page }) => {
+  await page.goto('/primerural/d/DF Quality Control/new');
+  await page.waitForLoadState('networkidle').catch(() => {});
+  await tab(page, /^existing$/i).click();
+  await page.getByRole('button', { name: /\+ Add Item/i }).first().click();
+  const main = page.locator('main');
+  await expect(main, 'QC shows an AVERAGE SCORE (%) model').toContainText(/average score/i);
+  // BRD spec is 23 fixed stars totalling /115 — confirm with BA which model is canonical.
+  await expect(main, 'BRD /115 fixed-star total is NOT used').not.toContainText('/115');
+});
+
+test('PR-TC-FW-PC-002 · Product Compliance cert status is Received/Rejected, not Active/Expired', async ({ page }) => {
+  await page.goto('/primerural/d/DF Product Compliance/new');
+  await page.waitForLoadState('networkidle').catch(() => {});
+  await tab(page, /^existing$/i).click();
+  await page.getByRole('button', { name: /\+ Add/i }).first().click();
+  // Status model is Received / Not Yet Received / Rejected (+ validity date) — there is no
+  // Active/Expired state, so an expired cert is not flagged. Confirm intended behaviour.
+  await expect(page.locator('main')).toContainText(/not yet received|received|rejected/i);
+});
+
+/* ---------------------------------------------------------------------------
+ * Deep-nested / save-time / file-upload flows — documented, not yet codified.
+ * Each needs multi-level entry (product → child → leaf), a save-time assertion
+ * with cleanup, or a file fixture. Tracked here so they are visible, not lost.
+ * (Most also depend on stable selectors — see the data-testid ask.)
+ * ------------------------------------------------------------------------- */
+const DEFERRED: Array<[string, string]> = [
+  ['PR-TC-FW-TEST-001', 'Product Testing date-chain (Sent≤Received≤Reported): needs a save-time assertion + record cleanup; live edit fires no validation (filed).'],
+  ['PR-TC-FW-UP-001',   'Unit Pricing 9-section cost buildup: per-product nested (REQUIRED → + Add Product → cost components → total).'],
+  ['PR-TC-FW-UP-002',   'Unit Pricing 3 pricing methods (cost-plus/competitive/value): per-product, add product first.'],
+  ['PR-TC-FW-CA-001',   'Customer Analysis segmentation: per-product nested (EXISTING → + Add Product → segmentation multi-select).'],
+  ['PR-TC-FW-ML-001',   'Market Linkage net-revenue-with-commission: 3-level (Channel → + Add Product → Sales Tracker 12mo grid).'],
+  ['PR-TC-FW-SCH-001',  'Schemes EMI: interest-based amortisation (Loan Amount + Interest + dates → EMI/Month); BA to confirm vs flat model.'],
+  ['PR-TC-FW-MR-001',   'Market Research SWOT: no 4-quadrant grid found (Product Snapshot + Key Findings + competitor channels instead); absence-only assertion is too weak to codify — confirm model with BA.'],
+  ['PR-TC-FW-UP-003',   'Unit Pricing TASKS-tab / no-LOG-BOOK deviation: tab bar renders only on a saved record (blank /new shows just Save/Cancel), so it needs an existing UP record + stable tab hook to codify. Verified via MCP (filed).'],
+  ['PR-TC-FW-PROMO-001','Promotional Marketing cost-per-reach (budget/reach): on REQUIRED planned-promotions, deeper entry.'],
+  ['PR-TC-FW-PROTO-001','Product Prototyping conditional Prototype-Type: 3 levels (product → + Add Iteration → conditional fields).'],
+  ['PR-TC-FW-PKG-001',  'Packaging monthly-qty sum: nested MONTHLY ORDER SCHEDULE (per-month qty/price rows).'],
+  ['PR-TC-FW-LSVC-001', 'Logistic Service cost-per-trip: conditional field not surfaced in the basic route row.'],
+  ['PR-TC-FW-STD-001',  'Standardization SOP upload + status + versioning: needs a file fixture (file-upload-driven).'],
+];
+for (const [id, why] of DEFERRED) {
+  test(`${id} · deferred form-fill`, () => { test.fixme(true, why); });
+}
