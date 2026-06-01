@@ -3721,18 +3721,17 @@ table.matrix tr:nth-child(even) td { background: var(--offwhite); }
         <span class="tag pol-neg">Negative</span><span class="tag pri-p0">P0</span>
         <span class="tag tp val">Validation</span><span class="tag role">FA</span>
       </div>
-      <div class="tc-title">Required fields enforced: Name, Sector, District, Block, Village</div>
+      <div class="tc-title">Required fields enforced: Entrepreneur Name + Phone; geography auto-set from Program Access</div>
       <div class="tc-body">
         <span class="label">Steps</span>
         <ol>
           <li>Save with all fields blank.</li>
           <li>Fill only Name; save.</li>
-          <li>Fill Name + Sector; save.</li>
-          <li>Continue progressively.</li>
+          <li>Add Phone; save.</li>
         </ol>
         <div class="exp">
           <span class="label">Expected</span>
-          Each save lists the still-missing required fields inline with terracotta border-error. Top banner counts unfixed errors. Focus jumps to first invalid.
+          Only Entrepreneur Name and Phone are mandatory (inline terracotta border-error + banner count + focus to first invalid). District/Block/Village are auto-populated server-side from the FA's Program Access — not user-entered and not blocking (per repo). Village is NOT a required-to-save field.
         </div>
       </div>
     </div>
@@ -3743,16 +3742,16 @@ table.matrix tr:nth-child(even) td { background: var(--offwhite); }
         <span class="tag pol-neg">Negative</span><span class="tag pri-p0">P0</span>
         <span class="tag tp val">Validation</span><span class="tag role">FA</span>
       </div>
-      <div class="tc-title">Entrepreneur Name is unique (case-insensitive within cohort)</div>
+      <div class="tc-title">Entrepreneur Name is unique (global)</div>
       <div class="tc-body">
         <span class="label">Steps</span>
         <ol>
-          <li>Save EP "Hilltop Honey" (case 1).</li>
-          <li>Try to save another EP with the same name "hilltop honey".</li>
+          <li>Save EP "Hilltop Honey".</li>
+          <li>Try to save another EP with the exact same name "Hilltop Honey".</li>
         </ol>
         <div class="exp">
           <span class="label">Expected</span>
-          Second save rejected: "An entrepreneur with this name already exists in this cohort." (Verify with PM whether uniqueness is cohort-scoped or global. Names like "Cherift Shylla" are common — likely cohort-scoped + phone-or-village disambiguator.)
+          Second save rejected — enterprenur_name has a GLOBAL unique constraint in the repo (case-sensitive). [If cohort-scoped, case-insensitive uniqueness is wanted for common names, that is a spec change — confirm with PM; the current build is global.]
         </div>
       </div>
     </div>
@@ -3763,17 +3762,15 @@ table.matrix tr:nth-child(even) td { background: var(--offwhite); }
         <span class="tag pol-neg">Negative</span><span class="tag pri-p0">P0</span>
         <span class="tag tp val">Validation</span><span class="tag role">FA</span>
       </div>
-      <div class="tc-title">DOB validation: not future, not &gt; 100 years old, not &lt; 14 years old</div>
+      <div class="tc-title">DOB validation: future date blocked</div>
       <div class="tc-body">
         <span class="label">Steps</span>
         <ol>
           <li>DOB = tomorrow. Save.</li>
-          <li>DOB = 31-Dec-1899 (&gt; 100 years).</li>
-          <li>DOB = today - 10 years.</li>
         </ol>
         <div class="exp">
           <span class="label">Expected</span>
-          All three rejected with specific messages: "Date of Birth cannot be in the future." / "Date of Birth seems too far in the past." / "Entrepreneur must be at least 14 years old."
+          Future DOB cannot be set — the date picker caps maxDate at today. [Min-age 14 / max-age 100 are NOT implemented in the repo; add to spec if those bounds are required before testing them.]
         </div>
       </div>
     </div>
@@ -4047,15 +4044,15 @@ table.matrix tr:nth-child(even) td { background: var(--offwhite); }
         <span class="tag pol-neg">Negative</span><span class="tag pri-p1">P1</span>
         <span class="tag tp val">Validation</span><span class="tag role">CTP</span>
       </div>
-      <div class="tc-title">Cannot set Final Selection without an attachment (jury / decision document)</div>
+      <div class="tc-title">Final Selection becomes mandatory once Rural E-Champ Score is entered</div>
       <div class="tc-body">
         <span class="label">Steps</span>
         <ol>
-          <li>Try to set Final Selection without uploading a supporting document.</li>
+          <li>As Core Team, enter a Rural E-Champ Score. Leave Final Selection blank. Save.</li>
         </ol>
         <div class="exp">
           <span class="label">Expected</span>
-          Rejected: "A supporting document is required when setting Final Selection."
+          Save rejected — Final Selection (Incubated / Supported) is mandatory once a Rural E-Champ Score is set (repo mandatory_depends_on). [There is NO "attachment required for Final Selection" rule — the attachment is optional and Core-Team-only.]
         </div>
       </div>
     </div>
@@ -4068,19 +4065,17 @@ table.matrix tr:nth-child(even) td { background: var(--offwhite); }
         <span class="tag pol-pos">Positive</span><span class="tag pri-p0">P0</span>
         <span class="tag tp func">Functional</span><span class="tag role">FA / CTP</span>
       </div>
-      <div class="tc-title">Framework Prioritisation table: pick frameworks for this EP, set priority 1-5</div>
+      <div class="tc-title">Framework Prioritisation: reorder the auto-listed frameworks by priority</div>
       <div class="tc-body">
         <span class="label">Steps</span>
         <ol>
-          <li>Open EP. Prioritisation tab. Add rows.</li>
-          <li>Framework = Raw Materials, Priority = 1.</li>
-          <li>Framework = Unit Pricing, Priority = 2.</li>
-          <li>Framework = Market Linkage, Priority = 3.</li>
-          <li>Save.</li>
+          <li>Set Final Selection = Incubated/Supported so the Prioritisation tab appears.</li>
+          <li>The table is pre-populated with all frameworks from the Diagnostic Framework Master (priority 0 default; rows are not manually added — add/remove is hidden).</li>
+          <li>Set Raw Materials = 1, Unit Pricing = 2, Market Linkage = 3. Save.</li>
         </ol>
         <div class="exp">
           <span class="label">Expected</span>
-          Saved. Diagnostics tab now shows only those 3 frameworks (filtered by what's prioritised). Progress = 0% for each. EP card on dashboards shows priorities in order.
+          Saved. EP cards on the dashboard reorder by ascending priority. [Rows are auto-seeded; there is no "Applicable?" checkbox in the repo.]
         </div>
         <p class="brd">BRD: Decision — Framework Prioritisation by CTIT or Fellow.</p>
       </div>
@@ -4092,15 +4087,15 @@ table.matrix tr:nth-child(even) td { background: var(--offwhite); }
         <span class="tag pol-neg">Negative</span><span class="tag pri-p1">P1</span>
         <span class="tag tp val">Validation</span><span class="tag role">FA / CTP</span>
       </div>
-      <div class="tc-title">Duplicate framework in priority table is rejected</div>
+      <div class="tc-title">Duplicate priority number in the priority table is rejected</div>
       <div class="tc-body">
         <span class="label">Steps</span>
         <ol>
-          <li>Add Raw Materials twice with priorities 1 and 4.</li>
+          <li>Set two frameworks to the same priority number (e.g. both = 1). Save.</li>
         </ol>
         <div class="exp">
           <span class="label">Expected</span>
-          Save rejected: "Framework can only appear once in the priority table."
+          Save rejected — the controller blocks duplicate priority values (and duplicate frameworks). [Frameworks are auto-seeded, so a duplicate framework can't be added via the UI; the controller still guards both.]
         </div>
       </div>
     </div>
@@ -4111,15 +4106,15 @@ table.matrix tr:nth-child(even) td { background: var(--offwhite); }
         <span class="tag pol-neg">Negative</span><span class="tag pri-p2">P2</span>
         <span class="tag tp val">Validation</span><span class="tag role">FA / CTP</span>
       </div>
-      <div class="tc-title">Priority must be a positive integer; warning if &gt; 10</div>
+      <div class="tc-title">Priority accepts any integer (0 is the default for unprioritised rows)</div>
       <div class="tc-body">
         <span class="label">Steps</span>
         <ol>
-          <li>Priority = 0, -1, 100.</li>
+          <li>Leave a row at priority 0; set another to 5; set another to 100. Save (no duplicates).</li>
         </ol>
         <div class="exp">
           <span class="label">Expected</span>
-          0 and -1 rejected. 100 saves but a warning: "Priority &gt; 10 is unusual." (Soft warning, not block.)
+          All accepted — priority is a plain Int with 0 as the default. [There is NO positivity rule or "&gt; 10" warning in the repo; add to spec only if a bound is desired.]
         </div>
       </div>
     </div>
@@ -4175,13 +4170,13 @@ table.matrix tr:nth-child(even) td { background: var(--offwhite); }
         <span class="tag pol-pos">Positive</span><span class="tag pri-p0">P0</span>
         <span class="tag tp func">Functional</span><span class="tag role">FA</span>
       </div>
-      <div class="tc-title">New EP starts in "MET" status by default</div>
+      <div class="tc-title">New EP starts in the pre-selection state (Final Selection blank)</div>
       <div class="tc-body">
         <span class="label">Steps</span>
         <ol><li>Create a new EP. Don't set Final Selection.</li></ol>
         <div class="exp">
           <span class="label">Expected</span>
-          Activity status pill = "MET" (teal-ish or neutral). Final Selection = blank.
+          EP saved with Final Selection = blank (conceptually "MET" in the program model). NOTE: the repo stores activity_status (Active/Inactive) + final_selection (Incubated/Supported) — there is no stored "MET" value; confirm how the pre-selection pill is derived/labelled.
         </div>
       </div>
     </div>
@@ -4192,7 +4187,7 @@ table.matrix tr:nth-child(even) td { background: var(--offwhite); }
         <span class="tag pol-pos">Positive</span><span class="tag pri-p0">P0</span>
         <span class="tag tp func">Functional</span><span class="tag role">CTP</span>
       </div>
-      <div class="tc-title">MET → Incubated transition: pill colour changes, downstream dashboards update</div>
+      <div class="tc-title">Pre-selection → Incubated transition: pill updates, downstream dashboards update</div>
       <div class="tc-body">
         <span class="label">Steps</span>
         <ol>
@@ -4201,7 +4196,7 @@ table.matrix tr:nth-child(even) td { background: var(--offwhite); }
         </ol>
         <div class="exp">
           <span class="label">Expected</span>
-          Sankey diagram now flows this EP into the Incubated stream. Status counts update. Pill on EP card is "Incubated" (specific colour per design — verify it's teal not green).
+          Status counts on the EP dashboards update; pill on the EP card is "Incubated" (verify colour is teal, not green). [Sankey/Intervention Dashboard is out of scope — being rebuilt.]
         </div>
       </div>
     </div>
@@ -4335,12 +4330,12 @@ table.matrix tr:nth-child(even) td { background: var(--offwhite); }
         <span class="label">Steps</span>
         <ol>
           <li>EP → Networking tab → +Add Introduction.</li>
-          <li>Mentor = "[UAT] Mentor One", Objective = "Help with packaging", Status = Pending.</li>
+          <li>Mentor = "[UAT] Mentor One", Contact Type, Introduced By, Objective = "Help with packaging", Meeting Status = "Not Yet Met".</li>
           <li>Save.</li>
         </ol>
         <div class="exp">
           <span class="label">Expected</span>
-          Row added. Mentor preview card with sectors and contact appears. Notification to mentor (if configured).
+          Row added; mentor fields auto-fetch from the Mentor Master record. Meeting Status options = Not Yet Met / Awaiting Response / Scheduled / In Progress / Completed (there is no "Pending" option). NOTE: Mentor Master doctype is not yet built in the repo — confirm build before executing.
         </div>
         <p class="brd">BRD: Networking &amp; Mentoring module.</p>
       </div>
@@ -4568,7 +4563,7 @@ table.matrix tr:nth-child(even) td { background: var(--offwhite); }
         <span class="label">Steps</span>
         <ol>
           <li>EP profile dashboard → "+ Add New Product".</li>
-          <li>Drawer opens. Fill: Product Name = "[UAT] Wild Honey 250 g", Category = Food, Description, Available Months (Jan, Feb, Mar), Shelf Life = 12 months.</li>
+          <li>Drawer opens. Fill: Product Name (from Product Master), Sector, Product Snapshot, tick Available Months (Jan/Feb/Mar), Shelf Life Duration = "12 months".</li>
           <li>Save.</li>
         </ol>
         <div class="exp">
@@ -4584,16 +4579,16 @@ table.matrix tr:nth-child(even) td { background: var(--offwhite); }
         <span class="tag pol-neg">Negative</span><span class="tag pri-p1">P1</span>
         <span class="tag tp val">Validation</span><span class="tag role">FA / CTP</span>
       </div>
-      <div class="tc-title">Product Name required; duplicate within same EP rejected</div>
+      <div class="tc-title">Product Name required; selected from Product Master (autocomplete)</div>
       <div class="tc-body">
         <span class="label">Steps</span>
         <ol>
-          <li>Try save without name.</li>
-          <li>Try save another product with the same name on the same EP.</li>
+          <li>Try save without a Product Name.</li>
+          <li>Pick a Product Name from the Product Master autocomplete; save.</li>
         </ol>
         <div class="exp">
           <span class="label">Expected</span>
-          First: "Product name is required." Second: "Product '[UAT] Wild Honey 250 g' already exists for this entrepreneur."
+          Without a name: "Product name is required." Product Name is a Link to the Product Master (autocomplete), not free text. [A duplicate-per-EP block is NOT a confirmed rule in the wireframe — confirm with BA before testing it.]
         </div>
       </div>
     </div>
@@ -4604,15 +4599,15 @@ table.matrix tr:nth-child(even) td { background: var(--offwhite); }
         <span class="tag pol-neg">Negative</span><span class="tag pri-p1">P1</span>
         <span class="tag tp val">Validation</span><span class="tag role">FA / CTP</span>
       </div>
-      <div class="tc-title">Shelf Life is a positive integer in months; reject 0 / negative / non-numeric</div>
+      <div class="tc-title">Shelf Life Duration is a free-text field (e.g. "12 months")</div>
       <div class="tc-body">
         <span class="label">Steps</span>
         <ol>
-          <li>Try shelf life = 0, -3, "twelve".</li>
+          <li>Enter Shelf Life Duration = "12 months".</li>
         </ol>
         <div class="exp">
           <span class="label">Expected</span>
-          All rejected with appropriate inline errors.
+          Accepted — Shelf Life Duration is a free-text Data field; the wireframe has no numeric/positive-integer validation. [If a numeric months value with validation is required, that is a spec change — confirm with BA.]
         </div>
       </div>
     </div>
@@ -4623,17 +4618,17 @@ table.matrix tr:nth-child(even) td { background: var(--offwhite); }
         <span class="tag pol-pos">Positive</span><span class="tag pri-p1">P1</span>
         <span class="tag tp ui">UI / UX</span><span class="tag role">FA / CTP</span>
       </div>
-      <div class="tc-title">Available Months is a multi-select chip group, not 12 separate booleans</div>
+      <div class="tc-title">Available Months is a 12-row checkbox table (drives the Monthly Production Tracker)</div>
       <div class="tc-body">
         <span class="label">Steps</span>
         <ol>
-          <li>Open the form. Available Months section.</li>
+          <li>Open the form. Available Months section. Tick Jan and Jun.</li>
         </ol>
         <div class="exp">
           <span class="label">Expected</span>
-          12 chips (Jan-Dec). Click to toggle (becomes terracotta when selected). "All months" quick-select. Year-round vs seasonal visually obvious.
+          Available Months is a 12-row checkbox table (TRUE/FALSE per month) — not a chip group. The ticked months become the rows of the Monthly Production Tracker; at least one month must be ticked to generate the tracker.
         </div>
-        <p class="brd">BRD: "available months / shelf life independence" — bug fix from QA.</p>
+        <p class="brd">BRD: Available Months drive the Monthly Production Tracker (checkbox-table model, per wireframe).</p>
       </div>
     </div>
 
@@ -4687,19 +4682,19 @@ table.matrix tr:nth-child(even) td { background: var(--offwhite); }
         <span class="tag pol-pos">Positive</span><span class="tag pri-p1">P1</span>
         <span class="tag tp func">Functional</span><span class="tag role">FA / CTP</span>
       </div>
-      <div class="tc-title">Process flow with machines pre-populates Raw Materials Existing tab</div>
+      <div class="tc-title">Process-flow machines pre-populate the Machinery framework Existing tab</div>
       <div class="tc-body">
         <span class="label">Steps</span>
         <ol>
-          <li>Add a step that uses Machine = "Honey extractor".</li>
+          <li>Add a process step that uses Machine = "Honey extractor" (Machine Status = Existing).</li>
           <li>Save.</li>
-          <li>Open Raw Materials framework for this product.</li>
+          <li>Open the Machinery framework for this entrepreneur.</li>
         </ol>
         <div class="exp">
           <span class="label">Expected</span>
-          "Honey extractor" pre-created as a row in Raw Materials Existing tab. (Cross-framework Golden Thread.)
+          "Honey extractor" pre-created as a row in the Machinery framework Existing tab. Cross-framework auto-fill per journey doc: process-flow machines → Machinery; product Ingredients → Raw Material (machines do NOT feed Raw Materials).
         </div>
-        <p class="brd">BRD Decision: process-flow machines → pre-create Raw Materials Existing rows.</p>
+        <p class="brd">BRD: process-flow machines → Machinery Existing rows; Ingredients → Raw Material rows.</p>
       </div>
     </div>
 
@@ -4716,14 +4711,14 @@ table.matrix tr:nth-child(even) td { background: var(--offwhite); }
         <span class="label">Steps</span>
         <ol>
           <li>Product → Variants tab → +Add Variant.</li>
-          <li>Fill: Variant Name = "250 g jar", Pack Size = 250 g, Unit Cost = 50, Retail Price = 200, Wholesale Price = 150.</li>
+          <li>Fill: Variant Name = "Wildflower", Sub Variant = "Raw", Net Weight = 250, Unit = g.</li>
           <li>Save.</li>
         </ol>
         <div class="exp">
           <span class="label">Expected</span>
-          SKU auto-generated per the SKU framework (e.g. <code>APIC-HHF-250G-001</code>). Visible in the row. Reused across the system (catalogue, market linkage, packaging).
+          SKU auto-generated as VARIANT-SUBVARIANT-WEIGHT-UNIT (spaces stripped, UPPERCASED, empty segments dropped) → e.g. <code>WILDFLOWER-RAW-250-G</code>. Read-only; reused across catalogue / market linkage / packaging. [Retail Price is read-only, fetched from Unit Pricing; there is no Unit Cost / Wholesale field on the variant — pricing lives in the Unit Pricing module.]
         </div>
-        <p class="brd">BRD: SKU framework + Variants tab fields.</p>
+        <p class="brd">BRD: SKU = Variant-SubVariant-Weight-Unit join (per wireframe).</p>
       </div>
     </div>
 
@@ -4733,15 +4728,15 @@ table.matrix tr:nth-child(even) td { background: var(--offwhite); }
         <span class="tag pol-neg">Negative</span><span class="tag pri-p1">P1</span>
         <span class="tag tp val">Validation</span><span class="tag role">FA / CTP</span>
       </div>
-      <div class="tc-title">Wholesale Price &lt; Unit Cost shows a warning (selling at loss)</div>
+      <div class="tc-title">Variant Retail Price is read-only, fetched from Unit Pricing</div>
       <div class="tc-body">
         <span class="label">Steps</span>
         <ol>
-          <li>Unit Cost = 100, Wholesale Price = 80.</li>
+          <li>Open a variant row. Attempt to edit Retail Price.</li>
         </ol>
         <div class="exp">
           <span class="label">Expected</span>
-          Save proceeds but a warning banner: "Wholesale price is below unit cost — entrepreneur will sell at a loss. Confirm intentional." (Soft warning.)
+          Retail Price is read-only on the variant — fetched from the Unit Pricing module (shown with a source + redirect link). There is no editable Unit Cost or Wholesale Price field on the product variant. [Any "wholesale &lt; unit cost" loss-warning belongs to the Unit Pricing framework — confirm with BA.]
         </div>
       </div>
     </div>
@@ -4752,15 +4747,15 @@ table.matrix tr:nth-child(even) td { background: var(--offwhite); }
         <span class="tag pol-neg">Negative</span><span class="tag pri-p1">P1</span>
         <span class="tag tp val">Validation</span><span class="tag role">FA / CTP</span>
       </div>
-      <div class="tc-title">Retail Price &lt; Wholesale Price hard-blocks save</div>
+      <div class="tc-title">Variant Volume auto-computes from L × B × H</div>
       <div class="tc-body">
         <span class="label">Steps</span>
         <ol>
-          <li>Wholesale = 150, Retail = 100.</li>
+          <li>Set variant dimensions: L = 10, B = 5, H = 4 (cm).</li>
         </ol>
         <div class="exp">
           <span class="label">Expected</span>
-          Rejected: "Retail price must be ≥ Wholesale price."
+          Volume auto-computes = 10 × 5 × 4 = 200 cm³ (read-only, shown with unit³). [Replaces the old "Retail &lt; Wholesale" check — those fields don't exist on the variant; pricing lives in Unit Pricing.]
         </div>
       </div>
     </div>
@@ -4836,18 +4831,17 @@ table.matrix tr:nth-child(even) td { background: var(--offwhite); }
         <span class="tag pol-pos">Positive</span><span class="tag pri-p1">P1</span>
         <span class="tag tp func">Functional</span><span class="tag role">FA / CTP</span>
       </div>
-      <div class="tc-title">Master SKU correctly expands to variant SKUs</div>
+      <div class="tc-title">Variant SKU auto-generates from Variant + Sub Variant + Net Weight + Unit</div>
       <div class="tc-body">
         <span class="label">Steps</span>
         <ol>
-          <li>Product Master SKU = APIC-HHF.</li>
-          <li>Add variants 250g, 500g, 1kg.</li>
+          <li>Add variants: (Wildflower, Raw, 250, g), (Wildflower, Raw, 500, g), (Wildflower, Raw, 1, kg).</li>
         </ol>
         <div class="exp">
           <span class="label">Expected</span>
-          Variant SKUs: APIC-HHF-250G-001, APIC-HHF-500G-001, APIC-HHF-1KG-001. (Logic per SKU framework — verify against the SKU reference HTML.)
+          Variant SKUs = WILDFLOWER-RAW-250-G, WILDFLOWER-RAW-500-G, WILDFLOWER-RAW-1-KG (join of Variant-SubVariant-Weight-Unit; stripped, UPPERCASED, empty segments dropped). [No "APIC-HHF" master-expansion-with-numeric-suffix scheme exists in the wireframe.]
         </div>
-        <p class="brd">BRD QA fix: Master SKU expansion logic.</p>
+        <p class="brd">BRD: SKU = Variant-SubVariant-Weight-Unit join (per wireframe).</p>
       </div>
     </div>
 
@@ -4867,7 +4861,7 @@ table.matrix tr:nth-child(even) td { background: var(--offwhite); }
         </ol>
         <div class="exp">
           <span class="label">Expected</span>
-          Opens product detail (in drawer or new page). All product tabs accessible: Details, Process Flow, Variants, Financials, Compliance.
+          Opens product detail (in drawer or new page). The four product tabs are accessible: Product Details, Product Variants, Process Flow, Production Capacity. [No Financials/Compliance tab exists on the product form — per wireframe.]
         </div>
       </div>
     </div>
