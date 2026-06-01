@@ -543,7 +543,7 @@ ROWS += [
 ("Product Form", "Product Profile", "field", "Products show as clickable photo cards on profile dashboard", "Y", "Y", "", ""),
 ("Product Form", "Product Profile", "calc", "General logic: calc fields show formula; fetched fields show source + redirect", "Y", "P", "", ""),
 ("Product Form", "Product Profile", "field", "Tabs = Details / Variants / Process Flow / Production Capacity (no Financials/Compliance)", "Y", "Y", "stale", "PR-001/015 reference Financials/Compliance tabs that don't exist"),
-("Product Form", "Product Profile", "auto-fill", "Data-flow: Ingredients -> RM; Machines -> Machinery", "Y", "N", "brd", "BRD data-flow (~line 1735) wrongly routes process-flow machines into Raw Materials Existing"),
+("Product Form", "Product Profile", "auto-fill", "Data-flow: Ingredients -> RM; Machines -> Machinery", "Y", "N", "", "FIXED in BRD: removed the erroneous machines->Raw-Materials data-flow row (now routes machines -> Machinery only)"),
 ]
 
 

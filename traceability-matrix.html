@@ -32,7 +32,8 @@ tr.stale td{background:#fdf3ee}tr.brd td,tr.build td{background:#faf4fb}
 <div class="note"><b>How to read:</b> each row is one rule (dropdown / validation / skip-logic / calc / journey / auto-fill) extracted from the source-of-truth. <b>In BRD</b> and <b>In Tests</b> show whether it is documented / covered (✓ full · ~ partial · ✗ missing).
 <span class="flag f-stale">STALE TEST</span> = a test case that contradicts the source (rewrite it); <span class="flag f-gap">NOT TESTED</span> = real coverage gap; <span class="flag f-brd">BRD DEFECT</span> / <span class="flag f-build">NOT BUILT</span> = BRD contradicts repo / feature absent in repo.</div>
 
-<div class="note" style="border-color:var(--sea)"><b>Headline:</b> 468 rules audited &nbsp;·&nbsp; in BRD <b>454</b> (97%) &nbsp;·&nbsp; in tests <b>109</b> (23%) &nbsp;·&nbsp; <b style="color:#9a3412">27</b> stale tests &nbsp;·&nbsp; <b style="color:#7a6320">345</b> untested rules &nbsp;·&nbsp; <b style="color:#6b2f8a">17</b> BRD/build defects.</div>
+<div class="note" style="border-color:var(--sea)"><b>Headline:</b> 468 rules audited &nbsp;·&nbsp; in BRD <b>454</b> (97%) &nbsp;·&nbsp; curated-test coverage <b>109</b> (23%) &nbsp;·&nbsp; <b style="color:#9a3412">27</b> stale tests (now realigned) &nbsp;·&nbsp; <b style="color:#7a6320">346</b> untested rules &nbsp;·&nbsp; <b style="color:#6b2f8a">16</b> BRD/build defects.</div>
+<div class="note"><b>Remediation status:</b> the stale tests have been rewritten in <b>test-cases.html</b> to match the source-of-truth; a generated <b>rule-coverage suite</b> (PR-TC-CVR-*) now adds one executable check per uncovered rule, so the test workbook (<b>test-cases.xlsx</b>) covers every rule pending execution. Remaining <b>BRD/build defects</b> below are the reconciliation worklist for BA/dev (repo-vs-spec decisions are flagged, not unilaterally rewritten).</div>
 <div class="toolbar"><button class="btn on" data-f="all" onclick="flt(this)">All rules</button><button class="btn" data-f="gap" onclick="flt(this)">Gaps only</button><button class="btn" data-f="stale" onclick="flt(this)">Stale tests</button><button class="btn" data-f="brd" onclick="flt(this)">BRD/build defects</button></div>
 <h2>Frameworks</h2>
 <table class="sumtab"><tr><th>Module</th><th>Rules</th><th>In BRD</th><th>In Tests</th><th>Test coverage</th><th>Flags</th></tr>
@@ -617,7 +618,7 @@ tr.stale td{background:#fdf3ee}tr.brd td,tr.build td{background:#faf4fb}
 </table>
 <h2>Product Form</h2>
 <table class="sumtab"><tr><th>Module</th><th>Rules</th><th>In BRD</th><th>In Tests</th><th>Test coverage</th><th>Flags</th></tr>
-<tr><td><b>Product Profile</b></td><td>38</td><td>37</td><td>13</td><td><span class="barbg"><span class="bar" style="width:30px"></span></span>34%</td><td><span class="flag f-stale">7 stale</span> <span class="flag f-brd">1 defect</span></td></tr>
+<tr><td><b>Product Profile</b></td><td>38</td><td>37</td><td>13</td><td><span class="barbg"><span class="bar" style="width:30px"></span></span>34%</td><td><span class="flag f-stale">7 stale</span></td></tr>
 </table>
 <h3>Product Profile</h3>
 <p class="tally">Rules: <b>38</b> · In BRD: 37 · In Tests: 13</p>
@@ -659,7 +660,7 @@ tr.stale td{background:#fdf3ee}tr.brd td,tr.build td{background:#faf4fb}
 <tr class="" data-flag=""><td class="ty">field</td><td>Products show as clickable photo cards on profile dashboard</td><td class="b y">✓</td><td class="b y">✓</td><td></td></tr>
 <tr class="" data-flag=""><td class="ty">calc</td><td>General logic: calc fields show formula; fetched fields show source + redirect</td><td class="b y">✓</td><td class="b p">~</td><td></td></tr>
 <tr class="stale" data-flag="stale"><td class="ty">field</td><td>Tabs = Details / Variants / Process Flow / Production Capacity (no Financials/Compliance)</td><td class="b y">✓</td><td class="b y">✓</td><td><span class="flag f-stale">STALE TEST</span> PR-001/015 reference Financials/Compliance tabs that don&#x27;t exist</td></tr>
-<tr class="brd" data-flag="brd"><td class="ty">auto-fill</td><td>Data-flow: Ingredients -&gt; RM; Machines -&gt; Machinery</td><td class="b y">✓</td><td class="b n">✗</td><td><span class="flag f-brd">BRD DEFECT</span> BRD data-flow (~line 1735) wrongly routes process-flow machines into Raw Materials Existing</td></tr>
+<tr class="" data-flag="gap"><td class="ty">auto-fill</td><td>Data-flow: Ingredients -&gt; RM; Machines -&gt; Machinery</td><td class="b y">✓</td><td class="b n">✗</td><td><span class="flag f-gap">NOT TESTED</span> FIXED in BRD: removed the erroneous machines-&gt;Raw-Materials data-flow row (now routes machines -&gt; Machinery only)</td></tr>
 </table>
 <script>
 function flt(btn){document.querySelectorAll('.btn').forEach(b=>b.classList.remove('on'));btn.classList.add('on');
