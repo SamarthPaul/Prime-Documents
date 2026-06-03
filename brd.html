@@ -1255,7 +1255,7 @@ body > .site-nav { position: fixed; top: 0; left: 0; right: 0; z-index: 9999; }
         <h2 class="section-title">Role &amp; Permission Matrix</h2>
       </div>
       <div class="section-desc">
-        Six roles access the portal. Each role sees a different sidebar menu and has different create/edit/view permissions. Landing page per role is marked with the <em>primary</em> pill below.
+        Six roles access the portal. Each role sees a different sidebar menu and has different create/edit/view permissions. Landing page per role is marked with the <em>primary</em> pill below. A <strong>Super Admin</strong> (System Manager) has full access across every workspace and is not shown as a separate column. <strong>District Coordinator</strong> access is scoped to the coordinator's assigned district (set at user creation) — there is no generic "Viewer" role.
       </div>
 
       <table class="brd-table">
@@ -1300,6 +1300,15 @@ body > .site-nav { position: fixed; top: 0; left: 0; right: 0; z-index: 9999; }
           </tr>
           <tr>
             <td><strong>Entrepreneur (List + Profile)</strong></td>
+            <td class="perm-check">Full CRUD</td>
+            <td class="perm-check">Full CRUD</td>
+            <td class="perm-check">Create + Edit (own block)</td>
+            <td class="perm-cross">--</td>
+            <td class="perm-cross">--</td>
+            <td class="perm-view">View only</td>
+          </tr>
+          <tr>
+            <td><strong>Entrepreneur Progress Report</strong> <span style="font-size:11px;color:var(--ink-faint);font-weight:400">(standalone workspace; form/doctype filled per entrepreneur)</span></td>
             <td class="perm-check">Full CRUD</td>
             <td class="perm-check">Full CRUD</td>
             <td class="perm-check">Create + Edit (own block)</td>
@@ -1414,6 +1423,7 @@ body > .site-nav { position: fixed; top: 0; left: 0; right: 0; z-index: 9999; }
           <span class="journey-step-pill">Intervention Dashboard</span>
           <span class="journey-step-pill">Milestone Tracker</span>
           <span class="journey-step-pill">Entrepreneur (List + Status Monitor)</span>
+          <span class="journey-step-pill">Entrepreneur Progress Report</span>
           <span class="journey-step-pill">Products</span>
           <span class="journey-step-pill">Fellow Activity Logger</span>
           <span class="journey-step-pill">Diagnostics (all modules)</span>
@@ -1432,6 +1442,7 @@ body > .site-nav { position: fixed; top: 0; left: 0; right: 0; z-index: 9999; }
           <span class="journey-step-pill">Intervention Dashboard</span>
           <span class="journey-step-pill">Milestone Tracker</span>
           <span class="journey-step-pill">Entrepreneur (List + Status Monitor)</span>
+          <span class="journey-step-pill">Entrepreneur Progress Report</span>
           <span class="journey-step-pill">Products</span>
           <span class="journey-step-pill">Fellow Activity Logger</span>
           <span class="journey-step-pill">Diagnostics (all modules)</span>
@@ -1448,6 +1459,8 @@ body > .site-nav { position: fixed; top: 0; left: 0; right: 0; z-index: 9999; }
         <div class="journey-steps">
           <span class="journey-step-pill primary">Entrepreneurial Landscape (landing)</span>
           <span class="journey-step-pill">Entrepreneur (List + Status Monitor)</span>
+          <span class="journey-step-pill">Entrepreneur Progress Report</span>
+          <span class="journey-step-pill">Products</span>
           <span class="journey-step-pill">Diagnostics (all modules)</span>
           <span class="journey-step-pill">Fellow Activity Logger</span>
           <span class="journey-step-pill">Research Notes</span>
@@ -1475,12 +1488,13 @@ body > .site-nav { position: fixed; top: 0; left: 0; right: 0; z-index: 9999; }
       </div>
 
       <div class="journey-lane" data-role="dc">
-        <div class="journey-lane-title"><span class="chip chip-muted">District Coordinator</span> Left Menu (View Only)</div>
+        <div class="journey-lane-title"><span class="chip chip-muted">District Coordinator</span> Left Menu (View Only &middot; <em style="font-weight:400;color:var(--ink-soft)">scoped to assigned district</em>)</div>
         <div class="journey-steps">
           <span class="journey-step-pill">Entrepreneurial Landscape</span>
           <span class="journey-step-pill">Intervention Dashboard</span>
           <span class="journey-step-pill">Milestone Tracker</span>
           <span class="journey-step-pill">Entrepreneur (List + Status Monitor)</span>
+          <span class="journey-step-pill">Entrepreneur Progress Report</span>
           <span class="journey-step-pill">Diagnostics (all modules)</span>
           <span class="journey-step-pill">Notifications</span>
         </div>
