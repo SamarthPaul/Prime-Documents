@@ -1,0 +1,157 @@
+<div class="brd-section" id="m-pitch">
+  <div class="section-header"><span class="section-id">PR-FN-001</span><h2 class="section-title">Pitch Deck</h2></div>
+  <div class="section-desc"><strong>Entrepreneur-level framework</strong> (Funding module) that guides the entrepreneur through building an <strong>11-slide investor pitch deck</strong>. The Existing tab records any deck already held and flags whether help is needed; the Required tab is a structured <strong>slide-by-slide content workspace</strong> plus the finished-deck upload and implementation status.</div>
+  <div class="callout callout-terra"><strong>Existing &rarr; Required bridge (Rule 3).</strong> Toggling <em>Does Entrepreneur need a Pitch Deck?</em> ON in Existing flags the intervention and activates the Required tab&rsquo;s slide workspace. The eleven slides are: <strong>Vision &amp; Impact &middot; Problem Statement &middot; Solution (USP) &middot; Business Model &middot; Financial Projections &middot; Milestones &middot; Competition &middot; Marketing Strategy &middot; Team Overview &middot; Expectations from Incubation &middot; Ask (Funding)</strong>. Slide-fill progress and the final-deck upload feed the Summary aggregates.</div>
+
+  <h3 style="font-size:16px;color:var(--teal);margin:18px 0 10px;">On-Screen UI Structure</h3>
+  <div class="card"><div style="font-size:13px;line-height:1.9;color:var(--ink)">A teal title bar reads <em>Pitch Deck</em>; a horizontal <strong>tab rail</strong> &mdash; <em>Summary &middot; Existing &middot; Required &middot; Resources &middot; Task Log &middot; Log Book</em> &mdash; sits below, active tab teal, entrepreneur chip on every panel (Rule 2).<br><br><strong>Existing</strong> has two cards: Section&nbsp;I <em>Pitch Deck</em> (upload existing deck .pdf/.ppt/.pptx with a View button, Pitch Video Link with Open&nbsp;&#8599;, Last Updated date) and a terracotta Section&nbsp;II <em>Intervention Need</em> (Need-a-deck toggle + Justify). <strong>Required</strong> has Section&nbsp;I <em>Assessment</em> &mdash; an <strong>11-slide content grid</strong> (each slide is a colour-coded card with title, guiding description, and a content textarea) &mdash; and a terracotta Section&nbsp;II <em>Implementation Status</em> (status select, final-deck upload, video link, last updated). <strong>Summary</strong> is read-only: a slide-wise overview table, aggregate cards (Existing Assets / Slide Progress / Interventions / Slide Breakdown) and four intervention-flag tiles (Slides Filled, Intervention Needed, Required Deck Uploaded, Tasks Completed). <strong>Resources</strong>, <strong>Task Log</strong> and <strong>Log Book</strong> close the rail.</div></div>
+  <div class="flow-container" style="margin-top:12px"><div class="flow-step"><div class="flow-box">Summary</div></div><div class="flow-arrow">&rarr;</div><div class="flow-step"><div class="flow-box">Existing</div></div><div class="flow-arrow">&rarr;</div><div class="flow-step"><div class="flow-box">Required</div></div><div class="flow-arrow">&rarr;</div><div class="flow-step"><div class="flow-box">Resources</div></div><div class="flow-arrow">&rarr;</div><div class="flow-step"><div class="flow-box">Task Log</div></div><div class="flow-arrow">&rarr;</div><div class="flow-step"><div class="flow-box">Log Book</div></div></div>
+
+  <h3 style="font-size:16px;color:var(--teal);margin:18px 0 10px;">User Journey</h3>
+  <div class="card"><div class="flow-container">
+    <div class="flow-step"><div class="flow-box">Open Pitch Deck</div><div class="flow-label">EP dashboard &middot; Diagnostics &rarr; Funding</div></div>
+    <div class="flow-arrow">&rarr;</div>
+    <div class="flow-step"><div class="flow-box">Record existing deck</div><div class="flow-label">Existing &mdash; upload / video link, or none</div></div>
+    <div class="flow-arrow">&rarr;</div>
+    <div class="flow-step"><div class="flow-box">Flag need &amp; justify</div><div class="flow-label">Section II toggle &rarr; activates slide workspace</div></div>
+    <div class="flow-arrow">&rarr;</div>
+    <div class="flow-step"><div class="flow-box">Fill 11 slides</div><div class="flow-label">Required &mdash; Assessment content grid</div></div>
+    <div class="flow-arrow">&rarr;</div>
+    <div class="flow-step"><div class="flow-box">Upload deck &amp; Save</div><div class="flow-label">Implementation Status; Summary progress updates</div></div>
+  </div></div>
+
+  <!-- ============ TAB 1: SUMMARY ============ -->
+  <div class="accordion open"><div class="accordion-trigger" onclick="this.parentElement.classList.toggle('open')">Tab 1: Summary <span class="acc-arrow">&#9660;</span></div>
+    <div class="accordion-body">
+      <p style="font-size:13px;color:var(--ink-soft);margin-bottom:12px;">Read-only. Auto-populated from Existing and Required; recalculates on switch back.</p>
+
+      <h4 style="font-size:14px;color:var(--teal);margin-bottom:10px;">Slide-wise Overview Table</h4>
+      <p style="font-size:12px;color:var(--ink-soft);font-style:italic;margin-bottom:8px;">One row per slide (11 rows) showing fill status.</p>
+      <table class="brd-table"><thead><tr><th>Field Name</th><th>Field Type</th><th>Input Values</th><th>Input / Autofill</th><th>Logic</th><th>Validation &amp; Error Messages</th></tr></thead>
+      <tbody>
+        <tr><td>Slide</td><td>Read-only text</td><td>11 slide titles (Vision &amp; Impact &hellip; Ask)</td><td>System</td><td>Fixed slide list.</td><td>&mdash; (display only)</td></tr>
+        <tr><td>Status</td><td>Read-only badge</td><td>Filled / Empty</td><td>Calculated</td><td>Filled (green) when the slide&rsquo;s content textarea is non-blank; Empty (amber) otherwise.</td><td>&mdash;</td></tr>
+        <tr><td>Content Preview</td><td>Read-only text</td><td>&mdash;</td><td>Autofill</td><td>Truncated first line of the slide&rsquo;s content.</td><td>&mdash;</td></tr>
+      </tbody></table>
+
+      <h4 style="font-size:14px;color:var(--teal);margin:16px 0 10px;">Aggregate Cards (4)</h4>
+      <table class="brd-table"><thead><tr><th>Card / Metric</th><th>Field Type</th><th>Input / Autofill</th><th>Logic</th></tr></thead>
+      <tbody>
+        <tr><td>Existing Assets &rarr; Deck Uploaded / Video Link / Last Updated</td><td>Read-only</td><td>Autofill</td><td>Whether an existing deck file / video link exists and when it was last updated.</td></tr>
+        <tr><td>Slide Progress &rarr; Slides Filled</td><td>Read-only number (green)</td><td>Calculated</td><td>Count of the 11 slides with content.</td></tr>
+        <tr><td>Slide Progress &rarr; Slides Empty</td><td>Read-only number (amber)</td><td>Calculated</td><td><em>= 11 &minus; Slides Filled</em>.</td></tr>
+        <tr><td>Slide Progress &rarr; Completion %</td><td>Read-only (green)</td><td>Calculated</td><td><em>= Slides Filled &divide; 11</em>.</td></tr>
+        <tr><td>Interventions &rarr; Needed / Implementation Status</td><td>Read-only</td><td>Autofill</td><td>Reflects the Existing need-toggle and the Required Implementation Status.</td></tr>
+        <tr><td>Slide Breakdown &rarr; per-slide filled flags</td><td>Read-only list</td><td>Calculated</td><td>Compact per-slide filled/empty indicator.</td></tr>
+      </tbody></table>
+
+      <h4 style="font-size:14px;color:var(--teal);margin:16px 0 10px;">Intervention Flags Strip (4 tiles)</h4>
+      <table class="brd-table"><thead><tr><th>Tile</th><th>Field Type</th><th>Input / Autofill</th><th>Logic</th></tr></thead>
+      <tbody>
+        <tr><td>&#128202; Slides Filled</td><td>Read-only count (green)</td><td>Calculated</td><td>= slides with content (of 11).</td></tr>
+        <tr><td>&#8635; Intervention Needed</td><td>Read-only Yes/No (amber)</td><td>Autofill</td><td>= Existing need-a-deck toggle state.</td></tr>
+        <tr><td>&#128193; Required Deck Uploaded</td><td>Read-only Yes/No (blue)</td><td>Autofill</td><td>= whether the Required final deck file is attached.</td></tr>
+        <tr><td>&#10003; Tasks Completed</td><td>Read-only count (green)</td><td>Calculated</td><td>= Task Log rows marked Completed.</td></tr>
+      </tbody></table>
+    </div></div>
+
+  <!-- ============ TAB 2: EXISTING ============ -->
+  <div class="accordion"><div class="accordion-trigger" onclick="this.parentElement.classList.toggle('open')">Tab 2: Existing <span class="acc-arrow">&#9660;</span></div>
+    <div class="accordion-body">
+      <h4 style="font-size:14px;color:var(--teal);margin-bottom:10px;">Section I &mdash; Pitch Deck (existing assets)</h4>
+      <table class="brd-table"><thead><tr><th>Field Name</th><th>Field Type</th><th>Input Values</th><th>Input / Autofill</th><th>Logic</th><th>Validation &amp; Error Messages</th></tr></thead>
+      <tbody>
+        <tr><td>Upload Pitch Deck (if available)</td><td>Attach (Upload / View)</td><td>.pdf / .ppt / .pptx</td><td>Input</td><td>Existing deck file; View enabled once attached. Feeds the Existing Assets aggregate.</td><td>&mdash;</td></tr>
+        <tr><td>Pitch Video Link (if available)</td><td>URL</td><td>https://&hellip;</td><td>Input</td><td>An &ldquo;Open &#8599;&rdquo; link appears when a valid URL is entered.</td><td>Valid URL.</td></tr>
+        <tr><td>Last Updated</td><td>Date</td><td>&mdash;</td><td>Input</td><td>When the existing deck was last revised.</td><td>&mdash;</td></tr>
+      </tbody></table>
+
+      <h4 style="font-size:14px;color:var(--teal);margin:16px 0 10px;">Section II &mdash; Intervention Need</h4>
+      <table class="brd-table"><thead><tr><th>Field Name</th><th>Field Type</th><th>Input Values</th><th>Input / Autofill</th><th>Logic</th><th>Validation &amp; Error Messages</th></tr></thead>
+      <tbody>
+        <tr><td>Does Entrepreneur need a Pitch Deck?</td><td>Toggle</td><td>Yes / No</td><td>Input</td><td>ON flags the intervention, activates the Required slide workspace and sets the Summary Intervention Needed flag.</td><td>&mdash;</td></tr>
+        <tr><td>Justify</td><td>Textarea</td><td>Free text</td><td>Input</td><td>Why a deck is (or isn&rsquo;t) required &mdash; investor outreach, grant application, incubator entry.</td><td>Recommended when toggle ON.</td></tr>
+      </tbody></table>
+    </div></div>
+
+  <!-- ============ TAB 3: REQUIRED ============ -->
+  <div class="accordion"><div class="accordion-trigger" onclick="this.parentElement.classList.toggle('open')">Tab 3: Required <span class="acc-arrow">&#9660;</span></div>
+    <div class="accordion-body">
+      <h4 style="font-size:14px;color:var(--teal);margin-bottom:10px;">Section I &mdash; Assessment (11-slide content grid)</h4>
+      <p style="font-size:12px;color:var(--ink-soft);font-style:italic;margin-bottom:8px;">A high-level data-entry workspace for the eleven primary slides of the pitch. Each slide is a colour-coded card with a guiding description and a free-text content area.</p>
+      <table class="brd-table"><thead><tr><th>Slide (card)</th><th>Field Type</th><th>Guiding Prompt</th><th>Logic</th></tr></thead>
+      <tbody>
+        <tr><td>1. Vision &amp; Impact</td><td>Textarea</td><td>Long-term vision &amp; the environmental / social / economic impact.</td><td>Filled state feeds Slide Progress.</td></tr>
+        <tr><td>2. Problem Statement</td><td>Textarea</td><td>The specific, painful problem the customer faces; quantify where possible.</td><td>&mdash;</td></tr>
+        <tr><td>3. Solution (USP)</td><td>Textarea</td><td>The product / service &amp; the unique selling proposition (origin, craft, ingredient, certification).</td><td>&mdash;</td></tr>
+        <tr><td>4. Business Model</td><td>Textarea</td><td>Revenue model, pricing, channels, key partners &mdash; how value is created &amp; captured.</td><td>&mdash;</td></tr>
+        <tr><td>5. Financial Projections</td><td>Textarea</td><td>3-year revenue, gross margin, break-even &amp; key assumptions.</td><td>&mdash;</td></tr>
+        <tr><td>6. Milestones</td><td>Textarea</td><td>Achievements to date + a 6 / 12 / 18-month roadmap.</td><td>&mdash;</td></tr>
+        <tr><td>7. Competition</td><td>Textarea</td><td>Direct &amp; indirect competitors and your differentiation.</td><td>&mdash;</td></tr>
+        <tr><td>8. Marketing Strategy</td><td>Textarea</td><td>Acquisition channels &amp; brand-building (online/offline mix, exhibitions, partnerships).</td><td>&mdash;</td></tr>
+        <tr><td>9. Team Overview</td><td>Textarea</td><td>Founders, key hires, advisors &amp; gaps still to fill.</td><td>&mdash;</td></tr>
+        <tr><td>10. Expectations from Incubation</td><td>Textarea</td><td>Mentorship, market linkages, infrastructure, specific introductions sought.</td><td>&mdash;</td></tr>
+        <tr><td>11. Ask (Funding)</td><td>Textarea</td><td>Amount sought, instrument (equity / grant / debt) &amp; line-by-line deployment.</td><td>&mdash;</td></tr>
+      </tbody></table>
+
+      <h4 style="font-size:14px;color:var(--teal);margin:16px 0 10px;">Section II &mdash; Implementation Status</h4>
+      <table class="brd-table"><thead><tr><th>Field Name</th><th>Field Type</th><th>Input Values</th><th>Input / Autofill</th><th>Logic</th><th>Validation &amp; Error Messages</th></tr></thead>
+      <tbody>
+        <tr><td>Implementation Status</td><td>Select</td><td>Pending / In Progress / Implemented / Not Feasible</td><td>Input</td><td>Status badge; surfaces in Summary.</td><td>&mdash;</td></tr>
+        <tr><td>Upload Pitch Deck</td><td>Attach (Upload / View)</td><td>.pdf / .ppt / .pptx</td><td>Input</td><td>The finished deck; sets the Required Deck Uploaded flag.</td><td>&mdash;</td></tr>
+        <tr><td>Pitch Video Link</td><td>URL</td><td>https://&hellip;</td><td>Input</td><td>Open &#8599; link when valid.</td><td>Valid URL.</td></tr>
+        <tr><td>Last Updated</td><td>Date</td><td>&mdash;</td><td>Input</td><td>&mdash;</td><td>&mdash;</td></tr>
+      </tbody></table>
+    </div></div>
+
+  <!-- ============ TAB 4: RESOURCES ============ -->
+  <div class="accordion"><div class="accordion-trigger" onclick="this.parentElement.classList.toggle('open')">Tab 4: Resources <span class="acc-arrow">&#9660;</span></div>
+    <div class="accordion-body">
+      <p style="font-size:13px;color:var(--ink-soft);margin-bottom:12px;">Reference materials &mdash; deck templates, sample pitches, investor lists, recorded pitch sessions. &ldquo;+ Add Resource&rdquo; appends a row.</p>
+      <table class="brd-table"><thead><tr><th>Field Name</th><th>Field Type</th><th>Input Values</th><th>Input / Autofill</th><th>Logic</th><th>Validation &amp; Error Messages</th></tr></thead>
+      <tbody>
+        <tr><td>Resource Title</td><td>Text</td><td>Free text</td><td>Input</td><td>&mdash;</td><td>&mdash;</td></tr>
+        <tr><td>Category</td><td>Select</td><td>Deck Template / Sample Pitch / Investor List / Recording / Reference</td><td>Input</td><td>&mdash;</td><td>&mdash;</td></tr>
+        <tr><td>Description / Notes</td><td>Text</td><td>Free text</td><td>Input</td><td>&mdash;</td><td>&mdash;</td></tr>
+        <tr><td>File / Link</td><td>Attach / URL</td><td>Any file or URL</td><td>Input</td><td>Drive-linked resource.</td><td>&mdash;</td></tr>
+      </tbody></table>
+    </div></div>
+
+  <!-- ============ TAB 5: TASK LOG ============ -->
+  <div class="accordion"><div class="accordion-trigger" onclick="this.parentElement.classList.toggle('open')">Tab 5: Task Log <span class="acc-arrow">&#9660;</span></div>
+    <div class="accordion-body">
+      <p style="font-size:13px;color:var(--ink-soft);margin-bottom:12px;">Seeded pitch-prep activities (e.g. Slides Drafted, Financials Validated, Deck Designed, Mock Pitch Done, Investor Shared) drive a read-only Progress field &amp; the Tasks Completed flag; each row carries Status, Owner, Due Date, Notes.</p>
+      <table class="brd-table"><thead><tr><th>Field Name</th><th>Field Type</th><th>Input Values</th><th>Input / Autofill</th><th>Logic</th><th>Validation &amp; Error Messages</th></tr></thead>
+      <tbody>
+        <tr><td>No. / Task Name / Phase</td><td>Read-only</td><td>Seeded list; Existing / Intervention / Required</td><td>System</td><td>Fixed seeded tasks with colour-coded phase badge.</td><td>&mdash;</td></tr>
+        <tr><td>Status</td><td>Select</td><td>Pending / In Progress / Completed / Blocked</td><td>Input</td><td>Aggregates into read-only Progress (%) &amp; Tasks Completed.</td><td>&mdash;</td></tr>
+        <tr><td>Owner / Due Date / Notes</td><td>Text / Date / Text</td><td>Free</td><td>Input</td><td>&mdash;</td><td>&mdash;</td></tr>
+      </tbody></table>
+    </div></div>
+
+  <!-- ============ TAB 6: LOG BOOK ============ -->
+  <div class="accordion"><div class="accordion-trigger" onclick="this.parentElement.classList.toggle('open')">Tab 6: Log Book <span class="acc-arrow">&#9660;</span></div>
+    <div class="accordion-body">
+      <p style="font-size:13px;color:var(--ink-soft);margin-bottom:12px;">Free-form activity diary (child table <em>DF Log Book Child</em>). &ldquo;+ Add Entry&rdquo; appends a row.</p>
+      <table class="brd-table"><thead><tr><th>Field Name</th><th>Field Type</th><th>Input Values</th><th>Input / Autofill</th><th>Logic</th><th>Validation &amp; Error Messages</th></tr></thead>
+      <tbody>
+        <tr><td>Date</td><td>Date</td><td>&mdash;</td><td>Input</td><td>&mdash;</td><td>&mdash;</td></tr>
+        <tr><td>Activity</td><td>Select</td><td>Drafting / Review / Mentor Session / Mock Pitch / Investor Meeting</td><td>Input</td><td>&mdash;</td><td>&mdash;</td></tr>
+        <tr><td>Notes / Observations</td><td>Text</td><td>Free text</td><td>Input</td><td>&mdash;</td><td>&mdash;</td></tr>
+        <tr><td>Logged By / Evidence</td><td>Text / Attach</td><td>Name / file</td><td>Input</td><td>&mdash;</td><td>&mdash;</td></tr>
+      </tbody></table>
+    </div></div>
+
+  <div class="callout callout-danger"><strong>Key validations (whole form):</strong> Entrepreneur is required and unique (one Pitch Deck form per entrepreneur). Video links must be valid URLs; deck uploads accept .pdf / .ppt / .pptx only. Slides Filled, Slides Empty and Completion % are computed read-only from the 11-slide grid (Rule 1). The Existing need-a-deck toggle activates the Required slide workspace; the Required Implementation Status and final-deck upload drive the Summary flags. Slide content and the Ask feed the entrepreneur&rsquo;s funding narrative (links conceptually to Scheme Funding).</div>
+
+  <div class="review-panel" data-section="m-pitch">
+    <div class="review-strip"><span style="font-size:12px;color:var(--ink-soft);font-weight:500;">Section Review:</span>
+      <button class="review-status-btn" onclick="setReview('m-pitch','draft',this)">Draft</button>
+      <button class="review-status-btn" onclick="setReview('m-pitch','review',this)">In Review</button>
+      <button class="review-status-btn" onclick="setReview('m-pitch','changes',this)">Needs Changes</button>
+      <button class="review-status-btn" onclick="setReview('m-pitch','approved',this)">Approved</button>
+      <button style="margin-left:auto;background:none;border:none;font-size:12px;color:var(--sea);cursor:pointer;font-family:var(--font);text-decoration:underline;" onclick="copyLink('m-pitch')">Copy Link</button></div>
+    <div class="review-comments"><div class="comment-list" id="comments-m-pitch"></div>
+      <div class="comment-input-row"><input type="text" placeholder="Your name" style="max-width:120px" id="name-m-pitch"><textarea rows="1" placeholder="Add a comment..." id="text-m-pitch"></textarea><button class="comment-add-btn" onclick="addComment('m-pitch')">Add</button></div></div>
+  </div>
+</div>

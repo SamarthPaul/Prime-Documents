@@ -1,0 +1,192 @@
+<div class="brd-section" id="m-log-serv">
+  <div class="section-header"><span class="section-id">PR-LG-002</span><h2 class="section-title">Logistic Service</h2></div>
+  <div class="section-desc"><strong>Entrepreneur-level framework</strong> (Logistics module) that assesses the enterprise&rsquo;s <strong>connectivity and delivery capability</strong> and maps every <strong>shipping route</strong> the entrepreneur uses &mdash; leg by leg, with mode, time, cost and contact &mdash; computing per-trip, monthly and annual logistics spend. Routes that under-perform are flagged for a service upgrade, bridging into the Required tab.</div>
+  <div class="callout callout-terra"><strong>Route-based model.</strong> Unlike the Existing/Required-grid frameworks, Logistic Service is organised around <strong>routes</strong>. Each route holds a <em>leg table</em> (From &rarr; To hops) whose costs sum to <strong>Total Cost Per Trip</strong>; a <strong>Frequency</strong> multiplier then yields <em>Monthly Cost = Trip Cost &times; multiplier</em> and <em>Annual Cost = Monthly Cost &times; 12</em>. Toggling <em>Service Upgrade Needed?</em> on a route bridges it into Required (Rule 3) carrying the route name, type and pain points across.</div>
+
+  <h3 style="font-size:16px;color:var(--teal);margin:18px 0 10px;">On-Screen UI Structure</h3>
+  <div class="card"><div style="font-size:13px;line-height:1.9;color:var(--ink)">A teal title bar reads <em>Logistic Service</em>; a horizontal <strong>tab rail</strong> &mdash; <em>Summary &middot; Assessment &middot; Existing &middot; Required &middot; Resources &middot; Task Log &middot; Log Book</em> &mdash; sits below, active tab teal, with the entrepreneur chip on every panel (Rule 2).<br><br><strong>Assessment</strong> captures one-time connectivity facts (road quality, nearest highway / rail / courier hub, last-mile access, main issue, seasonal disruption) plus an <em>Available Services</em> checkbox matrix across four families (Courier / Post, Surface Transport, E-commerce Fulfilment, Community / Govt).<br><br><strong>Existing</strong> renders each route as a collapsible <strong>block</strong> (Route Name / Purpose, Route Type, Direction in the header). Section&nbsp;I <em>Route Details</em> is a <strong>leg table</strong> (From, To, Mode, Time, Cost, Contact) footed by Total Cost Per Trip; a teal <em>calc box</em> shows Frequency &rarr; Monthly Cost &rarr; Annual Cost. Section&nbsp;II <em>Pain Points</em> offers a pill group + Delay Frequency. An <em>Intervention Need</em> block carries the Service-Upgrade toggle.<br><br><strong>Required</strong> mirrors each flagged route read-only and captures the recommended upgrade + Implementation Status. <strong>Summary</strong> is read-only (route overview table, aggregate cards, intervention flags). <strong>Resources</strong>, <strong>Task Log</strong> and <strong>Log Book</strong> close the rail. Trip / Monthly / Annual costs render italic on cream-deep with formula tooltips (Rule 1).</div></div>
+  <div class="flow-container" style="margin-top:12px"><div class="flow-step"><div class="flow-box">Summary</div></div><div class="flow-arrow">&rarr;</div><div class="flow-step"><div class="flow-box">Assessment</div></div><div class="flow-arrow">&rarr;</div><div class="flow-step"><div class="flow-box">Existing</div></div><div class="flow-arrow">&rarr;</div><div class="flow-step"><div class="flow-box">Required</div></div><div class="flow-arrow">&rarr;</div><div class="flow-step"><div class="flow-box">Resources</div></div><div class="flow-arrow">&rarr;</div><div class="flow-step"><div class="flow-box">Task Log</div></div><div class="flow-arrow">&rarr;</div><div class="flow-step"><div class="flow-box">Log Book</div></div></div>
+
+  <h3 style="font-size:16px;color:var(--teal);margin:18px 0 10px;">User Journey</h3>
+  <div class="card"><div class="flow-container">
+    <div class="flow-step"><div class="flow-box">Open Logistic Service</div><div class="flow-label">EP dashboard &middot; Diagnostics &rarr; Logistics</div></div>
+    <div class="flow-arrow">&rarr;</div>
+    <div class="flow-step"><div class="flow-box">Record connectivity</div><div class="flow-label">Assessment &mdash; roads, hubs, last-mile, services</div></div>
+    <div class="flow-arrow">&rarr;</div>
+    <div class="flow-step"><div class="flow-box">Add route &amp; legs</div><div class="flow-label">Existing &mdash; leg table; Trip / Monthly / Annual cost calc</div></div>
+    <div class="flow-arrow">&rarr;</div>
+    <div class="flow-step"><div class="flow-box">Log pain points</div><div class="flow-label">pills + Delay Frequency</div></div>
+    <div class="flow-arrow">&rarr;</div>
+    <div class="flow-step"><div class="flow-box">Flag upgrade &amp; Save</div><div class="flow-label">toggle &rarr; Required; recommended service + status</div></div>
+  </div></div>
+
+  <!-- ============ TAB 1: SUMMARY ============ -->
+  <div class="accordion open"><div class="accordion-trigger" onclick="this.parentElement.classList.toggle('open')">Tab 1: Summary <span class="acc-arrow">&#9660;</span></div>
+    <div class="accordion-body">
+      <p style="font-size:13px;color:var(--ink-soft);margin-bottom:12px;">Read-only. Auto-populated from Assessment, Existing and Required; recalculates on switch back.</p>
+
+      <h4 style="font-size:14px;color:var(--teal);margin-bottom:10px;">Route-wise Overview Table</h4>
+      <table class="brd-table"><thead><tr><th>Field Name</th><th>Field Type</th><th>Input Values</th><th>Input / Autofill</th><th>Logic</th><th>Validation &amp; Error Messages</th></tr></thead>
+      <tbody>
+        <tr><td>Route</td><td>Read-only text (bold)</td><td>&mdash;</td><td>Autofill</td><td>Route Name / Purpose from the Existing block.</td><td>&mdash; (display only)</td></tr>
+        <tr><td>Type / Direction</td><td>Read-only text</td><td>Direct / Via Hub / Multi-stop &middot; Inbound / Outbound / Both</td><td>Autofill</td><td>From the route header.</td><td>&mdash;</td></tr>
+        <tr><td>Trip Cost / Monthly Cost / Annual Cost (&#8377;)</td><td>Read-only currency</td><td>&mdash;</td><td>Calculated</td><td>Trip = &Sigma; leg costs; Monthly = Trip &times; frequency multiplier; Annual = Monthly &times; 12.</td><td>&mdash;</td></tr>
+        <tr><td>Delay Frequency</td><td>Read-only badge</td><td>Never / Sometimes / Often / Always</td><td>Autofill</td><td>Often / Always surface amber/red.</td><td>&mdash;</td></tr>
+        <tr><td>Intervention</td><td>Read-only badge</td><td>&#8635; Upgrade / &mdash;</td><td>Autofill</td><td>Amber when the route&rsquo;s Service-Upgrade toggle is ON.</td><td>&mdash;</td></tr>
+        <tr><td>Implementation Status</td><td>Read-only badge</td><td>Pending / In Progress / Completed / Not Feasible</td><td>Autofill</td><td>Mirrors the linked Required route status.</td><td>&mdash;</td></tr>
+      </tbody></table>
+
+      <h4 style="font-size:14px;color:var(--teal);margin:16px 0 10px;">Aggregate Cards (4)</h4>
+      <table class="brd-table"><thead><tr><th>Card / Metric</th><th>Field Type</th><th>Input / Autofill</th><th>Logic</th></tr></thead>
+      <tbody>
+        <tr><td>Existing &rarr; Total Routes / Total Legs</td><td>Read-only numbers</td><td>Calculated</td><td>Counts across the Existing tab.</td></tr>
+        <tr><td>Existing &rarr; Routes with Delays</td><td>Read-only number (amber)</td><td>Calculated</td><td>Routes with Delay Frequency Often / Always.</td></tr>
+        <tr><td>Cost &rarr; Total Monthly / Annual Logistics Cost (&#8377;)</td><td>Read-only currency</td><td>Calculated</td><td>&Sigma; of all route Monthly / Annual costs.</td></tr>
+        <tr><td>Interventions &rarr; Routes Flagged / Bridged</td><td>Read-only numbers</td><td>Calculated</td><td>Routes with the upgrade toggle ON and their bridged Required entries.</td></tr>
+        <tr><td>Status &rarr; Pending / In Progress / Completed / Not Feasible</td><td>Read-only numbers</td><td>Calculated</td><td>Implementation-status counts across Required routes.</td></tr>
+      </tbody></table>
+
+      <h4 style="font-size:14px;color:var(--teal);margin:16px 0 10px;">Intervention Flags Strip (4 tiles)</h4>
+      <table class="brd-table"><thead><tr><th>Tile</th><th>Field Type</th><th>Input / Autofill</th><th>Logic</th></tr></thead>
+      <tbody>
+        <tr><td>&#8635; Upgrade Needed</td><td>Read-only count (amber)</td><td>Calculated</td><td>= routes with Service-Upgrade toggle ON.</td></tr>
+        <tr><td>! Frequent Delays</td><td>Read-only count (red)</td><td>Calculated</td><td>= routes with Delay Frequency Often / Always.</td></tr>
+        <tr><td>&#10003; Completed Upgrades</td><td>Read-only count (green)</td><td>Calculated</td><td>= Required routes with status Completed.</td></tr>
+        <tr><td>&#9676; In Progress</td><td>Read-only count (blue)</td><td>Calculated</td><td>= Required routes with status In Progress.</td></tr>
+      </tbody></table>
+    </div></div>
+
+  <!-- ============ TAB 2: ASSESSMENT ============ -->
+  <div class="accordion"><div class="accordion-trigger" onclick="this.parentElement.classList.toggle('open')">Tab 2: Assessment <span class="acc-arrow">&#9660;</span></div>
+    <div class="accordion-body">
+      <h4 style="font-size:14px;color:var(--teal);margin-bottom:10px;">Section I &mdash; Connectivity Assessment</h4>
+      <table class="brd-table"><thead><tr><th>Field Name</th><th>Field Type</th><th>Input Values</th><th>Input / Autofill</th><th>Logic</th><th>Validation &amp; Error Messages</th></tr></thead>
+      <tbody>
+        <tr><td>Road Connectivity</td><td>Select</td><td>Pucca Road (Tarred) / Kutcha Road (Gravel-Dirt) / Mixed / No Road Access</td><td>Input</td><td>Baseline access quality.</td><td>&mdash;</td></tr>
+        <tr><td>Nearest Highway / Main Road</td><td>Text</td><td>Free text</td><td>Input</td><td>Name + approx distance.</td><td>&mdash;</td></tr>
+        <tr><td>Nearest Rail Station</td><td>Text</td><td>Free text</td><td>Input</td><td>&mdash;</td><td>&mdash;</td></tr>
+        <tr><td>Nearest Courier Hub / Post Office</td><td>Text</td><td>Free text</td><td>Input</td><td>&mdash;</td><td>&mdash;</td></tr>
+        <tr><td>Last Mile Access</td><td>Select</td><td>Any vehicle / Small vehicle only / Two-wheeler &middot; foot only / Seasonal only</td><td>Input</td><td>Constrains feasible transport modes.</td><td>&mdash;</td></tr>
+        <tr><td>Main Logistics Issue</td><td>Textarea</td><td>Free text</td><td>Input</td><td>&mdash;</td><td>&mdash;</td></tr>
+        <tr><td>Seasonal Disruption</td><td>Textarea</td><td>Free text</td><td>Input</td><td>e.g. monsoon road cut-off windows.</td><td>&mdash;</td></tr>
+      </tbody></table>
+
+      <h4 style="font-size:14px;color:var(--teal);margin:16px 0 10px;">Section II &mdash; Available Services (checkbox families)</h4>
+      <table class="brd-table"><thead><tr><th>Family</th><th>Options</th></tr></thead>
+      <tbody>
+        <tr><td>Courier / Post</td><td>India Post, Blue Dart, DTDC, Delhivery, Shiprocket</td></tr>
+        <tr><td>Surface Transport</td><td>Own Vehicle, Hired Cab, Auto / Tempo, Mini Truck, Bus Parcel, Train Parcel</td></tr>
+        <tr><td>E-commerce Fulfilment</td><td>Amazon, Flipkart, Meesho, Ecomm Express, Xpressbees</td></tr>
+        <tr><td>Community / Govt</td><td>FPO Van, SHG Network, Cold Chain, NGO Partner, Govt Scheme</td></tr>
+      </tbody></table>
+    </div></div>
+
+  <!-- ============ TAB 3: EXISTING ============ -->
+  <div class="accordion"><div class="accordion-trigger" onclick="this.parentElement.classList.toggle('open')">Tab 3: Existing <span class="acc-arrow">&#9660;</span></div>
+    <div class="accordion-body">
+      <p style="font-size:13px;color:var(--ink-soft);margin-bottom:12px;">One collapsible <strong>block per route</strong>. &ldquo;+ Add Route&rdquo; appends a block; the header carries Route Name / Purpose, Route Type and Direction.</p>
+
+      <h4 style="font-size:14px;color:var(--teal);margin-bottom:10px;">Route Header</h4>
+      <table class="brd-table"><thead><tr><th>Field Name</th><th>Field Type</th><th>Input Values</th><th>Input / Autofill</th><th>Logic</th><th>Validation &amp; Error Messages</th></tr></thead>
+      <tbody>
+        <tr><td>Route Name / Purpose *</td><td>Text</td><td>Free text</td><td>Input</td><td>Labels the route block and Summary row.</td><td>&ldquo;Route Name is required.&rdquo;</td></tr>
+        <tr><td>Route Type</td><td>Select</td><td>Direct / Via Hub-Market / Multi-stop</td><td>Input</td><td>&mdash;</td><td>&mdash;</td></tr>
+        <tr><td>Direction</td><td>Select</td><td>Inbound / Outbound / Both</td><td>Input</td><td>&mdash;</td><td>&mdash;</td></tr>
+      </tbody></table>
+
+      <h4 style="font-size:14px;color:var(--teal);margin:16px 0 10px;">Section I &mdash; Route Details (leg table)</h4>
+      <table class="brd-table"><thead><tr><th>Field Name</th><th>Field Type</th><th>Input Values</th><th>Input / Autofill</th><th>Logic</th><th>Validation &amp; Error Messages</th></tr></thead>
+      <tbody>
+        <tr><td>From / To</td><td>Text</td><td>Free text</td><td>Input</td><td>Start &amp; end of the leg; &ldquo;+ Add Row&rdquo; appends legs.</td><td>&mdash;</td></tr>
+        <tr><td>Mode of Transport</td><td>Select</td><td>16 modes: Own Vehicle / Two-Wheeler / Hired Cab / Auto-Tempo / Mini Truck-Bolero / Bus Parcel / Train Parcel / India Post-SpeedPost / Blue Dart / DTDC / Delhivery / Shiprocket / FPO-Cooperative Van / Cold Chain Truck / On Foot-Headload / Other</td><td>Input</td><td>Per-leg mode.</td><td>&mdash;</td></tr>
+        <tr><td>Time of Travel</td><td>Text</td><td>Free text</td><td>Input</td><td>Duration of the leg.</td><td>&mdash;</td></tr>
+        <tr><td>Cost (&#8377;)</td><td>Currency</td><td>&ge; 0</td><td>Input</td><td>Leg cost; summed into Total Cost Per Trip.</td><td>Must be &ge; 0.</td></tr>
+        <tr><td>Contact</td><td>Text</td><td>Free text</td><td>Input</td><td>Transporter / operator contact.</td><td>&mdash;</td></tr>
+        <tr><td>Total Cost Per Trip (&#8377;)</td><td>Read-only currency</td><td>&mdash;</td><td>Calculated</td><td><em>= &Sigma; leg costs</em> (table footer).</td><td>&mdash;</td></tr>
+      </tbody></table>
+
+      <h4 style="font-size:14px;color:var(--teal);margin:16px 0 10px;">Frequency &amp; Cost (calc box)</h4>
+      <table class="brd-table"><thead><tr><th>Field Name</th><th>Field Type</th><th>Input Values</th><th>Input / Autofill</th><th>Logic</th><th>Validation &amp; Error Messages</th></tr></thead>
+      <tbody>
+        <tr><td>Frequency</td><td>Select</td><td>Daily (&times;30) / Twice a week (&times;12) / Weekly (&times;4) / Twice a month (&times;2) / Monthly (&times;1) / Every 2 months (&times;0.5)</td><td>Input</td><td>Sets the monthly trip multiplier.</td><td>&mdash;</td></tr>
+        <tr><td>Monthly Cost (&#8377;)</td><td>Read-only currency</td><td>&mdash;</td><td>Calculated</td><td><em>= Total Cost Per Trip &times; frequency multiplier</em>.</td><td>&mdash;</td></tr>
+        <tr><td>Annual Cost (&#8377;)</td><td>Read-only currency</td><td>&mdash;</td><td>Calculated</td><td><em>= Monthly Cost &times; 12</em>; feeds the cost aggregates.</td><td>&mdash;</td></tr>
+      </tbody></table>
+
+      <h4 style="font-size:14px;color:var(--teal);margin:16px 0 10px;">Section II &mdash; Pain Points + Intervention Need</h4>
+      <table class="brd-table"><thead><tr><th>Field Name</th><th>Field Type</th><th>Input Values</th><th>Input / Autofill</th><th>Logic</th><th>Validation &amp; Error Messages</th></tr></thead>
+      <tbody>
+        <tr><td>Issues Experienced</td><td>Multi-select pills</td><td>Delays / High Cost / Damage-Loss / Unreliable / No Tracking / Limited Capacity / Seasonal Cut-off</td><td>Input</td><td>Select all that apply.</td><td>&mdash;</td></tr>
+        <tr><td>Delay Frequency</td><td>Select</td><td>Never / Sometimes / Often / Always</td><td>Input</td><td>Drives the Frequent Delays flag &amp; Summary badge.</td><td>&mdash;</td></tr>
+        <tr><td>Notes</td><td>Textarea</td><td>Free text</td><td>Input</td><td>&mdash;</td><td>&mdash;</td></tr>
+        <tr><td>Service Upgrade Needed?</td><td>Toggle</td><td>On / Off</td><td>Input</td><td>ON bridges this route into Required (Rule 3); OFF removes it.</td><td>Justification recommended when ON.</td></tr>
+      </tbody></table>
+    </div></div>
+
+  <!-- ============ TAB 4: REQUIRED ============ -->
+  <div class="accordion"><div class="accordion-trigger" onclick="this.parentElement.classList.toggle('open')">Tab 4: Required <span class="acc-arrow">&#9660;</span></div>
+    <div class="accordion-body">
+      <p style="font-size:13px;color:var(--ink-soft);margin-bottom:12px;">Routes needing a service upgrade &mdash; bridge-populated from flagged Existing routes (or added manually). Each card mirrors the source route read-only and captures the recommended upgrade.</p>
+      <table class="brd-table"><thead><tr><th>Field Name</th><th>Field Type</th><th>Input Values</th><th>Input / Autofill</th><th>Logic</th><th>Validation &amp; Error Messages</th></tr></thead>
+      <tbody>
+        <tr><td>Route Name / Purpose / Route Type (source)</td><td>Read-only text</td><td>&mdash;</td><td>Autofill</td><td>Mirrored from the originating Existing route.</td><td>&mdash;</td></tr>
+        <tr><td>Recommended Mode / Service</td><td>Select / Text</td><td>16 transport modes + service families</td><td>Input</td><td>The proposed upgrade (faster mode, aggregator, cold chain&hellip;).</td><td>&mdash;</td></tr>
+        <tr><td>Expected Trip / Monthly Cost (&#8377;)</td><td>Currency</td><td>&ge; 0</td><td>Input</td><td>Target cost after upgrade; compared to current.</td><td>Must be &ge; 0.</td></tr>
+        <tr><td>Justification</td><td>Textarea</td><td>Free text</td><td>Input / Autofill</td><td>Two-way synced with the Existing route&rsquo;s pain points / note.</td><td>&mdash;</td></tr>
+        <tr><td>Implementation Status</td><td>Select</td><td>Pending / In Progress / Completed / Not Feasible</td><td>Input</td><td>Drives Summary status &amp; flags.</td><td>&mdash;</td></tr>
+        <tr><td>Implementation Notes</td><td>Textarea</td><td>Free text</td><td>Input</td><td>&mdash;</td><td>&mdash;</td></tr>
+      </tbody></table>
+      <div class="callout callout-teal">Removing a bridged Required route toggles OFF the corresponding Existing Service-Upgrade flag (two-way sync).</div>
+    </div></div>
+
+  <!-- ============ TAB 5: RESOURCES ============ -->
+  <div class="accordion"><div class="accordion-trigger" onclick="this.parentElement.classList.toggle('open')">Tab 5: Resources <span class="acc-arrow">&#9660;</span></div>
+    <div class="accordion-body">
+      <p style="font-size:13px;color:var(--ink-soft);margin-bottom:12px;">Reference materials &mdash; courier rate cards, transporter contacts, government schemes, route maps, insurance, FPO / cooperative directories. &ldquo;+ Add Resource&rdquo; appends a row.</p>
+      <table class="brd-table"><thead><tr><th>Field Name</th><th>Field Type</th><th>Input Values</th><th>Input / Autofill</th><th>Logic</th><th>Validation &amp; Error Messages</th></tr></thead>
+      <tbody>
+        <tr><td>Resource Title</td><td>Text</td><td>Free text</td><td>Input</td><td>&mdash;</td><td>&mdash;</td></tr>
+        <tr><td>Category</td><td>Select</td><td>Courier Rate Card / Transporter Contact / Government Scheme / Route Map / Insurance / FPO &middot; Cooperative</td><td>Input</td><td>&mdash;</td><td>&mdash;</td></tr>
+        <tr><td>Description / Notes</td><td>Text</td><td>Free text</td><td>Input</td><td>&mdash;</td><td>&mdash;</td></tr>
+        <tr><td>File</td><td>Attach (Upload / View)</td><td>Any file</td><td>Input</td><td>Drive-linked resource.</td><td>&mdash;</td></tr>
+      </tbody></table>
+    </div></div>
+
+  <!-- ============ TAB 6: TASK LOG ============ -->
+  <div class="accordion"><div class="accordion-trigger" onclick="this.parentElement.classList.toggle('open')">Tab 6: Task Log <span class="acc-arrow">&#9660;</span></div>
+    <div class="accordion-body">
+      <p style="font-size:13px;color:var(--ink-soft);margin-bottom:12px;">Seeded logistics activities (e.g. Connectivity Assessed, Routes Mapped, Costs &amp; Frequency Logged, Upgrade Identified, New Service Onboarded) drive a read-only Progress field; each row carries Status, Owner, Due Date, Notes.</p>
+      <table class="brd-table"><thead><tr><th>Field Name</th><th>Field Type</th><th>Input Values</th><th>Input / Autofill</th><th>Logic</th><th>Validation &amp; Error Messages</th></tr></thead>
+      <tbody>
+        <tr><td>No. / Task Name / Phase</td><td>Read-only</td><td>Seeded list; Existing / Intervention / Required</td><td>System</td><td>Fixed seeded tasks with colour-coded phase badge.</td><td>&mdash;</td></tr>
+        <tr><td>Status</td><td>Select</td><td>Pending / In Progress / Completed / Blocked</td><td>Input</td><td>Aggregates into read-only Progress (%).</td><td>&mdash;</td></tr>
+        <tr><td>Owner / Due Date / Notes</td><td>Text / Date / Text</td><td>Free</td><td>Input</td><td>&mdash;</td><td>&mdash;</td></tr>
+      </tbody></table>
+    </div></div>
+
+  <!-- ============ TAB 7: LOG BOOK ============ -->
+  <div class="accordion"><div class="accordion-trigger" onclick="this.parentElement.classList.toggle('open')">Tab 7: Log Book <span class="acc-arrow">&#9660;</span></div>
+    <div class="accordion-body">
+      <p style="font-size:13px;color:var(--ink-soft);margin-bottom:12px;">Free-form activity diary (child table <em>DF Log Book Child</em>). Columns: Date, Route / Service, Activity, Notes, Logged By, Evidence. &ldquo;+ Add Entry&rdquo; appends a row.</p>
+      <table class="brd-table"><thead><tr><th>Field Name</th><th>Field Type</th><th>Input Values</th><th>Input / Autofill</th><th>Logic</th><th>Validation &amp; Error Messages</th></tr></thead>
+      <tbody>
+        <tr><td>Date</td><td>Date</td><td>&mdash;</td><td>Input</td><td>&mdash;</td><td>&mdash;</td></tr>
+        <tr><td>Route / Service</td><td>Text</td><td>Route / transporter</td><td>Input</td><td>&mdash;</td><td>&mdash;</td></tr>
+        <tr><td>Activity</td><td>Select</td><td>Site Visit / Transporter Meeting / Rate Negotiation / Trial Shipment / Onboarding</td><td>Input</td><td>&mdash;</td><td>&mdash;</td></tr>
+        <tr><td>Notes / Logged By / Evidence</td><td>Text / Text / Attach</td><td>Free / Name / file</td><td>Input</td><td>&mdash;</td><td>&mdash;</td></tr>
+      </tbody></table>
+    </div></div>
+
+  <div class="callout callout-danger"><strong>Key validations (whole form):</strong> Entrepreneur is required and unique (one Logistic Service form per entrepreneur). Each Existing route needs a Route Name and at least one leg row; leg Cost and route costs must be &ge; 0. Trip Cost (&Sigma; legs), Monthly Cost (Trip &times; frequency multiplier) and Annual Cost (Monthly &times; 12) are read-only with formula tooltips (Rule 1). Toggling Service Upgrade ON bridges exactly one Required route; removing it clears the flag (two-way sync). Assessment fields are recorded once at entrepreneur level; Available Services drive which transport modes are realistic for the routes.</div>
+
+  <div class="review-panel" data-section="m-log-serv">
+    <div class="review-strip"><span style="font-size:12px;color:var(--ink-soft);font-weight:500;">Section Review:</span>
+      <button class="review-status-btn" onclick="setReview('m-log-serv','draft',this)">Draft</button>
+      <button class="review-status-btn" onclick="setReview('m-log-serv','review',this)">In Review</button>
+      <button class="review-status-btn" onclick="setReview('m-log-serv','changes',this)">Needs Changes</button>
+      <button class="review-status-btn" onclick="setReview('m-log-serv','approved',this)">Approved</button>
+      <button style="margin-left:auto;background:none;border:none;font-size:12px;color:var(--sea);cursor:pointer;font-family:var(--font);text-decoration:underline;" onclick="copyLink('m-log-serv')">Copy Link</button></div>
+    <div class="review-comments"><div class="comment-list" id="comments-m-log-serv"></div>
+      <div class="comment-input-row"><input type="text" placeholder="Your name" style="max-width:120px" id="name-m-log-serv"><textarea rows="1" placeholder="Add a comment..." id="text-m-log-serv"></textarea><button class="comment-add-btn" onclick="addComment('m-log-serv')">Add</button></div></div>
+  </div>
+</div>

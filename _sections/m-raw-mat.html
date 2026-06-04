@@ -1,0 +1,274 @@
+<div class="brd-section" id="m-raw-mat">
+  <div class="section-header">
+    <span class="section-id">PR-MFG-001</span>
+    <h2 class="section-title">Raw Materials</h2>
+  </div>
+  <div class="section-desc">Captures every raw material a manufacturing entrepreneur uses &mdash; its identity, supply/procurement profile, batch-level cost build-up and the resulting Raw Material Cost / Unit &mdash; and records the intervention work (alternate sources, alternate materials, new materials) needed to optimise it. This is the first framework in the Manufacturing module.</div>
+  <div class="callout callout-terra"><strong>Golden Thread.</strong> Product names flow in from the entrepreneur's Product Profile (read-only per Rule 2). Each material's calculated <em>RM Cost / Unit</em> and <em>Total Landed Cost / Unit</em> feed Unit Pricing individually &mdash; Existing rows feed Existing Unit Pricing, Required (optimised) rows feed Optimised Unit Pricing. Toggling an intervention flag in the Existing tab auto-creates a linked row in the Required tab (intervention bridge, Rule 3); removing the Required row clears the flag and vice-versa.</div>
+
+  <h3 style="font-size:16px;color:var(--teal);margin:18px 0 10px;">On-Screen UI Structure</h3>
+  <div class="card"><div style="font-size:13px;line-height:1.9;color:var(--ink)">A teal title bar reads <em>Raw Material Module</em> with crumb <em>PRIME Rural &middot; DF Raw Material</em>. Directly below sits a horizontal <strong>tab rail</strong> &mdash; <em>Summary &middot; Existing &middot; Required &middot; Resources &middot; Task Log</em> &mdash; the active tab highlighted teal. An <strong>entrepreneur chip</strong> ("Auto-fetched from profile") sits at the top of every panel.<br><br><strong>Summary</strong> is a read-only roll-up: a material-wise overview table (one row per material, two right-most columns shaded terracotta/green for New Price &amp; Saving), four aggregate cards (Materials / Cost / Interventions / Status) and a four-tile Intervention Flags strip.<br><br><strong>Existing</strong> renders each material as a collapsible <strong>block</strong> (sea-green header carrying inline Product + Raw-Material name inputs and auto Middleman / Essential tags) holding four sub-sections: Material Identity, Supply &amp; Procurement, Cost &amp; Calculations Inputs, and a <strong>Calculated</strong> strip plus a monospace Calculation Summary. A terracotta <strong>Intervention Need</strong> banner with two toggle cells closes each block. A teal total bar sums all blocks.<br><br><strong>Required</strong> has three numbered sections (I Alternate Sources, II Alternate Materials, III New Raw Material). Sections I &amp; II are populated by the intervention bridge &mdash; pre-created rows show the originating Product / Raw Material / Justification as read-only (italic on cream-deep), then editable optimisation fields and a terracotta Implementation Status block. Section III rows are added freely.<br><br><strong>Calculated fields</strong> (Amount Per Batch, RM Qty / Unit, RM Cost / Unit, Transport / Unit, Total Landed Cost / Unit, Expected Saving / Unit) render <em>italic on cream-deep background</em> and are never editable; each carries a formula tooltip (Rule 1).</div></div>
+  <div class="flow-container" style="margin-top:12px"><div class="flow-step"><div class="flow-box">Summary</div></div><div class="flow-arrow">&rarr;</div><div class="flow-step"><div class="flow-box">Existing</div></div><div class="flow-arrow">&rarr;</div><div class="flow-step"><div class="flow-box">Required</div></div><div class="flow-arrow">&rarr;</div><div class="flow-step"><div class="flow-box">Resources</div></div><div class="flow-arrow">&rarr;</div><div class="flow-step"><div class="flow-box">Task Log</div></div></div>
+
+  <h3 style="font-size:16px;color:var(--teal);margin:18px 0 10px;">User Journey</h3>
+  <div class="card"><div class="flow-container">
+    <div class="flow-step"><div class="flow-box">Open Raw Materials</div><div class="flow-label">Fessociate &middot; Diagnostics &rarr; Manufacturing (or EP dashboard card)</div></div>
+    <div class="flow-arrow">&rarr;</div>
+    <div class="flow-step"><div class="flow-box">Add &amp; record Existing material</div><div class="flow-label">identity, supply, batch cost inputs</div></div>
+    <div class="flow-arrow">&rarr;</div>
+    <div class="flow-step"><div class="flow-box">Review calculated RM Cost / Unit</div><div class="flow-label">auto in Calculated strip</div></div>
+    <div class="flow-arrow">&rarr;</div>
+    <div class="flow-step"><div class="flow-box">Toggle intervention flag</div><div class="flow-label">Existing tab &mdash; auto-creates Required row</div></div>
+    <div class="flow-arrow">&rarr;</div>
+    <div class="flow-step"><div class="flow-box">Research alternate &amp; set status</div><div class="flow-label">Required tab; add New materials</div></div>
+    <div class="flow-arrow">&rarr;</div>
+    <div class="flow-step"><div class="flow-box">Log activity &amp; Save</div><div class="flow-label">Task Log; Summary &amp; Unit Pricing update</div></div>
+  </div></div>
+
+  <!-- ============ TAB 1: SUMMARY ============ -->
+  <div class="accordion open"><div class="accordion-trigger" onclick="this.parentElement.classList.toggle('open')">Tab 1: Summary <span class="acc-arrow">&#9660;</span></div>
+    <div class="accordion-body">
+      <p style="font-size:13px;color:var(--ink-soft);margin-bottom:12px;">Entirely read-only. Auto-populated from the Existing and Required tabs &mdash; no direct data entry. Recalculates on every tab switch back to Summary and on any change in Existing/Required.</p>
+
+      <h4 style="font-size:14px;color:var(--teal);margin-bottom:10px;">Material-wise Overview Table</h4>
+      <p style="font-size:12px;color:var(--ink-soft);font-style:italic;margin-bottom:8px;">Each row feeds Unit Pricing individually. New Price / Unit and Saving populate only when an intervention is in progress / completed.</p>
+      <table class="brd-table"><thead><tr><th>Field Name</th><th>Field Type</th><th>Input Values</th><th>Input / Autofill</th><th>Logic</th><th>Validation &amp; Error Messages</th></tr></thead>
+      <tbody>
+        <tr><td>Product</td><td>Read-only text</td><td>&mdash;</td><td>Autofill</td><td>From the material's Product Name (Existing block) or, for New materials, the Product / Purpose field.</td><td>&mdash; (display only)</td></tr>
+        <tr><td>Raw Material</td><td>Read-only text (bold)</td><td>&mdash;</td><td>Autofill</td><td>From Name of Raw Material.</td><td>&mdash;</td></tr>
+        <tr><td>Source</td><td>Read-only text</td><td>&mdash;</td><td>Autofill</td><td>From Procurement Source.</td><td>&mdash;</td></tr>
+        <tr><td>Availability</td><td>Read-only badge</td><td>Easy / Moderate / Difficult</td><td>Autofill</td><td>Colour map: Easy &rarr; good (green), Moderate &rarr; fair (amber), Difficult &rarr; poor (red). Blank shows &ldquo;&mdash;&rdquo;.</td><td>&mdash;</td></tr>
+        <tr><td>Essential</td><td>Read-only badge</td><td>Yes / &mdash;</td><td>Autofill</td><td>Green &ldquo;Yes&rdquo; badge when Is It Essential? = Yes, else &ldquo;&mdash;&rdquo;.</td><td>&mdash;</td></tr>
+        <tr><td>Price / Unit (&#8377;)</td><td>Read-only currency</td><td>&mdash;</td><td>Autofill</td><td>Existing material's Price Per Unit; &ldquo;&mdash;&rdquo; if 0.</td><td>&mdash;</td></tr>
+        <tr><td>Intervention Type</td><td>Read-only badge + detail</td><td>&#8635; Alt. Source / &#8644; Alt. Material / + New Material / &mdash;</td><td>Autofill</td><td>Resolved from the linked Required row (bridge). Source row wins if both flagged. Sub-line shows source name or alternate material name. New-material rows always tagged &ldquo;+ New Material&rdquo;.</td><td>&mdash;</td></tr>
+        <tr><td>Implementation Status</td><td>Read-only badge</td><td>Pending / In Progress / Completed / Not Feasible (or On Hold for New)</td><td>Autofill</td><td>Mirrors the status set on the linked Required row. Completed &rarr; green, In Progress &rarr; amber, else neutral.</td><td>&mdash;</td></tr>
+        <tr><td>New Price / Unit (&#8377;) <span style="color:var(--terracotta-dk)">[shaded]</span></td><td>Read-only currency</td><td>&mdash;</td><td>Autofill</td><td>New Price Per Unit from the linked Required intervention row; &ldquo;&mdash;&rdquo; for New-material rows.</td><td>&mdash;</td></tr>
+        <tr><td>Saving <span style="color:var(--good-ink)">[shaded]</span></td><td>Read-only</td><td>&mdash;</td><td>Calculated</td><td><em>Saving = Old Price/Unit &minus; New Price/Unit.</em> Down-arrow &amp; green when positive, up-arrow &amp; red when negative; &ldquo;&mdash;&rdquo; for New rows.</td><td>&mdash;</td></tr>
+      </tbody></table>
+      <div class="callout callout-teal">Footer note row: &ldquo;Unit Pricing reads each material individually &mdash; RM Cost / Unit feeds from the Existing tab calculations.&rdquo; New-material rows are highlighted (cream) and never carry Price / Saving.</div>
+
+      <h4 style="font-size:14px;color:var(--teal);margin:16px 0 10px;">Aggregate Cards (4)</h4>
+      <table class="brd-table"><thead><tr><th>Card / Metric</th><th>Field Type</th><th>Input Values</th><th>Input / Autofill</th><th>Logic</th><th>Validation &amp; Error Messages</th></tr></thead>
+      <tbody>
+        <tr><td>Materials &rarr; Total Logged</td><td>Read-only number</td><td>&mdash;</td><td>Calculated</td><td>Count of Existing material blocks.</td><td>&mdash;</td></tr>
+        <tr><td>Materials &rarr; Essential</td><td>Read-only number</td><td>&mdash;</td><td>Calculated</td><td>Count where Is It Essential? = Yes.</td><td>&mdash;</td></tr>
+        <tr><td>Materials &rarr; Difficult Availability</td><td>Read-only number (amber)</td><td>&mdash;</td><td>Calculated</td><td>Count where Availability = Difficult.</td><td>&mdash;</td></tr>
+        <tr><td>Materials &rarr; New Added</td><td>Read-only number</td><td>&mdash;</td><td>Calculated</td><td>Count of Required Section III New-material rows.</td><td>&mdash;</td></tr>
+        <tr><td>Cost &rarr; Monthly Spend (&#8377;)</td><td>Read-only currency</td><td>&mdash;</td><td>Calculated</td><td>Sum of every material's Amount Per Batch.</td><td>&mdash;</td></tr>
+        <tr><td>Cost &rarr; Price / Unit &mdash; Before (&#8377;)</td><td>Read-only currency</td><td>&mdash;</td><td>Calculated</td><td>Average existing Price Per Unit across all materials carrying an intervention; &ldquo;&mdash;&rdquo; if none.</td><td>&mdash;</td></tr>
+        <tr><td>Cost &rarr; Price / Unit &mdash; After (&#8377;)</td><td>Read-only currency (green)</td><td>&mdash;</td><td>Calculated</td><td>Average New Price Per Unit across <strong>Completed</strong> interventions only; &ldquo;&mdash;&rdquo; until at least one is Completed.</td><td>&mdash;</td></tr>
+        <tr><td>Cost &rarr; Saving / Unit (&#8377;)</td><td>Read-only (green/red)</td><td>&mdash;</td><td>Calculated</td><td><em>= avg(Old, Completed) &minus; avg(New, Completed).</em> Down-arrow green if positive, up-arrow red if negative.</td><td>&mdash;</td></tr>
+        <tr><td>Interventions &rarr; Alt. Source Flagged</td><td>Read-only number (amber)</td><td>&mdash;</td><td>Calculated</td><td>Count of Existing blocks with the source toggle ON.</td><td>&mdash;</td></tr>
+        <tr><td>Interventions &rarr; Alt. Material Flagged</td><td>Read-only number (amber)</td><td>&mdash;</td><td>Calculated</td><td>Count of Existing blocks with the material toggle ON.</td><td>&mdash;</td></tr>
+        <tr><td>Interventions &rarr; New Material Needed</td><td>Read-only number</td><td>&mdash;</td><td>Calculated</td><td>Count of Section III rows.</td><td>&mdash;</td></tr>
+        <tr><td>Interventions &rarr; Total</td><td>Read-only number</td><td>&mdash;</td><td>Calculated</td><td>Alt. Source rows + Alt. Material rows + New rows.</td><td>&mdash;</td></tr>
+        <tr><td>Status &rarr; Completed</td><td>Read-only number (green)</td><td>&mdash;</td><td>Calculated</td><td>Count of all Required rows with status = Completed.</td><td>&mdash;</td></tr>
+        <tr><td>Status &rarr; In Progress</td><td>Read-only number (amber)</td><td>&mdash;</td><td>Calculated</td><td>Count with status = In Progress.</td><td>&mdash;</td></tr>
+        <tr><td>Status &rarr; Pending</td><td>Read-only number</td><td>&mdash;</td><td>Calculated</td><td>Count with status = Pending.</td><td>&mdash;</td></tr>
+        <tr><td>Status &rarr; Not Feasible</td><td>Read-only number</td><td>&mdash;</td><td>Calculated</td><td>Count with status = Not Feasible.</td><td>&mdash;</td></tr>
+      </tbody></table>
+
+      <h4 style="font-size:14px;color:var(--teal);margin:16px 0 10px;">Intervention Flags Strip (4 tiles)</h4>
+      <table class="brd-table"><thead><tr><th>Tile</th><th>Field Type</th><th>Input / Autofill</th><th>Logic</th></tr></thead>
+      <tbody>
+        <tr><td>&#8635; Alt. Source Needed</td><td>Read-only count (amber icon)</td><td>Calculated</td><td>= Alt. Source flagged count.</td></tr>
+        <tr><td>&#8644; Alt. Material Needed</td><td>Read-only count (blue icon)</td><td>Calculated</td><td>= Alt. Material flagged count.</td></tr>
+        <tr><td>! Difficult Availability</td><td>Read-only count (red icon)</td><td>Calculated</td><td>= Difficult availability count.</td></tr>
+        <tr><td>&#10003; Essential Materials</td><td>Read-only count (green icon)</td><td>Calculated</td><td>= Essential count.</td></tr>
+      </tbody></table>
+    </div></div>
+
+  <!-- ============ TAB 2: EXISTING ============ -->
+  <div class="accordion"><div class="accordion-trigger" onclick="this.parentElement.classList.toggle('open')">Tab 2: Existing <span class="acc-arrow">&#9660;</span></div>
+    <div class="accordion-body">
+      <p style="font-size:13px;color:var(--ink-soft);margin-bottom:12px;">One collapsible block per existing raw material (child table <em>Existing Raw Material</em>). &ldquo;+ Add Raw Material&rdquo; appends a block; each block has four sub-sections plus the intervention banner. The collapsible header carries inline Product and Raw-Material name inputs (two-way synced with the body fields) and auto Source / Essential tags.</p>
+
+      <h4 style="font-size:14px;color:var(--teal);margin-bottom:10px;">I. Material Identity</h4>
+      <table class="brd-table"><thead><tr><th>Field Name</th><th>Field Type</th><th>Input Values</th><th>Input / Autofill</th><th>Logic</th><th>Validation &amp; Error Messages</th></tr></thead>
+      <tbody>
+        <tr><td>Product Name *</td><td>Text (or Link to Product Profile)</td><td>Free text</td><td>Input / fetched from Product Profile (read-only when fetched, Rule 2)</td><td>Two-way synced with the block header Product input and propagated to any linked Required row.</td><td>&ldquo;Product Name is required.&rdquo;</td></tr>
+        <tr><td>Product SKU</td><td>Text</td><td>Free text</td><td>Input</td><td>&mdash;</td><td>&mdash;</td></tr>
+        <tr><td>Current Status of Use *</td><td>Select</td><td>Yes / No</td><td>Input</td><td>Whether the material is currently in use.</td><td>&ldquo;Select current status of use.&rdquo;</td></tr>
+        <tr><td>Name of Raw Material *</td><td>Text</td><td>Free text</td><td>Input</td><td>Two-way synced with the block header Raw-Material input; propagated to linked Required rows.</td><td>&ldquo;Raw material name is required.&rdquo;</td></tr>
+        <tr><td>Is It Essential? *</td><td>Select</td><td>Yes / No</td><td>Input</td><td>Yes shows a green &ldquo;Essential&rdquo; tag on the header and increments Essential aggregates.</td><td>&ldquo;Indicate whether this material is essential.&rdquo;</td></tr>
+      </tbody></table>
+
+      <h4 style="font-size:14px;color:var(--teal);margin:16px 0 10px;">II. Supply &amp; Procurement</h4>
+      <table class="brd-table"><thead><tr><th>Field Name</th><th>Field Type</th><th>Input Values</th><th>Input / Autofill</th><th>Logic</th><th>Validation &amp; Error Messages</th></tr></thead>
+      <tbody>
+        <tr><td>Availability</td><td>Select</td><td>Easy / Moderate / Difficult</td><td>Input</td><td>Difficult increments the Difficult-availability flag and the red Summary tile.</td><td>&mdash;</td></tr>
+        <tr><td>Procurement Frequency</td><td>Select</td><td>Daily / Weekly / Monthly / Seasonal</td><td>Input</td><td>&mdash;</td><td>&mdash;</td></tr>
+        <tr><td>Procured Season Time</td><td>Text</td><td>Free text (e.g., Oct&ndash;Mar)</td><td>Input</td><td>&mdash;</td><td>&mdash;</td></tr>
+        <tr><td>Procurement Source</td><td>Select</td><td>Market / Wholesaler / Middleman / Farm / Forest / Online / Others</td><td>Input</td><td>Selected value shows as a header tag; &ldquo;Middleman&rdquo; renders in the darker terracotta variant.</td><td>&mdash;</td></tr>
+        <tr><td>Source Name</td><td>Text</td><td>Free text</td><td>Input</td><td>&mdash;</td><td>&mdash;</td></tr>
+        <tr><td>Source Location</td><td>Text</td><td>Free text</td><td>Input</td><td>&mdash;</td><td>&mdash;</td></tr>
+        <tr><td>Source Contact</td><td>Text</td><td>Phone / email</td><td>Input</td><td>&mdash;</td><td>Validate phone/email format if entered.</td></tr>
+      </tbody></table>
+
+      <h4 style="font-size:14px;color:var(--teal);margin:16px 0 10px;">III. Cost &amp; Calculations &mdash; Inputs</h4>
+      <table class="brd-table"><thead><tr><th>Field Name</th><th>Field Type</th><th>Input Values</th><th>Input / Autofill</th><th>Logic</th><th>Validation &amp; Error Messages</th></tr></thead>
+      <tbody>
+        <tr><td>Unit *</td><td>Text</td><td>e.g., gram, ml, kg</td><td>Input</td><td>Label appended to RM Qty / Unit display.</td><td>&ldquo;Unit is required.&rdquo;</td></tr>
+        <tr><td>Monthly Requirement</td><td>Number</td><td>&ge; 0</td><td>Input</td><td>Reference quantity; not part of per-unit calc.</td><td>&ldquo;Cannot be negative.&rdquo;</td></tr>
+        <tr><td>Quantity Required Per Batch *</td><td>Number</td><td>&ge; 0</td><td>Input</td><td>Drives Amount Per Batch and RM Qty / Unit.</td><td>&ldquo;Enter quantity per batch.&rdquo;</td></tr>
+        <tr><td>Price Per Unit *</td><td>Currency (&#8377;)</td><td>&ge; 0, 2 decimals</td><td>Input</td><td>Drives Amount Per Batch; carried as the &ldquo;Old Price&rdquo; into linked Required rows and the Summary Before column.</td><td>&ldquo;Enter price per unit.&rdquo;</td></tr>
+        <tr><td>Batch Size *</td><td>Number</td><td>&gt; 0</td><td>Input</td><td>Divisor for all per-unit calculations &mdash; must be &gt; 0 or calculations return 0.</td><td>&ldquo;Batch size must be greater than 0.&rdquo;</td></tr>
+        <tr><td>Delivery / Transport Cost Per Trip</td><td>Currency (&#8377;)</td><td>&ge; 0, 2 decimals</td><td>Input</td><td>Drives Transport Cost / Unit.</td><td>&ldquo;Cannot be negative.&rdquo;</td></tr>
+      </tbody></table>
+
+      <h4 style="font-size:14px;color:var(--teal);margin:16px 0 10px;">IV. Calculated (read-only, italic on cream-deep)</h4>
+      <table class="brd-table"><thead><tr><th>Field Name</th><th>Field Type</th><th>Input / Autofill</th><th>Logic (Formula)</th></tr></thead>
+      <tbody>
+        <tr><td>Amount Per Batch</td><td>Calculated currency</td><td>Calculated</td><td><em>= Quantity Required Per Batch &times; Price Per Unit.</em> Summary line: &ldquo;Amount/Batch = {qty} {unit} &times; &#8377;{price} = &#8377;{result}&rdquo;.</td></tr>
+        <tr><td>Raw Material Qty Per Unit</td><td>Calculated number</td><td>Calculated</td><td><em>= Quantity Required Per Batch &divide; Batch Size</em> (0 if Batch Size = 0). Displayed with the Unit label.</td></tr>
+        <tr><td>Raw Material Cost Per Unit</td><td>Calculated currency</td><td>Calculated</td><td><em>= Amount Per Batch &divide; Batch Size</em> (0 if Batch Size = 0). This is the value Unit Pricing reads per material.</td></tr>
+        <tr><td>Transport Cost Per Unit</td><td>Calculated currency</td><td>Calculated</td><td><em>= Delivery / Transport Cost Per Trip &divide; Batch Size</em> (0 if Batch Size = 0).</td></tr>
+        <tr><td>Total Landed Cost Per Unit</td><td>Calculated currency (highlighted total line)</td><td>Calculated</td><td><em>= Raw Material Cost Per Unit + Transport Cost Per Unit.</em> Shown as &ldquo;TOTAL LANDED COST/UNIT&rdquo; in the Calculation Summary.</td></tr>
+      </tbody></table>
+      <div class="callout callout-teal">A monospace <strong>Calculation Summary</strong> echoes each formula with live values (lines 1&ndash;4) and the bold total line, so the entrepreneur can see exactly how the per-unit cost was derived.</div>
+
+      <h4 style="font-size:14px;color:var(--teal);margin:16px 0 10px;">V. Intervention Need (terracotta banner) &mdash; the bridge to Required</h4>
+      <table class="brd-table"><thead><tr><th>Field Name</th><th>Field Type</th><th>Input Values</th><th>Input / Autofill</th><th>Logic</th><th>Validation &amp; Error Messages</th></tr></thead>
+      <tbody>
+        <tr><td>Alternate procurement source needed?</td><td>Toggle</td><td>On / Off</td><td>Input</td><td>ON &rarr; note changes to &ldquo;&#8635; Flagged &rarr; Details in Required Tab&rdquo; <strong>and auto-creates a linked Alternate Source row</strong> in Required &sect;I carrying this block's Product, Raw Material and Justification (Rule 3). OFF &rarr; removes that linked row.</td><td>If ON, Justification should be filled before save.</td></tr>
+        <tr><td>Source intervention &mdash; Justification</td><td>Textarea</td><td>Free text</td><td>Input</td><td>Two-way synced into the linked Required source row's read-only Justification field.</td><td>&ldquo;Add a justification for the alternate-source intervention.&rdquo;</td></tr>
+        <tr><td>Alternate raw material needed?</td><td>Toggle</td><td>On / Off</td><td>Input</td><td>ON &rarr; note changes to &ldquo;&#8644; Flagged &rarr; Details in Required Tab&rdquo; <strong>and auto-creates a linked Alternate Material row</strong> in Required &sect;II. OFF &rarr; removes that row.</td><td>If ON, Justification should be filled before save.</td></tr>
+        <tr><td>Material intervention &mdash; Justification</td><td>Textarea</td><td>Free text</td><td>Input</td><td>Two-way synced into the linked Required material row's Justification field.</td><td>&ldquo;Add a justification for the alternate-material intervention.&rdquo;</td></tr>
+      </tbody></table>
+      <div class="callout callout-terra"><strong>Intervention bridge (Rule 3).</strong> A flag toggle and its linked Required row are bound: toggling ON creates the row (no duplicate created if one already exists); toggling OFF deletes it; deleting the Required row from the Required tab clears the flag back to &ldquo;Not flagged&rdquo;; removing the whole Existing block removes all of its linked Required rows. Product / Raw Material / Justification on the Required row are read-only mirrors of the Existing block.</div>
+
+      <h4 style="font-size:14px;color:var(--teal);margin:16px 0 10px;">Existing Total Bar (teal footer)</h4>
+      <table class="brd-table"><thead><tr><th>Field Name</th><th>Field Type</th><th>Input / Autofill</th><th>Logic</th></tr></thead>
+      <tbody>
+        <tr><td>Material Count</td><td>Calculated</td><td>Calculated</td><td>Number of Existing blocks.</td></tr>
+        <tr><td>Essential Materials</td><td>Calculated</td><td>Calculated</td><td>Count where Is It Essential? = Yes.</td></tr>
+        <tr><td>Total Monthly Spend</td><td>Calculated currency</td><td>Calculated</td><td>Sum of all Amount Per Batch values.</td></tr>
+        <tr><td>Total RM Cost / Unit</td><td>Calculated currency</td><td>Calculated</td><td>Sum of each block's Total Landed Cost / Unit.</td></tr>
+        <tr><td>Auto-fetches to</td><td>Static label (amber)</td><td>&mdash;</td><td>&ldquo;Existing Unit Pricing &rarr; Raw Materials.&rdquo; (Golden Thread sink.)</td></tr>
+      </tbody></table>
+    </div></div>
+
+  <!-- ============ TAB 3: REQUIRED ============ -->
+  <div class="accordion"><div class="accordion-trigger" onclick="this.parentElement.classList.toggle('open')">Tab 3: Required <span class="acc-arrow">&#9660;</span></div>
+    <div class="accordion-body">
+      <p style="font-size:13px;color:var(--ink-soft);margin-bottom:12px;">Three numbered sections. Sections I &amp; II are <strong>bridge-populated</strong> &mdash; rows are auto-created from the Existing tab's intervention toggles (a manual &ldquo;+ Add&rdquo; button also exists). Each row shows read-only originating context (Product / Current Raw Material / Justification) then editable optimisation fields and an Implementation Status block. Empty sections show a dashed placeholder.</p>
+
+      <h4 style="font-size:14px;color:var(--teal);margin-bottom:10px;">Section I &mdash; Alternate Procurement Sources</h4>
+      <table class="brd-table"><thead><tr><th>Field Name</th><th>Field Type</th><th>Input Values</th><th>Input / Autofill</th><th>Logic</th><th>Validation &amp; Error Messages</th></tr></thead>
+      <tbody>
+        <tr><td>Product</td><td>Read-only text</td><td>&mdash;</td><td>Autofill (bridge)</td><td>Mirrors the originating Existing block's Product Name.</td><td>&mdash;</td></tr>
+        <tr><td>Current Raw Material</td><td>Read-only text</td><td>&mdash;</td><td>Autofill (bridge)</td><td>Mirrors the originating Name of Raw Material.</td><td>&mdash;</td></tr>
+        <tr><td>Justification (from Existing)</td><td>Textarea (synced)</td><td>Free text</td><td>Autofill, editable (two-way)</td><td>Synced with the Existing block's source Justification.</td><td>&mdash;</td></tr>
+        <tr><td>New Source Type</td><td>Select</td><td>Market / Wholesaler / Farm / Forest / Online / Cooperative &middot; FPO / Direct Producer / Others</td><td>Input</td><td>&mdash;</td><td>&ldquo;Select the new source type.&rdquo;</td></tr>
+        <tr><td>New Source Name</td><td>Text</td><td>Free text</td><td>Input</td><td>Surfaced as the Intervention detail sub-line in Summary.</td><td>&mdash;</td></tr>
+        <tr><td>Location</td><td>Text</td><td>Free text</td><td>Input</td><td>&mdash;</td><td>&mdash;</td></tr>
+        <tr><td>Contact</td><td>Text</td><td>Phone / email</td><td>Input</td><td>&mdash;</td><td>Validate format if entered.</td></tr>
+        <tr><td>New Price Per Unit (&#8377;)</td><td>Currency</td><td>&ge; 0, 2 decimals</td><td>Input</td><td>Feeds Expected Saving / Unit and the Summary New Price column.</td><td>&ldquo;Cannot be negative.&rdquo;</td></tr>
+        <tr><td>Old Price Per Unit (&#8377;)</td><td>Currency</td><td>&ge; 0, 2 decimals</td><td>Input (defaults to the existing material's Price Per Unit)</td><td>Baseline for the saving calc.</td><td>&ldquo;Cannot be negative.&rdquo;</td></tr>
+        <tr><td>Expected Saving / Unit</td><td>Calculated (read-only)</td><td>&mdash;</td><td>Calculated</td><td><em>= Old Price Per Unit &minus; New Price Per Unit</em>, shown as &ldquo;&#8377;{value} / unit&rdquo;.</td><td>&mdash;</td></tr>
+        <tr><td>Notes</td><td>Text</td><td>Free text</td><td>Input</td><td>&mdash;</td><td>&mdash;</td></tr>
+        <tr><td>Implementation Status</td><td>Select</td><td>Pending / In Progress / Completed / Not Feasible</td><td>Input</td><td>Drives the Required Completed count and the Summary After / Saving (Completed only).</td><td>&mdash;</td></tr>
+        <tr><td>Implementation Notes</td><td>Textarea</td><td>Free text</td><td>Input</td><td>&mdash;</td><td>&mdash;</td></tr>
+      </tbody></table>
+      <div class="callout callout-amber">Tag: &ldquo;&#8635; Alternate Source&rdquo;. Removing this row (Remove button) clears the originating Existing block's source toggle and resets its note to &ldquo;Not flagged&rdquo;.</div>
+
+      <h4 style="font-size:14px;color:var(--teal);margin:16px 0 10px;">Section II &mdash; Alternate Raw Materials</h4>
+      <table class="brd-table"><thead><tr><th>Field Name</th><th>Field Type</th><th>Input Values</th><th>Input / Autofill</th><th>Logic</th><th>Validation &amp; Error Messages</th></tr></thead>
+      <tbody>
+        <tr><td>Product</td><td>Read-only text</td><td>&mdash;</td><td>Autofill (bridge)</td><td>Mirrors the originating Existing block's Product.</td><td>&mdash;</td></tr>
+        <tr><td>Current Raw Material</td><td>Read-only text</td><td>&mdash;</td><td>Autofill (bridge)</td><td>Mirrors the originating Raw Material.</td><td>&mdash;</td></tr>
+        <tr><td>Justification (from Existing)</td><td>Textarea (synced)</td><td>Free text</td><td>Autofill, editable (two-way)</td><td>Synced with the Existing block's material Justification.</td><td>&mdash;</td></tr>
+        <tr><td>Proposed Alternate Material</td><td>Text</td><td>Free text</td><td>Input</td><td>Surfaced as the Intervention detail sub-line in Summary.</td><td>&ldquo;Enter the proposed alternate material.&rdquo;</td></tr>
+        <tr><td>Reason for Change</td><td>Select</td><td>Cost Reduction / Quality Improvement / Availability / Sustainability / Local Sourcing / Others</td><td>Input</td><td>&mdash;</td><td>&mdash;</td></tr>
+        <tr><td>New Price Per Unit (&#8377;)</td><td>Currency (placeholder 0.00)</td><td>&ge; 0, 2 decimals</td><td>Input</td><td>Feeds the Summary New Price column and Price Impact (vs the existing material's Price Per Unit).</td><td>&ldquo;Cannot be negative.&rdquo;</td></tr>
+        <tr><td>Quality Trade-off</td><td>Select</td><td>None / Minor / Moderate / Significant</td><td>Input</td><td>&mdash;</td><td>&mdash;</td></tr>
+        <tr><td>Trial Status</td><td>Select</td><td>Pending / Sample Sourced / Trial Run / Approved / Rejected</td><td>Input</td><td>Tracks substitution trial progress (distinct from Implementation Status).</td><td>&mdash;</td></tr>
+        <tr><td>Notes</td><td>Text</td><td>Free text (substitution, sourcing, trials)</td><td>Input</td><td>&mdash;</td><td>&mdash;</td></tr>
+        <tr><td>Implementation Status</td><td>Select</td><td>Pending / In Progress / Completed / Not Feasible</td><td>Input</td><td>Drives Completed count and Summary After / Saving (Completed only).</td><td>&mdash;</td></tr>
+        <tr><td>Implementation Notes</td><td>Textarea</td><td>Free text</td><td>Input</td><td>&mdash;</td><td>&mdash;</td></tr>
+      </tbody></table>
+      <div class="callout callout-amber">Tag: &ldquo;&#8644; Alternate Material&rdquo;. Removing this row clears the originating Existing block's material toggle.</div>
+
+      <h4 style="font-size:14px;color:var(--teal);margin:16px 0 10px;">Section III &mdash; New Raw Material (standalone, freely added)</h4>
+      <table class="brd-table"><thead><tr><th>Field Name</th><th>Field Type</th><th>Input Values</th><th>Input / Autofill</th><th>Logic</th><th>Validation &amp; Error Messages</th></tr></thead>
+      <tbody>
+        <tr><td>Product / Purpose</td><td>Text</td><td>Free text</td><td>Input</td><td>Shown as Product in the Summary New-material row.</td><td>&mdash;</td></tr>
+        <tr><td>SKU / Reference</td><td>Text</td><td>Free text</td><td>Input</td><td>&mdash;</td><td>&mdash;</td></tr>
+        <tr><td>Name of Raw Material *</td><td>Text</td><td>Free text</td><td>Input</td><td>Shown (bold) in the Summary row.</td><td>&ldquo;Raw material name is required.&rdquo;</td></tr>
+        <tr><td>Procurement Source</td><td>Select</td><td>Market / Wholesaler / Farm / Forest / Online / Cooperative &middot; FPO / Direct Producer / Others</td><td>Input</td><td>&mdash;</td><td>&mdash;</td></tr>
+        <tr><td>Source Name</td><td>Text</td><td>Free text</td><td>Input</td><td>&mdash;</td><td>&mdash;</td></tr>
+        <tr><td>Source Location</td><td>Text</td><td>Free text</td><td>Input</td><td>&mdash;</td><td>&mdash;</td></tr>
+        <tr><td>Source Contact</td><td>Text</td><td>Phone / email</td><td>Input</td><td>&mdash;</td><td>Validate format if entered.</td></tr>
+        <tr><td>Availability</td><td>Select</td><td>Easy / Moderate / Difficult</td><td>Input</td><td>Renders as a badge in the Summary row.</td><td>&mdash;</td></tr>
+        <tr><td>Unit</td><td>Text</td><td>e.g., gram, ml, kg</td><td>Input</td><td>&mdash;</td><td>&mdash;</td></tr>
+        <tr><td>Qty Required Per Batch</td><td>Number</td><td>&ge; 0</td><td>Input</td><td>&mdash;</td><td>&ldquo;Cannot be negative.&rdquo;</td></tr>
+        <tr><td>Price Per Unit (&#8377;)</td><td>Currency</td><td>&ge; 0, 2 decimals</td><td>Input</td><td>&mdash;</td><td>&ldquo;Cannot be negative.&rdquo;</td></tr>
+        <tr><td>Batch Size</td><td>Number</td><td>&gt; 0</td><td>Input</td><td>&mdash;</td><td>&ldquo;Batch size must be greater than 0.&rdquo;</td></tr>
+        <tr><td>Transport Cost Per Trip (&#8377;)</td><td>Currency</td><td>&ge; 0, 2 decimals</td><td>Input</td><td>&mdash;</td><td>&ldquo;Cannot be negative.&rdquo;</td></tr>
+        <tr><td>Is It Essential?</td><td>Select</td><td>Yes / No</td><td>Input</td><td>&mdash;</td><td>&mdash;</td></tr>
+        <tr><td>Reason for Adding</td><td>Text</td><td>Free text</td><td>Input</td><td>Why this new raw material is needed.</td><td>&mdash;</td></tr>
+        <tr><td>Implementation Status</td><td>Select</td><td>Pending / In Progress / Completed / On Hold</td><td>Input</td><td>Note: New-material rows use <strong>On Hold</strong> (not Not Feasible) as the fourth option.</td><td>&mdash;</td></tr>
+        <tr><td>Implementation Notes</td><td>Textarea</td><td>Free text</td><td>Input</td><td>&mdash;</td><td>&mdash;</td></tr>
+      </tbody></table>
+      <div class="callout callout-teal">Tag: &ldquo;+ New Material&rdquo;. New-material rows have no Price / Saving columns in Summary (highlighted row, Price &amp; Saving show &ldquo;&mdash;&rdquo;).</div>
+
+      <h4 style="font-size:14px;color:var(--teal);margin:16px 0 10px;">Required Total Bar &mdash; Optimised View (teal footer)</h4>
+      <table class="brd-table"><thead><tr><th>Field Name</th><th>Field Type</th><th>Input / Autofill</th><th>Logic</th></tr></thead>
+      <tbody>
+        <tr><td>Alternate Sources</td><td>Calculated</td><td>Calculated</td><td>Count of Section I rows.</td></tr>
+        <tr><td>Alternate Materials</td><td>Calculated</td><td>Calculated</td><td>Count of Section II rows.</td></tr>
+        <tr><td>New Raw Materials</td><td>Calculated</td><td>Calculated</td><td>Count of Section III rows.</td></tr>
+        <tr><td>Status: Completed</td><td>Calculated</td><td>Calculated</td><td>Count of all Required rows with status = Completed.</td></tr>
+        <tr><td>Auto-fetches to</td><td>Static label (amber)</td><td>&mdash;</td><td>&ldquo;Optimised Unit Pricing &rarr; Raw Materials.&rdquo; (Golden Thread sink.)</td></tr>
+      </tbody></table>
+    </div></div>
+
+  <!-- ============ TAB 4: RESOURCES ============ -->
+  <div class="accordion"><div class="accordion-trigger" onclick="this.parentElement.classList.toggle('open')">Tab 4: Resources <span class="acc-arrow">&#9660;</span></div>
+    <div class="accordion-body">
+      <p style="font-size:13px;color:var(--ink-soft);margin-bottom:12px;">Reference Materials child table &mdash; supplier directories, quotations, substitute references etc. &ldquo;+ Add Resource&rdquo; appends a row; at least one row must remain.</p>
+      <table class="brd-table"><thead><tr><th>Field Name</th><th>Field Type</th><th>Input Values</th><th>Input / Autofill</th><th>Logic</th><th>Validation &amp; Error Messages</th></tr></thead>
+      <tbody>
+        <tr><td>Resource Title</td><td>Text</td><td>Free text</td><td>Input</td><td>&mdash;</td><td>&ldquo;Resource title is required.&rdquo;</td></tr>
+        <tr><td>Category</td><td>Select</td><td>Supplier Directory / Wholesaler Contact / FPO &middot; Cooperative / Quality Standards / Seasonal Calendar / Substitute Material</td><td>Input</td><td>&mdash;</td><td>&mdash;</td></tr>
+        <tr><td>Type</td><td>Select</td><td>Contact / Reference / Quotation / Specification / Map &middot; Location</td><td>Input</td><td>&mdash;</td><td>&mdash;</td></tr>
+        <tr><td>Description / Notes</td><td>Text</td><td>Free text</td><td>Input</td><td>&mdash;</td><td>&mdash;</td></tr>
+        <tr><td>File</td><td>Attach (Upload / View)</td><td>File upload</td><td>Input</td><td>Upload stores the file; View opens it.</td><td>&mdash;</td></tr>
+      </tbody></table>
+    </div></div>
+
+  <!-- ============ TAB 5: TASK LOG ============ -->
+  <div class="accordion"><div class="accordion-trigger" onclick="this.parentElement.classList.toggle('open')">Tab 5: Task Log <span class="acc-arrow">&#9660;</span></div>
+    <div class="accordion-body">
+      <p style="font-size:13px;color:var(--ink-soft);margin-bottom:12px;">Activity log for raw-material work. Opens with one blank row; &ldquo;+ Add Entry&rdquo; appends and auto-numbers rows (01, 02, &hellip;); deleting renumbers the remainder.</p>
+      <table class="brd-table"><thead><tr><th>Field Name</th><th>Field Type</th><th>Input Values</th><th>Input / Autofill</th><th>Logic</th><th>Validation &amp; Error Messages</th></tr></thead>
+      <tbody>
+        <tr><td>No.</td><td>Auto number</td><td>&mdash;</td><td>Autofill</td><td>Zero-padded sequence; recomputed on add / delete.</td><td>&mdash;</td></tr>
+        <tr><td>Date</td><td>Date</td><td>Date picker</td><td>Input</td><td>&mdash;</td><td>&mdash;</td></tr>
+        <tr><td>Task Name</td><td>Select (preset list)</td><td>01 Awareness on Importance of RM Data Collection &middot; 02 Record RM Data &middot; 03 Calculate RM Cost Per Unit &middot; 04 Identify Difficult-Availability Materials &middot; 05 Identify Alternate Procurement Source Need &middot; 06 Identify Alternate RM Need &middot; 07 Identify New RM Need &middot; 08 Research Alternative Procurement Sources &middot; 09 Research Alternative RMs &middot; 10 Research New RM &middot; 11 Record Alternate Source &middot; 12 Record Alternate Material &middot; 13 Record New RM &middot; 14 Establish Supply Linkage &middot; 15 Monitor Supply Linkage &middot; 16 Review RM Cost Impact on Unit Pricing &middot; If other, specify in comments</td><td>Input</td><td>Standard 16-step raw-material activity taxonomy plus an &ldquo;other&rdquo; option.</td><td>&ldquo;Select a task.&rdquo;</td></tr>
+        <tr><td>Notes / Outcome</td><td>Text</td><td>Free text</td><td>Input</td><td>Required when Task Name = &ldquo;If other, specify in comments&rdquo;.</td><td>&ldquo;Describe the outcome.&rdquo;</td></tr>
+        <tr><td>Attachment</td><td>Attach (Upload)</td><td>File upload</td><td>Input</td><td>&mdash;</td><td>&mdash;</td></tr>
+      </tbody></table>
+    </div></div>
+
+  <div class="callout callout-danger"><strong>Key validations (whole form):</strong> Product Name, Name of Raw Material, Current Status of Use, Is It Essential?, Unit, Quantity Required Per Batch, Price Per Unit and Batch Size are mandatory on every Existing material. Batch Size must be &gt; 0 &mdash; all per-unit calculations (RM Qty/Unit, RM Cost/Unit, Transport/Unit, Total Landed Cost/Unit) return 0 when Batch Size is 0 or blank. All currency / quantity inputs must be &ge; 0. An intervention flag toggled ON must have a Justification before save, and toggling it ON/OFF must keep the linked Required row in sync (create on ON, delete on OFF; deleting the Required row resets the flag). Summary &ldquo;After&rdquo; and &ldquo;Saving / Unit&rdquo; count <strong>Completed</strong> interventions only. New-material rows use &ldquo;On Hold&rdquo; as the fourth status (not &ldquo;Not Feasible&rdquo;).</div>
+
+  <div class="review-panel" data-section="m-raw-mat">
+    <div class="review-strip">
+      <span style="font-size:12px;color:var(--ink-soft);font-weight:500;">Section Review:</span>
+      <button class="review-status-btn" onclick="setReview('m-raw-mat','draft',this)">Draft</button>
+      <button class="review-status-btn" onclick="setReview('m-raw-mat','review',this)">In Review</button>
+      <button class="review-status-btn" onclick="setReview('m-raw-mat','changes',this)">Needs Changes</button>
+      <button class="review-status-btn" onclick="setReview('m-raw-mat','approved',this)">Approved</button>
+      <button style="margin-left:auto;background:none;border:none;font-size:12px;color:var(--sea);cursor:pointer;font-family:var(--font);text-decoration:underline;" onclick="copyLink('m-raw-mat')">Copy Link</button>
+    </div>
+    <div class="review-comments">
+      <div class="comment-list" id="comments-m-raw-mat"></div>
+      <div class="comment-input-row">
+        <input type="text" placeholder="Your name" style="max-width:120px" id="name-m-raw-mat">
+        <textarea rows="1" placeholder="Add a comment..." id="text-m-raw-mat"></textarea>
+        <button class="comment-add-btn" onclick="addComment('m-raw-mat')">Add</button>
+      </div>
+    </div>
+  </div>
+</div>

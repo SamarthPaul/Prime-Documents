@@ -2,3 +2,8 @@ _results_accumulated.json
 *.png
 test-results/
 node_modules/
+__pycache__/
+*.pyc
+# Internal-only — kept OUT of the public Pages repo
+Prime Rural Steerco Meeting_May_2026.pptx
+create_steerco.py

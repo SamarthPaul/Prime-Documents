@@ -1,0 +1,237 @@
+<div class="brd-section" id="m-testing">
+  <div class="section-header"><span class="section-id">PR-PD-003</span><h2 class="section-title">Product Testing</h2></div>
+  <div class="section-desc">Part of the Product Development module &mdash; captures every lab test conducted on an entrepreneur&rsquo;s product (existing &amp; required), the NABL / accredited lab, the consent letter signed with the entrepreneur, and the full sample-to-result date chain (sample deposited to office &rarr; deposited to lab &rarr; test results received). Tests that fail a parameter are flagged for retesting, automatically bridging from the Existing tab into the Required tab.</div>
+
+  <div class="callout callout-terra"><strong>Key behaviour &mdash; the Existing &rarr; Required intervention bridge.</strong> A test conducted is recorded ONCE in the Existing tab. Toggling its &ldquo;Need Retesting?&rdquo; flag does not capture any consent or new test data &mdash; it only raises a flag and auto-creates a linked card in the Required tab (Product + Test Type locked / sourced from Existing, with the justification carried across read-only). New tests not previously conducted are added manually in the Required tab. The Required tab is where consent management (core-team approval, consent-letter signed toggle + conditional reason, consent letter upload) and the full date chain live; the Existing tab carries only a shorter date chain (deposit &rarr; result).</div>
+
+  <h3 style="font-size:16px;color:var(--teal);margin:18px 0 10px;">On-Screen UI Structure</h3>
+  <div class="card"><div style="font-size:13px;line-height:1.9;color:var(--ink)">
+    <strong>Top bar:</strong> teal header &ldquo;Product Testing&rdquo; with crumb &ldquo;PRIME Rural &middot; Quality &amp; Compliance&rdquo;, and an entrepreneur chip (avatar + name) auto-fetched from the profile. <br>
+    <strong>Tab rail:</strong> horizontal pill bar with five tabs &mdash; Summary &middot; Existing &middot; Required &middot; Resources &middot; Task Log; the active tab renders teal-on-white (Existing opens by default). <br>
+    <strong>Body layout:</strong> each tab is a panel. <em>Summary</em> is read-only: a Test-wise Overview table (one row per test), four Aggregate cards (Existing / Cost / Interventions / Implementation Status), and a 4-cell Intervention-flag strip. <em>Existing</em> and <em>Required</em> render each test as a collapsible &ldquo;test block&rdquo; (sea-blue header carrying Product + Test Type selectors, a status / flag chip, and a Remove button) with a Test Details sub-section. <br>
+    <strong>Special widgets:</strong> (1) <em>Consent toggle</em> &mdash; in the Required tab, a &ldquo;Consent Letter Signed&rdquo; checkbox (default on) that reveals a conditional &ldquo;If not signed, reason&rdquo; textarea when unchecked, plus a Consent Letter upload / view control and a separate &ldquo;Approved by Core Team&rdquo; checkbox. (2) <em>Date chain</em> &mdash; ordered date fields: Existing = Date of Sample Deposit &rarr; Date of Test Results; Required = Date of Sample Deposit to Office &rarr; Date of Sample Deposit to Lab &rarr; Date of Test Results. (3) <em>Retesting toggle</em> &mdash; a terracotta &ldquo;Intervention Need&rdquo; panel in Existing with a &ldquo;Need Retesting?&rdquo; toggle + Justification, which bridges to Required. (4) <em>Implementation Status</em> selector + chip on each Required card (Pending / In Progress / Completed / On Hold / Not Feasible). (5) File upload / view pills for Testing Report and Consent Letter. <br>
+    Per Rule&nbsp;1, every calculated / autofilled field (all Summary aggregates, the overview table cells, bridged Product / Test Type / Justification, the Reference cells) renders <em>italic on a cream-deep background</em> and is non-editable, with a tooltip describing its source / formula.
+  </div></div>
+  <div class="flow-container" style="margin-top:12px">
+    <div class="flow-step"><div class="flow-box">Summary</div></div>
+    <div class="flow-arrow">&rarr;</div>
+    <div class="flow-step"><div class="flow-box">Existing</div></div>
+    <div class="flow-arrow">&rarr;</div>
+    <div class="flow-step"><div class="flow-box">Required</div></div>
+    <div class="flow-arrow">&rarr;</div>
+    <div class="flow-step"><div class="flow-box">Resources</div></div>
+    <div class="flow-arrow">&rarr;</div>
+    <div class="flow-step"><div class="flow-box">Task Log</div></div>
+  </div>
+
+  <h3 style="font-size:16px;color:var(--teal);margin:18px 0 10px;">User Journey</h3>
+  <div class="card"><div class="flow-container">
+    <div class="flow-step"><div class="flow-box">Open</div><div class="flow-label">Diagnostics &rarr; Product Development &rarr; Product Testing (entrepreneur auto-fetched)</div></div>
+    <div class="flow-arrow">&rarr;</div>
+    <div class="flow-step"><div class="flow-box">Record Existing</div><div class="flow-label">Add each test already conducted; product, test type, lab, deposit &amp; result dates, report upload</div></div>
+    <div class="flow-arrow">&rarr;</div>
+    <div class="flow-step"><div class="flow-box">Flag Retesting</div><div class="flow-label">Toggle &ldquo;Need Retesting?&rdquo; with justification on any failed / expired test &mdash; bridges to Required</div></div>
+    <div class="flow-arrow">&rarr;</div>
+    <div class="flow-step"><div class="flow-box">Plan Required</div><div class="flow-label">Required tab &rarr; get core-team approval, sign &amp; upload consent, pick lab, run the date chain</div></div>
+    <div class="flow-arrow">&rarr;</div>
+    <div class="flow-step"><div class="flow-box">Track &amp; Upload</div><div class="flow-label">Update Implementation Status, upload the test report, attach Resources</div></div>
+    <div class="flow-arrow">&rarr;</div>
+    <div class="flow-step"><div class="flow-box">Log &amp; Save</div><div class="flow-label">Capture activities in Task Log; review Summary roll-up; save</div></div>
+  </div></div>
+
+  <!-- ============ TAB 1: SUMMARY ============ -->
+  <div class="accordion open">
+    <div class="accordion-trigger" onclick="this.parentElement.classList.toggle('open')">Tab 1 &mdash; Summary (read-only roll-up)</div>
+    <div class="accordion-body">
+      <p style="font-size:13px;color:var(--ink);margin-bottom:10px;">Entirely auto-populated from the Existing and Required tabs &mdash; no data entry on this tab. It contains three blocks: (1) a Test-wise Overview table, (2) four Aggregate cards, (3) an Intervention-flag strip. The Intervention Type and Implementation Status columns reflect the Required tab; rows for manually-added Required tests render on a highlighted background.</p>
+
+      <p style="font-size:14px;font-weight:600;color:var(--teal);margin:12px 0 6px;">1.1 Test-wise Overview table (one row per test; Existing + manual Required; auto-built)</p>
+      <table class="brd-field-table">
+        <thead><tr><th>Field Name</th><th>Field Type</th><th>Input Values</th><th>Input / Autofill</th><th>Logic</th><th>Validation &amp; Error Messages</th></tr></thead>
+        <tbody>
+          <tr><td>Product</td><td>Read-only text</td><td>&mdash;</td><td>Autofill</td><td>Product name from each Existing block (and any manual Required test). Manual Required tests render on a highlighted row. Rows with neither Product nor Test Type set are skipped.</td><td>&mdash;</td></tr>
+          <tr><td>Test Type</td><td>Read-only text</td><td>&mdash;</td><td>Autofill</td><td>Test Type from the block; &ldquo;&mdash;&rdquo; if unset.</td><td>&mdash;</td></tr>
+          <tr><td>Lab</td><td>Read-only text</td><td>&mdash;</td><td>Autofill</td><td>Lab Name from the Existing block; &ldquo;&mdash;&rdquo; if unset.</td><td>&mdash;</td></tr>
+          <tr><td>Result Date</td><td>Read-only date</td><td>&mdash;</td><td>Autofill</td><td>Date of Test Results from the block; &ldquo;&mdash;&rdquo; if unset.</td><td>&mdash;</td></tr>
+          <tr><td>Report</td><td>Read-only badge</td><td>Yes / &mdash;</td><td>Calculated</td><td>&ldquo;Yes&rdquo; (green, with attachment icon) when a Testing Report file is attached on the block; else &ldquo;&mdash;&rdquo;.</td><td>&mdash;</td></tr>
+          <tr><td>Retesting Flagged</td><td>Read-only badge</td><td>Yes / &mdash;</td><td>Calculated</td><td>&ldquo;Yes&rdquo; (amber, warning icon) when the block&rsquo;s &ldquo;Need Retesting?&rdquo; toggle is on; else &ldquo;&mdash;&rdquo;.</td><td>&mdash;</td></tr>
+          <tr><td>Intervention Type</td><td>Read-only badge</td><td>Retesting / + New Test / &mdash;</td><td>Autofill</td><td>Flagged Existing rows show &ldquo;Retesting&rdquo;; manual Required tests show &ldquo;+ New Test&rdquo;; else &ldquo;&mdash;&rdquo;. Cell on a cream / peach background.</td><td>&mdash;</td></tr>
+          <tr><td>Implementation Status</td><td>Read-only badge</td><td>Pending / In Progress / Completed / On Hold / Not Feasible</td><td>Autofill</td><td>Mirrors the linked Required card&rsquo;s status chip. Colour: Completed=green, In Progress=amber, On Hold=blue, Not Feasible=red, Pending=cream. &ldquo;&mdash;&rdquo; if no linked Required card.</td><td>&mdash;</td></tr>
+        </tbody>
+      </table>
+
+      <p style="font-size:14px;font-weight:600;color:var(--teal);margin:14px 0 6px;">1.2 Aggregate cards (four, all read-only / calculated)</p>
+      <table class="brd-field-table">
+        <thead><tr><th>Field Name</th><th>Field Type</th><th>Input Values</th><th>Input / Autofill</th><th>Logic</th><th>Validation &amp; Error Messages</th></tr></thead>
+        <tbody>
+          <tr><td>Existing &middot; Total Tests Logged</td><td>Read-only count</td><td>&mdash;</td><td>Calculated</td><td>Count of Existing blocks with a Product or Test Type set.</td><td>&mdash;</td></tr>
+          <tr><td>Existing &middot; Unique Products Tested</td><td>Read-only count</td><td>&mdash;</td><td>Calculated</td><td>Distinct count of products across Existing tests.</td><td>&mdash;</td></tr>
+          <tr><td>Existing &middot; Reports Uploaded</td><td>Read-only count (green)</td><td>&mdash;</td><td>Calculated</td><td>Count of Existing tests with a Testing Report attached.</td><td>&mdash;</td></tr>
+          <tr><td>Existing &middot; Results Received</td><td>Read-only count (green)</td><td>&mdash;</td><td>Calculated</td><td>Count of Existing tests with a Date of Test Results filled.</td><td>&mdash;</td></tr>
+          <tr><td>Existing &middot; Flagged for Retesting</td><td>Read-only count (amber)</td><td>&mdash;</td><td>Calculated</td><td>Count of Existing tests with the retesting toggle on.</td><td>&mdash;</td></tr>
+          <tr><td>Cost &middot; Most Used Lab</td><td>Read-only text</td><td>&mdash;</td><td>Calculated</td><td>Lab with the highest test count across Existing tests; &ldquo;&mdash;&rdquo; if none.</td><td>&mdash;</td></tr>
+          <tr><td>Cost &middot; Unique Labs Used</td><td>Read-only count</td><td>&mdash;</td><td>Calculated</td><td>Distinct count of labs used (ignoring &ldquo;&mdash; Select &mdash;&rdquo;).</td><td>&mdash;</td></tr>
+          <tr><td>Cost &middot; Tests with Deposit Date</td><td>Read-only count</td><td>&mdash;</td><td>Calculated</td><td>Count of Existing tests with a Date of Sample Deposit filled.</td><td>&mdash;</td></tr>
+          <tr><td>Cost &middot; Tests Awaiting Results</td><td>Read-only count (amber)</td><td>&mdash;</td><td>Calculated</td><td>Count of Existing tests with a deposit date but NO result date.</td><td>&mdash;</td></tr>
+          <tr><td>Interventions &middot; Required Tests (Total)</td><td>Read-only count</td><td>&mdash;</td><td>Calculated</td><td>Count of all Required cards (bridged + manual).</td><td>&mdash;</td></tr>
+          <tr><td>Interventions &middot; Bridged from Existing</td><td>Read-only count (amber)</td><td>&mdash;</td><td>Calculated</td><td>Count of Required cards auto-created from a flagged Existing test.</td><td>&mdash;</td></tr>
+          <tr><td>Interventions &middot; Added Manually</td><td>Read-only count</td><td>&mdash;</td><td>Calculated</td><td>Count of Required cards added directly via &ldquo;+ Add New Test&rdquo;.</td><td>&mdash;</td></tr>
+          <tr><td>Interventions &middot; Consent Signed</td><td>Read-only count (green)</td><td>&mdash;</td><td>Calculated</td><td>Count of Required cards whose Consent Letter Signed checkbox is checked.</td><td>&mdash;</td></tr>
+          <tr><td>Interventions &middot; Approved by Core Team</td><td>Read-only count (green)</td><td>&mdash;</td><td>Calculated</td><td>Count of Required cards whose &ldquo;Approved by Core Team&rdquo; checkbox is checked.</td><td>&mdash;</td></tr>
+          <tr><td>Implementation Status &middot; Completed / In Progress / Pending / On Hold / Not Feasible</td><td>Read-only counts (Completed green, In Progress amber, Not Feasible red)</td><td>&mdash;</td><td>Calculated</td><td>Count of Required cards by their Implementation Status value.</td><td>&mdash;</td></tr>
+        </tbody>
+      </table>
+
+      <p style="font-size:14px;font-weight:600;color:var(--teal);margin:14px 0 6px;">1.3 Intervention Flag strip (four count cards)</p>
+      <table class="brd-field-table">
+        <thead><tr><th>Field Name</th><th>Field Type</th><th>Input Values</th><th>Input / Autofill</th><th>Logic</th><th>Validation &amp; Error Messages</th></tr></thead>
+        <tbody>
+          <tr><td>Tests Logged</td><td>Read-only count card</td><td>&mdash;</td><td>Calculated</td><td>= Existing &middot; Total Tests Logged.</td><td>&mdash;</td></tr>
+          <tr><td>Retesting Flagged</td><td>Read-only count card</td><td>&mdash;</td><td>Calculated</td><td>= Existing &middot; Flagged for Retesting.</td><td>&mdash;</td></tr>
+          <tr><td>Tests Required</td><td>Read-only count card</td><td>&mdash;</td><td>Calculated</td><td>= Interventions &middot; Required Tests (Total).</td><td>&mdash;</td></tr>
+          <tr><td>Completed</td><td>Read-only count card</td><td>&mdash;</td><td>Calculated</td><td>= Implementation Status &middot; Completed.</td><td>&mdash;</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ============ TAB 2: EXISTING ============ -->
+  <div class="accordion">
+    <div class="accordion-trigger" onclick="this.parentElement.classList.toggle('open')">Tab 2 &mdash; Existing (tests already conducted; child table of test blocks)</div>
+    <div class="accordion-body">
+      <p style="font-size:13px;color:var(--ink);margin-bottom:10px;">Caption: &ldquo;Map all product tests already conducted. Flag any that need retesting via the per-card Intervention toggle &mdash; flagged tests automatically appear in the Required tab.&rdquo; Repeating child table: each row is a collapsible &ldquo;test block&rdquo; added via <em>+ Add Test</em> (one seed block on load). The block header carries a Product selector, a Test Type selector, a &ldquo;Retesting Flagged&rdquo; chip (shown only when flagged) and a Remove button (confirm prompt). Below are all fields of one test row.</p>
+
+      <p style="font-size:14px;font-weight:600;color:var(--teal);margin:12px 0 6px;">2.1 Block header</p>
+      <table class="brd-field-table">
+        <thead><tr><th>Field Name</th><th>Field Type</th><th>Input Values</th><th>Input / Autofill</th><th>Logic</th><th>Validation &amp; Error Messages</th></tr></thead>
+        <tbody>
+          <tr><td>Product</td><td>Select</td><td>&mdash; Select Product &mdash; / &lt;Product Master&gt; (Bamboo Shoot Pickle, Lemongrass Tea, Lakadong Turmeric, Eri Silk Muffler, Bamboo Earring, Local Honey, Jadoh Spice Mix &hellip;)</td><td>Input</td><td>Identifies the tested product. On change, cascades to the bridged Required card&rsquo;s (locked) Product if one exists.</td><td>Required to count in Summary: a block with neither Product nor Test Type is ignored in aggregates.</td></tr>
+          <tr><td>Test Type</td><td>Select</td><td>&mdash; Test Type &mdash; / Microbiological Test / Heavy Metal Test / Pesticide Residue Test / Nutritional Analysis / Shelf Life Test / Moisture Content / pH Test / Curcumin Content (HPLC) / Aflatoxin Test / Sensory / Organoleptic / Packaging Integrity / Fibre Strength (Textile) / Colour Fastness (Textile) / Other</td><td>Input</td><td>The test performed. Cascades to the bridged Required card&rsquo;s (locked) Test Type if one exists.</td><td>&mdash;</td></tr>
+          <tr><td>Retesting Flagged (chip)</td><td>Read-only chip</td><td>&mdash;</td><td>Calculated</td><td>Hidden until the &ldquo;Need Retesting?&rdquo; toggle is on; then shows &ldquo;Retesting Flagged&rdquo; in terracotta.</td><td>&mdash;</td></tr>
+        </tbody>
+      </table>
+
+      <p style="font-size:14px;font-weight:600;color:var(--teal);margin:14px 0 6px;">2.2 Test Details (sub-section) &mdash; includes the Existing date chain</p>
+      <table class="brd-field-table">
+        <thead><tr><th>Field Name</th><th>Field Type</th><th>Input Values</th><th>Input / Autofill</th><th>Logic</th><th>Validation &amp; Error Messages</th></tr></thead>
+        <tbody>
+          <tr><td>Purpose for Testing</td><td>Text</td><td>Free text (e.g. &ldquo;Pre-FSSAI compliance, export sample, shelf life validation&rdquo;)</td><td>Input</td><td>Why the test was conducted.</td><td>&mdash;</td></tr>
+          <tr><td>Lab Name</td><td>Select</td><td>&mdash; Select &mdash; / &lt;Lab Master&gt; (NIFTEM Sonipat / CFTRI Mysuru / Spices Board Lab Cochin / NABL Accredited Local Lab &mdash; Shillong / &mdash; Guwahati / IIT Guwahati Food Lab / Assam Agricultural University / NEHU Lab / Govt Agmark Lab / NTH North-East / Private Testing Lab / Other)</td><td>Input</td><td>Lab that conducted the test; feeds Summary &ldquo;Most Used Lab&rdquo; and &ldquo;Unique Labs&rdquo;.</td><td>&mdash;</td></tr>
+          <tr><td>Date of Sample Deposit <span style="color:var(--terracotta)">[chain&nbsp;1]</span></td><td>Date</td><td>Calendar date</td><td>Input</td><td>First link in the Existing date chain &mdash; when the sample was deposited to the lab.</td><td>Must be on or before Date of Test Results: &ldquo;Sample deposit date cannot be after the result date.&rdquo;</td></tr>
+          <tr><td>Date of Test Results <span style="color:var(--terracotta)">[chain&nbsp;2]</span></td><td>Date</td><td>Calendar date</td><td>Input</td><td>Second link &mdash; when results were received. Feeds Summary &ldquo;Results Received&rdquo; and the overview Result Date column.</td><td>Must be on or after Date of Sample Deposit: &ldquo;Result date cannot be before the sample deposit date.&rdquo;</td></tr>
+          <tr><td>Testing Report</td><td>Attach (Upload / View)</td><td>File (.pdf / .jpg / .jpeg / .png)</td><td>Input</td><td>Lab report upload; shows a file pill with remove (&times;) and enables the View button once attached. Drives Summary &ldquo;Reports Uploaded&rdquo;.</td><td>&mdash;</td></tr>
+        </tbody>
+      </table>
+
+      <div class="callout callout-terra"><strong>Date chain (Existing).</strong> The two date fields must be ordered: <em>Date of Sample Deposit &le; Date of Test Results</em>. A test with a deposit date but no result date is counted in Summary as &ldquo;Awaiting Results&rdquo;.</div>
+
+      <p style="font-size:14px;font-weight:600;color:var(--teal);margin:14px 0 6px;">2.3 Intervention Need &mdash; Retesting toggle (terracotta panel; raises flag, bridges to Required)</p>
+      <table class="brd-field-table">
+        <thead><tr><th>Field Name</th><th>Field Type</th><th>Input Values</th><th>Input / Autofill</th><th>Logic</th><th>Validation &amp; Error Messages</th></tr></thead>
+        <tbody>
+          <tr><td>Need Retesting?</td><td>Toggle (on/off)</td><td>Off (default) / On</td><td>Input</td><td>When On: the flag note reads &ldquo;Flagged &rarr; Required tab&rdquo;, the header &ldquo;Retesting Flagged&rdquo; chip appears, the Justification field is revealed, and a linked Required card is auto-created (Product, Test Type, Purpose, Lab and Justification copied across). When toggled Off, the linked Required card is removed.</td><td>&mdash;</td></tr>
+          <tr><td>Justification</td><td>Textarea (conditional)</td><td>Free text (e.g. &ldquo;failed parameter, expired report, regulator change, new batch&rdquo;)</td><td>Input</td><td>Shown only when the toggle is on. Live-syncs into the bridged Required card&rsquo;s read-only &ldquo;Justification (from Existing)&rdquo; field.</td><td>&mdash;</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ============ TAB 3: REQUIRED ============ -->
+  <div class="accordion">
+    <div class="accordion-trigger" onclick="this.parentElement.classList.toggle('open')">Tab 3 &mdash; Required (tests to be conducted &mdash; consent management + full date chain)</div>
+    <div class="accordion-body">
+      <p style="font-size:13px;color:var(--ink);margin-bottom:10px;">Caption: &ldquo;Tests required &mdash; auto-populated from the Existing tab when retesting is flagged, or added manually for new tests to be conducted.&rdquo; Empty state: &ldquo;No tests required yet. Flag a test in the Existing tab, or add a new one manually below.&rdquo; Each card is a collapsible test block added via <em>+ Add New Test</em>; header carries Product + Test Type selectors (locked / disabled for bridged cards, title &ldquo;Locked &mdash; sourced from Existing&rdquo;), a &ldquo;Bridged from Existing&rdquo; marker on bridged cards, an Implementation Status chip and a Remove button.</p>
+
+      <div class="callout callout-terra"><strong>Consent management lives here.</strong> Before a required test proceeds, the Fessociate records core-team approval, signs a consent letter with the entrepreneur (toggle), and uploads the signed letter. The consent toggle defaults to ON; un-checking it reveals a mandatory reason. The full date chain (sample &rarr; office &rarr; lab &rarr; result) is also captured on this tab.</div>
+
+      <p style="font-size:14px;font-weight:600;color:var(--teal);margin:12px 0 6px;">3.1 Block header</p>
+      <table class="brd-field-table">
+        <thead><tr><th>Field Name</th><th>Field Type</th><th>Input Values</th><th>Input / Autofill</th><th>Logic</th><th>Validation &amp; Error Messages</th></tr></thead>
+        <tbody>
+          <tr><td>Product</td><td>Select (locked if bridged)</td><td>&mdash; Select Product &mdash; / &lt;Product Master&gt;</td><td>Input / Autofill</td><td>Manual cards: editable. Bridged cards: disabled and sourced from the linked Existing test (cascades on change there).</td><td>&mdash;</td></tr>
+          <tr><td>Test Type</td><td>Select (locked if bridged)</td><td>&mdash; Test Type &mdash; / &lt;Test Type Master&gt;</td><td>Input / Autofill</td><td>Manual cards: editable. Bridged cards: disabled and sourced from the linked Existing test.</td><td>&mdash;</td></tr>
+          <tr><td>Bridged from Existing (marker)</td><td>Read-only marker</td><td>&mdash;</td><td>Autofill</td><td>Shown only on cards auto-created from a flagged Existing test.</td><td>&mdash;</td></tr>
+          <tr><td>Implementation Status (chip)</td><td>Read-only chip</td><td>Pending / In Progress / Completed / On Hold / Not Feasible</td><td>Autofill</td><td>Mirrors the Implementation Status selector in 3.3; colour-coded.</td><td>&mdash;</td></tr>
+        </tbody>
+      </table>
+
+      <p style="font-size:14px;font-weight:600;color:var(--teal);margin:14px 0 6px;">3.2 Test Details (sub-section) &mdash; consent management + full date chain</p>
+      <table class="brd-field-table">
+        <thead><tr><th>Field Name</th><th>Field Type</th><th>Input Values</th><th>Input / Autofill</th><th>Logic</th><th>Validation &amp; Error Messages</th></tr></thead>
+        <tbody>
+          <tr><td>Purpose for Testing</td><td>Text</td><td>Free text (e.g. &ldquo;Pre-FSSAI compliance, export sample&rdquo;)</td><td>Input / Autofill</td><td>Prefilled from the source Existing test on bridged cards; editable.</td><td>&mdash;</td></tr>
+          <tr><td>Lab Name</td><td>Select</td><td>&mdash; Select &mdash; / &lt;Lab Master&gt;</td><td>Input / Autofill</td><td>Lab chosen for the required test; prefilled from source on bridged cards.</td><td>&mdash;</td></tr>
+          <tr><td>Approved by Core Team</td><td>Checkbox</td><td>Unchecked (default) / Checked &mdash; &ldquo;Yes &mdash; approved by core team&rdquo;</td><td>Input</td><td>Records core-team sign-off for the test. Feeds Summary &ldquo;Approved by Core Team&rdquo; count.</td><td>&mdash;</td></tr>
+          <tr><td>Consent Letter Signed</td><td>Checkbox (consent toggle)</td><td>Checked (default) / Unchecked &mdash; &ldquo;Yes &mdash; consent letter signed&rdquo;</td><td>Input</td><td>Defaults to checked. When UNCHECKED, reveals the &ldquo;If not signed, reason&rdquo; row below; when re-checked, hides it. Feeds Summary &ldquo;Consent Signed&rdquo; count.</td><td>&mdash;</td></tr>
+          <tr><td>If not signed, reason</td><td>Textarea (conditional)</td><td>Free text (e.g. &ldquo;Reason for missing consent&hellip;&rdquo;)</td><td>Input</td><td>Hidden by default; shown only when Consent Letter Signed is unchecked.</td><td>Required when consent is unchecked: &ldquo;Provide a reason if the consent letter is not signed.&rdquo;</td></tr>
+          <tr><td>Upload Consent Letter</td><td>Attach (Upload / View)</td><td>File (.pdf / .jpg / .jpeg / .png)</td><td>Input</td><td>Signed consent letter upload; file pill with remove (&times;) and a View button enabled once attached.</td><td>&mdash;</td></tr>
+          <tr><td>Date of Sample Deposit to Office <span style="color:var(--terracotta)">[chain&nbsp;1]</span></td><td>Date</td><td>Calendar date</td><td>Input</td><td>First link in the full date chain &mdash; sample handed to the PRIME office.</td><td>Must be &le; Date of Sample Deposit to Lab: &ldquo;Office deposit date cannot be after the lab deposit date.&rdquo;</td></tr>
+          <tr><td>Date of Sample Deposit to Lab <span style="color:var(--terracotta)">[chain&nbsp;2]</span></td><td>Date</td><td>Calendar date</td><td>Input</td><td>Second link &mdash; sample forwarded from office to the lab.</td><td>Must be &ge; office deposit and &le; result date: &ldquo;Lab deposit date must fall between the office deposit and the result date.&rdquo;</td></tr>
+          <tr><td>Date of Test Results <span style="color:var(--terracotta)">[chain&nbsp;3]</span></td><td>Date</td><td>Calendar date</td><td>Input</td><td>Final link &mdash; results received from the lab.</td><td>Must be &ge; Date of Sample Deposit to Lab: &ldquo;Result date cannot be before the lab deposit date.&rdquo;</td></tr>
+          <tr><td>Testing Report</td><td>Attach (Upload / View)</td><td>File (.pdf / .jpg / .jpeg / .png)</td><td>Input</td><td>Lab report upload; file pill with remove and View.</td><td>&mdash;</td></tr>
+          <tr><td>Justification (from Existing)</td><td>Read-only textarea (bridged only, cream-deep)</td><td>&mdash;</td><td>Autofill</td><td>Shown only on bridged cards; live-synced from the Existing test&rsquo;s Justification field.</td><td>&mdash;</td></tr>
+        </tbody>
+      </table>
+
+      <div class="callout callout-terra"><strong>Date chain (Required, three links).</strong> The dates must be strictly ordered: <em>Date of Sample Deposit to Office &le; Date of Sample Deposit to Lab &le; Date of Test Results</em>. Any out-of-order entry is rejected with the field-specific message above.</div>
+
+      <p style="font-size:14px;font-weight:600;color:var(--teal);margin:14px 0 6px;">3.3 Implementation Status (terracotta panel)</p>
+      <table class="brd-field-table">
+        <thead><tr><th>Field Name</th><th>Field Type</th><th>Input Values</th><th>Input / Autofill</th><th>Logic</th><th>Validation &amp; Error Messages</th></tr></thead>
+        <tbody>
+          <tr><td>Status</td><td>Select</td><td>Pending (default) / In Progress / Completed / On Hold / Not Feasible</td><td>Input</td><td>On change, updates the header chip (colour-coded) and feeds the Summary Implementation Status counts and the overview table.</td><td>&mdash;</td></tr>
+          <tr><td>Notes</td><td>Textarea</td><td>Free text (&ldquo;Implementation notes, blockers, next steps&hellip;&rdquo;)</td><td>Input</td><td>Free-form progress notes for this required test.</td><td>&mdash;</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ============ TAB 4: RESOURCES ============ -->
+  <div class="accordion">
+    <div class="accordion-trigger" onclick="this.parentElement.classList.toggle('open')">Tab 4 &mdash; Resources (reference materials child table)</div>
+    <div class="accordion-body">
+      <p style="font-size:13px;color:var(--ink);margin-bottom:10px;">Block title &ldquo;Reference Materials&rdquo;. Repeating child table added via <em>+ Add Resource</em>; at least one row must remain (&ldquo;At least one row is required.&rdquo;). Per row:</p>
+      <table class="brd-field-table">
+        <thead><tr><th>Field Name</th><th>Field Type</th><th>Input Values</th><th>Input / Autofill</th><th>Logic</th><th>Validation &amp; Error Messages</th></tr></thead>
+        <tbody>
+          <tr><td>Resource Title</td><td>Text</td><td>Free text</td><td>Input</td><td>Name of the reference material.</td><td>&mdash;</td></tr>
+          <tr><td>Category</td><td>Select</td><td>&mdash; Select &mdash; / Lab Contact / Quotation / Previous Test Report / FSSAI / Regulatory Guideline / NABL Lab List / Consent Letter Template / Test Parameter Reference / Packaging / Shelf Life Standard / Export / Certification Standard / Other</td><td>Input</td><td>Classifies the resource.</td><td>&mdash;</td></tr>
+          <tr><td>Type</td><td>Select</td><td>&mdash; Select &mdash; / Report / Study / Contact / Template / Guideline / Photo / Evidence / Quotation</td><td>Input</td><td>Resource format / nature.</td><td>&mdash;</td></tr>
+          <tr><td>Description / Notes</td><td>Text</td><td>Free text</td><td>Input</td><td>Notes about the resource.</td><td>&mdash;</td></tr>
+          <tr><td>File</td><td>Attach (Upload / View)</td><td>File</td><td>Input</td><td>Upload a file or View the attached one.</td><td>&mdash;</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ============ TAB 5: TASK LOG ============ -->
+  <div class="accordion">
+    <div class="accordion-trigger" onclick="this.parentElement.classList.toggle('open')">Tab 5 &mdash; Task Log (Product Testing activities child table)</div>
+    <div class="accordion-body">
+      <p style="font-size:13px;color:var(--ink);margin-bottom:10px;">Block title &ldquo;Task Log &mdash; Product Testing Activities&rdquo; with a live &ldquo;N entries&rdquo; counter. Repeating child table added via <em>+ Add Entry</em>. Row No. auto-renumbers (01, 02, &hellip;) on add / delete. Per row:</p>
+      <table class="brd-field-table">
+        <thead><tr><th>Field Name</th><th>Field Type</th><th>Input Values</th><th>Input / Autofill</th><th>Logic</th><th>Validation &amp; Error Messages</th></tr></thead>
+        <tbody>
+          <tr><td>No.</td><td>Read-only auto-number</td><td>&mdash;</td><td>Calculated</td><td>Sequential index, zero-padded; re-numbers on row delete.</td><td>&mdash;</td></tr>
+          <tr><td>Date</td><td>Date</td><td>Calendar date</td><td>Input</td><td>Date the activity occurred.</td><td>&mdash;</td></tr>
+          <tr><td>Task Name</td><td>Select</td><td>&mdash; Select Task &mdash; + the 17 master tasks: 01 Awareness on Importance of Product Testing / 02 Identify Products Requiring Testing / 03 Define Test Parameters Required / 04 Identify Suitable NABL / Accredited Lab / 05 Obtain Lab Quotation / Estimate / 06 Get Core Team Approval for Testing / 07 Prepare and Sign Consent Letter with Entrepreneur / 08 Collect Product Sample from Entrepreneur / 09 Deposit Sample to PRIME Office / 10 Deposit Sample to Lab / 11 Follow Up with Lab on Timeline / 12 Receive and Review Test Report / 13 Share Test Report with Entrepreneur / 14 Document Results in CRM / 15 Flag Failed Parameters &mdash; Retesting Required / 16 Initiate Retesting Process / 17 Update Final Status in Module / If other, specify in comments</td><td>Input</td><td>Standardised activity picklist mirroring the product-testing process flow.</td><td>&mdash;</td></tr>
+          <tr><td>Notes / Outcome</td><td>Text</td><td>Free text</td><td>Input</td><td>Outcome / remarks; required when Task Name = &ldquo;If other, specify in comments&rdquo;.</td><td>Conditionally required for &ldquo;If other&rdquo;: &ldquo;Specify the task in notes.&rdquo;</td></tr>
+          <tr><td>Attachment</td><td>Attach (Upload)</td><td>File</td><td>Input</td><td>Optional supporting file.</td><td>&mdash;</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="callout callout-danger"><strong>Key validations (whole form):</strong> The date chain must be strictly ordered everywhere &mdash; in Existing, Date of Sample Deposit &le; Date of Test Results; in Required, Date of Sample Deposit to Office &le; Date of Sample Deposit to Lab &le; Date of Test Results (out-of-order dates are rejected). Consent-required rules: when &ldquo;Consent Letter Signed&rdquo; is unchecked on a Required test, the &ldquo;If not signed, reason&rdquo; field is mandatory; the signed consent letter should be uploaded and core-team approval recorded before a required test proceeds to the lab. A flagged Existing test must carry a Justification, which bridges (read-only) into the auto-created Required card; toggling the flag off removes that card, and toggling it on re-creates it with Product / Test Type locked. Required cards added manually keep Product / Test Type editable. Resources require at least one row. File uploads accept .pdf / .jpg / .jpeg / .png only.</div>
+
+  <div class="review-panel" data-section="m-testing">
+    <div class="review-strip"><span style="font-size:12px;color:var(--ink-soft);font-weight:500;">Section Review:</span>
+      <button class="review-status-btn" onclick="setReview('m-testing','draft',this)">Draft</button>
+      <button class="review-status-btn" onclick="setReview('m-testing','review',this)">In Review</button>
+      <button class="review-status-btn" onclick="setReview('m-testing','changes',this)">Needs Changes</button>
+      <button class="review-status-btn" onclick="setReview('m-testing','approved',this)">Approved</button>
+      <button style="margin-left:auto;background:none;border:none;font-size:12px;color:var(--sea);cursor:pointer;font-family:var(--font);text-decoration:underline;" onclick="copyLink('m-testing')">Copy Link</button></div>
+    <div class="review-comments"><div class="comment-list" id="comments-m-testing"></div>
+      <div class="comment-input-row"><input type="text" placeholder="Your name" style="max-width:120px" id="name-m-testing"><textarea rows="1" placeholder="Add a comment..." id="text-m-testing"></textarea><button class="comment-add-btn" onclick="addComment('m-testing')">Add</button></div></div>
+  </div>
+</div>

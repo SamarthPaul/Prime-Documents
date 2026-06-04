@@ -1,0 +1,170 @@
+<div class="brd-section" id="m-schemes">
+  <div class="section-header"><span class="section-id">PR-FN-002</span><h2 class="section-title">Schemes &amp; Funding</h2></div>
+  <div class="section-desc"><strong>Entrepreneur-level framework</strong> (Funding module) that tracks every <strong>government scheme, grant and loan</strong> the entrepreneur has accessed or should pursue &mdash; eligibility, application status, disbursed amounts and full <strong>loan-repayment / EMI</strong> details. Schemes flagged for follow-up bridge into the Required tab; loan repayment figures conceptually align with the Financials framework.</div>
+  <div class="callout callout-teal"><strong>Scheme Master (config-driven, 19 + Other).</strong> Includes PMEGP, MUDRA (Shishu / Kishore / Tarun), Stand-Up India, Startup India Seed Fund, MOVCDNER, NABARD (Capital Investment Subsidy / Rural Innovation Fund), KVIB Loan, DIC Loan, CMEGP Meghalaya, MBMA Livelihood Programme, SELCO Foundation Grant, LIFCOM Loan, NEHHDC Marketing Support, MSME Champions, CGTMSE, NSIC Single Point Registration, and <em>Other</em>.</div>
+  <div class="callout callout-terra"><strong>Intervention bridge (Rule 3) &amp; EMI calc.</strong> Toggling the per-scheme Intervention block ON auto-creates a row in Required &rarr; Section&nbsp;I (carrying scheme + justification); Section&nbsp;II is for genuinely new applications. <strong>EMI / Month</strong> is computed (flat) as <em>Loan Amount &divide; Loan Term (months)</em> and is read-only. Status options: Applied / Sanctioned / Disbursed / Rejected / Under Review; Eligibility: Eligible / Not Eligible / Document Pending.</div>
+
+  <h3 style="font-size:16px;color:var(--teal);margin:18px 0 10px;">On-Screen UI Structure</h3>
+  <div class="card"><div style="font-size:13px;line-height:1.9;color:var(--ink)">A teal title bar reads <em>Schemes &amp; Funding</em>; a horizontal <strong>tab rail</strong> &mdash; <em>Summary &middot; Existing &middot; Required &middot; Resources &middot; Task &middot; Log Book</em> &mdash; sits below, active tab teal, entrepreneur chip on every panel (Rule 2).<br><br><strong>Existing</strong> renders each scheme as a row/card with three subsections: <em>(a) Scheme &amp; Eligibility</em>, <em>(b) Application &amp; Amounts</em> (status, dates, disbursed &amp; loan amount), and <em>(c) Loan Repayment Details</em> (loan no., amount, interest, outstanding, term, EMI/month, start/end dates, contribution %), plus a terracotta Intervention block. <strong>Required</strong> has Section&nbsp;I <em>Flagged</em> (bridge-populated) and Section&nbsp;II <em>New</em> scheme applications. <strong>Summary</strong> is read-only: Existing vs Required stat cards (count, disbursed &#8377;, total EMI/month) plus an Existing status-distribution strip (Applied / Sanctioned / Disbursed / Rejected / Under Review). <strong>Resources</strong> (Scheme Master List, MUDRA reference, Loan Documentation Checklist), <strong>Task</strong> and <strong>Log Book</strong> close the rail. Computed fields (EMI, outstanding, totals) render italic on cream-deep with formula tooltips (Rule 1).</div></div>
+  <div class="flow-container" style="margin-top:12px"><div class="flow-step"><div class="flow-box">Summary</div></div><div class="flow-arrow">&rarr;</div><div class="flow-step"><div class="flow-box">Existing</div></div><div class="flow-arrow">&rarr;</div><div class="flow-step"><div class="flow-box">Required</div></div><div class="flow-arrow">&rarr;</div><div class="flow-step"><div class="flow-box">Resources</div></div><div class="flow-arrow">&rarr;</div><div class="flow-step"><div class="flow-box">Task</div></div><div class="flow-arrow">&rarr;</div><div class="flow-step"><div class="flow-box">Log Book</div></div></div>
+
+  <h3 style="font-size:16px;color:var(--teal);margin:18px 0 10px;">User Journey</h3>
+  <div class="card"><div class="flow-container">
+    <div class="flow-step"><div class="flow-box">Open Schemes &amp; Funding</div><div class="flow-label">EP dashboard &middot; Diagnostics &rarr; Funding</div></div>
+    <div class="flow-arrow">&rarr;</div>
+    <div class="flow-step"><div class="flow-box">Add accessed schemes</div><div class="flow-label">Existing &mdash; pick scheme, eligibility, status, amounts</div></div>
+    <div class="flow-arrow">&rarr;</div>
+    <div class="flow-step"><div class="flow-box">Record loan &amp; EMI</div><div class="flow-label">Subsection c &mdash; EMI auto-calcs</div></div>
+    <div class="flow-arrow">&rarr;</div>
+    <div class="flow-step"><div class="flow-box">Flag follow-ups</div><div class="flow-label">Intervention toggle &rarr; Required Section I</div></div>
+    <div class="flow-arrow">&rarr;</div>
+    <div class="flow-step"><div class="flow-box">Add new applications &amp; Save</div><div class="flow-label">Required Section II; Summary &amp; status strip update</div></div>
+  </div></div>
+
+  <!-- ============ TAB 1: SUMMARY ============ -->
+  <div class="accordion open"><div class="accordion-trigger" onclick="this.parentElement.classList.toggle('open')">Tab 1: Summary <span class="acc-arrow">&#9660;</span></div>
+    <div class="accordion-body">
+      <p style="font-size:13px;color:var(--ink-soft);margin-bottom:12px;">Live snapshot of every scheme accessed or applied for. Read-only; edit Existing / Required to update.</p>
+
+      <h4 style="font-size:14px;color:var(--teal);margin-bottom:10px;">Stat Cards (Existing &amp; Required)</h4>
+      <table class="brd-table"><thead><tr><th>Card / Metric</th><th>Field Type</th><th>Input / Autofill</th><th>Logic</th></tr></thead>
+      <tbody>
+        <tr><td>Existing &rarr; Schemes Count</td><td>Read-only number</td><td>Calculated</td><td>Number of Existing scheme rows.</td></tr>
+        <tr><td>Existing &rarr; Disbursed (&#8377;)</td><td>Read-only currency (green)</td><td>Calculated</td><td>&Sigma; Disbursed Amount across Existing schemes. Indian formatting.</td></tr>
+        <tr><td>Existing &rarr; Total EMI / month (&#8377;)</td><td>Read-only currency</td><td>Calculated</td><td>&Sigma; of each scheme&rsquo;s EMI/Month (= Loan Amount &divide; Term).</td></tr>
+        <tr><td>Required &rarr; Schemes Count / Target Amount (&#8377;)</td><td>Read-only</td><td>Calculated</td><td>Count of Required rows and the funding sought.</td></tr>
+      </tbody></table>
+
+      <h4 style="font-size:14px;color:var(--teal);margin:16px 0 10px;">Existing &mdash; Status Distribution</h4>
+      <table class="brd-table"><thead><tr><th>Status</th><th>Field Type</th><th>Input / Autofill</th><th>Logic</th></tr></thead>
+      <tbody>
+        <tr><td>Applied</td><td>Read-only count (blue)</td><td>Calculated</td><td>Existing schemes with status Applied.</td></tr>
+        <tr><td>Sanctioned</td><td>Read-only count (amber)</td><td>Calculated</td><td>Status Sanctioned.</td></tr>
+        <tr><td>Disbursed</td><td>Read-only count (green)</td><td>Calculated</td><td>Status Disbursed.</td></tr>
+        <tr><td>Rejected</td><td>Read-only count (red)</td><td>Calculated</td><td>Status Rejected.</td></tr>
+        <tr><td>Under Review</td><td>Read-only count</td><td>Calculated</td><td>Status Under Review.</td></tr>
+      </tbody></table>
+    </div></div>
+
+  <!-- ============ TAB 2: EXISTING ============ -->
+  <div class="accordion"><div class="accordion-trigger" onclick="this.parentElement.classList.toggle('open')">Tab 2: Existing <span class="acc-arrow">&#9660;</span></div>
+    <div class="accordion-body">
+      <p style="font-size:13px;color:var(--ink-soft);margin-bottom:12px;">Every scheme / grant / loan the entrepreneur has accessed, as a row with three subsections + an Intervention block. Loan repayment fields auto-fetch from the Financials module where available. &ldquo;+ Add Scheme&rdquo; appends a row.</p>
+
+      <h4 style="font-size:14px;color:var(--teal);margin-bottom:10px;">Subsection a &mdash; Scheme &amp; Eligibility</h4>
+      <table class="brd-table"><thead><tr><th>Field Name</th><th>Field Type</th><th>Input Values</th><th>Input / Autofill</th><th>Logic</th><th>Validation &amp; Error Messages</th></tr></thead>
+      <tbody>
+        <tr><td>Scheme / Funding *</td><td>Select</td><td>Scheme Master (19 + Other)</td><td>Input</td><td>Labels the row &amp; Summary; choosing &ldquo;Other&rdquo; reveals a free-text name.</td><td>&ldquo;Select a scheme.&rdquo;</td></tr>
+        <tr><td>Eligibility Status</td><td>Select</td><td>Eligible / Not Eligible / Document Pending</td><td>Input</td><td>Drives an eligibility chip.</td><td>&mdash;</td></tr>
+        <tr><td>Eligibility Notes</td><td>Textarea</td><td>Free text</td><td>Input</td><td>Criteria met / pending documents.</td><td>&mdash;</td></tr>
+      </tbody></table>
+
+      <h4 style="font-size:14px;color:var(--teal);margin:16px 0 10px;">Subsection b &mdash; Application &amp; Amounts</h4>
+      <table class="brd-table"><thead><tr><th>Field Name</th><th>Field Type</th><th>Input Values</th><th>Input / Autofill</th><th>Logic</th><th>Validation &amp; Error Messages</th></tr></thead>
+      <tbody>
+        <tr><td>Status</td><td>Select</td><td>Applied / Sanctioned / Disbursed / Rejected / Under Review</td><td>Input</td><td>Header status chip; feeds the Status Distribution.</td><td>&mdash;</td></tr>
+        <tr><td>Application Date</td><td>Date</td><td>&mdash;</td><td>Input</td><td>&mdash;</td><td>&le; today.</td></tr>
+        <tr><td>Disbursement Date</td><td>Date</td><td>&mdash;</td><td>Input</td><td>Shown / relevant once status is Disbursed.</td><td>&ge; Application Date.</td></tr>
+        <tr><td>Disbursed Amount (&#8377;)</td><td>Currency</td><td>&ge; 0</td><td>Input</td><td>Feeds the Disbursed (&#8377;) summary stat.</td><td>Must be &ge; 0.</td></tr>
+        <tr><td>Loan Amount (&#8377;)</td><td>Currency</td><td>&ge; 0</td><td>Input</td><td>If the scheme is a loan; mirrors into subsection c.</td><td>Must be &ge; 0.</td></tr>
+        <tr><td>Sanction Letter / Proof</td><td>Attach (Upload / View)</td><td>Any file</td><td>Input</td><td>Supporting document.</td><td>&mdash;</td></tr>
+      </tbody></table>
+
+      <h4 style="font-size:14px;color:var(--teal);margin:16px 0 10px;">Subsection c &mdash; Loan Repayment Details</h4>
+      <table class="brd-table"><thead><tr><th>Field Name</th><th>Field Type</th><th>Input Values</th><th>Input / Autofill</th><th>Logic</th><th>Validation &amp; Error Messages</th></tr></thead>
+      <tbody>
+        <tr><td>Loan No.</td><td>Text</td><td>Free text</td><td>Input</td><td>Loan account / reference number.</td><td>&mdash;</td></tr>
+        <tr><td>Loan Amount (&#8377;)</td><td>Currency</td><td>&ge; 0</td><td>Input</td><td>Drives the EMI calc.</td><td>Must be &ge; 0.</td></tr>
+        <tr><td>Loan Interest (% p.a.)</td><td>Number</td><td>&ge; 0</td><td>Input</td><td>Recorded for reference.</td><td>Must be &ge; 0.</td></tr>
+        <tr><td>Outstanding Loan (&#8377;)</td><td>Currency</td><td>&ge; 0</td><td>Input</td><td>Current balance.</td><td>Must be &ge; 0.</td></tr>
+        <tr><td>Loan Term (months)</td><td>Number</td><td>&ge; 1</td><td>Input</td><td>Divides Loan Amount to compute EMI.</td><td>Integer &ge; 1.</td></tr>
+        <tr><td>EMI / Month (&#8377;)</td><td>Read-only currency</td><td>Calculated</td><td><em>= Loan Amount &divide; Loan Term</em> (flat); feeds Total EMI/month.</td><td>&mdash;</td></tr>
+        <tr><td>Loan Start / End Date</td><td>Date</td><td>&mdash;</td><td>Input</td><td>Repayment window.</td><td>End &gt; Start.</td></tr>
+        <tr><td>Loan Contribution %</td><td>Number</td><td>0&ndash;100</td><td>Input</td><td>Share of project cost funded by this loan.</td><td>0&ndash;100.</td></tr>
+      </tbody></table>
+
+      <h4 style="font-size:14px;color:var(--teal);margin:16px 0 10px;">Intervention Block</h4>
+      <table class="brd-table"><thead><tr><th>Field Name</th><th>Field Type</th><th>Input Values</th><th>Input / Autofill</th><th>Logic</th><th>Validation &amp; Error Messages</th></tr></thead>
+      <tbody>
+        <tr><td>Flag for Intervention?</td><td>Toggle</td><td>On / Off</td><td>Input</td><td>ON auto-creates a Required Section&nbsp;I row (bridge, Rule 3); OFF removes it.</td><td>&mdash;</td></tr>
+        <tr><td>Justify</td><td>Textarea</td><td>Free text</td><td>Input</td><td>Why follow-up is needed &mdash; partial disbursement, EMI burden, eligibility re-assessment. Two-way synced.</td><td>Required when toggle ON.</td></tr>
+      </tbody></table>
+    </div></div>
+
+  <!-- ============ TAB 3: REQUIRED ============ -->
+  <div class="accordion"><div class="accordion-trigger" onclick="this.parentElement.classList.toggle('open')">Tab 3: Required <span class="acc-arrow">&#9660;</span></div>
+    <div class="accordion-body">
+      <p style="font-size:13px;color:var(--ink-soft);margin-bottom:12px;">Section&nbsp;I auto-populates from Existing schemes flagged for intervention; Section&nbsp;II is for genuinely new applications identified for this entrepreneur.</p>
+
+      <h4 style="font-size:14px;color:var(--teal);margin-bottom:10px;">Section I &mdash; Schemes / Funding (Flagged, bridge-populated)</h4>
+      <table class="brd-table"><thead><tr><th>Field Name</th><th>Field Type</th><th>Input Values</th><th>Input / Autofill</th><th>Logic</th><th>Validation &amp; Error Messages</th></tr></thead>
+      <tbody>
+        <tr><td>Scheme (source)</td><td>Read-only text</td><td>&mdash;</td><td>Autofill</td><td>Mirrored from the flagged Existing scheme.</td><td>&mdash;</td></tr>
+        <tr><td>Justification</td><td>Read-only / Textarea</td><td>Free text</td><td>Autofill</td><td>Two-way synced with the Existing Intervention justify.</td><td>&mdash;</td></tr>
+        <tr><td>Action Required / Next Step</td><td>Textarea</td><td>Free text</td><td>Input</td><td>Concrete follow-up to pursue.</td><td>&mdash;</td></tr>
+        <tr><td>Implementation Status</td><td>Select</td><td>Pending / On hold / Applied / Rejected</td><td>Input</td><td>Tracks the follow-up.</td><td>&mdash;</td></tr>
+      </tbody></table>
+      <div class="callout callout-teal">Removing a Section&nbsp;I row toggles OFF the corresponding Existing Intervention flag (two-way sync).</div>
+
+      <h4 style="font-size:14px;color:var(--teal);margin:16px 0 10px;">Section II &mdash; Schemes / Funding (New applications)</h4>
+      <table class="brd-table"><thead><tr><th>Field Name</th><th>Field Type</th><th>Input Values</th><th>Input / Autofill</th><th>Logic</th><th>Validation &amp; Error Messages</th></tr></thead>
+      <tbody>
+        <tr><td>Scheme / Funding *</td><td>Select</td><td>Scheme Master (19 + Other)</td><td>Input</td><td>New scheme to apply for.</td><td>&ldquo;Select a scheme.&rdquo;</td></tr>
+        <tr><td>Eligibility Status</td><td>Select</td><td>Eligible / Not Eligible / Document Pending</td><td>Input</td><td>&mdash;</td><td>&mdash;</td></tr>
+        <tr><td>Target Amount (&#8377;)</td><td>Currency</td><td>&ge; 0</td><td>Input</td><td>Funding sought.</td><td>Must be &ge; 0.</td></tr>
+        <tr><td>Implementation Status</td><td>Select</td><td>Pending / On hold / Applied / Rejected</td><td>Input</td><td>&mdash;</td><td>&mdash;</td></tr>
+        <tr><td>Notes</td><td>Textarea</td><td>Free text</td><td>Input</td><td>&mdash;</td><td>&mdash;</td></tr>
+      </tbody></table>
+    </div></div>
+
+  <!-- ============ TAB 4: RESOURCES ============ -->
+  <div class="accordion"><div class="accordion-trigger" onclick="this.parentElement.classList.toggle('open')">Tab 4: Resources <span class="acc-arrow">&#9660;</span></div>
+    <div class="accordion-body">
+      <p style="font-size:13px;color:var(--ink-soft);margin-bottom:12px;">Reference material &amp; templates for scheme identification, application and disbursement tracking &mdash; includes a Scheme Master List, a MUDRA loan reference (SC/ST &amp; women eligibility, Composite Loan up to &#8377;1&nbsp;Crore) and a Loan Documentation Checklist. &ldquo;+ Add Resource&rdquo; appends a row.</p>
+      <table class="brd-table"><thead><tr><th>Field Name</th><th>Field Type</th><th>Input Values</th><th>Input / Autofill</th><th>Logic</th><th>Validation &amp; Error Messages</th></tr></thead>
+      <tbody>
+        <tr><td>Resource Title</td><td>Text</td><td>Free text</td><td>Input</td><td>&mdash;</td><td>&mdash;</td></tr>
+        <tr><td>Category</td><td>Select</td><td>Scheme Reference / Loan Reference / Documentation Checklist / Application Form / Contact</td><td>Input</td><td>&mdash;</td><td>&mdash;</td></tr>
+        <tr><td>Description / Notes</td><td>Text</td><td>Free text</td><td>Input</td><td>&mdash;</td><td>&mdash;</td></tr>
+        <tr><td>File / Link</td><td>Attach / URL</td><td>Any file or URL</td><td>Input</td><td>Drive-linked resource.</td><td>&mdash;</td></tr>
+      </tbody></table>
+    </div></div>
+
+  <!-- ============ TAB 5: TASK ============ -->
+  <div class="accordion"><div class="accordion-trigger" onclick="this.parentElement.classList.toggle('open')">Tab 5: Task <span class="acc-arrow">&#9660;</span></div>
+    <div class="accordion-body">
+      <p style="font-size:13px;color:var(--ink-soft);margin-bottom:12px;">Log every action taken on a scheme &mdash; application submission, follow-up, document handover, sanction-letter receipt. Seeded tasks drive a read-only Progress field.</p>
+      <table class="brd-table"><thead><tr><th>Field Name</th><th>Field Type</th><th>Input Values</th><th>Input / Autofill</th><th>Logic</th><th>Validation &amp; Error Messages</th></tr></thead>
+      <tbody>
+        <tr><td>No. / Task Name / Phase</td><td>Read-only</td><td>Seeded list; Existing / Intervention / Required</td><td>System</td><td>Fixed seeded tasks with colour-coded phase badge.</td><td>&mdash;</td></tr>
+        <tr><td>Status</td><td>Select</td><td>Pending / In Progress / Completed / Blocked</td><td>Input</td><td>Aggregates into read-only Progress (%).</td><td>&mdash;</td></tr>
+        <tr><td>Owner / Due Date / Notes</td><td>Text / Date / Text</td><td>Free</td><td>Input</td><td>&mdash;</td><td>&mdash;</td></tr>
+      </tbody></table>
+    </div></div>
+
+  <!-- ============ TAB 6: LOG BOOK ============ -->
+  <div class="accordion"><div class="accordion-trigger" onclick="this.parentElement.classList.toggle('open')">Tab 6: Log Book <span class="acc-arrow">&#9660;</span></div>
+    <div class="accordion-body">
+      <p style="font-size:13px;color:var(--ink-soft);margin-bottom:12px;">Free-form record of every visit, interview or observation related to scheme applications (child table <em>DF Log Book Child</em>). &ldquo;+ Add Entry&rdquo; appends a row.</p>
+      <table class="brd-table"><thead><tr><th>Field Name</th><th>Field Type</th><th>Input Values</th><th>Input / Autofill</th><th>Logic</th><th>Validation &amp; Error Messages</th></tr></thead>
+      <tbody>
+        <tr><td>Date</td><td>Date</td><td>&mdash;</td><td>Input</td><td>&mdash;</td><td>&mdash;</td></tr>
+        <tr><td>Scheme / Activity</td><td>Text</td><td>Scheme / bank / office</td><td>Input</td><td>&mdash;</td><td>&mdash;</td></tr>
+        <tr><td>Activity Type</td><td>Select</td><td>Bank Visit / Office Visit / Document Handover / Follow-up / Interview</td><td>Input</td><td>&mdash;</td><td>&mdash;</td></tr>
+        <tr><td>Notes / Logged By / Evidence</td><td>Text / Text / Attach</td><td>Free / Name / file</td><td>Input</td><td>&mdash;</td><td>&mdash;</td></tr>
+      </tbody></table>
+    </div></div>
+
+  <div class="callout callout-danger"><strong>Key validations (whole form):</strong> Entrepreneur is required and unique (one Schemes &amp; Funding form per entrepreneur). Each Existing row needs a Scheme selected; Disbursed Amount, Loan Amount, Outstanding and Interest must be &ge; 0; Loan Term &ge; 1 (months). EMI/Month (= Loan Amount &divide; Term) and the disbursed / EMI totals are read-only with formula tooltips (Rule 1). Disbursement Date &ge; Application Date; Loan End &gt; Start. Flagging an Intervention creates exactly one Required Section&nbsp;I row and stays two-way synced. Loan repayment figures align with the Financials framework where present.</div>
+
+  <div class="review-panel" data-section="m-schemes">
+    <div class="review-strip"><span style="font-size:12px;color:var(--ink-soft);font-weight:500;">Section Review:</span>
+      <button class="review-status-btn" onclick="setReview('m-schemes','draft',this)">Draft</button>
+      <button class="review-status-btn" onclick="setReview('m-schemes','review',this)">In Review</button>
+      <button class="review-status-btn" onclick="setReview('m-schemes','changes',this)">Needs Changes</button>
+      <button class="review-status-btn" onclick="setReview('m-schemes','approved',this)">Approved</button>
+      <button style="margin-left:auto;background:none;border:none;font-size:12px;color:var(--sea);cursor:pointer;font-family:var(--font);text-decoration:underline;" onclick="copyLink('m-schemes')">Copy Link</button></div>
+    <div class="review-comments"><div class="comment-list" id="comments-m-schemes"></div>
+      <div class="comment-input-row"><input type="text" placeholder="Your name" style="max-width:120px" id="name-m-schemes"><textarea rows="1" placeholder="Add a comment..." id="text-m-schemes"></textarea><button class="comment-add-btn" onclick="addComment('m-schemes')">Add</button></div></div>
+  </div>
+</div>

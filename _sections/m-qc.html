@@ -1,0 +1,282 @@
+<div class="brd-section" id="m-qc">
+  <div class="section-header"><span class="section-id">PR-PD-005</span><h2 class="section-title">Quality Control</h2></div>
+  <div class="section-desc">Part of the Product Development module &mdash; a maturity-style Quality Control assessment in which the Fessociate rates the entrepreneur&rsquo;s premises against 23 standard QC practices on a 1&ndash;5 star scale (Existing), sets a target rating profile (Optimized / Required), and the system auto-computes a per-practice gap, priority and an aggregate QC score (mean of all rated stars) with a maturity tier and rating distribution.</div>
+
+  <div class="callout callout-terra"><strong>Key behaviour &mdash; star-rated maturity scale with an Existing &rarr; Required gap engine.</strong> The same fixed list of 23 QC practices appears in both the Existing and Optimized tabs. In Existing each practice is rated 1&ndash;5 stars on what is observed at the entrepreneur&rsquo;s premises; in Optimized the target star level is set. For every practice rated in both tabs, the system calculates <em>Gap = Target &minus; Existing</em> and derives a Priority (Critical &ge; 3, High &ge; 2, Low = 1, At Target = 0). The aggregate QC score per tab is the <em>mean of all rated stars</em>, rounded to a maturity tier. A single &ldquo;Intervention Need&rdquo; toggle (with justification) on the Existing tab flags the whole assessment for improvement; the Optimized tab then carries one Implementation Status.</div>
+
+  <h3 style="font-size:16px;color:var(--teal);margin:18px 0 10px;">On-Screen UI Structure</h3>
+  <div class="card"><div style="font-size:13px;line-height:1.9;color:var(--ink)">
+    <strong>Top bar:</strong> teal header &ldquo;Quality Control&rdquo; with crumb &ldquo;PRIME Rural &middot; Quality &amp; Compliance&rdquo;, and an entrepreneur chip (avatar + name) auto-fetched from the profile. <br>
+    <strong>Tab rail:</strong> horizontal pill bar with five tabs &mdash; Summary &middot; Existing &middot; Optimized &middot; Resources &middot; Task Log; the active tab renders teal-on-white (Summary opens by default). <br>
+    <strong>Body layout:</strong> each tab is a panel. <em>Summary</em> is read-only: a Practice-wise Overview table (one row per practice, Existing vs Target with gap + priority), a 2&times;2 grid of four Aggregate cards (Existing Assessment / Required Target / Interventions / Rating Distribution) and a 4-cell Intervention-flag strip. <em>Existing</em> and <em>Optimized</em> each show a 5-tier star Legend strip followed by a 23-row Assessment table and an aggregate Average strip. <br>
+    <strong>Special widgets:</strong> (1) <em>Star-rating control</em> &mdash; each of the 23 assessment rows carries a 5-star clickable rating (hover preview, click to set, &times; clear button) plus a free-text Notes field. (2) <em>Legend strip</em> &mdash; a 5-cell key mapping 1&ndash;5 stars to maturity labels (Not aware / Not practiced &rarr; Fully implemented). (3) <em>Average strip</em> &mdash; a teal gradient panel showing Practices Rated (n / 23), the numeric Average Rating and an average-star rendering. (4) <em>Intervention Need toggle</em> (Existing) &mdash; an on/off switch &ldquo;Need improvement in Quality Control?&rdquo; that reveals a conditional Justification textarea. (5) <em>Implementation Status</em> selector + Notes (Optimized). (6) <em>Distribution bars</em> &mdash; a 5-tier bar chart of how many practices fall in each star band. <br>
+    Per Rule&nbsp;1, every calculated / autofilled field (all Summary aggregates and overview cells, both Average strips, the per-practice Gap and Priority, the maturity tier, the distribution counts) renders <em>italic on a cream-deep background</em> and is non-editable, with a tooltip describing its source / formula.
+  </div></div>
+  <div class="flow-container" style="margin-top:12px">
+    <div class="flow-step"><div class="flow-box">Summary</div></div>
+    <div class="flow-arrow">&rarr;</div>
+    <div class="flow-step"><div class="flow-box">Existing</div></div>
+    <div class="flow-arrow">&rarr;</div>
+    <div class="flow-step"><div class="flow-box">Optimized</div></div>
+    <div class="flow-arrow">&rarr;</div>
+    <div class="flow-step"><div class="flow-box">Resources</div></div>
+    <div class="flow-arrow">&rarr;</div>
+    <div class="flow-step"><div class="flow-box">Task Log</div></div>
+  </div>
+
+  <h3 style="font-size:16px;color:var(--teal);margin:18px 0 10px;">User Journey</h3>
+  <div class="card"><div class="flow-container">
+    <div class="flow-step"><div class="flow-box">Open</div><div class="flow-label">Diagnostics &rarr; Product Development &rarr; Quality Control (entrepreneur auto-fetched)</div></div>
+    <div class="flow-arrow">&rarr;</div>
+    <div class="flow-step"><div class="flow-box">Rate Existing</div><div class="flow-label">Existing tab &rarr; star-rate all 23 QC practices 1&ndash;5 against what is observed; add per-practice notes</div></div>
+    <div class="flow-arrow">&rarr;</div>
+    <div class="flow-step"><div class="flow-box">Flag Need</div><div class="flow-label">Toggle &ldquo;Need improvement?&rdquo; with justification if quality control gaps warrant intervention</div></div>
+    <div class="flow-arrow">&rarr;</div>
+    <div class="flow-step"><div class="flow-box">Set Target</div><div class="flow-label">Optimized tab &rarr; set the target star level per practice; system computes gap &amp; priority</div></div>
+    <div class="flow-arrow">&rarr;</div>
+    <div class="flow-step"><div class="flow-box">Track</div><div class="flow-label">Set Implementation Status + notes; attach Resources; review Summary roll-up &amp; QC score</div></div>
+    <div class="flow-arrow">&rarr;</div>
+    <div class="flow-step"><div class="flow-box">Log &amp; Save</div><div class="flow-label">Capture visits / trainings in Task Log; save</div></div>
+  </div></div>
+
+  <!-- ============ TAB 1: SUMMARY ============ -->
+  <div class="accordion open">
+    <div class="accordion-trigger" onclick="this.parentElement.classList.toggle('open')">Tab 1 &mdash; Summary (read-only roll-up; QC score &amp; gap engine)</div>
+    <div class="accordion-body">
+      <p style="font-size:13px;color:var(--ink);margin-bottom:10px;">Entirely auto-populated from the Existing and Optimized tabs &mdash; no data entry on this tab. It contains three blocks: (1) a Practice-wise Overview table, (2) a 2&times;2 grid of four Aggregate cards, (3) an Intervention-flag strip. Rows with a gap &ge; 2 render on an amber background (<code>row-gap2</code>); gap &ge; 3 render orange (<code>row-gap3</code>).</p>
+
+      <p style="font-size:14px;font-weight:600;color:var(--teal);margin:12px 0 6px;">1.1 Practice-wise Overview table (one row per practice; auto-built; 23 rows)</p>
+      <table class="brd-field-table">
+        <thead><tr><th>Field Name</th><th>Field Type</th><th>Input Values</th><th>Input / Autofill</th><th>Logic</th><th>Validation &amp; Error Messages</th></tr></thead>
+        <tbody>
+          <tr><td>#</td><td>Read-only index</td><td>01&ndash;23</td><td>Calculated</td><td>Zero-padded practice number matching the fixed practice list.</td><td>&mdash;</td></tr>
+          <tr><td>Practice</td><td>Read-only text</td><td>&mdash;</td><td>Autofill</td><td>The QC practice text from the fixed list (e.g. &ldquo;Raw material inspection before use&rdquo;).</td><td>&mdash;</td></tr>
+          <tr><td>Existing Rating</td><td>Read-only stars + value</td><td>&mdash; / 1&ndash;5 stars</td><td>Autofill</td><td>Star rating set for this practice in the Existing tab; renders &ldquo;Not rated&rdquo; if unset. Cell on a peach background.</td><td>&mdash;</td></tr>
+          <tr><td>Required Target</td><td>Read-only stars + value</td><td>&mdash; / 1&ndash;5 stars</td><td>Autofill</td><td>Target star rating set in the Optimized tab; renders &ldquo;Not set&rdquo; if unset. Cell on a green background.</td><td>&mdash;</td></tr>
+          <tr><td>Gap</td><td>Read-only signed number</td><td>&mdash; / 0 / +1&hellip;+4</td><td>Calculated</td><td>= Required Target &minus; Existing Rating, shown only when both are set; colour-coded (red &ge; 3, amber &ge; 2, green = 0). &ldquo;&mdash;&rdquo; if either rating is missing.</td><td>&mdash;</td></tr>
+          <tr><td>Priority</td><td>Read-only badge</td><td>Critical / High / Low / At Target / &mdash;</td><td>Calculated</td><td>Derived from Gap: gap &ge; 3 &rarr; Critical (red); gap &ge; 2 &rarr; High (amber); gap = 1 &rarr; Low (cream); gap = 0 &rarr; At Target (green); &ldquo;&mdash;&rdquo; when gap cannot be computed.</td><td>&mdash;</td></tr>
+        </tbody>
+      </table>
+
+      <p style="font-size:14px;font-weight:600;color:var(--teal);margin:14px 0 6px;">1.2 Aggregate cards &mdash; 2&times;2 grid (four cards, all read-only / calculated)</p>
+      <h4 style="font-size:13px;color:var(--sea);margin:10px 0 4px;">Card A &mdash; Existing Assessment</h4>
+      <table class="brd-field-table">
+        <thead><tr><th>Field Name</th><th>Field Type</th><th>Input Values</th><th>Input / Autofill</th><th>Logic</th><th>Validation &amp; Error Messages</th></tr></thead>
+        <tbody>
+          <tr><td>Practices Rated</td><td>Read-only count</td><td>n / 23</td><td>Calculated</td><td>Count of practices given an Existing star rating, out of 23.</td><td>&mdash;</td></tr>
+          <tr><td>Average Rating</td><td>Read-only decimal</td><td>&mdash; / 1.00&ndash;5.00</td><td>Calculated</td><td><strong>QC score</strong> = mean of all rated Existing stars (sum &divide; rated count), to 2 decimals; &ldquo;&mdash;&rdquo; when nothing is rated.</td><td>&mdash;</td></tr>
+          <tr><td>Maturity Tier</td><td>Read-only label</td><td>Not aware / Not practiced &middot; Aware but not implemented &middot; Partially implemented &middot; Mostly implemented &middot; Fully implemented</td><td>Calculated</td><td>Tier label keyed by round(Average Rating); coloured green (tier &ge; 4) or red (tier &le; 2).</td><td>&mdash;</td></tr>
+          <tr><td>Fully Implemented (&starf;&starf;&starf;&starf;&starf;)</td><td>Read-only count (green)</td><td>&mdash;</td><td>Calculated</td><td>Count of Existing practices rated exactly 5 stars.</td><td>&mdash;</td></tr>
+          <tr><td>Not Aware / Not Practiced (&starf;)</td><td>Read-only count (red)</td><td>&mdash;</td><td>Calculated</td><td>Count of Existing practices rated exactly 1 star.</td><td>&mdash;</td></tr>
+          <tr><td>Intervention Flagged</td><td>Read-only Yes / No (amber)</td><td>Yes / No</td><td>Calculated</td><td>&ldquo;Yes&rdquo; when the Existing &ldquo;Need improvement?&rdquo; toggle is on; else &ldquo;No&rdquo;.</td><td>&mdash;</td></tr>
+        </tbody>
+      </table>
+
+      <h4 style="font-size:13px;color:var(--sea);margin:12px 0 4px;">Card B &mdash; Required (Target Profile)</h4>
+      <table class="brd-field-table">
+        <thead><tr><th>Field Name</th><th>Field Type</th><th>Input Values</th><th>Input / Autofill</th><th>Logic</th><th>Validation &amp; Error Messages</th></tr></thead>
+        <tbody>
+          <tr><td>Practices Set</td><td>Read-only count</td><td>n / 23</td><td>Calculated</td><td>Count of practices given a Target star rating in the Optimized tab, out of 23.</td><td>&mdash;</td></tr>
+          <tr><td>Target Average</td><td>Read-only decimal</td><td>&mdash; / 1.00&ndash;5.00</td><td>Calculated</td><td>Mean of all set Target stars, to 2 decimals; &ldquo;&mdash;&rdquo; when none set.</td><td>&mdash;</td></tr>
+          <tr><td>Target Tier</td><td>Read-only label</td><td>(same 5 maturity labels)</td><td>Calculated</td><td>Tier label keyed by round(Target Average).</td><td>&mdash;</td></tr>
+          <tr><td>Implementation Status</td><td>Read-only label</td><td>Pending / In Progress / Completed / On Hold / Not Feasible</td><td>Autofill</td><td>Mirrors the Implementation Status selector on the Optimized tab.</td><td>&mdash;</td></tr>
+        </tbody>
+      </table>
+
+      <h4 style="font-size:13px;color:var(--sea);margin:12px 0 4px;">Card C &mdash; Interventions (gap analytics)</h4>
+      <table class="brd-field-table">
+        <thead><tr><th>Field Name</th><th>Field Type</th><th>Input Values</th><th>Input / Autofill</th><th>Logic</th><th>Validation &amp; Error Messages</th></tr></thead>
+        <tbody>
+          <tr><td>High Priority Gaps (gap &ge; 2)</td><td>Read-only count (red)</td><td>&mdash;</td><td>Calculated</td><td>Count of practices whose Gap (Target &minus; Existing) is &ge; 2.</td><td>&mdash;</td></tr>
+          <tr><td>Critical Gaps (gap &ge; 3)</td><td>Read-only count (red)</td><td>&mdash;</td><td>Calculated</td><td>Count of practices whose Gap is &ge; 3.</td><td>&mdash;</td></tr>
+          <tr><td>Already at Target (gap = 0)</td><td>Read-only count (green)</td><td>&mdash;</td><td>Calculated</td><td>Count of practices rated in both tabs with Gap = 0.</td><td>&mdash;</td></tr>
+          <tr><td>Average Gap (across rated)</td><td>Read-only decimal</td><td>&mdash; / 0.0&ndash;4.0</td><td>Calculated</td><td>Mean of positive gaps across practices rated in both tabs (negative gaps floored at 0), to 1 decimal; &ldquo;&mdash;&rdquo; if none comparable.</td><td>&mdash;</td></tr>
+        </tbody>
+      </table>
+
+      <h4 style="font-size:13px;color:var(--sea);margin:12px 0 4px;">Card D &mdash; Rating Distribution (Existing)</h4>
+      <table class="brd-field-table">
+        <thead><tr><th>Field Name</th><th>Field Type</th><th>Input Values</th><th>Input / Autofill</th><th>Logic</th><th>Validation &amp; Error Messages</th></tr></thead>
+        <tbody>
+          <tr><td>1&starf; &hellip; 5&starf; bars</td><td>Read-only bar chart</td><td>&mdash;</td><td>Calculated</td><td>Five tier rows (1&starf;&ndash;5&starf;), each a coloured bar (tier-1 poor &rarr; tier-5 good) sized to count &divide; max-bucket, with the count to the right. Empty state: &ldquo;Rate practices in the Existing tab to see distribution.&rdquo;</td><td>&mdash;</td></tr>
+        </tbody>
+      </table>
+
+      <p style="font-size:14px;font-weight:600;color:var(--teal);margin:14px 0 6px;">1.3 Intervention Flag strip (four count cards)</p>
+      <table class="brd-field-table">
+        <thead><tr><th>Field Name</th><th>Field Type</th><th>Input Values</th><th>Input / Autofill</th><th>Logic</th><th>Validation &amp; Error Messages</th></tr></thead>
+        <tbody>
+          <tr><td>Practices Rated</td><td>Read-only count card</td><td>&mdash;</td><td>Calculated</td><td>= Existing &middot; Practices Rated (count only).</td><td>&mdash;</td></tr>
+          <tr><td>Intervention Flagged</td><td>Read-only Yes / No card</td><td>Yes / No</td><td>Calculated</td><td>= Existing &ldquo;Need improvement?&rdquo; toggle state.</td><td>&mdash;</td></tr>
+          <tr><td>High Priority Gaps</td><td>Read-only count card</td><td>&mdash;</td><td>Calculated</td><td>= count of gaps &ge; 2.</td><td>&mdash;</td></tr>
+          <tr><td>At Target</td><td>Read-only count card</td><td>&mdash;</td><td>Calculated</td><td>= count of practices with gap = 0.</td><td>&mdash;</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ============ TAB 2: EXISTING ============ -->
+  <div class="accordion">
+    <div class="accordion-trigger" onclick="this.parentElement.classList.toggle('open')">Tab 2 &mdash; Existing (rate the 23 QC practices 1&ndash;5)</div>
+    <div class="accordion-body">
+      <p style="font-size:13px;color:var(--ink);margin-bottom:10px;">Caption: &ldquo;Rate each practice on a 1&ndash;5 scale based on what you observe at the entrepreneur&rsquo;s premises.&rdquo; The tab shows the 5-tier Legend strip, then the Assessment table of all 23 practices, then the Average strip, then the terracotta Intervention Need panel.</p>
+
+      <p style="font-size:14px;font-weight:600;color:var(--teal);margin:12px 0 6px;">2.1 Legend strip (rating key, read-only)</p>
+      <table class="brd-field-table">
+        <thead><tr><th>Field Name</th><th>Field Type</th><th>Input Values</th><th>Input / Autofill</th><th>Logic</th><th>Validation &amp; Error Messages</th></tr></thead>
+        <tbody>
+          <tr><td>Star Scale Key</td><td>Read-only legend (5 cells)</td><td>1&starf; Not aware / Not practiced &middot; 2&starf; Aware but not implemented &middot; 3&starf; Partially implemented &middot; 4&starf; Mostly implemented &middot; 5&starf; Fully implemented</td><td>Static</td><td>Fixed maturity key shown above the assessment for rater reference; identical key appears on the Optimized tab.</td><td>&mdash;</td></tr>
+        </tbody>
+      </table>
+
+      <p style="font-size:14px;font-weight:600;color:var(--teal);margin:14px 0 6px;">2.2 Assessment table &mdash; per-practice row fields</p>
+      <table class="brd-field-table">
+        <thead><tr><th>Field Name</th><th>Field Type</th><th>Input Values</th><th>Input / Autofill</th><th>Logic</th><th>Validation &amp; Error Messages</th></tr></thead>
+        <tbody>
+          <tr><td>Row No.</td><td>Read-only index</td><td>01&ndash;23</td><td>Calculated</td><td>Fixed zero-padded practice number.</td><td>&mdash;</td></tr>
+          <tr><td>Practice (Question)</td><td>Read-only text</td><td>&mdash;</td><td>Static</td><td>The QC practice from the fixed list (see 2.3 below).</td><td>&mdash;</td></tr>
+          <tr><td>Rating</td><td>Star rating (1&ndash;5)</td><td>1 / 2 / 3 / 4 / 5 stars</td><td>Input</td><td>Click a star to set the rating (hover previews); value feeds Existing average, distribution, tier and the per-practice gap.</td><td>&mdash;</td></tr>
+          <tr><td>Clear (&times;)</td><td>Action button</td><td>&mdash;</td><td>Input</td><td>Clears the rating for the row, returning it to &ldquo;Not rated&rdquo; and removing it from all aggregates.</td><td>&mdash;</td></tr>
+          <tr><td>Notes</td><td>Text</td><td>Free text</td><td>Input</td><td>Optional per-practice observation note.</td><td>&mdash;</td></tr>
+        </tbody>
+      </table>
+
+      <p style="font-size:14px;font-weight:600;color:var(--teal);margin:14px 0 6px;">2.3 The 23 fixed QC practices (each rated 1&ndash;5 stars; identical list in Existing &amp; Optimized)</p>
+      <table class="brd-field-table">
+        <thead><tr><th>#</th><th>Practice (Question)</th><th>Rating Type</th><th>Scoring</th></tr></thead>
+        <tbody>
+          <tr><td>01</td><td>Is Entrepreneur aware of Quality and Control practices?</td><td>1&ndash;5 stars</td><td>Star value feeds mean QC score</td></tr>
+          <tr><td>02</td><td>Raw material inspection before use</td><td>1&ndash;5 stars</td><td>Star value feeds mean QC score</td></tr>
+          <tr><td>03</td><td>Batch labeling done</td><td>1&ndash;5 stars</td><td>Star value feeds mean QC score</td></tr>
+          <tr><td>04</td><td>Expiry date tracking</td><td>1&ndash;5 stars</td><td>Star value feeds mean QC score</td></tr>
+          <tr><td>05</td><td>Rejection of defective products</td><td>1&ndash;5 stars</td><td>Star value feeds mean QC score</td></tr>
+          <tr><td>06</td><td>Standard measurement tools used</td><td>1&ndash;5 stars</td><td>Star value feeds mean QC score</td></tr>
+          <tr><td>07</td><td>Written SOP available</td><td>1&ndash;5 stars</td><td>Star value feeds mean QC score</td></tr>
+          <tr><td>08</td><td>Clean Production Workspace</td><td>1&ndash;5 stars</td><td>Star value feeds mean QC score</td></tr>
+          <tr><td>09</td><td>Personal protective gear (gloves, cap, apron)</td><td>1&ndash;5 stars</td><td>Star value feeds mean QC score</td></tr>
+          <tr><td>10</td><td>Separate raw and finished goods area</td><td>1&ndash;5 stars</td><td>Star value feeds mean QC score</td></tr>
+          <tr><td>11</td><td>Equipment cleaning schedule</td><td>1&ndash;5 stars</td><td>Star value feeds mean QC score</td></tr>
+          <tr><td>12</td><td>Pest control measures</td><td>1&ndash;5 stars</td><td>Star value feeds mean QC score</td></tr>
+          <tr><td>13</td><td>Proper ventilation</td><td>1&ndash;5 stars</td><td>Star value feeds mean QC score</td></tr>
+          <tr><td>14</td><td>Handwashing facility available</td><td>1&ndash;5 stars</td><td>Star value feeds mean QC score</td></tr>
+          <tr><td>15</td><td>Use of clean water</td><td>1&ndash;5 stars</td><td>Star value feeds mean QC score</td></tr>
+          <tr><td>16</td><td>Covered waste bins</td><td>1&ndash;5 stars</td><td>Star value feeds mean QC score</td></tr>
+          <tr><td>17</td><td>Nails trimmed / no jewellery</td><td>1&ndash;5 stars</td><td>Star value feeds mean QC score</td></tr>
+          <tr><td>18</td><td>Regular cleaning of utensils</td><td>1&ndash;5 stars</td><td>Star value feeds mean QC score</td></tr>
+          <tr><td>19</td><td>Raw materials off the floor</td><td>1&ndash;5 stars</td><td>Star value feeds mean QC score</td></tr>
+          <tr><td>20</td><td>Use of pallets or racks</td><td>1&ndash;5 stars</td><td>Star value feeds mean QC score</td></tr>
+          <tr><td>21</td><td>FIFO (First In First Out) followed</td><td>1&ndash;5 stars</td><td>Star value feeds mean QC score</td></tr>
+          <tr><td>22</td><td>Storage away from moisture</td><td>1&ndash;5 stars</td><td>Star value feeds mean QC score</td></tr>
+          <tr><td>23</td><td>Labelled storage containers</td><td>1&ndash;5 stars</td><td>Star value feeds mean QC score</td></tr>
+        </tbody>
+      </table>
+      <div class="callout"><strong>Aggregate QC score (per tab).</strong> Average Rating = (sum of all rated stars) &divide; (number of practices rated). Only rated practices are included &mdash; unrated practices do not drag the mean down. The result is shown to 2 decimals and mapped to a Maturity Tier via round(): 1 = Not aware / Not practiced, 2 = Aware but not implemented, 3 = Partially implemented, 4 = Mostly implemented, 5 = Fully implemented. The 5-star &ldquo;Average&rdquo; rendering fills round(Average) stars.</div>
+
+      <p style="font-size:14px;font-weight:600;color:var(--teal);margin:14px 0 6px;">2.4 Average strip (teal gradient summary, read-only)</p>
+      <table class="brd-field-table">
+        <thead><tr><th>Field Name</th><th>Field Type</th><th>Input Values</th><th>Input / Autofill</th><th>Logic</th><th>Validation &amp; Error Messages</th></tr></thead>
+        <tbody>
+          <tr><td>Practices Rated</td><td>Read-only count</td><td>n / 23</td><td>Calculated</td><td>Live count of practices given a star rating in this tab.</td><td>&mdash;</td></tr>
+          <tr><td>Average Rating</td><td>Read-only decimal</td><td>&mdash; / 1.00&ndash;5.00</td><td>Calculated</td><td>Mean of rated stars (the QC score), 2 decimals; &ldquo;&mdash;&rdquo; when nothing rated.</td><td>&mdash;</td></tr>
+          <tr><td>Average (stars)</td><td>Read-only star render</td><td>&starf;&hellip;&star; (0&ndash;5 filled)</td><td>Calculated</td><td>round(Average Rating) filled stars over a 5-star track.</td><td>&mdash;</td></tr>
+        </tbody>
+      </table>
+
+      <p style="font-size:14px;font-weight:600;color:var(--teal);margin:14px 0 6px;">2.5 Intervention Need (terracotta panel) &mdash; whole-assessment flag</p>
+      <table class="brd-field-table">
+        <thead><tr><th>Field Name</th><th>Field Type</th><th>Input Values</th><th>Input / Autofill</th><th>Logic</th><th>Validation &amp; Error Messages</th></tr></thead>
+        <tbody>
+          <tr><td>Need improvement in Quality Control?</td><td>Toggle (on/off)</td><td>Off (default) / On</td><td>Input</td><td>When On: the note reads &ldquo;Flagged &rarr; Set target profile in Optimized tab&rdquo;, the Justification field is revealed, and Summary &ldquo;Intervention Flagged&rdquo; = Yes. When Off, note reads &ldquo;Not flagged&rdquo;.</td><td>&mdash;</td></tr>
+          <tr><td>Justification</td><td>Textarea (conditional)</td><td>Free text (e.g. &ldquo;gaps observed, regulatory drivers, scale-up readiness&rdquo;)</td><td>Input</td><td>Shown only when the toggle is on; captures what practices need improvement and why.</td><td>&mdash;</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ============ TAB 3: OPTIMIZED / REQUIRED ============ -->
+  <div class="accordion">
+    <div class="accordion-trigger" onclick="this.parentElement.classList.toggle('open')">Tab 3 &mdash; Optimized (set target rating profile + Implementation Status)</div>
+    <div class="accordion-body">
+      <p style="font-size:13px;color:var(--ink);margin-bottom:10px;">Caption: &ldquo;Set the target rating profile &mdash; what level the entrepreneur should reach for each practice.&rdquo; Mirrors the Existing tab structure (Legend &rarr; Target Assessment table over the same 23 practices &rarr; Target Average strip), then adds a terracotta Implementation Status panel. Setting a Target star for a practice rated in Existing drives the per-practice Gap and Priority in Summary.</p>
+
+      <p style="font-size:14px;font-weight:600;color:var(--teal);margin:12px 0 6px;">3.1 Target Assessment table &mdash; per-practice row fields (same 23 practices as 2.3)</p>
+      <table class="brd-field-table">
+        <thead><tr><th>Field Name</th><th>Field Type</th><th>Input Values</th><th>Input / Autofill</th><th>Logic</th><th>Validation &amp; Error Messages</th></tr></thead>
+        <tbody>
+          <tr><td>Row No.</td><td>Read-only index</td><td>01&ndash;23</td><td>Calculated</td><td>Fixed zero-padded practice number.</td><td>&mdash;</td></tr>
+          <tr><td>Practice (Question)</td><td>Read-only text</td><td>&mdash;</td><td>Static</td><td>Same fixed QC practice list as the Existing tab.</td><td>&mdash;</td></tr>
+          <tr><td>Target Rating</td><td>Star rating (1&ndash;5)</td><td>1 / 2 / 3 / 4 / 5 stars</td><td>Input</td><td>Target maturity level for the practice; feeds Target average, tier and Gap = Target &minus; Existing.</td><td>&mdash;</td></tr>
+          <tr><td>Clear (&times;)</td><td>Action button</td><td>&mdash;</td><td>Input</td><td>Clears the target for the row (&ldquo;Not set&rdquo;), removing it from Target aggregates and gap.</td><td>&mdash;</td></tr>
+        </tbody>
+      </table>
+      <div class="callout"><strong>Gap &amp; Priority engine.</strong> For each practice set in both tabs: <em>Gap = Target Rating &minus; Existing Rating</em> (negative gaps treated as 0 in averages). Priority: gap &ge; 3 &rarr; <strong>Critical</strong>; gap &ge; 2 &rarr; <strong>High</strong>; gap = 1 &rarr; <strong>Low</strong>; gap = 0 &rarr; <strong>At Target</strong>. These feed the Summary overview rows (amber at gap &ge; 2, orange at gap &ge; 3) and the Interventions card counts.</div>
+
+      <p style="font-size:14px;font-weight:600;color:var(--teal);margin:14px 0 6px;">3.2 Target Average strip (teal gradient summary, read-only)</p>
+      <table class="brd-field-table">
+        <thead><tr><th>Field Name</th><th>Field Type</th><th>Input Values</th><th>Input / Autofill</th><th>Logic</th><th>Validation &amp; Error Messages</th></tr></thead>
+        <tbody>
+          <tr><td>Practices Set</td><td>Read-only count</td><td>n / 23</td><td>Calculated</td><td>Count of practices given a Target star rating.</td><td>&mdash;</td></tr>
+          <tr><td>Target Average</td><td>Read-only decimal</td><td>&mdash; / 1.00&ndash;5.00</td><td>Calculated</td><td>Mean of set Target stars, 2 decimals.</td><td>&mdash;</td></tr>
+          <tr><td>Target (stars)</td><td>Read-only star render</td><td>&starf;&hellip;&star; (0&ndash;5 filled)</td><td>Calculated</td><td>round(Target Average) filled stars.</td><td>&mdash;</td></tr>
+        </tbody>
+      </table>
+
+      <p style="font-size:14px;font-weight:600;color:var(--teal);margin:14px 0 6px;">3.3 Implementation Status (terracotta panel)</p>
+      <table class="brd-field-table">
+        <thead><tr><th>Field Name</th><th>Field Type</th><th>Input Values</th><th>Input / Autofill</th><th>Logic</th><th>Validation &amp; Error Messages</th></tr></thead>
+        <tbody>
+          <tr><td>Status</td><td>Select</td><td>Pending (default) / In Progress / Completed / On Hold / Not Feasible</td><td>Input</td><td>Tracks progress against the target profile; mirrored to Summary Card B &ldquo;Implementation Status&rdquo;.</td><td>&mdash;</td></tr>
+          <tr><td>Notes</td><td>Textarea</td><td>Free text (&ldquo;Implementation notes, blockers, next steps&hellip;&rdquo;)</td><td>Input</td><td>Free-form progress notes for the QC improvement plan.</td><td>&mdash;</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ============ TAB 4: RESOURCES ============ -->
+  <div class="accordion">
+    <div class="accordion-trigger" onclick="this.parentElement.classList.toggle('open')">Tab 4 &mdash; Resources (reference materials)</div>
+    <div class="accordion-body">
+      <p style="font-size:13px;color:var(--ink);margin-bottom:10px;">Caption: &ldquo;Reference materials and external links useful to support Quality Control standardisation.&rdquo; A grid of resource tiles, each with a title, a short description and an open / download link. The mockup ships six standing tiles:</p>
+      <table class="brd-field-table">
+        <thead><tr><th>Field Name</th><th>Field Type</th><th>Input Values</th><th>Input / Autofill</th><th>Logic</th><th>Validation &amp; Error Messages</th></tr></thead>
+        <tbody>
+          <tr><td>Resource Title</td><td>Read-only text</td><td>FSSAI Schedule 4 (Hygiene &amp; Sanitation) / HACCP Plan Template / 5S Workplace Checklist / FIFO &amp; Storage Best Practices / Production SOP Template (Editable) / Personal Protective Gear Checklist</td><td>Static</td><td>Tile heading for each reference material.</td><td>&mdash;</td></tr>
+          <tr><td>Description</td><td>Read-only text</td><td>Free text per tile (e.g. &ldquo;Mandatory hygiene requirements for food businesses&hellip;&rdquo;)</td><td>Static</td><td>One-line summary of what the resource is for.</td><td>&mdash;</td></tr>
+          <tr><td>Link / Download</td><td>Hyperlink</td><td>External URL (e.g. FSSAI portal) / template / checklist / .docx download</td><td>Static</td><td>Opens the reference (new tab) or downloads the file; FSSAI links to the live portal.</td><td>&mdash;</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ============ TAB 5: TASK LOG ============ -->
+  <div class="accordion">
+    <div class="accordion-trigger" onclick="this.parentElement.classList.toggle('open')">Tab 5 &mdash; Task Log (visits, trainings &amp; interventions child table)</div>
+    <div class="accordion-body">
+      <p style="font-size:13px;color:var(--ink);margin-bottom:10px;">Caption: &ldquo;Log every visit, training, and intervention conducted to improve quality practices.&rdquo; Repeating child table added via <em>+ Add Log Entry</em>; row No. auto-renumbers (01, 02, &hellip;) on add / delete. New rows default Date to today. Per row:</p>
+      <table class="brd-field-table">
+        <thead><tr><th>Field Name</th><th>Field Type</th><th>Input Values</th><th>Input / Autofill</th><th>Logic</th><th>Validation &amp; Error Messages</th></tr></thead>
+        <tbody>
+          <tr><td>No.</td><td>Read-only auto-number</td><td>&mdash;</td><td>Calculated</td><td>Sequential zero-padded index; re-numbers on row delete.</td><td>&mdash;</td></tr>
+          <tr><td>Date</td><td>Date</td><td>Calendar date (defaults to today)</td><td>Input</td><td>Date the activity occurred.</td><td>&mdash;</td></tr>
+          <tr><td>Action Taken</td><td>Text</td><td>Free text (e.g. &ldquo;Site visit, Hygiene training&rdquo;)</td><td>Input</td><td>What was done.</td><td>&mdash;</td></tr>
+          <tr><td>Done By</td><td>Text</td><td>Free text (Field officer name)</td><td>Input</td><td>Person who conducted the activity.</td><td>&mdash;</td></tr>
+          <tr><td>Outcome / Notes</td><td>Textarea</td><td>Free text (&ldquo;What was done, what changed&hellip;&rdquo;)</td><td>Input</td><td>Outcome / remarks for the activity.</td><td>&mdash;</td></tr>
+          <tr><td>Delete (&times;)</td><td>Action button</td><td>&mdash;</td><td>Input</td><td>Removes the row and re-numbers the table.</td><td>&mdash;</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="callout callout-danger"><strong>Key validations (whole form):</strong> The aggregate QC score on each tab is the <em>mean of rated stars only</em> (sum &divide; rated count) &mdash; unrated practices are excluded, not counted as zero. Existing and Optimized share the same fixed 23-practice list; a per-practice Gap (Target &minus; Existing) and Priority are computed only when a practice is rated in <em>both</em> tabs, otherwise Gap / Priority show &ldquo;&mdash;&rdquo;. Average Gap floors negative gaps at 0. Maturity Tier is keyed by round(average) onto the five fixed labels. The Existing &ldquo;Need improvement?&rdquo; toggle, when on, reveals (and expects) a Justification and sets Summary &ldquo;Intervention Flagged&rdquo; = Yes. Task Log rows auto-renumber on add / delete and seed Date to today.</div>
+
+  <div class="review-panel" data-section="m-qc">
+    <div class="review-strip"><span style="font-size:12px;color:var(--ink-soft);font-weight:500;">Section Review:</span>
+      <button class="review-status-btn" onclick="setReview('m-qc','draft',this)">Draft</button>
+      <button class="review-status-btn" onclick="setReview('m-qc','review',this)">In Review</button>
+      <button class="review-status-btn" onclick="setReview('m-qc','changes',this)">Needs Changes</button>
+      <button class="review-status-btn" onclick="setReview('m-qc','approved',this)">Approved</button>
+      <button style="margin-left:auto;background:none;border:none;font-size:12px;color:var(--sea);cursor:pointer;font-family:var(--font);text-decoration:underline;" onclick="copyLink('m-qc')">Copy Link</button></div>
+    <div class="review-comments"><div class="comment-list" id="comments-m-qc"></div>
+      <div class="comment-input-row"><input type="text" placeholder="Your name" style="max-width:120px" id="name-m-qc"><textarea rows="1" placeholder="Add a comment..." id="text-m-qc"></textarea><button class="comment-add-btn" onclick="addComment('m-qc')">Add</button></div></div>
+  </div>
+</div>

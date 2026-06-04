@@ -1,0 +1,248 @@
+<div class="brd-section" id="m-mkt-linkage">
+  <div class="section-header"><span class="section-id">PR-MKT-003</span><h2 class="section-title">Market Linkage</h2></div>
+  <div class="section-desc">Part of the Market module, the Market Linkage framework captures where an entrepreneur sells today (Existing channels with revenue), the new channels recommended as an intervention (each holding its own nested product-mapping table with an implementation status), and a month-by-month Sales Tracker of actual recorded sales. A Summary tab rolls everything up into a channel-wise overview, aggregate cards and intervention-flag tiles.</div>
+  <div class="callout callout-terra"><strong>Channel-status aggregate rule:</strong> Each recommended channel carries a single status chip whose value is computed from the implementation status of its nested product rows &mdash; <strong>Completed</strong> only when <em>every</em> product row is Completed; <strong>Not Feasible</strong> if any row is Not Feasible; <strong>In Progress</strong> if any row is In Progress; otherwise <strong>Pending</strong> (also the value when a channel has no product rows yet). Type and Selling Mode are set once at the channel level and apply to all products inside it.</div>
+
+  <h3 style="font-size:16px;color:var(--teal);margin:18px 0 10px;">On-Screen UI Structure</h3>
+  <div class="card"><div style="font-size:13px;line-height:1.9;color:var(--ink)">
+    <strong>Top bar:</strong> forest-teal header "Market Linkage" with a "PRIME Rural &middot; Marketing Framework" crumb, and an entrepreneur chip below it (avatar + name <em>auto-fetched from profile</em>).<br>
+    <strong>Tab rail</strong> (uppercase pills): <strong>Summary</strong> &middot; <strong>Existing</strong> &middot; <strong>Required</strong> &middot; <strong>Sales Tracker</strong> &middot; <strong>Resources</strong> &middot; <strong>Task Log</strong>. Active tab is teal-filled; opening Summary triggers a roll-up refresh.<br>
+    <strong>Body:</strong> The <strong>Existing</strong> tab is a flat channel grid plus an "Intervention Need" toggle block; the <strong>Required</strong> tab is a <em>channel repeater</em> where each "+ Add Recommended Channel" creates a collapsible <em>channel card</em> with a nested product table; the <strong>Sales Tracker</strong> is a set of twelve collapsible <em>month accordions</em>, each holding a CRM-style inner table of one row per SKU-per-channel.<br>
+    <strong>Special widgets:</strong> (1) collapsible <em>channel cards</em> (sea-coloured header) carrying channel-level Name / Type / Mode / Location / Identified-By plus an aggregate <em>status chip</em>; (2) <em>nested product tables</em> inside each channel with a per-row Implementation Status select; (3) a <em>toggle switch</em> for "Upgrade / Add New Channels?" that reveals a Justification box; (4) <em>source tags</em> (Existing / Recommended / Self-initiated); (5) twelve <em>month accordions</em> each with a header showing the month's auto Qty + Revenue totals; (6) a Summary tab with a channel-wise overview table, four aggregate cards and four intervention-flag tiles.<br>
+    <strong>Calculated fields</strong> (Avg Revenue/Month, Annual Revenue, Annual Total Revenue, per-row Tracker Revenue, all month totals, the channel status chip, and every Summary aggregate) render <em>italic on cream-deep background, read-only, with a tooltip</em> per Rule 1.
+  </div></div>
+  <div class="flow-container" style="margin-top:12px">
+    <div class="flow-step"><div class="flow-box">Summary</div><div class="flow-label">Auto roll-up</div></div>
+    <div class="flow-arrow">&rarr;</div>
+    <div class="flow-step"><div class="flow-box">Existing</div><div class="flow-label">Current channels + revenue</div></div>
+    <div class="flow-arrow">&rarr;</div>
+    <div class="flow-step"><div class="flow-box">Required</div><div class="flow-label">Recommended channels + nested products</div></div>
+    <div class="flow-arrow">&rarr;</div>
+    <div class="flow-step"><div class="flow-box">Sales Tracker</div><div class="flow-label">Monthly actual sales</div></div>
+    <div class="flow-arrow">&rarr;</div>
+    <div class="flow-step"><div class="flow-box">Resources</div><div class="flow-label">Reference materials</div></div>
+    <div class="flow-arrow">&rarr;</div>
+    <div class="flow-step"><div class="flow-box">Task Log</div><div class="flow-label">Activity register</div></div>
+  </div>
+
+  <h3 style="font-size:16px;color:var(--teal);margin:18px 0 10px;">User Journey</h3>
+  <div class="card"><div class="flow-container">
+    <div class="flow-step"><div class="flow-box">1. Map Existing Channels</div><div class="flow-label">Name / Type / Mode / Location, price &amp; units</div></div>
+    <div class="flow-arrow">&rarr;</div>
+    <div class="flow-step"><div class="flow-box">2. Flag Upgrade Need</div><div class="flow-label">Toggle on &rarr; justify &rarr; go to Required</div></div>
+    <div class="flow-arrow">&rarr;</div>
+    <div class="flow-step"><div class="flow-box">3. Add Recommended Channels</div><div class="flow-label">Channel card + nested product table</div></div>
+    <div class="flow-arrow">&rarr;</div>
+    <div class="flow-step"><div class="flow-box">4. Set Product Status</div><div class="flow-label">Per-row status drives channel chip</div></div>
+    <div class="flow-arrow">&rarr;</div>
+    <div class="flow-step"><div class="flow-box">5. Record Monthly Sales</div><div class="flow-label">Add rows per month; revenue auto-calcs</div></div>
+    <div class="flow-arrow">&rarr;</div>
+    <div class="flow-step"><div class="flow-box">6. Review Summary</div><div class="flow-label">Overview + aggregates + flags</div></div>
+  </div></div>
+
+  <!-- ===== TAB 1: EXISTING ===== -->
+  <div class="accordion open">
+    <div class="accordion-trigger" onclick="this.parentElement.classList.toggle('open')">Tab 1 &mdash; Existing (Current Selling Channels + Intervention Need)</div>
+    <div class="accordion-body">
+      <p style="font-size:13px;color:var(--ink);margin:4px 0 12px;">Maps where the entrepreneur is currently selling &mdash; all offline, online and exhibition channels &mdash; in a flat repeater grid (caption: "Map where the entrepreneur is currently selling"). "+ Add Channel" appends a row; the three revenue columns auto-calculate. Below the grid sits the <strong>Intervention Need</strong> block.</p>
+
+      <h4 style="color:var(--sea);margin:14px 0 6px;">Current Selling Channels (child table)</h4>
+      <table class="field-table">
+        <thead><tr><th>Field Name</th><th>Field Type</th><th>Input Values</th><th>Input</th><th>Autofill</th><th>Logic</th><th>Validation &amp; Error Messages</th></tr></thead>
+        <tbody>
+          <tr><td>#</td><td>Auto number</td><td>01, 02, &hellip;</td><td>Calculated</td><td>Row index (zero-padded)</td><td>Renumbers on add/delete.</td><td>Non-editable.</td></tr>
+          <tr><td>Channel Name</td><td>Data</td><td>Free text, e.g., "Mawkynrew Weekly Market", "Shillong Grocery Store", "WhatsApp Direct Orders"</td><td>Manual</td><td>&mdash;</td><td>Rows with a blank name are skipped in the Summary roll-up.</td><td>Required for the row to count. Error: "Enter the channel name."</td></tr>
+          <tr><td>Type</td><td>Select</td><td>Online; Offline</td><td>Manual</td><td>&mdash;</td><td>Drives the Existing Online / Offline split in the Summary.</td><td>Optional.</td></tr>
+          <tr><td>Selling Mode</td><td>Select</td><td>B2B; B2C; D2C; Exhibition</td><td>Manual</td><td>&mdash;</td><td>Counted into the Summary B2B / B2C / D2C / Exhibition tallies (existing + recommended).</td><td>Optional.</td></tr>
+          <tr><td>Location</td><td>Select</td><td>Block Master: Mawkynrew, Mawphlang, Pynursla, Mylliem, Sohra (Cherrapunji), Mawsynram, Khliehriat, Jowai, Resubelpara, Tura, Williamnagar, Baghmara, Other</td><td>Manual</td><td>&mdash;</td><td>&mdash;</td><td>Optional.</td></tr>
+          <tr><td>Price (&#8377;)</td><td>Float (step 0.01)</td><td>Numeric per unit</td><td>Manual</td><td>&mdash;</td><td>Drives Avg Revenue/Month (= Price &times; units). Recalculates live on input.</td><td>Optional; numeric &ge; 0. Error on negative: "Price cannot be negative."</td></tr>
+          <tr><td>Avg Revenue / Month (&#8377;)</td><td>Number / units (input)</td><td>Numeric average units sold per month</td><td>Manual</td><td>&mdash;</td><td>Despite the label this cell takes the average monthly <em>units</em>; multiplied by Price to derive the calculated revenue figures.</td><td>Optional; numeric &ge; 0.</td></tr>
+          <tr><td><em>Annual Revenue (&#8377;)</em></td><td>Currency (read-only)</td><td>Auto</td><td>Calculated</td><td>= (Price &times; units) &times; 12</td><td>Italic on cream-deep, tooltip (Rule 1). The Summary Best Channel and Total Annual Revenue read from here.</td><td>Non-editable.</td></tr>
+          <tr><td><em>Annual Total Revenue (&#8377;)</em></td><td>Currency (read-only)</td><td>Auto</td><td>Calculated</td><td>= Price &times; units &times; 12</td><td>Italic on cream-deep, tooltip (Rule 1); the annualised total for the channel.</td><td>Non-editable.</td></tr>
+        </tbody>
+      </table>
+      <div class="callout callout-terra">Caption under the grid: "Avg Revenue/Month, Annual Revenue and Annual Total Revenue auto-calculate." Existing channels surface in the Summary overview with a blue <em>Existing</em> source tag and an "Active" status chip.</div>
+
+      <h4 style="color:var(--sea);margin:14px 0 6px;">Intervention Need block</h4>
+      <table class="field-table">
+        <thead><tr><th>Field Name</th><th>Field Type</th><th>Input Values</th><th>Input</th><th>Autofill</th><th>Logic</th><th>Validation &amp; Error Messages</th></tr></thead>
+        <tbody>
+          <tr><td>Upgrade / Add New Channels?</td><td>Toggle (On / Off)</td><td>Off (default) / On</td><td>Manual</td><td>&mdash;</td><td><strong>Conditional:</strong> Off shows the note "Not flagged"; On switches the note to "Flagged &mdash; add recommended channels in Required tab" and reveals the Justification box. Sets the Summary "Upgrade Needed" flag to Yes/No.</td><td>Optional.</td></tr>
+          <tr><td>Justification</td><td>Small Text (conditional)</td><td>Reason for upgrading or adding new channels</td><td>Manual</td><td>&mdash;</td><td>Shown only when the toggle is On.</td><td>Optional; only relevant when shown.</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ===== TAB 2: REQUIRED ===== -->
+  <div class="accordion">
+    <div class="accordion-trigger" onclick="this.parentElement.classList.toggle('open')">Tab 2 &mdash; Required (Recommended Channels &rarr; nested product tables)</div>
+    <div class="accordion-body">
+      <p style="font-size:13px;color:var(--ink);margin:4px 0 12px;">Channel repeater (heading "I. Recommended Channels"). "+ Add Recommended Channel" creates a collapsible channel card that holds its own product-mapping table; a new card seeds one product row automatically. Note shown: "Each channel holds its own product mapping table. Type and Selling Mode are set at the channel level and apply to all products within it."</p>
+
+      <h4 style="color:var(--sea);margin:14px 0 6px;">Channel Card Header</h4>
+      <table class="field-table">
+        <thead><tr><th>Field Name</th><th>Field Type</th><th>Input Values</th><th>Input</th><th>Autofill</th><th>Logic</th><th>Validation &amp; Error Messages</th></tr></thead>
+        <tbody>
+          <tr><td>Channel Name</td><td>Data</td><td>Free text, e.g., "Amazon India", "Shillong Mela 2025"</td><td>Manual</td><td>&mdash;</td><td>Cards with a blank name are skipped in the Summary roll-up.</td><td>Required before save. Error: "Enter the channel name."</td></tr>
+          <tr><td>Type</td><td>Select</td><td>Online; Offline</td><td>Manual</td><td>&mdash;</td><td>Channel-level; applies to all products in the card.</td><td>Optional.</td></tr>
+          <tr><td>Selling Mode</td><td>Select</td><td>B2B; B2C; D2C; Exhibition</td><td>Manual</td><td>&mdash;</td><td>Channel-level; counted into the Summary mode tallies.</td><td>Optional.</td></tr>
+          <tr><td>Location</td><td>Select</td><td>Block Master (Mawkynrew &hellip; Baghmara, Other)</td><td>Manual</td><td>&mdash;</td><td>&mdash;</td><td>Optional.</td></tr>
+          <tr><td>Identified By</td><td>Select</td><td>Ground Team; Core Team; Entrepreneur</td><td>Manual</td><td>&mdash;</td><td>Records who recommended the channel.</td><td>Optional.</td></tr>
+          <tr><td><em>Status Chip</em></td><td>Chip (read-only, aggregate)</td><td>Pending / In Progress / Completed / Not Feasible</td><td>Calculated</td><td>Derived from the Implementation Status of every product row in this card</td><td>Italic-equivalent read-only aggregate (Rule 1). <strong>Completed only when all product rows are Completed</strong>; Not Feasible if any row is Not Feasible; In Progress if any row is In Progress; else Pending (also when no product rows exist). Recomputes on status change, row add and row delete.</td><td>Non-editable.</td></tr>
+          <tr><td>Remove (channel)</td><td>Action button</td><td>&mdash;</td><td>Manual</td><td>&mdash;</td><td>Deletes the channel and all its product rows.</td><td>Confirm prompt: "Remove this channel and all its products?"</td></tr>
+        </tbody>
+      </table>
+
+      <h4 style="color:var(--sea);margin:14px 0 6px;">Products Sold via this Channel (nested child table per channel)</h4>
+      <p style="font-size:12px;color:var(--ink-soft);margin:2px 0 6px;">"+ Add Product" appends a row; "x" deletes it. Each row's status feeds the channel aggregate chip above.</p>
+      <table class="field-table">
+        <thead><tr><th>Field Name</th><th>Field Type</th><th>Input Values</th><th>Input</th><th>Autofill</th><th>Logic</th><th>Validation &amp; Error Messages</th></tr></thead>
+        <tbody>
+          <tr><td>#</td><td>Auto number</td><td>01, 02, &hellip;</td><td>Calculated</td><td>Row index (zero-padded)</td><td>Renumbers on add/delete.</td><td>Non-editable.</td></tr>
+          <tr><td>Product Name</td><td>Select (Link)</td><td>Distinct Product Master names: Bamboo Shoot Pickle, Lemongrass Tea, Lakadong Turmeric, Eri Silk Muffler</td><td>Manual</td><td>&mdash;</td><td><strong>Cascading:</strong> on change, filters the SKU dropdown to that product's SKUs. Counts toward "Products Mapped" / "Unique Products" in the Summary.</td><td>Optional per row.</td></tr>
+          <tr><td>Product SKU</td><td>Select (cascading)</td><td>SKUs for the chosen product, e.g., BST-PCK-200-G &mdash; 200g Standard; BST-PCK-500-G &mdash; 500g Family; LMG-TEA-50-G &mdash; 50g Pouch; LMG-TEA-100-G &mdash; 100g Tin; LKD-TUR-100-G &mdash; 100g Pouch; LKD-TUR-250-G &mdash; 250g Jar; ERI-MUF-001 &mdash; 180x30 cm</td><td>Manual</td><td>&mdash;</td><td>Shows "Select Product first" until a Product Name is chosen.</td><td>Optional.</td></tr>
+          <tr><td>Price (&#8377;)</td><td>Float (step 0.01)</td><td>Numeric per unit</td><td>Manual</td><td>&mdash;</td><td>Reference / target price for this SKU via this channel.</td><td>Optional; numeric &ge; 0.</td></tr>
+          <tr><td>Notes</td><td>Data</td><td>Free text</td><td>Manual</td><td>&mdash;</td><td>&mdash;</td><td>Optional.</td></tr>
+          <tr><td>Implementation Status</td><td>Select</td><td>Pending; In Progress; Completed; Not Feasible</td><td>Manual</td><td>&mdash;</td><td><strong>Drives the channel aggregate chip</strong> (see Channel Card Header) and the Summary Intervention-Status counters.</td><td>Optional; defaults to Pending.</td></tr>
+        </tbody>
+      </table>
+      <div class="callout callout-terra"><strong>Aggregate logic restated:</strong> the channel chip is Completed <em>only</em> when every product row reads Completed. A single Not Feasible row makes the channel Not Feasible; any In Progress row (with none Not Feasible) makes it In Progress; otherwise it stays Pending.</div>
+    </div>
+  </div>
+
+  <!-- ===== TAB 3: SALES TRACKER ===== -->
+  <div class="accordion">
+    <div class="accordion-trigger" onclick="this.parentElement.classList.toggle('open')">Tab 3 &mdash; Sales Tracker (monthly accordions, actual recorded sales)</div>
+    <div class="accordion-body">
+      <p style="font-size:13px;color:var(--ink);margin:4px 0 12px;">Twelve collapsible month accordions (January &hellip; December). Each accordion header shows that month's auto Qty and Revenue totals; the section header shows grand Total Units and Annual Revenue chips. Caption: "Each month is a collapsible section. Each row = one SKU via one channel. Price can differ per month. Revenue auto-calculates." "+ Add Row" appends a row inside the open month.</p>
+      <div class="callout callout-terra"><strong>Cohort-year span (Rule 11):</strong> the tracker is read against the entrepreneur's cohort / fellowship year &mdash; the twelve month buckets belong to the active cohort year, and historical buckets remain visible across the cohort span rather than resetting on calendar year-end. Tracker totals represent <em>actual recorded sales</em> and are kept distinct from the Existing-tab projected revenue in the Summary.</div>
+
+      <h4 style="color:var(--sea);margin:14px 0 6px;">Per-Month Sales Row (inner table; one per SKU-per-channel)</h4>
+      <table class="field-table">
+        <thead><tr><th>Field Name</th><th>Field Type</th><th>Input Values</th><th>Input</th><th>Autofill</th><th>Logic</th><th>Validation &amp; Error Messages</th></tr></thead>
+        <tbody>
+          <tr><td>#</td><td>Auto number</td><td>01, 02, &hellip;</td><td>Calculated</td><td>Row index within the month (zero-padded)</td><td>Renumbers on add/delete within that month.</td><td>Non-editable.</td></tr>
+          <tr><td>Source</td><td>Select</td><td>Existing; Recommended; Self-initiated</td><td>Manual</td><td>&mdash;</td><td>On select, renders a coloured <em>source tag</em> under the cell (Existing = blue, Recommended = green, Self-initiated = terracotta).</td><td>Optional.</td></tr>
+          <tr><td>Channel Name</td><td>Data</td><td>Free text, e.g., "Mawkynrew Weekly Market"</td><td>Manual</td><td>&mdash;</td><td>Identifies which channel the sale went through.</td><td>Optional.</td></tr>
+          <tr><td>Type</td><td>Select</td><td>Online; Offline</td><td>Manual</td><td>&mdash;</td><td>&mdash;</td><td>Optional.</td></tr>
+          <tr><td>Selling Mode</td><td>Select</td><td>B2B; B2C; D2C; Exhibition</td><td>Manual</td><td>&mdash;</td><td>&mdash;</td><td>Optional.</td></tr>
+          <tr><td>Product</td><td>Select (Link)</td><td>Distinct Product Master names (Bamboo Shoot Pickle, Lemongrass Tea, Lakadong Turmeric, Eri Silk Muffler)</td><td>Manual</td><td>&mdash;</td><td><strong>Cascading:</strong> filters the SKU dropdown to that product.</td><td>Optional.</td></tr>
+          <tr><td>SKU</td><td>Select (cascading)</td><td>SKUs for the chosen product (BST-PCK-200-G &hellip; ERI-MUF-001)</td><td>Manual</td><td>&mdash;</td><td>Shows "Select Product first" until a Product is chosen.</td><td>Optional.</td></tr>
+          <tr><td>Quantity</td><td>Number (min 0)</td><td>Units sold this month</td><td>Manual</td><td>&mdash;</td><td>Drives row Revenue (= Quantity &times; Price) and month Qty total.</td><td>Optional; numeric &ge; 0.</td></tr>
+          <tr><td>Price (&#8377;)</td><td>Float (step 0.01)</td><td>Numeric per unit; may differ per month</td><td>Manual</td><td>&mdash;</td><td>Drives row Revenue.</td><td>Optional; numeric &ge; 0.</td></tr>
+          <tr><td><em>Revenue</em></td><td>Currency (read-only)</td><td>"&mdash;" when zero, else "Rs &lt;amount&gt;"</td><td>Calculated</td><td>= Quantity &times; Price</td><td>Italic-equivalent read-only (Rule 1); recalculates live and rolls into the month Qty/Revenue totals and the grand Annual Revenue.</td><td>Non-editable.</td></tr>
+        </tbody>
+      </table>
+
+      <h4 style="color:var(--sea);margin:14px 0 6px;">Month &amp; Grand Totals (read-only)</h4>
+      <table class="field-table">
+        <thead><tr><th>Metric</th><th>Field Type</th><th>Source</th><th>Input</th><th>Autofill</th><th>Logic</th><th>Validation &amp; Error Messages</th></tr></thead>
+        <tbody>
+          <tr><td><em>Month Qty</em></td><td>Read-only</td><td>Month rows</td><td>Calculated</td><td>Sum of row Quantity for that month</td><td>"&mdash;" when the month has no rows; shown in the accordion header.</td><td>Non-editable.</td></tr>
+          <tr><td><em>Month Revenue</em></td><td>Read-only currency</td><td>Month rows</td><td>Calculated</td><td>Sum of row Revenue for that month</td><td>"&mdash;" when empty; shown in the accordion header.</td><td>Non-editable.</td></tr>
+          <tr><td><em>Total Units (grand)</em></td><td>Read-only</td><td>All months</td><td>Calculated</td><td>Sum of all month Qty totals</td><td>Shown in the section header chip; "0" when no data.</td><td>Non-editable.</td></tr>
+          <tr><td><em>Annual Revenue (grand)</em></td><td>Read-only currency</td><td>All months</td><td>Calculated</td><td>Sum of all month Revenue totals</td><td>Shown in the section header chip ("Rs 0.00" when no data); also surfaces as the Summary "Tracker Annual Revenue".</td><td>Non-editable.</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ===== TAB 4: SUMMARY ===== -->
+  <div class="accordion">
+    <div class="accordion-trigger" onclick="this.parentElement.classList.toggle('open')">Tab 4 &mdash; Summary (auto roll-up, read-only)</div>
+    <div class="accordion-body">
+      <p style="font-size:13px;color:var(--ink);margin:4px 0 12px;">Entirely calculated &mdash; no manual entry; refreshes on open. Comprises (1) a Channel-wise Overview table (existing + recommended), (2) four Aggregate cards (Existing / Revenue / Interventions / Intervention Status), (3) four Intervention-flag tiles.</p>
+
+      <h4 style="color:var(--sea);margin:10px 0 6px;">Channel-wise Overview (one row per channel; existing then recommended)</h4>
+      <p style="font-size:12px;color:var(--ink-soft);margin:2px 0 6px;">Caption: "Existing channels with revenue. Recommended channels show alongside with their implementation status." Recommended rows are highlighted; a TOTAL row sums annual revenue when existing channels exist.</p>
+      <table class="field-table">
+        <thead><tr><th>Column</th><th>Field Type</th><th>Source</th><th>Input</th><th>Autofill</th><th>Logic</th><th>Validation &amp; Error Messages</th></tr></thead>
+        <tbody>
+          <tr><td><em>Channel</em></td><td>Read-only</td><td>Existing grid / Required card</td><td>Calculated</td><td>Channel name (bold)</td><td>Row keyed to the channel.</td><td>&mdash;</td></tr>
+          <tr><td><em>Type</em></td><td>Read-only pill</td><td>Channel</td><td>Calculated</td><td>Online (blue) / Offline (amber) pill</td><td>"&mdash;" if blank.</td><td>&mdash;</td></tr>
+          <tr><td><em>Mode</em></td><td>Read-only</td><td>Channel</td><td>Calculated</td><td>Selling Mode</td><td>&mdash;</td><td>&mdash;</td></tr>
+          <tr><td><em>Location</em></td><td>Read-only</td><td>Channel</td><td>Calculated</td><td>Block</td><td>&mdash;</td><td>&mdash;</td></tr>
+          <tr><td><em>Avg Rev / Month (&#8377;)</em></td><td>Read-only currency</td><td>Existing grid</td><td>Calculated</td><td>Avg monthly revenue (teal)</td><td>"&mdash;" for recommended channels (no revenue captured).</td><td>&mdash;</td></tr>
+          <tr><td><em>Annual Revenue (&#8377;)</em></td><td>Read-only currency</td><td>Existing grid</td><td>Calculated</td><td>Annual revenue (green)</td><td>"&mdash;" for recommended channels.</td><td>&mdash;</td></tr>
+          <tr><td><em>Source</em></td><td>Read-only tag</td><td>System</td><td>Calculated</td><td>Existing (blue) or Recommended (green) source tag</td><td>&mdash;</td><td>&mdash;</td></tr>
+          <tr><td><em>Intervention Status</em></td><td>Read-only chip</td><td>Channel</td><td>Calculated</td><td>"Active" for existing; aggregate status chip for recommended</td><td>Recommended uses the channel aggregate (Completed / In Progress / Pending / Not Feasible).</td><td>&mdash;</td></tr>
+        </tbody>
+      </table>
+
+      <h4 style="color:var(--sea);margin:12px 0 6px;">Aggregate Cards &amp; Intervention Flags (all read-only counters)</h4>
+      <table class="field-table">
+        <thead><tr><th>Metric</th><th>Field Type</th><th>Group</th><th>Input</th><th>Autofill</th><th>Logic</th><th>Validation &amp; Error Messages</th></tr></thead>
+        <tbody>
+          <tr><td><em>Total Channels</em></td><td>Read-only count</td><td>Existing</td><td>Calculated</td><td>Count of existing channels with a name</td><td>&mdash;</td><td>&mdash;</td></tr>
+          <tr><td><em>Online</em></td><td>Read-only count</td><td>Existing</td><td>Calculated</td><td>Existing channels with Type = Online</td><td>&mdash;</td><td>&mdash;</td></tr>
+          <tr><td><em>Offline</em></td><td>Read-only count</td><td>Existing</td><td>Calculated</td><td>Existing channels with Type = Offline</td><td>&mdash;</td><td>&mdash;</td></tr>
+          <tr><td><em>Upgrade Needed</em></td><td>Read-only flag</td><td>Existing</td><td>Calculated</td><td>Yes / No from the Intervention-Need toggle</td><td>Amber when Yes; also a flag tile.</td><td>&mdash;</td></tr>
+          <tr><td><em>Total Annual Revenue (&#8377;)</em></td><td>Read-only currency</td><td>Revenue</td><td>Calculated</td><td>Sum of existing Annual Revenue (green)</td><td>"&mdash;" if no existing channels.</td><td>&mdash;</td></tr>
+          <tr><td><em>Avg Revenue / Month (&#8377;)</em></td><td>Read-only currency</td><td>Revenue</td><td>Calculated</td><td>= Total Annual Revenue &divide; 12</td><td>&mdash;</td><td>&mdash;</td></tr>
+          <tr><td><em>Best Channel</em></td><td>Read-only</td><td>Revenue</td><td>Calculated</td><td>Existing channel with the highest annual revenue</td><td>Truncated with ellipsis.</td><td>&mdash;</td></tr>
+          <tr><td><em>Tracker Annual Revenue (&#8377;)</em></td><td>Read-only currency</td><td>Revenue</td><td>Calculated</td><td>Sum of Sales-Tracker month revenues (green)</td><td>Caption: "Tracker = actual recorded sales." Kept distinct from projected revenue.</td><td>&mdash;</td></tr>
+          <tr><td><em>Recommended Channels Added</em></td><td>Read-only count</td><td>Interventions</td><td>Calculated</td><td>Count of named recommended channels</td><td>Also a flag tile.</td><td>&mdash;</td></tr>
+          <tr><td><em>Products Mapped</em></td><td>Read-only count</td><td>Interventions</td><td>Calculated</td><td>Total product rows (with a product) across recommended channels</td><td>&mdash;</td><td>&mdash;</td></tr>
+          <tr><td><em>Unique Products</em></td><td>Read-only count</td><td>Interventions</td><td>Calculated</td><td>Distinct product names mapped</td><td>&mdash;</td><td>&mdash;</td></tr>
+          <tr><td><em>B2B / B2C / D2C / Exhibition</em></td><td>Read-only counts</td><td>Interventions</td><td>Calculated</td><td>Selling-Mode tallies across existing + recommended channels</td><td>Four separate counters.</td><td>&mdash;</td></tr>
+          <tr><td><em>Status &mdash; Completed</em></td><td>Read-only count</td><td>Intervention Status</td><td>Calculated</td><td>Product rows with status Completed (green)</td><td>Counted across all recommended product rows.</td><td>&mdash;</td></tr>
+          <tr><td><em>Status &mdash; In Progress</em></td><td>Read-only count</td><td>Intervention Status</td><td>Calculated</td><td>Product rows In Progress (amber)</td><td>&mdash;</td><td>&mdash;</td></tr>
+          <tr><td><em>Status &mdash; Pending</em></td><td>Read-only count</td><td>Intervention Status</td><td>Calculated</td><td>Product rows Pending (or unset)</td><td>&mdash;</td><td>&mdash;</td></tr>
+          <tr><td><em>Status &mdash; Not Feasible</em></td><td>Read-only count</td><td>Intervention Status</td><td>Calculated</td><td>Product rows Not Feasible (red)</td><td>&mdash;</td><td>&mdash;</td></tr>
+          <tr><td><em>Flag &mdash; Annual Revenue / Channels Active / Upgrade Needed / Recommended Channels</em></td><td>Read-only flag tiles</td><td>Flags</td><td>Calculated</td><td>Annual revenue (&#8377;); count of active existing channels; Yes/No upgrade; recommended channel count</td><td>Four tiles mirroring the cards above.</td><td>&mdash;</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ===== TAB 5: RESOURCES ===== -->
+  <div class="accordion">
+    <div class="accordion-trigger" onclick="this.parentElement.classList.toggle('open')">Tab 5 &mdash; Resources (Reference Materials child table)</div>
+    <div class="accordion-body">
+      <p style="font-size:13px;color:var(--ink);margin:4px 0 12px;">Single child table; at least one row required.</p>
+      <table class="field-table">
+        <thead><tr><th>Field Name</th><th>Field Type</th><th>Input Values</th><th>Input</th><th>Autofill</th><th>Logic</th><th>Validation &amp; Error Messages</th></tr></thead>
+        <tbody>
+          <tr><td>Resource Title</td><td>Data</td><td>Free text</td><td>Manual</td><td>&mdash;</td><td>&mdash;</td><td>Required if row kept. Error: "Enter a resource title."</td></tr>
+          <tr><td>Category</td><td>Select</td><td>Buyer / Retailer Contact; Wholesale Market Directory; E-commerce Platform Guide; Exhibition / Mela Calendar; Govt Scheme / Subsidy; Packaging &amp; Branding Reference; Pricing Benchmarks; SHG / FPO Linkage; Other</td><td>Manual</td><td>&mdash;</td><td>&mdash;</td><td>Optional.</td></tr>
+          <tr><td>Type</td><td>Select</td><td>Contact; Reference; Quotation; Agreement / MOU; Map / Location; Photo / Evidence</td><td>Manual</td><td>&mdash;</td><td>&mdash;</td><td>Optional.</td></tr>
+          <tr><td>Description / Notes</td><td>Data</td><td>Free text notes</td><td>Manual</td><td>&mdash;</td><td>&mdash;</td><td>Optional.</td></tr>
+          <tr><td>File</td><td>Attach (Upload / View)</td><td>File upload</td><td>Manual</td><td>&mdash;</td><td>Upload and View actions.</td><td>Optional.</td></tr>
+        </tbody>
+      </table>
+      <div class="callout callout-terra">Delete is blocked when only one row remains. Error: "At least one row is required."</div>
+    </div>
+  </div>
+
+  <!-- ===== TAB 6: TASK LOG ===== -->
+  <div class="accordion">
+    <div class="accordion-trigger" onclick="this.parentElement.classList.toggle('open')">Tab 6 &mdash; Task Log (Market Linkage Activities register)</div>
+    <div class="accordion-body">
+      <p style="font-size:13px;color:var(--ink);margin:4px 0 12px;">Activity register with a live entry counter. Each entry below.</p>
+      <table class="field-table">
+        <thead><tr><th>Field Name</th><th>Field Type</th><th>Input Values</th><th>Input</th><th>Autofill</th><th>Logic</th><th>Validation &amp; Error Messages</th></tr></thead>
+        <tbody>
+          <tr><td>No.</td><td>Auto number</td><td>01, 02, &hellip;</td><td>Calculated</td><td>Sequential, zero-padded</td><td>Renumbers on delete; drives the entry counter.</td><td>Non-editable.</td></tr>
+          <tr><td>Date</td><td>Date</td><td>Date picker</td><td>Manual</td><td>&mdash;</td><td>&mdash;</td><td>Optional.</td></tr>
+          <tr><td>Task Name</td><td>Select</td><td>ML task list: 01 Map Existing Selling Channels; 02 Record Channel Revenue Data; 03 Identify Channel Upgrade / Expansion Need; 04 Research New Market Channels; 05 Identify Potential Buyers / Retailers; 06 Contact Potential Buyer / Retailer; 07 Conduct Buyer Meeting; 08 Negotiate Terms / Pricing; 09 Finalise Channel Agreement / MOU; 10 Set Up Online Channel (e-commerce / social); 11 Register for Exhibition / Mela; 12 Prepare Products for New Channel; 13 First Dispatch / Delivery to New Channel; 14 Monitor Channel Sales Performance; 15 Review Pricing Strategy by Channel; 16 Update Sales Tracker; "If other, specify in comments"</td><td>Manual</td><td>&mdash;</td><td>&mdash;</td><td>Required per entry. Error: "Select a task."</td></tr>
+          <tr><td>Notes / Outcome</td><td>Data</td><td>Free text</td><td>Manual</td><td>&mdash;</td><td>&mdash;</td><td>Optional.</td></tr>
+          <tr><td>Attachment</td><td>Attach (Upload)</td><td>File upload</td><td>Manual</td><td>&mdash;</td><td>&mdash;</td><td>Optional.</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="callout callout-danger"><strong>Key validations (whole form):</strong> (1) A channel row/card counts only when Channel Name is filled &mdash; "Enter the channel name." (2) The recommended channel <em>status chip is system-calculated and read-only</em>: Completed only when all nested product rows are Completed, Not Feasible if any row is Not Feasible, In Progress if any row is In Progress, else Pending &mdash; it must never be hand-edited. (3) All numeric fields (Price, Avg Revenue/Month units, Quantity) must be &ge; 0; negatives rejected ("Price cannot be negative"). (4) Existing revenue columns (Avg Revenue/Month, Annual Revenue, Annual Total Revenue) and every Tracker Revenue / month total / grand total are auto-calculated and non-editable. (5) Justification is only valid / shown when the "Upgrade / Add New Channels?" toggle is On. (6) Product SKU is enabled only after a Product Name is chosen (cascading). (7) Tracker month buckets belong to the active cohort year (Rule 11) and Tracker revenue (actual) is kept distinct from projected Existing-channel revenue. (8) Removing a channel deletes all its products (confirm prompt). (9) Resources table must retain at least one row. (10) Task Log entries require a Task Name. (11) All Indian currency uses &#8377; with Indian number formatting (e.g., &#8377; 1,00,000).</div>
+
+  <div class="review-panel" data-section="m-mkt-linkage">
+    <div class="review-strip"><span style="font-size:12px;color:var(--ink-soft);font-weight:500;">Section Review:</span>
+      <button class="review-status-btn" onclick="setReview('m-mkt-linkage','draft',this)">Draft</button>
+      <button class="review-status-btn" onclick="setReview('m-mkt-linkage','review',this)">In Review</button>
+      <button class="review-status-btn" onclick="setReview('m-mkt-linkage','changes',this)">Needs Changes</button>
+      <button class="review-status-btn" onclick="setReview('m-mkt-linkage','approved',this)">Approved</button>
+      <button style="margin-left:auto;background:none;border:none;font-size:12px;color:var(--sea);cursor:pointer;font-family:var(--font);text-decoration:underline;" onclick="copyLink('m-mkt-linkage')">Copy Link</button></div>
+    <div class="review-comments"><div class="comment-list" id="comments-m-mkt-linkage"></div>
+      <div class="comment-input-row"><input type="text" placeholder="Your name" style="max-width:120px" id="name-m-mkt-linkage"><textarea rows="1" placeholder="Add a comment..." id="text-m-mkt-linkage"></textarea><button class="comment-add-btn" onclick="addComment('m-mkt-linkage')">Add</button></div></div>
+  </div>
+</div>

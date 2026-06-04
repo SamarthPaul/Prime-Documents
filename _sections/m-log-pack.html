@@ -1,0 +1,180 @@
+<div class="brd-section" id="m-log-pack">
+  <div class="section-header"><span class="section-id">PR-LG-001</span><h2 class="section-title">Logistic Packing</h2></div>
+  <div class="section-desc"><strong>Product-level framework</strong> (Logistics module) that records the <strong>outer / transit packing</strong> used to ship each product &mdash; box type, material, dimensions, transport mode, load &amp; stacking limits, damage history and per-unit cost &mdash; together with a months-as-rows <strong>monthly shipment-quantity grid</strong>. Distinct from <em>Product Packaging</em> (which covers primary consumer packaging). An intervention bridge carries flagged packing into a Required tab for a recommended replacement spec.</div>
+  <div class="callout callout-terra"><strong>Golden Thread &amp; pattern.</strong> Mirrors Product Packaging: products are added as collapsible blocks (Product Name + SKU), each holding Section&nbsp;I packing-detail rows and Section&nbsp;III intervention need; a shared <strong>Section&nbsp;II Monthly Shipment Quantities</strong> grid (months &darr; rows, each product&rsquo;s packing type &rarr; column) spans cohort years (Rule 11) and computes annual transit-packing cost (<em>&Sigma; month qty &times; price/unit</em>). Toggling <em>Packing Intervention Needed?</em> auto-creates a linked row in Required Section&nbsp;I (bridge, Rule 3); removing it clears the flag (two-way).</div>
+
+  <h3 style="font-size:16px;color:var(--teal);margin:18px 0 10px;">On-Screen UI Structure</h3>
+  <div class="card"><div style="font-size:13px;line-height:1.9;color:var(--ink)">A teal title bar reads <em>Logistic Packing</em>; a horizontal <strong>tab rail</strong> &mdash; <em>Summary &middot; Existing &middot; Required &middot; Resources &middot; Task Log &middot; Log Book</em> &mdash; sits below, active tab teal, with the entrepreneur chip on every panel (Rule 2).<br><br><strong>Existing</strong> renders each product as a collapsible <strong>block</strong> (sea-green header with Product Name + SKU). Section&nbsp;I is a repeating <strong>packing-detail grid</strong> (4-column cells per row) capturing type, material, source, dimensions, capacity, price, transport mode, load/stacking limits, damage observed, picture, a four-pill <em>Properties</em> group (Fragile Suitable / Reusable / Waterproof / Cold Chain) and a note. Section&nbsp;III is a terracotta <em>Intervention Need</em> block per packing type. The shared <strong>Section&nbsp;II Monthly Shipment Quantities</strong> grid sits below all blocks.<br><br><strong>Required</strong> holds Section&nbsp;I <em>Recommended Replacement Specification</em> (bridge-populated), Section&nbsp;II <em>New Packing</em> (standalone) and Section&nbsp;III <em>Monthly Shipment Quantities &mdash; Required</em>. <strong>Summary</strong> is read-only (overview table with a Damage Risk column, aggregate cards, intervention-flag tiles incl. Damage Risk Flagged &amp; Reusable Packing). <strong>Resources</strong>, <strong>Task Log</strong> and <strong>Log Book</strong> close the rail. Calculated fields render italic on cream-deep with formula tooltips (Rule 1).</div></div>
+  <div class="flow-container" style="margin-top:12px"><div class="flow-step"><div class="flow-box">Summary</div></div><div class="flow-arrow">&rarr;</div><div class="flow-step"><div class="flow-box">Existing</div></div><div class="flow-arrow">&rarr;</div><div class="flow-step"><div class="flow-box">Required</div></div><div class="flow-arrow">&rarr;</div><div class="flow-step"><div class="flow-box">Resources</div></div><div class="flow-arrow">&rarr;</div><div class="flow-step"><div class="flow-box">Task Log</div></div><div class="flow-arrow">&rarr;</div><div class="flow-step"><div class="flow-box">Log Book</div></div></div>
+
+  <h3 style="font-size:16px;color:var(--teal);margin:18px 0 10px;">User Journey</h3>
+  <div class="card"><div class="flow-container">
+    <div class="flow-step"><div class="flow-box">Open Logistic Packing</div><div class="flow-label">EP dashboard &middot; Diagnostics &rarr; Logistics</div></div>
+    <div class="flow-arrow">&rarr;</div>
+    <div class="flow-step"><div class="flow-box">Add product &amp; packing rows</div><div class="flow-label">Existing &mdash; type, material, dims, mode, load, damage</div></div>
+    <div class="flow-arrow">&rarr;</div>
+    <div class="flow-step"><div class="flow-box">Fill Monthly Shipment grid</div><div class="flow-label">Section II &mdash; per month &times; type; annual cost auto-calcs</div></div>
+    <div class="flow-arrow">&rarr;</div>
+    <div class="flow-step"><div class="flow-box">Flag intervention</div><div class="flow-label">Section III toggle &rarr; Required replacement row</div></div>
+    <div class="flow-arrow">&rarr;</div>
+    <div class="flow-step"><div class="flow-box">Spec replacement &amp; Save</div><div class="flow-label">Required + New Packing; Task Log / Log Book; Summary updates</div></div>
+  </div></div>
+
+  <!-- ============ TAB 1: SUMMARY ============ -->
+  <div class="accordion open"><div class="accordion-trigger" onclick="this.parentElement.classList.toggle('open')">Tab 1: Summary <span class="acc-arrow">&#9660;</span></div>
+    <div class="accordion-body">
+      <p style="font-size:13px;color:var(--ink-soft);margin-bottom:12px;">Read-only. Auto-populated from Existing and Required; recalculates on switch back.</p>
+
+      <h4 style="font-size:14px;color:var(--teal);margin-bottom:10px;">Packing-wise Overview Table</h4>
+      <p style="font-size:12px;color:var(--ink-soft);font-style:italic;margin-bottom:8px;">One row per packing type per product; Required (replacement / new) rows highlighted below.</p>
+      <table class="brd-table"><thead><tr><th>Field Name</th><th>Field Type</th><th>Input Values</th><th>Input / Autofill</th><th>Logic</th><th>Validation &amp; Error Messages</th></tr></thead>
+      <tbody>
+        <tr><td>Product</td><td>Read-only text (bold)</td><td>&mdash;</td><td>Autofill</td><td>Product Name from the Existing block (or Product / Purpose for new packing).</td><td>&mdash; (display only)</td></tr>
+        <tr><td>Packing Type</td><td>Read-only text</td><td>Corrugated Box / Wooden Crate / Jute Bag / HDPE Sack / Thermocol Box / &hellip;</td><td>Autofill</td><td>From Type of Packing on the detail row.</td><td>&mdash;</td></tr>
+        <tr><td>Material / Transport Mode</td><td>Read-only text</td><td>&mdash;</td><td>Autofill</td><td>From the row&rsquo;s Material and Transport Mode (Road / Rail / Air / Water / Cold Chain).</td><td>&mdash;</td></tr>
+        <tr><td>Price / Unit (&#8377;)</td><td>Read-only currency</td><td>&mdash;</td><td>Autofill</td><td>Row&rsquo;s Price Per Unit; Indian formatting.</td><td>&mdash;</td></tr>
+        <tr><td>Avg Monthly Qty</td><td>Read-only number</td><td>&mdash;</td><td>Calculated</td><td><em>= Annual Qty for this product+type &divide; 12</em>.</td><td>&mdash;</td></tr>
+        <tr><td>Damage Risk</td><td>Read-only badge</td><td>None / Minor / Moderate / Severe</td><td>Autofill</td><td>From Damage Observed; Severe&rarr;red, Moderate&rarr;amber, None&rarr;green.</td><td>&mdash;</td></tr>
+        <tr><td>Intervention Type</td><td>Read-only badge</td><td>&#8635; Replacement / + New Packing / &mdash;</td><td>Autofill</td><td>From the type&rsquo;s intervention toggle / Section&nbsp;II new rows.</td><td>&mdash;</td></tr>
+        <tr><td>Implementation Status</td><td>Read-only badge</td><td>Pending / In Progress / Completed / Not Feasible</td><td>Autofill</td><td>Mirrors the linked Required row status.</td><td>&mdash;</td></tr>
+      </tbody></table>
+
+      <h4 style="font-size:14px;color:var(--teal);margin:16px 0 10px;">Aggregate Cards (4)</h4>
+      <table class="brd-table"><thead><tr><th>Card / Metric</th><th>Field Type</th><th>Input / Autofill</th><th>Logic</th></tr></thead>
+      <tbody>
+        <tr><td>Existing &rarr; Products with Packing</td><td>Read-only number</td><td>Calculated</td><td>Count of product blocks with at least one packing row.</td></tr>
+        <tr><td>Existing &rarr; Total Packing Types</td><td>Read-only number</td><td>Calculated</td><td>Total packing detail rows across products.</td></tr>
+        <tr><td>Existing &rarr; Annual Qty / Annual Cost (&#8377;)</td><td>Read-only</td><td>Calculated</td><td>&Sigma; of the monthly grid and <em>&Sigma;(month qty &times; price/unit)</em>.</td></tr>
+        <tr><td>Existing &rarr; Damage Risk Flagged</td><td>Read-only number (amber)</td><td>Calculated</td><td>Count of rows with Damage Observed = Moderate or Severe.</td></tr>
+        <tr><td>Cost &rarr; Products / Items / Annual Cost</td><td>Read-only</td><td>Calculated</td><td>Mirror of the counts + total transit-packing spend.</td></tr>
+        <tr><td>Interventions &rarr; Flagged / Bridged / New Packing Added / Total</td><td>Read-only numbers</td><td>Calculated</td><td>Counts across Required Section&nbsp;I (replacements) and Section&nbsp;II (new packing).</td></tr>
+        <tr><td>Status &rarr; Pending / In Progress / Completed / Not Feasible</td><td>Read-only numbers</td><td>Calculated</td><td>Implementation-status counts across all Required rows.</td></tr>
+      </tbody></table>
+
+      <h4 style="font-size:14px;color:var(--teal);margin:16px 0 10px;">Intervention Flags Strip (4 tiles)</h4>
+      <table class="brd-table"><thead><tr><th>Tile</th><th>Field Type</th><th>Input / Autofill</th><th>Logic</th></tr></thead>
+      <tbody>
+        <tr><td>&#8635; Intervention Needed</td><td>Read-only count (amber)</td><td>Calculated</td><td>= packing rows whose intervention toggle is ON.</td></tr>
+        <tr><td>! Damage Risk Flagged</td><td>Read-only count (red)</td><td>Calculated</td><td>= rows with Damage Observed Moderate / Severe.</td></tr>
+        <tr><td>&#8634; Reusable Packing</td><td>Read-only count (green)</td><td>Calculated</td><td>= rows with the Reusable property pill ON.</td></tr>
+        <tr><td>+ New Packing Added</td><td>Read-only count (blue)</td><td>Calculated</td><td>= Required Section&nbsp;II new packing rows.</td></tr>
+      </tbody></table>
+    </div></div>
+
+  <!-- ============ TAB 2: EXISTING ============ -->
+  <div class="accordion"><div class="accordion-trigger" onclick="this.parentElement.classList.toggle('open')">Tab 2: Existing <span class="acc-arrow">&#9660;</span></div>
+    <div class="accordion-body">
+      <p style="font-size:13px;color:var(--ink-soft);margin-bottom:12px;">One collapsible <strong>block per product</strong> (Product Name + SKU in the header). &ldquo;+ Add Product&rdquo; appends a block; &ldquo;+ Add Row&rdquo; appends a packing item. Section&nbsp;I rows + Section&nbsp;III intervention sit inside each block; the shared Section&nbsp;II grid sits below all blocks.</p>
+
+      <h4 style="font-size:14px;color:var(--teal);margin-bottom:10px;">Section I &mdash; Packing Details (repeating row per packing type)</h4>
+      <table class="brd-table"><thead><tr><th>Field Name</th><th>Field Type</th><th>Input Values</th><th>Input / Autofill</th><th>Logic</th><th>Validation &amp; Error Messages</th></tr></thead>
+      <tbody>
+        <tr><td>Type of Packing *</td><td>Select</td><td>Corrugated Box / Wooden Crate / Jute Bag / HDPE Sack / Thermocol Box / Bubble Wrap Pack / Carton / Plastic Crate / Gunny Bag / Tin Container</td><td>Input</td><td>Drives the product&rsquo;s column in the shared monthly grid and the Section&nbsp;III group.</td><td>&ldquo;Type of Packing is required.&rdquo;</td></tr>
+        <tr><td>Material</td><td>Select</td><td>Corrugated Board / Wood / Jute / HDPE / Thermocol / Bubble Wrap / Cardboard / Plastic / Gunny / Tin</td><td>Input</td><td>Surfaces in Summary &amp; the bridged Required row.</td><td>&mdash;</td></tr>
+        <tr><td>Purchase Source</td><td>Select</td><td>Local Market / Online / Manufacturer Direct / Wholesaler</td><td>Input</td><td>&mdash;</td><td>&mdash;</td></tr>
+        <tr><td>Dimensions (L &times; B &times; H)</td><td>Three numeric + unit Select</td><td>L, B, H; cm / mm / m / in</td><td>Input</td><td>Physical spec of the transit pack.</td><td>Values &ge; 0.</td></tr>
+        <tr><td>Capacity / Volume + Unit</td><td>Number + Select</td><td>&ge; 0; pcs / kg / L / dozen / bundle</td><td>Input</td><td>Pack size descriptor.</td><td>Must be &ge; 0.</td></tr>
+        <tr><td>Price / Unit (&#8377;)</td><td>Currency</td><td>&ge; 0</td><td>Input</td><td>Multiplied by each month&rsquo;s shipment qty to compute Month Total &amp; Annual Cost.</td><td>Must be &ge; 0. Indian formatting.</td></tr>
+        <tr><td>Transport Mode</td><td>Select</td><td>Road / Rail / Air / Water / Cold Chain</td><td>Input</td><td>Primary mode this packing is used for.</td><td>&mdash;</td></tr>
+        <tr><td>Max Load (kg)</td><td>Number</td><td>&ge; 0</td><td>Input</td><td>Load rating of the pack.</td><td>Must be &ge; 0.</td></tr>
+        <tr><td>Stacking Layers</td><td>Number</td><td>&ge; 1</td><td>Input</td><td>How many can be safely stacked.</td><td>Integer &ge; 1.</td></tr>
+        <tr><td>Damage Observed</td><td>Select</td><td>None / Minor / Moderate / Severe</td><td>Input</td><td>Drives Damage Risk badge &amp; the Damage Risk Flagged aggregate (Moderate/Severe).</td><td>&mdash;</td></tr>
+        <tr><td>Picture</td><td>Attach (Upload)</td><td>Image file</td><td>Input</td><td>Reference photo.</td><td>&mdash;</td></tr>
+        <tr><td>Properties</td><td>Multi-select pills</td><td>Fragile Suitable / Reusable / Waterproof / Cold Chain</td><td>Input (toggle pills)</td><td>Reusable feeds the Reusable Packing flag tile.</td><td>&mdash;</td></tr>
+        <tr><td>Note / Observations</td><td>Textarea</td><td>Free text</td><td>Input</td><td>&mdash;</td><td>&mdash;</td></tr>
+      </tbody></table>
+
+      <h4 style="font-size:14px;color:var(--teal);margin:16px 0 10px;">Section II &mdash; Monthly Shipment Quantities (shared, all products)</h4>
+      <p style="font-size:12px;color:var(--ink-soft);font-style:italic;margin-bottom:8px;">Transposed grid: <strong>months are rows</strong> (Apr&hellip;Mar), each product&rsquo;s packing type is a <strong>column</strong> (auto-populated from every block&rsquo;s Section&nbsp;I). Spans cohort years (Rule 11).</p>
+      <table class="brd-table"><thead><tr><th>Field Name</th><th>Field Type</th><th>Input Values</th><th>Input / Autofill</th><th>Logic</th><th>Validation &amp; Error Messages</th></tr></thead>
+      <tbody>
+        <tr><td>Shipment Month</td><td>Row label</td><td>Apr &hellip; Mar</td><td>System</td><td>Fixed 12-month axis.</td><td>&mdash;</td></tr>
+        <tr><td>Quantity Shipped (per month &times; type)</td><td>Number</td><td>&ge; 0</td><td>Input</td><td>One editable cell per month per product-type column; entries preserved on re-render.</td><td>Must be &ge; 0 integer.</td></tr>
+        <tr><td>Month Total (&#8377;)</td><td>Read-only currency</td><td>&mdash;</td><td>Calculated</td><td><em>= &Sigma; over types (month qty &times; type price/unit)</em>.</td><td>&mdash;</td></tr>
+        <tr><td>Annual Total per Type / Grand Total (&#8377;)</td><td>Read-only</td><td>&mdash;</td><td>Calculated</td><td>Column-wise units sum and overall annual transit-packing cost.</td><td>&mdash;</td></tr>
+      </tbody></table>
+
+      <h4 style="font-size:14px;color:var(--teal);margin:16px 0 10px;">Section III &mdash; Intervention Need (per product, per type)</h4>
+      <table class="brd-table"><thead><tr><th>Field Name</th><th>Field Type</th><th>Input Values</th><th>Input / Autofill</th><th>Logic</th><th>Validation &amp; Error Messages</th></tr></thead>
+      <tbody>
+        <tr><td>Packing Intervention Needed?</td><td>Toggle</td><td>On / Off</td><td>Input</td><td>ON auto-creates a linked Required Section&nbsp;I replacement row (bridge, Rule 3); OFF removes it.</td><td>&mdash;</td></tr>
+        <tr><td>Justification</td><td>Textarea</td><td>Free text</td><td>Input</td><td>Reason &mdash; damage / cost / unsuitable mode. Two-way synced to the Required row.</td><td>Recommended when toggle ON.</td></tr>
+      </tbody></table>
+    </div></div>
+
+  <!-- ============ TAB 3: REQUIRED ============ -->
+  <div class="accordion"><div class="accordion-trigger" onclick="this.parentElement.classList.toggle('open')">Tab 3: Required <span class="acc-arrow">&#9660;</span></div>
+    <div class="accordion-body">
+      <p style="font-size:13px;color:var(--ink-soft);margin-bottom:12px;">Three sections: Section&nbsp;I bridge-populated replacement specs, Section&nbsp;II standalone new packing, Section&nbsp;III the required-side monthly grid. Empty state until a packing type is flagged or a new pack added.</p>
+
+      <h4 style="font-size:14px;color:var(--teal);margin-bottom:10px;">Section I &mdash; Recommended Replacement Specification (bridge-populated)</h4>
+      <table class="brd-table"><thead><tr><th>Field Name</th><th>Field Type</th><th>Input Values</th><th>Input / Autofill</th><th>Logic</th><th>Validation &amp; Error Messages</th></tr></thead>
+      <tbody>
+        <tr><td>Product / Current Type / Material</td><td>Read-only text</td><td>&mdash;</td><td>Autofill</td><td>Mirrored from the originating Existing block + packing row (italic on cream-deep).</td><td>&mdash;</td></tr>
+        <tr><td>Justification</td><td>Read-only / Textarea</td><td>Free text</td><td>Autofill</td><td>Two-way synced with the Existing Section&nbsp;III justify.</td><td>&mdash;</td></tr>
+        <tr><td>Recommended Packing Details (Type *, Material, Source, Dimensions, Capacity/Unit, Price/Unit, Transport Mode, Max Load, Stacking, Properties)</td><td>Same field set as Existing Section&nbsp;I</td><td>As per Existing row</td><td>Input</td><td>The target replacement spec; Price/Unit feeds Saving and the required monthly grid.</td><td>&ldquo;Type of Packing is required.&rdquo;</td></tr>
+        <tr><td>Implementation Status</td><td>Select</td><td>Pending / In Progress / Completed / Not Feasible</td><td>Input</td><td>Drives Summary status badge &amp; counts.</td><td>&mdash;</td></tr>
+        <tr><td>Implementation Notes</td><td>Textarea</td><td>Free text</td><td>Input</td><td>&mdash;</td><td>&mdash;</td></tr>
+      </tbody></table>
+      <div class="callout callout-teal">Removing a Section&nbsp;I row toggles OFF the corresponding Existing packing-intervention flag (two-way sync).</div>
+
+      <h4 style="font-size:14px;color:var(--teal);margin:16px 0 10px;">Section II &mdash; New Packing (standalone)</h4>
+      <p style="font-size:13px;color:var(--ink-soft);margin-bottom:8px;">Same packing field set as Section&nbsp;I, added freely for transit packing not linked to any existing product/type, with its own Implementation Status (Pending / In Progress / Completed / On Hold).</p>
+
+      <h4 style="font-size:14px;color:var(--teal);margin:16px 0 10px;">Section III &mdash; Monthly Shipment Quantities (Required)</h4>
+      <p style="font-size:13px;color:var(--ink-soft);margin-bottom:0;">Mirrors the Existing monthly grid for the required side (months &darr; rows, required packing types &rarr; columns); Month Total = <em>&Sigma;(qty &times; required price/unit)</em>. Spans cohort years (Rule 11).</p>
+    </div></div>
+
+  <!-- ============ TAB 4: RESOURCES ============ -->
+  <div class="accordion"><div class="accordion-trigger" onclick="this.parentElement.classList.toggle('open')">Tab 4: Resources <span class="acc-arrow">&#9660;</span></div>
+    <div class="accordion-body">
+      <p style="font-size:13px;color:var(--ink-soft);margin-bottom:12px;">Reference materials &mdash; supplier directories, material samples, transit-packing standards, quotations. &ldquo;+ Add Resource&rdquo; appends a row.</p>
+      <table class="brd-table"><thead><tr><th>Field Name</th><th>Field Type</th><th>Input Values</th><th>Input / Autofill</th><th>Logic</th><th>Validation &amp; Error Messages</th></tr></thead>
+      <tbody>
+        <tr><td>Resource Title</td><td>Text</td><td>Free text</td><td>Input</td><td>&mdash;</td><td>&mdash;</td></tr>
+        <tr><td>Category</td><td>Select</td><td>Supplier Directory / Material Sample / Packing Standard / Quotation / Specification Sheet</td><td>Input</td><td>&mdash;</td><td>&mdash;</td></tr>
+        <tr><td>Type</td><td>Select</td><td>Contact / Reference / Quotation / Specification / Photo &middot; Sample</td><td>Input</td><td>&mdash;</td><td>&mdash;</td></tr>
+        <tr><td>Description / Notes</td><td>Text</td><td>Free text</td><td>Input</td><td>&mdash;</td><td>&mdash;</td></tr>
+        <tr><td>File</td><td>Attach (Upload / View)</td><td>Any file</td><td>Input</td><td>Drive-linked resource.</td><td>&mdash;</td></tr>
+      </tbody></table>
+    </div></div>
+
+  <!-- ============ TAB 5: TASK LOG ============ -->
+  <div class="accordion"><div class="accordion-trigger" onclick="this.parentElement.classList.toggle('open')">Tab 5: Task Log <span class="acc-arrow">&#9660;</span></div>
+    <div class="accordion-body">
+      <p style="font-size:13px;color:var(--ink-soft);margin-bottom:12px;">Seeded packing activities (e.g. Existing Packing Recorded, Monthly Shipment Volumes Logged, Damage Inspection, Replacement Spec Finalised, Procurement Switched) drive a read-only Progress field; each row carries Status, Owner, Due Date, Notes.</p>
+      <table class="brd-table"><thead><tr><th>Field Name</th><th>Field Type</th><th>Input Values</th><th>Input / Autofill</th><th>Logic</th><th>Validation &amp; Error Messages</th></tr></thead>
+      <tbody>
+        <tr><td>No. / Task Name / Phase</td><td>Read-only</td><td>Seeded list; Existing / Intervention / Required</td><td>System</td><td>Fixed seeded tasks with colour-coded phase badge.</td><td>&mdash;</td></tr>
+        <tr><td>Status</td><td>Select</td><td>Pending / In Progress / Completed / Blocked</td><td>Input</td><td>Aggregates into read-only Progress (%).</td><td>&mdash;</td></tr>
+        <tr><td>Owner / Due Date / Notes</td><td>Text / Date / Text</td><td>Free</td><td>Input</td><td>&mdash;</td><td>&mdash;</td></tr>
+      </tbody></table>
+    </div></div>
+
+  <!-- ============ TAB 6: LOG BOOK ============ -->
+  <div class="accordion"><div class="accordion-trigger" onclick="this.parentElement.classList.toggle('open')">Tab 6: Log Book <span class="acc-arrow">&#9660;</span></div>
+    <div class="accordion-body">
+      <p style="font-size:13px;color:var(--ink-soft);margin-bottom:12px;">Free-form activity diary (child table <em>DF Log Book Child</em>). &ldquo;+ Add Entry&rdquo; appends a row.</p>
+      <table class="brd-table"><thead><tr><th>Field Name</th><th>Field Type</th><th>Input Values</th><th>Input / Autofill</th><th>Logic</th><th>Validation &amp; Error Messages</th></tr></thead>
+      <tbody>
+        <tr><td>Date</td><td>Date</td><td>&mdash;</td><td>Input</td><td>&mdash;</td><td>&mdash;</td></tr>
+        <tr><td>Product / Activity</td><td>Text</td><td>Product / supplier</td><td>Input</td><td>&mdash;</td><td>&mdash;</td></tr>
+        <tr><td>Activity Type</td><td>Select</td><td>Site Visit / Supplier Meeting / Damage Inspection / Sample Review / Procurement</td><td>Input</td><td>&mdash;</td><td>&mdash;</td></tr>
+        <tr><td>Notes / Observations</td><td>Text</td><td>Free text</td><td>Input</td><td>&mdash;</td><td>&mdash;</td></tr>
+        <tr><td>Logged By / Evidence</td><td>Text / Attach</td><td>Name / file</td><td>Input</td><td>&mdash;</td><td>&mdash;</td></tr>
+      </tbody></table>
+    </div></div>
+
+  <div class="callout callout-danger"><strong>Key validations (whole form):</strong> Entrepreneur is required and unique (one Logistic Packing form per entrepreneur). Each product block needs a name and at least one packing row; Type of Packing is mandatory on every row (Existing &amp; Required). Capacity, Price/Unit, Max Load, Quantity Shipped must be &ge; 0; Stacking Layers &ge; 1. Calculated fields (Month Total, Annual qty/type, Annual Cost, Avg Monthly Qty, Saving) are read-only with formula tooltips (Rule 1) and the monthly grid spans cohort years (Rule 11). Toggling an intervention ON creates exactly one bridged Required replacement row; removing it clears the flag (two-way sync). Distinct from Product Packaging &mdash; this framework records outer / transit packing only.</div>
+
+  <div class="review-panel" data-section="m-log-pack">
+    <div class="review-strip"><span style="font-size:12px;color:var(--ink-soft);font-weight:500;">Section Review:</span>
+      <button class="review-status-btn" onclick="setReview('m-log-pack','draft',this)">Draft</button>
+      <button class="review-status-btn" onclick="setReview('m-log-pack','review',this)">In Review</button>
+      <button class="review-status-btn" onclick="setReview('m-log-pack','changes',this)">Needs Changes</button>
+      <button class="review-status-btn" onclick="setReview('m-log-pack','approved',this)">Approved</button>
+      <button style="margin-left:auto;background:none;border:none;font-size:12px;color:var(--sea);cursor:pointer;font-family:var(--font);text-decoration:underline;" onclick="copyLink('m-log-pack')">Copy Link</button></div>
+    <div class="review-comments"><div class="comment-list" id="comments-m-log-pack"></div>
+      <div class="comment-input-row"><input type="text" placeholder="Your name" style="max-width:120px" id="name-m-log-pack"><textarea rows="1" placeholder="Add a comment..." id="text-m-log-pack"></textarea><button class="comment-add-btn" onclick="addComment('m-log-pack')">Add</button></div></div>
+  </div>
+</div>

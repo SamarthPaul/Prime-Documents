@@ -1,0 +1,249 @@
+<div class="brd-section" id="m-cust-analysis">
+  <div class="section-header"><span class="section-id">PR-MKT-002</span><h2 class="section-title">Customer Analysis</h2></div>
+  <div class="section-desc">Market module framework where the field facilitator maps each product's current customer base across demographic, geographic, psychographic and behavioural segmentation, defines the existing target market, flags products needing an upgrade, and captures an aspirational (Required) target market with an implementation pipeline.</div>
+
+  <h3 style="font-size:16px;color:var(--teal);margin:18px 0 10px;">On-Screen UI Structure</h3>
+  <div class="card"><div style="font-size:13px;line-height:1.9;color:var(--ink)">
+    <strong>Top bar:</strong> teal header reading &ldquo;Customer Analysis&rdquo; with breadcrumb &ldquo;PRIME Rural &middot; Marketing Framework&rdquo;. Below it an <em>entrepreneur chip</em> showing initials avatar and &ldquo;Auto-fetched from profile&rdquo; (the entrepreneur is auto-linked, not chosen on this screen).<br>
+    <strong>Tab rail (5 tabs):</strong> Summary &middot; Existing &middot; Required &middot; Resources &middot; Task Log. The active tab is solid teal; Existing is the default working tab; Summary opens on load.<br>
+    <strong>Body &mdash; Existing &amp; Required tabs:</strong> a stacked list of collapsible <em>product blocks</em>. Each product block (sea-green header with product dropdown + status chip + Remove) expands into six numbered sub-sections (I&ndash;VI). Sub-sections I&ndash;V use a <em>multi-select chip picker</em> (pick one or more values from a master, each shown as a removable chip). Sub-section VI uses single-select dropdowns plus a free-text persona. The Existing block ends with an <em>Intervention Need</em> toggle; the Required block ends with an <em>Implementation Status</em> block.<br>
+    <strong>Special widgets:</strong> chip multi-picker (demographic/geographic/psychographic/behavioural/segmentation fields); toggle switch (intervention flag) that reveals a justification box and lights an &ldquo;Intervention Flagged&rdquo; chip in the product header; status chip (Pending / In Progress / Completed / Not Feasible) on Required products.<br>
+    <strong>Summary tab</strong> is <em>fully calculated</em> &mdash; product-wise Existing-vs-Required comparison table, four aggregate cards, and four intervention-flag tiles, all auto-populated from the Existing and Required tabs. Calculated fields are shown <em>in italic on cream-deep background with a tooltip explaining the source</em> (Rule 1). <strong>Resources</strong> holds a reference-material table; <strong>Task Log</strong> holds a dated activity log against a fixed task master.
+  </div></div>
+  <div class="flow-container" style="margin-top:12px"><span class="tab-pill">Summary</span><div class="flow-arrow">&rarr;</div><span class="tab-pill">Existing</span><div class="flow-arrow">&rarr;</div><span class="tab-pill">Required</span><div class="flow-arrow">&rarr;</div><span class="tab-pill">Resources</span><div class="flow-arrow">&rarr;</div><span class="tab-pill">Task Log</span></div>
+
+  <h3 style="font-size:16px;color:var(--teal);margin:18px 0 10px;">User Journey</h3>
+  <div class="card"><div class="flow-container">
+    <div class="flow-step"><div class="flow-box">1</div><div class="flow-label">Open Customer Analysis; entrepreneur auto-fetched from profile</div></div>
+    <div class="flow-arrow">&rarr;</div>
+    <div class="flow-step"><div class="flow-box">2</div><div class="flow-label">On Existing tab, Add Product and pick it from the product master</div></div>
+    <div class="flow-arrow">&rarr;</div>
+    <div class="flow-step"><div class="flow-box">3</div><div class="flow-label">Fill segmentation I&ndash;V (demographic, geographic, psychographic, behavioural, customer segments)</div></div>
+    <div class="flow-arrow">&rarr;</div>
+    <div class="flow-step"><div class="flow-box">4</div><div class="flow-label">Define Target Market (VI) &mdash; segment, readiness, persona &mdash; then flag Intervention Need if upgrade required</div></div>
+    <div class="flow-arrow">&rarr;</div>
+    <div class="flow-step"><div class="flow-box">5</div><div class="flow-label">On Required tab, add the same/new product, define aspirational target &amp; set Implementation Status</div></div>
+    <div class="flow-arrow">&rarr;</div>
+    <div class="flow-step"><div class="flow-box">6</div><div class="flow-label">Attach references (Resources), log activity (Task Log), review the auto Summary comparison</div></div>
+  </div></div>
+
+  <!-- ============ TAB 1: EXISTING ============ -->
+  <div class="accordion open">
+    <div class="accordion-trigger" onclick="this.parentElement.classList.toggle('open')">Tab 1 &mdash; Existing (current customer base, per product)</div>
+    <div class="accordion-body">
+      <div class="section-desc" style="margin-top:0;">Caption on screen: &ldquo;Map the current customer base for each product the entrepreneur is selling. Each product holds its own customer segmentation and target market definition.&rdquo; The tab renders a list of collapsible product blocks plus an <strong>+ Add Product</strong> bar. Each block carries the six sub-sections below plus an Intervention Need toggle.</div>
+
+      <h4 style="font-size:14px;color:var(--teal);margin-bottom:10px;">Product Block Header</h4>
+      <table class="field-table">
+        <thead><tr><th>Field Name</th><th>Field Type</th><th>Input Values</th><th>Input</th><th>Autofill</th><th>Logic</th><th>Validation &amp; Error Messages</th></tr></thead>
+        <tbody>
+          <tr><td>Product</td><td>Select (Link to Product Master)</td><td>Bamboo Shoot Pickle, Lemongrass Tea, Lakadong Turmeric, Eri Silk Muffler, Bamboo Earring, Local Honey, Jadoh Spice Mix (placeholder master &mdash; final list from Product master)</td><td>Yes</td><td>No</td><td>Header dropdown that names the block; selecting blank leaves an unnamed block. One product block per product.</td><td>Product required before the block counts toward Summary. Error: &ldquo;Select a product.&rdquo;</td></tr>
+          <tr><td>Intervention Flagged (chip)</td><td>Status chip (read-only)</td><td>&ldquo;&#8635; Intervention Flagged&rdquo; (hidden until flagged)</td><td>No</td><td>Yes</td><td><em>Auto-shown</em> when the Intervention Need toggle is ON for this product.</td><td>&mdash;</td></tr>
+          <tr><td>Remove</td><td>Button</td><td>&mdash;</td><td>Yes</td><td>No</td><td>Removes the product block after confirmation &ldquo;Remove this product's customer analysis?&rdquo;; clears its picker state.</td><td>&mdash;</td></tr>
+        </tbody>
+      </table>
+
+      <h4 style="font-size:14px;color:var(--teal);margin-bottom:10px;">I. Demographic Segmentation</h4>
+      <table class="field-table">
+        <thead><tr><th>Field Name</th><th>Field Type</th><th>Input Values</th><th>Input</th><th>Autofill</th><th>Logic</th><th>Validation &amp; Error Messages</th></tr></thead>
+        <tbody>
+          <tr><td>Age Group</td><td>Multi-select chip picker</td><td>Below 18; 18&ndash;25; 26&ndash;35; 36&ndash;45; 46&ndash;55; 56&ndash;65; Above 65</td><td>Yes</td><td>No</td><td>Pick one or more; each value shown as a removable chip.</td><td>No duplicate values; at least one demographic field recommended.</td></tr>
+          <tr><td>Gender</td><td>Multi-select chip picker</td><td>Female; Male; Non-binary; Prefer not to say</td><td>Yes</td><td>No</td><td>Pick one or more.</td><td>No duplicate values.</td></tr>
+          <tr><td>Family Size</td><td>Multi-select chip picker</td><td>1 (Single); 2 (Couple); 3&ndash;4 (Small Family); 5&ndash;6 (Mid Family); 7+ (Joint Family)</td><td>Yes</td><td>No</td><td>Pick one or more.</td><td>No duplicate values.</td></tr>
+          <tr><td>Occupation</td><td>Multi-select chip picker</td><td>Salaried; Self-employed; Farmer; Student; Homemaker; Retired; Daily Wage; Government Employee</td><td>Yes</td><td>No</td><td>Pick one or more.</td><td>No duplicate values.</td></tr>
+          <tr><td>Income Bracket</td><td>Multi-select chip picker</td><td>Below &#8377;15,000; &#8377;15,000&ndash;&#8377;30,000; &#8377;30,000&ndash;&#8377;60,000; &#8377;60,000&ndash;&#8377;1,00,000; Above &#8377;1,00,000</td><td>Yes</td><td>No</td><td>Pick one or more; Indian number formatting on bands.</td><td>No duplicate values.</td></tr>
+          <tr><td>Education Level</td><td>Multi-select chip picker</td><td>No formal education; Primary; Secondary; Higher Secondary; Diploma; Graduate; Postgraduate</td><td>Yes</td><td>No</td><td>Pick one or more.</td><td>No duplicate values.</td></tr>
+          <tr><td>Notes</td><td>Text area (multi-line)</td><td>Free text &mdash; &ldquo;Additional observations on demographic segmentation&rdquo;</td><td>Yes</td><td>No</td><td>Optional qualitative notes.</td><td>&mdash;</td></tr>
+        </tbody>
+      </table>
+
+      <h4 style="font-size:14px;color:var(--teal);margin-bottom:10px;">II. Geographic</h4>
+      <table class="field-table">
+        <thead><tr><th>Field Name</th><th>Field Type</th><th>Input Values</th><th>Input</th><th>Autofill</th><th>Logic</th><th>Validation &amp; Error Messages</th></tr></thead>
+        <tbody>
+          <tr><td>Primary Geography</td><td>Multi-select chip picker</td><td>Local (Block); District; State; Inter-state; National; International</td><td>Yes</td><td>No</td><td>Feeds the Existing &ldquo;Geography&rdquo; column in the Summary table (first two picks shown).</td><td>No duplicate values; at least one value recommended.</td></tr>
+          <tr><td>Key Cities</td><td>Multi-select chip picker</td><td>Shillong; Tura; Jowai; Nongpoh; Williamnagar; Baghmara; Guwahati; Kolkata; Delhi; Mumbai</td><td>Yes</td><td>No</td><td>Pick one or more cities.</td><td>No duplicate values.</td></tr>
+          <tr><td>Location Type</td><td>Multi-select chip picker</td><td>Rural; Semi-urban; Urban; Tier-1 City; Tier-2 City; Tier-3 City</td><td>Yes</td><td>No</td><td>Pick one or more.</td><td>No duplicate values.</td></tr>
+          <tr><td>Notes</td><td>Text area</td><td>Free text &mdash; &ldquo;Additional observations on geography&rdquo;</td><td>Yes</td><td>No</td><td>Optional.</td><td>&mdash;</td></tr>
+        </tbody>
+      </table>
+
+      <h4 style="font-size:14px;color:var(--teal);margin-bottom:10px;">III. Psychographic</h4>
+      <table class="field-table">
+        <thead><tr><th>Field Name</th><th>Field Type</th><th>Input Values</th><th>Input</th><th>Autofill</th><th>Logic</th><th>Validation &amp; Error Messages</th></tr></thead>
+        <tbody>
+          <tr><td>Values &amp; Lifestyle</td><td>Multi-select chip picker</td><td>Health-conscious; Eco-conscious; Traditional; Modern; Premium / Luxury; Budget-conscious; Convenience-driven; Adventurous</td><td>Yes</td><td>No</td><td>Pick one or more.</td><td>No duplicate values.</td></tr>
+          <tr><td>Buying Motivation</td><td>Multi-select chip picker</td><td>Quality; Price; Local Origin; Brand; Health Benefits; Convenience; Social Status; Recommendation</td><td>Yes</td><td>No</td><td>Pick one or more.</td><td>No duplicate values.</td></tr>
+          <tr><td>Notes</td><td>Text area</td><td>Free text &mdash; &ldquo;Additional observations on psychographics&rdquo;</td><td>Yes</td><td>No</td><td>Optional.</td><td>&mdash;</td></tr>
+        </tbody>
+      </table>
+
+      <h4 style="font-size:14px;color:var(--teal);margin-bottom:10px;">IV. Behavioural</h4>
+      <table class="field-table">
+        <thead><tr><th>Field Name</th><th>Field Type</th><th>Input Values</th><th>Input</th><th>Autofill</th><th>Logic</th><th>Validation &amp; Error Messages</th></tr></thead>
+        <tbody>
+          <tr><td>Purchase Behaviour</td><td>Multi-select chip picker</td><td>First-time Buyer; Repeat Purchase; Bulk Buyer; Occasional; Seasonal; Impulse</td><td>Yes</td><td>No</td><td>Pick one or more.</td><td>No duplicate values.</td></tr>
+          <tr><td>Usage Rate</td><td>Multi-select chip picker</td><td>Heavy User; Moderate User; Light User; Non-user</td><td>Yes</td><td>No</td><td>Pick one or more.</td><td>No duplicate values.</td></tr>
+          <tr><td>Loyalty Status</td><td>Multi-select chip picker</td><td>Hard-core Loyal; Soft-core Loyal; Shifting Loyal; Switcher</td><td>Yes</td><td>No</td><td>Pick one or more.</td><td>No duplicate values.</td></tr>
+          <tr><td>Occasion</td><td>Multi-select chip picker</td><td>Daily Use; Festive; Gifting; Special Occasion; Travel; Health Need</td><td>Yes</td><td>No</td><td>Pick one or more.</td><td>No duplicate values.</td></tr>
+          <tr><td>Notes</td><td>Text area</td><td>Free text &mdash; &ldquo;Additional observations on customer behaviour&rdquo;</td><td>Yes</td><td>No</td><td>Optional.</td><td>&mdash;</td></tr>
+        </tbody>
+      </table>
+
+      <h4 style="font-size:14px;color:var(--teal);margin-bottom:10px;">V. Customer Segmentation</h4>
+      <table class="field-table">
+        <thead><tr><th>Field Name</th><th>Field Type</th><th>Input Values</th><th>Input</th><th>Autofill</th><th>Logic</th><th>Validation &amp; Error Messages</th></tr></thead>
+        <tbody>
+          <tr><td>Primary Customers</td><td>Multi-select chip picker</td><td>Households; Restaurants &amp; Cafes; Hotels; Retail Stores; Wholesalers; Tourists; Online Buyers; Institutional Buyers; Health-conscious Consumers</td><td>Yes</td><td>No</td><td>Feeds the Existing &ldquo;Customers&rdquo; column in the Summary table (first two picks shown).</td><td>At least one primary customer recommended; no duplicates.</td></tr>
+          <tr><td>Secondary Customers</td><td>Multi-select chip picker</td><td>Same master as Primary Customers (Households &hellip; Health-conscious Consumers)</td><td>Yes</td><td>No</td><td>Optional broader/secondary base.</td><td>No duplicate values.</td></tr>
+        </tbody>
+      </table>
+
+      <h4 style="font-size:14px;color:var(--teal);margin-bottom:10px;">VI. Target Market Definition</h4>
+      <table class="field-table">
+        <thead><tr><th>Field Name</th><th>Field Type</th><th>Input Values</th><th>Input</th><th>Autofill</th><th>Logic</th><th>Validation &amp; Error Messages</th></tr></thead>
+        <tbody>
+          <tr><td>Primary Target Segment</td><td>Select (single)</td><td>Not applicable; Urban health-conscious women, 26&ndash;45; Tourists &amp; diaspora; Institutional / HoReCa buyers; Export / B2B buyers; Gift buyers (festive); Local daily consumers; Pan-India e-commerce buyers</td><td>Yes</td><td>No</td><td>Derived from the segmentation above; counts toward &ldquo;Target Segment Set&rdquo; aggregate when not &ldquo;Not applicable&rdquo;.</td><td>Recommended once segmentation done.</td></tr>
+          <tr><td>Secondary Target Segment</td><td>Select (single)</td><td>Same master as Primary Target Segment</td><td>Yes</td><td>No</td><td>Optional second segment.</td><td>&mdash;</td></tr>
+          <tr><td>Market Readiness</td><td>Select (single)</td><td>Not applicable; High &mdash; immediate market exists; Medium &mdash; needs awareness building; Low &mdash; market development needed</td><td>Yes</td><td>No</td><td>Drives the Existing Market Readiness badge and the High/Medium/Low/Not Set aggregates.</td><td>&mdash;</td></tr>
+          <tr><td>Target Customer Persona</td><td>Text area</td><td>Free text &mdash; &ldquo;Describe the typical customer in 3&ndash;4 sentences&hellip;&rdquo;</td><td>Yes</td><td>No</td><td>Qualitative persona narrative.</td><td>&mdash;</td></tr>
+        </tbody>
+      </table>
+
+      <h4 style="font-size:14px;color:var(--teal);margin-bottom:10px;">Intervention Need (Existing only)</h4>
+      <table class="field-table">
+        <thead><tr><th>Field Name</th><th>Field Type</th><th>Input Values</th><th>Input</th><th>Autofill</th><th>Logic</th><th>Validation &amp; Error Messages</th></tr></thead>
+        <tbody>
+          <tr><td>Upgrade Target Customers?</td><td>Toggle (on/off)</td><td>Off (default) / On</td><td>Yes</td><td>No</td><td>When ON: flag note changes to &ldquo;&#8635; Flagged &rarr; Aspirational profile in Required tab&rdquo;, the &ldquo;Intervention Flagged&rdquo; header chip appears, the Justification box is revealed, and the product is counted as &ldquo;Upgrade Needed&rdquo; in Summary.</td><td>&mdash;</td></tr>
+          <tr><td>Justification</td><td>Text area (conditional)</td><td>Free text &mdash; &ldquo;Reason for upgrading the target customer profile for this product&hellip;&rdquo;</td><td>Yes</td><td>No</td><td><em>Shown only when the toggle is ON.</em></td><td>Recommended when flagged: explain why an upgrade is needed.</td></tr>
+        </tbody>
+      </table>
+      <div class="callout">A flagged Existing product signals that a matching aspirational profile should be created on the Required tab. The flag lights the &ldquo;&#8635; Upgrade&rdquo; badge and the &rarr; arrow in the Summary comparison row.</div>
+    </div>
+  </div>
+
+  <!-- ============ TAB 2: REQUIRED ============ -->
+  <div class="accordion">
+    <div class="accordion-trigger" onclick="this.parentElement.classList.toggle('open')">Tab 2 &mdash; Required (aspirational target market + implementation)</div>
+    <div class="accordion-body">
+      <div class="section-desc" style="margin-top:0;">Caption on screen: &ldquo;Define the aspirational target market for each product. Track Implementation Status as interventions move through the pipeline.&rdquo; A Required product block uses the <strong>same product header and the same six sub-sections (I&ndash;VI) as Existing</strong>, but the closing block is <strong>Implementation Status</strong> instead of Intervention Need. Required rows are matched to Existing rows by product name in the Summary comparison; unmatched Required products appear as &ldquo;+ New Target Only&rdquo;.</div>
+
+      <h4 style="font-size:14px;color:var(--teal);margin-bottom:10px;">Segmentation I&ndash;VI (aspirational)</h4>
+      <div class="callout">Sub-sections I&ndash;VI are identical in structure to the Existing tab (Demographic, Geographic, Psychographic, Behavioural, Customer Segmentation, Target Market Definition), but here they describe the <em>aspirational future</em> customer rather than the current base. The same masters and validations apply. See the Existing tab tables above for field-level detail.</div>
+
+      <h4 style="font-size:14px;color:var(--teal);margin-bottom:10px;">Product Block Header (Required)</h4>
+      <table class="field-table">
+        <thead><tr><th>Field Name</th><th>Field Type</th><th>Input Values</th><th>Input</th><th>Autofill</th><th>Logic</th><th>Validation &amp; Error Messages</th></tr></thead>
+        <tbody>
+          <tr><td>Product</td><td>Select (Link to Product Master)</td><td>Same product master as Existing</td><td>Yes</td><td>No</td><td>If the product name matches an Existing block, the Summary pairs them in one comparison row; otherwise the row is tagged &ldquo;+ New Target Only&rdquo;.</td><td>Product required. Error: &ldquo;Select a product.&rdquo;</td></tr>
+          <tr><td>Status (chip)</td><td>Status chip (read-only)</td><td>Pending (default) / In Progress / Completed / Not Feasible</td><td>No</td><td>Yes</td><td><em>Mirrors the Implementation Status select below;</em> colour-coded chip in the product header.</td><td>&mdash;</td></tr>
+        </tbody>
+      </table>
+
+      <h4 style="font-size:14px;color:var(--teal);margin-bottom:10px;">Implementation Status (Required only)</h4>
+      <table class="field-table">
+        <thead><tr><th>Field Name</th><th>Field Type</th><th>Input Values</th><th>Input</th><th>Autofill</th><th>Logic</th><th>Validation &amp; Error Messages</th></tr></thead>
+        <tbody>
+          <tr><td>Status</td><td>Select (single)</td><td>Pending; In Progress; Completed; Not Feasible</td><td>Yes</td><td>No</td><td>On change, updates the header status chip colour and the Implementation Status aggregates (Completed/In Progress/Pending/Not Feasible) and the Summary &ldquo;Impl. Status&rdquo; badge.</td><td>&mdash;</td></tr>
+          <tr><td>Notes</td><td>Text area</td><td>Free text &mdash; &ldquo;Implementation notes, blockers, next steps&hellip;&rdquo;</td><td>Yes</td><td>No</td><td>Optional progress log.</td><td>&mdash;</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ============ TAB 3: SUMMARY ============ -->
+  <div class="accordion">
+    <div class="accordion-trigger" onclick="this.parentElement.classList.toggle('open')">Tab 3 &mdash; Summary (auto-calculated)</div>
+    <div class="accordion-body">
+      <div class="section-desc" style="margin-top:0;">Entirely read-only and auto-populated from the Existing and Required tabs. Opens by default on load. Three blocks: a product-wise comparison table, four aggregate cards, and four intervention-flag tiles. <em>All values are calculated; none are entered here.</em></div>
+
+      <h4 style="font-size:14px;color:var(--teal);margin-bottom:10px;">&#9312; Product-wise Customer Overview (calculated table)</h4>
+      <table class="field-table">
+        <thead><tr><th>Column</th><th>Field Type</th><th>Source / Logic</th><th>Notes</th></tr></thead>
+        <tbody>
+          <tr><td>Product</td><td>Text + flag badge</td><td>Product name; badge shows &ldquo;&#8635; Upgrade&rdquo; if Existing flagged, or &ldquo;+ New Target Only&rdquo; if Required has no Existing match.</td><td>One row per product (Existing-led; unmatched Required appended).</td></tr>
+          <tr><td>Existing &mdash; Geography</td><td><em>Calculated</em></td><td>First two picks of Existing Primary Geography.</td><td>Peach (Existing) background.</td></tr>
+          <tr><td>Existing &mdash; Customers</td><td><em>Calculated</em></td><td>First two picks of Existing Primary Customers.</td><td>Peach background.</td></tr>
+          <tr><td>Existing &mdash; Market Readiness</td><td><em>Calculated</em> badge</td><td>Existing Market Readiness (High/Medium/Low label).</td><td>Green/amber/red badge.</td></tr>
+          <tr><td>Required &mdash; Geography</td><td><em>Calculated</em></td><td>First two picks of Required Primary Geography.</td><td>Mint (Required) background; &ldquo;Not set&rdquo; if blank.</td></tr>
+          <tr><td>Required &mdash; Target Segment</td><td><em>Calculated</em></td><td>Required Primary Target Segment (excludes &ldquo;Not applicable&rdquo;).</td><td>Mint background.</td></tr>
+          <tr><td>Required &mdash; Market Readiness</td><td><em>Calculated</em> badge</td><td>Required Market Readiness label.</td><td>Mint background.</td></tr>
+          <tr><td>Impl. Status</td><td><em>Calculated</em> badge</td><td>Required Implementation Status (Pending/In Progress/Completed/Not Feasible).</td><td>Colour-coded.</td></tr>
+        </tbody>
+      </table>
+
+      <h4 style="font-size:14px;color:var(--teal);margin-bottom:10px;">&#9313; Aggregate Cards (calculated)</h4>
+      <table class="field-table">
+        <thead><tr><th>Card</th><th>Metric</th><th>Source / Logic</th></tr></thead>
+        <tbody>
+          <tr><td>Existing</td><td>Products Analysed; Intervention Flagged; Not Flagged</td><td><em>Counts of Existing product blocks; flagged = toggle ON.</em></td></tr>
+          <tr><td>Market</td><td>High / Medium / Low Market Readiness; Not Set</td><td><em>Counts of Existing products by their Market Readiness band.</em></td></tr>
+          <tr><td>Interventions</td><td>Required Profiles Added; Target Segment Set; Persona Written</td><td><em>Count of Required blocks; with a target segment set; with a persona text filled.</em></td></tr>
+          <tr><td>Implementation Status</td><td>Completed; In Progress; Pending; Not Feasible</td><td><em>Counts of Required products by Implementation Status.</em></td></tr>
+        </tbody>
+      </table>
+
+      <h4 style="font-size:14px;color:var(--teal);margin-bottom:10px;">&#9314; Intervention Flag Tiles (calculated)</h4>
+      <table class="field-table">
+        <thead><tr><th>Tile</th><th>Source / Logic</th></tr></thead>
+        <tbody>
+          <tr><td>Products Analysed</td><td><em>Total Existing product blocks.</em></td></tr>
+          <tr><td>Upgrade Needed</td><td><em>Existing products with the Intervention toggle ON.</em></td></tr>
+          <tr><td>High Market Readiness</td><td><em>Existing products with High readiness.</em></td></tr>
+          <tr><td>New Target Profiles</td><td><em>Total Required product blocks.</em></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ============ TAB 4: RESOURCES ============ -->
+  <div class="accordion">
+    <div class="accordion-trigger" onclick="this.parentElement.classList.toggle('open')">Tab 4 &mdash; Resources (reference materials)</div>
+    <div class="accordion-body">
+      <div class="section-desc" style="margin-top:0;">An add-row table of supporting evidence used to build the customer analysis. Each row has Resource Title, Category, Type, Notes, a File upload, and a delete control.</div>
+      <table class="field-table">
+        <thead><tr><th>Field Name</th><th>Field Type</th><th>Input Values</th><th>Input</th><th>Autofill</th><th>Logic</th><th>Validation &amp; Error Messages</th></tr></thead>
+        <tbody>
+          <tr><td>Resource Title</td><td>Text</td><td>Free text</td><td>Yes</td><td>No</td><td>Name of the reference.</td><td>Recommended.</td></tr>
+          <tr><td>Category</td><td>Select</td><td>Consumer Survey Data; Market Research Report; Customer Interview Transcript; Competitor Customer Profile; Census / Demographics Data; Platform Analytics; Other</td><td>Yes</td><td>No</td><td>Classifies the source.</td><td>&mdash;</td></tr>
+          <tr><td>Type</td><td>Select</td><td>Report / Study; Transcript; Reference; Template; Data</td><td>Yes</td><td>No</td><td>Format of the file.</td><td>&mdash;</td></tr>
+          <tr><td>Notes</td><td>Text</td><td>Free text</td><td>Yes</td><td>No</td><td>Optional context.</td><td>&mdash;</td></tr>
+          <tr><td>File</td><td>Attach (Upload button)</td><td>Uploaded document</td><td>Yes</td><td>No</td><td>Attach the source file.</td><td>&mdash;</td></tr>
+          <tr><td>(Delete)</td><td>Button</td><td>&mdash;</td><td>Yes</td><td>No</td><td>Removes the row; &ldquo;+ Add Resource&rdquo; appends a new blank row.</td><td>&mdash;</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ============ TAB 5: TASK LOG ============ -->
+  <div class="accordion">
+    <div class="accordion-trigger" onclick="this.parentElement.classList.toggle('open')">Tab 5 &mdash; Task Log (activity log)</div>
+    <div class="accordion-body">
+      <div class="section-desc" style="margin-top:0;">A numbered, dated log of customer-analysis activities. Header shows a live entry count. Each &ldquo;+ Add Entry&rdquo; appends an auto-numbered row; deleting a row re-numbers the rest.</div>
+      <table class="field-table">
+        <thead><tr><th>Field Name</th><th>Field Type</th><th>Input Values</th><th>Input</th><th>Autofill</th><th>Logic</th><th>Validation &amp; Error Messages</th></tr></thead>
+        <tbody>
+          <tr><td>No.</td><td>Auto number</td><td>01, 02, &hellip; (zero-padded)</td><td>No</td><td>Yes</td><td><em>Auto-sequenced; re-numbers on delete.</em></td><td>&mdash;</td></tr>
+          <tr><td>Date</td><td>Date</td><td>Calendar picker</td><td>Yes</td><td>No</td><td>Date the activity was carried out.</td><td>&mdash;</td></tr>
+          <tr><td>Task Name</td><td>Select (task master)</td><td>01 Awareness on Importance of Customer Analysis; 02 Identify Products for Customer Analysis; 03&ndash;06 Map Existing Customer Base (Demographic / Geographic / Psychographic / Behavioural); 07 Define Primary Customer Segmentation; 08 Define Secondary Customer Segmentation; 09 Define Primary Target Segment (Existing); 10 Assess Market Readiness (Existing); 11 Write Customer Persona (Existing); 12 Identify Gaps &mdash; Flag for Intervention; 13 Define Aspirational Target Segment (Required); 14 Set Market Readiness (Required); 15 Write Aspirational Customer Persona; 16 Link to Market Research Module; 17 Link to Market Linkage Module; 18 Review and Update Status in Module; If other, specify in comments</td><td>Yes</td><td>No</td><td>Fixed task master driving the log.</td><td>Select a task; use &ldquo;If other&rdquo; for ad-hoc activities.</td></tr>
+          <tr><td>Notes / Outcome</td><td>Text</td><td>Free text</td><td>Yes</td><td>No</td><td>Outcome of the activity.</td><td>&mdash;</td></tr>
+          <tr><td>(Delete)</td><td>Button</td><td>&mdash;</td><td>Yes</td><td>No</td><td>Removes the row and re-sequences numbering.</td><td>&mdash;</td></tr>
+        </tbody>
+      </table>
+      <div class="callout">Cross-module links: tasks 16 and 17 connect this analysis to the Market Research and Market Linkage modules respectively, keeping the customer definition consistent across the Market framework.</div>
+    </div>
+  </div>
+
+  <div class="callout callout-danger">Key validations (whole form): (1) Each product block requires a Product selection before it counts toward the Summary &mdash; &ldquo;Select a product.&rdquo; (2) Multi-select chip pickers reject duplicate values within the same field. (3) When the Existing Intervention toggle is ON, a Justification is expected and a matching aspirational profile should exist on the Required tab. (4) Income brackets follow Indian number formatting (&#8377;1,00,000 not &#8377;100,000). (5) The Summary tab and all header status/flag chips are calculated &mdash; never edited directly; they recompute whenever Existing/Required data changes. (6) Required products are matched to Existing by exact product name; an unmatched Required product is surfaced as &ldquo;+ New Target Only&rdquo; rather than silently dropped.</div>
+
+  <div class="review-panel" data-section="m-cust-analysis">
+    <div class="review-strip"><span style="font-size:12px;color:var(--ink-soft);font-weight:500;">Section Review:</span>
+      <button class="review-status-btn" onclick="setReview('m-cust-analysis','draft',this)">Draft</button>
+      <button class="review-status-btn" onclick="setReview('m-cust-analysis','review',this)">In Review</button>
+      <button class="review-status-btn" onclick="setReview('m-cust-analysis','changes',this)">Needs Changes</button>
+      <button class="review-status-btn" onclick="setReview('m-cust-analysis','approved',this)">Approved</button>
+      <button style="margin-left:auto;background:none;border:none;font-size:12px;color:var(--sea);cursor:pointer;font-family:var(--font);text-decoration:underline;" onclick="copyLink('m-cust-analysis')">Copy Link</button></div>
+    <div class="review-comments"><div class="comment-list" id="comments-m-cust-analysis"></div>
+      <div class="comment-input-row"><input type="text" placeholder="Your name" style="max-width:120px" id="name-m-cust-analysis"><textarea rows="1" placeholder="Add a comment..." id="text-m-cust-analysis"></textarea><button class="comment-add-btn" onclick="addComment('m-cust-analysis')">Add</button></div></div>
+  </div>
+</div>

@@ -1,0 +1,192 @@
+<div class="brd-section" id="m-digi-lit">
+  <div class="section-header"><span class="section-id">PR-SK-001</span><h2 class="section-title">Digital Literacy</h2></div>
+  <div class="section-desc">Part of the Skilling (Upskilling) module. It captures the entrepreneur's current digital footprint &mdash; device/internet access plus a star-rated proficiency assessment across nine platform skills &mdash; flags where training is needed, then carries those flags into a Required tab where target skill levels and implementation status are tracked through delivery, with the Summary rolling up the existing-vs-target skill change and intervention progress.</div>
+  <div class="callout callout-terra"><strong>Entrepreneur-scoped, one record per entrepreneur.</strong> The header chip is auto-fetched from the Enterprenur Profile (Entrepreneur is a unique Link; District &amp; Block are hidden fetched fields). Module is fixed to <em>Upskilling</em> and Applicable To is fixed to <em>Enterpreneur</em> (both read-only). The Existing and Required skill grids are backed by the <em>Digital Literacy Entry</em> child table (phase = Existing / Required); flagging a row for intervention in the Existing tab auto-bridges a matching row into the Required tab.</div>
+
+  <h3 style="font-size:16px;color:var(--teal);margin:18px 0 10px;">On-Screen UI Structure</h3>
+  <div class="card"><div style="font-size:13px;line-height:1.9;color:var(--ink)">A teal title bar reads <em>Digital Literacy</em> with crumb <em>PRIME Rural &middot; Capacity Building</em>. Below it sits a horizontal <strong>tab rail</strong> &mdash; <em>Summary &middot; Existing &middot; Required &middot; Resources &middot; Task Log &middot; Log Book</em> &mdash; the active tab highlighted teal. An <strong>entrepreneur chip</strong> (avatar + name, auto-fetched from profile) sits above every tab body.<br><br>The <strong>Existing</strong> tab has two Roman-numbered sections: <em>I&nbsp;Access &amp; Devices</em> (a checkbox group &mdash; Smartphone, Laptop/Computer, Internet) and <em>II&nbsp;Skill Assessment</em>, a special <strong>skills grid</strong> with one row per platform skill. Each grid row carries a <strong>5-star proficiency rating</strong> widget (click to set, &times; to clear), an <strong>Intervention Required?</strong> toggle, and a Justification text input. A 5-cell <strong>legend</strong> above the grid maps stars to proficiency labels. Below the grid an <strong>average strip</strong> (teal gradient) shows Skills Rated, Average Skill Level and an average-stars readout; a teal <strong>total bar</strong> repeats the totals and notes the auto-fetch to the Required tab.<br><br>The <strong>Required</strong> tab mirrors this: <em>I&nbsp;Access &amp; Device Needs</em> (three device cards &mdash; Smartphone, Laptop/Computer, Internet &mdash; each with a <em>Needed</em> checkbox + a status dropdown) and <em>II&nbsp;Target Skill Assessment</em>, the same skills grid but with a <strong>Target Skill Level</strong> star rating, an <strong>Implementation Status</strong> dropdown and a Learnings/Notes input. Rows bridged from Existing arrive pre-populated with a <span class="bridged-pill">&#8635; Bridged</span> pill and a platform locked read-only. A status-overview total bar tallies Pending / In Progress / Completed.<br><br>The <strong>Summary</strong> tab is fully read-only: a skill-wise overview table (Existing Level &middot; Intervention Flagged &middot; Target Level &middot; Skill Change &middot; Implementation Status), four aggregate cards (Existing / Required / Skill Change / Implementation Status) and a four-tile intervention-flags strip. <strong>Resources</strong> is a tile list of training guides; <strong>Task Log</strong> is a fixed activity checklist; <strong>Log Book</strong> is an add-row table of training/visit entries.<br><br><strong>Calculated fields</strong> (Skills Rated, Average / Target Average Skill Level, average-stars, all Summary counts &amp; Skill Change) render <em>italic on cream-deep background</em>, are never editable, and carry a formula tooltip (Rule 1). The entrepreneur chip, District and Block are <strong>fetched</strong> and read-only with a source note (Rule 2).</div></div>
+  <div class="flow-container" style="margin-top:12px"><div class="flow-step"><div class="flow-box">Summary</div></div><div class="flow-arrow">&rarr;</div><div class="flow-step"><div class="flow-box">Existing</div></div><div class="flow-arrow">&rarr;</div><div class="flow-step"><div class="flow-box">Required</div></div><div class="flow-arrow">&rarr;</div><div class="flow-step"><div class="flow-box">Resources</div></div><div class="flow-arrow">&rarr;</div><div class="flow-step"><div class="flow-box">Task Log</div></div><div class="flow-arrow">&rarr;</div><div class="flow-step"><div class="flow-box">Log Book</div></div></div>
+
+  <h3 style="font-size:16px;color:var(--teal);margin:18px 0 10px;">User Journey</h3>
+  <div class="card"><div class="flow-container">
+    <div class="flow-step"><div class="flow-box">Open Digital Literacy</div><div class="flow-label">entrepreneur auto-fetched from profile</div></div>
+    <div class="flow-arrow">&rarr;</div>
+    <div class="flow-step"><div class="flow-box">Tick current access</div><div class="flow-label">Existing &middot; smartphone / laptop / internet</div></div>
+    <div class="flow-arrow">&rarr;</div>
+    <div class="flow-step"><div class="flow-box">Rate each platform skill</div><div class="flow-label">5-star proficiency per row; flag gaps</div></div>
+    <div class="flow-arrow">&rarr;</div>
+    <div class="flow-step"><div class="flow-box">Flagged rows bridge to Required</div><div class="flow-label">set target level + needed devices</div></div>
+    <div class="flow-arrow">&rarr;</div>
+    <div class="flow-step"><div class="flow-box">Deliver training &amp; update status</div><div class="flow-label">Pending &rarr; In Progress &rarr; Completed; Log Book</div></div>
+    <div class="flow-arrow">&rarr;</div>
+    <div class="flow-step"><div class="flow-box">Review Summary</div><div class="flow-label">skill change &amp; intervention roll-up</div></div>
+  </div></div>
+
+  <!-- ============ TAB 1: SUMMARY ============ -->
+  <div class="accordion open"><div class="accordion-trigger" onclick="this.parentElement.classList.toggle('open')">Tab 1: Summary <span class="acc-arrow">&#9660;</span></div>
+    <div class="accordion-body">
+      <p style="font-size:13px;color:var(--ink-soft);margin-bottom:12px;">Entirely read-only. Auto-populated from the Existing and Required tabs and recalculated on every switch back to Summary and on any change in those tabs.</p>
+
+      <h4 style="font-size:14px;color:var(--teal);margin-bottom:10px;">Skill-wise Overview Table</h4>
+      <p style="font-size:12px;color:var(--ink-soft);font-style:italic;margin-bottom:8px;">One row per platform skill. Existing columns from the Existing grid; Target / Skill Change columns (sea-shaded); Implementation Status (green-shaded).</p>
+      <table class="brd-table"><thead><tr><th>Field Name</th><th>Field Type</th><th>Input Values</th><th>Input / Autofill</th><th>Logic</th><th>Validation &amp; Error Messages</th></tr></thead>
+      <tbody>
+        <tr><td>Platform / Skill</td><td>Read-only text</td><td>E-mail / WhatsApp / Instagram / MS-Office / Calls / UPI Account / UPI QR Code Creation / Printing UPI QR Code / Operating Mobile Camera</td><td>Autofill</td><td>One row per rated skill carried from the Existing grid (and any matched Required row).</td><td>&mdash; (display only)</td></tr>
+        <tr><td>Existing Level</td><td>Read-only stars / label</td><td>&mdash;</td><td>Calculated</td><td>The Existing-tab star rating for that skill (1&ndash;5 &rarr; No knowledge &hellip; Proficient); &ldquo;&mdash;&rdquo; if unrated.</td><td>&mdash;</td></tr>
+        <tr><td>Intervention Flagged</td><td>Read-only badge</td><td>Yes / No</td><td>Calculated</td><td>Reflects the Existing-tab <em>Intervention Required?</em> toggle for that skill.</td><td>&mdash;</td></tr>
+        <tr><td>Target Level <span style="color:var(--good-ink)">[shaded]</span></td><td>Read-only stars / label</td><td>&mdash;</td><td>Calculated</td><td>The Required-tab target star rating for the matched skill; &ldquo;&mdash;&rdquo; if not set.</td><td>&mdash;</td></tr>
+        <tr><td>Skill Change <span style="color:var(--good-ink)">[shaded]</span></td><td>Read-only (green / red)</td><td>Improved / Decreased / No Change / &mdash;</td><td>Calculated</td><td><em>= Target Level &minus; Existing Level</em>. &gt;&nbsp;0 &rarr; &#9650; Improved (green); &lt;&nbsp;0 &rarr; &#9660; Decreased (red); 0 &rarr; No Change; &ldquo;&mdash;&rdquo; if either level missing.</td><td>&mdash;</td></tr>
+        <tr><td>Implementation Status <span style="color:var(--good-ink)">[shaded]</span></td><td>Read-only badge</td><td>Pending / In Progress / Completed / On Hold / Not Feasible</td><td>Calculated</td><td>Mirrors the matched Required row's Implementation Status dropdown.</td><td>&mdash;</td></tr>
+      </tbody></table>
+
+      <h4 style="font-size:14px;color:var(--teal);margin:16px 0 10px;">Aggregate Cards (4)</h4>
+      <table class="brd-table"><thead><tr><th>Card / Metric</th><th>Field Type</th><th>Input Values</th><th>Input / Autofill</th><th>Logic</th><th>Validation &amp; Error Messages</th></tr></thead>
+      <tbody>
+        <tr><td>Existing &rarr; Devices Available</td><td>Read-only fraction</td><td>n / 2</td><td>Calculated</td><td>Count of ticked Existing access items (Smartphone, Laptop, Internet) &mdash; shown as &ldquo;n / 2&rdquo; per mockup.</td><td>&mdash;</td></tr>
+        <tr><td>Existing &rarr; Skills Rated</td><td>Read-only number</td><td>&mdash;</td><td>Calculated</td><td>Count of Existing grid rows with a star rating &gt; 0.</td><td>&mdash;</td></tr>
+        <tr><td>Existing &rarr; Avg Skill Level</td><td>Read-only number</td><td>&mdash;</td><td>Calculated</td><td><em>= &sum; star values &divide; Skills Rated</em> (2 decimals); &ldquo;&mdash;&rdquo; if none rated.</td><td>&mdash;</td></tr>
+        <tr><td>Existing &rarr; Interventions Flagged</td><td>Read-only number</td><td>&mdash;</td><td>Calculated</td><td>Count of Existing rows with the Intervention toggle on.</td><td>&mdash;</td></tr>
+        <tr><td>Required &rarr; Devices Needed</td><td>Read-only fraction</td><td>n / 2</td><td>Calculated</td><td>Count of ticked <em>Needed</em> device cards.</td><td>&mdash;</td></tr>
+        <tr><td>Required &rarr; Target Skills Set</td><td>Read-only number</td><td>&mdash;</td><td>Calculated</td><td>Count of Required rows with a target star rating &gt; 0.</td><td>&mdash;</td></tr>
+        <tr><td>Required &rarr; Target Avg Level</td><td>Read-only number</td><td>&mdash;</td><td>Calculated</td><td><em>= &sum; target stars &divide; Target Skills Set</em>; &ldquo;&mdash;&rdquo; if none.</td><td>&mdash;</td></tr>
+        <tr><td>Required &rarr; Bridged from Existing</td><td>Read-only number</td><td>&mdash;</td><td>Calculated</td><td>Count of Required rows that originated from an Existing intervention flag (Bridged pill).</td><td>&mdash;</td></tr>
+        <tr><td>Skill Change &rarr; Improved / Decreased / No Change</td><td>Read-only numbers</td><td>&mdash;</td><td>Calculated</td><td>Per-skill counts where Target &minus; Existing is &gt; 0 / &lt; 0 / = 0.</td><td>&mdash;</td></tr>
+        <tr><td>Skill Change &rarr; Device Gap</td><td>Read-only number (amber)</td><td>&mdash;</td><td>Calculated</td><td>Count of devices marked <em>Needed</em> in Required but not available in Existing.</td><td>&mdash;</td></tr>
+        <tr><td>Implementation Status &rarr; Completed / In Progress / Pending / Not Feasible</td><td>Read-only numbers</td><td>&mdash;</td><td>Calculated</td><td>Count of Required rows by Implementation Status value.</td><td>&mdash;</td></tr>
+      </tbody></table>
+      <div class="callout callout-teal">Footer: a four-tile <strong>Intervention Flags</strong> strip &mdash; Intervention Required (flag count), Trainings Completed (rows with status Completed), Skills Improved (positive Skill Change), and Device Gap (needed-but-unavailable devices).</div>
+    </div>
+  </div>
+
+  <!-- ============ TAB 2: EXISTING ============ -->
+  <div class="accordion"><div class="accordion-trigger" onclick="this.parentElement.classList.toggle('open')">Tab 2: Existing &mdash; Access &amp; Skill Assessment <span class="acc-arrow">&#9660;</span></div>
+    <div class="accordion-body">
+      <p style="font-size:13px;color:var(--ink-soft);margin-bottom:12px;">The working baseline tab. Captures what the entrepreneur currently has and rates their current proficiency on each platform skill. Flagging a row auto-creates a matching entry in the Required tab.</p>
+
+      <h4 style="font-size:14px;color:var(--teal);margin-bottom:10px;">Section I &mdash; Access &amp; Devices</h4>
+      <table class="brd-table"><thead><tr><th>Field Name</th><th>Field Type</th><th>Input Values</th><th>Input / Autofill</th><th>Logic</th><th>Validation &amp; Error Messages</th></tr></thead>
+      <tbody>
+        <tr><td>Which access does the entrepreneur currently have?</td><td>Checkbox group (multi-select)</td><td>Smartphone / Laptop &middot; Computer / Internet</td><td>Input</td><td>Tick all that apply. Backed by <em>Has Smartphone</em> and <em>Has Internet</em> one-time access checks; drives the Summary &ldquo;Devices Available&rdquo; aggregate and the Device Gap flag.</td><td>&mdash; (optional; none ticked = 0 available)</td></tr>
+      </tbody></table>
+
+      <h4 style="font-size:14px;color:var(--teal);margin:16px 0 10px;">Skill Proficiency Legend (5 levels)</h4>
+      <p style="font-size:12px;color:var(--ink-soft);font-style:italic;margin-bottom:8px;">The star scale shown above both skill grids. Each star step maps to a proficiency label.</p>
+      <table class="brd-table"><thead><tr><th>Stars</th><th>Proficiency Label</th><th>Numeric Value</th></tr></thead>
+      <tbody>
+        <tr><td>&#9733;&#9734;&#9734;&#9734;&#9734;</td><td>No existing knowledge</td><td>1</td></tr>
+        <tr><td>&#9733;&#9733;&#9734;&#9734;&#9734;</td><td>Beginner</td><td>2</td></tr>
+        <tr><td>&#9733;&#9733;&#9733;&#9734;&#9734;</td><td>Basic</td><td>3</td></tr>
+        <tr><td>&#9733;&#9733;&#9733;&#9733;&#9734;</td><td>Intermediate</td><td>4</td></tr>
+        <tr><td>&#9733;&#9733;&#9733;&#9733;&#9733;</td><td>Proficient</td><td>5</td></tr>
+      </tbody></table>
+      <div class="callout callout-teal">The underlying <em>Digital Literacy Entry</em> doctype stores the level as a label list &mdash; Existing Skill Level: <em>Beginner / Intermediate / Savy / No existing knowledge</em>; the UI presents it as the 5-star scale above. Required (after-intervention) level options are <em>Beginner / Intermediate / Savy / No Progress</em>.</div>
+
+      <h4 style="font-size:14px;color:var(--teal);margin:16px 0 10px;">Section II &mdash; Skill Assessment <span style="font-size:12px;color:var(--ink-soft)">(skills grid &mdash; one row per platform skill)</span></h4>
+      <p style="font-size:12px;color:var(--ink-soft);font-style:italic;margin-bottom:8px;">Nine platform skills available: E-mail, WhatsApp, Instagram, MS-Office, Calls, UPI Account, UPI QR Code Creation, Printing UPI QR Code, Operating Mobile Camera. Add a row per skill assessed.</p>
+      <table class="brd-table"><thead><tr><th>Field Name</th><th>Field Type</th><th>Input Values</th><th>Input / Autofill</th><th>Logic</th><th>Validation &amp; Error Messages</th></tr></thead>
+      <tbody>
+        <tr><td>#</td><td>Read-only sequence</td><td>&mdash;</td><td>Calculated</td><td>Auto row index; renumbered on delete.</td><td>&mdash;</td></tr>
+        <tr><td>Platform / Skill</td><td>Select</td><td>E-mail / WhatsApp / Instagram / MS-Office / Calls / UPI Account / UPI QR Code Creation / Printing UPI QR Code / Operating Mobile Camera</td><td>Input</td><td>Single platform per row; drawn from the 9-item platform master. A row counts only once a platform is chosen.</td><td>Avoid duplicate platforms across rows; unselected rows are skipped in roll-ups.</td></tr>
+        <tr><td>Existing Skill Level</td><td>5-star rating widget</td><td>1&ndash;5 stars (see legend)</td><td>Input</td><td>Click a star to set proficiency (1 = No existing knowledge &hellip; 5 = Proficient); &times; clears to 0. Feeds Skills Rated &amp; Average.</td><td>0 (unrated) excluded from the average.</td></tr>
+        <tr><td>Intervention Required?</td><td>Toggle (on/off)</td><td>On / Off</td><td>Input</td><td>Turning it on shows &ldquo;&uarr; Flagged &rarr; Required Tab&rdquo; and <strong>auto-creates a matching (bridged) row</strong> in the Required tab pre-filled with this Platform &amp; Justification. Turning it off removes that bridged row.</td><td>&mdash;</td></tr>
+        <tr><td>Justification</td><td>Text</td><td>&mdash;</td><td>Input</td><td>Reason / context (e.g. &ldquo;Training need, gap noted, equipment unavailable&rdquo;). Live-syncs into the bridged Required row's Learnings/Notes.</td><td>&mdash; (recommended when flagged)</td></tr>
+        <tr><td>Delete row</td><td>Action button</td><td>&mdash;</td><td>Input</td><td>Removes the row; also removes its bridged Required row if one exists; renumbers and recalculates.</td><td>&mdash;</td></tr>
+      </tbody></table>
+      <div class="callout callout-teal"><strong>Average strip (calculated, read-only):</strong> <em>Skills Rated</em> = count of rows with stars &gt; 0; <em>Average Skill Level</em> = &sum; stars &divide; Skills Rated (2 dp); <em>Average stars</em> = the rounded average rendered as filled/empty stars. The teal total bar repeats Skills Rated, Average Level and Interventions Flagged, and notes &ldquo;Auto-fetches to: Required Tab &rarr; Target Profile&rdquo;.</div>
+    </div>
+  </div>
+
+  <!-- ============ TAB 3: REQUIRED ============ -->
+  <div class="accordion"><div class="accordion-trigger" onclick="this.parentElement.classList.toggle('open')">Tab 3: Required &mdash; Target Skills &amp; Implementation <span class="acc-arrow">&#9660;</span></div>
+    <div class="accordion-body">
+      <p style="font-size:13px;color:var(--ink-soft);margin-bottom:12px;">Sets target skill levels and tracks implementation. Rows flagged in Existing arrive pre-populated as <span class="bridged-pill">&#8635; Bridged</span> rows (platform locked); new target rows can also be added manually.</p>
+
+      <h4 style="font-size:14px;color:var(--teal);margin-bottom:10px;">Section I &mdash; Access &amp; Device Needs <span style="font-size:12px;color:var(--ink-soft)">(three device cards)</span></h4>
+      <table class="brd-table"><thead><tr><th>Field Name</th><th>Field Type</th><th>Input Values</th><th>Input / Autofill</th><th>Logic</th><th>Validation &amp; Error Messages</th></tr></thead>
+      <tbody>
+        <tr><td>Smartphone &mdash; Needed</td><td>Checkbox</td><td>On / Off</td><td>Input</td><td>Tick if a smartphone must be provided/arranged. Compared against Existing access for the Device Gap flag.</td><td>&mdash;</td></tr>
+        <tr><td>Smartphone &mdash; Status</td><td>Select</td><td>Pending / In Progress / Completed / Not Feasible</td><td>Input</td><td>Provisioning status for this device.</td><td>&mdash;</td></tr>
+        <tr><td>Laptop / Computer &mdash; Needed</td><td>Checkbox</td><td>On / Off</td><td>Input</td><td>As above for laptop/computer.</td><td>&mdash;</td></tr>
+        <tr><td>Laptop / Computer &mdash; Status</td><td>Select</td><td>Pending / In Progress / Completed / Not Feasible</td><td>Input</td><td>Provisioning status.</td><td>&mdash;</td></tr>
+        <tr><td>Internet &mdash; Needed</td><td>Checkbox</td><td>On / Off</td><td>Input</td><td>As above for internet connectivity.</td><td>&mdash;</td></tr>
+        <tr><td>Internet &mdash; Status</td><td>Select</td><td>Pending / In Progress / Completed / Not Feasible</td><td>Input</td><td>Provisioning status.</td><td>&mdash;</td></tr>
+      </tbody></table>
+
+      <h4 style="font-size:14px;color:var(--teal);margin:16px 0 10px;">Section II &mdash; Target Skill Assessment <span style="font-size:12px;color:var(--ink-soft)">(skills grid)</span></h4>
+      <table class="brd-table"><thead><tr><th>Field Name</th><th>Field Type</th><th>Input Values</th><th>Input / Autofill</th><th>Logic</th><th>Validation &amp; Error Messages</th></tr></thead>
+      <tbody>
+        <tr><td>#</td><td>Read-only sequence</td><td>&mdash;</td><td>Calculated</td><td>Auto row index; renumbered on delete.</td><td>&mdash;</td></tr>
+        <tr><td>Platform / Skill</td><td>Select <span style="color:var(--ink-soft)">(locked when bridged)</span></td><td>Same 9-item platform master</td><td>Input / Autofill</td><td>For bridged rows the platform is sourced from the Existing row and shown read-only with a <span class="bridged-pill">&#8635; Bridged</span> pill; manual rows let the user pick.</td><td>Required for the row to count.</td></tr>
+        <tr><td>Target Skill Level</td><td>5-star rating widget</td><td>1&ndash;5 stars (see legend)</td><td>Input</td><td>Desired proficiency after intervention. Feeds Target Skills Set, Target Average and the Summary Skill Change.</td><td>0 (unset) excluded from the target average.</td></tr>
+        <tr><td>Implementation Status</td><td>Select</td><td>Pending / In Progress / Completed / On Hold / Not Feasible</td><td>Input</td><td>Delivery state of the training/intervention for this skill; drives the status totals and Summary roll-up.</td><td>Defaults to Pending.</td></tr>
+        <tr><td>Learnings / Notes</td><td>Text</td><td>&mdash;</td><td>Input</td><td>Key takeaways / training notes. For bridged rows it pre-fills from the Existing Justification and stays in sync.</td><td>&mdash;</td></tr>
+        <tr><td>Delete row</td><td>Action button</td><td>&mdash;</td><td>Input</td><td>Removes the row; if it was bridged, also clears the originating Existing intervention toggle; renumbers and recalculates.</td><td>&mdash;</td></tr>
+      </tbody></table>
+      <div class="callout callout-teal"><strong>Average / status strip (calculated, read-only):</strong> <em>Skills Set</em> = rows with target stars &gt; 0; <em>Target Average Level</em> = &sum; target stars &divide; Skills Set (2 dp); average rendered as stars. The status-overview total bar tallies Skills Set, Target Average, and Pending / In Progress / Completed counts.</div>
+      <div class="callout callout-terra"><strong>Bridge behaviour.</strong> An Existing row's Intervention toggle and its bridged Required row are two-way linked: removing the Required row clears the Existing flag, and changing the Existing platform/justification flows into the bridged row. The bridged platform select is disabled (&ldquo;Locked &mdash; sourced from Existing&rdquo;).</div>
+    </div>
+  </div>
+
+  <!-- ============ TAB 4: RESOURCES ============ -->
+  <div class="accordion"><div class="accordion-trigger" onclick="this.parentElement.classList.toggle('open')">Tab 4: Resources <span class="acc-arrow">&#9660;</span></div>
+    <div class="accordion-body">
+      <p style="font-size:13px;color:var(--ink-soft);margin-bottom:12px;">Reference materials &amp; training guides &mdash; a tile list of step-by-step how-to guides. Backed by a Drive resources HTML widget (link name + drive link).</p>
+      <table class="brd-table"><thead><tr><th>Resource Tile</th><th>Field Type</th><th>Contents</th><th>Input / Autofill</th><th>Logic</th><th>Validation &amp; Error Messages</th></tr></thead>
+      <tbody>
+        <tr><td>WhatsApp for Business &mdash; Quick Start</td><td>Resource tile + link</td><td>Business profile, catalog, broadcast lists, quick-reply templates</td><td>Autofill</td><td>&ldquo;Open guide&rdquo; opens the linked Drive resource.</td><td>&mdash;</td></tr>
+        <tr><td>UPI Onboarding (PhonePe / GPay / BHIM)</td><td>Resource tile + link</td><td>Bank linking, UPI ID creation, first payment walk-through</td><td>Autofill</td><td>As above.</td><td>&mdash;</td></tr>
+        <tr><td>Generate &amp; Print UPI QR Code</td><td>Resource tile + link</td><td>Create a static UPI QR via BHIM / merchant portal, print on A4 sticker</td><td>Autofill</td><td>As above.</td><td>&mdash;</td></tr>
+        <tr><td>Smartphone Photography Basics</td><td>Resource tile + link</td><td>Lighting, composition, clean-background product photos</td><td>Autofill</td><td>As above.</td><td>&mdash;</td></tr>
+        <tr><td>Instagram Reels &mdash; First Post</td><td>Resource tile + link</td><td>Recording, editing, captioning, posting a Reel</td><td>Autofill</td><td>As above.</td><td>&mdash;</td></tr>
+        <tr><td>Email Account Setup (Gmail)</td><td>Resource tile + link</td><td>Create Gmail, configure on phone, send first attachment</td><td>Autofill</td><td>As above.</td><td>&mdash;</td></tr>
+      </tbody></table>
+    </div>
+  </div>
+
+  <!-- ============ TAB 5: TASK LOG ============ -->
+  <div class="accordion"><div class="accordion-trigger" onclick="this.parentElement.classList.toggle('open')">Tab 5: Task Log <span class="acc-arrow">&#9660;</span></div>
+    <div class="accordion-body">
+      <p style="font-size:13px;color:var(--ink-soft);margin-bottom:12px;">A fixed activity checklist for Digital Literacy delivery, phased Existing / Required. Backed by the <em>DF Log Book Child</em> tasks table and a hidden Progress float.</p>
+      <table class="brd-table"><thead><tr><th>Field Name</th><th>Field Type</th><th>Input Values</th><th>Input / Autofill</th><th>Logic</th><th>Validation &amp; Error Messages</th></tr></thead>
+      <tbody>
+        <tr><td>No.</td><td>Read-only sequence</td><td>&mdash;</td><td>Calculated</td><td>Fixed task ordering.</td><td>&mdash;</td></tr>
+        <tr><td>Task Name</td><td>Read-only label</td><td>10 fixed tasks (see below)</td><td>Autofill</td><td>Seeded task list, not free-text.</td><td>&mdash;</td></tr>
+        <tr><td>Phase</td><td>Read-only badge</td><td>Existing / Required</td><td>Autofill</td><td>Existing: Device &amp; Internet Access Assessed; Skill Levels Rated; Intervention Needs Identified &amp; Flagged. Required: Target Skill Levels Set; WhatsApp / Social Media Training Delivered; UPI / Digital Payment Setup Done; Smartphone Photography Training Done; Email &amp; Basic Office Skills Training Done; Follow-up Assessment Completed; Skills Verified &amp; Signed Off.</td><td>&mdash;</td></tr>
+        <tr><td>Status</td><td>Select</td><td>Pending / In Progress / Completed</td><td>Input</td><td>Per-task status; rolls into the hidden Progress %.</td><td>&mdash;</td></tr>
+        <tr><td>Owner</td><td>Text / Link</td><td>&mdash;</td><td>Input</td><td>Field officer responsible.</td><td>&mdash;</td></tr>
+        <tr><td>Due Date</td><td>Date</td><td>&mdash;</td><td>Input</td><td>Target completion date.</td><td>&mdash;</td></tr>
+        <tr><td>Notes</td><td>Text</td><td>&mdash;</td><td>Input</td><td>Free-text remarks.</td><td>&mdash;</td></tr>
+      </tbody></table>
+    </div>
+  </div>
+
+  <!-- ============ TAB 6: LOG BOOK ============ -->
+  <div class="accordion"><div class="accordion-trigger" onclick="this.parentElement.classList.toggle('open')">Tab 6: Log Book <span class="acc-arrow">&#9660;</span></div>
+    <div class="accordion-body">
+      <p style="font-size:13px;color:var(--ink-soft);margin-bottom:12px;">An add-row table to log every training session, hand-holding visit, or device set-up conducted. Backed by the <em>Direct Log Book Child</em> table.</p>
+      <table class="brd-table"><thead><tr><th>Field Name</th><th>Field Type</th><th>Input Values</th><th>Input / Autofill</th><th>Logic</th><th>Validation &amp; Error Messages</th></tr></thead>
+      <tbody>
+        <tr><td>Date</td><td>Date</td><td>&mdash;</td><td>Input</td><td>Date of the activity.</td><td>&mdash;</td></tr>
+        <tr><td>Platform / Skill</td><td>Text</td><td>e.g. WhatsApp, UPI</td><td>Input</td><td>Which skill the session addressed.</td><td>&mdash;</td></tr>
+        <tr><td>Activity Type</td><td>Select</td><td>Training Session / Device Setup / Hand-holding Visit / Assessment / Follow-up / Demo</td><td>Input</td><td>Nature of the engagement.</td><td>&mdash; (select required)</td></tr>
+        <tr><td>Outcome / Notes</td><td>Text</td><td>&mdash;</td><td>Input</td><td>What was done, what changed.</td><td>&mdash;</td></tr>
+        <tr><td>Done By</td><td>Text</td><td>Field officer name</td><td>Input</td><td>Who conducted the activity.</td><td>&mdash;</td></tr>
+        <tr><td>Evidence</td><td>Attach / Upload</td><td>&mdash;</td><td>Input</td><td>Optional supporting file (photo, attendance).</td><td>&mdash;</td></tr>
+        <tr><td>Delete row</td><td>Action button</td><td>&mdash;</td><td>Input</td><td>Removes the entry.</td><td>&mdash;</td></tr>
+      </tbody></table>
+    </div>
+  </div>
+
+  <div class="callout callout-danger"><strong>Key validations (whole form):</strong> Entrepreneur is a unique Link &mdash; one Digital Literacy record per entrepreneur; District &amp; Block are fetched read-only; Module (Upskilling) and Applicable To (Enterpreneur) are read-only. In the skill grids a row counts only once a Platform / Skill is selected; a star rating of 0 (unrated) is excluded from Skills Rated and the average. Turning on an Existing row's Intervention toggle auto-bridges a Required row (platform locked, justification synced); deleting either side keeps the two in sync. Devices marked <em>Needed</em> in Required but absent in Existing surface as a Device Gap. Required Implementation Status defaults to Pending and drives the status totals. All Summary figures are read-only and recalculated on every change; numeric roll-ups use Indian number formatting.</div>
+
+  <div class="review-panel" data-section="m-digi-lit">
+    <div class="review-strip"><span style="font-size:12px;color:var(--ink-soft);font-weight:500;">Section Review:</span>
+      <button class="review-status-btn" onclick="setReview('m-digi-lit','draft',this)">Draft</button>
+      <button class="review-status-btn" onclick="setReview('m-digi-lit','review',this)">In Review</button>
+      <button class="review-status-btn" onclick="setReview('m-digi-lit','changes',this)">Needs Changes</button>
+      <button class="review-status-btn" onclick="setReview('m-digi-lit','approved',this)">Approved</button>
+      <button style="margin-left:auto;background:none;border:none;font-size:12px;color:var(--sea);cursor:pointer;font-family:var(--font);text-decoration:underline;" onclick="copyLink('m-digi-lit')">Copy Link</button></div>
+    <div class="review-comments"><div class="comment-list" id="comments-m-digi-lit"></div>
+      <div class="comment-input-row"><input type="text" placeholder="Your name" style="max-width:120px" id="name-m-digi-lit"><textarea rows="1" placeholder="Add a comment..." id="text-m-digi-lit"></textarea><button class="comment-add-btn" onclick="addComment('m-digi-lit')">Add</button></div></div>
+  </div>
+</div>

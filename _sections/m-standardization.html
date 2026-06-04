@@ -1,0 +1,186 @@
+<div class="brd-section" id="m-standardization">
+  <div class="section-header"><span class="section-id">PR-PD-004</span><h2 class="section-title">Product Standardization</h2></div>
+  <div class="section-desc">The Product Development module that documents each entrepreneur's standardisation efforts &mdash; recipe / process / packaging SOPs, hygiene, HACCP, GMP, ISO, organic and GI-tag standards &mdash; tracks whether existing SOPs are actually being followed, and bridges flagged gaps into a Required pipeline with an implementation status. It carries an entrepreneur-level Task Log and a Resources library of templates and regulatory references.</div>
+
+  <h3 style="font-size:16px;color:var(--teal);margin:18px 0 10px;">On-Screen UI Structure</h3>
+  <div class="card"><div style="font-size:13px;line-height:1.9;color:var(--ink)">A teal title bar reads <em>Product Standardization</em> with crumb <em>PRIME Rural &middot; Quality &amp; Compliance</em>. Beneath it a horizontal <strong>tab rail</strong> &mdash; <em>Summary &middot; Existing &middot; Required &middot; Resources &middot; Task Log</em> &mdash; with the active tab highlighted teal. An <strong>entrepreneur chip</strong> (avatar + &ldquo;Auto-fetched from profile&rdquo;) sits above the tab body and is the implicit parent of every record.<br><br>The <strong>Existing</strong> and <strong>Required</strong> tabs each hold a list of collapsible <strong>standardisation blocks</strong>. Each block carries a sea-green header with two inline selectors &mdash; <strong>Product</strong> (fetched from the Product master) and <strong>Standardisation Type</strong> (fetched from the Standardization Type master) &mdash; a status chip, and a Remove button; clicking the header collapses/expands the body. An Existing block's body is a <em>Standardisation Details</em> sub-section (Product Sector, Upload SOP, SOP URL, Developed By, Version, Is-being-followed Yes/No with conditional reason) plus a terracotta <strong>Intervention Need</strong> panel carrying a toggle that bridges the block into the Required tab.<br><br>A Required block's body holds the same details plus <em>Scope for Standardisation</em> and <em>Approved by Core Team</em> checkboxes, a <em>Collaborating Partner</em> field, an optional read-only <em>Justification (from Existing)</em> when bridged, and a terracotta <strong>Implementation Status</strong> panel (Status select + Notes) that drives the header chip. Bridged blocks show a <span style="font-style:italic">&ldquo;&#8635; Bridged from Existing&rdquo;</span> marker and lock their Product / Type selectors.<br><br>Special widgets: an upload-with-view control and a URL field with a validated &ldquo;Open&rdquo; button on every block; the <strong>Resources</strong> tab is a reference-materials data table (Title / Category / Type / Notes / File); the <strong>Task Log</strong> tab is an auto-numbered activity table fed by a fixed 19-step task picker. The <strong>Summary</strong> tab is entirely read-only &mdash; a Standardisation-wise overview table, four aggregate cards and a four-tile flags strip. <strong>Auto-fetched fields</strong> (Product Sector, the bridged Justification) render <em>italic on a cream-deep background</em> and are never editable, with a &ldquo;Fetched from X&rdquo; tooltip (Rule 1).</div></div>
+  <div class="flow-container" style="margin-top:12px"><div class="flow-step"><div class="flow-box">Summary</div></div><div class="flow-arrow">&rarr;</div><div class="flow-step"><div class="flow-box">Existing</div></div><div class="flow-arrow">&rarr;</div><div class="flow-step"><div class="flow-box">Required</div></div><div class="flow-arrow">&rarr;</div><div class="flow-step"><div class="flow-box">Resources</div></div><div class="flow-arrow">&rarr;</div><div class="flow-step"><div class="flow-box">Task Log</div></div></div>
+
+  <h3 style="font-size:16px;color:var(--teal);margin:18px 0 10px;">User Journey</h3>
+  <div class="card"><div class="flow-container">
+    <div class="flow-step"><div class="flow-box">Open Existing &amp; add standardisation</div><div class="flow-label">pick Product + Standardisation Type</div></div>
+    <div class="flow-arrow">&rarr;</div>
+    <div class="flow-step"><div class="flow-box">Document the SOP</div><div class="flow-label">upload / URL, Developed By, Version</div></div>
+    <div class="flow-arrow">&rarr;</div>
+    <div class="flow-step"><div class="flow-box">Record if being followed</div><div class="flow-label">Yes / No &mdash; capture reason if No</div></div>
+    <div class="flow-arrow">&rarr;</div>
+    <div class="flow-step"><div class="flow-box">Flag intervention need</div><div class="flow-label">toggle &amp; justify &rarr; bridges to Required</div></div>
+    <div class="flow-arrow">&rarr;</div>
+    <div class="flow-step"><div class="flow-box">Plan in Required tab</div><div class="flow-label">scope, core-team approval, partner</div></div>
+    <div class="flow-arrow">&rarr;</div>
+    <div class="flow-step"><div class="flow-box">Track to completion</div><div class="flow-label">set Implementation Status; log tasks</div></div>
+  </div></div>
+
+  <!-- ============ TAB 1: SUMMARY ============ -->
+  <div class="accordion open"><div class="accordion-trigger" onclick="this.parentElement.classList.toggle('open')">Tab 1: Summary <span class="acc-arrow">&#9660;</span></div>
+    <div class="accordion-body">
+      <p style="font-size:13px;color:var(--ink-soft);margin-bottom:12px;">Entirely read-only. Recalculated on every switch back to Summary. Holds three blocks &mdash; a Standardisation-wise overview table, four aggregate cards, and a four-tile Intervention Flags strip. The overview is one row per <em>existing</em> standardisation, with the last two columns pulled from its linked Required (intervention) block; manually-added Required rows are appended below.</p>
+
+      <h4 style="font-size:14px;color:var(--teal);margin-bottom:10px;">Standardisation-wise Overview Table</h4>
+      <p style="font-size:12px;color:var(--ink-soft);font-style:italic;margin-bottom:8px;">Auto-populated from the Existing and Required tabs. Intervention Type and Implementation Status columns (shaded) reflect the Required tab. Blocks with neither a Product nor a Type are skipped.</p>
+      <table class="brd-table"><thead><tr><th>Field Name</th><th>Field Type</th><th>Input Values</th><th>Input / Autofill</th><th>Logic</th><th>Validation &amp; Error Messages</th></tr></thead>
+      <tbody>
+        <tr><td>Product</td><td>Read-only text (bold)</td><td>&mdash;</td><td>Autofill</td><td>From the Existing block's Product selector; &ldquo;&mdash;&rdquo; if blank.</td><td>&mdash; (display only)</td></tr>
+        <tr><td>Sector</td><td>Read-only text</td><td>&mdash;</td><td>Autofill</td><td>Mirrors the block's auto-fetched Product Sector; &ldquo;&mdash;&rdquo; if none.</td><td>&mdash;</td></tr>
+        <tr><td>Standardisation Type</td><td>Read-only text</td><td>&mdash;</td><td>Autofill</td><td>From the block's Standardisation Type selector.</td><td>&mdash;</td></tr>
+        <tr><td>SOP</td><td>Read-only badge</td><td>&#128206; Yes / &mdash;</td><td>Calculated</td><td>&ldquo;&#128206; Yes&rdquo; (green) when an SOP file is attached on the block, else &ldquo;&mdash;&rdquo;.</td><td>&mdash;</td></tr>
+        <tr><td>Being Followed</td><td>Read-only badge</td><td>Yes / No</td><td>Autofill</td><td>Mirrors the block's Yes/No selector &mdash; Yes green, No amber.</td><td>&mdash;</td></tr>
+        <tr><td>Intervention Flagged</td><td>Read-only badge</td><td>&#9888; Yes / &mdash;</td><td>Calculated</td><td>&ldquo;&#9888; Yes&rdquo; (amber) when the Intervention toggle is on, else &ldquo;&mdash;&rdquo;.</td><td>&mdash;</td></tr>
+        <tr><td>Intervention Type <span style="color:var(--good-ink)">[shaded]</span></td><td>Read-only badge</td><td>&#8635; Intervention / + New / &mdash;</td><td>Calculated</td><td>&ldquo;&#8635; Intervention&rdquo; (amber) when flagged from Existing; &ldquo;+ New&rdquo; (blue) for a manually-added Required row; &ldquo;&mdash;&rdquo; otherwise.</td><td>&mdash;</td></tr>
+        <tr><td>Implementation Status <span style="color:var(--good-ink)">[shaded]</span></td><td>Read-only badge</td><td>Pending / In Progress / Completed / On Hold / Not Feasible</td><td>Calculated</td><td>From the linked Required block's status chip &mdash; Completed green, In Progress amber, On Hold blue, Not Feasible red, Pending neutral; &ldquo;&mdash;&rdquo; if no linked Required block.</td><td>&mdash;</td></tr>
+      </tbody></table>
+
+      <h4 style="font-size:14px;color:var(--teal);margin:16px 0 10px;">Aggregate Cards (4)</h4>
+      <table class="brd-table"><thead><tr><th>Card / Metric</th><th>Field Type</th><th>Input Values</th><th>Input / Autofill</th><th>Logic</th><th>Validation &amp; Error Messages</th></tr></thead>
+      <tbody>
+        <tr><td>Existing &rarr; Total Standardisations Logged</td><td>Read-only number</td><td>&mdash;</td><td>Calculated</td><td>Count of Existing blocks that have a Product or a Type set.</td><td>&mdash;</td></tr>
+        <tr><td>Existing &rarr; Unique Products Covered</td><td>Read-only number</td><td>&mdash;</td><td>Calculated</td><td>Distinct Products across logged Existing blocks.</td><td>&mdash;</td></tr>
+        <tr><td>Existing &rarr; SOPs Uploaded</td><td>Read-only number (green)</td><td>&mdash;</td><td>Calculated</td><td>Count of blocks with an SOP file attached.</td><td>&mdash;</td></tr>
+        <tr><td>Existing &rarr; Being Followed (Yes)</td><td>Read-only number (green)</td><td>&mdash;</td><td>Calculated</td><td>Count where the Yes/No selector = Yes.</td><td>&mdash;</td></tr>
+        <tr><td>Existing &rarr; Not Being Followed (No)</td><td>Read-only number (amber)</td><td>&mdash;</td><td>Calculated</td><td>Count where the selector = No.</td><td>&mdash;</td></tr>
+        <tr><td>Cost &rarr; Standardisations with SOP URL</td><td>Read-only number</td><td>&mdash;</td><td>Calculated</td><td>Count of blocks with a non-empty SOP URL.</td><td>&mdash;</td></tr>
+        <tr><td>Cost &rarr; Unique Standardisation Types</td><td>Read-only number</td><td>&mdash;</td><td>Calculated</td><td>Distinct Standardisation Types across logged blocks.</td><td>&mdash;</td></tr>
+        <tr><td>Cost &rarr; Most Common Type</td><td>Read-only text</td><td>&mdash;</td><td>Calculated</td><td>The Standardisation Type with the highest frequency; &ldquo;&mdash;&rdquo; if none.</td><td>&mdash;</td></tr>
+        <tr><td>Cost &rarr; Flagged for Intervention</td><td>Read-only number (amber)</td><td>&mdash;</td><td>Calculated</td><td>Count of Existing blocks with the Intervention toggle on.</td><td>&mdash;</td></tr>
+        <tr><td>Interventions &rarr; Required Standardisations (Total)</td><td>Read-only number</td><td>&mdash;</td><td>Calculated</td><td>Count of all Required-tab blocks.</td><td>&mdash;</td></tr>
+        <tr><td>Interventions &rarr; Bridged from Existing</td><td>Read-only number (amber)</td><td>&mdash;</td><td>Calculated</td><td>Required blocks carrying a bridge-source attribute (created via the toggle).</td><td>&mdash;</td></tr>
+        <tr><td>Interventions &rarr; Added Manually</td><td>Read-only number</td><td>&mdash;</td><td>Calculated</td><td>Required blocks with no bridge source.</td><td>&mdash;</td></tr>
+        <tr><td>Interventions &rarr; Scope Identified</td><td>Read-only number (green)</td><td>&mdash;</td><td>Calculated</td><td>Required blocks with the &ldquo;Scope for Standardisation&rdquo; checkbox ticked.</td><td>&mdash;</td></tr>
+        <tr><td>Interventions &rarr; Approved by Core Team</td><td>Read-only number (green)</td><td>&mdash;</td><td>Calculated</td><td>Required blocks with the &ldquo;Approved by Core Team&rdquo; checkbox ticked.</td><td>&mdash;</td></tr>
+        <tr><td>Implementation Status &rarr; Completed / In Progress / Pending / On Hold / Not Feasible</td><td>Read-only numbers</td><td>&mdash;</td><td>Calculated</td><td>Count of Required blocks by status chip value (Completed green, In Progress amber, Not Feasible red).</td><td>&mdash;</td></tr>
+      </tbody></table>
+
+      <div class="callout callout-teal">Footer: a four-tile <strong>Intervention Flags</strong> strip mirrors the aggregates &mdash; Standardisations Logged (= Total Logged), Intervention Flagged, Required (= Required total) and Completed counts.</div>
+    </div>
+  </div>
+
+  <!-- ============ TAB 2: EXISTING ============ -->
+  <div class="accordion"><div class="accordion-trigger" onclick="this.parentElement.classList.toggle('open')">Tab 2: Existing (Baseline) &mdash; per-standardisation blocks <span class="acc-arrow">&#9660;</span></div>
+    <div class="accordion-body">
+      <p style="font-size:13px;color:var(--ink-soft);margin-bottom:12px;">The baseline working tab: a list of collapsible standardisation blocks documenting existing standardisation efforts per product. The caption instructs the user to flag missing or incomplete standardisations via the per-card Intervention toggle to push them to the Required tab. <em>+ Add Standardisation</em> seeds one new collapsed-capable block; the form opens with one block already present.</p>
+
+      <h4 style="font-size:14px;color:var(--teal);margin-bottom:10px;">Block Header</h4>
+      <table class="brd-table"><thead><tr><th>Field Name</th><th>Field Type</th><th>Input Values</th><th>Input / Autofill</th><th>Logic</th><th>Validation &amp; Error Messages</th></tr></thead>
+      <tbody>
+        <tr><td>Product</td><td>Select (link to Product)</td><td>Bamboo Shoot Pickle / Lemongrass Tea / Lakadong Turmeric / Eri Silk Muffler / Bamboo Earring / Local Honey / Jadoh Spice Mix &hellip;</td><td>Input</td><td>Options fetched from the Product master. On change it auto-fetches Product Sector and cascades Product + Type to any bridged Required block.</td><td>A block needs a Product or a Type to count in Summary roll-ups.</td></tr>
+        <tr><td>Standardisation Type</td><td>Select (link to Standardization Type)</td><td>Recipe Standardisation / Process SOP / Packaging SOP / Hygiene &amp; Sanitation SOP / HACCP / GMP / ISO 22000 / ISO 9001 / BRC / Organic (NPOP) / Hand-Loom &middot; Hand-Made / GI Tag Compliance SOP / Other</td><td>Input</td><td>Options fetched from the Standardization Type master. On change it cascades the Type to any bridged Required block.</td><td>&mdash;</td></tr>
+        <tr><td>Intervention Flagged chip</td><td>Read-only chip</td><td>&#9888; Intervention Flagged</td><td>Calculated</td><td>Hidden by default; shown (terracotta) in the header when the block's Intervention toggle is on.</td><td>&mdash;</td></tr>
+        <tr><td>Remove</td><td>Action button</td><td>&mdash;</td><td>Input</td><td>Deletes the block (and its bridged Required block, if any) after confirmation.</td><td>Confirm: &ldquo;Remove this standardisation entry?&rdquo;</td></tr>
+      </tbody></table>
+
+      <h4 style="font-size:14px;color:var(--teal);margin:16px 0 10px;">Standardisation Details</h4>
+      <table class="brd-table"><thead><tr><th>Field Name</th><th>Field Type</th><th>Input Values</th><th>Input / Autofill</th><th>Logic</th><th>Validation &amp; Error Messages</th></tr></thead>
+      <tbody>
+        <tr><td>Product Sector</td><td>Read-only text</td><td>e.g. Food &amp; Beverages &mdash; Pickles / Spices &amp; Herbs / Handloom &amp; Textile</td><td>Autofill</td><td><strong>Fetched from the Product master</strong> via the product&rarr;sector map when a Product is chosen; blank until then.</td><td>&mdash; (read-only)</td></tr>
+        <tr><td>Upload SOP</td><td>File attach + View</td><td>.pdf / .doc / .docx / .jpg / .jpeg / .png</td><td>Input</td><td>Uploads a single SOP file shown as a removable pill; the View button enables once a file is attached. Presence of a file drives the Summary &ldquo;SOP&rdquo; and &ldquo;SOPs Uploaded&rdquo; metrics.</td><td>One file per block (re-upload replaces).</td></tr>
+        <tr><td>SOP URL</td><td>URL text + Open button</td><td>https://&hellip;</td><td>Input</td><td>Free URL to an externally hosted SOP. The &ldquo;Open&rdquo; button enables only when the value matches <code>^https?://</code> and opens it in a new tab.</td><td>Open disabled until a valid http(s) URL is entered.</td></tr>
+        <tr><td>Developed By</td><td>Text</td><td>e.g. Prime Rural team, partner consultant, self</td><td>Input</td><td>Who authored the SOP.</td><td>&mdash;</td></tr>
+        <tr><td>Version</td><td>Text</td><td>e.g. v1.0, 2024.03</td><td>Input</td><td>SOP version / revision tag.</td><td>&mdash;</td></tr>
+        <tr><td>Is the standardisation being followed?</td><td>Segmented Yes / No</td><td>Yes (default) / No</td><td>Input</td><td>Yes/No toggle on compliance. Choosing &ldquo;No&rdquo; reveals the conditional reason field; feeds the Summary &ldquo;Being Followed&rdquo; column and Followed/Not-Followed aggregates.</td><td>Defaults to Yes.</td></tr>
+        <tr><td>If no, give reasons <span style="color:var(--ink-soft)">[conditional]</span></td><td>Textarea</td><td>&mdash;</td><td>Input</td><td><strong>Shown only when &ldquo;No&rdquo; is selected.</strong> Captures why the SOP is not followed (training gap, equipment unavailable, unclear instructions&hellip;).</td><td>&mdash; (recommended when No)</td></tr>
+      </tbody></table>
+
+      <h4 style="font-size:14px;color:var(--teal);margin:16px 0 10px;">Intervention Need <span style="font-size:12px;color:var(--ink-soft)">(terracotta panel)</span></h4>
+      <table class="brd-table"><thead><tr><th>Field Name</th><th>Field Type</th><th>Input Values</th><th>Input / Autofill</th><th>Logic</th><th>Validation &amp; Error Messages</th></tr></thead>
+      <tbody>
+        <tr><td>New Intervention in Standardising?</td><td>Toggle (on / off)</td><td>Off (default) / On</td><td>Input</td><td>Turning <strong>on</strong> sets the flag note to &ldquo;&#8635; Flagged &rarr; Required tab&rdquo;, shows the header chip, reveals Justification, and <em>bridges a new block into the Required tab</em> (locked Product/Type copied across). Turning <strong>off</strong> removes that bridged block.</td><td>&mdash;</td></tr>
+        <tr><td>Flag note</td><td>Read-only label</td><td>Not flagged / &#8635; Flagged &rarr; Required tab</td><td>Calculated</td><td>Mirrors the toggle state; emphasised (terracotta) when flagged.</td><td>&mdash;</td></tr>
+        <tr><td>Justification <span style="color:var(--ink-soft)">[conditional]</span></td><td>Textarea</td><td>&mdash;</td><td>Input</td><td><strong>Shown only when flagged.</strong> Reason for intervention (outdated SOP, regulatory change, scale-up, certification requirement&hellip;). Live-synced into the bridged Required block's read-only &ldquo;Justification (from Existing)&rdquo; field.</td><td>&mdash; (recommended when flagged)</td></tr>
+      </tbody></table>
+    </div>
+  </div>
+
+  <!-- ============ TAB 3: REQUIRED ============ -->
+  <div class="accordion"><div class="accordion-trigger" onclick="this.parentElement.classList.toggle('open')">Tab 3: Required &mdash; intervention pipeline <span class="acc-arrow">&#9660;</span></div>
+    <div class="accordion-body">
+      <p style="font-size:13px;color:var(--ink-soft);margin-bottom:12px;">Standardisations required &mdash; either auto-populated (bridged) from the Existing tab when its Intervention toggle is on, or added manually via <em>+ Add New Standardisation</em>. When empty, an italic empty-message prompts the user to flag an Existing standardisation or add one manually. Bridged blocks show a &ldquo;&#8635; Bridged from Existing&rdquo; marker and lock their Product / Type (sourced from Existing); manual blocks keep both selectors editable.</p>
+
+      <h4 style="font-size:14px;color:var(--teal);margin-bottom:10px;">Block Header</h4>
+      <table class="brd-table"><thead><tr><th>Field Name</th><th>Field Type</th><th>Input Values</th><th>Input / Autofill</th><th>Logic</th><th>Validation &amp; Error Messages</th></tr></thead>
+      <tbody>
+        <tr><td>Product</td><td>Select (link to Product)</td><td>Same Product master list</td><td>Input / Autofill</td><td>Editable for manual blocks (auto-fetches Sector on change); <strong>locked &amp; pre-filled</strong> for bridged blocks (&ldquo;Locked &mdash; sourced from Existing tab&rdquo;).</td><td>&mdash;</td></tr>
+        <tr><td>Standardisation Type</td><td>Select (link to Standardization Type)</td><td>Same Standardisation Type master list</td><td>Input / Autofill</td><td>Editable for manual blocks; locked &amp; pre-filled for bridged blocks.</td><td>&mdash;</td></tr>
+        <tr><td>Bridged marker</td><td>Read-only chip</td><td>&#8635; Bridged from Existing</td><td>Calculated</td><td>Shown only on bridged blocks (terracotta).</td><td>&mdash;</td></tr>
+        <tr><td>Implementation chip</td><td>Read-only chip</td><td>Pending (default) / In Progress / Completed / On Hold / Not Feasible</td><td>Calculated</td><td>Reflects the Implementation Status select; colour-coded (Completed green, In Progress amber, On Hold blue, Not Feasible red, Pending neutral).</td><td>&mdash;</td></tr>
+        <tr><td>Remove</td><td>Action button</td><td>&mdash;</td><td>Input</td><td>For a bridged block, also turns the source Existing toggle off (clearing its flag) before removal.</td><td>Confirm: &ldquo;Remove this required standardisation?&rdquo;</td></tr>
+      </tbody></table>
+
+      <h4 style="font-size:14px;color:var(--teal);margin:16px 0 10px;">Standardisation Details</h4>
+      <table class="brd-table"><thead><tr><th>Field Name</th><th>Field Type</th><th>Input Values</th><th>Input / Autofill</th><th>Logic</th><th>Validation &amp; Error Messages</th></tr></thead>
+      <tbody>
+        <tr><td>Product Sector</td><td>Read-only text</td><td>&mdash;</td><td>Autofill</td><td><strong>Fetched from the Product master</strong> when a Product is set (copied across on bridge).</td><td>&mdash; (read-only)</td></tr>
+        <tr><td>Scope for Standardisation</td><td>Checkbox</td><td>Yes &mdash; scope identified</td><td>Input</td><td>Marks that scope for standardisation has been identified; feeds the &ldquo;Scope Identified&rdquo; aggregate.</td><td>&mdash;</td></tr>
+        <tr><td>Approved by Core Team</td><td>Checkbox</td><td>Yes &mdash; approved by core team</td><td>Input</td><td>Core-team sign-off; feeds the &ldquo;Approved by Core Team&rdquo; aggregate. (In the doctype this is a perm-level-1 / restricted field.)</td><td>&mdash;</td></tr>
+        <tr><td>Collaborating Partner</td><td>Text</td><td>e.g. NIFTEM, Spices Board, partner consultant, self-developed</td><td>Input</td><td>Partner / expert assisting with the standardisation.</td><td>&mdash;</td></tr>
+        <tr><td>Upload SOP</td><td>File attach + View</td><td>.pdf / .doc / .docx / .jpg / .jpeg / .png</td><td>Input</td><td>Uploads the developed / final SOP; View enables once attached.</td><td>One file per block (re-upload replaces).</td></tr>
+        <tr><td>SOP URL</td><td>URL text + Open button</td><td>https://&hellip;</td><td>Input</td><td>Externally hosted SOP link; Open enables only for valid http(s) URLs.</td><td>Open disabled until a valid URL is entered.</td></tr>
+        <tr><td>Developed By</td><td>Text</td><td>e.g. Prime Rural team, partner consultant</td><td>Input</td><td>Author of the new SOP.</td><td>&mdash;</td></tr>
+        <tr><td>Version</td><td>Text</td><td>e.g. v1.0, 2024.03</td><td>Input</td><td>SOP version tag.</td><td>&mdash;</td></tr>
+        <tr><td>Remarks</td><td>Textarea</td><td>&mdash;</td><td>Input</td><td>Implementation notes, scope clarifications, partner-discussion summary.</td><td>&mdash;</td></tr>
+        <tr><td>Justification (from Existing) <span style="color:var(--ink-soft)">[bridged only]</span></td><td>Read-only textarea</td><td>&mdash;</td><td>Autofill</td><td><strong>Shown only on bridged blocks.</strong> Live-synced from the source Existing block's Justification field; not editable here.</td><td>&mdash; (read-only)</td></tr>
+      </tbody></table>
+
+      <h4 style="font-size:14px;color:var(--teal);margin:16px 0 10px;">Implementation Status <span style="font-size:12px;color:var(--ink-soft)">(terracotta panel)</span></h4>
+      <table class="brd-table"><thead><tr><th>Field Name</th><th>Field Type</th><th>Input Values</th><th>Input / Autofill</th><th>Logic</th><th>Validation &amp; Error Messages</th></tr></thead>
+      <tbody>
+        <tr><td>Status</td><td>Select</td><td>Pending (default) / In Progress / Completed / On Hold / Not Feasible</td><td>Input</td><td>Drives the header chip colour and the Summary Implementation-Status aggregates. <em>(The underlying doctype currently exposes In-Progress / Completed / Dropped; the mockup uses the richer five-state set.)</em></td><td>&mdash;</td></tr>
+        <tr><td>Notes</td><td>Textarea</td><td>&mdash;</td><td>Input</td><td>Implementation notes, blockers, next steps.</td><td>&mdash;</td></tr>
+      </tbody></table>
+    </div>
+  </div>
+
+  <!-- ============ TAB 4: RESOURCES ============ -->
+  <div class="accordion"><div class="accordion-trigger" onclick="this.parentElement.classList.toggle('open')">Tab 4: Resources &mdash; Reference Materials <span class="acc-arrow">&#9660;</span></div>
+    <div class="accordion-body">
+      <p style="font-size:13px;color:var(--ink-soft);margin-bottom:12px;">A reference-materials data table for SOP templates and regulatory / certification references. <em>+ Add Resource</em> appends a row; the &#10005; button deletes a row (at least one row must remain).</p>
+      <table class="brd-table"><thead><tr><th>Field Name</th><th>Field Type</th><th>Input Values</th><th>Input / Autofill</th><th>Logic</th><th>Validation &amp; Error Messages</th></tr></thead>
+      <tbody>
+        <tr><td>Resource Title</td><td>Text</td><td>&mdash;</td><td>Input</td><td>Name of the reference material.</td><td>&mdash;</td></tr>
+        <tr><td>Category</td><td>Select</td><td>SOP Template / FSSAI &middot; Regulatory Guideline / HACCP Reference / GMP Standard / ISO &middot; BRC Standard / GI Tag Compliance Document / Partner &middot; Consultant Contact / Training Material / Organic Certification Reference / Other</td><td>Input</td><td>Classifies the resource.</td><td>&mdash;</td></tr>
+        <tr><td>Type</td><td>Select</td><td>Template / Guideline / Report &middot; Study / Contact / Specification / Photo &middot; Evidence</td><td>Input</td><td>Format of the resource.</td><td>&mdash;</td></tr>
+        <tr><td>Description / Notes</td><td>Text</td><td>&mdash;</td><td>Input</td><td>Free notes about the resource.</td><td>&mdash;</td></tr>
+        <tr><td>File</td><td>Upload + View buttons</td><td>&mdash;</td><td>Input</td><td>Attach &amp; preview the resource file.</td><td>&mdash;</td></tr>
+        <tr><td>Delete (&#10005;)</td><td>Action button</td><td>&mdash;</td><td>Input</td><td>Removes the row.</td><td>Blocked on the last row: &ldquo;At least one row is required.&rdquo;</td></tr>
+      </tbody></table>
+    </div>
+  </div>
+
+  <!-- ============ TAB 5: TASK LOG ============ -->
+  <div class="accordion"><div class="accordion-trigger" onclick="this.parentElement.classList.toggle('open')">Tab 5: Task Log &mdash; Standardisation Activities <span class="acc-arrow">&#9660;</span></div>
+    <div class="accordion-body">
+      <p style="font-size:13px;color:var(--ink-soft);margin-bottom:12px;">A chronological activity log for standardisation work. <em>+ Add Entry</em> appends an auto-numbered row; a live counter shows the number of entries. Rows renumber on delete. (Backed by the DF Log Book Child / Direct Log Book Child tables.)</p>
+      <table class="brd-table"><thead><tr><th>Field Name</th><th>Field Type</th><th>Input Values</th><th>Input / Autofill</th><th>Logic</th><th>Validation &amp; Error Messages</th></tr></thead>
+      <tbody>
+        <tr><td>No.</td><td>Read-only sequence</td><td>01, 02, &hellip;</td><td>Calculated</td><td>Two-digit auto index; renumbered when a row is deleted.</td><td>&mdash;</td></tr>
+        <tr><td>Date</td><td>Date</td><td>&mdash;</td><td>Input</td><td>When the activity occurred.</td><td>&mdash;</td></tr>
+        <tr><td>Task Name</td><td>Select</td><td>01 Awareness on Importance of Product Standardisation / 02 Identify Products Requiring Standardisation / 03 Define Standardisation Type Required / 04 Identify Collaborating Partner &middot; Expert / 05 Get Core Team Approval / 06 Develop Recipe Standardisation / 07 Develop Process SOP / 08 Develop Packaging SOP / 09 Develop Hygiene &amp; Sanitation SOP / 10 Conduct HACCP &middot; GMP Assessment / 11 Review SOP with Entrepreneur / 12 Train Entrepreneur &middot; Workers on SOP / 13 Trial Run &mdash; SOP Implementation / 14 Evaluate Trial Outcome / 15 Finalise and Version SOP Document / 16 Upload SOP to CRM / 17 Follow-up &mdash; Is SOP Being Followed? / 18 Flag Non-compliance &mdash; Intervention Required / 19 Update Status in Module / If other, specify in comments</td><td>Input</td><td>Fixed 19-step task picker (plus an &ldquo;other&rdquo; option).</td><td>&mdash;</td></tr>
+        <tr><td>Notes / Outcome</td><td>Text</td><td>&mdash;</td><td>Input</td><td>What happened / the outcome of the task.</td><td>&mdash;</td></tr>
+        <tr><td>Attachment</td><td>Upload button</td><td>&mdash;</td><td>Input</td><td>Optional supporting file.</td><td>&mdash;</td></tr>
+        <tr><td>Delete (&#10005;)</td><td>Action button</td><td>&mdash;</td><td>Input</td><td>Removes the entry and renumbers remaining rows.</td><td>&mdash;</td></tr>
+      </tbody></table>
+    </div>
+  </div>
+
+  <div class="callout callout-danger"><strong>Key validations (whole form):</strong> the parent record is keyed to one Entrepreneur (unique, required &mdash; auto-fetched into the chip); Module is fixed to <em>Product Development</em> and Applicable-To to <em>Product</em> (both read-only). An Existing block must have a Product or a Standardisation Type to count in Summary roll-ups. The &ldquo;If no, give reasons&rdquo; field shows only when Being-Followed = No, and Justification shows only when the Intervention toggle is on. Turning the toggle on creates exactly one bridged Required block (Product / Type locked &amp; copied, Justification live-synced); turning it off &mdash; or removing the Required block &mdash; clears the flag on both sides. SOP URL &ldquo;Open&rdquo; / &ldquo;Resource Open&rdquo; buttons enable only for valid <code>http(s)://</code> values. One SOP file per block (re-upload replaces). Resources and Task Log require at least one row to remain. All Indian number formatting; no rejected/pending state &mdash; status uses the five-state implementation set.</div>
+
+  <div class="review-panel" data-section="m-standardization">
+    <div class="review-strip"><span style="font-size:12px;color:var(--ink-soft);font-weight:500;">Section Review:</span>
+      <button class="review-status-btn" onclick="setReview('m-standardization','draft',this)">Draft</button>
+      <button class="review-status-btn" onclick="setReview('m-standardization','review',this)">In Review</button>
+      <button class="review-status-btn" onclick="setReview('m-standardization','changes',this)">Needs Changes</button>
+      <button class="review-status-btn" onclick="setReview('m-standardization','approved',this)">Approved</button>
+      <button style="margin-left:auto;background:none;border:none;font-size:12px;color:var(--sea);cursor:pointer;font-family:var(--font);text-decoration:underline;" onclick="copyLink('m-standardization')">Copy Link</button></div>
+    <div class="review-comments"><div class="comment-list" id="comments-m-standardization"></div>
+      <div class="comment-input-row"><input type="text" placeholder="Your name" style="max-width:120px" id="name-m-standardization"><textarea rows="1" placeholder="Add a comment..." id="text-m-standardization"></textarea><button class="comment-add-btn" onclick="addComment('m-standardization')">Add</button></div></div>
+  </div>
+</div>

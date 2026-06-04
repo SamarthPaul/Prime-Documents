@@ -1,0 +1,251 @@
+<div class="brd-section" id="m-brand">
+  <div class="section-header"><span class="section-id">PR-MT-001</span><h2 class="section-title">Branding Identity</h2></div>
+  <div class="section-desc">The Branding Identity framework under the Marketing Tools module captures an enterprise's brand story, USP and tagline, then drives three implementation tracks &mdash; Brand, Logo and Business Card &mdash; each with a Designer-led draft cycle and dual approval from the entrepreneur and the core team. A Summary view rolls up approval status across all three tracks, and a Task Log records the 24-step branding journey.</div>
+  <div class="callout callout-terra">Key behaviour: the Designer (or AI Generated option) uploads up to three sequential draft versions per track; each track advances only when both the Entrepreneur Approval and Core Team Approval reach <strong>Approved</strong>. Either party can return a track by marking <em>Rejected</em>, which re-opens the next draft slot.</div>
+
+  <h3 style="font-size:16px;color:var(--teal);margin:18px 0 10px;">On-Screen UI Structure</h3>
+  <div class="card"><div style="font-size:13px;line-height:1.9;color:var(--ink)">
+    <strong>Top bar:</strong> teal app header reading &ldquo;PRIME Rural | Marketing Tools&rdquo; with a breadcrumb &ldquo;Diagnostics / Marketing Tools&rdquo; on the right.<br>
+    <strong>Tab rail:</strong> a horizontally scrollable uppercase tab strip &mdash; <em>Summary</em> (default active), <em>Brand</em>, <em>Logo</em>, <em>Business Card</em>, <em>Resources</em>, <em>Task Log</em>. The active tab is filled teal.<br>
+    <strong>Summary body:</strong> a brand profile card (teal hero) showing a logo upload placeholder, Enterprise label with brand name, italic tagline, and a right-aligned Market Scope value; below it a cream USP strip and a two-column row showing <span style="font-style:italic;background:var(--cream-deep);padding:1px 5px;border-radius:4px;" title="Mirrored from the Brand tab inputs">Current Brand Name</span> and <span style="font-style:italic;background:var(--cream-deep);padding:1px 5px;border-radius:4px;" title="Mirrored from the Brand tab inputs">New Brand Name</span>. Beneath sits a 3-column grid of track status cards (Brand / Logo / Business Card), each surfacing approval status chips. All Summary values are <em>derived</em> read-outs of data entered on the working tabs.<br>
+    <strong>Brand / Logo / Business Card bodies:</strong> grouped into banner-led blocks &mdash; teal banners denote assessment/positioning data, terracotta banners denote implementation/action (Designer, Drafts, Approvals). Inside, label-and-value field rows are used, with auto-fetched fields shown <span style="font-style:italic;background:var(--cream-deep);padding:1px 5px;border-radius:4px;" title="Calculated / fetched, not user-entered (Rule 1)">italic on a cream-deep background</span> per Rule 1.<br>
+    <strong>Special widgets:</strong> a market-scope chip group (single-select pills), Yes/No intervention toggles, Upload / View buttons for HD assets and QR codes, a sequential Draft Versions list with status dots (active vs. pending), and Entrepreneur / Core Team approval status dropdowns. The Logo track Designer dropdown additionally offers an <em>AI Generated</em> option.
+  </div></div>
+  <div class="flow-container" style="margin-top:12px">
+    <div class="flow-step"><div class="flow-box">Summary</div></div>
+    <div class="flow-arrow">&rarr;</div>
+    <div class="flow-step"><div class="flow-box">Brand</div></div>
+    <div class="flow-arrow">&rarr;</div>
+    <div class="flow-step"><div class="flow-box">Logo</div></div>
+    <div class="flow-arrow">&rarr;</div>
+    <div class="flow-step"><div class="flow-box">Business Card</div></div>
+    <div class="flow-arrow">&rarr;</div>
+    <div class="flow-step"><div class="flow-box">Resources</div></div>
+    <div class="flow-arrow">&rarr;</div>
+    <div class="flow-step"><div class="flow-box">Task Log</div></div>
+  </div>
+
+  <h3 style="font-size:16px;color:var(--teal);margin:18px 0 10px;">User Journey</h3>
+  <div class="card"><div class="flow-container">
+    <div class="flow-step"><div class="flow-box">Capture brand brief</div><div class="flow-label">Fessociate records storyline, current name, USP &amp; tagline</div></div>
+    <div class="flow-arrow">&rarr;</div>
+    <div class="flow-step"><div class="flow-box">Decide interventions</div><div class="flow-label">Fessociate flags &ldquo;Need new brand name?&rdquo; / &ldquo;Need new logo?&rdquo; &amp; sets Market Scope</div></div>
+    <div class="flow-arrow">&rarr;</div>
+    <div class="flow-step"><div class="flow-box">Brainstorm names</div><div class="flow-label">Fessociate proposes new name &amp; justification (if advised)</div></div>
+    <div class="flow-arrow">&rarr;</div>
+    <div class="flow-step"><div class="flow-box accent">Designer uploads drafts</div><div class="flow-label">Assigned Designer (or AI Generated) uploads Draft 1&ndash;3 per track</div></div>
+    <div class="flow-arrow">&rarr;</div>
+    <div class="flow-step"><div class="flow-box accent">Dual approval</div><div class="flow-label">Entrepreneur Approval + Core Team Approval &mdash; both must be Approved</div></div>
+    <div class="flow-arrow">&rarr;</div>
+    <div class="flow-step"><div class="flow-box">Deliver &amp; log</div><div class="flow-label">Final files delivered; Task Log entry recorded</div></div>
+  </div></div>
+
+  <!-- ============ BRAND ============ -->
+  <div class="accordion open">
+    <div class="accordion-trigger" onclick="this.parentElement.classList.toggle('open')">Brand Tab</div>
+    <div class="accordion-body">
+
+      <h4 style="font-size:14px;color:var(--teal);margin-bottom:10px;">Section I &mdash; Brand Identity Data (Assessment &amp; positioning)</h4>
+      <table class="field-table">
+        <thead><tr><th>Field Name</th><th>Field Type</th><th>Input Values</th><th>Input</th><th>Autofill</th><th>Logic</th><th>Validation &amp; Error Messages</th></tr></thead>
+        <tbody>
+          <tr><td>Enterprise Name</td><td>Data (read-only)</td><td>&mdash;</td><td>No</td><td>Yes</td><td>Auto-fetched from the linked entrepreneur / enterprise profile.</td><td>Non-editable; sourced from profile.</td></tr>
+          <tr><td>Storyline of the Enterprise</td><td>Text (read-only)</td><td>&mdash;</td><td>No</td><td>Yes</td><td>Auto-fetched from the enterprise profile; seeds the brand story &amp; USP discussion.</td><td>Non-editable; sourced from profile.</td></tr>
+          <tr><td>Current Brand Name</td><td>Data</td><td>Free text</td><td>Yes</td><td>No</td><td>Existing brand/trade name in use today. Mirrored into the Summary &ldquo;Current Brand Name&rdquo; read-out.</td><td>Required before track can be approved. Error: &ldquo;Enter the current brand name.&rdquo;</td></tr>
+          <tr><td>Need New Brand Name?</td><td>Toggle (Yes/No)</td><td>On / Off</td><td>Yes</td><td>No</td><td>Flags whether a brand-name intervention is needed. When On, &ldquo;New Brand Name&rdquo; and &ldquo;Justification&rdquo; become required.</td><td>If On and New Brand Name is blank &rarr; &ldquo;Provide the proposed new brand name.&rdquo;</td></tr>
+          <tr><td>New Brand Name (if advised)</td><td>Data</td><td>Free text</td><td>Conditional</td><td>No</td><td>Proposed name; captured only when &ldquo;Need New Brand Name?&rdquo; is On. Mirrored into Summary &ldquo;New Brand Name&rdquo; (shown in teal).</td><td>Required when toggle On. Error: &ldquo;Proposed name required when a new brand name is advised.&rdquo;</td></tr>
+          <tr><td>Justification</td><td>Text (multi-line)</td><td>Free text</td><td>Conditional</td><td>No</td><td>Reason for the brand-name change; supports the entrepreneur/core-team decision.</td><td>Required when &ldquo;Need New Brand Name?&rdquo; is On. Error: &ldquo;Justification required for a brand change.&rdquo;</td></tr>
+          <tr><td>USP of Brand</td><td>Data</td><td>Free text</td><td>Yes</td><td>No</td><td>Unique selling proposition; mirrored into the Summary USP strip.</td><td>Recommended before approval; error if blank at approval: &ldquo;Enter the brand USP.&rdquo;</td></tr>
+          <tr><td>Brand Tagline</td><td>Data</td><td>Free text</td><td>Yes</td><td>No</td><td>Short tagline; reused on the Business Card (Brand Tagline auto-fetch) and Summary hero.</td><td>&mdash;</td></tr>
+          <tr><td>Entrepreneur Media Folder Link</td><td>Link / URL (read-only)</td><td>&mdash;</td><td>No</td><td>Yes</td><td>Auto-fetched media-folder link for reference assets.</td><td>Non-editable; sourced from profile.</td></tr>
+          <tr><td>Market Scope</td><td>Single-select chip group</td><td>Local / State &#124; National</td><td>Yes</td><td>No</td><td>Exactly one scope selected; defaults to &ldquo;Local / State&rdquo;. Surfaced on Summary hero (Market Scope).</td><td>One option must remain selected.</td></tr>
+        </tbody>
+      </table>
+
+      <h4 style="font-size:14px;color:var(--teal);margin:18px 0 10px;">Section II &mdash; Implementation Status (Approvals)</h4>
+      <table class="field-table">
+        <thead><tr><th>Field Name</th><th>Field Type</th><th>Input Values</th><th>Input</th><th>Autofill</th><th>Logic</th><th>Validation &amp; Error Messages</th></tr></thead>
+        <tbody>
+          <tr><td>Entrepreneur Approval</td><td>Select</td><td>Approved &#124; Pending &#124; Rejected</td><td>Yes</td><td>No</td><td>Entrepreneur's sign-off on the brand name/USP/tagline. Drives the Summary Brand-track entrepreneur status chip.</td><td>Defaults to blank/Pending; must be Approved (alongside Core Team) to close the track.</td></tr>
+          <tr><td>Core Team Approval</td><td>Select</td><td>Approved &#124; Pending &#124; Rejected</td><td>Yes</td><td>No</td><td>Core team's sign-off. Drives the Summary Brand-track core status chip. Both approvals required to finalise.</td><td>Defaults to blank/Pending; must be Approved to close the track.</td></tr>
+        </tbody>
+      </table>
+      <div class="callout callout-teal">The Brand track has no Designer/Drafts block &mdash; it is name &amp; positioning text only. Dual approval here gates the downstream Logo and Business Card tracks, which reuse the confirmed name &amp; tagline.</div>
+    </div>
+  </div>
+
+  <!-- ============ LOGO ============ -->
+  <div class="accordion">
+    <div class="accordion-trigger" onclick="this.parentElement.classList.toggle('open')">Logo Tab</div>
+    <div class="accordion-body">
+
+      <h4 style="font-size:14px;color:var(--teal);margin-bottom:10px;">Entrepreneur Snapshot</h4>
+      <table class="field-table">
+        <thead><tr><th>Field Name</th><th>Field Type</th><th>Input Values</th><th>Input</th><th>Autofill</th><th>Logic</th><th>Validation &amp; Error Messages</th></tr></thead>
+        <tbody>
+          <tr><td>Entrepreneur Name</td><td>Data (read-only)</td><td>&mdash;</td><td>No</td><td>Yes</td><td>Auto-fetched from profile.</td><td>Non-editable.</td></tr>
+          <tr><td>Profile Link</td><td>Action button</td><td>&ldquo;Go to profile&rdquo;</td><td>No</td><td>Yes</td><td>Opens the linked entrepreneur profile.</td><td>&mdash;</td></tr>
+        </tbody>
+      </table>
+
+      <h4 style="font-size:14px;color:var(--teal);margin:18px 0 10px;">Section I &mdash; Existing Logo (Current state &amp; intervention flag)</h4>
+      <table class="field-table">
+        <thead><tr><th>Field Name</th><th>Field Type</th><th>Input Values</th><th>Input</th><th>Autofill</th><th>Logic</th><th>Validation &amp; Error Messages</th></tr></thead>
+        <tbody>
+          <tr><td>Existing Logo in HD</td><td>Attach (Upload / View)</td><td>Image file</td><td>Yes</td><td>No</td><td>High-definition copy of the current logo, if any. Upload and View actions.</td><td>Recommended file format/HD; error if View used with no file: &ldquo;No file uploaded.&rdquo;</td></tr>
+          <tr><td>Open File (if available)</td><td>Attach (Upload)</td><td>Source / editable file</td><td>Yes</td><td>No</td><td>Editable source file (e.g. vector / .ai) when available.</td><td>Optional.</td></tr>
+          <tr><td>Need New Logo?</td><td>Toggle (Yes/No)</td><td>On / Off</td><td>Yes</td><td>No</td><td>Flags a logo intervention. When On, Designer assignment, Draft Versions and the Justification become relevant. Drives Summary &ldquo;New Logo Needed&rdquo; chip.</td><td>If On and Justification blank &rarr; &ldquo;Enter the reason a new logo is needed.&rdquo;</td></tr>
+          <tr><td>Justification</td><td>Text (multi-line)</td><td>Free text</td><td>Conditional</td><td>No</td><td>Reason for needing a new logo.</td><td>Required when &ldquo;Need New Logo?&rdquo; is On.</td></tr>
+        </tbody>
+      </table>
+
+      <h4 style="font-size:14px;color:var(--teal);margin:18px 0 10px;">Section II &mdash; Implementation Status (Designer &middot; Drafts &middot; Approvals)</h4>
+      <table class="field-table">
+        <thead><tr><th>Field Name</th><th>Field Type</th><th>Input Values</th><th>Input</th><th>Autofill</th><th>Logic</th><th>Validation &amp; Error Messages</th></tr></thead>
+        <tbody>
+          <tr><td>Designer</td><td>Select</td><td>Designer A &#124; Designer B &#124; AI Generated</td><td>Yes</td><td>No</td><td>Assigns the responsible Designer (or the AI Generated option) for logo drafts. Only the assigned Designer / core team may upload drafts.</td><td>Required before uploading drafts. Error: &ldquo;Assign a designer before uploading drafts.&rdquo;</td></tr>
+          <tr><td>Draft 1</td><td>Attach (Upload / View)</td><td>Logo draft file</td><td>Yes (Designer)</td><td>No</td><td>First draft; active slot. Uploaded by the assigned Designer.</td><td>At least one draft required before approval.</td></tr>
+          <tr><td>Draft 2</td><td>Attach (Upload / View)</td><td>Logo draft file</td><td>Conditional (Designer)</td><td>No</td><td>Sequential &mdash; unlocks (Pending until then) after Draft 1 exists / is rejected.</td><td>Optional; enabled in sequence.</td></tr>
+          <tr><td>Draft 3</td><td>Attach (Upload / View)</td><td>Logo draft file</td><td>Conditional (Designer)</td><td>No</td><td>Sequential &mdash; unlocks (Pending until then) after Draft 2 exists / is rejected.</td><td>Optional; enabled in sequence.</td></tr>
+          <tr><td>Entrepreneur Approval</td><td>Select</td><td>Approved &#124; Pending &#124; Rejected</td><td>Yes</td><td>No</td><td>Entrepreneur's sign-off on the selected logo draft. Drives Summary Logo-track entrepreneur chip.</td><td>Must be Approved (with Core Team) to finalise; Rejected re-opens next draft.</td></tr>
+          <tr><td>Core Team Approval</td><td>Select</td><td>Approved &#124; Pending &#124; Rejected</td><td>Yes</td><td>No</td><td>Core team's sign-off. Drives Summary Logo-track core chip. Both approvals required to deliver final logo files.</td><td>Must be Approved to finalise.</td></tr>
+        </tbody>
+      </table>
+      <div class="callout callout-amber">Draft Versions are sequential: only Draft 1 is initially active; Draft 2 and Draft 3 display as &ldquo;Pending&rdquo; until the prior draft is uploaded or rejected. Maximum 3 drafts per track.</div>
+    </div>
+  </div>
+
+  <!-- ============ BUSINESS CARD ============ -->
+  <div class="accordion">
+    <div class="accordion-trigger" onclick="this.parentElement.classList.toggle('open')">Business Card Tab</div>
+    <div class="accordion-body">
+
+      <h4 style="font-size:14px;color:var(--teal);margin-bottom:10px;">Section I &mdash; Card Content (Auto-populated from profile)</h4>
+      <table class="field-table">
+        <thead><tr><th>Field Name</th><th>Field Type</th><th>Input Values</th><th>Input</th><th>Autofill</th><th>Logic</th><th>Validation &amp; Error Messages</th></tr></thead>
+        <tbody>
+          <tr><td>Name of Entrepreneur</td><td>Data (read-only)</td><td>&mdash;</td><td>No</td><td>Yes</td><td>Auto-fetched from profile.</td><td>Non-editable.</td></tr>
+          <tr><td>Name of Enterprise</td><td>Data (read-only)</td><td>&mdash;</td><td>No</td><td>Yes</td><td>Auto-fetched from profile / Brand tab.</td><td>Non-editable.</td></tr>
+          <tr><td>Brand Tagline</td><td>Data (read-only)</td><td>&mdash;</td><td>No</td><td>Yes</td><td>Auto-fetched from the Brand tab tagline.</td><td>Non-editable.</td></tr>
+          <tr><td>Contact Number</td><td>Data (read-only)</td><td>&mdash;</td><td>No</td><td>Yes</td><td>Auto-fetched from profile.</td><td>Non-editable.</td></tr>
+          <tr><td>Email</td><td>Data (read-only)</td><td>&mdash;</td><td>No</td><td>Yes</td><td>Auto-fetched from profile.</td><td>Non-editable.</td></tr>
+          <tr><td>WhatsApp Catalogue QR</td><td>Attach (Upload / View)</td><td>QR image</td><td>Yes</td><td>No</td><td>Digital asset printed on the card.</td><td>Optional; error if View used with no file.</td></tr>
+          <tr><td>Instagram QR</td><td>Attach (Upload / View)</td><td>QR image</td><td>Yes</td><td>No</td><td>Digital asset printed on the card.</td><td>Optional; error if View used with no file.</td></tr>
+        </tbody>
+      </table>
+
+      <h4 style="font-size:14px;color:var(--teal);margin:18px 0 10px;">Section II &mdash; Implementation Status (Designer &middot; Drafts &middot; Approvals)</h4>
+      <table class="field-table">
+        <thead><tr><th>Field Name</th><th>Field Type</th><th>Input Values</th><th>Input</th><th>Autofill</th><th>Logic</th><th>Validation &amp; Error Messages</th></tr></thead>
+        <tbody>
+          <tr><td>Designer</td><td>Select</td><td>Designer A &#124; Designer B</td><td>Yes</td><td>No</td><td>Assigns the Designer for business-card drafts (Canva). Only the assigned Designer / core team may upload drafts. (No AI Generated option on this track.)</td><td>Required before uploading drafts. Error: &ldquo;Assign a designer before uploading drafts.&rdquo;</td></tr>
+          <tr><td>Draft 1</td><td>Attach (Upload / View)</td><td>Card draft file</td><td>Yes (Designer)</td><td>No</td><td>First draft; active slot.</td><td>At least one draft required before approval.</td></tr>
+          <tr><td>Draft 2</td><td>Attach (Upload / View)</td><td>Card draft file</td><td>Conditional (Designer)</td><td>No</td><td>Sequential &mdash; Pending until Draft 1 exists / is rejected.</td><td>Optional; enabled in sequence.</td></tr>
+          <tr><td>Draft 3</td><td>Attach (Upload / View)</td><td>Card draft file</td><td>Conditional (Designer)</td><td>No</td><td>Sequential &mdash; Pending until Draft 2 exists / is rejected.</td><td>Optional; enabled in sequence.</td></tr>
+          <tr><td>Entrepreneur Approval</td><td>Select</td><td>Approved &#124; Pending &#124; Rejected</td><td>Yes</td><td>No</td><td>Entrepreneur's sign-off on the selected card draft. Drives Summary Business-Card-track entrepreneur chip.</td><td>Must be Approved (with Core Team) to finalise; Rejected re-opens next draft.</td></tr>
+          <tr><td>Core Team Approval</td><td>Select</td><td>Approved &#124; Pending &#124; Rejected</td><td>Yes</td><td>No</td><td>Core team's sign-off. Drives Summary Business-Card-track core chip. Both approvals required to deliver final files.</td><td>Must be Approved to finalise.</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ============ SUMMARY ============ -->
+  <div class="accordion">
+    <div class="accordion-trigger" onclick="this.parentElement.classList.toggle('open')">Summary Tab (derived roll-up)</div>
+    <div class="accordion-body">
+      <div class="callout callout-teal">The Summary tab is entirely <em>derived</em> &mdash; it reads from the Brand, Logo and Business Card tabs and contains no independent inputs.</div>
+      <table class="field-table">
+        <thead><tr><th>Field Name</th><th>Field Type</th><th>Input Values</th><th>Input</th><th>Autofill</th><th>Logic</th><th>Validation &amp; Error Messages</th></tr></thead>
+        <tbody>
+          <tr><td>Brand Profile (hero)</td><td>Derived card</td><td>&mdash;</td><td>No</td><td>Yes</td><td>Logo upload placeholder + Enterprise name + italic tagline + Market Scope, all mirrored from the Brand tab.</td><td>Read-only display.</td></tr>
+          <tr><td>USP</td><td>Derived text</td><td>&mdash;</td><td>No</td><td>Yes</td><td>Mirrors USP of Brand from the Brand tab.</td><td>Read-only.</td></tr>
+          <tr><td>Current Brand Name</td><td>Derived text</td><td>&mdash;</td><td>No</td><td>Yes</td><td>Mirrors Current Brand Name from Brand tab.</td><td>Read-only.</td></tr>
+          <tr><td>New Brand Name</td><td>Derived text</td><td>&mdash;</td><td>No</td><td>Yes</td><td>Mirrors New Brand Name (shown in teal).</td><td>Read-only.</td></tr>
+          <tr><td>Brand track &mdash; Entrepreneur / Core Team Approval</td><td>Derived status chip</td><td>Approved &#124; Pending &#124; Rejected</td><td>No</td><td>Yes</td><td>Reflects the two Brand-tab approval selects.</td><td>Read-only.</td></tr>
+          <tr><td>Logo track &mdash; New Logo Needed + Approvals</td><td>Derived status chip</td><td>Yes/No; Approved &#124; Pending &#124; Rejected</td><td>No</td><td>Yes</td><td>&ldquo;New Logo Needed&rdquo; reflects the Logo-tab toggle; two chips reflect the Logo approvals.</td><td>Read-only.</td></tr>
+          <tr><td>Business Card track &mdash; Approvals</td><td>Derived status chip</td><td>Approved &#124; Pending &#124; Rejected</td><td>No</td><td>Yes</td><td>Reflects the two Business-Card-tab approval selects.</td><td>Read-only.</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ============ RESOURCES ============ -->
+  <div class="accordion">
+    <div class="accordion-trigger" onclick="this.parentElement.classList.toggle('open')">Resources Tab (child table)</div>
+    <div class="accordion-body">
+      <p style="font-size:13px;color:var(--ink-soft);margin-bottom:10px;">Reference materials child table &mdash; add one row per resource (+ Add Resource). At least one row is retained.</p>
+      <table class="field-table">
+        <thead><tr><th>Field Name</th><th>Field Type</th><th>Input Values</th><th>Input</th><th>Autofill</th><th>Logic</th><th>Validation &amp; Error Messages</th></tr></thead>
+        <tbody>
+          <tr><td>Resource Title</td><td>Data</td><td>Free text</td><td>Yes</td><td>No</td><td>Title of the reference material.</td><td>Recommended before save.</td></tr>
+          <tr><td>Category</td><td>Select</td><td>Brand &#124; Logo &#124; Business Card &#124; General</td><td>Yes</td><td>No</td><td>Classifies the resource by track.</td><td>&mdash;</td></tr>
+          <tr><td>Type</td><td>Select</td><td>Template &#124; Reference &#124; Guideline &#124; Example</td><td>Yes</td><td>No</td><td>Nature of the resource.</td><td>&mdash;</td></tr>
+          <tr><td>Description / Notes</td><td>Data</td><td>Free text</td><td>Yes</td><td>No</td><td>Notes about the resource.</td><td>&mdash;</td></tr>
+          <tr><td>File</td><td>Attach (Upload / View)</td><td>Any file</td><td>Yes</td><td>No</td><td>The reference file itself.</td><td>Optional.</td></tr>
+          <tr><td>(Row delete)</td><td>Action</td><td>&#10005;</td><td>Yes</td><td>No</td><td>Removes the row.</td><td>At least one row required &mdash; error: &ldquo;At least one row is required.&rdquo;</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ============ TASK LOG ============ -->
+  <div class="accordion">
+    <div class="accordion-trigger" onclick="this.parentElement.classList.toggle('open')">Task Log Tab (child table)</div>
+    <div class="accordion-body">
+      <p style="font-size:13px;color:var(--ink-soft);margin-bottom:10px;">Branding-journey activity log &mdash; add one row per activity (+ Add Entry). The serial No. auto-renumbers on add/delete.</p>
+      <table class="field-table">
+        <thead><tr><th>Field Name</th><th>Field Type</th><th>Input Values</th><th>Input</th><th>Autofill</th><th>Logic</th><th>Validation &amp; Error Messages</th></tr></thead>
+        <tbody>
+          <tr><td>No.</td><td>Auto-number (read-only)</td><td>01, 02, 03&hellip;</td><td>No</td><td>Yes</td><td>Zero-padded serial; auto-renumbers when rows are added or deleted.</td><td>System-generated.</td></tr>
+          <tr><td>Date</td><td>Date</td><td>Calendar picker</td><td>Yes</td><td>No</td><td>Date the activity occurred.</td><td>&mdash;</td></tr>
+          <tr><td>Task Name</td><td>Select (24 fixed tasks)</td><td>See task list below</td><td>Yes</td><td>No</td><td>Chosen from the fixed 24-step Branding Identity task list.</td><td>Select a task before saving the row.</td></tr>
+          <tr><td>Notes / Outcome</td><td>Data</td><td>Free text</td><td>Yes</td><td>No</td><td>Outcome / notes for the activity.</td><td>&mdash;</td></tr>
+          <tr><td>Attachment</td><td>Attach (Upload)</td><td>Any file</td><td>Yes</td><td>No</td><td>Supporting evidence.</td><td>Optional.</td></tr>
+        </tbody>
+      </table>
+      <h4 style="font-size:14px;color:var(--teal);margin:18px 0 10px;">Task Name &mdash; fixed dropdown (24 options)</h4>
+      <table class="field-table">
+        <thead><tr><th style="width:8%">#</th><th>Task</th></tr></thead>
+        <tbody>
+          <tr><td>01</td><td>Awareness on Importance of Brand Identity</td></tr>
+          <tr><td>02</td><td>Record Existing Brand Information</td></tr>
+          <tr><td>03</td><td>Draft Brand Story &amp; USP</td></tr>
+          <tr><td>04</td><td>Brainstorm and Research Brand Name Ideas</td></tr>
+          <tr><td>05</td><td>Brand Name Approved by Entrepreneur</td></tr>
+          <tr><td>06</td><td>Final Brand Name &amp; Tagline Confirmed</td></tr>
+          <tr><td>07</td><td>Awareness on Importance of Logo</td></tr>
+          <tr><td>08</td><td>Data Collection for Logo Creation</td></tr>
+          <tr><td>09</td><td>Brainstorm and Sketch Logo Concepts</td></tr>
+          <tr><td>10</td><td>Designer briefing on Logo</td></tr>
+          <tr><td>11</td><td>Logo Reviewed by Core Team</td></tr>
+          <tr><td>12</td><td>Final Logo Selected and Confirmed by Entrepreneur</td></tr>
+          <tr><td>13</td><td>Deliver Final Logo Files to Entrepreneur</td></tr>
+          <tr><td>14</td><td>Awareness on Importance of Business Card</td></tr>
+          <tr><td>15</td><td>Data Collection for Business Card</td></tr>
+          <tr><td>16</td><td>Creation of Business Card on Canva</td></tr>
+          <tr><td>17</td><td>Business Card Reviewed by Core Team</td></tr>
+          <tr><td>18</td><td>Business Card Approved by Entrepreneur</td></tr>
+          <tr><td>19</td><td>Deliver Business Card Files to Entrepreneur</td></tr>
+          <tr><td>20</td><td>Business Card Printed by Entrepreneur Locally</td></tr>
+          <tr><td>21</td><td>Business Card Printed and Collected from PRIME Office</td></tr>
+          <tr><td>22</td><td>Business Card Delivered to Entrepreneur</td></tr>
+          <tr><td>23</td><td>Follow-up on Business Card Usage and Reprinting Needs</td></tr>
+          <tr><td>24</td><td>If others, specify</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="callout callout-danger">Key validations (whole framework): (1) Each implementation track (Brand, Logo, Business Card) is finalised only when <strong>both</strong> Entrepreneur Approval and Core Team Approval are <strong>Approved</strong> &mdash; a single <em>Rejected</em> blocks delivery and re-opens the next draft slot. (2) A Designer must be assigned before any draft can be uploaded; only the assigned Designer (or core team) holds upload permission. (3) Draft Versions are sequential and capped at 3 (Draft 2/3 stay &ldquo;Pending&rdquo; until the prior draft exists/is rejected). (4) &ldquo;Need New Brand Name?&rdquo; On &rarr; New Brand Name + Justification required; &ldquo;Need New Logo?&rdquo; On &rarr; Justification required. (5) Market Scope must always have exactly one chip selected. (6) Task Log rows require a Task Name selection; serial No. is system-generated. (7) Resources / Task Log child tables must retain at least one row.</div>
+
+  <div class="review-panel" data-section="m-brand">
+    <div class="review-strip"><span style="font-size:12px;color:var(--ink-soft);font-weight:500;">Section Review:</span>
+      <button class="review-status-btn" onclick="setReview('m-brand','draft',this)">Draft</button>
+      <button class="review-status-btn" onclick="setReview('m-brand','review',this)">In Review</button>
+      <button class="review-status-btn" onclick="setReview('m-brand','changes',this)">Needs Changes</button>
+      <button class="review-status-btn" onclick="setReview('m-brand','approved',this)">Approved</button>
+      <button style="margin-left:auto;background:none;border:none;font-size:12px;color:var(--sea);cursor:pointer;font-family:var(--font);text-decoration:underline;" onclick="copyLink('m-brand')">Copy Link</button></div>
+    <div class="review-comments"><div class="comment-list" id="comments-m-brand"></div>
+      <div class="comment-input-row"><input type="text" placeholder="Your name" style="max-width:120px" id="name-m-brand"><textarea rows="1" placeholder="Add a comment..." id="text-m-brand"></textarea><button class="comment-add-btn" onclick="addComment('m-brand')">Add</button></div></div>
+  </div>
+</div>

@@ -1,0 +1,320 @@
+<div class="brd-section" id="m-cap-build">
+  <div class="section-header"><span class="section-id">PR-SK-002</span><h2 class="section-title">Capacity Building</h2></div>
+  <div class="section-desc">Skilling module of the Diagnostic Framework: records every Past Training the entrepreneur has attended, evaluates its retention / application, and &mdash; where a skill has not stuck &mdash; flags it for re-training; standalone new skill gaps are captured as New Required Trainings. Soft vs Technical skill areas are tracked separately, each intervention carries a Gap Severity and a six-dimension star-rated Post-Training Assessment scorecard, and a read-only Summary rolls up trainings, gaps and intervention flags.</div>
+
+  <div class="callout callout-terra"><strong>Key behaviour &mdash; the Past &rarr; Required re-training bridge.</strong> A training is recorded ONCE in the <em>Past Trainings</em> tab. Toggling its &ldquo;Re-training needed for this skill?&rdquo; flag captures no cost &mdash; it only raises a flag and writes a justification. The flagged training then auto-appears in <em>Required Trainings &rarr; Section&nbsp;I (Re-training Interventions)</em>, pre-filled (read-only) with the Past Training name, Skill Area and the justification text, where the Fessociate adds Gap Severity, current/required levels, intervention type and an implementation plan. Standalone skill gaps not linked to any past record are added separately in <em>Section&nbsp;II (New Required Trainings)</em>. Untoggling the flag (or removing the bridged row) removes it from Section&nbsp;I. Both intervention types share an identical six-dimension Post-Training Assessment scorecard.</div>
+
+  <h3 style="font-size:16px;color:var(--teal);margin:18px 0 10px;">On-Screen UI Structure</h3>
+  <div class="card"><div style="font-size:13px;line-height:1.9;color:var(--ink)">
+    <strong>Top bar:</strong> teal header &ldquo;Capacity Building Module&rdquo; with crumb &ldquo;PRIME Rural &middot; DF Capacity Building&rdquo;, plus an entrepreneur chip (avatar + name) auto-fetched from the profile. <br>
+    <strong>Tab rail:</strong> horizontal pill bar with six tabs &mdash; Summary &middot; Past Trainings &middot; Required Trainings &middot; Tasks &middot; Resources &middot; Log Book; active tab renders teal-on-white. <br>
+    <strong>Body layout:</strong> each tab is a panel. <em>Summary</em> is read-only: a Training-wise Overview table (one row per training), four Aggregate cards (Past Trainings / Required Trainings / Capacity Picture / Status) and a four-cell Intervention Flag strip. <em>Past Trainings</em> renders each training as a collapsible &ldquo;training block&rdquo; (sea-blue header with name input + skill-type badge + Remove) holding three sub-sections (Training Details, Skill Retention &amp; Application, Remarks) and a terracotta Intervention Need flag panel. <em>Required Trainings</em> has two sections of repeating rows &mdash; Section&nbsp;I Re-training (auto-populated from flagged Past Trainings) and Section&nbsp;II New Required Trainings &mdash; each row carrying Skill Type / Skill Area / Gap Severity / levels / intervention + an Implementation Status block + the Post-Training scorecard. <br>
+    <strong>Special widgets:</strong> (1) <em>Skill-area multi-select</em> &mdash; a grouped listbox split into &ldquo;&mdash;&nbsp;Soft Skills&nbsp;&mdash;&rdquo; and &ldquo;&mdash;&nbsp;Technical Skills&nbsp;&mdash;&rdquo; optgroups that filters to show only the chosen Skill Type&rsquo;s options. (2) <em>Re-training flag toggle</em> with a live note (&ldquo;Not flagged&rdquo; &rarr; &ldquo;&#8635; Flagged &rarr; Details in Required Tab&rdquo;) and a justification box that bridges to Section&nbsp;I. (3) <em>Six-dimension Post-Training Assessment scorecard</em> &mdash; six 1&ndash;5 star ratings (Skill / Confidence / Production Improvement, Working Independently, Ability to Train Others, Further Support Needed) over a 1&ndash;5 legend (None &rarr; Excellent), plus six narrative text fields. (4) <em>Total bars</em> at the foot of Past and Required summarising counts and the Auto-fetch target. <br>
+    Per Rule&nbsp;1, every calculated / rolled-up field (all Summary table cells, the four Aggregate cards, the Intervention Flag counts, and both Total bars) renders <em>italic on a cream-deep background</em> and is non-editable, with a tooltip stating its source.
+  </div></div>
+  <div class="flow-container" style="margin-top:12px">
+    <div class="flow-step"><div class="flow-box">Summary</div></div>
+    <div class="flow-arrow">&rarr;</div>
+    <div class="flow-step"><div class="flow-box">Past Trainings</div></div>
+    <div class="flow-arrow">&rarr;</div>
+    <div class="flow-step"><div class="flow-box">Required Trainings</div></div>
+    <div class="flow-arrow">&rarr;</div>
+    <div class="flow-step"><div class="flow-box">Tasks</div></div>
+    <div class="flow-arrow">&rarr;</div>
+    <div class="flow-step"><div class="flow-box">Resources</div></div>
+    <div class="flow-arrow">&rarr;</div>
+    <div class="flow-step"><div class="flow-box">Log Book</div></div>
+  </div>
+
+  <h3 style="font-size:16px;color:var(--teal);margin:18px 0 10px;">User Journey</h3>
+  <div class="card"><div class="flow-container">
+    <div class="flow-step"><div class="flow-box">Open</div><div class="flow-label">Diagnostics &rarr; Skilling &rarr; Capacity Building (entrepreneur auto-fetched)</div></div>
+    <div class="flow-arrow">&rarr;</div>
+    <div class="flow-step"><div class="flow-box">Record Past</div><div class="flow-label">Add each training attended; skill type/area, completion, retention &amp; application, remarks</div></div>
+    <div class="flow-arrow">&rarr;</div>
+    <div class="flow-step"><div class="flow-box">Flag Re-training</div><div class="flow-label">Toggle &ldquo;Re-training needed?&rdquo; with a justification on trainings that did not stick</div></div>
+    <div class="flow-arrow">&rarr;</div>
+    <div class="flow-step"><div class="flow-box">Detail Gaps</div><div class="flow-label">Required tab &rarr; Section&nbsp;I auto-fills flagged trainings; Section&nbsp;II add new gaps; set severity, levels, intervention</div></div>
+    <div class="flow-arrow">&rarr;</div>
+    <div class="flow-step"><div class="flow-box">Assess Outcome</div><div class="flow-label">After delivery, rate the six-dimension scorecard and capture learning outcomes &amp; feedback</div></div>
+    <div class="flow-arrow">&rarr;</div>
+    <div class="flow-step"><div class="flow-box">Log &amp; Save</div><div class="flow-label">Record activities in Tasks &amp; Log Book; review Summary roll-up; save</div></div>
+  </div></div>
+
+  <!-- ============ TAB 1: SUMMARY ============ -->
+  <div class="accordion open">
+    <div class="accordion-trigger" onclick="this.parentElement.classList.toggle('open')">Tab 1 &mdash; Summary (read-only roll-up)</div>
+    <div class="accordion-body">
+      <p style="font-size:13px;color:var(--ink);margin-bottom:10px;">Entirely auto-populated from the Past Trainings and Required Trainings tabs &mdash; no data entry on this tab. Four blocks: (1.1) a Training-wise Overview table (one row per training; re-training rows highlighted, new-training rows tinted green), (1.2) four Aggregate cards, (1.3) a four-cell Intervention Flag strip.</p>
+
+      <h4 style="font-size:14px;color:var(--teal);margin-bottom:10px;">1.1 Training-wise Overview table (one row per training, auto-built)</h4>
+      <table class="brd-field-table">
+        <thead><tr><th>Field Name</th><th>Field Type</th><th>Input Values</th><th>Input / Autofill</th><th>Logic</th><th>Validation &amp; Error Messages</th></tr></thead>
+        <tbody>
+          <tr><td>Training Name</td><td>Read-only text</td><td>&mdash;</td><td>Autofill</td><td>Bold training name from each Past block and each Required row (re-training name bridges from its Past Training). Empty state: &ldquo;Auto-populated from Past Trainings and Required Trainings tabs&rdquo;.</td><td>&mdash;</td></tr>
+          <tr><td>Skill Type</td><td>Read-only badge</td><td>Soft Skill / Technical Skill</td><td>Autofill</td><td>From the block&rsquo;s Skill Type. Badge: Soft = purple, Technical = blue; re-training &amp; new rows show &ldquo;&larr;&nbsp;from Past Trainings&rdquo; / &ldquo;New Required Training&rdquo; in this column span.</td><td>&mdash;</td></tr>
+          <tr><td>Skill Area</td><td>Read-only text</td><td>&mdash;</td><td>Autofill</td><td>Comma-joined selected skill areas of the Past block.</td><td>&mdash;</td></tr>
+          <tr><td>Intervention Type</td><td>Read-only badge</td><td>&#8635; Re-training / + New Training</td><td>Autofill</td><td>Re-training rows show a terracotta &ldquo;&#8635; Re-training&rdquo; badge; new rows a blue &ldquo;+ New Training&rdquo; badge; Past rows show &ldquo;&mdash;&rdquo;.</td><td>&mdash;</td></tr>
+          <tr><td>Gap Severity</td><td>Read-only badge</td><td>Critical / High / Medium / Low</td><td>Autofill</td><td>From the Required row&rsquo;s Gap Severity. Badge: Critical = red, High = amber, Medium = highlight, Low = neutral; &ldquo;&mdash;&rdquo; if unset or for Past rows.</td><td>&mdash;</td></tr>
+          <tr><td>Implementation Status</td><td>Read-only badge</td><td>Identified / Planned / Scheduled / Ongoing / Completed / Follow-up Pending</td><td>Autofill</td><td>From the Required row&rsquo;s Implementation Status. Badge: Completed = green, Planned/Scheduled = blue, else neutral; &ldquo;&mdash;&rdquo; if unset.</td><td>&mdash;</td></tr>
+        </tbody>
+      </table>
+
+      <h4 style="font-size:14px;color:var(--teal);margin:14px 0 10px;">1.2 Aggregate cards (four, all read-only / calculated)</h4>
+      <table class="brd-field-table">
+        <thead><tr><th>Field Name</th><th>Field Type</th><th>Input Values</th><th>Input / Autofill</th><th>Logic</th><th>Validation &amp; Error Messages</th></tr></thead>
+        <tbody>
+          <tr><td>Past Trainings &middot; Total Recorded</td><td>Read-only count</td><td>&mdash;</td><td>Calculated</td><td>Count of Past training blocks.</td><td>&mdash;</td></tr>
+          <tr><td>Past Trainings &middot; Soft Skill</td><td>Read-only count</td><td>&mdash;</td><td>Calculated</td><td>Past blocks with Skill Type = Soft Skill.</td><td>&mdash;</td></tr>
+          <tr><td>Past Trainings &middot; Technical Skill</td><td>Read-only count</td><td>&mdash;</td><td>Calculated</td><td>Past blocks with Skill Type = Technical Skill.</td><td>&mdash;</td></tr>
+          <tr><td>Past Trainings &middot; Fully Completed</td><td>Read-only count (green)</td><td>&mdash;</td><td>Calculated</td><td>Past blocks with Completion Status = Completed.</td><td>&mdash;</td></tr>
+          <tr><td>Past Trainings &middot; Re-training Flagged</td><td>Read-only count (amber)</td><td>&mdash;</td><td>Calculated</td><td>Past blocks whose Re-training toggle is On.</td><td>&mdash;</td></tr>
+          <tr><td>Required Trainings &middot; Total Identified</td><td>Read-only count</td><td>&mdash;</td><td>Calculated</td><td>Section&nbsp;I re-training rows + Section&nbsp;II new rows.</td><td>&mdash;</td></tr>
+          <tr><td>Required Trainings &middot; Re-training</td><td>Read-only count</td><td>&mdash;</td><td>Calculated</td><td>Count of Section&nbsp;I rows.</td><td>&mdash;</td></tr>
+          <tr><td>Required Trainings &middot; New Trainings</td><td>Read-only count</td><td>&mdash;</td><td>Calculated</td><td>Count of Section&nbsp;II rows.</td><td>&mdash;</td></tr>
+          <tr><td>Required Trainings &middot; Critical / High Gap</td><td>Read-only count (red)</td><td>&mdash;</td><td>Calculated</td><td>Required rows with Gap Severity = Critical or High.</td><td>&mdash;</td></tr>
+          <tr><td>Required Trainings &middot; Completed</td><td>Read-only count (green)</td><td>&mdash;</td><td>Calculated</td><td>Required rows with Implementation Status = Completed.</td><td>&mdash;</td></tr>
+          <tr><td>Capacity Picture &middot; Total Trainings</td><td>Read-only count</td><td>&mdash;</td><td>Calculated</td><td>Past total + Required total.</td><td>&mdash;</td></tr>
+          <tr><td>Capacity Picture &middot; Skill Areas Covered</td><td>Read-only count</td><td>&mdash;</td><td>Calculated</td><td>Distinct skill areas across Past + Required rows.</td><td>&mdash;</td></tr>
+          <tr><td>Capacity Picture &middot; Gaps Remaining</td><td>Read-only count (amber)</td><td>&mdash;</td><td>Calculated</td><td>max(0, Required total &minus; Required Completed).</td><td>&mdash;</td></tr>
+          <tr><td>Capacity Picture &middot; Interventions Completed</td><td>Read-only count (green)</td><td>&mdash;</td><td>Calculated</td><td>= Required rows with status Completed.</td><td>&mdash;</td></tr>
+          <tr><td>Status &middot; Completed</td><td>Read-only count (green)</td><td>&mdash;</td><td>Calculated</td><td>Required rows with status = Completed.</td><td>&mdash;</td></tr>
+          <tr><td>Status &middot; Planned / Scheduled</td><td>Read-only count</td><td>&mdash;</td><td>Calculated</td><td>Required rows with status = Planned or Scheduled.</td><td>&mdash;</td></tr>
+          <tr><td>Status &middot; Identified</td><td>Read-only count</td><td>&mdash;</td><td>Calculated</td><td>Required rows with status = Identified.</td><td>&mdash;</td></tr>
+          <tr><td>Status &middot; Pending</td><td>Read-only count (amber)</td><td>&mdash;</td><td>Calculated</td><td>Required rows with status unset (&ldquo;&mdash;&nbsp;Select&nbsp;&mdash;&rdquo;).</td><td>&mdash;</td></tr>
+        </tbody>
+      </table>
+
+      <h4 style="font-size:14px;color:var(--teal);margin:14px 0 10px;">1.3 Intervention Flag strip (four count cards)</h4>
+      <table class="brd-field-table">
+        <thead><tr><th>Field Name</th><th>Field Type</th><th>Input Values</th><th>Input / Autofill</th><th>Logic</th><th>Validation &amp; Error Messages</th></tr></thead>
+        <tbody>
+          <tr><td>Re-training Needed</td><td>Read-only count card (amber &#8635;)</td><td>&mdash;</td><td>Calculated</td><td>= Past blocks with Re-training toggle On.</td><td>&mdash;</td></tr>
+          <tr><td>Critical Gap</td><td>Read-only count card (red !)</td><td>&mdash;</td><td>Calculated</td><td>= Required rows with Gap Severity Critical or High.</td><td>&mdash;</td></tr>
+          <tr><td>New Training Added</td><td>Read-only count card (blue +)</td><td>&mdash;</td><td>Calculated</td><td>= count of Section&nbsp;II new training rows.</td><td>&mdash;</td></tr>
+          <tr><td>Interventions Completed</td><td>Read-only count card (green &#10003;)</td><td>&mdash;</td><td>Calculated</td><td>= Required rows with status = Completed.</td><td>&mdash;</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ============ TAB 2: PAST TRAININGS ============ -->
+  <div class="accordion">
+    <div class="accordion-trigger" onclick="this.parentElement.classList.toggle('open')">Tab 2 &mdash; Past Trainings (trainings already attended; child table of training blocks)</div>
+    <div class="accordion-body">
+      <p style="font-size:13px;color:var(--ink);margin-bottom:10px;">Repeating child table: each row is a collapsible &ldquo;training block&rdquo; added via <em>+ Add Past Training</em>. Block header carries the training name (synced with the name field below), a skill-type badge and a Remove button (confirm prompt). Each block has three sub-sections plus a terracotta Intervention Need panel, with a foot Total bar across all blocks. Below are all fields of one training row.</p>
+
+      <h4 style="font-size:14px;color:var(--teal);margin-bottom:10px;">2.1 Past Trainings &mdash; I. Training Details</h4>
+      <table class="brd-field-table">
+        <thead><tr><th>Field Name</th><th>Field Type</th><th>Input Values</th><th>Input / Autofill</th><th>Logic</th><th>Validation &amp; Error Messages</th></tr></thead>
+        <tbody>
+          <tr><td>Training Name</td><td>Text</td><td>Free text</td><td>Input</td><td>Syncs both ways with the block header name input. Source for the re-training bridge name in Required &rarr; Section&nbsp;I.</td><td>&mdash;</td></tr>
+          <tr><td>Skill Type <strong>*</strong></td><td>Select</td><td>&mdash; Select &mdash; / Soft Skill / Technical Skill</td><td>Input</td><td>Mandatory. Drives the header badge (Soft = purple, Technical = blue) and filters the Skill Area listbox to the matching optgroup. Feeds Summary Soft / Technical counts.</td><td>Required: &ldquo;Select the skill type.&rdquo;</td></tr>
+          <tr><td>Skill Area <strong>*</strong></td><td>Multi-select listbox (grouped)</td><td>Soft: Communication / Leadership / Customer Interaction / Confidence Building / Financial Discipline / Team Coordination / Entrepreneurial Mindset / Decision Making &nbsp;&middot;&nbsp; Technical: Product Making / Recipe Standardisation / Product Consistency / Food Preparation / Craft Technique / Finishing Technique / Production Workflow / Product Innovation / Material Handling / Quality Management</td><td>Input</td><td>Mandatory. Hold Ctrl/Cmd to select multiple. Options shown depend on Skill Type (soft optgroup for Soft, technical optgroup for Technical, both if none chosen). Comma-joined selection surfaces in the Summary Skill Area column.</td><td>Required: &ldquo;Select at least one skill area.&rdquo;</td></tr>
+          <tr><td>Provider / Trainer</td><td>Text</td><td>Free text</td><td>Input</td><td>Provider or trainer name who delivered the training.</td><td>&mdash;</td></tr>
+          <tr><td>Training Format</td><td>Select</td><td>&mdash; Select &mdash; / Classroom / Workshop / On-site Demonstration / Exposure Visit / One-on-one Mentoring / Group Training / Online / Self-paced</td><td>Input</td><td>Mode in which the training was delivered.</td><td>&mdash;</td></tr>
+          <tr><td>Location</td><td>Text</td><td>Free text</td><td>Input</td><td>Venue or location of the training.</td><td>&mdash;</td></tr>
+          <tr><td>Start Date</td><td>Date</td><td>Calendar date</td><td>Input</td><td>When the training began.</td><td>&mdash;</td></tr>
+          <tr><td>End Date</td><td>Date</td><td>Calendar date</td><td>Input</td><td>When the training ended.</td><td>End Date should be &ge; Start Date: &ldquo;End date cannot be before start date.&rdquo;</td></tr>
+          <tr><td>Completion Status <strong>*</strong></td><td>Select</td><td>&mdash; Select &mdash; / Completed / Partial / Ongoing / Dropped</td><td>Input</td><td>Mandatory. &ldquo;Completed&rdquo; counts toward Summary &amp; Total bar &ldquo;Fully Completed&rdquo;.</td><td>Required: &ldquo;Select the completion status.&rdquo;</td></tr>
+        </tbody>
+      </table>
+
+      <h4 style="font-size:14px;color:var(--teal);margin:14px 0 10px;">2.2 Past Trainings &mdash; II. Skill Retention &amp; Application (the &ldquo;did it stick?&rdquo; assessment)</h4>
+      <table class="brd-field-table">
+        <thead><tr><th>Field Name</th><th>Field Type</th><th>Input Values</th><th>Input / Autofill</th><th>Logic</th><th>Validation &amp; Error Messages</th></tr></thead>
+        <tbody>
+          <tr><td>Skill Retention</td><td>Select</td><td>&mdash; Select &mdash; / Cannot Apply / Applies with Support / Independent / Can Train Others</td><td>Input</td><td>How well the entrepreneur retains the skill &mdash; the primary signal for whether re-training is needed (&ldquo;Cannot Apply&rdquo; / &ldquo;Applies with Support&rdquo; typically warrant the flag).</td><td>&mdash;</td></tr>
+          <tr><td>Applied in Enterprise?</td><td>Select</td><td>&mdash; Select &mdash; / Yes / Partial / No</td><td>Input</td><td>Whether the skill is actually being used in the enterprise.</td><td>&mdash;</td></tr>
+          <tr><td>Behaviour Change Observed?</td><td>Select</td><td>&mdash; Select &mdash; / Yes &mdash; Significant / Yes &mdash; Minor / No Change / Too Early to Tell</td><td>Input</td><td>Observed behavioural change since the training.</td><td>&mdash;</td></tr>
+          <tr><td>Improvement Seen</td><td>Select</td><td>&mdash; Select &mdash; / Confidence Improved / Product Consistency Improved / Production Speed Improved / Customer Interaction Improved / Entrepreneurial Behaviour Improved / Multiple Improvements</td><td>Input</td><td>Nature of the improvement attributable to the training.</td><td>&mdash;</td></tr>
+          <tr><td>Time Since Training</td><td>Select</td><td>&mdash; Select &mdash; / Less than 1 month / 1&ndash;3 months / 3&ndash;6 months / More than 6 months</td><td>Input</td><td>Elapsed time since the training, contextualising retention.</td><td>&mdash;</td></tr>
+        </tbody>
+      </table>
+
+      <h4 style="font-size:14px;color:var(--teal);margin:14px 0 10px;">2.3 Past Trainings &mdash; III. Remarks</h4>
+      <table class="brd-field-table">
+        <thead><tr><th>Field Name</th><th>Field Type</th><th>Input Values</th><th>Input / Autofill</th><th>Logic</th><th>Validation &amp; Error Messages</th></tr></thead>
+        <tbody>
+          <tr><td>Entrepreneur Feedback</td><td>Textarea</td><td>Free text</td><td>Input</td><td>Entrepreneur&rsquo;s own feedback on this past training.</td><td>&mdash;</td></tr>
+          <tr><td>Trainer Feedback</td><td>Textarea</td><td>Free text</td><td>Input</td><td>Trainer&rsquo;s remarks.</td><td>&mdash;</td></tr>
+          <tr><td>Field Team Observation</td><td>Textarea</td><td>Free text</td><td>Input</td><td>What the field team observed.</td><td>&mdash;</td></tr>
+        </tbody>
+      </table>
+
+      <h4 style="font-size:14px;color:var(--teal);margin:14px 0 10px;">2.4 Skill Gaps &mdash; Intervention Need (terracotta flag panel; raises a flag, captures no cost)</h4>
+      <div class="callout callout-terra"><strong>Re-training conditional logic.</strong> The Re-training toggle is the single trigger for the Past &rarr; Required bridge. When turned <strong>On</strong>, the note flips from &ldquo;Not flagged&rdquo; to &ldquo;&#8635;&nbsp;Flagged &rarr; Details in Required Tab&rdquo;, and a bridged row is created in <em>Required Trainings &rarr; Section&nbsp;I</em> pre-filled (read-only) with this training&rsquo;s Name, Skill Area and the Justification text typed below; the Justification box syncs live into that row. Turning the toggle <strong>Off</strong> (or removing the bridged Section&nbsp;I row) clears the flag and removes the row. The companion cell carries a static note explaining this routing.</div>
+      <table class="brd-field-table">
+        <thead><tr><th>Field Name</th><th>Field Type</th><th>Input Values</th><th>Input / Autofill</th><th>Logic</th><th>Validation &amp; Error Messages</th></tr></thead>
+        <tbody>
+          <tr><td>Re-training needed for this skill?</td><td>Toggle (on/off)</td><td>Off (default) / On</td><td>Input</td><td>When On, flags the training for re-training and creates the bridged Section&nbsp;I row; note becomes &ldquo;&#8635; Flagged &rarr; Details in Required Tab&rdquo;. Counts toward Summary &amp; Total bar &ldquo;Re-training Flagged&rdquo;.</td><td>&mdash;</td></tr>
+          <tr><td>Justification (Why is re-training needed?)</td><td>Textarea</td><td>Free text</td><td>Input</td><td>Reason for re-training; syncs live into the bridged Section&nbsp;I row&rsquo;s &ldquo;Justification (from Past Trainings)&rdquo; field.</td><td>Recommended when the toggle is On: &ldquo;Add a justification for re-training.&rdquo;</td></tr>
+          <tr><td>Routing note</td><td>Read-only label (static)</td><td>&mdash;</td><td>Static</td><td>States &ldquo;When flagged, this training appears in Required Trainings &rarr; Section&nbsp;I pre-filled with skill area and justification.&rdquo;</td><td>&mdash;</td></tr>
+        </tbody>
+      </table>
+
+      <h4 style="font-size:14px;color:var(--teal);margin:14px 0 10px;">2.5 Past Trainings &mdash; Total bar (foot, read-only)</h4>
+      <table class="brd-field-table">
+        <thead><tr><th>Field Name</th><th>Field Type</th><th>Input Values</th><th>Input / Autofill</th><th>Logic</th><th>Validation &amp; Error Messages</th></tr></thead>
+        <tbody>
+          <tr><td>Total</td><td>Read-only count</td><td>&mdash;</td><td>Calculated</td><td>Number of Past training blocks.</td><td>&mdash;</td></tr>
+          <tr><td>Soft Skill</td><td>Read-only count</td><td>&mdash;</td><td>Calculated</td><td>Past blocks with Skill Type = Soft Skill.</td><td>&mdash;</td></tr>
+          <tr><td>Product Technical</td><td>Read-only count</td><td>&mdash;</td><td>Calculated</td><td>Past blocks with Skill Type = Technical Skill.</td><td>&mdash;</td></tr>
+          <tr><td>Fully Completed</td><td>Read-only count</td><td>&mdash;</td><td>Calculated</td><td>Past blocks with Completion Status = Completed.</td><td>&mdash;</td></tr>
+          <tr><td>Intervention Flagged</td><td>Read-only count (amber)</td><td>&mdash;</td><td>Calculated</td><td>Past blocks with the Re-training toggle On.</td><td>&mdash;</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ============ TAB 3: REQUIRED TRAININGS ============ -->
+  <div class="accordion">
+    <div class="accordion-trigger" onclick="this.parentElement.classList.toggle('open')">Tab 3 &mdash; Required Trainings (Section I: Re-training Interventions &middot; Section II: New Required Trainings)</div>
+    <div class="accordion-body">
+      <div class="callout callout-terra"><strong>Bridge from Past Trainings (Rule 3).</strong> Section&nbsp;I rows are not entered from scratch &mdash; they are auto-populated when a Past Training&rsquo;s Re-training flag is toggled On, arriving pre-filled (read-only) with the Past Training name, Skill Area and Justification. Empty state: &ldquo;No re-training interventions flagged yet &mdash; toggle the flag in Past Trainings to populate this section.&rdquo; A manual <em>+ Add Re-training Row</em> is also available. Section&nbsp;II New Required Trainings are standalone skill gaps not linked to any past record, added via <em>+ Add New Required Training</em>. Both row types carry an Implementation Status block and the identical six-dimension Post-Training Assessment scorecard.</div>
+
+      <h4 style="font-size:14px;color:var(--teal);margin:12px 0 10px;">3.1 Section I &mdash; Re-training Interventions: bridged read-only header</h4>
+      <table class="brd-field-table">
+        <thead><tr><th>Field Name</th><th>Field Type</th><th>Input Values</th><th>Input / Autofill</th><th>Logic</th><th>Validation &amp; Error Messages</th></tr></thead>
+        <tbody>
+          <tr><td>Past Training</td><td>Read-only text (autofill, cream-deep)</td><td>&mdash;</td><td>Autofill</td><td>Bridged from the flagged Past Training&rsquo;s name; &ldquo;&mdash;&rdquo; if not yet named.</td><td>&mdash;</td></tr>
+          <tr><td>Skill Area</td><td>Read-only text (autofill, cream-deep)</td><td>&mdash;</td><td>Autofill</td><td>Bridged from the flagged Past Training&rsquo;s Skill Area.</td><td>&mdash;</td></tr>
+          <tr><td>Justification (from Past Trainings)</td><td>Textarea</td><td>Free text</td><td>Autofill (editable)</td><td>Pre-filled from the Past Training justification; stays in sync with the source field.</td><td>&mdash;</td></tr>
+          <tr><td>Intervention Type</td><td>Read-only badge</td><td>&#8635; Re-training</td><td>Autofill</td><td>Fixed terracotta &ldquo;&#8635; Re-training&rdquo; badge marking the row origin.</td><td>&mdash;</td></tr>
+        </tbody>
+      </table>
+
+      <h4 style="font-size:14px;color:var(--teal);margin:14px 0 10px;">3.2 Section I &amp; II &mdash; Intervention Details (identical body for both row types)</h4>
+      <p style="font-size:13px;color:var(--ink);margin-bottom:6px;">Section&nbsp;II rows add a free-text Training Name and a Skill Type selector in the header (a blue &ldquo;+ New Training&rdquo; badge) instead of the bridged read-only header above; the detail grid below is identical for both.</p>
+      <table class="brd-field-table">
+        <thead><tr><th>Field Name</th><th>Field Type</th><th>Input Values</th><th>Input / Autofill</th><th>Logic</th><th>Validation &amp; Error Messages</th></tr></thead>
+        <tbody>
+          <tr><td>Training Name <em>(Section&nbsp;II only)</em></td><td>Text</td><td>Free text</td><td>Input</td><td>Name of the new required training; surfaces in the Summary overview row.</td><td>&mdash;</td></tr>
+          <tr><td>Skill Type</td><td>Select</td><td>&mdash; Select &mdash; / Soft Skill / Technical Skill</td><td>Input</td><td>Filters the Skill Area listbox to the matching optgroup (soft vs technical skill gap).</td><td>&mdash;</td></tr>
+          <tr><td>Skill Area</td><td>Multi-select listbox (grouped)</td><td>Soft &amp; Technical skill areas (same lists as Past Trainings 2.1)</td><td>Input</td><td>Hold Ctrl/Cmd to select multiple; shown options follow the chosen Skill Type. Contributes to the distinct Skill Areas Covered count.</td><td>&mdash;</td></tr>
+          <tr><td>Gap Severity</td><td>Select</td><td>&mdash; Select &mdash; / Critical / High / Medium / Low</td><td>Input</td><td>Severity of the skill gap. Critical/High feed the Summary &ldquo;Critical / High Gap&rdquo; count and the red &ldquo;Critical Gap&rdquo; flag card.</td><td>&mdash;</td></tr>
+          <tr><td>Current Level</td><td>Select</td><td>&mdash; Select &mdash; / No Exposure / Beginner / Intermediate / Advanced</td><td>Input</td><td>Entrepreneur&rsquo;s present skill level.</td><td>&mdash;</td></tr>
+          <tr><td>Required Level</td><td>Select</td><td>&mdash; Select &mdash; / No Exposure / Beginner / Intermediate / Advanced</td><td>Input</td><td>Target skill level after the intervention.</td><td>Required Level should be &ge; Current Level: &ldquo;Required level should not be below current level.&rdquo;</td></tr>
+          <tr><td>Problem Observed</td><td>Textarea</td><td>Free text</td><td>Input</td><td>Specific problem &mdash; e.g. inconsistent output, difficulty repeating recipe, low confidence while selling.</td><td>&mdash;</td></tr>
+          <tr><td>Intervention Type</td><td>Select</td><td>&mdash; Select &mdash; / Training / Demonstration / Mentoring / Exposure Visit / Apprenticeship / Refresher</td><td>Input</td><td>How the gap will be addressed.</td><td>&mdash;</td></tr>
+          <tr><td>Suggested Provider / Resource</td><td>Text</td><td>Free text</td><td>Input</td><td>Who can deliver this training.</td><td>&mdash;</td></tr>
+          <tr><td>Assigned To</td><td>Select</td><td>&mdash; Select &mdash; / Fellow / DC / Core Team / External Trainer</td><td>Input</td><td>Responsible party for delivering the intervention.</td><td>&mdash;</td></tr>
+          <tr><td>Expected Outcome</td><td>Textarea</td><td>Free text</td><td>Input</td><td>Target result &mdash; e.g. entrepreneur independently prepares product, improved consistency / communication confidence.</td><td>&mdash;</td></tr>
+        </tbody>
+      </table>
+
+      <h4 style="font-size:14px;color:var(--teal);margin:14px 0 10px;">3.3 Implementation Status (terracotta block; per Required row)</h4>
+      <table class="brd-field-table">
+        <thead><tr><th>Field Name</th><th>Field Type</th><th>Input Values</th><th>Input / Autofill</th><th>Logic</th><th>Validation &amp; Error Messages</th></tr></thead>
+        <tbody>
+          <tr><td>Status</td><td>Select</td><td>&mdash; Select &mdash; / Identified / Planned / Scheduled / Ongoing / Completed / Follow-up Pending</td><td>Input</td><td>Drives the Summary Status card breakdown, the &ldquo;Completed&rdquo; aggregate and the &ldquo;Interventions Completed&rdquo; flag card; unset rows count as Pending.</td><td>&mdash;</td></tr>
+          <tr><td>Scheduled Date</td><td>Date</td><td>Calendar date</td><td>Input</td><td>When the intervention is scheduled.</td><td>&mdash;</td></tr>
+          <tr><td>Implementation Notes</td><td>Textarea</td><td>Free text</td><td>Input</td><td>Notes on scheduling, logistics or dependencies.</td><td>&mdash;</td></tr>
+        </tbody>
+      </table>
+
+      <h4 style="font-size:14px;color:var(--teal);margin:14px 0 10px;">3.4 Learning Outcomes &mdash; Post-Training Assessment scorecard (six dimensions; per Required row, shared by both row types)</h4>
+      <p style="font-size:13px;color:var(--ink);margin-bottom:6px;">A six-dimension star scorecard rated after the intervention, over a 1&ndash;5 legend: 1&nbsp;None &middot; 2&nbsp;Minimal &middot; 3&nbsp;Moderate &middot; 4&nbsp;Good &middot; 5&nbsp;Excellent. Each dimension is a 1&ndash;5 star control, followed by six narrative text fields.</p>
+      <table class="brd-field-table">
+        <thead><tr><th>Field Name</th><th>Field Type</th><th>Input Values</th><th>Input / Autofill</th><th>Logic</th><th>Validation &amp; Error Messages</th></tr></thead>
+        <tbody>
+          <tr><td>Skill Improvement</td><td>Star rating</td><td>1&ndash;5 stars (None &rarr; Excellent)</td><td>Input</td><td>Dimension 1 &mdash; improvement in the targeted skill after the intervention.</td><td>&mdash;</td></tr>
+          <tr><td>Confidence Improvement</td><td>Star rating</td><td>1&ndash;5 stars</td><td>Input</td><td>Dimension 2 &mdash; change in the entrepreneur&rsquo;s confidence.</td><td>&mdash;</td></tr>
+          <tr><td>Production Improvement</td><td>Star rating</td><td>1&ndash;5 stars</td><td>Input</td><td>Dimension 3 &mdash; effect on production / output.</td><td>&mdash;</td></tr>
+          <tr><td>Working Independently</td><td>Star rating</td><td>1&ndash;5 stars</td><td>Input</td><td>Dimension 4 &mdash; ability to apply the skill without support.</td><td>&mdash;</td></tr>
+          <tr><td>Ability to Train Others</td><td>Star rating</td><td>1&ndash;5 stars</td><td>Input</td><td>Dimension 5 &mdash; capacity to pass the skill on (e.g. to SHG members).</td><td>&mdash;</td></tr>
+          <tr><td>Further Support Needed</td><td>Star rating</td><td>1&ndash;5 stars</td><td>Input</td><td>Dimension 6 &mdash; extent of additional support still required.</td><td>&mdash;</td></tr>
+          <tr><td>Entrepreneur Feedback</td><td>Textarea</td><td>Free text</td><td>Input</td><td>Entrepreneur&rsquo;s own feedback after the training.</td><td>&mdash;</td></tr>
+          <tr><td>Trainer / Facilitator Feedback</td><td>Textarea</td><td>Free text</td><td>Input</td><td>Trainer&rsquo;s observations and remarks.</td><td>&mdash;</td></tr>
+          <tr><td>Field Team Observation</td><td>Textarea</td><td>Free text</td><td>Input</td><td>What the field team observed post-training.</td><td>&mdash;</td></tr>
+          <tr><td>Learning Outcome</td><td>Textarea</td><td>Free text</td><td>Input</td><td>Key skills or knowledge actually gained.</td><td>&mdash;</td></tr>
+          <tr><td>Follow-up Actions</td><td>Textarea</td><td>Free text</td><td>Input</td><td>Next steps or follow-up required.</td><td>&mdash;</td></tr>
+          <tr><td>Assessment Date</td><td>Date</td><td>Calendar date</td><td>Input</td><td>Date the post-training assessment was conducted.</td><td>&mdash;</td></tr>
+        </tbody>
+      </table>
+
+      <h4 style="font-size:14px;color:var(--teal);margin:14px 0 10px;">3.5 Required Trainings &mdash; Total bar (foot, read-only)</h4>
+      <table class="brd-field-table">
+        <thead><tr><th>Field Name</th><th>Field Type</th><th>Input Values</th><th>Input / Autofill</th><th>Logic</th><th>Validation &amp; Error Messages</th></tr></thead>
+        <tbody>
+          <tr><td>Re-training</td><td>Read-only count</td><td>&mdash;</td><td>Calculated</td><td>Count of Section&nbsp;I rows.</td><td>&mdash;</td></tr>
+          <tr><td>New Trainings</td><td>Read-only count</td><td>&mdash;</td><td>Calculated</td><td>Count of Section&nbsp;II rows.</td><td>&mdash;</td></tr>
+          <tr><td>Critical / High Gap</td><td>Read-only count</td><td>&mdash;</td><td>Calculated</td><td>Section&nbsp;I + II rows with Gap Severity = Critical or High.</td><td>&mdash;</td></tr>
+          <tr><td>Completed</td><td>Read-only count</td><td>&mdash;</td><td>Calculated</td><td>Required rows with Implementation Status = Completed.</td><td>&mdash;</td></tr>
+          <tr><td>Auto-fetches to</td><td>Read-only label (static)</td><td>&mdash;</td><td>Static</td><td>States &ldquo;Details Scorecard&rdquo; &mdash; the Post-Training Assessment scorecard for each Required row.</td><td>&mdash;</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ============ TAB 4: TASKS ============ -->
+  <div class="accordion">
+    <div class="accordion-trigger" onclick="this.parentElement.classList.toggle('open')">Tab 4 &mdash; Tasks (capacity-building activity log child table)</div>
+    <div class="accordion-body">
+      <p style="font-size:13px;color:var(--ink);margin-bottom:10px;">Repeating child table added via <em>+ Add Row</em>; six seed tasks load by default (Awareness &amp; orientation on capacity building &rarr; Applied for scheme/training programme &rarr; Co-ordination with training provider &rarr; Received Registration/Confirmation &rarr; Conducted training/attended programme &rarr; Follow up on learning outcomes). Row No. auto-numbers (01, 02, &hellip;). Per row:</p>
+      <table class="brd-field-table">
+        <thead><tr><th>Field Name</th><th>Field Type</th><th>Input Values</th><th>Input / Autofill</th><th>Logic</th><th>Validation &amp; Error Messages</th></tr></thead>
+        <tbody>
+          <tr><td>No.</td><td>Read-only auto-number</td><td>&mdash;</td><td>Calculated</td><td>Sequential index, zero-padded.</td><td>&mdash;</td></tr>
+          <tr><td>Task Name</td><td>Text</td><td>Free text (seeded with the six standard tasks)</td><td>Input</td><td>The capacity-building activity.</td><td>&mdash;</td></tr>
+          <tr><td>Actual Start</td><td>Date</td><td>Calendar date</td><td>Input</td><td>When the task started.</td><td>&mdash;</td></tr>
+          <tr><td>Completion Date</td><td>Date</td><td>Calendar date</td><td>Input</td><td>When the task completed.</td><td>Completion Date should be &ge; Actual Start.</td></tr>
+          <tr><td>Status</td><td>Select</td><td>Pending / In Progress / Completed / Blocked</td><td>Input</td><td>Current state of the task.</td><td>&mdash;</td></tr>
+          <tr><td>Description</td><td>Text</td><td>Free text</td><td>Input</td><td>Task description.</td><td>&mdash;</td></tr>
+          <tr><td>Comment</td><td>Text</td><td>Free text</td><td>Input</td><td>Free remark.</td><td>&mdash;</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ============ TAB 5: RESOURCES ============ -->
+  <div class="accordion">
+    <div class="accordion-trigger" onclick="this.parentElement.classList.toggle('open')">Tab 5 &mdash; Resources (reference materials child table)</div>
+    <div class="accordion-body">
+      <p style="font-size:13px;color:var(--ink);margin-bottom:10px;">Repeating child table added via <em>+ Add Resource</em>; at least one row must remain (&ldquo;At least one row is required.&rdquo;). Per row:</p>
+      <table class="brd-field-table">
+        <thead><tr><th>Field Name</th><th>Field Type</th><th>Input Values</th><th>Input / Autofill</th><th>Logic</th><th>Validation &amp; Error Messages</th></tr></thead>
+        <tbody>
+          <tr><td>Resource Title</td><td>Text</td><td>Free text</td><td>Input</td><td>Name of the reference material.</td><td>&mdash;</td></tr>
+          <tr><td>Category</td><td>Select</td><td>&mdash; Select &mdash; / Training Material / Curriculum / Assessment Tool / Certificate / Reference Guide</td><td>Input</td><td>Classifies the resource.</td><td>&mdash;</td></tr>
+          <tr><td>Type</td><td>Select</td><td>&mdash; Select &mdash; / Document / Video / Link / Contact</td><td>Input</td><td>Resource format / nature.</td><td>&mdash;</td></tr>
+          <tr><td>Notes</td><td>Text</td><td>Free text</td><td>Input</td><td>Notes about the resource.</td><td>&mdash;</td></tr>
+          <tr><td>File</td><td>Attach (Upload)</td><td>File</td><td>Input</td><td>Upload a supporting file.</td><td>&mdash;</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ============ TAB 6: LOG BOOK ============ -->
+  <div class="accordion">
+    <div class="accordion-trigger" onclick="this.parentElement.classList.toggle('open')">Tab 6 &mdash; Log Book (field-visit task logs child table)</div>
+    <div class="accordion-body">
+      <p style="font-size:13px;color:var(--ink);margin-bottom:10px;">Repeating child table added via <em>+ Add Row</em>; one seed row on load (&ldquo;Add your task logs here&rdquo;). Row No. auto-numbers (01, 02, &hellip;). Per row:</p>
+      <table class="brd-field-table">
+        <thead><tr><th>Field Name</th><th>Field Type</th><th>Input Values</th><th>Input / Autofill</th><th>Logic</th><th>Validation &amp; Error Messages</th></tr></thead>
+        <tbody>
+          <tr><td>No.</td><td>Read-only auto-number</td><td>&mdash;</td><td>Calculated</td><td>Sequential index, zero-padded.</td><td>&mdash;</td></tr>
+          <tr><td>FE Associate</td><td>Text</td><td>Free text</td><td>Input</td><td>Field associate who made the log entry.</td><td>&mdash;</td></tr>
+          <tr><td>Log Date</td><td>Date</td><td>Calendar date</td><td>Input</td><td>Date of the log entry.</td><td>&mdash;</td></tr>
+          <tr><td>Entrepreneur Name</td><td>Text</td><td>Free text (defaults from profile)</td><td>Input / Autofill</td><td>Entrepreneur the log relates to.</td><td>&mdash;</td></tr>
+          <tr><td>Diagnostic Framework</td><td>Text</td><td>Free text (e.g. &ldquo;DF Capacity Building&rdquo;)</td><td>Input</td><td>Framework context for the log.</td><td>&mdash;</td></tr>
+          <tr><td>Task Name</td><td>Text</td><td>Free text</td><td>Input</td><td>Task referenced in the log.</td><td>&mdash;</td></tr>
+          <tr><td>Photo</td><td>Attach (Upload)</td><td>File / image</td><td>Input</td><td>Optional field photo.</td><td>&mdash;</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="callout callout-danger"><strong>Key validations (whole form):</strong> On every Past Training block, Skill Type, Skill Area and Completion Status are mandatory (Skill Area requires at least one selection); End Date must not precede Start Date. The Skill Area listbox must match the chosen Skill Type &mdash; selecting Soft Skill clears any technical selections and vice-versa. Toggling &ldquo;Re-training needed?&rdquo; On should be accompanied by a Justification and creates exactly one bridged Section&nbsp;I row; turning it Off (or removing that row) clears the flag &mdash; the two stay consistent. In Required rows, Required Level should not fall below Current Level. Status / Gap Severity drive every Summary count (Pending = unset status; Critical + High = the red Critical-Gap flag; Completed = the green Interventions-Completed flag). Resources require at least one row. All Summary cells, the four Aggregate cards, the Intervention Flag strip and both Total bars are read-only roll-ups &mdash; never edited directly.</div>
+
+  <div class="review-panel" data-section="m-cap-build">
+    <div class="review-strip"><span style="font-size:12px;color:var(--ink-soft);font-weight:500;">Section Review:</span>
+      <button class="review-status-btn" onclick="setReview('m-cap-build','draft',this)">Draft</button>
+      <button class="review-status-btn" onclick="setReview('m-cap-build','review',this)">In Review</button>
+      <button class="review-status-btn" onclick="setReview('m-cap-build','changes',this)">Needs Changes</button>
+      <button class="review-status-btn" onclick="setReview('m-cap-build','approved',this)">Approved</button>
+      <button style="margin-left:auto;background:none;border:none;font-size:12px;color:var(--sea);cursor:pointer;font-family:var(--font);text-decoration:underline;" onclick="copyLink('m-cap-build')">Copy Link</button></div>
+    <div class="review-comments"><div class="comment-list" id="comments-m-cap-build"></div>
+      <div class="comment-input-row"><input type="text" placeholder="Your name" style="max-width:120px" id="name-m-cap-build"><textarea rows="1" placeholder="Add a comment..." id="text-m-cap-build"></textarea><button class="comment-add-btn" onclick="addComment('m-cap-build')">Add</button></div></div>
+  </div>
+</div>

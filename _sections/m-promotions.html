@@ -1,0 +1,224 @@
+<div class="brd-section" id="m-promotions">
+  <div class="section-header"><span class="section-id">PR-MKT-004</span><h2 class="section-title">Promotions</h2></div>
+  <div class="section-desc">Part of the Market module, the Promotions framework maps how an entrepreneur currently promotes their products across all offline and online (digital) channels, flags whether new promotion methods are needed, proposes recommended channels with an implementation status, and tracks promotional / digital-marketing activities through a task log and resource library. Backed by <strong>DF Promotional Marketing</strong> (one record per entrepreneur) with <strong>Promotional Marketing Entry</strong> child rows phased Existing / Required.</div>
+
+  <h3 style="font-size:16px;color:var(--teal);margin:18px 0 10px;">On-Screen UI Structure</h3>
+  <div class="card"><div style="font-size:13px;line-height:1.9;color:var(--ink)">
+    <strong>Top bar:</strong> forest-teal header "Promotions" with a "PRIME Rural &middot; Marketing Framework" crumb, and an entrepreneur chip below it (avatar + name <em>auto-fetched from the Entrepreneur Profile</em>).<br>
+    <strong>Tab rail</strong> (uppercase pills): <strong>Summary</strong> &middot; <strong>Existing</strong> &middot; <strong>Required</strong> &middot; <strong>Resources</strong> &middot; <strong>Task Log</strong>. Active tab is teal-filled; the form opens on the Summary tab (which refreshes on open).<br>
+    <strong>Body:</strong> the <strong>Existing</strong> and <strong>Required</strong> tabs are channel <em>repeaters</em> ("+ Add Promotion" appends a row) backed by the same Promotional Marketing Entry child table, differentiated by a <em>Phase</em> field (Existing vs Required). The Existing tab additionally carries an <em>Intervention Need</em> block (toggle + justification). The Required tab adds an Implementation Status column. Resources and Task Log are independent child-table registers.<br>
+    <strong>Special widgets:</strong> (1) an <em>Intervention Need toggle</em> (forest-green when on) that reveals a justification textarea and flags the record for new promotion methods; (2) a <em>conditional Digital Platform Category</em> column that becomes relevant only when Channel Type = Online (NA when Offline); (3) an Implementation Status pill (Pending / In Progress / Completed / Not Feasible) on Required rows; (4) a Summary tab with a Promotion-wise Overview table, four Aggregate cards (Existing / Cost-Frequency / Interventions / Intervention Status) and four Intervention-flag tiles; (5) Upload / View file actions on Resources and Task Log rows.<br>
+    <strong>Calculated fields</strong> (entrepreneur chip, all Summary overview rows, aggregate counters and flag tiles, the live Task Log entry counter) render <em>italic on cream-deep background, read-only, with a tooltip</em> per Rule 1.
+  </div></div>
+  <div class="flow-container" style="margin-top:12px">
+    <div class="flow-step"><div class="flow-box">Summary</div><div class="flow-label">Auto roll-up</div></div>
+    <div class="flow-arrow">&rarr;</div>
+    <div class="flow-step"><div class="flow-box">Existing</div><div class="flow-label">Current channels + Intervention flag</div></div>
+    <div class="flow-arrow">&rarr;</div>
+    <div class="flow-step"><div class="flow-box">Required</div><div class="flow-label">Recommended channels + status</div></div>
+    <div class="flow-arrow">&rarr;</div>
+    <div class="flow-step"><div class="flow-box">Resources</div><div class="flow-label">Reference materials</div></div>
+    <div class="flow-arrow">&rarr;</div>
+    <div class="flow-step"><div class="flow-box">Task Log</div><div class="flow-label">Activity register</div></div>
+  </div>
+
+  <h3 style="font-size:16px;color:var(--teal);margin:18px 0 10px;">User Journey</h3>
+  <div class="card"><div class="flow-container">
+    <div class="flow-step"><div class="flow-box">1. Open Profile</div><div class="flow-label">Entrepreneur, District, Block auto-fetched</div></div>
+    <div class="flow-arrow">&rarr;</div>
+    <div class="flow-step"><div class="flow-box">2. Map Existing</div><div class="flow-label">Add current offline / online promotions</div></div>
+    <div class="flow-arrow">&rarr;</div>
+    <div class="flow-step"><div class="flow-box">3. Flag Need</div><div class="flow-label">Toggle "Need new methods?" + justify</div></div>
+    <div class="flow-arrow">&rarr;</div>
+    <div class="flow-step"><div class="flow-box">4. Recommend</div><div class="flow-label">Propose channels; set Implementation Status</div></div>
+    <div class="flow-arrow">&rarr;</div>
+    <div class="flow-step"><div class="flow-box">5. Resources</div><div class="flow-label">Attach guides, templates, evidence</div></div>
+    <div class="flow-arrow">&rarr;</div>
+    <div class="flow-step"><div class="flow-box">6. Log &amp; Review</div><div class="flow-label">Record tasks; Summary rolls up</div></div>
+  </div></div>
+
+  <!-- ===== TAB 1: EXISTING ===== -->
+  <div class="accordion open">
+    <div class="accordion-trigger" onclick="this.parentElement.classList.toggle('open')">Tab 1 &mdash; Existing (current promotion channels + Intervention Need)</div>
+    <div class="accordion-body">
+      <p style="font-size:13px;color:var(--ink);margin:4px 0 12px;">Caption: <em>"Map how the entrepreneur currently promotes their products &mdash; all offline and online activities."</em> A channel repeater ("+ Add Promotion") writes Promotional Marketing Entry rows with <strong>Phase = Existing</strong>. Below the table sits the <strong>Intervention Need</strong> block. Two demo rows are seeded (Facebook Page Posts, WhatsApp Status Updates).</p>
+
+      <h4 style="color:var(--sea);margin:14px 0 6px;">Header &mdash; Auto-fetched context (read-only)</h4>
+      <table class="field-table">
+        <thead><tr><th>Field Name</th><th>Field Type</th><th>Input Values</th><th>Input</th><th>Autofill</th><th>Logic</th><th>Validation &amp; Error Messages</th></tr></thead>
+        <tbody>
+          <tr><td>Entrepreneur</td><td>Link (Enterprenur Profile)</td><td>Entrepreneur Profile master</td><td>Manual (set on create)</td><td>Drives the chip &amp; all fetches</td><td>Unique &mdash; one DF Promotional Marketing record per entrepreneur. Autoname <code>PRM-.{enterprenur_name}.-.#####</code>.</td><td>Required. Duplicate entrepreneur rejected (unique).</td></tr>
+          <tr><td><em>Module</em></td><td>Select (read-only)</td><td>Accounts / Manufacturing / Product Development / Marketing</td><td>Calculated</td><td>Default "Marketing"</td><td>Fixed for this framework.</td><td>Non-editable.</td></tr>
+          <tr><td><em>Applicable To</em></td><td>Select (read-only)</td><td>Product / Enterpreneur</td><td>Calculated</td><td>Default "Product"</td><td>Fixed for this framework.</td><td>Non-editable.</td></tr>
+          <tr><td><em>District</em></td><td>Link (read-only, hidden)</td><td>District Master</td><td>Calculated</td><td>Fetched from Entrepreneur &rarr; district</td><td>Italic on cream-deep, tooltip (Rule 1).</td><td>Non-editable.</td></tr>
+          <tr><td><em>Block</em></td><td>Link (read-only, hidden)</td><td>Block Master</td><td>Calculated</td><td>Fetched from Entrepreneur &rarr; block</td><td>Italic on cream-deep, tooltip (Rule 1).</td><td>Non-editable.</td></tr>
+        </tbody>
+      </table>
+
+      <h4 style="color:var(--sea);margin:14px 0 6px;">Existing Promotions (Promotional Marketing Entry, Phase = Existing)</h4>
+      <p style="font-size:12px;color:var(--ink-soft);margin:2px 0 6px;">Repeater grid. Mockup columns: Promotion Name / Type / Handled by / Frequency / Notes. Backed by the richer child doctype below (Channel Type, Promotion Mode, Digital Platform Category, Platform Name, Handled By, Contact, Details / Impact, Tools Used).</p>
+      <table class="field-table">
+        <thead><tr><th>Field Name</th><th>Field Type</th><th>Input Values</th><th>Input</th><th>Autofill</th><th>Logic</th><th>Validation &amp; Error Messages</th></tr></thead>
+        <tbody>
+          <tr><td>#</td><td>Auto number</td><td>01, 02, &hellip;</td><td>Calculated</td><td>Row index (zero-padded)</td><td>Renumbers on add / delete.</td><td>Non-editable.</td></tr>
+          <tr><td><em>Phase</em></td><td>Select (read-only here)</td><td>Existing / Required</td><td>Calculated</td><td>Set to "Existing" for all rows on this tab</td><td>Required by the child doctype; segregates this tab's rows from the Required tab.</td><td>Required (system-set).</td></tr>
+          <tr><td>Promotion Name</td><td>Data</td><td>e.g., "Facebook Page Posts", "WhatsApp Status Updates"</td><td>Manual</td><td>&mdash;</td><td>Stored as Platform Name on the child row; primary label in Summary &amp; overview.</td><td>Required for the row to count in Summary. Error: "Enter the promotion name."</td></tr>
+          <tr><td>Type (Channel Type)</td><td>Select</td><td>Offline; Online</td><td>Manual</td><td>&mdash;</td><td>Drives the Online / Offline aggregate split. When Online, Digital Platform Category becomes relevant; when Offline it may be NA.</td><td>Optional; recommended. Counts toward Online / Offline tallies.</td></tr>
+          <tr><td>Promotion Mode</td><td>Select</td><td>Retail; Exhibitions; Hospitality; Direct; Festivals; Shops; Pop-ups; Social Media; Videos; Ads; Other</td><td>Manual</td><td>&mdash;</td><td>Categorises the promotion activity.</td><td>Optional.</td></tr>
+          <tr><td>Digital Platform Category</td><td>Select (conditional)</td><td>NA; WhatsApp; YouTube; Facebook; Instagram; Other</td><td>Manual</td><td>&mdash;</td><td><strong>Conditional:</strong> relevant when Channel Type = Online; "Can be NA if Channel Type is Offline."</td><td>Optional; set to NA for offline channels.</td></tr>
+          <tr><td>Handled by</td><td>Select / Data</td><td>Self; Family; Paid 3rd Party (mockup free-text e.g., "Self / Daughter")</td><td>Manual</td><td>&mdash;</td><td>Who runs the channel.</td><td>Optional.</td></tr>
+          <tr><td>Contact</td><td>Small Text</td><td>Manager / agency contact info</td><td>Manual</td><td>&mdash;</td><td>Relevant mainly when Handled by = Paid 3rd Party.</td><td>Optional.</td></tr>
+          <tr><td>Frequency</td><td>Select</td><td>Daily; Weekly; Monthly; Yearly</td><td>Manual</td><td>&mdash;</td><td>Drives the Cost / Frequency aggregate counts (Daily / Weekly / Monthly / Yearly).</td><td>Optional.</td></tr>
+          <tr><td>Notes (Details / Impact)</td><td>Small Text</td><td>e.g., "Product photos, occasional videos"; reach, spend, engagement, generated sales</td><td>Manual</td><td>&mdash;</td><td>Free observation field; "Generated sales or engagement accomplished from the channel."</td><td>Optional.</td></tr>
+          <tr><td>Tools Used</td><td>Select</td><td>Business Card; Brochure; Catalogue; Photos; Videos</td><td>Manual</td><td>&mdash;</td><td>Collateral used on the channel.</td><td>Optional.</td></tr>
+          <tr><td>Delete</td><td>Action (&times;)</td><td>&mdash;</td><td>Manual</td><td>&mdash;</td><td>Removes the row and renumbers.</td><td>&mdash;</td></tr>
+        </tbody>
+      </table>
+
+      <h4 style="color:var(--sea);margin:14px 0 6px;">Intervention Need block (terracotta panel)</h4>
+      <table class="field-table">
+        <thead><tr><th>Field Name</th><th>Field Type</th><th>Input Values</th><th>Input</th><th>Autofill</th><th>Logic</th><th>Validation &amp; Error Messages</th></tr></thead>
+        <tbody>
+          <tr><td>Need New Promotion Methods?</td><td>Toggle (Check)</td><td>Off / On</td><td>Manual</td><td>&mdash;</td><td>When On: note flips to "&#8635; Flagged &rarr; Add new promotion methods in Required tab", reveals the Justification field, and sets the "New Methods Needed" Summary flag to Yes. When Off: note reads "Not flagged" and the Justification is hidden.</td><td>Optional.</td></tr>
+          <tr><td>Justification</td><td>Small Text (conditional)</td><td>Reason for needing new promotion methods</td><td>Manual</td><td>&mdash;</td><td>Shown only when the toggle is On.</td><td>Recommended when the toggle is On.</td></tr>
+        </tbody>
+      </table>
+      <div class="callout callout-terra">A row counts in Summary only once its Promotion Name is filled. Channel Type drives the Online / Offline split; Frequency drives the Daily / Weekly / Monthly / Yearly cost counts. Turning on the Intervention toggle is the trigger to populate the Required tab.</div>
+    </div>
+  </div>
+
+  <!-- ===== TAB 2: REQUIRED ===== -->
+  <div class="accordion">
+    <div class="accordion-trigger" onclick="this.parentElement.classList.toggle('open')">Tab 2 &mdash; Required (recommended promotion channels + Implementation Status)</div>
+    <div class="accordion-body">
+      <p style="font-size:13px;color:var(--ink);margin:4px 0 12px;">Caption: <em>"Propose promotion strategies to add or upgrade based on identified gaps."</em> Same repeater, writing Promotional Marketing Entry rows with <strong>Phase = Required</strong>, plus a Suggested Handled by column and an Implementation Status column. Rows appear highlighted ("+ New") in the Summary overview. A demo row is seeded (Instagram Reels, In Progress).</p>
+      <table class="field-table">
+        <thead><tr><th>Field Name</th><th>Field Type</th><th>Input Values</th><th>Input</th><th>Autofill</th><th>Logic</th><th>Validation &amp; Error Messages</th></tr></thead>
+        <tbody>
+          <tr><td>#</td><td>Auto number</td><td>01, 02, &hellip;</td><td>Calculated</td><td>Row index (zero-padded)</td><td>Renumbers on add / delete.</td><td>Non-editable.</td></tr>
+          <tr><td><em>Phase</em></td><td>Select (read-only here)</td><td>Existing / Required</td><td>Calculated</td><td>Set to "Required" for all rows on this tab</td><td>Required by the child doctype; segregates these rows from the Existing tab.</td><td>Required (system-set).</td></tr>
+          <tr><td>Promotion Name</td><td>Data</td><td>e.g., "Instagram Reels"</td><td>Manual</td><td>&mdash;</td><td>Stored as Platform Name; primary label in Summary (shown with a "+ New" badge).</td><td>Required for the row to count. Error: "Enter the promotion name."</td></tr>
+          <tr><td>Type (Channel Type)</td><td>Select</td><td>Offline; Online</td><td>Manual</td><td>&mdash;</td><td>Drives Online / Offline additions in the Interventions aggregate card.</td><td>Optional; recommended.</td></tr>
+          <tr><td>Promotion Mode</td><td>Select</td><td>Retail; Exhibitions; Hospitality; Direct; Festivals; Shops; Pop-ups; Social Media; Videos; Ads; Other</td><td>Manual</td><td>&mdash;</td><td>Categorises the proposed activity.</td><td>Optional.</td></tr>
+          <tr><td>Digital Platform Category</td><td>Select (conditional)</td><td>NA; WhatsApp; YouTube; Facebook; Instagram; Other</td><td>Manual</td><td>&mdash;</td><td><strong>Conditional:</strong> relevant when Channel Type = Online; NA for Offline.</td><td>Optional.</td></tr>
+          <tr><td>Suggested Handled by</td><td>Select / Data</td><td>Self; Family; Paid 3rd Party (mockup free-text e.g., "Marketing Intern / Family")</td><td>Manual</td><td>&mdash;</td><td>Distinct values surface as "Suggested Handled By" in the Interventions card.</td><td>Optional.</td></tr>
+          <tr><td>Contact</td><td>Small Text</td><td>Manager / agency contact info</td><td>Manual</td><td>&mdash;</td><td>Relevant when a paid third party is suggested.</td><td>Optional.</td></tr>
+          <tr><td>Frequency</td><td>Select</td><td>Daily; Weekly; Monthly; Yearly</td><td>Manual</td><td>&mdash;</td><td>Proposed cadence.</td><td>Optional.</td></tr>
+          <tr><td>Notes (Details / Impact)</td><td>Small Text</td><td>e.g., "Short videos showing process and product"; tactics, budget, justification</td><td>Manual</td><td>&mdash;</td><td>Free field for the proposed tactics.</td><td>Optional.</td></tr>
+          <tr><td>Tools Used</td><td>Select</td><td>Business Card; Brochure; Catalogue; Photos; Videos</td><td>Manual</td><td>&mdash;</td><td>Collateral planned.</td><td>Optional.</td></tr>
+          <tr><td>Implementation Status</td><td>Select</td><td>Pending; In Progress; Completed; Not Feasible <span style="color:var(--ink-soft)">(child doctype underlying values: Suggested / Implemented)</span></td><td>Manual</td><td>&mdash;</td><td>Colour-coded pill (green / amber / cream / terracotta). Drives the Intervention Status card (Completed / In Progress / Pending / Not Feasible) and recalculates the Summary on change. Mandatory on the child row when Phase = Required.</td><td>Required when Phase = Required. Error: "Set the implementation status."</td></tr>
+          <tr><td>Delete</td><td>Action (&times;)</td><td>&mdash;</td><td>Manual</td><td>&mdash;</td><td>Removes the row and renumbers.</td><td>&mdash;</td></tr>
+        </tbody>
+      </table>
+      <div class="callout callout-terra">Required rows are the "intervention" recommendations &mdash; they roll up into "New Methods Recommended", Online / Offline Additions and the Intervention Status counts on the Summary. Blank / unset status is treated as Pending.</div>
+    </div>
+  </div>
+
+  <!-- ===== TAB 3: SUMMARY ===== -->
+  <div class="accordion">
+    <div class="accordion-trigger" onclick="this.parentElement.classList.toggle('open')">Tab 3 &mdash; Summary (auto roll-up, read-only)</div>
+    <div class="accordion-body">
+      <p style="font-size:13px;color:var(--ink);margin:4px 0 12px;">Entirely calculated &mdash; no manual entry; refreshes on open. Comprises (1) a Promotion-wise Overview table, (2) four Aggregate cards, (3) four Intervention-flag tiles. Caption: <em>"One row per existing promotion. Recommended new methods appear highlighted below."</em></p>
+
+      <h4 style="color:var(--sea);margin:10px 0 6px;">Promotion-wise Overview (one row per Existing promotion; Required rows appended &amp; highlighted)</h4>
+      <table class="field-table">
+        <thead><tr><th>Column</th><th>Field Type</th><th>Source</th><th>Input</th><th>Autofill</th><th>Logic</th><th>Validation &amp; Error Messages</th></tr></thead>
+        <tbody>
+          <tr><td><em>Promotion Name</em></td><td>Read-only</td><td>Existing / Required</td><td>Calculated</td><td>Promotion Name</td><td>Bold. Row skipped if name blank.</td><td>&mdash;</td></tr>
+          <tr><td><em>Type</em></td><td>Read-only badge</td><td>Channel Type</td><td>Calculated</td><td>Online (blue) / Offline (cream)</td><td>Colour-coded pill.</td><td>&mdash;</td></tr>
+          <tr><td><em>Handled By</em></td><td>Read-only</td><td>Handled by</td><td>Calculated</td><td>Handler value</td><td>"&mdash;" if blank.</td><td>&mdash;</td></tr>
+          <tr><td><em>Frequency</em></td><td>Read-only</td><td>Frequency</td><td>Calculated</td><td>Daily / Weekly / Monthly / Yearly</td><td>"&mdash;" if blank.</td><td>&mdash;</td></tr>
+          <tr><td><em>Notes</em></td><td>Read-only</td><td>Notes</td><td>Calculated</td><td>Notes text</td><td>Soft-ink colour.</td><td>&mdash;</td></tr>
+          <tr><td><em>Intervention Type</em></td><td>Read-only badge</td><td>Phase</td><td>Calculated</td><td>"&mdash;" for Existing rows; "+ New" (blue) for Required rows</td><td>Terracotta-tinted cell.</td><td>&mdash;</td></tr>
+          <tr><td><em>Implementation Status</em></td><td>Read-only badge</td><td>Required &middot; Implementation Status</td><td>Calculated</td><td>"&mdash;" for Existing; Pending / In Progress / Completed / Not Feasible pill for Required</td><td>Green-tinted cell; colour-coded pill.</td><td>&mdash;</td></tr>
+        </tbody>
+      </table>
+
+      <h4 style="color:var(--sea);margin:12px 0 6px;">Aggregate Cards (four cards, all read-only counters)</h4>
+      <table class="field-table">
+        <thead><tr><th>Metric</th><th>Field Type</th><th>Card</th><th>Input</th><th>Autofill</th><th>Logic</th><th>Validation &amp; Error Messages</th></tr></thead>
+        <tbody>
+          <tr><td><em>Total Promotions</em></td><td>Read-only count</td><td>Existing</td><td>Calculated</td><td>Count of named Existing rows</td><td>&mdash;</td><td>&mdash;</td></tr>
+          <tr><td><em>Online</em></td><td>Read-only count</td><td>Existing</td><td>Calculated</td><td>Existing rows with Type = Online</td><td>Blue.</td><td>&mdash;</td></tr>
+          <tr><td><em>Offline</em></td><td>Read-only count</td><td>Existing</td><td>Calculated</td><td>Existing rows with Type = Offline</td><td>&mdash;</td><td>&mdash;</td></tr>
+          <tr><td><em>Intervention Flagged</em></td><td>Read-only (Yes / No)</td><td>Existing</td><td>Calculated</td><td>State of the Intervention toggle</td><td>Amber "Yes" when flagged.</td><td>&mdash;</td></tr>
+          <tr><td><em>Daily Frequency</em></td><td>Read-only count</td><td>Cost</td><td>Calculated</td><td>Existing rows with Frequency = Daily</td><td>&mdash;</td><td>&mdash;</td></tr>
+          <tr><td><em>Weekly Frequency</em></td><td>Read-only count</td><td>Cost</td><td>Calculated</td><td>Existing rows with Frequency = Weekly</td><td>&mdash;</td><td>&mdash;</td></tr>
+          <tr><td><em>Monthly Frequency</em></td><td>Read-only count</td><td>Cost</td><td>Calculated</td><td>Existing rows with Frequency = Monthly</td><td>&mdash;</td><td>&mdash;</td></tr>
+          <tr><td><em>Yearly Frequency</em></td><td>Read-only count</td><td>Cost</td><td>Calculated</td><td>Existing rows with Frequency = Yearly</td><td>&mdash;</td><td>&mdash;</td></tr>
+          <tr><td><em>New Methods Recommended</em></td><td>Read-only count</td><td>Interventions</td><td>Calculated</td><td>Count of named Required rows</td><td>&mdash;</td><td>&mdash;</td></tr>
+          <tr><td><em>Online Additions</em></td><td>Read-only count</td><td>Interventions</td><td>Calculated</td><td>Required rows with Type = Online</td><td>Blue.</td><td>&mdash;</td></tr>
+          <tr><td><em>Offline Additions</em></td><td>Read-only count</td><td>Interventions</td><td>Calculated</td><td>Required rows with Type = Offline</td><td>&mdash;</td><td>&mdash;</td></tr>
+          <tr><td><em>Suggested Handled By</em></td><td>Read-only list</td><td>Interventions</td><td>Calculated</td><td>Distinct handler values across Required rows (comma-joined)</td><td>Truncated with ellipsis; "&mdash;" if none.</td><td>&mdash;</td></tr>
+          <tr><td><em>Completed</em></td><td>Read-only count</td><td>Intervention Status</td><td>Calculated</td><td>Required rows with status Completed</td><td>Green.</td><td>&mdash;</td></tr>
+          <tr><td><em>In Progress</em></td><td>Read-only count</td><td>Intervention Status</td><td>Calculated</td><td>Required rows with status In Progress</td><td>Amber.</td><td>&mdash;</td></tr>
+          <tr><td><em>Pending</em></td><td>Read-only count</td><td>Intervention Status</td><td>Calculated</td><td>Required rows with status Pending / unset</td><td>&mdash;</td><td>&mdash;</td></tr>
+          <tr><td><em>Not Feasible</em></td><td>Read-only count</td><td>Intervention Status</td><td>Calculated</td><td>Required rows with status Not Feasible</td><td>Deep terracotta.</td><td>&mdash;</td></tr>
+        </tbody>
+      </table>
+
+      <h4 style="color:var(--sea);margin:12px 0 6px;">Intervention Flag Tiles (four read-only tiles)</h4>
+      <table class="field-table">
+        <thead><tr><th>Tile</th><th>Field Type</th><th>Source</th><th>Input</th><th>Autofill</th><th>Logic</th><th>Validation &amp; Error Messages</th></tr></thead>
+        <tbody>
+          <tr><td><em>Existing Promotions</em></td><td>Read-only count</td><td>Existing</td><td>Calculated</td><td>Total named Existing rows</td><td>Green tile.</td><td>&mdash;</td></tr>
+          <tr><td><em>New Methods Needed</em></td><td>Read-only (Yes / No)</td><td>Intervention toggle</td><td>Calculated</td><td>Yes when flagged, else No</td><td>Terracotta tile.</td><td>&mdash;</td></tr>
+          <tr><td><em>Online (Total)</em></td><td>Read-only count</td><td>Existing + Required</td><td>Calculated</td><td>Online rows across both phases</td><td>Blue tile.</td><td>&mdash;</td></tr>
+          <tr><td><em>Offline (Total)</em></td><td>Read-only count</td><td>Existing + Required</td><td>Calculated</td><td>Offline rows across both phases</td><td>Cream tile.</td><td>&mdash;</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ===== TAB 4: RESOURCES ===== -->
+  <div class="accordion">
+    <div class="accordion-trigger" onclick="this.parentElement.classList.toggle('open')">Tab 4 &mdash; Resources (Reference Materials child table)</div>
+    <div class="accordion-body">
+      <p style="font-size:13px;color:var(--ink);margin:4px 0 12px;">Single child table of reference materials; at least one row required. Also surfaced as a Drive Resources / link in the underlying doctype.</p>
+      <table class="field-table">
+        <thead><tr><th>Field Name</th><th>Field Type</th><th>Input Values</th><th>Input</th><th>Autofill</th><th>Logic</th><th>Validation &amp; Error Messages</th></tr></thead>
+        <tbody>
+          <tr><td>Resource Title</td><td>Data</td><td>Free text</td><td>Manual</td><td>&mdash;</td><td>&mdash;</td><td>Required if row kept. Error: "Enter a resource title."</td></tr>
+          <tr><td>Category</td><td>Select</td><td>Social Media Guide; Platform Reference; Content Template; Budget Estimate; Campaign Tracker; Competitor Promotion; Govt. Scheme for Promotion; Other</td><td>Manual</td><td>&mdash;</td><td>&mdash;</td><td>Optional.</td></tr>
+          <tr><td>Type</td><td>Select</td><td>Guide / Manual; Template; Reference; Contact; Photo / Evidence</td><td>Manual</td><td>&mdash;</td><td>&mdash;</td><td>Optional.</td></tr>
+          <tr><td>Description / Notes</td><td>Data</td><td>Free text notes</td><td>Manual</td><td>&mdash;</td><td>&mdash;</td><td>Optional.</td></tr>
+          <tr><td>File</td><td>Attach (Upload / View)</td><td>File upload</td><td>Manual</td><td>&mdash;</td><td>Upload and View actions.</td><td>Optional.</td></tr>
+          <tr><td>Delete</td><td>Action (&times;)</td><td>&mdash;</td><td>Manual</td><td>&mdash;</td><td>Removes the row.</td><td>Blocked when only one row remains. Error: "At least one row is required."</td></tr>
+        </tbody>
+      </table>
+      <div class="callout callout-terra">Delete is blocked when only one row remains.</div>
+    </div>
+  </div>
+
+  <!-- ===== TAB 5: TASK LOG ===== -->
+  <div class="accordion">
+    <div class="accordion-trigger" onclick="this.parentElement.classList.toggle('open')">Tab 5 &mdash; Task Log (Promotions Activities register)</div>
+    <div class="accordion-body">
+      <p style="font-size:13px;color:var(--ink);margin:4px 0 12px;">Activity register ("Task Log &mdash; Promotions Activities") with a live entry counter. Each entry below.</p>
+      <table class="field-table">
+        <thead><tr><th>Field Name</th><th>Field Type</th><th>Input Values</th><th>Input</th><th>Autofill</th><th>Logic</th><th>Validation &amp; Error Messages</th></tr></thead>
+        <tbody>
+          <tr><td>No.</td><td>Auto number</td><td>01, 02, &hellip;</td><td>Calculated</td><td>Sequential, zero-padded</td><td>Renumbers on delete; drives the "&lt;n&gt; entries" counter.</td><td>Non-editable.</td></tr>
+          <tr><td>Date</td><td>Date</td><td>Date picker</td><td>Manual</td><td>&mdash;</td><td>&mdash;</td><td>Optional.</td></tr>
+          <tr><td>Task Name</td><td>Select</td><td>Promotions task list: 01 Awareness on Importance of Promotions; 02 Document Existing Promotion Activities; 03 Assess Reach and Effectiveness of Existing Promotions; 04 Identify Gaps in Promotion Coverage; 05 Research Platform Options (Online); 06 Recommend New Promotion Methods; 07 Set Up Social Media Profile / Page; 08 Create First Content Piece (Photo / Video); 09 Publish First Post / Campaign; 10 Train Entrepreneur on Content Creation; 11 Review First Month Promotion Performance; 12 Plan Next Promotion Cycle; 13 Coordinate with Marketing / Design Partners; 14 Track Leads / Inquiries from Promotions; 15 Update Promotions Module in CRM; "If other, specify in comments"</td><td>Manual</td><td>&mdash;</td><td>&mdash;</td><td>Required per entry. Error: "Select a task."</td></tr>
+          <tr><td>Notes / Outcome</td><td>Data</td><td>Free text</td><td>Manual</td><td>&mdash;</td><td>&mdash;</td><td>Optional.</td></tr>
+          <tr><td>Attachment</td><td>Attach (Upload)</td><td>File upload</td><td>Manual</td><td>&mdash;</td><td>&mdash;</td><td>Optional.</td></tr>
+          <tr><td>Delete</td><td>Action (&times;)</td><td>&mdash;</td><td>Manual</td><td>&mdash;</td><td>Removes the row, renumbers, updates the counter.</td><td>&mdash;</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="callout callout-danger"><strong>Key validations (whole form):</strong> (1) Entrepreneur is required and unique &mdash; one DF Promotional Marketing record per entrepreneur; duplicate rejected. (2) Module ("Marketing") and Applicable To ("Product") are read-only system defaults; District &amp; Block are read-only fetches from the Entrepreneur Profile and must never be hand-edited. (3) Every promotion row needs a Promotion Name to count in the Summary &mdash; "Enter the promotion name." (4) Phase is system-set (Existing on the Existing tab, Required on the Required tab). (5) Implementation Status is mandatory on Required rows ("Set the implementation status"); blank is treated as Pending. (6) Digital Platform Category is conditional &mdash; relevant when Channel Type = Online, NA when Offline. (7) When the Intervention toggle is On, a Justification is expected and the record is flagged "New Methods Needed = Yes". (8) Resources table must retain at least one row ("At least one row is required."). (9) Task Log entries require a Task Name ("Select a task."). (10) All Summary figures are system-calculated, read-only, and refresh on open; counts use Indian number formatting.</div>
+
+  <div class="review-panel" data-section="m-promotions">
+    <div class="review-strip"><span style="font-size:12px;color:var(--ink-soft);font-weight:500;">Section Review:</span>
+      <button class="review-status-btn" onclick="setReview('m-promotions','draft',this)">Draft</button>
+      <button class="review-status-btn" onclick="setReview('m-promotions','review',this)">In Review</button>
+      <button class="review-status-btn" onclick="setReview('m-promotions','changes',this)">Needs Changes</button>
+      <button class="review-status-btn" onclick="setReview('m-promotions','approved',this)">Approved</button>
+      <button style="margin-left:auto;background:none;border:none;font-size:12px;color:var(--sea);cursor:pointer;font-family:var(--font);text-decoration:underline;" onclick="copyLink('m-promotions')">Copy Link</button></div>
+    <div class="review-comments"><div class="comment-list" id="comments-m-promotions"></div>
+      <div class="comment-input-row"><input type="text" placeholder="Your name" style="max-width:120px" id="name-m-promotions"><textarea rows="1" placeholder="Add a comment..." id="text-m-promotions"></textarea><button class="comment-add-btn" onclick="addComment('m-promotions')">Add</button></div></div>
+  </div>
+</div>

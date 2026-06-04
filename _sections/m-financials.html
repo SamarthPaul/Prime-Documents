@@ -1,0 +1,263 @@
+<div class="brd-section" id="m-financials">
+  <div class="section-header">
+    <span class="section-id">PR-AC-001</span>
+    <h2 class="section-title">Financials</h2>
+  </div>
+  <div class="section-desc">The Financials framework is the <strong>Accounts</strong> module of the Diagnostic Framework. It captures the entrepreneur's baseline financial picture (investment sources, loans, revenue &amp; expenditure), bookkeeping practice pre/post intervention, monthly performance over time, and a Business Model Calculator that derives monthly break-even. Golden-Thread ties: the Calculator auto-fetches Existing loans from Financial Assessment, Existing revenue/expense from the Revenue &amp; Expenditure card, and total monthly production quantity from the Production Capacity framework; its Projected break-even feeds the Summary tab.</div>
+  <div class="callout callout-terra">Key behaviour: data flows across tabs &mdash; Financial Assessment (Loans) &rarr; Calculator (Existing Loan 1 &amp; 2); Financial Assessment (Revenue &amp; Expenditure) &rarr; Calculator (Existing column, editable override); Growth (monthly table) &rarr; Summary KPIs &amp; trend chart; Calculator (Projected break-even) &rarr; Summary Monthly Break-even card. Bookkeeping Q1&ndash;Q3 captured Pre (Financial Assessment) and Post (Growth) drive the Summary Growth Trajectory.</div>
+
+  <h3 style="font-size:16px;color:var(--teal);margin:18px 0 10px;">On-Screen UI Structure</h3>
+  <div class="card"><div style="font-size:13px;line-height:1.9;color:var(--ink)">A teal hero bar reads "Financials" with the subtitle "Accounts &middot; Financial Bookkeeping &middot; Applicable to Entrepreneur" and Back / Save buttons. Below sits a horizontal tab rail of five tabs: <strong>Summary</strong>, <strong>Financial Assessment</strong>, <strong>Growth</strong>, <strong>Business Model Calculator</strong>, and <strong>Task Log</strong>.<br><br><strong>Summary</strong> (virtual / read-only, rendered by DfFinancialsSummary.vue) leads with a 4-tile KPI grid (Total Investment, Avg Monthly Revenue, Avg Net Profit/Month, Profit Margin), then a two-column split of an "Investment &amp; Loans" card (investment breakdown bar list + loans table) and a "Revenue &amp; Income" averages card. Below is an SVG "Monthly Revenue &amp; Profit Trend" bar chart (teal=revenue, terracotta=profit, redraws live from Growth edits), a "Bookkeeping Growth Trajectory" card of three Pre&rarr;Post comparison tiles (Practices Bookkeeping, Bookkeeping Level, Maintenance Frequency), and a "Monthly Break-even" card of two teal/terracotta hero tiles fetched from the Calculator's Projected scenario.<br><br><strong>Financial Assessment</strong> opens with a Details card, then Section I &mdash; Assessment (Investment Sources child table, Loan Details child table, Revenue &amp; Expenditure field grid with calculated profit/overall/margin), then Section II &mdash; Bookkeeping Practice (three baseline questions Q1&ndash;Q3) followed by a terracotta Intervention Need block with a toggle + justification textarea.<br><br><strong>Growth</strong> has Section I &mdash; Monthly Tracker (a monthly performance child table with totals + three teal average stat tiles) and Section II &mdash; Implementation Status (terracotta), the post-intervention bookkeeping reassessment Q1&ndash;Q3.<br><br><strong>Business Model Calculator</strong> is a collapsible four-section calculator (I. Loan Terms grid with auto-fetched/manual rows + add-to-total checkboxes; II. Revenue &amp; Expense with Existing/Projected columns; III. Monthly Break-even output table; IV. Capital Costs card), ending in a teal result hero, a status banner (good/warn/bad), and a help card. A legend distinguishes auto-fetched (read-only), input, and auto-calculated cells.<br><br><strong>Task Log</strong> is a single child table of bookkeeping intervention tasks with date, task dropdown, notes, and an upload/view attachment cell.<br><br>Calculated fields render italic on a cream-deep background with a formula tooltip (General Rule 1); auto-fetched fields are read-only on cream-deep (Rule 2).</div></div>
+  <div class="flow-container" style="margin-top:12px"><div class="flow-step"><div class="flow-box">Summary</div></div><div class="flow-arrow">&rarr;</div><div class="flow-step"><div class="flow-box">Financial Assessment</div></div><div class="flow-arrow">&rarr;</div><div class="flow-step"><div class="flow-box">Growth</div></div><div class="flow-arrow">&rarr;</div><div class="flow-step"><div class="flow-box">Business Model Calculator</div></div><div class="flow-arrow">&rarr;</div><div class="flow-step"><div class="flow-box">Task Log</div></div></div>
+
+  <h3 style="font-size:16px;color:var(--teal);margin:18px 0 10px;">User Journey</h3>
+  <div class="card"><div class="flow-container"><div class="flow-step"><div class="flow-box">Open Financials</div><div class="flow-label">Fessociate via Diagnostics &rarr; Accounts &rarr; Financials, or EP dashboard framework card</div></div><div class="flow-arrow">&rarr;</div><div class="flow-step"><div class="flow-box">Capture baseline</div><div class="flow-label">Financial Assessment: investment sources, loans, revenue/expense, bookkeeping Q1&ndash;Q3</div></div><div class="flow-arrow">&rarr;</div><div class="flow-step"><div class="flow-box">Flag intervention</div><div class="flow-label">toggle Intervention Need + justify if bookkeeping gaps found</div></div><div class="flow-arrow">&rarr;</div><div class="flow-step"><div class="flow-box">Log monthly data</div><div class="flow-label">Growth tab: add reporting months + revenue/expense/evidence</div></div><div class="flow-arrow">&rarr;</div><div class="flow-step"><div class="flow-box">Run Calculator</div><div class="flow-label">enter Projected targets &amp; new loan; break-even auto-computes</div></div><div class="flow-arrow">&rarr;</div><div class="flow-step"><div class="flow-box">Save</div><div class="flow-label">Summary KPIs, trend, trajectory &amp; break-even regenerate</div></div></div></div>
+
+  <div class="accordion open"><div class="accordion-trigger" onclick="this.parentElement.classList.toggle('open')">Tab 1: Summary <span class="acc-arrow">&#9660;</span></div>
+    <div class="accordion-body">
+      <p style="font-size:13px;color:var(--ink-soft);margin:0 0 12px;">Virtual, read-only dashboard (DfFinancialsSummary.vue). No editable fields &mdash; every value is calculated or fetched from the other tabs. Listed below grouped by widget.</p>
+
+      <h4 style="font-size:14px;color:var(--teal);margin-bottom:10px;">KPI Tiles (4)</h4>
+      <table class="brd-table"><thead><tr><th>Field Name</th><th>Field Type</th><th>Input Values</th><th>Input / Autofill</th><th>Logic</th><th>Validation &amp; Error Messages</th></tr></thead>
+      <tbody>
+        <tr><td>Total Investment</td><td>Currency</td><td>e.g. &#8377;2,00,000</td><td>Calculated</td><td>Sum of all Investment Sources rows (amt). Sub-label "Across N sources".</td><td>Read-only; &ge; 0.</td></tr>
+        <tr><td>Avg Monthly Revenue</td><td>Currency</td><td>e.g. &#8377;37,500</td><td>Calculated</td><td>Mean of Growth monthly Revenue across all months on file.</td><td>Read-only; "&mdash;" when no months.</td></tr>
+        <tr><td>Avg Net Profit / Month</td><td>Currency</td><td>e.g. &#8377;13,800</td><td>Calculated</td><td>Avg Revenue &minus; Avg Expenditure (after expenses &amp; EMI). Mean of (Revenue&minus;Expense) over Growth months.</td><td>Read-only.</td></tr>
+        <tr><td>Profit Margin</td><td>Percent</td><td>e.g. 36.8%</td><td>Calculated</td><td>(Avg Net Profit &divide; Avg Revenue) &times; 100, to 1 decimal. "&mdash;" if Avg Revenue &le; 0.</td><td>Read-only.</td></tr>
+      </tbody></table>
+
+      <h4 style="font-size:14px;color:var(--teal);margin:16px 0 10px;">Investment &amp; Loans card</h4>
+      <table class="brd-table"><thead><tr><th>Field Name</th><th>Field Type</th><th>Input Values</th><th>Input / Autofill</th><th>Logic</th><th>Validation &amp; Error Messages</th></tr></thead>
+      <tbody>
+        <tr><td>Investment breakdown (bar list)</td><td>Display</td><td>Source name + amount + bar</td><td>Autofill from Investment Sources</td><td>One bar per source; bar width = source amount &divide; total investment &times; 100%.</td><td>Read-only.</td></tr>
+        <tr><td>Loans summary table</td><td>Display</td><td>Source, Sanctioned, Outstanding, EMI</td><td>Autofill from Loan Details</td><td>Lists each loan row. Header shows "N sources &middot; M active loan(s)".</td><td>Read-only.</td></tr>
+      </tbody></table>
+
+      <h4 style="font-size:14px;color:var(--teal);margin:16px 0 10px;">Revenue &amp; Income card (per-month averages)</h4>
+      <table class="brd-table"><thead><tr><th>Field Name</th><th>Field Type</th><th>Input Values</th><th>Input / Autofill</th><th>Logic</th><th>Validation &amp; Error Messages</th></tr></thead>
+      <tbody>
+        <tr><td>Avg Monthly Business Revenue</td><td>Currency</td><td>e.g. &#8377;35,000</td><td>Autofill from Financial Assessment</td><td>Read-only.</td><td>Read-only.</td></tr>
+        <tr><td>Avg Monthly Expenditure</td><td>Currency</td><td>e.g. &#8377;22,000</td><td>Autofill</td><td>Read-only.</td><td>Read-only.</td></tr>
+        <tr><td>Average Additional Income</td><td>Currency</td><td>e.g. &#8377;2,500</td><td>Autofill</td><td>Read-only.</td><td>Read-only.</td></tr>
+        <tr><td>Avg Overall Monthly Revenue</td><td>Currency</td><td>e.g. &#8377;37,500</td><td>Calculated</td><td>Avg Monthly Business Revenue + Average Additional Income.</td><td>Read-only.</td></tr>
+        <tr><td>Avg Net Profit / Month</td><td>Currency</td><td>e.g. &#8377;13,800</td><td>Calculated</td><td>Avg Monthly Business Revenue &minus; Avg Monthly Expenditure.</td><td>Read-only.</td></tr>
+        <tr><td>Business Status</td><td>Pill</td><td>Operational / &hellip;</td><td>Autofill</td><td>Status pill carried from business profile.</td><td>Read-only.</td></tr>
+      </tbody></table>
+
+      <h4 style="font-size:14px;color:var(--teal);margin:16px 0 10px;">Trend chart, Trajectory &amp; Break-even</h4>
+      <table class="brd-table"><thead><tr><th>Field Name</th><th>Field Type</th><th>Input Values</th><th>Input / Autofill</th><th>Logic</th><th>Validation &amp; Error Messages</th></tr></thead>
+      <tbody>
+        <tr><td>Monthly Revenue &amp; Profit Trend</td><td>SVG bar chart</td><td>teal=Revenue, terracotta=Profit</td><td>Calculated</td><td>One bar group per Growth month; Profit = Revenue &minus; Expense. Y-axis auto-scales (nice ceiling). Empty state: "Add months in the Growth tab to plot the trend".</td><td>Read-only; redraws live on Growth edits.</td></tr>
+        <tr><td>Trajectory &mdash; Practices Bookkeeping</td><td>Pre&rarr;Post tile</td><td>Yes / No</td><td>Autofill</td><td>Pre = Financial Assessment Q1; Post = Growth Q1. Delta: No&rarr;Yes "Started practicing"; Yes&rarr;No "Stopped practicing"; Yes&rarr;Yes "Continues to practice".</td><td>Read-only; "Set values&hellip;" if either unset.</td></tr>
+        <tr><td>Trajectory &mdash; Bookkeeping Level</td><td>Pre&rarr;Post tile</td><td>Level 1&ndash;5</td><td>Autofill</td><td>Pre = FA Q2; Post = Growth Q2. Levels mapped 1&ndash;5 (None/Informal/Basic/Structured/Digital). Delta = Post &minus; Pre levels (e.g. "+2 levels").</td><td>Read-only.</td></tr>
+        <tr><td>Trajectory &mdash; Maintenance Frequency</td><td>Pre&rarr;Post tile</td><td>Yearly&hellip;Daily</td><td>Autofill</td><td>Pre = FA Q3; Post = Growth Q3. Ordered Yearly&lt;Occasionally&lt;Monthly&lt;Weekly&lt;Daily. Delta: "More frequent" / "Less frequent" / "Same frequency".</td><td>Read-only.</td></tr>
+        <tr><td>Monthly Break-even Revenue</td><td>Currency</td><td>e.g. &#8377;1,50,000 or "Not achievable"</td><td>Autofill from Calculator (Projected)</td><td>Mirrors Calculator Revenue Break-even/Month (Projected scenario).</td><td>Read-only.</td></tr>
+        <tr><td>Monthly Break-even Units</td><td>Int</td><td>e.g. 820 units or "Not achievable"</td><td>Autofill from Calculator (Projected)</td><td>Units needed to cover Expense + EMI; mirrors Calculator Unit Break-even/Month.</td><td>Read-only.</td></tr>
+      </tbody></table>
+      <div class="callout callout-teal">All Summary widgets are read-only mirrors. KPIs &amp; trend recompute from Growth; Revenue &amp; Income averages and Trajectory Pre from Financial Assessment; Break-even from the Calculator's Projected column.</div>
+    </div></div>
+
+  <div class="accordion"><div class="accordion-trigger" onclick="this.parentElement.classList.toggle('open')">Tab 2: Financial Assessment <span class="acc-arrow">&#9660;</span></div>
+    <div class="accordion-body">
+
+      <h4 style="font-size:14px;color:var(--teal);margin-bottom:10px;">Details (header card)</h4>
+      <table class="brd-table"><thead><tr><th>Field Name</th><th>Field Type</th><th>Input Values</th><th>Input / Autofill</th><th>Logic</th><th>Validation &amp; Error Messages</th></tr></thead>
+      <tbody>
+        <tr><td>Entrepreneur Name</td><td>Link (Entrepreneur)</td><td>e.g. Banshan Marak</td><td>Autofill</td><td>From the EP context the framework is opened in.</td><td>Read-only.</td></tr>
+        <tr><td>Module</td><td>Data</td><td>Accounts</td><td>Autofill</td><td>Fixed = "Accounts".</td><td>Read-only.</td></tr>
+        <tr><td>Applicable To</td><td>Data</td><td>Entrepreneur</td><td>Autofill</td><td>Fixed = "Entrepreneur".</td><td>Read-only.</td></tr>
+        <tr><td>Lifecycle</td><td>Pill</td><td>Active / &hellip;</td><td>Autofill</td><td>EP lifecycle status.</td><td>Read-only.</td></tr>
+      </tbody></table>
+
+      <h4 style="font-size:14px;color:var(--teal);margin:16px 0 10px;">Section I &mdash; Assessment &middot; Investment Sources (child table)</h4>
+      <table class="brd-table"><thead><tr><th>Field Name</th><th>Field Type</th><th>Input Values</th><th>Input / Autofill</th><th>Logic</th><th>Validation &amp; Error Messages</th></tr></thead>
+      <tbody>
+        <tr><td>Investment Source</td><td>Select</td><td>Self-funded, Family/Friends, Friends, Bank Loan, Government Scheme, NGO, Other</td><td>Input</td><td>Drives "Other Source Name" enablement.</td><td>Required per row.</td></tr>
+        <tr><td>Other Source Name</td><td>Data</td><td>Free text</td><td>Input (conditional)</td><td>Enabled only when Investment Source = "Other"; otherwise disabled/greyed (opacity 0.5, no pointer).</td><td>Required if Investment Source = "Other" &mdash; "Specify the other investment source".</td></tr>
+        <tr><td>Source Name</td><td>Data</td><td>e.g. Personal savings, Mother &mdash; handloom unit</td><td>Input</td><td>Descriptive label for the source.</td><td>Recommended.</td></tr>
+        <tr><td>Amount</td><td>Currency</td><td>e.g. 1,50,000</td><td>Input</td><td>Feeds Total Investment Sources Amount + Summary breakdown bars.</td><td>&ge; 0.</td></tr>
+        <tr><td>Total Investment Sources Amount</td><td>Currency</td><td>e.g. &#8377;2,00,000</td><td>Calculated (footer)</td><td>Sum of all rows' Amount; also shown in card header.</td><td>Read-only.</td></tr>
+      </tbody></table>
+      <div class="callout callout-teal">"+ Add Investment Source" appends a row; "&#10005;" removes. Total recomputes on every amount edit.</div>
+
+      <h4 style="font-size:14px;color:var(--teal);margin:16px 0 10px;">Section I &mdash; Assessment &middot; Loan Details (child table)</h4>
+      <table class="brd-table"><thead><tr><th>Field Name</th><th>Field Type</th><th>Input Values</th><th>Input / Autofill</th><th>Logic</th><th>Validation &amp; Error Messages</th></tr></thead>
+      <tbody>
+        <tr><td>Loan Amount</td><td>Currency</td><td>e.g. 2,00,000</td><td>Input</td><td>First two rows' amount sync to Calculator Existing Loan 1 &amp; 2.</td><td>&ge; 0.</td></tr>
+        <tr><td>Interest %</td><td>Float</td><td>e.g. 12 (% p.a.)</td><td>Input</td><td>Step 0.01; first two rows sync to Calculator loan rate.</td><td>&ge; 0; typically &le; 100.</td></tr>
+        <tr><td>Outstanding</td><td>Currency</td><td>e.g. 1,80,000</td><td>Input</td><td>Current outstanding principal; shown in Summary loans table.</td><td>&ge; 0; &le; Loan Amount &mdash; "Outstanding cannot exceed Loan Amount".</td></tr>
+        <tr><td>Term (mo)</td><td>Int</td><td>e.g. 60</td><td>Input</td><td>No. of instalments (months); first two rows sync to Calculator instalments.</td><td>&ge; 0 (integer).</td></tr>
+        <tr><td>Start</td><td>Date</td><td>e.g. 2026-04-01</td><td>Input</td><td>Loan start date.</td><td>End must be &ge; Start &mdash; "Loan end date must be on or after start date".</td></tr>
+        <tr><td>End</td><td>Date</td><td>e.g. 2031-04-01</td><td>Input</td><td>Loan end date.</td><td>&ge; Start.</td></tr>
+        <tr><td>EMI</td><td>Currency</td><td>e.g. 4,500</td><td>Input</td><td>Monthly repayment recorded; shown in Summary loans table.</td><td>&ge; 0.</td></tr>
+        <tr><td>Loan %</td><td>Float</td><td>e.g. 100</td><td>Input</td><td>Loan contribution as % of total.</td><td>0 &ndash; 100.</td></tr>
+        <tr><td>Loan/Scheme</td><td>Data</td><td>e.g. PMEGP &mdash; SBI</td><td>Input</td><td>Scheme name; first two rows' name sync to Calculator loan row labels.</td><td>Recommended.</td></tr>
+      </tbody></table>
+      <div class="callout callout-teal">"+ Add Loan" appends a row. Header shows active loan count. The first two loan rows auto-populate the Calculator's Existing Loan 1 &amp; 2 (amount, rate, instalments, scheme name).</div>
+
+      <h4 style="font-size:14px;color:var(--teal);margin:16px 0 10px;">Section I &mdash; Assessment &middot; Revenue &amp; Expenditure</h4>
+      <table class="brd-table"><thead><tr><th>Field Name</th><th>Field Type</th><th>Input Values</th><th>Input / Autofill</th><th>Logic</th><th>Validation &amp; Error Messages</th></tr></thead>
+      <tbody>
+        <tr><td>Avg Monthly Business Revenue</td><td>Currency</td><td>e.g. 35,000</td><td>Input</td><td>Source of truth for Calculator Existing Revenue (unless overridden in Calculator).</td><td>&ge; 0.</td></tr>
+        <tr><td>Avg Monthly Expenditure</td><td>Currency</td><td>e.g. 22,000</td><td>Input</td><td>Source of truth for Calculator Existing Expense (unless overridden).</td><td>&ge; 0.</td></tr>
+        <tr><td>Avg Additional Income</td><td>Currency</td><td>e.g. 2,500</td><td>Input</td><td>Feeds Avg Overall Monthly Revenue.</td><td>&ge; 0.</td></tr>
+        <tr><td>Avg Net Profit Per Month</td><td>Currency</td><td>e.g. &#8377;13,000</td><td>Calculated</td><td>Avg Monthly Business Revenue &minus; Avg Monthly Expenditure.</td><td>Read-only.</td></tr>
+        <tr><td>Additional Income Source</td><td>Data</td><td>e.g. Family handloom dividends</td><td>Input</td><td>Describes the additional income.</td><td>Recommended if Avg Additional Income &gt; 0.</td></tr>
+        <tr><td>Avg Overall Monthly Revenue</td><td>Currency</td><td>e.g. &#8377;37,500</td><td>Calculated</td><td>Avg Monthly Business Revenue + Avg Additional Income.</td><td>Read-only.</td></tr>
+        <tr><td>Profit Margin</td><td>Percent</td><td>e.g. 34.7%</td><td>Calculated</td><td>(Avg Net Profit &divide; Avg Overall Monthly Revenue) &times; 100, 1 decimal. "&mdash;" if Overall &le; 0.</td><td>Read-only.</td></tr>
+        <tr><td>Revenue Evidence</td><td>Attach</td><td>e.g. revenue-apr-may-2026.pdf</td><td>Input</td><td>Supporting document for stated revenue.</td><td>Recommended.</td></tr>
+        <tr><td>Business Status</td><td>Pill</td><td>Operational / &hellip;</td><td>Autofill</td><td>From business profile.</td><td>Read-only.</td></tr>
+      </tbody></table>
+      <div class="callout callout-teal">Calculation: Avg Net Profit = Revenue &minus; Expenditure; Avg Overall Revenue = Revenue + Additional Income; Margin = Net Profit &divide; Overall Revenue. These values push live into the Calculator's Existing column.</div>
+
+      <h4 style="font-size:14px;color:var(--teal);margin:16px 0 10px;">Section II &mdash; Bookkeeping Practice (Pre baseline)</h4>
+      <table class="brd-table"><thead><tr><th>Field Name</th><th>Field Type</th><th>Input Values</th><th>Input / Autofill</th><th>Logic</th><th>Validation &amp; Error Messages</th></tr></thead>
+      <tbody>
+        <tr><td>Q1: Does the Entrepreneur practice Bookkeeping?</td><td>Select</td><td>Yes, No</td><td>Input</td><td>Feeds Summary Trajectory Pre (Practices Bookkeeping).</td><td>Required to populate trajectory.</td></tr>
+        <tr><td>Q2: Level of Entrepreneur's Bookkeeping practice</td><td>Select</td><td>Level 1 &mdash; None (no records kept); Level 2 &mdash; Informal (mental notes, scattered slips); Level 3 &mdash; Basic (handwritten cash book, uncategorised); Level 4 &mdash; Structured (categorised ledger, monthly totals); Level 5 &mdash; Digital (digital tool, categorised, regular)</td><td>Input</td><td>Mapped to 1&ndash;5; feeds Trajectory Pre (Bookkeeping Level).</td><td>Required to populate trajectory.</td></tr>
+        <tr><td>Q3: How often does he maintain his Bookkeeping?</td><td>Select</td><td>Daily, Weekly, Monthly, Yearly, Occasionally</td><td>Input</td><td>Ordered Yearly&lt;Occasionally&lt;Monthly&lt;Weekly&lt;Daily; feeds Trajectory Pre (Frequency).</td><td>Required to populate trajectory.</td></tr>
+      </tbody></table>
+
+      <h4 style="font-size:14px;color:var(--terracotta-dk);margin:16px 0 10px;">Section II &mdash; Intervention Need (terracotta)</h4>
+      <table class="brd-table"><thead><tr><th>Field Name</th><th>Field Type</th><th>Input Values</th><th>Input / Autofill</th><th>Logic</th><th>Validation &amp; Error Messages</th></tr></thead>
+      <tbody>
+        <tr><td>Needs Intervention in bookkeeping?</td><td>Check (toggle)</td><td>On / Off</td><td>Input</td><td>When ON, reveals the Justify textarea.</td><td>&mdash;</td></tr>
+        <tr><td>Justify</td><td>Textarea</td><td>Free text</td><td>Input (conditional)</td><td>Shown only when toggle is ON. "Why is the intervention needed? What gaps did the assessment surface?"</td><td>Required when toggle ON &mdash; "Justify why bookkeeping intervention is needed".</td></tr>
+      </tbody></table>
+      <div class="callout callout-terra">Conditional: the Justify field is hidden until the Intervention toggle is switched on; a justification is mandatory once flagged.</div>
+    </div></div>
+
+  <div class="accordion"><div class="accordion-trigger" onclick="this.parentElement.classList.toggle('open')">Tab 3: Growth <span class="acc-arrow">&#9660;</span></div>
+    <div class="accordion-body">
+
+      <h4 style="font-size:14px;color:var(--teal);margin-bottom:10px;">Section I &mdash; Monthly Tracker &middot; Monthly Performance (child table)</h4>
+      <table class="brd-table"><thead><tr><th>Field Name</th><th>Field Type</th><th>Input Values</th><th>Input / Autofill</th><th>Logic</th><th>Validation &amp; Error Messages</th></tr></thead>
+      <tbody>
+        <tr><td>Reporting Month</td><td>Data</td><td>e.g. Jun 2026</td><td>Input</td><td>One row per reporting month; spans the cohort start&rarr;end years (General Rule 11). Short month label feeds the Summary trend chart X-axis.</td><td>Required per row.</td></tr>
+        <tr><td>Revenue (&#8377;)</td><td>Currency</td><td>e.g. 44,000</td><td>Input</td><td>Feeds totals, averages, KPIs and trend chart.</td><td>&ge; 0.</td></tr>
+        <tr><td>Expenses (&#8377;)</td><td>Currency</td><td>e.g. 25,000</td><td>Input</td><td>Feeds totals, averages and trend chart.</td><td>&ge; 0.</td></tr>
+        <tr><td>Profit (&#8377;)</td><td>Currency</td><td>e.g. &#8377;19,000</td><td>Calculated</td><td>Revenue &minus; Expenses (per row).</td><td>Read-only.</td></tr>
+        <tr><td>Evidence</td><td>Attach</td><td>e.g. jun-2026.pdf</td><td>Input</td><td>Supporting document for the month's figures.</td><td>Recommended.</td></tr>
+        <tr><td>Totals (footer)</td><td>Currency</td><td>Rev / Exp / Profit sums</td><td>Calculated</td><td>Column sums across all rows.</td><td>Read-only.</td></tr>
+      </tbody></table>
+      <table class="brd-table" style="margin-top:12px"><thead><tr><th>Field Name</th><th>Field Type</th><th>Input Values</th><th>Input / Autofill</th><th>Logic</th><th>Validation &amp; Error Messages</th></tr></thead>
+      <tbody>
+        <tr><td>Average Revenue</td><td>Currency</td><td>e.g. &#8377;36,500</td><td>Calculated (stat tile)</td><td>Mean Revenue across N reporting months on file.</td><td>Read-only.</td></tr>
+        <tr><td>Average Expenditure</td><td>Currency</td><td>e.g. &#8377;23,000</td><td>Calculated (stat tile)</td><td>Avg Revenue &minus; Avg Profit (= mean Expense).</td><td>Read-only.</td></tr>
+        <tr><td>Average Profit</td><td>Currency</td><td>e.g. &#8377;13,500</td><td>Calculated (stat tile)</td><td>Mean Profit (Avg Revenue &minus; Avg Expenditure) across N months.</td><td>Read-only.</td></tr>
+      </tbody></table>
+      <div class="callout callout-teal">The monthly tracker spans the cohort start&rarr;end years (General Rule 11). Averages are computed over all months on file (whatever the count). These averages drive the Summary KPI tiles and trend chart.</div>
+
+      <h4 style="font-size:14px;color:var(--terracotta-dk);margin:16px 0 10px;">Section II &mdash; Implementation Status &middot; Bookkeeping Practice (Post intervention)</h4>
+      <table class="brd-table"><thead><tr><th>Field Name</th><th>Field Type</th><th>Input Values</th><th>Input / Autofill</th><th>Logic</th><th>Validation &amp; Error Messages</th></tr></thead>
+      <tbody>
+        <tr><td>Q1: Has the entrepreneur improved bookkeeping practice?</td><td>Select</td><td>Yes, No</td><td>Input</td><td>Feeds Summary Trajectory Post (Practices Bookkeeping), compared against FA Pre Q1.</td><td>Required to complete trajectory.</td></tr>
+        <tr><td>Q2: Level of Entrepreneur's Bookkeeping practice</td><td>Select</td><td>Level 1 &mdash; None; Level 2 &mdash; Informal; Level 3 &mdash; Basic; Level 4 &mdash; Structured; Level 5 &mdash; Digital</td><td>Input</td><td>Feeds Trajectory Post (Bookkeeping Level); delta = Post &minus; Pre.</td><td>Required to complete trajectory.</td></tr>
+        <tr><td>Q3: How often does he maintain his Bookkeeping?</td><td>Select</td><td>Daily, Weekly, Monthly, Yearly, Occasionally</td><td>Input</td><td>Feeds Trajectory Post (Frequency); delta vs FA Pre Q3.</td><td>Required to complete trajectory.</td></tr>
+      </tbody></table>
+      <div class="callout callout-terra">Post-intervention reassessment: these three answers are the Post values for the Summary's Bookkeeping Growth Trajectory, compared against the Pre values captured in Financial Assessment Section II.</div>
+    </div></div>
+
+  <div class="accordion"><div class="accordion-trigger" onclick="this.parentElement.classList.toggle('open')">Tab 4: Business Model Calculator <span class="acc-arrow">&#9660;</span></div>
+    <div class="accordion-body">
+      <p style="font-size:13px;color:var(--ink-soft);margin:0 0 12px;">Four collapsible sections. A legend distinguishes auto-fetched (read-only), input, and auto-calculated cells. Existing column figures auto-fetch from Financial Assessment; Projected column is the entrepreneur's post-intervention target.</p>
+
+      <h4 style="font-size:14px;color:var(--teal);margin-bottom:10px;">Section I &mdash; Loan Terms (grid)</h4>
+      <table class="brd-table"><thead><tr><th>Field Name</th><th>Field Type</th><th>Input Values</th><th>Input / Autofill</th><th>Logic</th><th>Validation &amp; Error Messages</th></tr></thead>
+      <tbody>
+        <tr><td>Existing Loan 1 &mdash; Loan/Scheme</td><td>Data</td><td>e.g. PMEGP &mdash; SBI</td><td>Autofill from Financial Assessment (Loan 1)</td><td>Row label; falls back to "Existing Loan 1" if no scheme name.</td><td>Read-only.</td></tr>
+        <tr><td>Existing Loan 1 &mdash; Amount / Interest Rate (% p.a.) / No. of Instalments</td><td>Currency / Float / Int</td><td>e.g. 4,00,000 / 6 / 60</td><td>Autofill from FA Loan 1</td><td>Cream-deep, italic, read-only (Rule 2).</td><td>Read-only.</td></tr>
+        <tr><td>Existing Loan 2 &mdash; Loan/Scheme + Amount / Rate / Instalments</td><td>Data / Currency / Float / Int</td><td>From FA Loan 2 (0 if none)</td><td>Autofill from FA Loan 2</td><td>Read-only.</td><td>Read-only.</td></tr>
+        <tr><td>New Loan Amount &mdash; Amount</td><td>Currency</td><td>Manual entry</td><td>Input</td><td>Manual new-loan principal for the projected scenario.</td><td>&ge; 0.</td></tr>
+        <tr><td>New Loan Amount &mdash; Interest Rate (% p.a.)</td><td>Float</td><td>Manual entry (step 0.01)</td><td>Input</td><td>Used in EMI amortisation.</td><td>&ge; 0.</td></tr>
+        <tr><td>New Loan Amount &mdash; No. of Instalments (months)</td><td>Int</td><td>Manual entry</td><td>Input</td><td>Used in EMI amortisation.</td><td>&ge; 0.</td></tr>
+        <tr><td>Loan Contribution (% of Total)</td><td>Float</td><td>per loan</td><td>Input</td><td>Informational contribution share.</td><td>0 &ndash; 100.</td></tr>
+        <tr><td>Add to Total (per loan)</td><td>Check</td><td>On / Off</td><td>Input</td><td>Only checked loans (with amount &gt; 0) are summed into Total Loan Amount and the EMI calc.</td><td>&mdash;</td></tr>
+        <tr><td>Total Loan Amount (BE, EE, CE)</td><td>Currency</td><td>e.g. &#8377;4,00,000</td><td>Calculated</td><td>Sum of all loan amounts whose "Add to Total" checkbox is on.</td><td>Read-only.</td></tr>
+      </tbody></table>
+      <div class="callout callout-teal">Existing Loan 1 &amp; 2 are auto-fetched from Financial Assessment &rarr; Loan Details (first two loans). New Loan is manual. Total Loan Amount = sum of all checked loans.</div>
+
+      <h4 style="font-size:14px;color:var(--teal);margin:16px 0 10px;">Section II &mdash; Revenue &amp; Expense (Existing vs Projected)</h4>
+      <table class="brd-table"><thead><tr><th>Field Name</th><th>Field Type</th><th>Input Values</th><th>Input / Autofill</th><th>Logic</th><th>Validation &amp; Error Messages</th></tr></thead>
+      <tbody>
+        <tr><td>Total Quantity (All Products &mdash; Monthly) &mdash; Existing</td><td>Int</td><td>e.g. 400</td><td>Autofill from Production Capacity</td><td>Fetched from Production Capacity &rarr; "Average Production unit per month". Read-only.</td><td>Read-only.</td></tr>
+        <tr><td>Total Quantity (All Products &mdash; Monthly) &mdash; Projected</td><td>Int</td><td>e.g. 1,500</td><td>Input</td><td>Entrepreneur's monthly quantity target.</td><td>&ge; 0.</td></tr>
+        <tr><td>Weighted Avg Selling Price / Unit (&#8377;) &mdash; Existing</td><td>Float</td><td>Calculated</td><td>Calculated</td><td>Average Revenue per month &divide; Total Quantity (Existing).</td><td>Read-only (calc-cell).</td></tr>
+        <tr><td>Weighted Avg Selling Price / Unit (&#8377;) &mdash; Projected</td><td>Float</td><td>Calculated</td><td>Calculated</td><td>Average Revenue per month &divide; Total Quantity (Projected).</td><td>Read-only.</td></tr>
+        <tr><td>Average Revenue per month (&#8377;) &mdash; Existing</td><td>Currency</td><td>e.g. 36,500</td><td>Autofill (editable override)</td><td>Auto-fetched from FA &rarr; Revenue &amp; Expenditure; editing sets "Overridden" flag and stops re-sync.</td><td>&ge; 0.</td></tr>
+        <tr><td>Average Revenue per month (&#8377;) &mdash; Projected</td><td>Currency</td><td>e.g. 2,80,000</td><td>Input</td><td>Post-intervention target revenue.</td><td>&ge; 0.</td></tr>
+        <tr><td>Average Expense per month (&#8377;) &mdash; Existing</td><td>Currency</td><td>e.g. 23,000</td><td>Autofill (editable override)</td><td>Auto-fetched from FA; editing sets "Overridden" flag.</td><td>&ge; 0.</td></tr>
+        <tr><td>Average Expense per month (&#8377;) &mdash; Projected</td><td>Currency</td><td>e.g. 50,000</td><td>Input</td><td>Post-intervention target expense.</td><td>&ge; 0.</td></tr>
+      </tbody></table>
+      <div class="callout callout-amber">Note: Existing Revenue/Expense are auto-fetched from Financial Assessment but remain editable &mdash; an override here displays a "&middot; Overridden" badge and prevents the FA values from re-clobbering the cell. "Reset all fields" clears the Projected column, checkboxes, and new-loan inputs.</div>
+
+      <h4 style="font-size:14px;color:var(--teal);margin:16px 0 10px;">Section III &mdash; Monthly Break-even (output, auto-calculated)</h4>
+      <table class="brd-table"><thead><tr><th>Field Name</th><th>Field Type</th><th>Input Values</th><th>Input / Autofill</th><th>Logic</th><th>Validation &amp; Error Messages</th></tr></thead>
+      <tbody>
+        <tr><td>Operating Profit / (Loss) &mdash; Before EMI (Existing &amp; Projected)</td><td>Currency</td><td>calc</td><td>Calculated</td><td>Revenue &minus; Expense (per column). Negative renders in danger colour.</td><td>Read-only.</td></tr>
+        <tr><td>EMI (Existing &amp; Projected)</td><td>Currency</td><td>calc</td><td>Calculated</td><td>Sum of per-loan EMI (amortisation, see Section IV); same value shown both columns.</td><td>Read-only.</td></tr>
+        <tr><td>Net Profit / (Loss)</td><td>Currency</td><td>calc</td><td>Calculated</td><td>Operating Profit &minus; EMI (per column).</td><td>Read-only.</td></tr>
+        <tr><td>Variable cost per unit</td><td>Float</td><td>calc</td><td>Calculated</td><td>Average Expense per month &divide; Total Quantity (per column).</td><td>Read-only; "&mdash;" if quantity 0.</td></tr>
+        <tr><td>Contribution per unit</td><td>Float</td><td>calc</td><td>Calculated</td><td>Weighted Avg Selling Price &minus; Variable cost per unit (per column).</td><td>Read-only.</td></tr>
+        <tr><td>Monthly fixed costs incl. EMI</td><td>Currency</td><td>calc</td><td>Calculated</td><td>Average Expense per month + EMI (per column).</td><td>Read-only.</td></tr>
+        <tr><td>Revenue Break-even / Month (&#8377;)</td><td>Currency</td><td>calc or "Not achievable"</td><td>Calculated</td><td>Unit Break-even &times; Weighted Avg Selling Price. "Not achievable" if Contribution &le; 0.</td><td>Read-only.</td></tr>
+        <tr><td>Unit Break-even / Month (units)</td><td>Int</td><td>calc or "Not achievable"</td><td>Calculated</td><td>&#8968; (Monthly fixed costs incl. EMI) &divide; Contribution per unit &#8969;. "Not achievable" if Contribution &le; 0.</td><td>Read-only.</td></tr>
+      </tbody></table>
+
+      <h4 style="font-size:14px;color:var(--teal);margin:16px 0 10px;">Section IV &mdash; Capital Costs</h4>
+      <table class="brd-table"><thead><tr><th>Field Name</th><th>Field Type</th><th>Input Values</th><th>Input / Autofill</th><th>Logic</th><th>Validation &amp; Error Messages</th></tr></thead>
+      <tbody>
+        <tr><td>Total Capital Cost</td><td>Currency</td><td>e.g. &#8377;4,00,000</td><td>Calculated</td><td>Equals Total Loan Amount (checked loans).</td><td>Read-only.</td></tr>
+        <tr><td>Loan Amount Taken</td><td>Currency</td><td>e.g. &#8377;4,00,000</td><td>Calculated</td><td>Total Loan Amount.</td><td>Read-only.</td></tr>
+        <tr><td>Interest Rate (blended)</td><td>Float</td><td>e.g. 6.00 %</td><td>Calculated</td><td>Amount-weighted average rate across included loans (informational).</td><td>Read-only.</td></tr>
+        <tr><td>No. of Instalments (blended)</td><td>Int</td><td>e.g. 60 months</td><td>Calculated</td><td>Amount-weighted average tenure, rounded (informational).</td><td>Read-only.</td></tr>
+        <tr><td>EMI per month</td><td>Currency</td><td>e.g. &#8377;7,733</td><td>Calculated</td><td>Computed per-loan via amortisation and summed.</td><td>Read-only.</td></tr>
+        <tr><td>Total Loan Repayment incl. interest</td><td>Currency</td><td>e.g. &#8377;4,63,980</td><td>Calculated</td><td>Total EMI &times; blended instalments.</td><td>Read-only.</td></tr>
+      </tbody></table>
+      <div class="callout callout-teal">EMI amortisation: <strong>EMI = P &times; r &times; (1+r)<sup>n</sup> &divide; ((1+r)<sup>n</sup> &minus; 1)</strong>, where r = annual rate &divide; 1200 and n = instalments (if r = 0, EMI = P &divide; n). With multiple checked loans a blended rate/tenure is shown for information; EMI is computed per-loan and summed.</div>
+
+      <h4 style="font-size:14px;color:var(--teal);margin:16px 0 10px;">Result hero &amp; Status banner</h4>
+      <table class="brd-table"><thead><tr><th>Field Name</th><th>Field Type</th><th>Input Values</th><th>Input / Autofill</th><th>Logic</th><th>Validation &amp; Error Messages</th></tr></thead>
+      <tbody>
+        <tr><td>Monthly Break-even Revenue (hero)</td><td>Currency</td><td>Projected RBE or "Not achievable"</td><td>Calculated</td><td>Mirrors Section III Projected Revenue Break-even; also mirrored to Summary.</td><td>Read-only.</td></tr>
+        <tr><td>Monthly Break-even Units (hero)</td><td>Int</td><td>Projected UBE or "Not achievable"</td><td>Calculated</td><td>Mirrors Section III Projected Unit Break-even; also mirrored to Summary.</td><td>Read-only.</td></tr>
+        <tr><td>Status Banner</td><td>Display</td><td>good / warn / bad</td><td>Calculated</td><td>If Projected Contribution &le; 0 &rarr; bad "Not achievable"; if Projected Quantity &ge; Unit Break-even &rarr; good "At or above break-even"; else warn "Below break-even" with units-needed gap.</td><td>Read-only.</td></tr>
+      </tbody></table>
+      <div class="callout callout-teal">Help-card logic: Contribution/unit = Selling price/unit &minus; Variable cost/unit (Variable cost/unit = Total Expense &divide; Quantity); Monthly obligation = Total Expense + EMI; Break-even units = &#8968; obligation &divide; contribution/unit &#8969;; Break-even revenue = units &times; selling price. Contribution &le; 0 &rarr; "Not achievable".</div>
+    </div></div>
+
+  <div class="accordion"><div class="accordion-trigger" onclick="this.parentElement.classList.toggle('open')">Tab 5: Task Log <span class="acc-arrow">&#9660;</span></div>
+    <div class="accordion-body">
+      <h4 style="font-size:14px;color:var(--teal);margin-bottom:10px;">Task Log &mdash; Financials (child table)</h4>
+      <table class="brd-table"><thead><tr><th>Field Name</th><th>Field Type</th><th>Input Values</th><th>Input / Autofill</th><th>Logic</th><th>Validation &amp; Error Messages</th></tr></thead>
+      <tbody>
+        <tr><td>No.</td><td>Int</td><td>auto 01, 02&hellip;</td><td>Calculated</td><td>Zero-padded row index.</td><td>Read-only.</td></tr>
+        <tr><td>Date</td><td>Date</td><td>e.g. 2026-03-10</td><td>Input</td><td>Date the task was performed.</td><td>Required per row.</td></tr>
+        <tr><td>Task Name</td><td>Select</td><td>01 &mdash; Initial Financial Assessment; 02 &mdash; Awareness on Importance of Bookkeeping; 03 &mdash; Financial Data Recorded in CRM; 04 &mdash; Bank Passbook Detail Collection; 05 &mdash; Loan Details Documented; 06 &mdash; Bookkeeping Training Delivered; 07 &mdash; Business &amp; Home Money Separation Training; 08 &mdash; Cash Book Follow Up; 09 &mdash; Monthly Performance Updated; 10 &mdash; Monthly P&amp;L Review; 11 &mdash; Assessed the Monthly Break-even through BMC; 12 &mdash; Follow Up on Bookkeeping Practices; 13 &mdash; Awareness on Digital Bookkeeping; 14 &mdash; Digital Bookkeeping Training Delivered; 15 &mdash; Investment Planning Session; 16 &mdash; If others, specify</td><td>Input</td><td>Standard bookkeeping intervention task list.</td><td>Required per row.</td></tr>
+        <tr><td>Notes / Outcome</td><td>Data</td><td>Free text</td><td>Input</td><td>Outcome or follow-up note.</td><td>Optional.</td></tr>
+        <tr><td>Attachment</td><td>Attach</td><td>Upload &middot; View &middot; filename</td><td>Input</td><td>Upload button stores filename; View enabled only when an attachment exists.</td><td>Optional.</td></tr>
+      </tbody></table>
+      <div class="callout callout-teal">"+ Add Entry" appends a task row; header shows the entry count. Task "16 &mdash; If others, specify" is the free-text catch-all.</div>
+    </div></div>
+
+  <div class="callout callout-danger">Key validations (whole form): Investment Source "Other Source Name" is required when source = "Other". Loan Outstanding cannot exceed Loan Amount; Loan End date must be on or after Start. All currency/quantity amounts must be &ge; 0; Interest % and Loan % in range 0&ndash;100. Bookkeeping Q1&ndash;Q3 must be answered (Pre in Financial Assessment, Post in Growth) to populate the Summary Growth Trajectory. When Intervention Need is toggled ON, the Justify reason is mandatory. Calculator: when Contribution per unit &le; 0, break-even is reported as "Not achievable" (selling more units cannot cover the monthly obligation). Each Task Log row requires Date and Task Name.</div>
+
+  <div class="review-panel" data-section="m-financials">
+    <div class="review-strip">
+      <span style="font-size:12px;color:var(--ink-soft);font-weight:500;">Section Review:</span>
+      <button class="review-status-btn" onclick="setReview('m-financials','draft',this)">Draft</button>
+      <button class="review-status-btn" onclick="setReview('m-financials','review',this)">In Review</button>
+      <button class="review-status-btn" onclick="setReview('m-financials','changes',this)">Needs Changes</button>
+      <button class="review-status-btn" onclick="setReview('m-financials','approved',this)">Approved</button>
+      <button style="margin-left:auto;background:none;border:none;font-size:12px;color:var(--sea);cursor:pointer;font-family:var(--font);text-decoration:underline;" onclick="copyLink('m-financials')">Copy Link</button>
+    </div>
+    <div class="review-comments">
+      <div class="comment-list" id="comments-m-financials"></div>
+      <div class="comment-input-row">
+        <input type="text" placeholder="Your name" style="max-width:120px" id="name-m-financials">
+        <textarea rows="1" placeholder="Add a comment..." id="text-m-financials"></textarea>
+        <button class="comment-add-btn" onclick="addComment('m-financials')">Add</button>
+      </div>
+    </div>
+  </div>
+</div>

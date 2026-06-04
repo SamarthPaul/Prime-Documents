@@ -1,0 +1,251 @@
+<div class="brd-section" id="m-prototyping">
+  <div class="section-header"><span class="section-id">PR-PD-002</span><h2 class="section-title">Product Prototyping</h2></div>
+  <div class="section-desc">Part of the Product Development module, this framework lets the Fessociate track every prototyping iteration for each of an entrepreneur's products &mdash; covering both packaging prototypes and product prototypes &mdash; from first concept through to scale implementation. One product card is added per product, and each prototype version (v1, v2, &hellip;) is logged inside that product's child table with a design upload and key learnings.</div>
+
+  <h3 style="font-size:16px;color:var(--teal);margin:18px 0 10px;">On-Screen UI Structure</h3>
+  <div class="card"><div style="font-size:13px;line-height:1.9;color:var(--ink)">
+    The screen header reads <strong>Product Prototyping</strong> with breadcrumb <em>PRIME Rural &middot; Product Development</em>. A horizontal <strong>tab rail</strong> sits directly below the header with four tabs: <strong>Summary</strong>, <strong>Prototypes</strong>, <strong>Resources</strong> and <strong>Task Log</strong>.
+    <br><br>
+    The <strong>Prototypes</strong> tab is the data-entry body. It opens with an auto-fetched entrepreneur chip (read-only, pulled from the profile) and a guidance caption. Below sits a repeatable list of <strong>collapsible product blocks</strong>, each added via a <em>+ Add Product</em> button. Every product block has a coloured header carrying three controls: a <strong>Product</strong> dropdown, an <strong>Implementation Status</strong> dropdown, and a status chip that mirrors the chosen status. The block body holds two subsections: <em>Prototype Configuration</em> and a <em>Prototype Iterations</em> child table.
+    <br><br>
+    A <strong>conditional dropdown</strong> drives the configuration: <em>Type of Prototyping</em> (Packaging / Product) changes the prompt and expected values of the <em>Prototyping Type Name</em> field below it &mdash; Packaging guides the user toward the Packing Master list, Product toward the Business Basket list.
+    <br><br>
+    The <strong>Summary</strong> tab is fully <span style="font-style:italic;background:var(--cream-deep);padding:1px 6px;border-radius:4px;" title="Calculated field &mdash; system-derived, never typed by the user (Rule 1).">read-only and auto-calculated</span> from the Prototypes tab: a product-wise overview table, four aggregate cards (Products, Iterations, Progress, Intervention Status) and four intervention-flag tiles. The <strong>Resources</strong> and <strong>Task Log</strong> tabs each hold a single flat child table for reference materials and dated activity entries respectively.
+  </div></div>
+  <div class="flow-container" style="margin-top:12px">
+    <span style="display:inline-block;padding:6px 14px;border-radius:16px;background:var(--teal);color:var(--cream);font-size:12px;font-weight:600;">Summary</span>
+    <div class="flow-arrow">&rarr;</div>
+    <span style="display:inline-block;padding:6px 14px;border-radius:16px;background:var(--cream-deep);color:var(--teal);font-size:12px;font-weight:600;border:1px solid var(--border);">Prototypes</span>
+    <div class="flow-arrow">&rarr;</div>
+    <span style="display:inline-block;padding:6px 14px;border-radius:16px;background:var(--cream-deep);color:var(--teal);font-size:12px;font-weight:600;border:1px solid var(--border);">Resources</span>
+    <div class="flow-arrow">&rarr;</div>
+    <span style="display:inline-block;padding:6px 14px;border-radius:16px;background:var(--cream-deep);color:var(--teal);font-size:12px;font-weight:600;border:1px solid var(--border);">Task Log</span>
+  </div>
+
+  <h3 style="font-size:16px;color:var(--teal);margin:18px 0 10px;">User Journey</h3>
+  <div class="card"><div class="flow-container">
+    <div class="flow-step"><div class="flow-box">Open Prototypes tab</div><div class="flow-label">Entrepreneur auto-fetched</div></div>
+    <div class="flow-arrow">&rarr;</div>
+    <div class="flow-step"><div class="flow-box accent">+ Add Product</div><div class="flow-label">Pick product, set implementation status</div></div>
+    <div class="flow-arrow">&rarr;</div>
+    <div class="flow-step"><div class="flow-box">Configure prototype</div><div class="flow-label">Type (Packaging/Product) &rarr; Type Name</div></div>
+    <div class="flow-arrow">&rarr;</div>
+    <div class="flow-step"><div class="flow-box">+ Add Iteration</div><div class="flow-label">Version, design upload, key learnings</div></div>
+    <div class="flow-arrow">&rarr;</div>
+    <div class="flow-step"><div class="flow-box">Repeat per version</div><div class="flow-label">v1 &rarr; v2 &rarr; Final/Pilot</div></div>
+    <div class="flow-arrow">&rarr;</div>
+    <div class="flow-step"><div class="flow-box highlight">Save</div><div class="flow-label">Summary tab auto-aggregates all products</div></div>
+  </div></div>
+
+  <!-- ===== TAB 1: PROTOTYPES (data entry) ===== -->
+  <div class="accordion open">
+    <div class="accordion-trigger" onclick="this.parentElement.classList.toggle('open')">
+      Tab 1 &mdash; Prototypes (Data Entry) <span class="acc-arrow">&#9660;</span>
+    </div>
+    <div class="accordion-body">
+      <h4 style="font-size:14px;color:var(--teal);margin:0 0 8px;">Product Block Header</h4>
+      <p style="font-size:12px;color:var(--ink-soft);margin-bottom:10px;">Each product is a collapsible block. The header carries the product, implementation status and a mirroring status chip. Blocks are repeatable via <em>+ Add Product</em> and removable via <em>Remove</em> (with confirm prompt).</p>
+      <table class="brd-table">
+        <thead><tr><th>Field Name</th><th>Field Type</th><th>Input Values</th><th>Input</th><th>Autofill</th><th>Logic</th><th>Validation &amp; Error Messages</th></tr></thead>
+        <tbody>
+          <tr>
+            <td><strong>Entrepreneur</strong></td>
+            <td>Link (read-only chip)</td>
+            <td>From Entrepreneur master</td>
+            <td>No</td>
+            <td>Yes &mdash; auto-fetched from profile context</td>
+            <td>Displayed as a chip at top of tab; identifies whose products are shown.</td>
+            <td>Mandatory; if context missing, block entry: &ldquo;Entrepreneur not resolved &mdash; open from a profile.&rdquo;</td>
+          </tr>
+          <tr>
+            <td><strong>Product</strong></td>
+            <td>Select</td>
+            <td>Product Master (e.g. Bamboo Shoot Pickle, Lemongrass Tea, Lakadong Turmeric, Eri Silk Muffler, Bamboo Earring, Local Honey, Jadoh Spice Mix)</td>
+            <td>Yes</td>
+            <td>No</td>
+            <td>Identifies the product being prototyped; feeds the Summary product-wise overview (one row per product).</td>
+            <td>Mandatory before save: &ldquo;Select a product.&rdquo; A product not yet selected is excluded from Summary aggregates.</td>
+          </tr>
+          <tr>
+            <td><strong>Implementation Status</strong></td>
+            <td>Select</td>
+            <td>Ideating &middot; Iteration &middot; Pilot Implemented &middot; Scale Implementation</td>
+            <td>Yes</td>
+            <td>No</td>
+            <td>On change, renders the status chip beside it (Ideating = neutral, Iteration = amber, Pilot = blue, Scale = green). Drives the Progress / Intervention Flags counters and &ldquo;Furthest Stage Reached&rdquo; on Summary (stage order: Ideating &lt; Iteration &lt; Pilot Implemented &lt; Scale Implementation).</td>
+            <td>Optional; blank counts toward &ldquo;No Status Set&rdquo; on Summary.</td>
+          </tr>
+          <tr>
+            <td><em>Status Chip</em></td>
+            <td><em>Display (calculated)</em></td>
+            <td><em>Mirrors Implementation Status</em></td>
+            <td>No</td>
+            <td>Yes</td>
+            <td><em>Hidden when status is blank; otherwise shows the status text colour-coded.</em></td>
+            <td>&mdash;</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h4 style="font-size:14px;color:var(--teal);margin:16px 0 8px;">Subsection A &mdash; Prototype Configuration</h4>
+      <table class="brd-table">
+        <thead><tr><th>Field Name</th><th>Field Type</th><th>Input Values</th><th>Input</th><th>Autofill</th><th>Logic</th><th>Validation &amp; Error Messages</th></tr></thead>
+        <tbody>
+          <tr>
+            <td><strong>Type of Prototyping</strong></td>
+            <td>Select (conditional driver)</td>
+            <td>Packaging &middot; Product</td>
+            <td>Yes</td>
+            <td>No</td>
+            <td>Conditional dropdown &mdash; the selected value re-points the <em>Prototyping Type Name</em> field below to the relevant master list and updates its prompt. Also classified on Summary as a Packaging or Product badge and counted in &ldquo;Packaging Prototypes&rdquo; vs &ldquo;Product Prototypes&rdquo;.</td>
+            <td>Mandatory before Type Name is meaningful: &ldquo;Select prototyping type.&rdquo;</td>
+          </tr>
+          <tr>
+            <td><strong>Prototyping Type Name</strong></td>
+            <td>Text / Select (conditional target)</td>
+            <td>If Packaging &rarr; Packing Master (Glass jar, Tin can, Kraft paper pouch, Standard plastic pouch, PET bottle, HDPE bottle, Aluminium foil pouch, Cardboard box, Cloth pouch, Vacuum-sealed, Gift hamper, Other). If Product &rarr; Business Basket (Food &amp; Beverages, Spices &amp; Herbs, Handloom &amp; Textile, Handicraft &amp; Bamboo, Personal Care &amp; Wellness, Honey &amp; Apiary, Dairy &amp; Allied, Agro-processed Foods, Snacks &amp; Ready-to-eat, Health Foods, Other)</td>
+            <td>Yes</td>
+            <td>No</td>
+            <td>Value set / prompt switches based on <em>Type of Prototyping</em>: Packaging prompts &ldquo;e.g., Kraft paper pouch, Glass jar, Tin can&hellip;&rdquo;; Product prompts &ldquo;e.g., Food &amp; Beverages, Spices &amp; Herbs&hellip;&rdquo;. Shown in the Summary &ldquo;Type Name&rdquo; column.</td>
+            <td>Mandatory once Type is chosen: &ldquo;Enter / select the prototyping type name.&rdquo;</td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="callout callout-terra"><strong>Conditional dropdown logic:</strong> <em>Type of Prototyping</em> is the driver field. Selecting <strong>Packaging</strong> binds <em>Prototyping Type Name</em> to the Packing Master; selecting <strong>Product</strong> binds it to the Business Basket. Changing the driver after a name is entered must re-validate the name against the newly applicable list and clear it if it no longer matches.</div>
+
+      <h4 style="font-size:14px;color:var(--teal);margin:16px 0 8px;">Subsection B &mdash; Prototype Iterations (Child Table)</h4>
+      <p style="font-size:12px;color:var(--ink-soft);margin-bottom:10px;">Repeatable rows logging each prototype version. Seeded with one row; rows added via <em>+ Add Iteration</em>, deleted via the row &times; control, and auto-renumbered (01, 02, &hellip;).</p>
+      <table class="brd-table">
+        <thead><tr><th>Field Name</th><th>Field Type</th><th>Input Values</th><th>Input</th><th>Autofill</th><th>Logic</th><th>Validation &amp; Error Messages</th></tr></thead>
+        <tbody>
+          <tr>
+            <td><strong>#</strong></td>
+            <td><em>Auto-number (calculated)</em></td>
+            <td>01, 02, 03&hellip;</td>
+            <td>No</td>
+            <td>Yes</td>
+            <td><em>Sequential serial, zero-padded; re-numbers on add/delete.</em></td>
+            <td>&mdash;</td>
+          </tr>
+          <tr>
+            <td><strong>Prototype Version</strong></td>
+            <td>Text</td>
+            <td>Free text (e.g., v1, v2, Final, v3 (Pilot))</td>
+            <td>Yes</td>
+            <td>No</td>
+            <td>Label for this iteration; counted as one iteration per row in Summary (&ldquo;Total Iterations Logged&rdquo;, &ldquo;Avg Iterations / Product&rdquo;).</td>
+            <td>Recommended; an empty version row still counts as an iteration but should warn: &ldquo;Name this prototype version.&rdquo;</td>
+          </tr>
+          <tr>
+            <td><strong>Design Upload</strong></td>
+            <td>File attachment</td>
+            <td>.pdf, .jpg, .jpeg, .png, .svg, .ai, .psd</td>
+            <td>Yes</td>
+            <td>No</td>
+            <td>One file per row; on upload a file pill appears and the <em>View</em> button enables. Rows with an attachment are counted in Summary &ldquo;Uploads Attached&rdquo; and shown with a clip indicator in the overview.</td>
+            <td>Optional; restrict to the accepted file types &mdash; &ldquo;Unsupported file type.&rdquo;</td>
+          </tr>
+          <tr>
+            <td><strong>Key Learnings</strong></td>
+            <td>Text (long)</td>
+            <td>Free text (what worked / what didn't / what changed for next version)</td>
+            <td>Yes</td>
+            <td>No</td>
+            <td>Captures iteration insight; rows with non-empty learnings are tallied as &ldquo;Learnings Captured&rdquo; on Summary.</td>
+            <td>Optional; encouraged for every iteration.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ===== TAB 2: SUMMARY (read-only) ===== -->
+  <div class="accordion">
+    <div class="accordion-trigger" onclick="this.parentElement.classList.toggle('open')">
+      Tab 2 &mdash; Summary (Read-Only / Calculated) <span class="acc-arrow">&#9660;</span>
+    </div>
+    <div class="accordion-body">
+      <p style="font-size:12px;color:var(--ink-soft);margin-bottom:10px;">Entirely auto-populated from the Prototypes tab; no inputs. Refreshes whenever the tab is opened. Comprises a product-wise overview table, four aggregate cards and four intervention-flag tiles.</p>
+      <h4 style="font-size:14px;color:var(--teal);margin:0 0 8px;">Product-wise Overview (one row per selected product)</h4>
+      <table class="brd-table">
+        <thead><tr><th>Field Name</th><th>Field Type</th><th>Input Values</th><th>Input</th><th>Autofill</th><th>Logic</th><th>Validation &amp; Error Messages</th></tr></thead>
+        <tbody>
+          <tr><td><em>Product</em></td><td><em>Display</em></td><td><em>From product block</em></td><td>No</td><td>Yes</td><td><em>One row per product where a Product is selected.</em></td><td>&mdash;</td></tr>
+          <tr><td><em>Prototype Type</em></td><td><em>Display (badge)</em></td><td><em>Packaging / Product</em></td><td>No</td><td>Yes</td><td><em>Colour-coded badge from Type of Prototyping.</em></td><td>&mdash;</td></tr>
+          <tr><td><em>Type Name</em></td><td><em>Display</em></td><td><em>Packing Master / Business Basket value</em></td><td>No</td><td>Yes</td><td><em>Mirrors Prototyping Type Name; shows &ldquo;&mdash;&rdquo; if blank.</em></td><td>&mdash;</td></tr>
+          <tr><td><em>Iterations</em></td><td><em>Count (calculated)</em></td><td><em>Integer</em></td><td>No</td><td>Yes</td><td><em>Number of iteration rows logged for the product.</em></td><td>&mdash;</td></tr>
+          <tr><td><em>Uploads</em></td><td><em>Count (calculated)</em></td><td><em>Integer + clip indicator</em></td><td>No</td><td>Yes</td><td><em>Count of iteration rows that have a design file attached.</em></td><td>&mdash;</td></tr>
+          <tr><td><em>Implementation Status</em></td><td><em>Display (chip)</em></td><td><em>Ideating / Iteration / Pilot Implemented / Scale Implementation</em></td><td>No</td><td>Yes</td><td><em>Colour-coded chip mirroring the block status.</em></td><td>&mdash;</td></tr>
+        </tbody>
+      </table>
+      <h4 style="font-size:14px;color:var(--teal);margin:16px 0 8px;">Aggregate Cards &amp; Intervention Flags (all calculated)</h4>
+      <table class="brd-table">
+        <thead><tr><th>Field Name</th><th>Field Type</th><th>Input Values</th><th>Input</th><th>Autofill</th><th>Logic</th><th>Validation &amp; Error Messages</th></tr></thead>
+        <tbody>
+          <tr><td><em>Total Products</em></td><td><em>Count</em></td><td><em>Integer</em></td><td>No</td><td>Yes</td><td><em>Count of product blocks with a Product selected.</em></td><td>&mdash;</td></tr>
+          <tr><td><em>Packaging Prototypes / Product Prototypes</em></td><td><em>Count</em></td><td><em>Integer</em></td><td>No</td><td>Yes</td><td><em>Split of products by Type of Prototyping.</em></td><td>&mdash;</td></tr>
+          <tr><td><em>Total Iterations Logged</em></td><td><em>Count</em></td><td><em>Integer</em></td><td>No</td><td>Yes</td><td><em>Sum of all iteration rows across products.</em></td><td>&mdash;</td></tr>
+          <tr><td><em>Uploads Attached</em></td><td><em>Count</em></td><td><em>Integer</em></td><td>No</td><td>Yes</td><td><em>Sum of iteration rows with a file attached.</em></td><td>&mdash;</td></tr>
+          <tr><td><em>Avg Iterations / Product</em></td><td><em>Number (calculated)</em></td><td><em>1 decimal, or &ldquo;&mdash;&rdquo;</em></td><td>No</td><td>Yes</td><td><em>Total Iterations &divide; Total Products; &ldquo;&mdash;&rdquo; when no products.</em></td><td>&mdash;</td></tr>
+          <tr><td><em>Ideating / Iteration / Pilot Implemented / Scale Implementation</em></td><td><em>Count + flag tile</em></td><td><em>Integer</em></td><td>No</td><td>Yes</td><td><em>Per-status product counts; mirrored in the four Intervention Flag tiles.</em></td><td>&mdash;</td></tr>
+          <tr><td><em>Furthest Stage Reached</em></td><td><em>Display (calculated)</em></td><td><em>Highest status by stage order</em></td><td>No</td><td>Yes</td><td><em>Max of Ideating &lt; Iteration &lt; Pilot Implemented &lt; Scale Implementation across all products.</em></td><td>&mdash;</td></tr>
+          <tr><td><em>Learnings Captured</em></td><td><em>Count</em></td><td><em>Integer</em></td><td>No</td><td>Yes</td><td><em>Iteration rows with non-empty Key Learnings.</em></td><td>&mdash;</td></tr>
+          <tr><td><em>No Status Set</em></td><td><em>Count</em></td><td><em>Integer</em></td><td>No</td><td>Yes</td><td><em>Products with a blank Implementation Status.</em></td><td>&mdash;</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ===== TAB 3: RESOURCES ===== -->
+  <div class="accordion">
+    <div class="accordion-trigger" onclick="this.parentElement.classList.toggle('open')">
+      Tab 3 &mdash; Resources (Reference Materials) <span class="acc-arrow">&#9660;</span>
+    </div>
+    <div class="accordion-body">
+      <p style="font-size:12px;color:var(--ink-soft);margin-bottom:10px;">A single flat child table of reference materials supporting prototyping. At least one row is always retained. Rows added via <em>+ Add Resource</em>, deleted via the row &times; (blocked at the last remaining row).</p>
+      <table class="brd-table">
+        <thead><tr><th>Field Name</th><th>Field Type</th><th>Input Values</th><th>Input</th><th>Autofill</th><th>Logic</th><th>Validation &amp; Error Messages</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Resource Title</strong></td><td>Text</td><td>Free text</td><td>Yes</td><td>No</td><td>Name of the reference material.</td><td>Recommended; warn on empty row before save.</td></tr>
+          <tr><td><strong>Category</strong></td><td>Select</td><td>Packaging Supplier &middot; Material Sample &middot; Design Reference &middot; Testing / Lab Report &middot; Costing Sheet &middot; Competitor Product &middot; Govt. Scheme / Support &middot; Other</td><td>Yes</td><td>No</td><td>Classifies the resource.</td><td>Optional; default &ldquo;&mdash; Select &mdash;&rdquo;.</td></tr>
+          <tr><td><strong>Type</strong></td><td>Select</td><td>Contact &middot; Reference &middot; Quotation &middot; Specification &middot; Photo / Evidence &middot; Report</td><td>Yes</td><td>No</td><td>Nature of the material.</td><td>Optional; default &ldquo;&mdash; Select &mdash;&rdquo;.</td></tr>
+          <tr><td><strong>Description / Notes</strong></td><td>Text</td><td>Free text</td><td>Yes</td><td>No</td><td>Notes about the resource.</td><td>Optional.</td></tr>
+          <tr><td><strong>File</strong></td><td>File attachment</td><td>Upload + View</td><td>Yes</td><td>No</td><td>Attach the supporting file; View opens it.</td><td>Optional.</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ===== TAB 4: TASK LOG ===== -->
+  <div class="accordion">
+    <div class="accordion-trigger" onclick="this.parentElement.classList.toggle('open')">
+      Tab 4 &mdash; Task Log (Prototyping Activities) <span class="acc-arrow">&#9660;</span>
+    </div>
+    <div class="accordion-body">
+      <p style="font-size:12px;color:var(--ink-soft);margin-bottom:10px;">A dated log of prototyping activities, with an entry count shown in the header. Rows added via <em>+ Add Entry</em>, auto-numbered (01, 02, &hellip;) and re-numbered on delete.</p>
+      <table class="brd-table">
+        <thead><tr><th>Field Name</th><th>Field Type</th><th>Input Values</th><th>Input</th><th>Autofill</th><th>Logic</th><th>Validation &amp; Error Messages</th></tr></thead>
+        <tbody>
+          <tr><td><strong>No.</strong></td><td><em>Auto-number (calculated)</em></td><td>01, 02, 03&hellip;</td><td>No</td><td>Yes</td><td><em>Sequential serial; re-numbers on delete.</em></td><td>&mdash;</td></tr>
+          <tr><td><strong>Date</strong></td><td>Date</td><td>Date picker</td><td>Yes</td><td>No</td><td>When the activity took place.</td><td>Recommended.</td></tr>
+          <tr><td><strong>Task Name</strong></td><td>Select</td><td>01 Awareness on Importance of Product Prototyping &middot; 02 Identify Products Requiring Prototyping &middot; 03 Define Prototyping Type (Packaging / Product) &middot; 04 Research Packaging Options / Business Basket &middot; 05 Procure Prototype Sample / Material &middot; 06 Create First Prototype (v1) &middot; 07 Review Prototype with Entrepreneur &middot; 08 Document Key Learnings from v1 &middot; 09 Create Revised Prototype (v2) &middot; 10 Review Revised Prototype &middot; 11 Document Key Learnings from v2 &middot; 12 Finalise Prototype Design &middot; 13 Pilot Production Run &middot; 14 Evaluate Pilot Outcome &middot; 15 Approve for Scale Implementation &middot; 16 Coordinate with Supplier / Vendor &middot; 17 Update Prototype Records in CRM &middot; If other, specify in comments</td><td>Yes</td><td>No</td><td>Predefined activity selected from the task master.</td><td>Mandatory per entry: &ldquo;Select a task.&rdquo;</td></tr>
+          <tr><td><strong>Notes / Outcome</strong></td><td>Text</td><td>Free text</td><td>Yes</td><td>No</td><td>Outcome / detail of the activity; required when Task Name is &ldquo;If other, specify in comments&rdquo;.</td><td>Conditional: required when task = &ldquo;If other&rdquo; &mdash; &ldquo;Specify the task in comments.&rdquo;</td></tr>
+          <tr><td><strong>Attachment</strong></td><td>File attachment</td><td>Upload</td><td>Yes</td><td>No</td><td>Optional evidence for the activity.</td><td>Optional.</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="callout callout-danger"><strong>Key validations (whole form):</strong> &bull; Each product block requires a <strong>Product</strong> before it counts toward Summary &mdash; &ldquo;Select a product.&rdquo; &bull; Once <strong>Type of Prototyping</strong> is chosen, <strong>Prototyping Type Name</strong> becomes mandatory and must belong to the correct master (Packing Master for Packaging, Business Basket for Product); changing the type re-validates and clears a non-matching name. &bull; Design uploads are restricted to .pdf / .jpg / .jpeg / .png / .svg / .ai / .psd. &bull; The Resources table must always retain at least one row. &bull; Task Log entries require a <strong>Task Name</strong>, and the &ldquo;If other&rdquo; option requires <strong>Notes / Outcome</strong> to be filled.</div>
+
+  <div class="review-panel" data-section="m-prototyping">
+    <div class="review-strip"><span style="font-size:12px;color:var(--ink-soft);font-weight:500;">Section Review:</span>
+      <button class="review-status-btn" onclick="setReview('m-prototyping','draft',this)">Draft</button>
+      <button class="review-status-btn" onclick="setReview('m-prototyping','review',this)">In Review</button>
+      <button class="review-status-btn" onclick="setReview('m-prototyping','changes',this)">Needs Changes</button>
+      <button class="review-status-btn" onclick="setReview('m-prototyping','approved',this)">Approved</button>
+      <button style="margin-left:auto;background:none;border:none;font-size:12px;color:var(--sea);cursor:pointer;font-family:var(--font);text-decoration:underline;" onclick="copyLink('m-prototyping')">Copy Link</button></div>
+    <div class="review-comments"><div class="comment-list" id="comments-m-prototyping"></div>
+      <div class="comment-input-row"><input type="text" placeholder="Your name" style="max-width:120px" id="name-m-prototyping"><textarea rows="1" placeholder="Add a comment..." id="text-m-prototyping"></textarea><button class="comment-add-btn" onclick="addComment('m-prototyping')">Add</button></div></div>
+  </div>
+</div>

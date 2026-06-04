@@ -1,0 +1,144 @@
+<div class="brd-section" id="m-product-compliance">
+  <div class="section-header"><span class="section-id">PR-LC-001</span><h2 class="section-title">Product Compliance <span style="font-size:13px;color:var(--ink-faint);font-weight:400">(Legal Compliance module)</span></h2></div>
+  <div class="section-desc"><strong>Product-level framework</strong> under the <em>Legal Compliance</em> module that tracks every <strong>product certification &amp; standard</strong> the enterprise&rsquo;s products hold or need &mdash; FSSAI, AGMARK, BIS, organic marks, craft marks, GI, and more. It is the product-scoped companion to <em>Business Registration</em> (which covers entrepreneur / business-level registrations): same card-based engine and intervention bridge, but each certification is tied to a product and to the relevant authority &amp; validity.</div>
+  <div class="callout callout-teal"><strong>Certification Master (product level, grouped).</strong> A single dropdown grouped into six buckets &mdash; <strong>Food &amp; Beverage</strong> (FSSAI Basic / State / Central, AGMARK, Spices Board, APEDA, ISO&nbsp;22000), <strong>Organic &amp; Natural</strong> (Organic NPOP, India Organic, PGS-India Organic), <strong>Craft &amp; Textile</strong> (Khadi Mark, Handloom Mark, Handicraft Mark, Silk Mark), <strong>Quality &amp; Standards</strong> (BIS Certification, ISO&nbsp;9001), <strong>IP &amp; Market</strong> (Trademark, Geographical Indication, IEC), <strong>Jewellery</strong> (Hallmark BIS) &mdash; plus <em>Other</em>. The master is config-driven; the same certification cannot be added twice for the same product on Existing.</div>
+  <div class="callout callout-terra"><strong>Intervention bridge (Rule 3).</strong> Toggling <em>Need Certification Intervention?</em> ON in an Existing card auto-creates a linked card in <em>Required</em>, carrying the certification, product, validity and justification across; the Existing <em>Type</em> (Renewal / Reapply) maps to the Required <em>Phase</em> (Renewal / New Registration). Bridged Required cards are <strong>locked</strong> (&ldquo;&#8635; Bridged from Existing&rdquo; marker, read-only justification); removing either side un-links the other (two-way sync).</div>
+
+  <h3 style="font-size:16px;color:var(--teal);margin:18px 0 10px;">On-Screen UI Structure</h3>
+  <div class="card"><div style="font-size:13px;line-height:1.9;color:var(--ink)">A teal title bar reads <em>Product Compliance</em> with crumb <em>PRIME Rural &middot; Product-level Certifications</em>. A horizontal <strong>tab rail</strong> &mdash; <em>Summary &middot; Existing &middot; Required &middot; Resources &middot; Task Log</em> &mdash; sits below it, active tab teal, entrepreneur chip on every panel (Rule 2).<br><br><strong>Existing</strong> and <strong>Required</strong> render each certification as a <strong>collapsible card</strong> (sea-green header with a grouped certification selector + status chip; a &ldquo;&#9888; Intervention Flagged&rdquo; chip appears when toggled). &ldquo;+ Add Certification&rdquo; / &ldquo;+ Add New Certification&rdquo; append a card. Each card carries an <em>Applicable Product</em> link, certification details (ID, authority, dates, validity, govt-certified, status, scanned copy) and &mdash; on Existing &mdash; an intervention block. <strong>Summary</strong> is read-only (certification-wise overview table, aggregate cards, intervention-flag tiles). <strong>Resources</strong> and <strong>Task Log</strong> are editable grids. As in Business Registration, a <em>Lifetime Validity</em> checkbox hides <em>Valid Till</em>, and certifications expiring within <strong>90 days</strong> surface amber / expired red in Summary.</div></div>
+  <div class="flow-container" style="margin-top:12px"><div class="flow-step"><div class="flow-box">Summary</div></div><div class="flow-arrow">&rarr;</div><div class="flow-step"><div class="flow-box">Existing</div></div><div class="flow-arrow">&rarr;</div><div class="flow-step"><div class="flow-box">Required</div></div><div class="flow-arrow">&rarr;</div><div class="flow-step"><div class="flow-box">Resources</div></div><div class="flow-arrow">&rarr;</div><div class="flow-step"><div class="flow-box">Task Log</div></div></div>
+
+  <h3 style="font-size:16px;color:var(--teal);margin:18px 0 10px;">User Journey</h3>
+  <div class="card"><div class="flow-container">
+    <div class="flow-step"><div class="flow-box">Open Product Compliance</div><div class="flow-label">EP dashboard &middot; Diagnostics &rarr; Legal Compliance</div></div>
+    <div class="flow-arrow">&rarr;</div>
+    <div class="flow-step"><div class="flow-box">Add &amp; map certifications</div><div class="flow-label">Existing &mdash; product + grouped master + ID / authority / validity</div></div>
+    <div class="flow-arrow">&rarr;</div>
+    <div class="flow-step"><div class="flow-box">Attach certificate</div><div class="flow-label">upload scan, set Govt. Certified &amp; Status</div></div>
+    <div class="flow-arrow">&rarr;</div>
+    <div class="flow-step"><div class="flow-box">Flag intervention</div><div class="flow-label">toggle &rarr; Type + Justification &rarr; bridges to Required</div></div>
+    <div class="flow-arrow">&rarr;</div>
+    <div class="flow-step"><div class="flow-box">Track in Required &amp; Save</div><div class="flow-label">Phase + Status; Summary &amp; flags recompute</div></div>
+  </div></div>
+
+  <!-- ============ TAB 1: SUMMARY ============ -->
+  <div class="accordion open"><div class="accordion-trigger" onclick="this.parentElement.classList.toggle('open')">Tab 1: Summary <span class="acc-arrow">&#9660;</span></div>
+    <div class="accordion-body">
+      <p style="font-size:13px;color:var(--ink-soft);margin-bottom:12px;">Entirely read-only. Auto-populated from the Existing and Required tabs; recalculates on switch back.</p>
+
+      <h4 style="font-size:14px;color:var(--teal);margin-bottom:10px;">Certification-wise Overview Table</h4>
+      <p style="font-size:12px;color:var(--ink-soft);font-style:italic;margin-bottom:8px;">One row per certification &mdash; Existing first, then Required (bridged + new) highlighted below.</p>
+      <table class="brd-table"><thead><tr><th>Field Name</th><th>Field Type</th><th>Input Values</th><th>Input / Autofill</th><th>Logic</th><th>Validation &amp; Error Messages</th></tr></thead>
+      <tbody>
+        <tr><td>Certification</td><td>Read-only text (bold)</td><td>&mdash;</td><td>Autofill</td><td>Certification name from the card&rsquo;s selector; a &#128206; clip icon shows when a scanned copy is attached.</td><td>&mdash; (display only)</td></tr>
+        <tr><td>Product</td><td>Read-only text</td><td>&mdash;</td><td>Autofill</td><td>The Applicable Product the certification covers.</td><td>&mdash;</td></tr>
+        <tr><td>Issuing Authority</td><td>Read-only text</td><td>&mdash;</td><td>Autofill</td><td>From the card&rsquo;s authority field; &ldquo;&mdash;&rdquo; if blank.</td><td>&mdash;</td></tr>
+        <tr><td>Valid Till</td><td>Read-only badge</td><td>Lifetime / date / Expired</td><td>Calculated</td><td>Lifetime (green) when checked; amber &ldquo;&#9200; date&rdquo; within 90 days; red &ldquo;Expired date&rdquo; when past; else plain date.</td><td>&mdash;</td></tr>
+        <tr><td>Govt. Certified</td><td>Read-only</td><td>&#10003; Yes / No / &mdash;</td><td>Autofill</td><td>Green &ldquo;&#10003; Yes&rdquo; / muted &ldquo;No&rdquo; / &ldquo;&mdash;&rdquo;.</td><td>&mdash;</td></tr>
+        <tr><td>Status</td><td>Read-only badge</td><td>Received / Not yet Received / Rejected</td><td>Autofill</td><td>Existing card status; Received&rarr;green, Not yet Received&rarr;amber, Rejected&rarr;red.</td><td>&mdash;</td></tr>
+        <tr><td>Intervention Type</td><td>Read-only badge</td><td>&#8635; Renewal / Reapply / &mdash;</td><td>Autofill</td><td>Amber badge when the card&rsquo;s intervention toggle is ON.</td><td>&mdash;</td></tr>
+        <tr><td>Implementation Status</td><td>Read-only badge</td><td>Applied / Not Yet Applied / Received / Not yet Received / Rejected</td><td>Autofill</td><td>Mirrors the bridged Required card status (defaults &ldquo;Not Yet Applied&rdquo;); &ldquo;&mdash;&rdquo; when not flagged.</td><td>&mdash;</td></tr>
+      </tbody></table>
+
+      <h4 style="font-size:14px;color:var(--teal);margin:16px 0 10px;">Aggregate Cards (4)</h4>
+      <table class="brd-table"><thead><tr><th>Card / Metric</th><th>Field Type</th><th>Input / Autofill</th><th>Logic</th></tr></thead>
+      <tbody>
+        <tr><td>Existing &rarr; Total Certifications</td><td>Read-only number</td><td>Calculated</td><td>Count of Existing cards with a certification selected.</td></tr>
+        <tr><td>Existing &rarr; Govt. Certified / With Scanned Copy</td><td>Read-only numbers (green)</td><td>Calculated</td><td>Counts of Govt-certified cards and cards with an attached scan.</td></tr>
+        <tr><td>Existing &rarr; Lifetime Validity / Expiring within 90 Days</td><td>Read-only numbers (amber)</td><td>Calculated</td><td>Lifetime-flagged count and non-lifetime certifications expiring soon.</td></tr>
+        <tr><td>Existing &rarr; Flagged for Intervention</td><td>Read-only number (amber)</td><td>Calculated</td><td>Existing cards with the intervention toggle ON.</td></tr>
+        <tr><td>Required &rarr; Total / Bridged / New / Intervention Rate</td><td>Read-only</td><td>Calculated</td><td>Required count split by origin; rate = Flagged &divide; Total Existing.</td></tr>
+        <tr><td>Interventions &rarr; Needed / In Progress / Received / Expiring Soon</td><td>Read-only numbers</td><td>Calculated</td><td>Same logic as Business Registration (incomplete flagged / Applied+Not-yet-Received / Received / expiring-90).</td></tr>
+        <tr><td>Implementation Status &rarr; Applied / Not Yet Applied / Not yet Received / Received / Rejected</td><td>Read-only numbers</td><td>Calculated</td><td>Status counts across all Required cards.</td></tr>
+      </tbody></table>
+
+      <h4 style="font-size:14px;color:var(--teal);margin:16px 0 10px;">Intervention Flags Strip (4 tiles)</h4>
+      <table class="brd-table"><thead><tr><th>Tile</th><th>Field Type</th><th>Input / Autofill</th><th>Logic</th></tr></thead>
+      <tbody>
+        <tr><td>&#8635; Intervention Needed</td><td>Read-only count (amber)</td><td>Calculated</td><td>= flagged certifications whose required action is incomplete.</td></tr>
+        <tr><td>&#9676; In Progress</td><td>Read-only count (blue)</td><td>Calculated</td><td>= Required cards Applied / Not yet Received.</td></tr>
+        <tr><td>&#10003; Received</td><td>Read-only count (green)</td><td>Calculated</td><td>= Required cards Received.</td></tr>
+        <tr><td>! Expiring Soon</td><td>Read-only count (amber)</td><td>Calculated</td><td>= certifications expiring within 90 days.</td></tr>
+      </tbody></table>
+    </div></div>
+
+  <!-- ============ TAB 2: EXISTING ============ -->
+  <div class="accordion"><div class="accordion-trigger" onclick="this.parentElement.classList.toggle('open')">Tab 2: Existing <span class="acc-arrow">&#9660;</span></div>
+    <div class="accordion-body">
+      <p style="font-size:13px;color:var(--ink-soft);margin-bottom:12px;">One collapsible <strong>card per product certification</strong> currently held. &ldquo;+ Add Certification&rdquo; appends a card; the header carries the grouped certification selector, a Status chip and a flag chip. Each card holds <em>Certification Details</em> + an <em>Intervention Need</em> block.</p>
+      <table class="brd-table"><thead><tr><th>Field Name</th><th>Field Type</th><th>Input Values</th><th>Input / Autofill</th><th>Logic</th><th>Validation &amp; Error Messages</th></tr></thead>
+      <tbody>
+        <tr><td>Certification Type *</td><td>Select (grouped)</td><td>Certification Master &mdash; 6 grouped buckets + Other</td><td>Input</td><td>Card header selector; group headings are non-selectable. Same certification cannot be added twice for the same product.</td><td>&ldquo;Select a certification.&rdquo;</td></tr>
+        <tr><td>Applicable Product *</td><td>Link / Select</td><td>Products from the entrepreneur&rsquo;s Product Profile</td><td>Input</td><td>Ties the certification to a specific product (product-level scope).</td><td>&ldquo;Select the applicable product.&rdquo;</td></tr>
+        <tr><td>ID No.</td><td>Text</td><td>Free text</td><td>Input</td><td>Certificate / licence number.</td><td>&mdash;</td></tr>
+        <tr><td>Issuing Authority</td><td>Text</td><td>Free text</td><td>Input</td><td>e.g. FSSAI, BIS, APEDA, Spices Board.</td><td>&mdash;</td></tr>
+        <tr><td>Issued Date</td><td>Date</td><td>&mdash;</td><td>Input</td><td>Date granted.</td><td>Must be &le; today.</td></tr>
+        <tr><td>Lifetime Validity</td><td>Checkbox</td><td>On / Off</td><td>Input</td><td>When checked, hides &amp; clears Valid Till; Summary shows green &ldquo;Lifetime&rdquo;.</td><td>&mdash;</td></tr>
+        <tr><td>Valid Till</td><td>Date</td><td>&mdash;</td><td>Input</td><td>Expiry; hidden when Lifetime. Drives 90-day expiring / expired highlighting.</td><td>Must be &gt; Issued Date.</td></tr>
+        <tr><td>Govt. Certified?</td><td>Select</td><td>Yes / No</td><td>Input</td><td>Feeds the Govt. Certified aggregate.</td><td>&mdash;</td></tr>
+        <tr><td>Status</td><td>Select</td><td>Received / Not yet Received / Rejected</td><td>Input</td><td>Header chip.</td><td>&ldquo;Status is required.&rdquo;</td></tr>
+        <tr><td>Scanned Copy</td><td>Attach (Upload / View)</td><td>.pdf / .jpg / .png</td><td>Input</td><td>File pill + View; feeds &ldquo;With Scanned Copy&rdquo;.</td><td>&mdash;</td></tr>
+        <tr><td>Need Certification Intervention?</td><td>Toggle</td><td>On / Off</td><td>Input</td><td>ON reveals Type + Justification, shows the flag chip and auto-creates a bridged Required card (Rule 3); OFF removes it.</td><td>&mdash;</td></tr>
+        <tr><td>Intervention &rarr; Type</td><td>Select</td><td>Renewal / Reapply</td><td>Input</td><td>Maps to Required Phase (Renewal / New Registration).</td><td>Recommended when toggle ON.</td></tr>
+        <tr><td>Intervention &rarr; Justification</td><td>Textarea</td><td>Free text</td><td>Input</td><td>Reason &mdash; expired / missing / upgrade. Two-way synced to the bridged card.</td><td>Required when toggle ON.</td></tr>
+      </tbody></table>
+    </div></div>
+
+  <!-- ============ TAB 3: REQUIRED ============ -->
+  <div class="accordion"><div class="accordion-trigger" onclick="this.parentElement.classList.toggle('open')">Tab 3: Required <span class="acc-arrow">&#9660;</span></div>
+    <div class="accordion-body">
+      <p style="font-size:13px;color:var(--ink-soft);margin-bottom:12px;">Certifications still to acquire or renew &mdash; <strong>bridge-populated</strong> from flagged Existing cards, or added manually via &ldquo;+ Add New Certification&rdquo;. Bridged cards are locked with a &ldquo;&#8635; Bridged from Existing&rdquo; marker.</p>
+      <table class="brd-table"><thead><tr><th>Field Name</th><th>Field Type</th><th>Input Values</th><th>Input / Autofill</th><th>Logic</th><th>Validation &amp; Error Messages</th></tr></thead>
+      <tbody>
+        <tr><td>Certification Type *</td><td>Select (grouped)</td><td>Certification Master</td><td>Input / Autofill</td><td>Manual cards chosen freely; bridged cards <strong>disabled</strong> &amp; pre-set from the source.</td><td>&ldquo;Select a certification.&rdquo;</td></tr>
+        <tr><td>Applicable Product</td><td>Link / Select</td><td>Product Profile products</td><td>Input / Autofill</td><td>Carried from the source card on bridged rows.</td><td>&mdash;</td></tr>
+        <tr><td>Phase</td><td>Select</td><td>New Registration / Renewal</td><td>Input / Autofill</td><td>Bridged cards default from the Existing Type.</td><td>&mdash;</td></tr>
+        <tr><td>ID No. / Issuing Authority / Issued Date</td><td>Text / Text / Date</td><td>Free</td><td>Input</td><td>Captured once obtained.</td><td>Issued Date &le; today.</td></tr>
+        <tr><td>Lifetime Validity / Valid Till</td><td>Checkbox / Date</td><td>On-Off / date</td><td>Input / Autofill</td><td>Same hide-on-lifetime behaviour; bridged prefill validity + lifetime.</td><td>Valid Till &gt; Issued Date.</td></tr>
+        <tr><td>Govt. Certified? / Scanned Copy</td><td>Select / Attach</td><td>Yes-No / file</td><td>Input</td><td>Same as Existing.</td><td>&mdash;</td></tr>
+        <tr><td>Justification (from Existing)</td><td>Read-only textarea</td><td>&mdash;</td><td>Autofill</td><td>Bridged cards only; mirrors the Existing justification (two-way synced).</td><td>&mdash;</td></tr>
+        <tr><td>Status</td><td>Select</td><td>Applied / Not Yet Applied / Received / Not yet Received / Rejected</td><td>Input</td><td>Header chip; feeds Implementation aggregates &amp; the Existing card&rsquo;s mirrored status. Defaults &ldquo;Not Yet Applied&rdquo;.</td><td>&mdash;</td></tr>
+        <tr><td>Notes</td><td>Textarea</td><td>Free text</td><td>Input</td><td>Application notes, blockers, next steps.</td><td>&mdash;</td></tr>
+      </tbody></table>
+      <div class="callout callout-teal">Removing a bridged Required card toggles OFF the corresponding Existing intervention flag (two-way sync).</div>
+    </div></div>
+
+  <!-- ============ TAB 4: RESOURCES ============ -->
+  <div class="accordion"><div class="accordion-trigger" onclick="this.parentElement.classList.toggle('open')">Tab 4: Resources <span class="acc-arrow">&#9660;</span></div>
+    <div class="accordion-body">
+      <p style="font-size:13px;color:var(--ink-soft);margin-bottom:12px;">Reference materials &mdash; application forms, regulatory guidance, vendor directories, sample certificates. &ldquo;+ Add Resource&rdquo; appends a row.</p>
+      <table class="brd-table"><thead><tr><th>Field Name</th><th>Field Type</th><th>Input Values</th><th>Input / Autofill</th><th>Logic</th><th>Validation &amp; Error Messages</th></tr></thead>
+      <tbody>
+        <tr><td>Resource Title</td><td>Text</td><td>Free text</td><td>Input</td><td>&mdash;</td><td>&mdash;</td></tr>
+        <tr><td>Category</td><td>Select</td><td>Application Form / Regulatory Guidance / Vendor Directory / Sample Certificate / Fee Schedule / Compliance Checklist</td><td>Input</td><td>&mdash;</td><td>&mdash;</td></tr>
+        <tr><td>Type</td><td>Select</td><td>Template / Reference / Vendor / Quotation / Specification</td><td>Input</td><td>&mdash;</td><td>&mdash;</td></tr>
+        <tr><td>Description / Notes</td><td>Text</td><td>Free text</td><td>Input</td><td>&mdash;</td><td>&mdash;</td></tr>
+        <tr><td>File</td><td>Attach (Upload / View)</td><td>Any file</td><td>Input</td><td>Drive-linked resource.</td><td>&mdash;</td></tr>
+      </tbody></table>
+    </div></div>
+
+  <!-- ============ TAB 5: TASK LOG ============ -->
+  <div class="accordion"><div class="accordion-trigger" onclick="this.parentElement.classList.toggle('open')">Tab 5: Task Log <span class="acc-arrow">&#9660;</span></div>
+    <div class="accordion-body">
+      <p style="font-size:13px;color:var(--ink-soft);margin-bottom:12px;">Seeded certification activities (Record Existing Certifications, Assess Validity &amp; Status, Identify New Need, Collect Documents, Submit Application, Upload Certificate &amp; Update Module&hellip;) drive a read-only Progress field; each row carries Status, Owner, Due Date, Notes.</p>
+      <table class="brd-table"><thead><tr><th>Field Name</th><th>Field Type</th><th>Input Values</th><th>Input / Autofill</th><th>Logic</th><th>Validation &amp; Error Messages</th></tr></thead>
+      <tbody>
+        <tr><td>No. / Task Name / Phase</td><td>Read-only</td><td>Seeded list; Existing / Intervention / Required</td><td>System</td><td>Fixed seeded tasks with colour-coded phase badge.</td><td>&mdash;</td></tr>
+        <tr><td>Status</td><td>Select</td><td>Pending / In Progress / Completed / Blocked</td><td>Input</td><td>Aggregates into read-only Progress (%).</td><td>&mdash;</td></tr>
+        <tr><td>Owner / Due Date / Notes</td><td>Text / Date / Text</td><td>Free</td><td>Input</td><td>&mdash;</td><td>&mdash;</td></tr>
+      </tbody></table>
+    </div></div>
+
+  <div class="callout callout-danger"><strong>Key validations (whole form):</strong> Entrepreneur is required and unique (one Product Compliance form per entrepreneur). Every card must have a <strong>Certification Type and an Applicable Product selected</strong>; the same certification cannot be added twice for the same product on Existing. Issued Date &le; today; Valid Till &gt; Issued Date and is hidden / cleared when Lifetime Validity is checked. Existing Status is mandatory. Flagging an intervention requires a Justification and creates exactly one bridged Required card; bridged cards are locked and stay two-way synced. Expiring-within-90-days / Expired highlighting is computed. <strong>Entrepreneur / business-level registrations belong in Business Registration, not here.</strong></div>
+
+  <div class="review-panel" data-section="m-product-compliance">
+    <div class="review-strip"><span style="font-size:12px;color:var(--ink-soft);font-weight:500;">Section Review:</span>
+      <button class="review-status-btn" onclick="setReview('m-product-compliance','draft',this)">Draft</button>
+      <button class="review-status-btn" onclick="setReview('m-product-compliance','review',this)">In Review</button>
+      <button class="review-status-btn" onclick="setReview('m-product-compliance','changes',this)">Needs Changes</button>
+      <button class="review-status-btn" onclick="setReview('m-product-compliance','approved',this)">Approved</button>
+      <button style="margin-left:auto;background:none;border:none;font-size:12px;color:var(--sea);cursor:pointer;font-family:var(--font);text-decoration:underline;" onclick="copyLink('m-product-compliance')">Copy Link</button></div>
+    <div class="review-comments"><div class="comment-list" id="comments-m-product-compliance"></div>
+      <div class="comment-input-row"><input type="text" placeholder="Your name" style="max-width:120px" id="name-m-product-compliance"><textarea rows="1" placeholder="Add a comment..." id="text-m-product-compliance"></textarea><button class="comment-add-btn" onclick="addComment('m-product-compliance')">Add</button></div></div>
+  </div>
+</div>

@@ -1,0 +1,311 @@
+<div class="brd-section" id="m-hr">
+  <div class="section-header">
+    <span class="section-id">PR-MFG-003</span>
+    <h2 class="section-title">Human Resource</h2>
+  </div>
+  <div class="section-desc">Captures the enterprise workforce (categories, skill levels, wages and headcount) under the Manufacturing module's diagnostic framework. Each worker category's monthly labour cost and labour-rate-per-hour feed Unit Pricing individually, while every wage line is checked against Government of Meghalaya (GoM) minimum-wage thresholds for compliance flagging.</div>
+
+  <div class="callout callout-terra">
+    <strong>Key behaviour &mdash; Existing &rarr; Required intervention bridge:</strong> When the Fessociate toggles <em>"Labour intervention needed?"</em> on an Existing worker block, a linked row is auto-created in the Required tab (Section I, Labour Interventions). The bridge is two-way: the Existing worker's Category / Skill / Nature / Justification flow into the Required row as read-only context, and removing the Required row (or unflagging the toggle) clears the bridge on both sides. <strong>New Labour</strong> (Required Section II) is standalone and is NOT bridged to Existing.
+  </div>
+
+  <h3 style="font-size:16px;color:var(--teal);margin:18px 0 10px;">On-Screen UI Structure</h3>
+  <div class="card"><div style="font-size:13px;line-height:1.9;color:var(--ink)">
+    <strong>Top bar:</strong> teal header "Human Resource Module" with breadcrumb "PRIME Rural &middot; DF Human Resource". Below it an entrepreneur chip (avatar + name) <em>auto-fetched from the entrepreneur profile</em>.<br>
+    <strong>Tab rail:</strong> a horizontal rail of five tabs &mdash; Summary &middot; Existing &middot; Required &middot; Resources &middot; Task Log. Active tab is teal-filled; switching to Summary triggers a full recalculation.<br>
+    <strong>Body layout:</strong> each tab is a panel.
+    <em>Existing</em> renders one collapsible <strong>worker block (child table row)</strong> per category, each with three sub-sections (Worker Classification, Wage Structure, Cost &amp; Compliance) plus an Intervention-Need toggle.
+    <em>Required</em> holds two sections &mdash; I. Labour Interventions (bridged rows) and II. New Labour (standalone blocks).
+    <em>Summary</em> shows a worker-wise overview grid, four aggregate cards, and four intervention-flag tiles.<br>
+    <strong>Special widgets:</strong> a per-block <strong>GoM compliance flag</strong> (green "Yes" / red "No" condition-badge) and a red <strong>wage-warning banner</strong> when the implied daily wage falls below the GoM minimum for the skill level; collapsible block headers carry Skill and GoM&#10003;/GoM&#10007; tags.<br>
+    <strong>Calculated fields</strong> (Total Workers, Monthly Labour Cost, Labour Rate / hr, GoM Compliant?, Required Monthly Cost) are rendered <em>italic on a cream-deep / highlight background</em>, read-only, with the active formula shown in the "Cost Formula Applied" strip (Rule 1).
+  </div></div>
+  <div class="flow-container" style="margin-top:12px">
+    <div class="flow-step"><div class="flow-box">Summary</div></div>
+    <div class="flow-arrow">&rarr;</div>
+    <div class="flow-step"><div class="flow-box">Existing</div></div>
+    <div class="flow-arrow">&rarr;</div>
+    <div class="flow-step"><div class="flow-box">Required</div></div>
+    <div class="flow-arrow">&rarr;</div>
+    <div class="flow-step"><div class="flow-box">Resources</div></div>
+    <div class="flow-arrow">&rarr;</div>
+    <div class="flow-step"><div class="flow-box">Task Log</div></div>
+  </div>
+
+  <h3 style="font-size:16px;color:var(--teal);margin:18px 0 10px;">User Journey</h3>
+  <div class="card"><div class="flow-container">
+    <div class="flow-step"><div class="flow-box highlight">Open Human Resource</div><div class="flow-label">Diagnostics &rarr; Manufacturing &rarr; Human Resource; entrepreneur auto-fetched</div></div>
+    <div class="flow-arrow">&rarr;</div>
+    <div class="flow-step"><div class="flow-box">Record existing workforce</div><div class="flow-label">Existing tab &mdash; add a worker block per category (classification, headcount, wages)</div></div>
+    <div class="flow-arrow">&rarr;</div>
+    <div class="flow-step"><div class="flow-box">Check cost &amp; GoM compliance</div><div class="flow-label">Monthly cost &amp; rate/hr auto-calc; system flags wages below GoM minimum</div></div>
+    <div class="flow-arrow">&rarr;</div>
+    <div class="flow-step"><div class="flow-box accent">Flag intervention</div><div class="flow-label">Toggle "Labour intervention needed?" &rarr; bridges row into Required tab</div></div>
+    <div class="flow-arrow">&rarr;</div>
+    <div class="flow-step"><div class="flow-box">Plan required workforce</div><div class="flow-label">Required tab &mdash; intervention type, required headcount/wages, status; add New Labour</div></div>
+    <div class="flow-arrow">&rarr;</div>
+    <div class="flow-step"><div class="flow-box highlight">Review &amp; Save</div><div class="flow-label">Summary recalculates; per-category cost feeds Unit Pricing</div></div>
+  </div></div>
+
+  <!-- ===================== TAB 1: SUMMARY ===================== -->
+  <div class="accordion open">
+    <div class="accordion-trigger" onclick="this.parentElement.classList.toggle('open')">
+      Tab 1 &mdash; Summary (read-only roll-up) <span class="acc-arrow">&#9660;</span>
+    </div>
+    <div class="accordion-body">
+      <div class="callout callout-teal">
+        <strong>Entirely auto-generated</strong> from the Existing and Required tabs. Recalculates whenever the tab is opened or any source field changes. No direct data entry on this tab.
+      </div>
+
+      <h4 style="font-size:14px;color:var(--teal);margin-bottom:10px;">A. Worker-wise Overview (table)</h4>
+      <p style="font-size:12px;color:var(--ink-soft);font-style:italic;margin-bottom:8px;">Each worker category's labour cost/unit feeds Unit Pricing <em>individually</em>. Intervention Type and Status columns populate only when a flag is raised. New Labour rows are appended below (highlighted) with a "+ New Labour" tag.</p>
+      <table class="brd-table">
+        <thead><tr><th>Column</th><th>Source</th><th>Logic / Display</th></tr></thead>
+        <tbody>
+          <tr><td>Category</td><td>Existing / New Labour block</td><td>Worker Category value (bold)</td></tr>
+          <tr><td>Skill Level</td><td>block</td><td>Unskilled / Semi-skilled / Skilled / Highly Skilled</td></tr>
+          <tr><td>Employment</td><td>block</td><td>Employment Nature value</td></tr>
+          <tr><td>Male</td><td>block</td><td>No. of Male Workers (&ldquo;&mdash;&rdquo; if 0)</td></tr>
+          <tr><td>Female</td><td>block</td><td>No. of Female Workers (&ldquo;&mdash;&rdquo; if 0)</td></tr>
+          <tr><td>Total Workers</td><td><em>calculated</em></td><td>Male + Female</td></tr>
+          <tr><td>Monthly Cost (&#8377;)</td><td><em>calculated</em></td><td>Block monthly labour cost</td></tr>
+          <tr><td>GoM</td><td><em>calculated flag</em></td><td>Condition-badge: green &ldquo;Yes&rdquo; / red &ldquo;No&rdquo; / &ldquo;&mdash;&rdquo;</td></tr>
+          <tr><td>Intervention Type</td><td>Required (bridged row)</td><td>&ldquo;&#8635; Labour&rdquo; badge + selected intervention type; &ldquo;&mdash;&rdquo; if unflagged</td></tr>
+          <tr><td>Implementation Status</td><td>Required (bridged row)</td><td>Status badge: Pending / In Progress / Completed / Not Feasible</td></tr>
+          <tr><td>New Workers</td><td>Required (bridged row)</td><td>Required headcount + signed delta vs current (e.g. &ldquo;+2 workers&rdquo;); &ldquo;Pending&rdquo; if no value</td></tr>
+          <tr><td>New Monthly Cost (&#8377;)</td><td>Required (bridged row)</td><td>Required monthly cost + signed delta (&#9650; Cost up / &#9660; Cost down)</td></tr>
+        </tbody>
+      </table>
+      <div class="callout callout-amber" style="margin-top:10px"><strong>Footer note row:</strong> &ldquo;Unit Pricing reads each worker category individually&rdquo; &mdash; rendered as a total-row caption, reinforcing that costs are NOT summed before being passed downstream.</div>
+
+      <h4 style="font-size:14px;color:var(--teal);margin:16px 0 10px;">B. Aggregate Cards (4 cards, all calculated)</h4>
+      <table class="brd-table">
+        <thead><tr><th>Card</th><th>Metric</th><th>Formula / Logic</th></tr></thead>
+        <tbody>
+          <tr><td rowspan="7"><strong>Existing</strong></td><td>Worker Categories</td><td>Count of Existing worker blocks</td></tr>
+          <tr><td>Total Workers</td><td>&Sigma; (Male + Female) across Existing blocks</td></tr>
+          <tr><td>Male Workers</td><td>&Sigma; Male</td></tr>
+          <tr><td>Female Workers</td><td>&Sigma; Female</td></tr>
+          <tr><td>Monthly Labour Cost (&#8377;)</td><td>&Sigma; block monthly cost</td></tr>
+          <tr><td>GoM Compliant</td><td>Count of blocks with GoM = Yes</td></tr>
+          <tr><td>GoM Non-Compliant</td><td>Count of blocks with GoM = No</td></tr>
+          <tr><td rowspan="7"><strong>Cost</strong></td><td>Monthly Cost &mdash; Before (&#8377;)</td><td>= Existing monthly labour cost</td></tr>
+          <tr><td>Monthly Cost &mdash; After (&#8377;)</td><td>&Sigma; Required cost of <em>Completed</em> interventions only; &ldquo;&mdash;&rdquo; if none</td></tr>
+          <tr><td>Cost Change (&#8377;)</td><td>After &minus; Before of Completed set (&#9650;/&#9660; signed); &ldquo;&mdash;&rdquo; if none</td></tr>
+          <tr><td>Workers Before</td><td>= Existing total workers</td></tr>
+          <tr><td>Workers After</td><td>(Existing total &minus; Completed current) + Completed required headcount</td></tr>
+          <tr><td>Jobs Created / Changed</td><td>Workers After &minus; Workers Before (signed); &ldquo;&mdash;&rdquo; if no Completed</td></tr>
+          <tr><td>Note</td><td><em>&ldquo;After = Completed interventions only.&rdquo;</em></td></tr>
+          <tr><td rowspan="3"><strong>Interventions</strong></td><td>Labour Interventions Flagged</td><td>Count of Existing blocks with toggle ON</td></tr>
+          <tr><td>Skilled / Highly Skilled</td><td>&Sigma; workers where Skill = Skilled or Highly Skilled</td></tr>
+          <tr><td>Avg Labour Rate / hr (&#8377;)</td><td>Total monthly cost &divide; total worker-hours (&Sigma; count &times; days &times; hours); 0 if hours = 0</td></tr>
+          <tr><td rowspan="4"><strong>Status</strong></td><td>Completed</td><td>Count of bridged rows with Status = Completed</td></tr>
+          <tr><td>In Progress</td><td>Count Status = In Progress</td></tr>
+          <tr><td>Pending</td><td>Count Status = Pending</td></tr>
+          <tr><td>Not Feasible</td><td>Count Status = Not Feasible</td></tr>
+        </tbody>
+      </table>
+
+      <h4 style="font-size:14px;color:var(--teal);margin:16px 0 10px;">C. Intervention Flag Tiles (4)</h4>
+      <table class="brd-table">
+        <thead><tr><th>Tile</th><th>Count</th></tr></thead>
+        <tbody>
+          <tr><td>Labour Intervention Needed (&#8635;, amber)</td><td>= Labour Interventions Flagged</td></tr>
+          <tr><td>GoM Non-Compliant (!, red)</td><td>= count of GoM = No blocks</td></tr>
+          <tr><td>GoM Compliant (&#10003;, green)</td><td>= count of GoM = Yes blocks</td></tr>
+          <tr><td>Skilled / Highly Skilled (&#9733;, blue)</td><td>= Skilled / Highly Skilled worker count</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ===================== TAB 2: EXISTING ===================== -->
+  <div class="accordion">
+    <div class="accordion-trigger" onclick="this.parentElement.classList.toggle('open')">
+      Tab 2 &mdash; Existing (workforce child table) <span class="acc-arrow">&#9660;</span>
+    </div>
+    <div class="accordion-body">
+      <div class="callout callout-teal">
+        Repeating collapsible <strong>worker block = one row of the workforce child table</strong> (<em>DF Human Resource Workforce Entry</em>). &ldquo;+ Add Worker Category&rdquo; adds a block; each block header shows Row no., a live label (Category &middot; Nature), and Skill / GoM tags. Three default rows are seeded on load. A teal total-bar sits below the list and feeds <em>Existing Unit Pricing &rarr; Human Resource</em>.
+      </div>
+
+      <h4 style="font-size:14px;color:var(--teal);margin-bottom:10px;">Sub-section I &mdash; Worker Classification</h4>
+      <table class="brd-table">
+        <thead><tr><th>Field Name</th><th>Field Type</th><th>Input Values</th><th>Input / Autofill</th><th>Logic</th><th>Validation &amp; Error Messages</th></tr></thead>
+        <tbody>
+          <tr><td>Worker Category *</td><td>Select</td><td>Self &middot; Unpaid Family &middot; Paid Family &middot; Hired Worker</td><td>Input</td><td>Updates block head label; drives Summary grouping</td><td>Required &mdash; &ldquo;Worker category is required&rdquo;</td></tr>
+          <tr><td>Skill Level *</td><td>Select</td><td>Unskilled &middot; Semi-skilled &middot; Skilled &middot; Highly Skilled</td><td>Input</td><td>Sets the GoM minimum-wage threshold used for compliance; sets Skill tag; counts toward Skilled tally if Skilled/Highly Skilled</td><td>Required &mdash; &ldquo;Skill level is required&rdquo;</td></tr>
+          <tr><td>Employment Nature *</td><td>Select</td><td>Permanent &middot; Contract &middot; Casual / Daily &middot; Seasonal &middot; Part-time</td><td>Input</td><td>Shown in head label and Summary</td><td>Required &mdash; &ldquo;Employment nature is required&rdquo;</td></tr>
+          <tr><td>No. of Male Workers</td><td>Number (int)</td><td>&ge; 0</td><td>Input</td><td>Feeds Total Workers and Summary Male tally</td><td>Must be &ge; 0; no negatives</td></tr>
+          <tr><td>No. of Female Workers</td><td>Number (int)</td><td>&ge; 0</td><td>Input</td><td>Feeds Total Workers and Summary Female tally</td><td>Must be &ge; 0; no negatives</td></tr>
+          <tr style="background:var(--cream-deep,#F4ECD3)"><td><em>Total Workers</em></td><td><em>Number (calculated)</em></td><td><em>Auto</em></td><td><em>Calculated</em></td><td><em>= Male + Female; blank when 0. Recalculates on either count change</em></td><td>Read-only</td></tr>
+        </tbody>
+      </table>
+
+      <h4 style="font-size:14px;color:var(--teal);margin:16px 0 10px;">Sub-section II &mdash; Wage Structure</h4>
+      <table class="brd-table">
+        <thead><tr><th>Field Name</th><th>Field Type</th><th>Input Values</th><th>Input / Autofill</th><th>Logic</th><th>Validation &amp; Error Messages</th></tr></thead>
+        <tbody>
+          <tr><td>Wage Type *</td><td>Select</td><td>Per Day &middot; Per Month &middot; Per Hour</td><td>Input</td><td>Selects which cost formula is applied; drives daily-equivalent for GoM check</td><td>Required &mdash; &ldquo;Wage type is required&rdquo;</td></tr>
+          <tr><td>Wage Rate *</td><td>Number / Currency (&#8377;)</td><td>&ge; 0, step 0.01</td><td>Input</td><td>Interpreted per the Wage Type (per day / month / hour)</td><td>Required &mdash; &ldquo;Wage rate is required&rdquo;; must be &ge; 0</td></tr>
+          <tr><td>Avg Working Days / Month</td><td>Number</td><td>&ge; 0 (e.g. 22)</td><td>Input</td><td>Used by Per Day &amp; Per Hour cost formulas and by rate/hr derivation</td><td>Must be &ge; 0; required when Wage Type = Per Day or Per Hour</td></tr>
+          <tr><td>Avg Hours / Day</td><td>Number</td><td>&ge; 0 (e.g. 8)</td><td>Input</td><td>Used by Per Hour cost formula and by rate/hr derivation</td><td>Must be &ge; 0; required when Wage Type = Per Hour</td></tr>
+        </tbody>
+      </table>
+
+      <h4 style="font-size:14px;color:var(--teal);margin:16px 0 10px;">Sub-section III &mdash; Cost &amp; Compliance (all calculated)</h4>
+      <table class="brd-table">
+        <thead><tr><th>Field Name</th><th>Field Type</th><th>Input Values</th><th>Input / Autofill</th><th>Logic</th><th>Validation &amp; Error Messages</th></tr></thead>
+        <tbody>
+          <tr style="background:var(--cream-deep,#F4ECD3)"><td><em>Monthly Labour Cost (&#8377;)</em></td><td><em>Currency (calculated)</em></td><td><em>Auto</em></td><td><em>Calculated</em></td><td><em>= Monthly-per-worker &times; Total Workers. Per Day: Rate &times; Days. Per Month: Rate. Per Hour: Rate &times; Days &times; Hours/Day. Feeds Unit Pricing per category</em></td><td>Read-only</td></tr>
+          <tr style="background:var(--cream-deep,#F4ECD3)"><td><em>Labour Rate / hr (&#8377;)</em></td><td><em>Currency (calculated)</em></td><td><em>Auto</em></td><td><em>Calculated</em></td><td><em>Per Hour: = Rate. Else: monthly-per-worker &divide; (Days &times; Hours). Per Day fallback: Rate &divide; Hours</em></td><td>Read-only</td></tr>
+          <tr style="background:var(--cream-deep,#F4ECD3)"><td><em>GoM Compliant?</em></td><td><em>Flag (calculated)</em></td><td><em>Yes / No / &mdash;</em></td><td><em>Calculated</em></td><td><em>Compare implied daily wage to GoM minimum for the Skill Level (see compliance callout). Renders green &ldquo;Yes&rdquo; / red &ldquo;No&rdquo; condition-badge; &ldquo;&mdash;&rdquo; until enough inputs</em></td><td>Read-only</td></tr>
+          <tr><td>Cost Formula Applied</td><td>Text (display)</td><td>Auto</td><td>Calculated</td><td>Shows the live formula string and a TOTAL MONTHLY COST line with worker count</td><td>Read-only</td></tr>
+          <tr><td>GoM Warning Banner</td><td>Conditional banner</td><td>Hidden / shown</td><td>Calculated</td><td>Shown only when GoM = No: &ldquo;Implied daily wage is below GoM minimum (&#8377;{min} / day) for {skill} workers.&rdquo;</td><td>&mdash;</td></tr>
+        </tbody>
+      </table>
+
+      <div class="callout callout-amber" style="margin-top:12px">
+        <strong>GoM minimum-wage compliance logic (per skill level, per day):</strong> Unskilled &#8377;360 &middot; Semi-skilled &#8377;410 &middot; Skilled &#8377;480 &middot; Highly Skilled &#8377;550 (reference thresholds &mdash; in production sourced from the configurable <em>GoM Wage Settings</em> doctype).<br>
+        <strong>Implied daily wage</strong> = Per Day: Wage Rate &middot; Per Month: Rate &divide; Days &middot; Per Hour: Rate &times; Hours/Day. <strong>Compliant</strong> when implied daily wage &ge; the skill-level minimum; otherwise Non-Compliant (red badge + warning banner). Flag stays &ldquo;&mdash;&rdquo; until Skill, Wage Type and a usable rate are present.
+      </div>
+
+      <h4 style="font-size:14px;color:var(--teal);margin:16px 0 10px;">Intervention Need</h4>
+      <table class="brd-table">
+        <thead><tr><th>Field Name</th><th>Field Type</th><th>Input Values</th><th>Input / Autofill</th><th>Logic</th><th>Validation &amp; Error Messages</th></tr></thead>
+        <tbody>
+          <tr><td>Labour intervention needed?</td><td>Toggle (Yes/No)</td><td>On / Off</td><td>Input</td><td>ON &rarr; creates a linked row in Required &rarr; I. Labour Interventions and shows &ldquo;&#8635; Flagged &rarr; Details in Required Tab&rdquo;. OFF &rarr; removes the bridged row. Increments the Flagged tally</td><td>Justification required when flagged (recommended)</td></tr>
+          <tr><td>Justification</td><td>Textarea</td><td>Free text</td><td>Input</td><td>Synced live into the bridged Required row's read-only justification field</td><td>&mdash;</td></tr>
+        </tbody>
+      </table>
+
+      <div class="callout callout-terra" style="margin-top:12px">
+        <strong>Existing total-bar (read-only roll-up, feeds Existing Unit Pricing):</strong> Worker Categories (block count) &middot; Total Workers (&Sigma; counts) &middot; Monthly Labour Cost (&Sigma; block cost) &middot; GoM Compliant (compliant / evaluated). Auto-fetches to <em>Existing Unit Pricing &rarr; Human Resource</em>.
+      </div>
+    </div>
+  </div>
+
+  <!-- ===================== TAB 3: REQUIRED ===================== -->
+  <div class="accordion">
+    <div class="accordion-trigger" onclick="this.parentElement.classList.toggle('open')">
+      Tab 3 &mdash; Required (Labour Interventions + New Labour) <span class="acc-arrow">&#9660;</span>
+    </div>
+    <div class="accordion-body">
+      <div class="callout callout-teal">
+        Two sections. <strong>I. Labour Interventions</strong> is auto-populated from the Existing tab when &ldquo;Labour intervention needed?&rdquo; is flagged (rows can also be added manually). <strong>II. New Labour</strong> holds standalone new worker categories not currently in the enterprise (not linked to Existing). A teal total-bar feeds <em>Optimised Unit Pricing &rarr; Human Resource</em>.
+      </div>
+
+      <h4 style="font-size:14px;color:var(--teal);margin-bottom:10px;">Section I &mdash; Labour Interventions (bridged rows)</h4>
+      <p style="font-size:12px;color:var(--ink-soft);font-style:italic;margin-bottom:8px;">Head block carries read-only context bridged from the Existing worker (Category, Skill Level, Employment Nature, Justification &mdash; justification is editable and syncs back). Empty-state message shown until a flag is raised.</p>
+      <table class="brd-table">
+        <thead><tr><th>Field Name</th><th>Field Type</th><th>Input Values</th><th>Input / Autofill</th><th>Logic</th><th>Validation &amp; Error Messages</th></tr></thead>
+        <tbody>
+          <tr><td>Worker Category</td><td>Data (read-only)</td><td>&mdash;</td><td>Autofill from bridged Existing block</td><td>Display-only context</td><td>Read-only</td></tr>
+          <tr><td>Skill Level</td><td>Data (read-only)</td><td>&mdash;</td><td>Autofill from bridged block</td><td>Display-only context</td><td>Read-only</td></tr>
+          <tr><td>Employment Nature</td><td>Data (read-only)</td><td>&mdash;</td><td>Autofill from bridged block</td><td>Display-only context</td><td>Read-only</td></tr>
+          <tr><td>Justification (from Existing)</td><td>Textarea</td><td>Free text</td><td>Autofill + editable</td><td>Two-way sync with the Existing block's justification</td><td>&mdash;</td></tr>
+          <tr><td>Intervention Type</td><td>Select</td><td>Hire Additional Workers &middot; Wage Revision &middot; Skill Upgrade / Training &middot; Replace with Skilled Worker &middot; Convert Family &rarr; Hired &middot; Convert Casual &rarr; Permanent &middot; Reduce Workforce &middot; Compliance Correction (GoM)</td><td>Input</td><td>Shown in Summary Intervention Type cell</td><td>Required &mdash; &ldquo;Select an intervention type&rdquo;</td></tr>
+          <tr style="background:var(--cream-deep,#F4ECD3)"><td><em>Current No. of Workers</em></td><td><em>Number (read-only)</em></td><td><em>Auto</em></td><td><em>Autofill from bridged block Total Workers</em></td><td><em>Baseline for the &ldquo;New Workers&rdquo; delta</em></td><td>Read-only</td></tr>
+          <tr><td>Required No. of Workers</td><td>Number (int)</td><td>&ge; 0</td><td>Input</td><td>Drives Required cost &times; count and the worker delta in Summary</td><td>Must be &ge; 0</td></tr>
+          <tr><td>Required Wage Type</td><td>Select</td><td>Per Day &middot; Per Month &middot; Per Hour</td><td>Input</td><td>Selects Required cost formula</td><td>Required when computing cost</td></tr>
+          <tr><td>Required Wage Rate (&#8377;)</td><td>Number / Currency</td><td>&ge; 0, step 0.01</td><td>Input</td><td>Per the Required Wage Type</td><td>Must be &ge; 0</td></tr>
+          <tr><td>Working Days / Month</td><td>Number</td><td>&ge; 0</td><td>Input</td><td>Per Day &amp; Per Hour formulas</td><td>Must be &ge; 0</td></tr>
+          <tr><td>Hours / Day</td><td>Number</td><td>&ge; 0</td><td>Input</td><td>Per Hour formula</td><td>Must be &ge; 0</td></tr>
+          <tr style="background:var(--cream-deep,#F4ECD3)"><td><em>Required Monthly Cost (&#8377;)</em></td><td><em>Currency (calculated)</em></td><td><em>Auto</em></td><td><em>Calculated</em></td><td><em>= per-worker &times; Required workers. Per Day: Rate &times; Days. Per Month: Rate. Per Hour: Rate &times; Days &times; Hours. Feeds Optimised Unit Pricing</em></td><td>Read-only</td></tr>
+          <tr><td>Status</td><td>Select</td><td>Pending &middot; In Progress &middot; Completed &middot; Not Feasible</td><td>Input</td><td>Only <em>Completed</em> rows count toward Summary &ldquo;After&rdquo; cost / Workers After / Jobs Created and the Required &ldquo;Completed&rdquo; total</td><td>Defaults to Pending</td></tr>
+        </tbody>
+      </table>
+      <div class="callout callout-amber" style="margin-top:10px"><strong>Removal behaviour:</strong> removing a bridged Required row also turns OFF the source Existing toggle and resets its note. Manually-added (non-bridged) rows are deleted independently.</div>
+
+      <h4 style="font-size:14px;color:var(--teal);margin:16px 0 10px;">Section II &mdash; New Labour (standalone blocks)</h4>
+      <p style="font-size:12px;color:var(--ink-soft);font-style:italic;margin-bottom:8px;">Same three-sub-section block structure as an Existing worker (Worker Classification, Wage Structure, Cost &amp; Compliance, all identical fields, dropdowns, calculations and GoM check) plus an Implementation Status select. NOT bridged &mdash; these are entirely new categories. Appended to the Summary grid as highlighted rows tagged &ldquo;+ New Labour&rdquo;.</p>
+      <table class="brd-table">
+        <thead><tr><th>Field Name</th><th>Field Type</th><th>Input Values</th><th>Input / Autofill</th><th>Logic</th><th>Validation &amp; Error Messages</th></tr></thead>
+        <tbody>
+          <tr><td>Worker Category *</td><td>Select</td><td>Self &middot; Unpaid Family &middot; Paid Family &middot; Hired Worker</td><td>Input</td><td>Same as Existing</td><td>Required</td></tr>
+          <tr><td>Skill Level *</td><td>Select</td><td>Unskilled &middot; Semi-skilled &middot; Skilled &middot; Highly Skilled</td><td>Input</td><td>Sets GoM threshold</td><td>Required</td></tr>
+          <tr><td>Employment Nature *</td><td>Select</td><td>Permanent &middot; Contract &middot; Casual / Daily &middot; Seasonal &middot; Part-time</td><td>Input</td><td>&mdash;</td><td>Required</td></tr>
+          <tr><td>No. of Male / Female Workers</td><td>Number (int)</td><td>&ge; 0</td><td>Input</td><td>Feed Total Workers</td><td>Must be &ge; 0</td></tr>
+          <tr style="background:var(--cream-deep,#F4ECD3)"><td><em>Total Workers</em></td><td><em>Number (calculated)</em></td><td><em>Auto</em></td><td><em>Calculated</em></td><td><em>= Male + Female</em></td><td>Read-only</td></tr>
+          <tr><td>Wage Type * / Wage Rate * / Days / Hours</td><td>Select + Numbers</td><td>As Existing Wage Structure</td><td>Input</td><td>Drive the same cost formulas</td><td>Wage Type &amp; Rate required</td></tr>
+          <tr style="background:var(--cream-deep,#F4ECD3)"><td><em>Monthly Labour Cost / Labour Rate / hr / GoM Compliant?</em></td><td><em>Calculated</em></td><td><em>Auto</em></td><td><em>Calculated</em></td><td><em>Identical formulas &amp; GoM check as Existing Cost &amp; Compliance</em></td><td>Read-only</td></tr>
+          <tr><td>Implementation Status</td><td>Select</td><td>Pending &middot; In Progress &middot; Completed &middot; Not Feasible</td><td>Input</td><td>Shown in Summary status badge for New Labour rows</td><td>Defaults to Pending</td></tr>
+        </tbody>
+      </table>
+
+      <div class="callout callout-terra" style="margin-top:12px">
+        <strong>Required total-bar (read-only, feeds Optimised Unit Pricing):</strong> Interventions (bridged-row count) &middot; Required Workers (&Sigma; Completed required headcount) &middot; Required Monthly Cost (&Sigma; Completed required cost) &middot; Status: Completed (count). Auto-fetches to <em>Optimised Unit Pricing &rarr; Human Resource</em>.
+      </div>
+    </div>
+  </div>
+
+  <!-- ===================== TAB 4: RESOURCES ===================== -->
+  <div class="accordion">
+    <div class="accordion-trigger" onclick="this.parentElement.classList.toggle('open')">
+      Tab 4 &mdash; Resources (Reference Materials child table) <span class="acc-arrow">&#9660;</span>
+    </div>
+    <div class="accordion-body">
+      <table class="brd-table">
+        <thead><tr><th>Field Name</th><th>Field Type</th><th>Input Values</th><th>Input / Autofill</th><th>Logic</th><th>Validation &amp; Error Messages</th></tr></thead>
+        <tbody>
+          <tr><td>Resource Title</td><td>Data</td><td>Free text</td><td>Input</td><td>&mdash;</td><td>Required per row</td></tr>
+          <tr><td>Category</td><td>Select</td><td>GoM Wage Notification &middot; Skilling / Training &middot; Labour Contractor &middot; SHG / Cooperative &middot; Compliance Reference</td><td>Input</td><td>&mdash;</td><td>&mdash;</td></tr>
+          <tr><td>Type</td><td>Select</td><td>Notification &middot; Reference &middot; Contact &middot; Training Material &middot; Specification</td><td>Input</td><td>&mdash;</td><td>&mdash;</td></tr>
+          <tr><td>Description / Notes</td><td>Data / Text</td><td>Free text</td><td>Input</td><td>&mdash;</td><td>&mdash;</td></tr>
+          <tr><td>File</td><td>Attach + View</td><td>Upload / View</td><td>Input</td><td>Upload button + View action per row</td><td>&mdash;</td></tr>
+        </tbody>
+      </table>
+      <div class="callout callout-teal" style="margin-top:10px">&ldquo;+ Add Resource&rdquo; appends a blank row; at least one row must remain (delete blocked on the last row).</div>
+    </div>
+  </div>
+
+  <!-- ===================== TAB 5: TASK LOG ===================== -->
+  <div class="accordion">
+    <div class="accordion-trigger" onclick="this.parentElement.classList.toggle('open')">
+      Tab 5 &mdash; Task Log (HR Activities child table) <span class="acc-arrow">&#9660;</span>
+    </div>
+    <div class="accordion-body">
+      <table class="brd-table">
+        <thead><tr><th>Field Name</th><th>Field Type</th><th>Input Values</th><th>Input / Autofill</th><th>Logic</th><th>Validation &amp; Error Messages</th></tr></thead>
+        <tbody>
+          <tr><td>No.</td><td>Number (auto)</td><td>Auto</td><td>Calculated</td><td>Zero-padded serial; re-sequences on row delete</td><td>Read-only</td></tr>
+          <tr><td>Date</td><td>Date</td><td>Date picker</td><td>Input</td><td>&mdash;</td><td>&mdash;</td></tr>
+          <tr><td>Task Name</td><td>Select</td><td>01 Awareness on Importance of Fair Labour Practices &middot; 02 Record Existing Workforce Data &middot; 03 Assess Labour Cost &amp; GoM Compliance &middot; 04 Identify Labour Intervention Need &middot; 05 Identify Workforce Gap &amp; Job Creation Potential &middot; 06 Support Hiring of Additional Workers &middot; 07 Record New Workforce Data After Intervention &middot; 08 Conduct HR Practice Follow Up &middot; If other, specify in comments</td><td>Input</td><td>Predefined HR activity list</td><td>Required per logged row</td></tr>
+          <tr><td>Notes / Outcome</td><td>Data / Text</td><td>Free text</td><td>Input</td><td>&mdash;</td><td>&mdash;</td></tr>
+          <tr><td>Attachment</td><td>Attach</td><td>Upload</td><td>Input</td><td>Upload button per row</td><td>&mdash;</td></tr>
+        </tbody>
+      </table>
+      <div class="callout callout-teal" style="margin-top:10px">One row is seeded on load; &ldquo;+ Add Entry&rdquo; appends rows with auto-incrementing serials.</div>
+    </div>
+  </div>
+
+  <div class="callout callout-danger">
+    <strong>Key validations (whole form):</strong>
+    (1) Worker Category, Skill Level, Employment Nature, Wage Type and Wage Rate are mandatory on every Existing and New Labour block.
+    (2) Male / Female / Days / Hours / Wage Rate must be &ge; 0 &mdash; no negative values.
+    (3) Days is required for Per Day &amp; Per Hour cost formulas; Hours/Day is required for Per Hour.
+    (4) <strong>GoM compliance</strong> is enforced as a flag, not a hard block: any block whose implied daily wage &lt; the skill-level GoM minimum (Unskilled &#8377;360 / Semi-skilled &#8377;410 / Skilled &#8377;480 / Highly Skilled &#8377;550) is marked Non-Compliant with a red warning banner and counts in the GoM Non-Compliant tile.
+    (5) A flagged Existing block should carry a justification; the bridged Required row then requires an Intervention Type.
+    (6) Only Status = Completed Required rows propagate to Summary &ldquo;After&rdquo; cost, Workers After and Jobs Created.
+    (7) Each worker category's Monthly Labour Cost feeds Unit Pricing <strong>individually</strong> &mdash; costs are never pre-summed before being passed downstream.
+  </div>
+
+  <div class="review-panel" data-section="m-hr">
+    <div class="review-strip">
+      <span style="font-size:12px;color:var(--ink-soft);font-weight:500;">Section Review:</span>
+      <button class="review-status-btn" onclick="setReview('m-hr','draft',this)">Draft</button>
+      <button class="review-status-btn" onclick="setReview('m-hr','review',this)">In Review</button>
+      <button class="review-status-btn" onclick="setReview('m-hr','changes',this)">Needs Changes</button>
+      <button class="review-status-btn" onclick="setReview('m-hr','approved',this)">Approved</button>
+      <button style="margin-left:auto;background:none;border:none;font-size:12px;color:var(--sea);cursor:pointer;font-family:var(--font);text-decoration:underline;" onclick="copyLink('m-hr')">Copy Link</button>
+    </div>
+    <div class="review-comments">
+      <div class="comment-list" id="comments-m-hr"></div>
+      <div class="comment-input-row">
+        <input type="text" placeholder="Your name" style="max-width:120px" id="name-m-hr">
+        <textarea rows="1" placeholder="Add a comment..." id="text-m-hr"></textarea>
+        <button class="comment-add-btn" onclick="addComment('m-hr')">Add</button>
+      </div>
+    </div>
+  </div>
+</div>

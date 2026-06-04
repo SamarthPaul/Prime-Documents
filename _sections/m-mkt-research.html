@@ -1,0 +1,287 @@
+<div class="brd-section" id="m-mkt-research">
+  <div class="section-header"><span class="section-id">PR-MKT-001</span><h2 class="section-title">Market Research</h2></div>
+  <div class="section-desc">Part of the Market module, the Market Research framework lets an entrepreneur capture the market landscape (Global / India / Meghalaya), map selling channels, research competing brands, interview consumers, run a competitor price scan across Local / State / National markets, and conclude with a SWOT. The per-scope competitor average prices computed here are auto-fetched into the Unit Pricing framework when the entrepreneur chooses the Competitor-Based pricing method.</div>
+  <div class="callout callout-terra"><strong>Golden thread to Unit Pricing:</strong> Each pricing table (Offline / Online, per market scope) auto-calculates a <em>Competitor Average Price</em> = mean of all non-zero price rows. These six averages (Local / State / National &times; Offline / Online) are read-only inputs into <strong>Unit Pricing &rarr; Competitor-Based method</strong>. They are not re-keyed there; they flow from this framework. Captured per product.</div>
+
+  <h3 style="font-size:16px;color:var(--teal);margin:18px 0 10px;">On-Screen UI Structure</h3>
+  <div class="card"><div style="font-size:13px;line-height:1.9;color:var(--ink)">
+    <strong>Top bar:</strong> forest-teal header "Market Research" with a "PRIME Rural &middot; Marketing Framework" crumb, and an entrepreneur chip below it (avatar + name <em>auto-fetched from profile</em>).<br>
+    <strong>Tab rail</strong> (uppercase pills): <strong>Summary</strong> &middot; <strong>Market Research</strong> &middot; <strong>Competitive Pricing Assessment</strong> &middot; <strong>Resources</strong> &middot; <strong>Task Log</strong>. Active tab is teal-filled.<br>
+    <strong>Body:</strong> Both the Market Research and Competitive Pricing tabs are <em>product-centric repeaters</em> &mdash; the entrepreneur clicks "+ Add Product", picks a product from the Product Master in a collapsible card header, and fills nested sections inside that card. There is no single flat form.<br>
+    <strong>Special widgets:</strong> (1) collapsible <em>product cards</em> with a product dropdown in the header; (2) <em>multi-select chip pickers</em> for Countries / States / Meghalaya locations; (3) nested <em>entry repeaters</em> (Channel / Brand / Respondent) each as its own collapsible card; (4) currency inputs with a &#8377; prefix; (5) <em>competitor price tables</em> with an auto-calculated average row in the table footer; (6) a 2&times;2 <em>SWOT quadrant grid</em>; (7) a Summary tab with an overview table, aggregate cards and intervention-flag tiles.<br>
+    <strong>Calculated fields</strong> (Product Name, Product Snapshot, Competitor Average Price, all Summary aggregates) render <em>italic on cream-deep background, read-only, with a tooltip</em> per Rule 1.
+  </div></div>
+  <div class="flow-container" style="margin-top:12px">
+    <div class="flow-step"><div class="flow-box">Summary</div><div class="flow-label">Auto roll-up</div></div>
+    <div class="flow-arrow">&rarr;</div>
+    <div class="flow-step"><div class="flow-box">Market Research</div><div class="flow-label">Landscape + Channels + Brands + Customers</div></div>
+    <div class="flow-arrow">&rarr;</div>
+    <div class="flow-step"><div class="flow-box">Competitive Pricing</div><div class="flow-label">Local / State / National + SWOT</div></div>
+    <div class="flow-arrow">&rarr;</div>
+    <div class="flow-step"><div class="flow-box">Resources</div><div class="flow-label">Reference materials</div></div>
+    <div class="flow-arrow">&rarr;</div>
+    <div class="flow-step"><div class="flow-box">Task Log</div><div class="flow-label">Activity register</div></div>
+  </div>
+
+  <h3 style="font-size:16px;color:var(--teal);margin:18px 0 10px;">User Journey</h3>
+  <div class="card"><div class="flow-container">
+    <div class="flow-step"><div class="flow-box">1. Add Product</div><div class="flow-label">Pick from Product Master; snapshot auto-fills</div></div>
+    <div class="flow-arrow">&rarr;</div>
+    <div class="flow-step"><div class="flow-box">2. Market Landscape</div><div class="flow-label">Global / India / Meghalaya size, CAGR, brands</div></div>
+    <div class="flow-arrow">&rarr;</div>
+    <div class="flow-step"><div class="flow-box">3. Channels + Brands + Customers</div><div class="flow-label">Add up to 5 outlets, brands, respondents</div></div>
+    <div class="flow-arrow">&rarr;</div>
+    <div class="flow-step"><div class="flow-box">4. Competitor Prices</div><div class="flow-label">Offline + Online rows per market scope</div></div>
+    <div class="flow-arrow">&rarr;</div>
+    <div class="flow-step"><div class="flow-box">5. SWOT</div><div class="flow-label">Strengths / Weaknesses / Opportunities / Threats</div></div>
+    <div class="flow-arrow">&rarr;</div>
+    <div class="flow-step"><div class="flow-box">6. Avg feeds Unit Pricing</div><div class="flow-label">Competitor averages auto-fetched downstream</div></div>
+  </div></div>
+
+  <!-- ===== TAB 1: MARKET RESEARCH ===== -->
+  <div class="accordion open">
+    <div class="accordion-trigger" onclick="this.parentElement.classList.toggle('open')">Tab 1 &mdash; Market Research (per-product repeater)</div>
+    <div class="accordion-body">
+      <p style="font-size:13px;color:var(--ink);margin:4px 0 12px;">Product-centric repeater. "+ Add Product" creates a collapsible card; selecting the product from the Product Master dropdown drives the auto-fetched Product Name &amp; Snapshot. Each product card contains four numbered sections: I Market Landscape, II Channel Research, III Key Brands Research, IV Customer Research.</p>
+
+      <h4 style="color:var(--sea);margin:14px 0 6px;">Product Card Header</h4>
+      <table class="field-table">
+        <thead><tr><th>Field Name</th><th>Field Type</th><th>Input Values</th><th>Input</th><th>Autofill</th><th>Logic</th><th>Validation &amp; Error Messages</th></tr></thead>
+        <tbody>
+          <tr><td>Product</td><td>Select (Link)</td><td>Product Master (e.g., Bamboo Shoot Pickle, Lemongrass Tea, Lakadong Turmeric, Eri Silk Muffler, Bamboo Earring, Local Honey, Jadoh Spice Mix)</td><td>Manual</td><td>&mdash;</td><td>Header dropdown per card. On change, drives Product Name &amp; Product Snapshot autofill below; key for Summary roll-up &amp; matching to the Competitive Pricing tab card.</td><td>Required before saving the card. Error: "Select a product." Avoid duplicate product cards within the same tab.</td></tr>
+        </tbody>
+      </table>
+
+      <h4 style="color:var(--sea);margin:14px 0 6px;">Section I &mdash; Market Landscape</h4>
+
+      <p style="font-size:12px;color:var(--ink-soft);margin:2px 0 6px;"><strong>I.a Product Scope</strong> (badge: Auto-fetched)</p>
+      <table class="field-table">
+        <thead><tr><th>Field Name</th><th>Field Type</th><th>Input Values</th><th>Input</th><th>Autofill</th><th>Logic</th><th>Validation &amp; Error Messages</th></tr></thead>
+        <tbody>
+          <tr><td><em>Product Name</em></td><td>Data (read-only)</td><td>&mdash;</td><td>Calculated</td><td>From Product Master via the card header selection</td><td>Italic on cream-deep, tooltip "Fetched from Product Master &middot; sourced via the product card header" (Rule 1).</td><td>Non-editable.</td></tr>
+          <tr><td><em>Product Snapshot</em></td><td>Small Text (read-only)</td><td>&mdash;</td><td>Calculated</td><td>From Product Master snapshot; populates on product select</td><td>Italic on cream-deep, tooltip (Rule 1).</td><td>Non-editable.</td></tr>
+        </tbody>
+      </table>
+
+      <p style="font-size:12px;color:var(--ink-soft);margin:10px 0 6px;"><strong>I.b Global</strong> (badge: Secondary)</p>
+      <table class="field-table">
+        <thead><tr><th>Field Name</th><th>Field Type</th><th>Input Values</th><th>Input</th><th>Autofill</th><th>Logic</th><th>Validation &amp; Error Messages</th></tr></thead>
+        <tbody>
+          <tr><td>Market Size (USD)</td><td>Data</td><td>Free text, e.g., "$3.2 Billion (2024)"</td><td>Manual</td><td>&mdash;</td><td>Secondary research value.</td><td>Optional. Counts toward "Products with Global Data" in Summary.</td></tr>
+          <tr><td>CAGR (%)</td><td>Float (step 0.01)</td><td>e.g., 6.8</td><td>Manual</td><td>&mdash;</td><td>&mdash;</td><td>Optional; numeric &ge; 0. Error: "Enter a valid percentage."</td></tr>
+          <tr><td>Key Exporting Countries</td><td>Multi-select chip picker</td><td>Country Master (India, China, Thailand, Indonesia, Vietnam, Bangladesh, Nepal, Sri Lanka, USA, UK, Germany, France, Netherlands, UAE, Saudi Arabia, Australia, Japan, Singapore, Other)</td><td>Manual</td><td>&mdash;</td><td>One or more chips.</td><td>Optional.</td></tr>
+          <tr><td>Key Brands</td><td>Data</td><td>e.g., "Organic India, Pukka Herbs, Numi"</td><td>Manual</td><td>&mdash;</td><td>&mdash;</td><td>Optional.</td></tr>
+          <tr><td>Key Findings</td><td>Small Text</td><td>Trends, consumer behaviour, certifications dominant internationally</td><td>Manual</td><td>&mdash;</td><td>&mdash;</td><td>Optional.</td></tr>
+          <tr><td>Source / Reference</td><td>Data</td><td>e.g., "FAO, Statista, IBEF"</td><td>Manual</td><td>&mdash;</td><td>&mdash;</td><td>Optional.</td></tr>
+        </tbody>
+      </table>
+
+      <p style="font-size:12px;color:var(--ink-soft);margin:10px 0 6px;"><strong>I.c India</strong> (badge: Secondary + Primary)</p>
+      <table class="field-table">
+        <thead><tr><th>Field Name</th><th>Field Type</th><th>Input Values</th><th>Input</th><th>Autofill</th><th>Logic</th><th>Validation &amp; Error Messages</th></tr></thead>
+        <tbody>
+          <tr><td>Market Size (INR)</td><td>Data</td><td>e.g., "&#8377;8,400 Crore (2024)"</td><td>Manual</td><td>&mdash;</td><td>Counts toward "Products with India Market Size" and is shown in the Summary overview row.</td><td>Optional.</td></tr>
+          <tr><td>CAGR (%)</td><td>Float (step 0.01)</td><td>e.g., 12</td><td>Manual</td><td>&mdash;</td><td>Shown as "CAGR (India %)" in Summary overview.</td><td>Optional; numeric &ge; 0.</td></tr>
+          <tr><td>Key States</td><td>Multi-select chip picker</td><td>State Master (all Indian states + Delhi)</td><td>Manual</td><td>&mdash;</td><td>One or more chips.</td><td>Optional.</td></tr>
+          <tr><td>Key Brands</td><td>Data</td><td>e.g., "Tata Sampann, MTR, Everest"</td><td>Manual</td><td>&mdash;</td><td>&mdash;</td><td>Optional.</td></tr>
+          <tr><td>Key Findings</td><td>Small Text</td><td>Platforms sold on, packaging norms, India consumer trends</td><td>Manual</td><td>&mdash;</td><td>&mdash;</td><td>Optional.</td></tr>
+          <tr><td>Source / Reference</td><td>Data</td><td>e.g., "IBEF, e-commerce listings, brand websites"</td><td>Manual</td><td>&mdash;</td><td>&mdash;</td><td>Optional.</td></tr>
+        </tbody>
+      </table>
+
+      <p style="font-size:12px;color:var(--ink-soft);margin:10px 0 6px;"><strong>I.d Meghalaya / North East</strong> (badge: Primary)</p>
+      <table class="field-table">
+        <thead><tr><th>Field Name</th><th>Field Type</th><th>Input Values</th><th>Input</th><th>Autofill</th><th>Logic</th><th>Validation &amp; Error Messages</th></tr></thead>
+        <tbody>
+          <tr><td>Market Size (INR)</td><td>Data</td><td>Approximate market size in district / state</td><td>Manual</td><td>&mdash;</td><td>Counts toward "Products with Meghalaya Data" in Summary.</td><td>Optional.</td></tr>
+          <tr><td>CAGR (%)</td><td>Float (step 0.01)</td><td>e.g., 8</td><td>Manual</td><td>&mdash;</td><td>&mdash;</td><td>Optional; numeric &ge; 0.</td></tr>
+          <tr><td>Key Selling Locations</td><td>Multi-select chip picker</td><td>Meghalaya Locations Master (Iew Duh / Bara Bazaar, Police Bazaar, Laitumkhrah Market, Mawkhar Market, MeghaMart, NEHHDC Outlets, Tura Main Market, Jowai Market, Williamnagar Market, Cherrapunji Tourist Outlets, Mawsynram Outlets, Ri Bhoi Local Markets, Sohra Bazaar, Khliehriat Market, Other)</td><td>Manual</td><td>&mdash;</td><td>One or more chips.</td><td>Optional.</td></tr>
+          <tr><td>Key Brands</td><td>Data</td><td>Names of local brands / sellers</td><td>Manual</td><td>&mdash;</td><td>&mdash;</td><td>Optional.</td></tr>
+          <tr><td>Key Findings</td><td>Small Text</td><td>Dominant item sizes, packaging, customer profile, distribution patterns</td><td>Manual</td><td>&mdash;</td><td>&mdash;</td><td>Optional.</td></tr>
+          <tr><td>Source / Reference</td><td>Data</td><td>Field visit dates, contact persons, photos</td><td>Manual</td><td>&mdash;</td><td>&mdash;</td><td>Optional.</td></tr>
+        </tbody>
+      </table>
+
+      <h4 style="color:var(--sea);margin:14px 0 6px;">Section II &mdash; Channel Research (child table; up to 5 outlets per product)</h4>
+      <p style="font-size:12px;color:var(--ink-soft);margin:2px 0 6px;">Repeater of collapsible "Channel" entry cards. Each entry has the fields below.</p>
+      <table class="field-table">
+        <thead><tr><th>Field Name</th><th>Field Type</th><th>Input Values</th><th>Input</th><th>Autofill</th><th>Logic</th><th>Validation &amp; Error Messages</th></tr></thead>
+        <tbody>
+          <tr><td>Outlet Name</td><td>Data</td><td>e.g., "Iew Duh Market, Stall 12"</td><td>Manual</td><td>&mdash;</td><td>&mdash;</td><td>Required if entry added. Error: "Enter the outlet name."</td></tr>
+          <tr><td>Outlet Type</td><td>Select</td><td>Weekly bazaar; Permanent retail shop; SHG / cooperative store; Govt outlet (NEHHDC etc.); Supermarket / modern retail; Pharmacy / health store; Tourism shop / souvenir; Wholesale market; Other</td><td>Manual</td><td>&mdash;</td><td>&mdash;</td><td>Optional.</td></tr>
+          <tr><td>District</td><td>Select</td><td>Meghalaya District Master (East Khasi Hills, West Khasi Hills, South West Khasi Hills, Eri Bhoi, Jaintia Hills, East Jaintia Hills, West Garo Hills, East Garo Hills, South Garo Hills, North Garo Hills, South West Garo Hills)</td><td>Manual</td><td>&mdash;</td><td>&mdash;</td><td>Optional.</td></tr>
+          <tr><td>Products Found</td><td>Data</td><td>Similar products on shelf</td><td>Manual</td><td>&mdash;</td><td>&mdash;</td><td>Optional.</td></tr>
+          <tr><td>Price Range Observed</td><td>Data</td><td>e.g., "&#8377;80&ndash;&#8377;150 per unit"</td><td>Manual</td><td>&mdash;</td><td>&mdash;</td><td>Optional.</td></tr>
+          <tr><td>Shelf Placement</td><td>Select</td><td>Eye-level / prominent; Bottom shelf; Top shelf; Counter display; End-cap / promotional; Not prominently placed</td><td>Manual</td><td>&mdash;</td><td>&mdash;</td><td>Optional.</td></tr>
+          <tr><td>Field Notes</td><td>Small Text</td><td>Packaging, competitor branding, customer behaviour observations</td><td>Manual</td><td>&mdash;</td><td>&mdash;</td><td>Optional.</td></tr>
+        </tbody>
+      </table>
+      <div class="callout callout-terra">A channel count &gt; 0 sets "Channel Data Captured" for that product in the Summary; the count surfaces as "Channels Mapped" in the overview row and aggregate cards. Soft limit of 5 outlets per product.</div>
+
+      <h4 style="color:var(--sea);margin:14px 0 6px;">Section III &mdash; Key Brands Research (child table)</h4>
+      <p style="font-size:12px;color:var(--ink-soft);margin:2px 0 6px;">Repeater of collapsible "Brand" entry cards. Research competing / comparable brands across India (online + offline).</p>
+      <table class="field-table">
+        <thead><tr><th>Field Name</th><th>Field Type</th><th>Input Values</th><th>Input</th><th>Autofill</th><th>Logic</th><th>Validation &amp; Error Messages</th></tr></thead>
+        <tbody>
+          <tr><td>Brand Name</td><td>Data</td><td>e.g., "Organic India"</td><td>Manual</td><td>&mdash;</td><td>&mdash;</td><td>Required if entry added. Error: "Enter the brand name."</td></tr>
+          <tr><td>Origin</td><td>Select</td><td>State Master</td><td>Manual</td><td>&mdash;</td><td>&mdash;</td><td>Optional.</td></tr>
+          <tr><td>Platforms</td><td>Select</td><td>Amazon India; Flipkart; Brand website (D2C); Jiomart / BigBasket; Modern retail (offline); Instagram / Facebook shop; WhatsApp / direct; Exhibition / trade show; Other</td><td>Manual</td><td>&mdash;</td><td>&mdash;</td><td>Optional.</td></tr>
+          <tr><td>Brand's Product Name</td><td>Data</td><td>e.g., "Tulsi Original Green Tea, 100g"</td><td>Manual</td><td>&mdash;</td><td>&mdash;</td><td>Optional.</td></tr>
+          <tr><td>Price (INR)</td><td>Currency (&#8377; prefix, step 0.01)</td><td>Numeric</td><td>Manual</td><td>&mdash;</td><td>Reference price for benchmarking; not auto-fed to Unit Pricing (only the Competitive Pricing tab averages are).</td><td>Optional; numeric &ge; 0.</td></tr>
+          <tr><td>Key USP</td><td>Data</td><td>e.g., "Farm to table", curcumin %, origin story</td><td>Manual</td><td>&mdash;</td><td>&mdash;</td><td>Optional.</td></tr>
+          <tr><td>Packing</td><td>Select</td><td>Glass jar; Tin can; Kraft paper pouch; Standard plastic pouch; PET bottle; HDPE bottle; Aluminium foil pouch; Cardboard box; Cloth pouch; Vacuum-sealed; Gift hamper; Other</td><td>Manual</td><td>&mdash;</td><td>&mdash;</td><td>Optional.</td></tr>
+          <tr><td>Learning for our Product</td><td>Small Text</td><td>What to learn / differentiate from this brand's positioning, pricing, packaging</td><td>Manual</td><td>&mdash;</td><td>&mdash;</td><td>Optional.</td></tr>
+        </tbody>
+      </table>
+
+      <h4 style="color:var(--sea);margin:14px 0 6px;">Section IV &mdash; Customer Research (child table)</h4>
+      <p style="font-size:12px;color:var(--ink-soft);margin:2px 0 6px;">Repeater of collapsible "Respondent" entry cards. Interview end consumers; document basic profile and product usage.</p>
+      <table class="field-table">
+        <thead><tr><th>Field Name</th><th>Field Type</th><th>Input Values</th><th>Input</th><th>Autofill</th><th>Logic</th><th>Validation &amp; Error Messages</th></tr></thead>
+        <tbody>
+          <tr><td>Age Group</td><td>Select</td><td>Below 18; 18&ndash;25; 26&ndash;35; 36&ndash;45; 46&ndash;55; 56&ndash;65; Above 65</td><td>Manual</td><td>&mdash;</td><td>&mdash;</td><td>Optional.</td></tr>
+          <tr><td>Gender</td><td>Select</td><td>Female; Male; Non-binary; Prefer not to say</td><td>Manual</td><td>&mdash;</td><td>&mdash;</td><td>Optional.</td></tr>
+          <tr><td>Occupation</td><td>Select</td><td>Salaried; Self-employed; Farmer; Student; Homemaker; Retired; Daily Wage; Government Employee; Business Owner</td><td>Manual</td><td>&mdash;</td><td>&mdash;</td><td>Optional.</td></tr>
+          <tr><td>Location (State / District / Block)</td><td>3 cascading Selects</td><td>State Master / Meghalaya District Master / Block Master (Mawkynrew, Mawphlang, Pynursla, Mylliem, Sohra (Cherrapunji), Mawsynram, Khliehriat, Jowai, Resubelpara, Tura, Williamnagar, Baghmara, Other)</td><td>Manual</td><td>&mdash;</td><td>Three-column grid.</td><td>Optional.</td></tr>
+          <tr><td>Have you used the product?</td><td>Select</td><td>Yes; No</td><td>Manual</td><td>&mdash;</td><td><strong>Conditional:</strong> when "Yes", reveals the Purchase Frequency row; when "No"/blank it is hidden.</td><td>Optional.</td></tr>
+          <tr><td>Purchase Frequency</td><td>Select (conditional)</td><td>Daily; Weekly; Fortnightly; Monthly; Seasonally; Festive / Special Occasion only; Once a year</td><td>Manual</td><td>&mdash;</td><td>Shown only if "Have you used the product? = Yes".</td><td>Optional; only relevant when shown.</td></tr>
+          <tr><td>Remarks</td><td>Small Text</td><td>Verbatim notes / key quotes</td><td>Manual</td><td>&mdash;</td><td>&mdash;</td><td>Optional.</td></tr>
+        </tbody>
+      </table>
+      <div class="callout callout-terra">Respondent count &gt; 0 sets "Customer Data Captured"; the count appears as "Respondents" in the Summary overview and aggregates.</div>
+    </div>
+  </div>
+
+  <!-- ===== TAB 2: COMPETITIVE PRICING ASSESSMENT ===== -->
+  <div class="accordion">
+    <div class="accordion-trigger" onclick="this.parentElement.classList.toggle('open')">Tab 2 &mdash; Competitive Pricing Assessment (per-product repeater &rarr; feeds Unit Pricing)</div>
+    <div class="accordion-body">
+      <p style="font-size:13px;color:var(--ink);margin:4px 0 12px;">Same product-card repeater. Each product card holds three market-scope sections (I Local Market, II State Market, III National Market) &mdash; each with an <strong>Offline Channels</strong> and an <strong>Online Channels</strong> price table &mdash; followed by Section IV SWOT Analysis. Product selection here is matched by name to the Market Research tab card for the Summary roll-up.</p>
+
+      <h4 style="color:var(--sea);margin:14px 0 6px;">Competitor Price Table (repeated &times; 6: Local / State / National &times; Offline / Online)</h4>
+      <p style="font-size:12px;color:var(--ink-soft);margin:2px 0 6px;">Each scope card seeds one Offline + one Online row on add. Columns below; channel column options differ by Offline vs Online.</p>
+      <table class="field-table">
+        <thead><tr><th>Field Name</th><th>Field Type</th><th>Input Values</th><th>Input</th><th>Autofill</th><th>Logic</th><th>Validation &amp; Error Messages</th></tr></thead>
+        <tbody>
+          <tr><td>#</td><td>Auto number</td><td>01, 02, &hellip;</td><td>Calculated</td><td>Row index (zero-padded)</td><td>Renumbers on add/delete.</td><td>Non-editable.</td></tr>
+          <tr><td>Brand / Competitor</td><td>Data</td><td>Brand name</td><td>Manual</td><td>&mdash;</td><td>&mdash;</td><td>Required for a row to count. Error: "Enter the competitor brand."</td></tr>
+          <tr><td>Outlet / Channel (Offline) &nbsp;/&nbsp; Platform (Online)</td><td>Select</td><td><strong>Offline:</strong> Outlet Types (Weekly bazaar &hellip; Other). <strong>Online:</strong> Platforms (Amazon India, Flipkart, Brand website (D2C), Jiomart / BigBasket, Modern retail (offline), Instagram / Facebook shop, WhatsApp / direct, Exhibition / trade show, Other).</td><td>Manual</td><td>&mdash;</td><td>Option list switches based on Offline vs Online table.</td><td>Optional.</td></tr>
+          <tr><td>Item Size</td><td>Data</td><td>e.g., "200g pouch"</td><td>Manual</td><td>&mdash;</td><td>Normalises comparison; align unit size for like-for-like pricing.</td><td>Optional.</td></tr>
+          <tr><td>Price (&#8377;)</td><td>Float (step 0.01)</td><td>Numeric per item</td><td>Manual</td><td>&mdash;</td><td><strong>Feeds the Competitor Average.</strong> Only non-zero, positive prices are included in the average.</td><td>Optional per row; numeric &ge; 0. Error on negative: "Price cannot be negative."</td></tr>
+          <tr><td>Notes</td><td>Data</td><td>USPs, packaging, certs</td><td>Manual</td><td>&mdash;</td><td>&mdash;</td><td>Optional.</td></tr>
+          <tr><td><em>Competitor Average Price</em></td><td>Currency (read-only, footer row)</td><td>&#8377; 0.00 default</td><td>Calculated</td><td>Mean of all non-zero Price rows in this table</td><td>Italic on cream-deep, tooltip (Rule 1). Recalculates live on price input / row add / row delete. <strong>This value is auto-fetched into Unit Pricing &rarr; Competitor-Based method</strong> ("Auto-fetched into Unit Pricing &middot; Competitor Based method" caption shown under each table).</td><td>Non-editable.</td></tr>
+        </tbody>
+      </table>
+      <div class="callout callout-terra"><strong>Feed to Unit Pricing:</strong> Six averages per product &mdash; Local-Offline, Local-Online, State-Offline, State-Online, National-Offline, National-Online &mdash; are read-only outputs consumed by the Unit Pricing framework's Competitor-Based method. The Summary surfaces Local Offline Avg, Local Online Avg and National Offline Avg per product, and flags Local / State / National pricing presence.</div>
+
+      <h4 style="color:var(--sea);margin:14px 0 6px;">Section IV &mdash; SWOT Analysis (this product vs competitors)</h4>
+      <p style="font-size:12px;color:var(--ink-soft);margin:2px 0 6px;">2&times;2 quadrant grid; four free-text cells.</p>
+      <table class="field-table">
+        <thead><tr><th>Field Name</th><th>Field Type</th><th>Input Values</th><th>Input</th><th>Autofill</th><th>Logic</th><th>Validation &amp; Error Messages</th></tr></thead>
+        <tbody>
+          <tr><td>Strengths (vs Competitor)</td><td>Small Text</td><td>What this product does better &mdash; origin story, GI tag, hand-craft, ingredient quality</td><td>Manual</td><td>&mdash;</td><td>Any non-empty SWOT cell sets "SWOT Completed" for the product in Summary.</td><td>Optional.</td></tr>
+          <tr><td>Weaknesses (vs Competitor)</td><td>Small Text</td><td>Where competitors out-perform &mdash; distribution, packaging, brand recall, certifications, scale</td><td>Manual</td><td>&mdash;</td><td>&mdash;</td><td>Optional.</td></tr>
+          <tr><td>Opportunities</td><td>Small Text</td><td>Market openings &mdash; un-met segments, channel gaps, festival demand, export potential</td><td>Manual</td><td>&mdash;</td><td>&mdash;</td><td>Optional.</td></tr>
+          <tr><td>Threats</td><td>Small Text</td><td>External risks &mdash; new entrants, regulation, raw material price volatility, substitutes</td><td>Manual</td><td>&mdash;</td><td>&mdash;</td><td>Optional.</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ===== TAB 3: SUMMARY ===== -->
+  <div class="accordion">
+    <div class="accordion-trigger" onclick="this.parentElement.classList.toggle('open')">Tab 3 &mdash; Summary (auto roll-up, read-only)</div>
+    <div class="accordion-body">
+      <p style="font-size:13px;color:var(--ink);margin:4px 0 12px;">Entirely calculated &mdash; no manual entry. Refreshes on open. Comprises (1) a Product-wise Research Overview table, (2) four Aggregate cards, (3) four Intervention-flag tiles.</p>
+
+      <h4 style="color:var(--sea);margin:10px 0 6px;">Product-wise Research Overview (one row per researched product)</h4>
+      <table class="field-table">
+        <thead><tr><th>Column</th><th>Field Type</th><th>Source</th><th>Input</th><th>Autofill</th><th>Logic</th><th>Validation &amp; Error Messages</th></tr></thead>
+        <tbody>
+          <tr><td><em>Product</em></td><td>Read-only</td><td>Card header</td><td>Calculated</td><td>Product name</td><td>Row keyed to selected product.</td><td>&mdash;</td></tr>
+          <tr><td><em>India Market Size</em></td><td>Read-only</td><td>I.c India</td><td>Calculated</td><td>Market Size (INR)</td><td>"&mdash;" if blank.</td><td>&mdash;</td></tr>
+          <tr><td><em>CAGR (India %)</em></td><td>Read-only</td><td>I.c India</td><td>Calculated</td><td>CAGR with "%" suffix</td><td>&mdash;</td><td>&mdash;</td></tr>
+          <tr><td><em>Channels Mapped</em></td><td>Read-only</td><td>Section II</td><td>Calculated</td><td>Count of channel entries</td><td>Teal bold.</td><td>&mdash;</td></tr>
+          <tr><td><em>Brands Researched</em></td><td>Read-only</td><td>Section III</td><td>Calculated</td><td>Count of brand entries</td><td>Teal bold.</td><td>&mdash;</td></tr>
+          <tr><td><em>Respondents</em></td><td>Read-only</td><td>Section IV (Customer)</td><td>Calculated</td><td>Count of respondent entries</td><td>&mdash;</td><td>&mdash;</td></tr>
+          <tr><td><em>Local Offline Avg (&#8377;)</em></td><td>Read-only</td><td>Competitive Pricing &middot; Local Offline</td><td>Calculated</td><td>Competitor average</td><td>Green tint. "Add in Competitive Pricing tab" if no matching card.</td><td>&mdash;</td></tr>
+          <tr><td><em>Local Online Avg (&#8377;)</em></td><td>Read-only</td><td>Competitive Pricing &middot; Local Online</td><td>Calculated</td><td>Competitor average</td><td>Green tint.</td><td>&mdash;</td></tr>
+          <tr><td><em>National Offline Avg (&#8377;)</em></td><td>Read-only</td><td>Competitive Pricing &middot; National Offline</td><td>Calculated</td><td>Competitor average</td><td>Green tint.</td><td>&mdash;</td></tr>
+        </tbody>
+      </table>
+
+      <h4 style="color:var(--sea);margin:12px 0 6px;">Aggregate Cards &amp; Intervention Flags (all read-only counters)</h4>
+      <table class="field-table">
+        <thead><tr><th>Metric</th><th>Field Type</th><th>Group</th><th>Input</th><th>Autofill</th><th>Logic</th><th>Validation &amp; Error Messages</th></tr></thead>
+        <tbody>
+          <tr><td><em>Products Researched</em></td><td>Read-only count</td><td>Existing / Flag</td><td>Calculated</td><td>Count of products with a selected name</td><td>Also shown as a flag tile.</td><td>&mdash;</td></tr>
+          <tr><td><em>Channels Mapped (Total)</em></td><td>Read-only count</td><td>Existing / Flag</td><td>Calculated</td><td>Sum of channel entries across products</td><td>Also a flag tile.</td><td>&mdash;</td></tr>
+          <tr><td><em>Brands Researched (Total)</em></td><td>Read-only count</td><td>Existing / Flag</td><td>Calculated</td><td>Sum of brand entries</td><td>Also a flag tile.</td><td>&mdash;</td></tr>
+          <tr><td><em>Respondents Interviewed</em></td><td>Read-only count</td><td>Existing / Flag</td><td>Calculated</td><td>Sum of respondent entries</td><td>Also a flag tile.</td><td>&mdash;</td></tr>
+          <tr><td><em>Products with India Market Size</em></td><td>Read-only count</td><td>Market</td><td>Calculated</td><td>Products with non-blank India size</td><td>Green.</td><td>&mdash;</td></tr>
+          <tr><td><em>Products with Meghalaya Data</em></td><td>Read-only count</td><td>Market</td><td>Calculated</td><td>Products with non-blank Meghalaya size</td><td>Green.</td><td>&mdash;</td></tr>
+          <tr><td><em>Products with CAGR (India)</em></td><td>Read-only count</td><td>Market</td><td>Calculated</td><td>Products with India CAGR filled</td><td>&mdash;</td><td>&mdash;</td></tr>
+          <tr><td><em>Products with Global Data</em></td><td>Read-only count</td><td>Market</td><td>Calculated</td><td>Products with non-blank Global size</td><td>&mdash;</td><td>&mdash;</td></tr>
+          <tr><td><em>Products with Local Pricing</em></td><td>Read-only count</td><td>Interventions</td><td>Calculated</td><td>Products with a Local Offline or Online avg &gt; 0</td><td>&mdash;</td><td>&mdash;</td></tr>
+          <tr><td><em>Products with State Pricing</em></td><td>Read-only count</td><td>Interventions</td><td>Calculated</td><td>Products with a State Offline avg &gt; 0</td><td>&mdash;</td><td>&mdash;</td></tr>
+          <tr><td><em>Products with National Pricing</em></td><td>Read-only count</td><td>Interventions</td><td>Calculated</td><td>Products with a National Offline avg &gt; 0</td><td>&mdash;</td><td>&mdash;</td></tr>
+          <tr><td><em>Competitor Rows Logged (Total)</em></td><td>Read-only count</td><td>Interventions</td><td>Calculated</td><td>Sum of all competitor price rows across scopes &amp; offline/online</td><td>&mdash;</td><td>&mdash;</td></tr>
+          <tr><td><em>SWOT Completed</em></td><td>Read-only count</td><td>Status</td><td>Calculated</td><td>Products with any non-empty SWOT cell</td><td>Green.</td><td>&mdash;</td></tr>
+          <tr><td><em>Customer Data Captured</em></td><td>Read-only count</td><td>Status</td><td>Calculated</td><td>Products with respondents &gt; 0</td><td>Green.</td><td>&mdash;</td></tr>
+          <tr><td><em>Channel Data Captured</em></td><td>Read-only count</td><td>Status</td><td>Calculated</td><td>Products with channels &gt; 0</td><td>Green.</td><td>&mdash;</td></tr>
+          <tr><td><em>Brand Data Captured</em></td><td>Read-only count</td><td>Status</td><td>Calculated</td><td>Products with brands &gt; 0</td><td>Green.</td><td>&mdash;</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ===== TAB 4: RESOURCES ===== -->
+  <div class="accordion">
+    <div class="accordion-trigger" onclick="this.parentElement.classList.toggle('open')">Tab 4 &mdash; Resources (Reference Materials child table)</div>
+    <div class="accordion-body">
+      <p style="font-size:13px;color:var(--ink);margin:4px 0 12px;">Single child table; at least one row required.</p>
+      <table class="field-table">
+        <thead><tr><th>Field Name</th><th>Field Type</th><th>Input Values</th><th>Input</th><th>Autofill</th><th>Logic</th><th>Validation &amp; Error Messages</th></tr></thead>
+        <tbody>
+          <tr><td>Resource Title</td><td>Data</td><td>Free text</td><td>Manual</td><td>&mdash;</td><td>&mdash;</td><td>Required if row kept. Error: "Enter a resource title."</td></tr>
+          <tr><td>Category</td><td>Select</td><td>Industry Report; Market Survey Data; Competitor Product Sample; Channel / Buyer Contact; Platform Listing Reference; Consumer Interview Transcript; Field Visit Photo; Pricing Benchmark; GI / Certification Reference; Other</td><td>Manual</td><td>&mdash;</td><td>&mdash;</td><td>Optional.</td></tr>
+          <tr><td>Type</td><td>Select</td><td>Report / Study; Contact; Reference; Photo / Evidence; Transcript; Quotation; Specification</td><td>Manual</td><td>&mdash;</td><td>&mdash;</td><td>Optional.</td></tr>
+          <tr><td>Description / Notes</td><td>Data</td><td>Free text notes</td><td>Manual</td><td>&mdash;</td><td>&mdash;</td><td>Optional.</td></tr>
+          <tr><td>File</td><td>Attach (Upload / View)</td><td>File upload</td><td>Manual</td><td>&mdash;</td><td>Upload and View actions.</td><td>Optional.</td></tr>
+        </tbody>
+      </table>
+      <div class="callout callout-terra">Delete is blocked when only one row remains. Error: "At least one row is required."</div>
+    </div>
+  </div>
+
+  <!-- ===== TAB 5: TASK LOG ===== -->
+  <div class="accordion">
+    <div class="accordion-trigger" onclick="this.parentElement.classList.toggle('open')">Tab 5 &mdash; Task Log (Market Research Activities register)</div>
+    <div class="accordion-body">
+      <p style="font-size:13px;color:var(--ink);margin:4px 0 12px;">Activity register with a live entry counter. Each entry below.</p>
+      <table class="field-table">
+        <thead><tr><th>Field Name</th><th>Field Type</th><th>Input Values</th><th>Input</th><th>Autofill</th><th>Logic</th><th>Validation &amp; Error Messages</th></tr></thead>
+        <tbody>
+          <tr><td>No.</td><td>Auto number</td><td>01, 02, &hellip;</td><td>Calculated</td><td>Sequential, zero-padded</td><td>Renumbers on delete; drives the entry counter.</td><td>Non-editable.</td></tr>
+          <tr><td>Date</td><td>Date</td><td>Date picker</td><td>Manual</td><td>&mdash;</td><td>&mdash;</td><td>Optional.</td></tr>
+          <tr><td>Task Name</td><td>Select</td><td>MR task list: 01 Define Research Scope &amp; Objectives; 02 Secondary Research &mdash; Global; 03 Secondary Research &mdash; India; 04 Secondary Research &mdash; Meghalaya / NE; 05 Identify Selling Channels (Offline); 06 Identify Selling Channels (Online / E-commerce); 07 Field Visit &mdash; Channel Mapping; 08 Document Competitor Brands (Online); 09 Document Competitor Brands (Offline); 10 Record Competitor Prices (Local); 11 Record Competitor Prices (State); 12 Record Competitor Prices (National); 13 Conduct Customer / Consumer Interviews; 14 Compile Customer Research Findings; 15 SWOT Analysis &mdash; vs Competitor; 16 Identify Key Differentiators; 17 Share Research Summary with Core Team; 18 Update Market Research in CRM; "If other, specify in comments"</td><td>Manual</td><td>&mdash;</td><td>&mdash;</td><td>Required per entry. Error: "Select a task."</td></tr>
+          <tr><td>Notes / Outcome</td><td>Data</td><td>Free text</td><td>Manual</td><td>&mdash;</td><td>&mdash;</td><td>Optional.</td></tr>
+          <tr><td>Attachment</td><td>Attach (Upload)</td><td>File upload</td><td>Manual</td><td>&mdash;</td><td>&mdash;</td><td>Optional.</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="callout callout-danger"><strong>Key validations (whole form):</strong> (1) Each product card must have a product selected from the Product Master before save &mdash; "Select a product"; avoid duplicate product cards in the same tab. (2) Channel and Brand entries require Outlet Name / Brand Name respectively. (3) All numeric fields (CAGR %, all Prices) must be &ge; 0 &mdash; negative prices rejected ("Price cannot be negative"). (4) Competitor Average Price is system-calculated from non-zero positive prices only and is read-only; it is the value auto-fetched into Unit Pricing &rarr; Competitor-Based method &mdash; it must never be hand-edited. (5) Purchase Frequency is only valid / shown when "Have you used the product? = Yes". (6) Resources table must retain at least one row. (7) Task Log entries require a Task Name. (8) All Indian currency uses &#8377; with Indian number formatting (e.g., &#8377;8,400 Crore, &#8377; 1,00,000).</div>
+
+  <div class="review-panel" data-section="m-mkt-research">
+    <div class="review-strip"><span style="font-size:12px;color:var(--ink-soft);font-weight:500;">Section Review:</span>
+      <button class="review-status-btn" onclick="setReview('m-mkt-research','draft',this)">Draft</button>
+      <button class="review-status-btn" onclick="setReview('m-mkt-research','review',this)">In Review</button>
+      <button class="review-status-btn" onclick="setReview('m-mkt-research','changes',this)">Needs Changes</button>
+      <button class="review-status-btn" onclick="setReview('m-mkt-research','approved',this)">Approved</button>
+      <button style="margin-left:auto;background:none;border:none;font-size:12px;color:var(--sea);cursor:pointer;font-family:var(--font);text-decoration:underline;" onclick="copyLink('m-mkt-research')">Copy Link</button></div>
+    <div class="review-comments"><div class="comment-list" id="comments-m-mkt-research"></div>
+      <div class="comment-input-row"><input type="text" placeholder="Your name" style="max-width:120px" id="name-m-mkt-research"><textarea rows="1" placeholder="Add a comment..." id="text-m-mkt-research"></textarea><button class="comment-add-btn" onclick="addComment('m-mkt-research')">Add</button></div></div>
+  </div>
+</div>

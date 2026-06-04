@@ -1,0 +1,192 @@
+<div class="brd-section" id="m-brochure">
+  <div class="section-header"><span class="section-id">PR-MT-003</span><h2 class="section-title">Brochure</h2></div>
+  <div class="section-desc">A Marketing Tools framework that captures an entrepreneur's brochure / catalogue content &mdash; setup details, the list of products featured in the brochure (with briefs, dimensions, price, MOQ and product pictures) and the draft-by-draft design status &mdash; and tracks the Designer's involvement from data collection through entrepreneur approval and printing.</div>
+  <div class="callout callout-terra"><strong>Key behaviour.</strong> The <em>Brochure Type</em> chosen at setup is a multi-select; the same set of types is mirrored down into the <em>Product Listings</em> child table so each product can be tagged with the brochure type(s) it should appear in. A product is considered &ldquo;included&rdquo; in a brochure only when at least one Brochure Type is selected on its listing row. Design work runs through up to three drafts; the brochure is final only when <em>Approved by Entrepreneur</em> is ticked.</div>
+
+  <h3 style="font-size:16px;color:var(--teal);margin:18px 0 10px;">On-Screen UI Structure</h3>
+  <div class="card"><div style="font-size:13px;line-height:1.9;color:var(--ink)">A teal title bar reads <em>Brochures Module</em> with crumb <em>PRIME Rural &middot; Marketing Tools</em>. Below it a horizontal <strong>tab rail</strong> &mdash; <em>Summary &middot; Existing &middot; Required &middot; Resources &middot; Task Log</em> &mdash; with the active tab highlighted teal.<br><br><strong>Summary</strong> is read-only: a Brochure-wise Overview table (one row per brochure, with the two right-most columns &mdash; Implementation Status and Approved &mdash; shaded terracotta/green), four aggregate cards (Existing / Cost / Interventions / Status) and a four-tile Intervention Flags strip.<br><br><strong>Existing</strong> opens with an Entrepreneur chip (Entrepreneur Name + Enterprise Name, both auto-fetched from profile, shown <em>italic on the cream-deep background</em>), followed by the <em>Existing Brochure</em> child table where each current brochure/catalogue is listed, its file uploaded, and a <em>Need New Brochure?</em> toggle plus justification recorded.<br><br><strong>Required</strong> is split into two banner-blocks. <em>Brochure Details</em> (teal banner) holds the <em>Brochure Setup</em> form (enterprise, multi-select Brochure Type, Market Scope, tagline, AI-assisted storyline, about, contact, email, address) and a nested <em>Product Listings</em> child table &mdash; the brochure's <strong>product listing</strong> grid carrying per-product brochure type(s), product name, brief, dimensions, price, MOQ and a multi-file <strong>product picture</strong> upload/view cell. <em>Brochure Status</em> (terracotta banner) holds Designer, Print Format and Page Count fields and the draft-tracking child table (Draft 1/2/3 file uploads, each with a status dropdown, plus the Approved-by-Entrepreneur checkbox).<br><br><strong>Resources</strong> is a placeholder for brochure templates, design references, print specifications and brand guidelines. <strong>Task Log</strong> is a numbered activity grid driven by a fixed 12-item brochure task list.<br><br><strong>Calculated / read-only fields</strong> (Entrepreneur Name, Enterprise Name, every Summary metric) render <em>italic on the cream-deep background</em> and are never editable; each Summary roll-up carries a derivation tooltip (Rule 1).</div></div>
+  <div class="flow-container" style="margin-top:12px"><div class="flow-step"><div class="flow-box">Summary</div></div><div class="flow-arrow">&rarr;</div><div class="flow-step"><div class="flow-box">Existing</div></div><div class="flow-arrow">&rarr;</div><div class="flow-step"><div class="flow-box">Required</div></div><div class="flow-arrow">&rarr;</div><div class="flow-step"><div class="flow-box">Resources</div></div><div class="flow-arrow">&rarr;</div><div class="flow-step"><div class="flow-box">Task Log</div></div></div>
+
+  <h3 style="font-size:16px;color:var(--teal);margin:18px 0 10px;">User Journey</h3>
+  <div class="card"><div class="flow-container">
+    <div class="flow-step"><div class="flow-box">Open Brochures</div><div class="flow-label">Marketing Tools &rarr; Brochure (entrepreneur context)</div></div>
+    <div class="flow-arrow">&rarr;</div>
+    <div class="flow-step"><div class="flow-box">Record existing brochures</div><div class="flow-label">Existing tab &mdash; upload file, flag Need New + justify</div></div>
+    <div class="flow-arrow">&rarr;</div>
+    <div class="flow-step"><div class="flow-box">Set up brochure &amp; product listings</div><div class="flow-label">Required &mdash; type(s), storyline, products + pictures</div></div>
+    <div class="flow-arrow">&rarr;</div>
+    <div class="flow-step"><div class="flow-box">Assign Designer &amp; raise drafts</div><div class="flow-label">Brochure Status &mdash; Draft 1/2/3 + status</div></div>
+    <div class="flow-arrow">&rarr;</div>
+    <div class="flow-step"><div class="flow-box">Entrepreneur approves</div><div class="flow-label">tick Approved by Entrepreneur</div></div>
+    <div class="flow-arrow">&rarr;</div>
+    <div class="flow-step"><div class="flow-box">Log activity &amp; Save</div><div class="flow-label">Task Log; Summary recalculates</div></div>
+  </div></div>
+
+  <!-- ============ TAB 1: SUMMARY ============ -->
+  <div class="accordion open"><div class="accordion-trigger" onclick="this.parentElement.classList.toggle('open')">Tab 1: Summary <span class="acc-arrow">&#9660;</span></div>
+    <div class="accordion-body">
+      <p style="font-size:13px;color:var(--ink-soft);margin-bottom:12px;">Entirely read-only. Auto-populated from the Existing and Required tabs &mdash; no direct data entry. Recalculates on every switch back to Summary and on any change in Existing / Required (toggles, status dropdowns, selections).</p>
+
+      <h4 style="font-size:14px;color:var(--teal);margin-bottom:10px;">Brochure-wise Overview Table</h4>
+      <p style="font-size:12px;color:var(--ink-soft);font-style:italic;margin-bottom:8px;">One row per brochure (sourced from Brochure Status rows). Product Names lists all products marked as included; Intervention Stage shows the furthest draft raised.</p>
+      <table class="brd-table"><thead><tr><th>Field Name</th><th>Field Type</th><th>Input Values</th><th>Input / Autofill</th><th>Logic</th><th>Validation &amp; Error Messages</th></tr></thead>
+      <tbody>
+        <tr><td>Brochure Title</td><td>Read-only text (bold)</td><td>&mdash;</td><td>Autofill</td><td>From the Brochure Status row title; shows italic &ldquo;Untitled&rdquo; if blank.</td><td>&mdash; (display only)</td></tr>
+        <tr><td>Product Names</td><td>Read-only list</td><td>&mdash;</td><td>Autofill</td><td>Bulleted list of every Product Listing row that has at least one Brochure Type selected <em>and</em> a chosen Product Name; &ldquo;&mdash;&rdquo; if none.</td><td>&mdash;</td></tr>
+        <tr><td>Brochure Type</td><td>Read-only text</td><td>&mdash;</td><td>Autofill</td><td>Comma-joined list of the master Brochure Type multi-select; &ldquo;&mdash;&rdquo; if none chosen.</td><td>&mdash;</td></tr>
+        <tr><td>Market Scope</td><td>Read-only text</td><td>Local / State &middot; National</td><td>Autofill</td><td>From Brochure Setup &rarr; Market Scope; &ldquo;&mdash;&rdquo; until chosen.</td><td>&mdash;</td></tr>
+        <tr><td>Designer</td><td>Read-only text</td><td>Designer A / Designer B / AI Generated</td><td>Autofill</td><td>From Brochure Status &rarr; Add Designer.</td><td>&mdash;</td></tr>
+        <tr><td>Intervention Stage</td><td>Read-only badge</td><td>&#10000; Draft 1 / &#10000; Draft 2 / &#10000; Draft 3 / &mdash;</td><td>Autofill</td><td>Furthest non-Pending draft on the row: Draft 3 wins over Draft 2 over Draft 1. &ldquo;&mdash;&rdquo; if all three drafts are Pending.</td><td>&mdash;</td></tr>
+        <tr><td>Implementation Status <span style="color:var(--terracotta-dk)">[shaded]</span></td><td>Read-only status pill</td><td>Pending / Under Review / Redo / Approved / Not Approved</td><td>Autofill</td><td>Status of the latest non-Pending draft (else Pending). Colour map: Approved &rarr; teal, Under Review &rarr; amber, Redo &rarr; terracotta, Not Approved &rarr; red, Pending &rarr; neutral.</td><td>&mdash;</td></tr>
+        <tr><td>Approved <span style="color:var(--good-ink)">[shaded]</span></td><td>Read-only badge</td><td>&#10003; Yes / &mdash;</td><td>Autofill</td><td>Green &ldquo;&#10003; Yes&rdquo; when the row's Approved by Entrepreneur checkbox is ticked, else &ldquo;&mdash;&rdquo;.</td><td>&mdash;</td></tr>
+      </tbody></table>
+      <div class="callout callout-teal">Empty state: when no Brochure Status rows exist the table shows &ldquo;Add brochures in Required tab &rarr; Brochure Status to populate&rdquo;.</div>
+
+      <h4 style="font-size:14px;color:var(--teal);margin:16px 0 10px;">Aggregate Cards (4) &amp; Intervention Flags (4)</h4>
+      <table class="brd-table"><thead><tr><th>Card / Metric</th><th>Field Type</th><th>Input Values</th><th>Input / Autofill</th><th>Logic</th><th>Validation &amp; Error Messages</th></tr></thead>
+      <tbody>
+        <tr><td>Existing &rarr; Total Existing Brochures</td><td>Read-only number</td><td>&mdash;</td><td>Calculated</td><td>Count of rows in the Existing Brochure table.</td><td>&mdash;</td></tr>
+        <tr><td>Existing &rarr; Need New Brochure</td><td>Read-only number (amber)</td><td>&mdash;</td><td>Calculated</td><td>Count of Existing rows whose <em>Need New Brochure?</em> toggle is ON.</td><td>&mdash;</td></tr>
+        <tr><td>Existing &rarr; No Change Needed</td><td>Read-only number</td><td>&mdash;</td><td>Calculated</td><td>Count of Existing rows whose toggle is OFF.</td><td>&mdash;</td></tr>
+        <tr><td>Existing &rarr; Products Included</td><td>Read-only number</td><td>&mdash;</td><td>Calculated</td><td>Count of Product Listing rows that have at least one Brochure Type selected.</td><td>&mdash;</td></tr>
+        <tr><td>Cost &rarr; Brochure Type</td><td>Read-only text</td><td>&mdash;</td><td>Autofill</td><td>Master Brochure Type multi-select, comma-joined; &ldquo;&mdash;&rdquo; if none.</td><td>&mdash;</td></tr>
+        <tr><td>Cost &rarr; Market Scope</td><td>Read-only text</td><td>Local / State &middot; National</td><td>Autofill</td><td>From Brochure Setup.</td><td>&mdash;</td></tr>
+        <tr><td>Cost &rarr; Print Format</td><td>Read-only text</td><td>A4 / A5 / DL (99 &times; 210 mm) / Custom</td><td>Autofill</td><td>From Brochure Status &rarr; Print Format.</td><td>&mdash;</td></tr>
+        <tr><td>Cost &rarr; Page Count</td><td>Read-only number</td><td>&mdash;</td><td>Autofill</td><td>From Brochure Status &rarr; Page Count; &ldquo;&mdash;&rdquo; if blank.</td><td>&mdash;</td></tr>
+        <tr><td>Cost &rarr; Designer</td><td>Read-only text</td><td>&mdash;</td><td>Autofill</td><td>From Brochure Status &rarr; Add Designer.</td><td>&mdash;</td></tr>
+        <tr><td>Interventions &rarr; Total in Design</td><td>Read-only number</td><td>&mdash;</td><td>Calculated</td><td>Sum of Draft 1 + Draft 2 + Draft 3 counts (= rows with at least one non-Pending draft, counted at their furthest draft).</td><td>&mdash;</td></tr>
+        <tr><td>Interventions &rarr; Draft 1 / 2 / 3 Raised</td><td>Read-only number</td><td>&mdash;</td><td>Calculated</td><td>Each Brochure Status row is counted once, against its furthest non-Pending draft only (Draft 3 &rarr; Draft 2 &rarr; Draft 1).</td><td>&mdash;</td></tr>
+        <tr><td>Status &rarr; Approved by Entrepreneur</td><td>Read-only number (green)</td><td>&mdash;</td><td>Calculated</td><td>Count of Brochure Status rows with the Approved checkbox ticked.</td><td>&mdash;</td></tr>
+        <tr><td>Status &rarr; Under Review / Redo / Pending / Not Approved</td><td>Read-only number (amber / amber / neutral / red)</td><td>&mdash;</td><td>Calculated</td><td>Count of rows whose <em>latest</em> draft status equals the named value.</td><td>&mdash;</td></tr>
+        <tr><td>Flags &rarr; Need New Brochure</td><td>Read-only flag count (amber)</td><td>&mdash;</td><td>Calculated</td><td>= Existing rows with toggle ON.</td><td>&mdash;</td></tr>
+        <tr><td>Flags &rarr; In Design Process</td><td>Read-only flag count (blue)</td><td>&mdash;</td><td>Calculated</td><td>= total number of Brochure Status rows.</td><td>&mdash;</td></tr>
+        <tr><td>Flags &rarr; Approved</td><td>Read-only flag count (green)</td><td>&mdash;</td><td>Calculated</td><td>= rows with Approved checkbox ticked.</td><td>&mdash;</td></tr>
+        <tr><td>Flags &rarr; Redo / Not Approved</td><td>Read-only flag count (amber)</td><td>&mdash;</td><td>Calculated</td><td>= rows whose latest status is Redo, plus rows whose latest status is Not Approved.</td><td>&mdash;</td></tr>
+      </tbody></table>
+      <div class="callout callout-teal">All Summary tiles use Indian number formatting (e.g. 1,00,000). Every metric is read-only and recomputed live &mdash; no manual override.</div>
+    </div>
+  </div>
+
+  <!-- ============ TAB 2: EXISTING ============ -->
+  <div class="accordion"><div class="accordion-trigger" onclick="this.parentElement.classList.toggle('open')">Tab 2: Existing <span class="acc-arrow">&#9660;</span></div>
+    <div class="accordion-body">
+      <p style="font-size:13px;color:var(--ink-soft);margin-bottom:12px;">Captures the entrepreneur's current brochures / catalogues and whether each one needs to be re-created. Opens with a read-only Entrepreneur chip.</p>
+
+      <h4 style="font-size:14px;color:var(--teal);margin-bottom:10px;">Entrepreneur (chip)</h4>
+      <table class="brd-table"><thead><tr><th>Field Name</th><th>Field Type</th><th>Input Values</th><th>Input / Autofill</th><th>Logic</th><th>Validation &amp; Error Messages</th></tr></thead>
+      <tbody>
+        <tr><td>Entrepreneur Name</td><td>Read-only text</td><td>&mdash;</td><td>Autofill</td><td><em>Auto fetched from profile</em> (italic on cream-deep background, Rule 2).</td><td>&mdash; (display only)</td></tr>
+        <tr><td>Enterprise Name</td><td>Read-only text</td><td>&mdash;</td><td>Autofill</td><td><em>Auto fetched from profile.</em></td><td>&mdash;</td></tr>
+      </tbody></table>
+
+      <h4 style="font-size:14px;color:var(--teal);margin:16px 0 10px;">Existing Brochure (child table)</h4>
+      <p style="font-size:12px;color:var(--ink-soft);font-style:italic;margin-bottom:8px;">Repeatable; at least one row. &ldquo;+ Add Row&rdquo; appends a blank row, &ldquo;&#10005;&rdquo; deletes (blocked when only one row remains).</p>
+      <table class="brd-table"><thead><tr><th>Field Name</th><th>Field Type</th><th>Input Values</th><th>Input / Autofill</th><th>Logic</th><th>Validation &amp; Error Messages</th></tr></thead>
+      <tbody>
+        <tr><td>Brochure / Catalogue Title</td><td>Text input</td><td>Free text</td><td>Input</td><td>Name of the existing brochure or catalogue. Feeds the Need-New map keyed by title.</td><td>Recommended before saving; blank title still counts toward Total Existing.</td></tr>
+        <tr><td>Upload Existing File</td><td>File upload + View</td><td>PDF / image / document</td><td>Input</td><td>&ldquo;Upload&rdquo; opens the file picker; &ldquo;View &#9655;&rdquo; previews the attached file.</td><td>Single file per row; recommended where the brochure exists.</td></tr>
+        <tr><td>Need New Brochure?</td><td>Toggle (on / off)</td><td>On = needs new &middot; Off = no change</td><td>Input</td><td>ON flags this brochure for re-creation; drives the Need-New aggregate and the Need New Brochure flag tile.</td><td>&mdash;</td></tr>
+        <tr><td>Justify</td><td>Text input</td><td>Free text</td><td>Input</td><td>Reason a new brochure is needed (e.g. &ldquo;Outdated design, no QR code&rdquo;).</td><td>Expected when Need New Brochure? = On.</td></tr>
+      </tbody></table>
+      <div class="callout callout-teal">Seed examples shown in the mockup: &ldquo;Herbal Products Catalogue&rdquo; (Need New: On &mdash; outdated design, no QR code), &ldquo;Soap Product Flyer&rdquo; (Need New: On &mdash; products added since last print), &ldquo;Price List 2024&rdquo; (Need New: Off).</div>
+    </div>
+  </div>
+
+  <!-- ============ TAB 3: REQUIRED ============ -->
+  <div class="accordion"><div class="accordion-trigger" onclick="this.parentElement.classList.toggle('open')">Tab 3: Required <span class="acc-arrow">&#9660;</span></div>
+    <div class="accordion-body">
+      <p style="font-size:13px;color:var(--ink-soft);margin-bottom:12px;">Two banner-blocks. <strong>I &mdash; Brochure Details</strong> (teal banner: &ldquo;Setup + product listings&rdquo;) holds the Brochure Setup form and the nested Product Listings child table. <strong>II &mdash; Brochure Status</strong> (terracotta banner: &ldquo;Designer &middot; Drafts &middot; Approval&rdquo;) holds Designer/format fields and the draft-tracking table.</p>
+
+      <h4 style="font-size:14px;color:var(--teal);margin-bottom:10px;">I. Brochure Details &rarr; Brochure Setup</h4>
+      <table class="brd-table"><thead><tr><th>Field Name</th><th>Field Type</th><th>Input Values</th><th>Input / Autofill</th><th>Logic</th><th>Validation &amp; Error Messages</th></tr></thead>
+      <tbody>
+        <tr><td>Enterprise Name</td><td>Text input</td><td>Free text</td><td>Input</td><td>Enterprise the brochure is for.</td><td>Required before raising a draft &mdash; &ldquo;Enter the enterprise name.&rdquo;</td></tr>
+        <tr><td>Brochure Type</td><td>Multi-select list (size 5)</td><td>Single Product Brochure / Multi-Product Catalogue / Tri-fold Leaflet / Bi-fold Leaflet / Single-page Flyer</td><td>Input</td><td>Hold Ctrl / Cmd to pick more than one. The chosen set is mirrored into every Product Listing row's per-product Brochure Type list. Feeds the Brochure Type summary metric.</td><td>At least one type recommended; drives product-level options.</td></tr>
+        <tr><td>Market Scope</td><td>Dropdown</td><td>Local / State &middot; National</td><td>Input</td><td>Default placeholder &ldquo;Select scope&rdquo;. Feeds Market Scope summary.</td><td>&mdash;</td></tr>
+        <tr><td>Brochure Tagline / Headline</td><td>Text input</td><td>Free text</td><td>Input</td><td>Headline printed on the brochure.</td><td>&mdash;</td></tr>
+        <tr><td>Brochure Storyline (AI)</td><td>Textarea + AI button</td><td>Free text / AI-generated</td><td>Input</td><td>&ldquo;&#10024; Generate with AI&rdquo; produces a suggested storyline the user can edit (Apoorva AI assist).</td><td>&mdash;</td></tr>
+        <tr><td>About the Enterprise</td><td>Textarea</td><td>Free text</td><td>Input</td><td>Short description of the enterprise for the brochure.</td><td>&mdash;</td></tr>
+        <tr><td>Contact Number</td><td>Text input</td><td>Phone number</td><td>Input</td><td>Printed contact number.</td><td>Numeric / valid phone format expected.</td></tr>
+        <tr><td>Email</td><td>Text input</td><td>Email address</td><td>Input</td><td>Printed contact email.</td><td>Valid email format expected.</td></tr>
+        <tr><td>Address / Location</td><td>Textarea</td><td>Free text</td><td>Input</td><td>Printed enterprise address / location.</td><td>&mdash;</td></tr>
+      </tbody></table>
+
+      <h4 style="font-size:14px;color:var(--teal);margin:16px 0 10px;">I. Brochure Details &rarr; Product Listings (child table)</h4>
+      <p style="font-size:12px;color:var(--ink-soft);font-style:italic;margin-bottom:8px;">The list of products that feature in the brochure. &ldquo;+ Add Product&rdquo; appends a row; each row's Brochure Type list is kept in sync with the master multi-select. A product counts as <em>included</em> only when at least one Brochure Type is selected on its row.</p>
+      <table class="brd-table"><thead><tr><th>Field Name</th><th>Field Type</th><th>Input Values</th><th>Input / Autofill</th><th>Logic</th><th>Validation &amp; Error Messages</th></tr></thead>
+      <tbody>
+        <tr><td>Brochure Type</td><td>Multi-select list (size 3)</td><td>Single Product Brochure / Multi-Product Catalogue / Tri-fold Leaflet / Bi-fold Leaflet / Single-page Flyer</td><td>Input</td><td>Which brochure type(s) this product appears in. Options mirror the master Brochure Type selection. Selecting any value marks the product as included &amp; surfaces it in Summary &rarr; Product Names.</td><td>Select &ge; 1 type for the product to feature in the brochure.</td></tr>
+        <tr><td>Product Name</td><td>Dropdown</td><td>Linked product list (e.g. Turmeric Soap, Neem Face Wash)</td><td>Input</td><td>Product to feature; chosen from the entrepreneur's products. Feeds the Summary Product Names list.</td><td>Required when a Brochure Type is selected &mdash; &ldquo;Choose the product.&rdquo;</td></tr>
+        <tr><td>Product Brief</td><td>Textarea (2 rows)</td><td>Free text</td><td>Input</td><td>Short description / selling points printed for the product.</td><td>&mdash;</td></tr>
+        <tr><td>Dimensions</td><td>Text input</td><td>L &times; B &times; H (e.g. 10&times;6&times;4 cm)</td><td>Input</td><td>Physical dimensions of the product.</td><td>&mdash;</td></tr>
+        <tr><td>Price</td><td>Text input</td><td>Currency (&#8377;, e.g. &#8377;120)</td><td>Input</td><td>Selling price shown on the brochure. Use Indian number formatting (e.g. &#8377;1,20,000).</td><td>Numeric / currency value expected.</td></tr>
+        <tr><td>MOQ</td><td>Text input</td><td>Quantity (e.g. 12 pcs)</td><td>Input</td><td>Minimum order quantity for the product.</td><td>&mdash;</td></tr>
+        <tr><td>Product Pictures</td><td>Multi-file upload + View</td><td>Image files (multiple)</td><td>Input</td><td>One or more product photos for the brochure (the picture / asset set per product). &ldquo;Upload&rdquo; allows multiple files; &ldquo;View &#9655;&rdquo; previews them.</td><td>At least one image recommended per featured product.</td></tr>
+      </tbody></table>
+      <div class="callout callout-teal">Seed examples: &ldquo;Turmeric Soap&rdquo; (Multi-Product Catalogue; 10&times;6&times;4 cm; &#8377;120; 12 pcs) and &ldquo;Neem Face Wash&rdquo; (Multi-Product Catalogue + Single-page Flyer; 8&times;5&times;5 cm; &#8377;180; 6 pcs).</div>
+
+      <h4 style="font-size:14px;color:var(--teal);margin:16px 0 10px;">II. Brochure Status &rarr; Header fields</h4>
+      <table class="brd-table"><thead><tr><th>Field Name</th><th>Field Type</th><th>Input Values</th><th>Input / Autofill</th><th>Logic</th><th>Validation &amp; Error Messages</th></tr></thead>
+      <tbody>
+        <tr><td>Add Designer</td><td>Dropdown</td><td>Designer A / Designer B / AI Generated</td><td>Input</td><td>Designer responsible for the brochure (or &ldquo;AI Generated&rdquo;). Feeds Designer summary metric.</td><td>Required before raising drafts &mdash; &ldquo;Assign a designer.&rdquo;</td></tr>
+        <tr><td>Print Format</td><td>Dropdown</td><td>A4 / A5 / DL (99 &times; 210 mm) / Custom</td><td>Input</td><td>Intended print format. Feeds Print Format summary.</td><td>&mdash;</td></tr>
+        <tr><td>Page Count</td><td>Number input</td><td>Integer (e.g. 4)</td><td>Input</td><td>Number of pages. Feeds Page Count summary.</td><td>Whole number &ge; 1 expected.</td></tr>
+      </tbody></table>
+
+      <h4 style="font-size:14px;color:var(--teal);margin:16px 0 10px;">II. Brochure Status &rarr; Draft tracking (child table)</h4>
+      <p style="font-size:12px;color:var(--ink-soft);font-style:italic;margin-bottom:8px;">Terracotta-headed table. One row per brochure; up to three drafts, each with its own file upload and status dropdown, closing with the entrepreneur-approval checkbox. &ldquo;+ Add Row&rdquo; appends; &ldquo;&#10005;&rdquo; deletes.</p>
+      <table class="brd-table"><thead><tr><th>Field Name</th><th>Field Type</th><th>Input Values</th><th>Input / Autofill</th><th>Logic</th><th>Validation &amp; Error Messages</th></tr></thead>
+      <tbody>
+        <tr><td>Brochure Title</td><td>Text input</td><td>Free text</td><td>Input</td><td>Title of the brochure being designed; surfaces as the Summary overview row title.</td><td>Recommended &mdash; rows without a title show &ldquo;Untitled&rdquo; in Summary.</td></tr>
+        <tr><td>Draft 1</td><td>File upload + View</td><td>PDF / image / design file</td><td>Input</td><td>First design draft from the Designer. &ldquo;View &#9655;&rdquo; previews.</td><td>&mdash;</td></tr>
+        <tr><td>Status (Draft 1)</td><td>Dropdown (terracotta chip)</td><td>Pending / Under Review / Redo / Approved / Not Approved</td><td>Input</td><td>Review outcome of Draft 1. Defaults to Pending.</td><td>&mdash;</td></tr>
+        <tr><td>Draft 2</td><td>File upload + View</td><td>PDF / image / design file</td><td>Input</td><td>Second draft, raised after Draft 1 feedback.</td><td>&mdash;</td></tr>
+        <tr><td>Status (Draft 2)</td><td>Dropdown (terracotta chip)</td><td>Pending / Under Review / Redo / Approved / Not Approved</td><td>Input</td><td>Review outcome of Draft 2.</td><td>&mdash;</td></tr>
+        <tr><td>Draft 3</td><td>File upload + View</td><td>PDF / image / design file</td><td>Input</td><td>Third / final draft.</td><td>&mdash;</td></tr>
+        <tr><td>Status (Draft 3)</td><td>Dropdown (terracotta chip)</td><td>Pending / Under Review / Redo / Approved / Not Approved</td><td>Input</td><td>Review outcome of Draft 3. The latest non-Pending draft drives Implementation Status &amp; Intervention Stage in Summary.</td><td>&mdash;</td></tr>
+        <tr><td>Approved by Entrepreneur</td><td>Checkbox</td><td>Ticked / unticked</td><td>Input</td><td>Final sign-off by the entrepreneur. Drives the Approved metric &amp; Approved flag tile.</td><td>Tick only after a draft is Approved.</td></tr>
+      </tbody></table>
+      <div class="callout callout-teal">Seed examples: &ldquo;Herbal Products Catalogue&rdquo; (Draft 1 Approved, Draft 2 Approved, Draft 3 Under Review &mdash; not yet entrepreneur-approved) and &ldquo;Soap Product Flyer&rdquo; (Draft 1 Approved, Draft 2 Redo, Draft 3 Pending).</div>
+    </div>
+  </div>
+
+  <!-- ============ TAB 4: RESOURCES ============ -->
+  <div class="accordion"><div class="accordion-trigger" onclick="this.parentElement.classList.toggle('open')">Tab 4: Resources <span class="acc-arrow">&#9660;</span></div>
+    <div class="accordion-body">
+      <p style="font-size:13px;color:var(--ink-soft);margin-bottom:12px;">Placeholder reference view for the Brochure framework.</p>
+      <table class="brd-table"><thead><tr><th>Field Name</th><th>Field Type</th><th>Input Values</th><th>Input / Autofill</th><th>Logic</th><th>Validation &amp; Error Messages</th></tr></thead>
+      <tbody>
+        <tr><td>Resources</td><td>Reference panel (placeholder)</td><td>&mdash;</td><td>Read-only</td><td>Brochure templates, design references, print specifications and brand guidelines for the entrepreneur and Designer.</td><td>&mdash; (content to be defined)</td></tr>
+      </tbody></table>
+    </div>
+  </div>
+
+  <!-- ============ TAB 5: TASK LOG ============ -->
+  <div class="accordion"><div class="accordion-trigger" onclick="this.parentElement.classList.toggle('open')">Tab 5: Task Log <span class="acc-arrow">&#9660;</span></div>
+    <div class="accordion-body">
+      <p style="font-size:13px;color:var(--ink-soft);margin-bottom:12px;">Numbered activity log for brochure work (header shows live entry count). &ldquo;+ Add Entry&rdquo; appends an auto-numbered row; deleting renumbers the remaining rows.</p>
+      <table class="brd-table"><thead><tr><th>Field Name</th><th>Field Type</th><th>Input Values</th><th>Input / Autofill</th><th>Logic</th><th>Validation &amp; Error Messages</th></tr></thead>
+      <tbody>
+        <tr><td>No.</td><td>Read-only number</td><td>&mdash;</td><td>Autofill</td><td>Auto-incrementing two-digit sequence (01, 02, &hellip;); recomputed on delete.</td><td>&mdash;</td></tr>
+        <tr><td>Date</td><td>Date picker</td><td>Calendar date</td><td>Input</td><td>Date the task was performed.</td><td>&mdash;</td></tr>
+        <tr><td>Task Name</td><td>Dropdown (fixed list)</td><td>See Brochure Task List below</td><td>Input</td><td>Pick from the 12 standard brochure tasks; default &ldquo;&mdash; Select Task &mdash;&rdquo;.</td><td>Select a task before saving.</td></tr>
+        <tr><td>Notes / Outcome</td><td>Text input</td><td>Free text</td><td>Input</td><td>Outcome / remarks for the task (used for &ldquo;If others, specify&rdquo;).</td><td>&mdash;</td></tr>
+        <tr><td>Attachment</td><td>File upload</td><td>Any file</td><td>Input</td><td>Optional supporting file for the task.</td><td>&mdash;</td></tr>
+      </tbody></table>
+      <div class="callout callout-teal"><strong>Brochure Task List (fixed dropdown):</strong> 01 Awareness on Importance of Brochure &middot; 02 Data Collection for Brochure Creation &middot; 03 Brainstorm and Sketch Brochure Ideas &middot; 04 Draft coordinations with Designer &middot; 05 Brochure approved by Core Team &middot; 06 Brochure approved by Entrepreneur &middot; 07 Delivered Brochure Files to Entrepreneur &middot; 08 Brochure printed and collected by Entrepreneur locally &middot; 09 Brochure printed and delivered in PRIME office &middot; 10 Brochure printed and delivered to the Entrepreneur via local cabs &middot; 11 Follow up on Brochure usage and printing &middot; 12 If others, specify in comments.</div>
+    </div>
+  </div>
+
+  <div class="callout callout-danger"><strong>Key validations (whole form):</strong> Enterprise Name and at least one Brochure Type must be set before raising a draft; each Product Listing row that carries a Brochure Type must also have a Product Name (and at least one Product Picture is recommended); a Designer must be assigned before drafts are uploaded; Page Count must be a whole number &ge; 1; Contact Number and Email must be valid; Status defaults to Pending and a draft must reach Approved before the Approved-by-Entrepreneur checkbox is ticked; the Existing Brochure and Brochure Status tables must each retain at least one row (delete is blocked on the last row); a Need-New justification is expected whenever the Need New Brochure? toggle is On.</div>
+
+  <div class="review-panel" data-section="m-brochure">
+    <div class="review-strip"><span style="font-size:12px;color:var(--ink-soft);font-weight:500;">Section Review:</span>
+      <button class="review-status-btn" onclick="setReview('m-brochure','draft',this)">Draft</button>
+      <button class="review-status-btn" onclick="setReview('m-brochure','review',this)">In Review</button>
+      <button class="review-status-btn" onclick="setReview('m-brochure','changes',this)">Needs Changes</button>
+      <button class="review-status-btn" onclick="setReview('m-brochure','approved',this)">Approved</button>
+      <button style="margin-left:auto;background:none;border:none;font-size:12px;color:var(--sea);cursor:pointer;font-family:var(--font);text-decoration:underline;" onclick="copyLink('m-brochure')">Copy Link</button></div>
+    <div class="review-comments"><div class="comment-list" id="comments-m-brochure"></div>
+      <div class="comment-input-row"><input type="text" placeholder="Your name" style="max-width:120px" id="name-m-brochure"><textarea rows="1" placeholder="Add a comment..." id="text-m-brochure"></textarea><button class="comment-add-btn" onclick="addComment('m-brochure')">Add</button></div></div>
+  </div>
+</div>

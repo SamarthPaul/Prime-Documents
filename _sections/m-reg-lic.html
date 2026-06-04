@@ -1,0 +1,147 @@
+<div class="brd-section" id="m-reg-lic">
+  <div class="section-header"><span class="section-id">PR-LC-002</span><h2 class="section-title">Business Registration <span style="font-size:13px;color:var(--ink-faint);font-weight:400">(Legal Compliance module)</span></h2></div>
+  <div class="section-desc"><strong>Entrepreneur / business-level framework</strong> under the <em>Legal Compliance</em> module (formerly &ldquo;Registration &amp; Licensing&rdquo; under Product Development). Records every <strong>entrepreneur- and business-level registration</strong> the enterprise holds and every one it still needs &mdash; legal structure, tax IDs, operating licences, market-access registrations and statutory NOCs. <strong>Product-level certifications (FSSAI, BIS, AGMARK, organic marks&hellip;) live in the companion <em>Product Compliance</em> framework</strong> (same module), not here. An intervention bridge carries any registration flagged in <em>Existing</em> into the <em>Required</em> tab for renewal / re-application.</div>
+  <div class="callout callout-teal"><strong>Registration Master (entrepreneur / business level, grouped).</strong> A single dropdown grouped into five buckets &mdash; <strong>Legal Structure</strong> (Sole Proprietorship, Partnership Firm, LLP, Private Limited Company, Producer Company, Cooperative Society, SHG, FPO, Section&nbsp;8 Company), <strong>Identity &amp; Tax</strong> (PAN, Aadhaar (Entrepreneur), GST, TAN), <strong>Business Operations</strong> (Udyam / MSME, Trade License (Municipal), Shop &amp; Establishment, Bank Account), <strong>Market Access</strong> (GeM, DPIIT Startup Recognition, APMC, NEHHDC, IEC), <strong>NOCs &amp; Compliance</strong> (Pollution Control NOC, Fire Safety NOC, Health &amp; Trade License) &mdash; plus <em>Other</em>. The master is config-driven; the same registration cannot be added twice on the Existing tab.</div>
+  <div class="callout callout-terra"><strong>Intervention bridge (Rule 3).</strong> Toggling <em>Need Registration / Licensing Intervention?</em> ON in an Existing card auto-creates a linked card in <em>Required</em>, carrying the registration name, validity and justification across. The Existing <em>Type</em> (Renewal / Reapply) maps to the Required <em>Phase</em> (Renewal / New Registration). Bridged Required cards are <strong>locked</strong> (registration selector disabled, &ldquo;&#8635; Bridged from Existing&rdquo; marker, read-only justification); removing either side un-links the other (two-way sync).</div>
+
+  <h3 style="font-size:16px;color:var(--teal);margin:18px 0 10px;">On-Screen UI Structure</h3>
+  <div class="card"><div style="font-size:13px;line-height:1.9;color:var(--ink)">A teal title bar reads <em>Business Registration</em> with crumb <em>PRIME Rural &middot; Entrepreneur &amp; Business-level Registrations</em>. A horizontal <strong>tab rail</strong> &mdash; <em>Summary &middot; Existing &middot; Required &middot; Resources &middot; Task Log</em> &mdash; sits below it, active tab highlighted teal, with an <strong>entrepreneur chip</strong> (&ldquo;Auto-fetched from profile&rdquo;) on every panel (Rule 2).<br><br><strong>Existing</strong> and <strong>Required</strong> render each registration as a <strong>collapsible card</strong> (sea-green header carrying a registration-selector dropdown + status chip; a &ldquo;&#9888; Intervention Flagged&rdquo; chip appears when toggled). &ldquo;+ Add Registration&rdquo; / &ldquo;+ Add New Registration&rdquo; append a card. Each Existing card holds a <em>Registration Details</em> subsection and a terracotta <em>Intervention Need</em> block; each Required card holds the same details plus a <em>Phase</em> field and a <em>Status</em> block. <strong>Summary</strong> is read-only (overview table + four aggregate cards + four intervention-flag tiles). <strong>Resources</strong> and <strong>Task Log</strong> are editable child-table grids.<br><br><strong>Validity-aware highlighting:</strong> a <em>Lifetime Validity</em> checkbox hides the <em>Valid Till</em> date; registrations expiring within <strong>90 days</strong> surface amber (&ldquo;&#9200;&rdquo;), expired ones red, in the Summary overview.</div></div>
+  <div class="flow-container" style="margin-top:12px"><div class="flow-step"><div class="flow-box">Summary</div></div><div class="flow-arrow">&rarr;</div><div class="flow-step"><div class="flow-box">Existing</div></div><div class="flow-arrow">&rarr;</div><div class="flow-step"><div class="flow-box">Required</div></div><div class="flow-arrow">&rarr;</div><div class="flow-step"><div class="flow-box">Resources</div></div><div class="flow-arrow">&rarr;</div><div class="flow-step"><div class="flow-box">Task Log</div></div></div>
+
+  <h3 style="font-size:16px;color:var(--teal);margin:18px 0 10px;">User Journey</h3>
+  <div class="card"><div class="flow-container">
+    <div class="flow-step"><div class="flow-box">Open Business Registration</div><div class="flow-label">EP dashboard &middot; Diagnostics &rarr; Legal Compliance</div></div>
+    <div class="flow-arrow">&rarr;</div>
+    <div class="flow-step"><div class="flow-box">Add &amp; map each registration</div><div class="flow-label">Existing &mdash; pick from grouped master, fill ID / authority / validity</div></div>
+    <div class="flow-arrow">&rarr;</div>
+    <div class="flow-step"><div class="flow-box">Attach scanned copy</div><div class="flow-label">upload certificate / licence, set Govt. Certified &amp; Status</div></div>
+    <div class="flow-arrow">&rarr;</div>
+    <div class="flow-step"><div class="flow-box">Flag intervention</div><div class="flow-label">toggle &rarr; Type + Justification &rarr; bridges to Required</div></div>
+    <div class="flow-arrow">&rarr;</div>
+    <div class="flow-step"><div class="flow-box">Track in Required &amp; Save</div><div class="flow-label">Phase + Status; Summary &amp; flags recompute</div></div>
+  </div></div>
+
+  <!-- ============ TAB 1: SUMMARY ============ -->
+  <div class="accordion open"><div class="accordion-trigger" onclick="this.parentElement.classList.toggle('open')">Tab 1: Summary <span class="acc-arrow">&#9660;</span></div>
+    <div class="accordion-body">
+      <p style="font-size:13px;color:var(--ink-soft);margin-bottom:12px;">Entirely read-only. Auto-populated from the Existing and Required tabs; recalculates on every switch back to Summary.</p>
+
+      <h4 style="font-size:14px;color:var(--teal);margin-bottom:10px;">Registration-wise Overview Table</h4>
+      <p style="font-size:12px;color:var(--ink-soft);font-style:italic;margin-bottom:8px;">One row per registration &mdash; Existing first, then Required (bridged + new) highlighted below. The two right-most columns (Intervention Type / Implementation Status) are shaded.</p>
+      <table class="brd-table"><thead><tr><th>Field Name</th><th>Field Type</th><th>Input Values</th><th>Input / Autofill</th><th>Logic</th><th>Validation &amp; Error Messages</th></tr></thead>
+      <tbody>
+        <tr><td>Registration</td><td>Read-only text (bold)</td><td>&mdash;</td><td>Autofill</td><td>Registration name from the card&rsquo;s selector; a &#128206; clip icon shows when a scanned copy is attached.</td><td>&mdash; (display only)</td></tr>
+        <tr><td>Issuing Authority</td><td>Read-only text</td><td>&mdash;</td><td>Autofill</td><td>From the card&rsquo;s Issuing Authority field; &ldquo;&mdash;&rdquo; if blank.</td><td>&mdash;</td></tr>
+        <tr><td>Valid Till</td><td>Read-only badge</td><td>Lifetime / date / Expired</td><td>Calculated</td><td><em>Lifetime</em> (green) when Lifetime Validity is checked; amber &ldquo;&#9200; date&rdquo; when within 90 days; red &ldquo;Expired date&rdquo; when past; else plain date.</td><td>&mdash;</td></tr>
+        <tr><td>Govt. Certified</td><td>Read-only</td><td>&#10003; Yes / No / &mdash;</td><td>Autofill</td><td>Green &ldquo;&#10003; Yes&rdquo; / muted &ldquo;No&rdquo; / &ldquo;&mdash;&rdquo;.</td><td>&mdash;</td></tr>
+        <tr><td>Status</td><td>Read-only badge</td><td>Received / Not yet Received / Rejected</td><td>Autofill</td><td>Existing card status. Received&rarr;green, Not yet Received&rarr;amber, Rejected&rarr;red.</td><td>&mdash;</td></tr>
+        <tr><td>Intervention Type <span style="color:var(--fair-ink)">[shaded]</span></td><td>Read-only badge</td><td>&#8635; Renewal / Reapply / &mdash;</td><td>Autofill</td><td>Amber badge when the card&rsquo;s intervention toggle is ON (shows the chosen Type); else &ldquo;&mdash;&rdquo;.</td><td>&mdash;</td></tr>
+        <tr><td>Implementation Status <span style="color:var(--good-ink)">[shaded]</span></td><td>Read-only badge</td><td>Applied / Not Yet Applied / Received / Not yet Received / Rejected</td><td>Autofill</td><td>Mirrors the status of the bridged Required card (defaults &ldquo;Not Yet Applied&rdquo;); &ldquo;&mdash;&rdquo; when not flagged.</td><td>&mdash;</td></tr>
+      </tbody></table>
+      <div class="callout callout-teal">Empty state: &ldquo;Auto-populated from Existing and Required tabs&rdquo;.</div>
+
+      <h4 style="font-size:14px;color:var(--teal);margin:16px 0 10px;">Aggregate Cards (4)</h4>
+      <table class="brd-table"><thead><tr><th>Card / Metric</th><th>Field Type</th><th>Input / Autofill</th><th>Logic</th></tr></thead>
+      <tbody>
+        <tr><td>Existing &rarr; Total Registrations</td><td>Read-only number</td><td>Calculated</td><td>Count of Existing cards with a registration selected.</td></tr>
+        <tr><td>Existing &rarr; Govt. Certified</td><td>Read-only number (green)</td><td>Calculated</td><td>Count where Govt. Certified = Yes.</td></tr>
+        <tr><td>Existing &rarr; Lifetime Validity</td><td>Read-only number</td><td>Calculated</td><td>Count where Lifetime Validity is checked.</td></tr>
+        <tr><td>Existing &rarr; With Scanned Copy</td><td>Read-only number (green)</td><td>Calculated</td><td>Count of cards with a file attached.</td></tr>
+        <tr><td>Existing &rarr; Expiring within 90 Days</td><td>Read-only number (amber)</td><td>Calculated</td><td>Non-lifetime cards whose Valid Till is between today and today+90 days.</td></tr>
+        <tr><td>Existing &rarr; Flagged for Intervention</td><td>Read-only number (amber)</td><td>Calculated</td><td>Count of Existing cards with the intervention toggle ON.</td></tr>
+        <tr><td>Required &rarr; Total Required</td><td>Read-only number</td><td>Calculated</td><td>Count of Required cards. Footer: &ldquo;Required = flagged renewals + new registrations to acquire.&rdquo;</td></tr>
+        <tr><td>Required &rarr; Bridged from Existing / New Additions</td><td>Read-only numbers</td><td>Calculated</td><td>Split of Required cards by origin (bridged vs manually added).</td></tr>
+        <tr><td>Required &rarr; Intervention Rate</td><td>Read-only (green)</td><td>Calculated</td><td><em>= Flagged &divide; Total Existing</em> as a %.</td></tr>
+        <tr><td>Interventions &rarr; Needed / In Progress / Received / Expiring Soon</td><td>Read-only numbers</td><td>Calculated</td><td>Intervention Needed = flagged whose bridged status is not Received/Rejected; In Progress = Applied + Not yet Received; Received = bridged Received; Expiring Soon = expiring-within-90 count.</td></tr>
+        <tr><td>Implementation Status &rarr; Applied / Not Yet Applied / Not yet Received / Received / Rejected</td><td>Read-only numbers</td><td>Calculated</td><td>Status counts across all Required cards. Applied&rarr;blue, Received&rarr;green, Rejected&rarr;red.</td></tr>
+      </tbody></table>
+
+      <h4 style="font-size:14px;color:var(--teal);margin:16px 0 10px;">Intervention Flags Strip (4 tiles)</h4>
+      <table class="brd-table"><thead><tr><th>Tile</th><th>Field Type</th><th>Input / Autofill</th><th>Logic</th></tr></thead>
+      <tbody>
+        <tr><td>&#8635; Intervention Needed</td><td>Read-only count (amber icon)</td><td>Calculated</td><td>= flagged registrations whose required action is incomplete.</td></tr>
+        <tr><td>&#9676; In Progress</td><td>Read-only count (blue icon)</td><td>Calculated</td><td>= Required cards with status Applied or Not yet Received.</td></tr>
+        <tr><td>&#10003; Received</td><td>Read-only count (green icon)</td><td>Calculated</td><td>= Required cards with status Received.</td></tr>
+        <tr><td>! Expiring Soon</td><td>Read-only count (amber icon)</td><td>Calculated</td><td>= Existing registrations expiring within 90 days.</td></tr>
+      </tbody></table>
+    </div></div>
+
+  <!-- ============ TAB 2: EXISTING ============ -->
+  <div class="accordion"><div class="accordion-trigger" onclick="this.parentElement.classList.toggle('open')">Tab 2: Existing <span class="acc-arrow">&#9660;</span></div>
+    <div class="accordion-body">
+      <p style="font-size:13px;color:var(--ink-soft);margin-bottom:12px;">One collapsible <strong>card per registration</strong> currently held. &ldquo;+ Add Registration&rdquo; appends a card; the header carries the grouped registration selector, a Status chip and a flag chip. Each card holds a <em>Registration Details</em> subsection and an <em>Intervention Need</em> block.</p>
+      <table class="brd-table"><thead><tr><th>Field Name</th><th>Field Type</th><th>Input Values</th><th>Input / Autofill</th><th>Logic</th><th>Validation &amp; Error Messages</th></tr></thead>
+      <tbody>
+        <tr><td>Registration Type *</td><td>Select (grouped)</td><td>Registration Master &mdash; 5 grouped buckets + Other</td><td>Input</td><td>Card header selector; labels the card and drives Summary. Group headings (&ldquo;&mdash; Legal Structure &mdash;&rdquo; etc.) are non-selectable.</td><td>&ldquo;Select a registration.&rdquo; Same registration cannot be added twice.</td></tr>
+        <tr><td>ID No.</td><td>Text</td><td>Free text</td><td>Input</td><td>Registration / licence number (e.g. GSTIN, Udyam no.).</td><td>&mdash;</td></tr>
+        <tr><td>Issuing Authority</td><td>Text</td><td>Free text</td><td>Input</td><td>e.g. GSTN, Govt. of Meghalaya, Municipal Board. Surfaces in Summary.</td><td>&mdash;</td></tr>
+        <tr><td>Issued Date</td><td>Date</td><td>&mdash;</td><td>Input</td><td>Date the registration was granted.</td><td>Must be &le; today.</td></tr>
+        <tr><td>Lifetime Validity</td><td>Checkbox</td><td>On / Off</td><td>Input</td><td><strong>When checked, hides the Valid Till field</strong> and clears it; Summary shows a green &ldquo;Lifetime&rdquo; badge.</td><td>&mdash;</td></tr>
+        <tr><td>Valid Till</td><td>Date</td><td>&mdash;</td><td>Input</td><td>Expiry date; hidden when Lifetime Validity is on. Drives the 90-day expiring / expired highlighting.</td><td>Must be &gt; Issued Date.</td></tr>
+        <tr><td>Govt. Certified?</td><td>Select</td><td>Yes / No</td><td>Input</td><td>Feeds the Govt. Certified aggregate.</td><td>&mdash;</td></tr>
+        <tr><td>Status</td><td>Select</td><td>Received / Not yet Received / Rejected</td><td>Input</td><td>Header chip: Received&rarr;green, Not yet Received&rarr;amber, Rejected&rarr;red.</td><td>&ldquo;Status is required.&rdquo;</td></tr>
+        <tr><td>Scanned Copy</td><td>Attach (Upload / View)</td><td>.pdf / .jpg / .png</td><td>Input</td><td>Upload shows a file pill + enables View; feeds the &ldquo;With Scanned Copy&rdquo; aggregate.</td><td>&mdash;</td></tr>
+        <tr><td>Need Registration / Licensing Intervention?</td><td>Toggle</td><td>On / Off</td><td>Input</td><td>ON reveals Type + Justification, shows the flag chip, and <strong>auto-creates a bridged Required card</strong> (Rule 3); OFF removes it.</td><td>&mdash;</td></tr>
+        <tr><td>Intervention &rarr; Type</td><td>Select</td><td>Renewal / Reapply</td><td>Input</td><td>Maps to Required Phase (Renewal &rarr; Renewal, Reapply &rarr; New Registration).</td><td>Recommended when toggle ON.</td></tr>
+        <tr><td>Intervention &rarr; Justification</td><td>Textarea</td><td>Free text</td><td>Input</td><td>Reason &mdash; expired / missing / needs upgrade. Two-way synced to the bridged Required card.</td><td>Required when toggle ON.</td></tr>
+      </tbody></table>
+    </div></div>
+
+  <!-- ============ TAB 3: REQUIRED ============ -->
+  <div class="accordion"><div class="accordion-trigger" onclick="this.parentElement.classList.toggle('open')">Tab 3: Required <span class="acc-arrow">&#9660;</span></div>
+    <div class="accordion-body">
+      <p style="font-size:13px;color:var(--ink-soft);margin-bottom:12px;">Registrations still to be acquired or renewed &mdash; <strong>bridge-populated</strong> from flagged Existing cards, or added manually via &ldquo;+ Add New Registration&rdquo;. Bridged cards are locked with a &ldquo;&#8635; Bridged from Existing&rdquo; marker. Empty state: &ldquo;No registration interventions required yet.&rdquo;</p>
+      <table class="brd-table"><thead><tr><th>Field Name</th><th>Field Type</th><th>Input Values</th><th>Input / Autofill</th><th>Logic</th><th>Validation &amp; Error Messages</th></tr></thead>
+      <tbody>
+        <tr><td>Registration Type *</td><td>Select (grouped)</td><td>Registration Master</td><td>Input / Autofill</td><td>Manual cards: chosen freely. Bridged cards: <strong>disabled</strong>, pre-set from the source Existing card (renames cascade from Existing).</td><td>&ldquo;Select a registration.&rdquo;</td></tr>
+        <tr><td>Phase</td><td>Select</td><td>New Registration / Renewal</td><td>Input / Autofill</td><td>Bridged cards default from the Existing Type (Renewal / Reapply&rarr;New Registration).</td><td>&mdash;</td></tr>
+        <tr><td>ID No. / Issuing Authority / Issued Date</td><td>Text / Text / Date</td><td>Free</td><td>Input</td><td>Captured once the registration is obtained.</td><td>Issued Date &le; today.</td></tr>
+        <tr><td>Lifetime Validity / Valid Till</td><td>Checkbox / Date</td><td>On-Off / date</td><td>Input / Autofill</td><td>Same hide-on-lifetime behaviour as Existing; bridged cards prefill validity + lifetime from the source.</td><td>Valid Till &gt; Issued Date.</td></tr>
+        <tr><td>Govt. Certified? / Scanned Copy</td><td>Select / Attach</td><td>Yes-No / file</td><td>Input</td><td>Same as Existing.</td><td>&mdash;</td></tr>
+        <tr><td>Justification (from Existing)</td><td>Read-only textarea</td><td>&mdash;</td><td>Autofill</td><td>Shown only on bridged cards; mirrors the Existing card&rsquo;s justification (two-way synced).</td><td>&mdash;</td></tr>
+        <tr><td>Status</td><td>Select</td><td>Applied / Not Yet Applied / Received / Not yet Received / Rejected</td><td>Input</td><td>Header chip; feeds Implementation Status aggregates and the Existing card&rsquo;s mirrored Implementation Status. Defaults &ldquo;Not Yet Applied&rdquo;.</td><td>&mdash;</td></tr>
+        <tr><td>Notes</td><td>Textarea</td><td>Free text</td><td>Input</td><td>Application notes, blockers, next steps.</td><td>&mdash;</td></tr>
+      </tbody></table>
+      <div class="callout callout-teal">Removing a bridged Required card toggles OFF the corresponding Existing intervention flag (bridge stays in sync both ways).</div>
+    </div></div>
+
+  <!-- ============ TAB 4: RESOURCES ============ -->
+  <div class="accordion"><div class="accordion-trigger" onclick="this.parentElement.classList.toggle('open')">Tab 4: Resources <span class="acc-arrow">&#9660;</span></div>
+    <div class="accordion-body">
+      <p style="font-size:13px;color:var(--ink-soft);margin-bottom:12px;">Reference materials &mdash; application forms, regulatory guidance, vendor directories, sample certificates. &ldquo;+ Add Resource&rdquo; appends a row.</p>
+      <table class="brd-table"><thead><tr><th>Field Name</th><th>Field Type</th><th>Input Values</th><th>Input / Autofill</th><th>Logic</th><th>Validation &amp; Error Messages</th></tr></thead>
+      <tbody>
+        <tr><td>Resource Title</td><td>Text</td><td>Free text</td><td>Input</td><td>&mdash;</td><td>&mdash;</td></tr>
+        <tr><td>Category</td><td>Select</td><td>Application Form / Regulatory Guidance / Vendor Directory / Sample Certificate / Fee Schedule / Compliance Checklist</td><td>Input</td><td>&mdash;</td><td>&mdash;</td></tr>
+        <tr><td>Type</td><td>Select</td><td>Template / Reference / Vendor / Quotation / Specification</td><td>Input</td><td>&mdash;</td><td>&mdash;</td></tr>
+        <tr><td>Description / Notes</td><td>Text</td><td>Free text</td><td>Input</td><td>&mdash;</td><td>&mdash;</td></tr>
+        <tr><td>File</td><td>Attach (Upload / View)</td><td>Any file</td><td>Input</td><td>Drive-linked resource.</td><td>&mdash;</td></tr>
+      </tbody></table>
+    </div></div>
+
+  <!-- ============ TAB 5: TASK LOG ============ -->
+  <div class="accordion"><div class="accordion-trigger" onclick="this.parentElement.classList.toggle('open')">Tab 5: Task Log <span class="acc-arrow">&#9660;</span></div>
+    <div class="accordion-body">
+      <p style="font-size:13px;color:var(--ink-soft);margin-bottom:12px;">Free-form diary of registration activities &mdash; applications submitted, follow-ups, vendor calls, document collection. &ldquo;+ Add Entry&rdquo; appends a row.</p>
+      <table class="brd-table"><thead><tr><th>Field Name</th><th>Field Type</th><th>Input Values</th><th>Input / Autofill</th><th>Logic</th><th>Validation &amp; Error Messages</th></tr></thead>
+      <tbody>
+        <tr><td>Date</td><td>Date</td><td>&mdash;</td><td>Input</td><td>&mdash;</td><td>&mdash;</td></tr>
+        <tr><td>Task Name</td><td>Text / Select</td><td>Application Submitted / Document Collection / Vendor Meeting / Follow-up / Inspection / Renewal / Other</td><td>Input</td><td>Activity descriptor.</td><td>&mdash;</td></tr>
+        <tr><td>Notes / Outcome</td><td>Text</td><td>Free text</td><td>Input</td><td>&mdash;</td><td>&mdash;</td></tr>
+        <tr><td>Attachment</td><td>Attach (Upload)</td><td>Any file</td><td>Input</td><td>Supporting document.</td><td>&mdash;</td></tr>
+      </tbody></table>
+    </div></div>
+
+  <div class="callout callout-danger"><strong>Key validations (whole form):</strong> Entrepreneur is required and unique (one Business Registration form per entrepreneur). Every card must have a <strong>Registration Type selected</strong> and the same registration cannot be added twice on Existing. Issued Date &le; today; Valid Till &gt; Issued Date and is hidden / cleared when Lifetime Validity is checked. Existing Status is mandatory. Toggling the intervention ON requires a Justification and creates exactly one bridged Required card; bridged cards are locked (selector disabled, justification read-only) and stay two-way synced &mdash; removing either side un-links the other. Expiring-within-90-days and Expired highlighting are computed, never stored. <strong>Product-level certifications belong in Product Compliance, not here.</strong></div>
+
+  <div class="review-panel" data-section="m-reg-lic">
+    <div class="review-strip"><span style="font-size:12px;color:var(--ink-soft);font-weight:500;">Section Review:</span>
+      <button class="review-status-btn" onclick="setReview('m-reg-lic','draft',this)">Draft</button>
+      <button class="review-status-btn" onclick="setReview('m-reg-lic','review',this)">In Review</button>
+      <button class="review-status-btn" onclick="setReview('m-reg-lic','changes',this)">Needs Changes</button>
+      <button class="review-status-btn" onclick="setReview('m-reg-lic','approved',this)">Approved</button>
+      <button style="margin-left:auto;background:none;border:none;font-size:12px;color:var(--sea);cursor:pointer;font-family:var(--font);text-decoration:underline;" onclick="copyLink('m-reg-lic')">Copy Link</button></div>
+    <div class="review-comments"><div class="comment-list" id="comments-m-reg-lic"></div>
+      <div class="comment-input-row"><input type="text" placeholder="Your name" style="max-width:120px" id="name-m-reg-lic"><textarea rows="1" placeholder="Add a comment..." id="text-m-reg-lic"></textarea><button class="comment-add-btn" onclick="addComment('m-reg-lic')">Add</button></div></div>
+  </div>
+</div>

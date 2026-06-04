@@ -1,0 +1,287 @@
+<div class="brd-section" id="m-machinery">
+  <div class="section-header">
+    <span class="section-id">PR-MFG-002</span>
+    <h2 class="section-title">Machinery</h2>
+  </div>
+  <div class="section-desc">Captures every machine and tool the entrepreneur owns or needs, computes per-machine depreciation that flows individually into Unit Pricing, and is part of the Manufacturing module. Golden-Thread ties: machines named in a Process Flow pre-create rows in the Existing tab, and machines flagged as Required surface in Infrastructure / EE workflows through explicit dropdown selection (never auto-pushed).</div>
+
+  <div class="callout callout-terra"><strong>Key behaviour &mdash; the Existing &rarr; Required intervention bridge.</strong> A machine is recorded ONCE in the Existing tab. Toggling its &ldquo;Servicing Needed?&rdquo; or &ldquo;Capacity Upgrade Needed?&rdquo; flag does not capture any cost &mdash; it only raises a flag. The Fessociate then opens the Required tab and adds an Intervention Row, picks the flagged machine from a dropdown of Existing machines, and the flag type + reference (current cost &middot; condition) auto-fetch. New (additional) machines are recorded separately in Required &rarr; Section II with the full Existing-style structure plus a Procurement Status. Each machine&rsquo;s Depreciation / Unit feeds Unit Pricing individually &mdash; the engine reads every machine row, not a single total.</div>
+
+  <h3 style="font-size:16px;color:var(--teal);margin:18px 0 10px;">On-Screen UI Structure</h3>
+  <div class="card"><div style="font-size:13px;line-height:1.9;color:var(--ink)">
+    <strong>Top bar:</strong> teal header &ldquo;Machinery Module&rdquo; with crumb &ldquo;PRIME Rural &middot; DF Machinery&rdquo;, and an entrepreneur chip (avatar + name) auto-fetched from the profile. <br>
+    <strong>Tab rail:</strong> horizontal pill bar with five tabs &mdash; Summary &middot; Existing &middot; Required &middot; Resources &middot; Task Log; active tab renders teal-on-white. <br>
+    <strong>Body layout:</strong> each tab is a panel. <em>Summary</em> is read-only: a machine-wise overview table, four aggregate cards (Machines / Capacity / Cost / Interventions &amp; Status), and a 4-cell flag strip. <em>Existing</em> and <em>Required</em> render each machine as a collapsible &ldquo;machine block&rdquo; (sea-blue header with name input + Remove) holding four sub-sections: Classification &amp; Process Integration, Technical &amp; Power Specifications, Operational Capacity &amp; Usage, Financial &amp; Maintenance Data. <br>
+    <strong>Special widgets:</strong> (1) <em>Depreciation / capacity calc strips</em> &mdash; highlighted cells inside each block showing Monthly Output, Capacity Utilization, Capacity Gap, Depreciation Rate, Monthly Depreciation and Depreciation / Unit, each derived live. (2) <em>Intervention banners</em> &mdash; in Existing, a terracotta &ldquo;Intervention Need &mdash; Flag Only&rdquo; panel with two toggles; in Required, collapsible intervention rows with Machine / Flag / Implementation Status selectors in the header. (3) A teal <em>total bar</em> at the foot of Existing and Required summarising counts, investment, output and total depreciation, and naming the Unit Pricing target. <br>
+    Per Rule&nbsp;1, every calculated field (Monthly Output, Utilization, Gap, Depreciation Rate, Monthly Depreciation, Depreciation / Unit, all totals and aggregates) renders <em>italic on a cream-deep background</em> and is non-editable, with a tooltip stating its formula.
+  </div></div>
+  <div class="flow-container" style="margin-top:12px">
+    <div class="flow-step"><div class="flow-box">Summary</div></div>
+    <div class="flow-arrow">&rarr;</div>
+    <div class="flow-step"><div class="flow-box">Existing</div></div>
+    <div class="flow-arrow">&rarr;</div>
+    <div class="flow-step"><div class="flow-box">Required</div></div>
+    <div class="flow-arrow">&rarr;</div>
+    <div class="flow-step"><div class="flow-box">Resources</div></div>
+    <div class="flow-arrow">&rarr;</div>
+    <div class="flow-step"><div class="flow-box">Task Log</div></div>
+  </div>
+
+  <h3 style="font-size:16px;color:var(--teal);margin:18px 0 10px;">User Journey</h3>
+  <div class="card"><div class="flow-container">
+    <div class="flow-step"><div class="flow-box">Open</div><div class="flow-label">Diagnostics &rarr; Manufacturing &rarr; Machinery (entrepreneur auto-fetched)</div></div>
+    <div class="flow-arrow">&rarr;</div>
+    <div class="flow-step"><div class="flow-box">Record Existing</div><div class="flow-label">Add each owned machine/tool; specs, capacity, cost, condition &mdash; depreciation auto-computes</div></div>
+    <div class="flow-arrow">&rarr;</div>
+    <div class="flow-step"><div class="flow-box">Flag Needs</div><div class="flow-label">Toggle Servicing / Capacity Upgrade on machines needing intervention</div></div>
+    <div class="flow-arrow">&rarr;</div>
+    <div class="flow-step"><div class="flow-box">Detail Interventions</div><div class="flow-label">Required tab &rarr; add row, pick flagged machine, enter cost &amp; status</div></div>
+    <div class="flow-arrow">&rarr;</div>
+    <div class="flow-step"><div class="flow-box">Research &amp; Add New</div><div class="flow-label">Record required new machines + procurement status; attach Resources</div></div>
+    <div class="flow-arrow">&rarr;</div>
+    <div class="flow-step"><div class="flow-box">Log &amp; Save</div><div class="flow-label">Capture activities in Task Log; review Summary; save</div></div>
+  </div></div>
+
+  <!-- ============ TAB 1: SUMMARY ============ -->
+  <div class="accordion open">
+    <div class="accordion-trigger" onclick="this.parentElement.classList.toggle('open')">Tab 1 &mdash; Summary (read-only roll-up)</div>
+    <div class="accordion-body">
+      <p style="font-size:13px;color:var(--ink);margin-bottom:10px;">Entirely auto-populated from the Existing and Required tabs. No data entry on this tab. It contains four blocks: (1) a Machine-wise Overview table, (2) four Aggregate cards, (3) an Intervention Flag strip. Each machine&rsquo;s Depreciation / Unit feeds Unit Pricing individually; the &ldquo;TOTAL (indicative)&rdquo; row is informational only because Unit Pricing reads each machine separately.</p>
+
+      <p style="font-size:14px;font-weight:600;color:var(--teal);margin:12px 0 6px;">1.1 Machine-wise Overview table (one row per machine, Existing + New; auto-built)</p>
+      <table class="brd-field-table">
+        <thead><tr><th>Field Name</th><th>Field Type</th><th>Input Values</th><th>Input / Autofill</th><th>Logic</th><th>Validation &amp; Error Messages</th></tr></thead>
+        <tbody>
+          <tr><td>Machine</td><td>Read-only text</td><td>&mdash;</td><td>Autofill</td><td>Machine name from each Existing &amp; New block. New machines render on a highlighted row.</td><td>&mdash;</td></tr>
+          <tr><td>Condition</td><td>Read-only badge</td><td>Good / Fair / Poor</td><td>Autofill</td><td>From machine&rsquo;s Machinery Condition. Badge colour: Good=green, Fair=amber, Poor=red; &ldquo;&mdash;&rdquo; if unset.</td><td>&mdash;</td></tr>
+          <tr><td>Monthly Output</td><td>Read-only number (italic, cream-deep)</td><td>&mdash;</td><td>Calculated</td><td>days &times; hours &times; Current Usage Capacity/hr, shown as &ldquo;N units&rdquo;.</td><td>&mdash;</td></tr>
+          <tr><td>Utilisation</td><td>Read-only badge</td><td>&mdash;</td><td>Calculated</td><td>(Current cap / Max cap) &times; 100, rounded. Badge: &ge;80% green, &ge;60% amber, else red; &ldquo;&mdash;&rdquo; if Max=0. New rows show &ldquo;&mdash;&rdquo;.</td><td>&mdash;</td></tr>
+          <tr><td>Capacity Gap</td><td>Read-only number (italic)</td><td>&mdash;</td><td>Calculated</td><td>Max cap &minus; Current cap (only if &gt;0), shown &ldquo;N units/hr&rdquo;, terracotta; else &ldquo;&mdash;&rdquo;.</td><td>&mdash;</td></tr>
+          <tr><td>Dep / Unit (&#8377;)</td><td>Read-only currency (italic)</td><td>&mdash;</td><td>Calculated</td><td>Per-machine Depreciation / Unit (see formula in tab 2). Teal bold.</td><td>&mdash;</td></tr>
+          <tr><td>Intervention Type</td><td>Read-only badge(s)</td><td>Servicing / Capacity / + New Machine</td><td>Autofill</td><td>Existing rows show one badge per active flag (&ldquo;Servicing&rdquo;, &ldquo;Capacity&rdquo;). New rows show &ldquo;+ New Machine&rdquo;. &ldquo;&mdash;&rdquo; if none.</td><td>&mdash;</td></tr>
+          <tr><td>Implementation Status</td><td>Read-only badge</td><td>Pending / In Progress / Completed</td><td>Autofill</td><td>For New machines, mirrors the block&rsquo;s Implementation Status. Existing rows show &ldquo;&mdash;&rdquo; here (status lives on the linked Intervention Row).</td><td>&mdash;</td></tr>
+          <tr><td>TOTAL (indicative) row</td><td>Read-only total row</td><td>&mdash;</td><td>Calculated</td><td>Sum of Monthly Output; overall utilisation = totalOutput / totalPotential; total gap; total Dep/Unit (sum of existing). Labelled &ldquo;Unit Pricing reads each machine individually&rdquo;.</td><td>&mdash;</td></tr>
+        </tbody>
+      </table>
+
+      <p style="font-size:14px;font-weight:600;color:var(--teal);margin:14px 0 6px;">1.2 Aggregate cards (four, all read-only / calculated)</p>
+      <table class="brd-field-table">
+        <thead><tr><th>Field Name</th><th>Field Type</th><th>Input Values</th><th>Input / Autofill</th><th>Logic</th><th>Validation &amp; Error Messages</th></tr></thead>
+        <tbody>
+          <tr><td>Machines &middot; Existing Machines</td><td>Read-only count</td><td>&mdash;</td><td>Calculated</td><td>Count of Existing blocks.</td><td>&mdash;</td></tr>
+          <tr><td>Machines &middot; Total Investment (&#8377;)</td><td>Read-only currency</td><td>&mdash;</td><td>Calculated</td><td>Sum of Cost of Machine across Existing blocks (Indian formatting, e.g. &#8377;1,00,000).</td><td>&mdash;</td></tr>
+          <tr><td>Machines &middot; New Machines Added</td><td>Read-only count</td><td>&mdash;</td><td>Calculated</td><td>Count of New blocks in Required &rarr; Section II.</td><td>&mdash;</td></tr>
+          <tr><td>Machines &middot; Additional Investment (&#8377;)</td><td>Read-only currency</td><td>&mdash;</td><td>Calculated</td><td>Sum of Cost across New blocks; &ldquo;&mdash;&rdquo; if none.</td><td>&mdash;</td></tr>
+          <tr><td>Capacity &middot; Current Monthly Output</td><td>Read-only number</td><td>&mdash;</td><td>Calculated</td><td>Sum of Monthly Output across Existing + New machines, &ldquo;N units&rdquo;.</td><td>&mdash;</td></tr>
+          <tr><td>Capacity &middot; Max Potential Output</td><td>Read-only number</td><td>&mdash;</td><td>Calculated</td><td>Sum of (days &times; hours &times; Max cap) across machines, &ldquo;N units&rdquo;.</td><td>&mdash;</td></tr>
+          <tr><td>Capacity &middot; Overall Utilisation</td><td>Read-only %</td><td>&mdash;</td><td>Calculated</td><td>totalOutput / totalPotential &times; 100; &ldquo;&mdash;&rdquo; if potential=0.</td><td>&mdash;</td></tr>
+          <tr><td>Capacity &middot; Capacity Gap</td><td>Read-only number</td><td>&mdash;</td><td>Calculated</td><td>Sum of per-machine gaps; &ldquo;N units/hr&rdquo; or &ldquo;&mdash;&rdquo;.</td><td>&mdash;</td></tr>
+          <tr><td>Cost &middot; Dep / Unit &mdash; Before (&#8377;)</td><td>Read-only currency</td><td>&mdash;</td><td>Calculated</td><td>Sum of Existing machines&rsquo; Depreciation / Unit.</td><td>&mdash;</td></tr>
+          <tr><td>Cost &middot; Dep / Unit &mdash; After (&#8377;)</td><td>Read-only currency</td><td>&mdash;</td><td>Calculated</td><td>Existing + New combined Dep/Unit; populates only when &ge;1 New machine exists, else &ldquo;&mdash;&rdquo;. Green if lower than Before, red if higher.</td><td>&mdash;</td></tr>
+          <tr><td>Interventions &middot; Servicing Needed</td><td>Read-only count</td><td>&mdash;</td><td>Calculated</td><td>Count of Existing machines with Servicing flag active.</td><td>&mdash;</td></tr>
+          <tr><td>Interventions &middot; Capacity Upgrade Needed</td><td>Read-only count</td><td>&mdash;</td><td>Calculated</td><td>Count of machines with Capacity flag active OR a positive capacity gap.</td><td>&mdash;</td></tr>
+          <tr><td>Interventions &middot; Completed</td><td>Read-only count</td><td>&mdash;</td><td>Calculated</td><td>Count of Intervention Rows with Implementation Status = Completed.</td><td>&mdash;</td></tr>
+          <tr><td>Interventions &middot; In Progress</td><td>Read-only count</td><td>&mdash;</td><td>Calculated</td><td>Count of Intervention Rows with status = In Progress.</td><td>&mdash;</td></tr>
+          <tr><td>Interventions &middot; In Procurement</td><td>Read-only count</td><td>&mdash;</td><td>Calculated</td><td>Count of New machines whose Implementation Status is In Progress or Completed.</td><td>&mdash;</td></tr>
+        </tbody>
+      </table>
+
+      <p style="font-size:14px;font-weight:600;color:var(--teal);margin:14px 0 6px;">1.3 Intervention Flag strip (four count cards)</p>
+      <table class="brd-field-table">
+        <thead><tr><th>Field Name</th><th>Field Type</th><th>Input Values</th><th>Input / Autofill</th><th>Logic</th><th>Validation &amp; Error Messages</th></tr></thead>
+        <tbody>
+          <tr><td>Servicing Needed</td><td>Read-only count card</td><td>&mdash;</td><td>Calculated</td><td>= Interventions &middot; Servicing Needed.</td><td>&mdash;</td></tr>
+          <tr><td>Capacity Gap</td><td>Read-only count card</td><td>&mdash;</td><td>Calculated</td><td>= Interventions &middot; Capacity Upgrade Needed.</td><td>&mdash;</td></tr>
+          <tr><td>New Machines</td><td>Read-only count card</td><td>&mdash;</td><td>Calculated</td><td>Count of New machine blocks.</td><td>&mdash;</td></tr>
+          <tr><td>In Procurement</td><td>Read-only count card</td><td>&mdash;</td><td>Calculated</td><td>= Interventions &middot; In Procurement.</td><td>&mdash;</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ============ TAB 2: EXISTING ============ -->
+  <div class="accordion">
+    <div class="accordion-trigger" onclick="this.parentElement.classList.toggle('open')">Tab 2 &mdash; Existing (machines/tools already owned; child table of machine blocks)</div>
+    <div class="accordion-body">
+      <p style="font-size:13px;color:var(--ink);margin-bottom:10px;">Repeating child table: each row is a collapsible &ldquo;machine block&rdquo; added via <em>+ Add Machine</em>. Machines named in a Process Flow arrive here as pre-created Existing rows (Golden Thread). Block header carries the machine name (synced with the name field below) and a Remove button (confirm prompt). Four sub-sections + an intervention flag panel + a foot total bar. Below are all fields of one machine row.</p>
+
+      <p style="font-size:14px;font-weight:600;color:var(--teal);margin:12px 0 6px;">2.1 Classification &amp; Process Integration</p>
+      <table class="brd-field-table">
+        <thead><tr><th>Field Name</th><th>Field Type</th><th>Input Values</th><th>Input / Autofill</th><th>Logic</th><th>Validation &amp; Error Messages</th></tr></thead>
+        <tbody>
+          <tr><td>Product</td><td>Read-only text (italic)</td><td>&mdash;</td><td>Autofill</td><td>Auto-fetched from the Product module.</td><td>&mdash;</td></tr>
+          <tr><td>Name of Machinery / Tool <strong>*</strong></td><td>Text</td><td>Free text</td><td>Input</td><td>Mandatory. Syncs to the block header name. Source for the Required tab&rsquo;s machine dropdown.</td><td>Required: &ldquo;Enter the machine / tool name.&rdquo;</td></tr>
+          <tr><td>Process Flow No.</td><td>Text</td><td>e.g. &ldquo;Processed Food-Process Flow&rdquo;</td><td>Input / Autofill</td><td>Links the machine to a Process Flow; pre-filled for process-flow-derived rows.</td><td>&mdash;</td></tr>
+          <tr><td>Purpose</td><td>Text</td><td>e.g. &ldquo;Shredding&rdquo;</td><td>Input</td><td>What the machine does in the process.</td><td>&mdash;</td></tr>
+        </tbody>
+      </table>
+
+      <p style="font-size:14px;font-weight:600;color:var(--teal);margin:14px 0 6px;">2.2 Technical &amp; Power Specifications</p>
+      <table class="brd-field-table">
+        <thead><tr><th>Field Name</th><th>Field Type</th><th>Input Values</th><th>Input / Autofill</th><th>Logic</th><th>Validation &amp; Error Messages</th></tr></thead>
+        <tbody>
+          <tr><td>Power / Phase Needed</td><td>Select</td><td>&mdash; Select &mdash; / Single Phase / III Phase</td><td>Input</td><td>Feeds power / solarisation planning.</td><td>&mdash;</td></tr>
+          <tr><td>Wattage / Load (W)</td><td>Number</td><td>&ge; 0</td><td>Input</td><td>Electrical load of the machine.</td><td>Must be &ge; 0: &ldquo;Wattage cannot be negative.&rdquo;</td></tr>
+          <tr><td>No. of Machinery / Tool <strong>*</strong></td><td>Number</td><td>Default 1</td><td>Input</td><td>Mandatory quantity of identical units.</td><td>Required, &ge; 1: &ldquo;Quantity must be at least 1.&rdquo;</td></tr>
+        </tbody>
+      </table>
+
+      <p style="font-size:14px;font-weight:600;color:var(--teal);margin:14px 0 6px;">2.3 Operational Capacity &amp; Usage (drives Monthly Output + Utilisation)</p>
+      <table class="brd-field-table">
+        <thead><tr><th>Field Name</th><th>Field Type</th><th>Input Values</th><th>Input / Autofill</th><th>Logic</th><th>Validation &amp; Error Messages</th></tr></thead>
+        <tbody>
+          <tr><td>Days of Equipment Usage / Month</td><td>Number</td><td>0&ndash;31</td><td>Input</td><td>Operating days per month (factor in Monthly Output).</td><td>Range 0&ndash;31: &ldquo;Days must be between 0 and 31.&rdquo;</td></tr>
+          <tr><td>Hours of Usage / Day</td><td>Number</td><td>0&ndash;24</td><td>Input</td><td>Operating hours per day (factor in Monthly Output).</td><td>Range 0&ndash;24: &ldquo;Hours must be between 0 and 24.&rdquo;</td></tr>
+          <tr><td>Main Usage Time</td><td>Select</td><td>&mdash; Select &mdash; / Day / Night / Both</td><td>Input</td><td>When the machine is mainly run (informs solar sizing).</td><td>&mdash;</td></tr>
+          <tr><td>Current Usage Capacity / hr (units)</td><td>Number</td><td>&ge; 0</td><td>Input</td><td>Actual units produced per hour now.</td><td>Must be &ge; 0; should be &le; Max capacity: &ldquo;Current capacity cannot exceed max processing capacity.&rdquo;</td></tr>
+          <tr><td>Max Processing Capacity / hr (units)</td><td>Number</td><td>&ge; 0</td><td>Input</td><td>Maximum achievable units per hour (denominator for Utilisation / Gap).</td><td>Must be &ge; Current capacity if both entered.</td></tr>
+          <tr><td>Monthly Output</td><td>Read-only calc (italic, cream-deep)</td><td>&mdash;</td><td>Calculated</td><td><strong>= Days &times; Hours &times; Current Usage Capacity/hr</strong>; rendered &ldquo;N units / month&rdquo;. Tooltip: &ldquo;days &times; hrs &times; current capacity&rdquo;.</td><td>&mdash;</td></tr>
+          <tr><td>Capacity Utilization</td><td>Read-only calc (italic)</td><td>&mdash;</td><td>Calculated</td><td><strong>= (Current cap / Max cap) &times; 100</strong>, shown &ldquo;NN% (cur/max)&rdquo;; &ldquo;&mdash;&rdquo; if Max=0.</td><td>&mdash;</td></tr>
+          <tr><td>Capacity Gap</td><td>Read-only calc (italic)</td><td>&mdash;</td><td>Calculated</td><td><strong>= Max cap &minus; Current cap</strong>, shown &ldquo;N units / hr unused&rdquo;; &ldquo;&mdash;&rdquo; if Max=0.</td><td>&mdash;</td></tr>
+        </tbody>
+      </table>
+
+      <p style="font-size:14px;font-weight:600;color:var(--teal);margin:14px 0 6px;">2.4 Financial &amp; Maintenance Data (drives Depreciation &mdash; feeds Existing Unit Pricing)</p>
+      <table class="brd-field-table">
+        <thead><tr><th>Field Name</th><th>Field Type</th><th>Input Values</th><th>Input / Autofill</th><th>Logic</th><th>Validation &amp; Error Messages</th></tr></thead>
+        <tbody>
+          <tr><td>Cost of Machine / Tool (&#8377;)</td><td>Number / currency</td><td>&ge; 0</td><td>Input</td><td>Purchase cost; base for depreciation.</td><td>Must be &ge; 0: &ldquo;Cost cannot be negative.&rdquo;</td></tr>
+          <tr><td>Brand Series</td><td>Text</td><td>Free text</td><td>Input</td><td>Make / model series.</td><td>&mdash;</td></tr>
+          <tr><td>Machinery Condition</td><td>Select</td><td>&mdash; Select &mdash; / Good (10% depreciation) / Fair (20% depreciation) / Poor (30% depreciation)</td><td>Input</td><td>Drives the annual Depreciation Rate (Good=10%, Fair=20%, Poor=30%).</td><td>Required to compute depreciation; if blank, depreciation shows &ldquo;&mdash;&rdquo;.</td></tr>
+          <tr><td>Critical / Non-Critical</td><td>Select</td><td>&mdash; Select &mdash; / Critical / Non-Critical</td><td>Input</td><td>Marks production-critical equipment.</td><td>&mdash;</td></tr>
+          <tr><td>If Critical, provide reason</td><td>Textarea</td><td>Free text</td><td>Input (conditional)</td><td>Shown / required when Critical / Non-Critical = Critical.</td><td>Conditionally required: &ldquo;Provide a reason for marking this machine critical.&rdquo;</td></tr>
+          <tr><td>Servicing Required?</td><td>Select</td><td>&mdash; Select &mdash; / Yes / No</td><td>Input</td><td>Declares whether routine servicing is due.</td><td>&mdash;</td></tr>
+          <tr><td>Upkeep Cost (&#8377;)</td><td>Number / currency</td><td>&ge; 0</td><td>Input</td><td>Recurring maintenance cost.</td><td>Must be &ge; 0.</td></tr>
+          <tr><td>Age of Machinery (years)</td><td>Number</td><td>&ge; 0</td><td>Input</td><td>Years in service.</td><td>Must be &ge; 0.</td></tr>
+          <tr><td>Depreciation Rate</td><td>Read-only calc (italic)</td><td>&mdash;</td><td>Calculated</td><td><strong>= rate by Condition</strong> (Good 10% / Fair 20% / Poor 30%), shown &ldquo;NN% per year&rdquo;.</td><td>&mdash;</td></tr>
+          <tr><td>Monthly Depreciation</td><td>Read-only calc (italic)</td><td>&mdash;</td><td>Calculated</td><td><strong>= (Cost &times; annual rate) / 12</strong>, shown &ldquo;&#8377;N / month&rdquo;.</td><td>&mdash;</td></tr>
+          <tr><td>Depreciation / Unit</td><td>Read-only calc (italic)</td><td>&mdash;</td><td>Calculated</td><td><strong>= Monthly Depreciation / Monthly Output</strong>, shown &ldquo;&#8377;N.NN / unit&rdquo;; &ldquo;&#8377;0.00&rdquo; if Output=0. Auto-fetches to Existing Unit Pricing &rarr; Machinery Depreciation / Unit (per machine).</td><td>&mdash;</td></tr>
+        </tbody>
+      </table>
+
+      <p style="font-size:14px;font-weight:600;color:var(--teal);margin:14px 0 6px;">2.5 Intervention Need &mdash; Flag Only (terracotta panel; raises flags, captures no cost)</p>
+      <table class="brd-field-table">
+        <thead><tr><th>Field Name</th><th>Field Type</th><th>Input Values</th><th>Input / Autofill</th><th>Logic</th><th>Validation &amp; Error Messages</th></tr></thead>
+        <tbody>
+          <tr><td>Servicing Needed?</td><td>Toggle (on/off)</td><td>Off (default) / On</td><td>Input</td><td>When On, note reads &ldquo;Flagged &rarr; Details in Required Tab&rdquo; and the machine becomes selectable as a Servicing intervention in Required. No cost captured here.</td><td>&mdash;</td></tr>
+          <tr><td>Capacity Upgrade Needed?</td><td>Toggle (on/off)</td><td>Off (default) / On</td><td>Input</td><td>When On, note reads &ldquo;Flagged &rarr; Details in Required Tab&rdquo;; selectable as a Capacity intervention in Required.</td><td>&mdash;</td></tr>
+        </tbody>
+      </table>
+
+      <p style="font-size:14px;font-weight:600;color:var(--teal);margin:14px 0 6px;">2.6 All Existing Machines &mdash; Total bar (foot, read-only)</p>
+      <table class="brd-field-table">
+        <thead><tr><th>Field Name</th><th>Field Type</th><th>Input Values</th><th>Input / Autofill</th><th>Logic</th><th>Validation &amp; Error Messages</th></tr></thead>
+        <tbody>
+          <tr><td>Machine Count</td><td>Read-only count</td><td>&mdash;</td><td>Calculated</td><td>Number of Existing machine blocks.</td><td>&mdash;</td></tr>
+          <tr><td>Total Investment</td><td>Read-only currency</td><td>&mdash;</td><td>Calculated</td><td>Sum of Cost of Machine (Indian formatting).</td><td>&mdash;</td></tr>
+          <tr><td>Monthly Output</td><td>Read-only number</td><td>&mdash;</td><td>Calculated</td><td>Sum of per-machine Monthly Output, &ldquo;N units&rdquo;.</td><td>&mdash;</td></tr>
+          <tr><td>Total Depreciation / Unit</td><td>Read-only currency</td><td>&mdash;</td><td>Calculated</td><td>Sum of per-machine Depreciation / Unit.</td><td>&mdash;</td></tr>
+          <tr><td>Auto-fetches to</td><td>Read-only label</td><td>&mdash;</td><td>Static</td><td>&ldquo;Existing Unit Pricing &rarr; Machinery Depreciation / Unit&rdquo; (note: Unit Pricing reads each machine individually).</td><td>&mdash;</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ============ TAB 3: REQUIRED ============ -->
+  <div class="accordion">
+    <div class="accordion-trigger" onclick="this.parentElement.classList.toggle('open')">Tab 3 &mdash; Required (Section I: Existing Machine Interventions &middot; Section II: New Machines)</div>
+    <div class="accordion-body">
+      <div class="callout callout-terra"><strong>Bridge from Existing (Rule 3).</strong> Section I rows do not re-enter machine data &mdash; they link to a machine already in the Existing tab via a dropdown built from Existing machine names. On selection, the machine&rsquo;s active flag (Servicing / Capacity) and a Reference (current cost &middot; condition) auto-fetch. Section II New machines are fully described here; if a New machine is later marked Required for the EE, it surfaces in Infrastructure / EE through explicit dropdown selection there &mdash; it is never auto-pushed.</div>
+
+      <p style="font-size:14px;font-weight:600;color:var(--teal);margin:12px 0 6px;">3.1 Section I &mdash; Existing Machine Interventions (repeating intervention rows)</p>
+      <p style="font-size:13px;color:var(--ink);margin-bottom:6px;">Added via <em>+ Add Intervention Row</em>. Empty state: &ldquo;No interventions yet &mdash; click + Add Intervention Row and select a flagged machine from the Existing tab.&rdquo; Header carries Machine / Flag / Implementation Status selectors + Remove; body holds the Intervention Details sub-section.</p>
+      <table class="brd-field-table">
+        <thead><tr><th>Field Name</th><th>Field Type</th><th>Input Values</th><th>Input / Autofill</th><th>Logic</th><th>Validation &amp; Error Messages</th></tr></thead>
+        <tbody>
+          <tr><td>Machine</td><td>Select (Link to Existing)</td><td>&mdash; Select machine &mdash; / &lt;Existing machine names&gt;</td><td>Input</td><td>Dropdown built from Name of Machinery in the Existing tab. On select, auto-fetches Flag type + Reference. This is the Existing&rarr;Required linkage.</td><td>Required: &ldquo;Select a machine from the Existing tab.&rdquo;</td></tr>
+          <tr><td>Flag (Type)</td><td>Select</td><td>&mdash; Auto &mdash; / Servicing / Capacity Upgrade</td><td>Autofill (overridable)</td><td>Auto-set from the selected machine&rsquo;s active toggle (Servicing if its service note active, else Capacity if capacity note active, else blank).</td><td>&mdash;</td></tr>
+          <tr><td>Implementation Status</td><td>Select</td><td>Pending (default) / In Progress / Completed</td><td>Input</td><td>Drives Summary &ldquo;Completed&rdquo; / &ldquo;In Progress&rdquo; counts.</td><td>&mdash;</td></tr>
+          <tr><td>Reference (current cost / condition)</td><td>Read-only text (auto, cream-deep)</td><td>&mdash;</td><td>Autofill</td><td>On machine select, populates &ldquo;&#8377;&lt;cost&gt; &middot; &lt;condition&gt;&rdquo; from the Existing block.</td><td>&mdash;</td></tr>
+          <tr><td>Issue / Description</td><td>Text</td><td>Free text</td><td>Input</td><td>Describe the issue or scope of the intervention.</td><td>&mdash;</td></tr>
+          <tr><td>Intervention Cost (&#8377;)</td><td>Number / currency</td><td>&ge; 0</td><td>Input</td><td>Cost of servicing / upgrade for this machine. Captured here, not in Existing.</td><td>Must be &ge; 0: &ldquo;Intervention cost cannot be negative.&rdquo;</td></tr>
+          <tr><td>New Electricity Cost / Unit (after solar)</td><td>Number / currency (step 0.01)</td><td>&ge; 0</td><td>Input</td><td>Revised per-unit electricity cost after a solar / capacity intervention (feeds running-cost analysis).</td><td>Must be &ge; 0.</td></tr>
+        </tbody>
+      </table>
+
+      <p style="font-size:14px;font-weight:600;color:var(--teal);margin:14px 0 6px;">3.2 Section II &mdash; New Machines (full machine block, like Existing, + Procurement; feeds Required Unit Pricing)</p>
+      <p style="font-size:13px;color:var(--ink);margin-bottom:6px;">Added via <em>+ Add New Machine</em>. Identical four sub-sections as the Existing tab (2.1&ndash;2.4 fields apply verbatim: Classification &amp; Process Integration, Technical &amp; Power Specifications, Operational Capacity &amp; Usage with the same Monthly Output / Utilization / Gap calcs, Financial &amp; Maintenance Data with the same Depreciation Rate / Monthly Depreciation / Depreciation / Unit formulae). The header additionally carries an Implementation Status selector. Differences from Existing are listed below; there is NO Intervention-flag panel on New machines.</p>
+      <table class="brd-field-table">
+        <thead><tr><th>Field Name</th><th>Field Type</th><th>Input Values</th><th>Input / Autofill</th><th>Logic</th><th>Validation &amp; Error Messages</th></tr></thead>
+        <tbody>
+          <tr><td>Implementation Status (header)</td><td>Select</td><td>Pending (default) / In Progress / Completed</td><td>Input</td><td>Mirrors to Summary; In Progress / Completed counts toward &ldquo;In Procurement&rdquo;.</td><td>&mdash;</td></tr>
+          <tr><td>Procurement Status</td><td>Select</td><td>Pending / Vendor Selected / EE Procurement - Selected / EE Completed / Procured (Self)</td><td>Input</td><td>Tracks how the machine is being procured. &ldquo;EE Procurement - Selected&rdquo; / &ldquo;EE Completed&rdquo; denote procurement routed through the Entrepreneurship Enablement (EE) channel (selected via dropdown, not auto-pushed).</td><td>&mdash;</td></tr>
+          <tr><td>Depreciation / Unit (New)</td><td>Read-only calc (italic)</td><td>&mdash;</td><td>Calculated</td><td>Same formula as Existing: (Cost &times; rate)/12 / Monthly Output, &ldquo;&#8377;N.NN / unit&rdquo;. Auto-fetches to Required Unit Pricing &rarr; Machinery Depreciation / Unit.</td><td>&mdash;</td></tr>
+        </tbody>
+      </table>
+
+      <p style="font-size:14px;font-weight:600;color:var(--teal);margin:14px 0 6px;">3.3 Total Machinery &mdash; Required (Existing + New) total bar (foot, read-only)</p>
+      <table class="brd-field-table">
+        <thead><tr><th>Field Name</th><th>Field Type</th><th>Input Values</th><th>Input / Autofill</th><th>Logic</th><th>Validation &amp; Error Messages</th></tr></thead>
+        <tbody>
+          <tr><td>Existing Depreciation / Unit</td><td>Read-only currency</td><td>&mdash;</td><td>Calculated</td><td>Sum of Existing machines&rsquo; Dep / Unit.</td><td>&mdash;</td></tr>
+          <tr><td>New Machine Depreciation / Unit</td><td>Read-only currency</td><td>&mdash;</td><td>Calculated</td><td>Sum of New machines&rsquo; Dep / Unit.</td><td>&mdash;</td></tr>
+          <tr><td>Total Machines</td><td>Read-only count</td><td>&mdash;</td><td>Calculated</td><td>Existing + New block counts.</td><td>&mdash;</td></tr>
+          <tr><td>Total Depreciation / Unit</td><td>Read-only currency</td><td>&mdash;</td><td>Calculated</td><td>Existing Dep/Unit + New Dep/Unit.</td><td>&mdash;</td></tr>
+          <tr><td>Auto-fetches to</td><td>Read-only label</td><td>&mdash;</td><td>Static</td><td>&ldquo;Required Unit Pricing &rarr; Machinery Depreciation / Unit&rdquo;.</td><td>&mdash;</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ============ TAB 4: RESOURCES ============ -->
+  <div class="accordion">
+    <div class="accordion-trigger" onclick="this.parentElement.classList.toggle('open')">Tab 4 &mdash; Resources (reference materials child table)</div>
+    <div class="accordion-body">
+      <p style="font-size:13px;color:var(--ink);margin-bottom:10px;">Repeating child table added via <em>+ Add Resource</em>; at least one row must remain (&ldquo;At least one row is required.&rdquo;). Per row:</p>
+      <table class="brd-field-table">
+        <thead><tr><th>Field Name</th><th>Field Type</th><th>Input Values</th><th>Input / Autofill</th><th>Logic</th><th>Validation &amp; Error Messages</th></tr></thead>
+        <tbody>
+          <tr><td>Resource Title</td><td>Text</td><td>Free text</td><td>Input</td><td>Name of the reference material.</td><td>&mdash;</td></tr>
+          <tr><td>Category</td><td>Select</td><td>&mdash; Select &mdash; / Machinery Catalogue / Solar Vendor / Servicing Contact / Procurement Guide / Safety / Compliance</td><td>Input</td><td>Classifies the resource.</td><td>&mdash;</td></tr>
+          <tr><td>Type</td><td>Select</td><td>&mdash; Select &mdash; / Template / Reference / Vendor / Quotation / Specification</td><td>Input</td><td>Resource format / nature.</td><td>&mdash;</td></tr>
+          <tr><td>Description / Notes</td><td>Text</td><td>Free text</td><td>Input</td><td>Notes about the resource.</td><td>&mdash;</td></tr>
+          <tr><td>File</td><td>Attach (Upload / View)</td><td>File</td><td>Input</td><td>Upload a file or View the attached one.</td><td>&mdash;</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ============ TAB 5: TASK LOG ============ -->
+  <div class="accordion">
+    <div class="accordion-trigger" onclick="this.parentElement.classList.toggle('open')">Tab 5 &mdash; Task Log (Machinery activities child table)</div>
+    <div class="accordion-body">
+      <p style="font-size:13px;color:var(--ink);margin-bottom:10px;">Repeating child table added via <em>+ Add Entry</em>; one seed row on load. Row No. auto-renumbers (01, 02, &hellip;) on add/delete. Per row:</p>
+      <table class="brd-field-table">
+        <thead><tr><th>Field Name</th><th>Field Type</th><th>Input Values</th><th>Input / Autofill</th><th>Logic</th><th>Validation &amp; Error Messages</th></tr></thead>
+        <tbody>
+          <tr><td>No.</td><td>Read-only auto-number</td><td>&mdash;</td><td>Calculated</td><td>Sequential index, zero-padded; re-numbers on row delete.</td><td>&mdash;</td></tr>
+          <tr><td>Date</td><td>Date</td><td>Calendar date</td><td>Input</td><td>Date the activity occurred.</td><td>&mdash;</td></tr>
+          <tr><td>Task Name</td><td>Select</td><td>&mdash; Select Task &mdash; + the 15 master tasks: 01 Awareness on Importance of Machinery for Production Capacity / 02 Record Existing Machinery Data / 03 Record Power &amp; Solarization Requirements / 04 Identify Servicing Need / 05 Identify New Machine Requirement / 06 Research Required Machinery / 07 Record Required Machinery / 08 Research Vendors / 09 Select Vendor &amp; Receive Quotation / 10 Facilitate Machinery Procurement / 11 Confirm Servicing Completion / 12 Confirm Machinery Delivery / 13 Complete Installation &amp; Trial Run / 14 Complete Solarization Installation / 15 Conduct Post-Installation Follow Up / If other, specify in comments</td><td>Input</td><td>Standardised activity picklist.</td><td>&mdash;</td></tr>
+          <tr><td>Notes / Outcome</td><td>Text</td><td>Free text</td><td>Input</td><td>Outcome / remarks; required when Task Name = &ldquo;If other, specify in comments&rdquo;.</td><td>Conditionally required for &ldquo;If other&rdquo;: &ldquo;Specify the task in notes.&rdquo;</td></tr>
+          <tr><td>Attachment</td><td>Attach (Upload)</td><td>File</td><td>Input</td><td>Optional supporting file.</td><td>&mdash;</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="callout callout-danger"><strong>Key validations (whole form):</strong> Name of Machinery / Tool and No. of Machinery / Tool are mandatory on every Existing and New machine block (quantity &ge; 1). Days (0&ndash;31), Hours (0&ndash;24), all capacity, cost, wattage, upkeep and age values must be &ge; 0; Current Usage Capacity must not exceed Max Processing Capacity. Machinery Condition must be set for depreciation to compute (otherwise depreciation shows &ldquo;&mdash;&rdquo;). &ldquo;If Critical, provide reason&rdquo; is required when the machine is marked Critical. In Required &rarr; Section I, every Intervention Row must reference a machine that exists in the Existing tab (dropdown selection); intervention cost and post-solar electricity cost must be &ge; 0. Resources require at least one row. Depreciation / Unit feeds Unit Pricing per machine &mdash; never as a single aggregate. Required machines reach Infrastructure / EE only by explicit dropdown selection, not auto-push.</div>
+
+  <div class="review-panel" data-section="m-machinery">
+    <div class="review-strip">
+      <span style="font-size:12px;color:var(--ink-soft);font-weight:500;">Section Review:</span>
+      <button class="review-status-btn" onclick="setReview('m-machinery','draft',this)">Draft</button>
+      <button class="review-status-btn" onclick="setReview('m-machinery','review',this)">In Review</button>
+      <button class="review-status-btn" onclick="setReview('m-machinery','changes',this)">Needs Changes</button>
+      <button class="review-status-btn" onclick="setReview('m-machinery','approved',this)">Approved</button>
+      <button style="margin-left:auto;background:none;border:none;font-size:12px;color:var(--sea);cursor:pointer;font-family:var(--font);text-decoration:underline;" onclick="copyLink('m-machinery')">Copy Link</button>
+    </div>
+    <div class="review-comments">
+      <div class="comment-list" id="comments-m-machinery"></div>
+      <div class="comment-input-row">
+        <input type="text" placeholder="Your name" style="max-width:120px" id="name-m-machinery">
+        <textarea rows="1" placeholder="Add a comment..." id="text-m-machinery"></textarea>
+        <button class="comment-add-btn" onclick="addComment('m-machinery')">Add</button>
+      </div>
+    </div>
+  </div>
+</div>

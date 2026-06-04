@@ -1,0 +1,448 @@
+<div class="brd-section" id="m-infra">
+  <div class="section-header">
+    <span class="section-id">PR-INF-001</span>
+    <h2 class="section-title">Infrastructure</h2>
+  </div>
+  <div class="section-desc">A single Infrastructure framework with three intervention tabs &mdash; Built Environment (BE), Energy Efficient Machinery (EE) and Clean Energy (CE) &mdash; plus Summary, Financial Model, Tracker, Task Log and Resources. The screen opens on a dashboard-style Summary, then drills into the per-tab forms. The SELCO Executive works inside the same framework but edits only SELCO-relevant fields (pricing, equipment status, disbursement); funding is split across SELCO / MBMA / LIFCOM / USER with a LIFCOM EMI option.</div>
+  <div class="callout callout-terra">Key behaviour: Infrastructure starts from a dashboard overview, then drills into forms. SELCO Executive sees all tabs but edits only SELCO-relevant fields (pricing, equipment status, disbursement). Required machines arrive from the Machinery framework via dropdown selection.</div>
+
+  <h3 style="font-size:16px;color:var(--teal);margin:18px 0 10px;">On-Screen UI Structure</h3>
+  <div class="card"><div style="font-size:13px;line-height:1.9;color:var(--ink)">
+    <strong>Top bar:</strong> forest-green header reading &ldquo;Infrastructure&rdquo; with a breadcrumb &ldquo;PRIME Rural &middot; Project Setup&rdquo;, and an entrepreneur chip (avatar + name) auto-fetched from the EP profile.<br>
+    <strong>Tab rail:</strong> a horizontal pill rail &mdash; Summary &middot; Built Environment &middot; Energy Efficient Machinery (Machines) &middot; Clean Energy (Solar) &middot; Financial Model &middot; Tracker &middot; Task Log &middot; Resources. Only one panel is visible at a time; switching to Summary / Financial Model / Tracker triggers a live recompute.<br>
+    <strong>Body layout:</strong> each tab is a stack of numbered Roman-numeral section blocks (I, II, III&hellip;) containing cream sub-sections of label + control field rows. Implementation Status blocks are terracotta-themed with a single status banner + a child &ldquo;log&rdquo; table.<br>
+    <strong>Special widgets:</strong> Summary uses a component-wise overview table (one row per BE/EE/CE), a 2&times;2 aggregates grid (Infrastructure Costs, Funding Split, Interventions, Disbursement &amp; Tracker) and an intervention-flag strip. The Financial Model has a <em>tier/slab A/B/C funding-split reference</em> (SELCO/MBMA/LIFCOM/USER %), four left-border funder cards that switch between static % (PRIME) and editable % inputs (Innovation/Scale), a % validation strip, and a LIFCOM EMI calculator (5-year / 3-year cards). The Tracker shows allocated-vs-disbursed tranche cards (cascading MBMA &rarr; USER &rarr; SELCO &rarr; LIFCOM), a vendor-payment disbursement table and a Disbursed &minus; Paid balance card. EE machines render as collapsible cards with an auto-fetched detail panel.<br>
+    <strong>Calculated fields</strong> (Plinth Rate, Rent/Unit, Electricity/Unit, BE Estimated Cost, EE/CE totals, all funder amounts, EMI, tranche allocations, balance) render <em>italic on a cream-deep / info background</em> with a formula tooltip per Rule 1.
+  </div></div>
+  <div class="flow-container" style="margin-top:12px">
+    <div class="flow-step"><div class="flow-box">Summary</div></div>
+    <div class="flow-arrow">&rarr;</div>
+    <div class="flow-step"><div class="flow-box">Built Environment</div></div>
+    <div class="flow-arrow">&rarr;</div>
+    <div class="flow-step"><div class="flow-box">Energy Efficient Machinery</div></div>
+    <div class="flow-arrow">&rarr;</div>
+    <div class="flow-step"><div class="flow-box">Clean Energy</div></div>
+    <div class="flow-arrow">&rarr;</div>
+    <div class="flow-step"><div class="flow-box">Financial Model</div></div>
+    <div class="flow-arrow">&rarr;</div>
+    <div class="flow-step"><div class="flow-box">Tracker</div></div>
+    <div class="flow-arrow">&rarr;</div>
+    <div class="flow-step"><div class="flow-box">Log Book</div></div>
+    <div class="flow-arrow">&rarr;</div>
+    <div class="flow-step"><div class="flow-box">Resources</div></div>
+  </div>
+
+  <h3 style="font-size:16px;color:var(--teal);margin:18px 0 10px;">User Journey</h3>
+  <div class="card"><div class="flow-container">
+    <div class="flow-step"><div class="flow-box">Open dashboard (Summary)</div><div class="flow-label">Fessociate reviews costs &amp; flags</div></div>
+    <div class="flow-arrow">&rarr;</div>
+    <div class="flow-step"><div class="flow-box">Site assessment (BE/EE/CE)</div><div class="flow-label">Water, rent, land, electricity, solar</div></div>
+    <div class="flow-arrow">&rarr;</div>
+    <div class="flow-step"><div class="flow-box">Flag interventions &amp; estimate</div><div class="flow-label">Toggle need, MSOR cost, pull Required machines</div></div>
+    <div class="flow-arrow">&rarr;</div>
+    <div class="flow-step"><div class="flow-box accent">SELCO Executive: pricing &amp; status</div><div class="flow-label">SELCO price, quotation/BOM, equipment status</div></div>
+    <div class="flow-arrow">&rarr;</div>
+    <div class="flow-step"><div class="flow-box">Financial Model &amp; EMI</div><div class="flow-label">Slab/tier split, funder %, LIFCOM EMI</div></div>
+    <div class="flow-arrow">&rarr;</div>
+    <div class="flow-step"><div class="flow-box accent">SELCO Executive: disbursement</div><div class="flow-label">Tranche allocation, vendor payments, balance</div></div>
+  </div></div>
+
+  <!-- ===================== SUMMARY ===================== -->
+  <div class="accordion open">
+    <div class="accordion-trigger" onclick="this.parentElement.classList.toggle('open')">
+      Tab: Summary (dashboard overview &mdash; opens first) <span class="acc-arrow">&#9660;</span>
+    </div>
+    <div class="accordion-body">
+      <div class="callout callout-teal">Read-only dashboard. Nothing is entered here &mdash; every value is computed live from BE / EE / CE and the Financial Model. Two editable selectors govern what the dashboard shows: <strong>Type of Calculation</strong> (Estimation / Final) and the Financial Model <strong>Project</strong>.</div>
+
+      <h4 style="font-size:14px;color:var(--teal);margin-bottom:10px;">Section I: Component-wise Overview (one row per component)</h4>
+      <table class="brd-table">
+        <thead><tr><th>Field Name</th><th>Field Type</th><th>Input Values</th><th>Input / Autofill</th><th>Logic</th><th>Validation &amp; Error Messages</th></tr></thead>
+        <tbody>
+          <tr><td>Component</td><td>Read-only label</td><td>Built Environment (BE) / Energy-Efficient Machines (EE) / Clean Energy &middot; Solar (CE)</td><td>Autofill</td><td>Three fixed rows, colour-coded left border (BE teal, EE brown, CE green)</td><td>--</td></tr>
+          <tr><td>Detail</td><td>Read-only</td><td>BE: intervention type; EE: list of machines; CE: list of solarised machines</td><td>Autofill from each tab</td><td>Shows &ldquo;No intervention&rdquo; / &ldquo;flagged &mdash; type not selected&rdquo; states</td><td>--</td></tr>
+          <tr><td>Cost</td><td>Read-only (INR)</td><td>--</td><td><strong>Autofill</strong></td><td><em>Reflects active Type of Calculation</em> &mdash; Estimation or Final per component</td><td>--</td></tr>
+          <tr><td>Tranche Allocation</td><td>Read-only breakdown</td><td>MBMA / User / SELCO / LIFCOM amounts per component</td><td>Autofill from Tracker</td><td>Shows &ldquo;Set project in Financial Model&rdquo; when none allocated</td><td>--</td></tr>
+          <tr><td>Intervention Type</td><td>Read-only badge</td><td>BE type / N machines / CE type</td><td>Autofill</td><td>Required column highlight (cream)</td><td>--</td></tr>
+          <tr><td>Implementation Status</td><td>Read-only badge</td><td>Per-component status (see each tab)</td><td>Autofill</td><td>Colour-coded badge (pending / revision / confirmed / delivered)</td><td>--</td></tr>
+        </tbody>
+      </table>
+
+      <h4 style="font-size:14px;color:var(--teal);margin:16px 0 10px;">Section II: Aggregates (2&times;2 card grid)</h4>
+      <table class="brd-table">
+        <thead><tr><th>Field Name</th><th>Field Type</th><th>Input Values</th><th>Input / Autofill</th><th>Logic</th><th>Validation &amp; Error Messages</th></tr></thead>
+        <tbody>
+          <tr><td>Infrastructure Costs &mdash; BE / EE / CE / Total</td><td>Read-only (INR)</td><td>--</td><td>Autofill</td><td><em>Total = BE + EE + CE</em></td><td>--</td></tr>
+          <tr><td>Funding Split &mdash; Active Slab/Model</td><td>Read-only</td><td>Slab A/B/C name or &ldquo;Innovation/Scale (custom)&rdquo;</td><td>Autofill from Financial Model</td><td>--</td><td>--</td></tr>
+          <tr><td>Funding Split &mdash; SELCO / MBMA / LIFCOM / User</td><td>Read-only (INR)</td><td>--</td><td>Autofill</td><td><em>amount = Total &times; funder %</em></td><td>--</td></tr>
+          <tr><td>EMI (5-year LIFCOM) / EMI (3-year LIFCOM)</td><td>Read-only (INR/mo)</td><td>--</td><td>Autofill</td><td><em>5yr = LIFCOM &divide; 60; 3yr = LIFCOM &divide; 36</em>. Shows &ldquo;N/A&rdquo; for non-PRIME projects</td><td>--</td></tr>
+          <tr><td>Interventions &mdash; BE flag / EE count / CE flag</td><td>Read-only</td><td>Flagged / Not flagged; integer count</td><td>Autofill</td><td>--</td><td>--</td></tr>
+          <tr><td>Rent / Unit &middot; Electricity / Unit</td><td>Read-only (INR)</td><td>--</td><td>Autofill from BE &amp; CE</td><td>--</td><td>--</td></tr>
+          <tr><td>Disbursement &mdash; Total Disbursed, Paid (Machines&amp;Solar), Paid (BE), Total Paid, Balance with Entrepreneur, Vendor Payments Logged, Tasks Logged</td><td>Read-only (INR / count)</td><td>--</td><td>Autofill from Tracker &amp; Task Log</td><td><em>Balance = Disbursed &minus; Paid</em></td><td>--</td></tr>
+        </tbody>
+      </table>
+
+      <h4 style="font-size:14px;color:var(--teal);margin:16px 0 10px;">Section III: Intervention Flags (4-tile strip)</h4>
+      <table class="brd-table">
+        <thead><tr><th>Field Name</th><th>Field Type</th><th>Input Values</th><th>Input / Autofill</th><th>Logic</th><th>Validation &amp; Error Messages</th></tr></thead>
+        <tbody>
+          <tr><td>BE Intervention</td><td>Read-only flag tile</td><td>Yes / No</td><td>Autofill</td><td>Mirrors BE &ldquo;Need BE Intervention?&rdquo; toggle</td><td>--</td></tr>
+          <tr><td>EE Machines</td><td>Read-only count tile</td><td>integer</td><td>Autofill</td><td>Count of Required machine cards in EE tab</td><td>--</td></tr>
+          <tr><td>CE Intervention</td><td>Read-only flag tile</td><td>Yes / No</td><td>Autofill</td><td>Mirrors CE &ldquo;Need CE Intervention?&rdquo; toggle</td><td>--</td></tr>
+          <tr><td>Total Cost</td><td>Read-only tile (INR)</td><td>--</td><td>Autofill</td><td><em>Shown in Lakh (e.g. &#8377;5.3L) when &ge; &#8377;1,00,000</em></td><td>--</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ===================== BUILT ENVIRONMENT ===================== -->
+  <div class="accordion">
+    <div class="accordion-trigger" onclick="this.parentElement.classList.toggle('open')">
+      Tab: Built Environment (BE) <span class="acc-arrow">&#9660;</span>
+    </div>
+    <div class="accordion-body">
+      <div class="callout callout-teal">Assess workspace, land and construction needs. BE cost is auto-calculated from the MSOR 2016 plinth-rate matrix (Hill &times; Typology) for RCC typologies, or entered manually for non-MSOR typologies (e.g. Kiosks). The <strong>SELCO Executive</strong> sets the Final DPR BE Cost in Implementation Status.</div>
+
+      <h4 style="font-size:14px;color:var(--teal);margin-bottom:10px;">Section I: Need Assessment &mdash; Water</h4>
+      <table class="brd-table">
+        <thead><tr><th>Field Name</th><th>Field Type</th><th>Input Values</th><th>Input / Autofill</th><th>Logic</th><th>Validation &amp; Error Messages</th></tr></thead>
+        <tbody>
+          <tr><td>Water Supply</td><td>Select</td><td>Own source, Locality source, PHE, Buys water</td><td>Input</td><td>--</td><td>--</td></tr>
+          <tr><td>Monthly expenses on water (&#8377;)</td><td>Currency</td><td>&ge; 0</td><td>Input</td><td>--</td><td>Numeric &ge; 0</td></tr>
+          <tr><td>Practice Rainwater Harvesting?</td><td>Yes/No segmented</td><td>Yes, No</td><td>Input</td><td>--</td><td>--</td></tr>
+          <tr><td>Willing to practice Rainwater Harvesting?</td><td>Yes/No segmented</td><td>Yes, No</td><td>Input</td><td>--</td><td>--</td></tr>
+        </tbody>
+      </table>
+
+      <h4 style="font-size:14px;color:var(--teal);margin:16px 0 10px;">Section I: Need Assessment &mdash; Rent</h4>
+      <table class="brd-table">
+        <thead><tr><th>Field Name</th><th>Field Type</th><th>Input Values</th><th>Input / Autofill</th><th>Logic</th><th>Validation &amp; Error Messages</th></tr></thead>
+        <tbody>
+          <tr><td>Where does the entrepreneur work?</td><td>Select</td><td>Home, Separate Workspace</td><td>Input</td><td>--</td><td>--</td></tr>
+          <tr><td>Where is this space situated?</td><td>Select</td><td>In the house, Outside the house within premises, Within town / village, In the farm, Commercial complex, Market, Others</td><td>Input</td><td>--</td><td>--</td></tr>
+          <tr><td>Condition of the Workspace</td><td>Select</td><td>Dilapidated, Poor, Average, Good, Very Good</td><td>Input</td><td>--</td><td>--</td></tr>
+          <tr><td>Rent per Month (&#8377;)</td><td>Currency</td><td>&ge; 0</td><td>Input</td><td>Feeds Rent per Unit</td><td>Numeric &ge; 0</td></tr>
+          <tr><td>Units Produced per Month</td><td>Int</td><td>&ge; 0</td><td>Input (or autofill from Product Profile &rarr; Production Capacity)</td><td>Shared value &mdash; mirrored read-only into CE tab</td><td>--</td></tr>
+          <tr><td>Rent per Unit</td><td>Currency (calculated)</td><td>--</td><td><strong>Autofill (read-only)</strong></td><td><em>Rent per Unit = Rent per Month &divide; Units Produced per Month</em> (0 if units = 0). Feeds Unit Pricing &rarr; Workspace Cost</td><td>--</td></tr>
+        </tbody>
+      </table>
+
+      <h4 style="font-size:14px;color:var(--teal);margin:16px 0 10px;">Section I: Need Assessment &mdash; Land</h4>
+      <table class="brd-table">
+        <thead><tr><th>Field Name</th><th>Field Type</th><th>Input Values</th><th>Input / Autofill</th><th>Logic</th><th>Validation &amp; Error Messages</th></tr></thead>
+        <tbody>
+          <tr><td>Land tenureship of existing workspace</td><td>Select</td><td>Assigned Community Land, Own Land purchased, Own Land inheritance, Govt. long leased land, Govt. rental, Rental / leased (private), Others</td><td>Input</td><td>--</td><td>--</td></tr>
+          <tr><td>Land tenureship of proposed workspace</td><td>Select</td><td>(same list as above)</td><td>Input</td><td>Conditional: reveals &ldquo;who owns property?&rdquo; when value is Assigned Community Land / Own Land purchased / Own Land inheritance</td><td>--</td></tr>
+          <tr><td>If assigned/owned: who owns property?</td><td>Select (conditional)</td><td>Self, Family, Relatives, Others</td><td>Input</td><td>Hidden unless proposed tenureship is owned/assigned</td><td>--</td></tr>
+          <tr><td>Type of soil condition</td><td>Select</td><td>Filled land, Rocky, Others</td><td>Input</td><td>--</td><td>--</td></tr>
+          <tr><td>Upload Land Document</td><td>Attach (.pdf/.jpg/.jpeg/.png)</td><td>File</td><td>Input</td><td>Upload + View buttons</td><td>--</td></tr>
+          <tr><td>Upload Rough Sketch of Site Layout with Dimension</td><td>Attach (.pdf/.jpg/.jpeg/.png)</td><td>File</td><td>Input</td><td>Upload + View buttons</td><td>--</td></tr>
+        </tbody>
+      </table>
+
+      <h4 style="font-size:14px;color:var(--teal);margin:16px 0 10px;">Section II: Intervention Need</h4>
+      <table class="brd-table">
+        <thead><tr><th>Field Name</th><th>Field Type</th><th>Input Values</th><th>Input / Autofill</th><th>Logic</th><th>Validation &amp; Error Messages</th></tr></thead>
+        <tbody>
+          <tr><td>Need BE Intervention?</td><td>Toggle</td><td>On / Off</td><td>Input</td><td>When On, reveals Type + Justify. Drives Summary BE flag</td><td>--</td></tr>
+          <tr><td>Type of Intervention</td><td>Select (conditional)</td><td>Renovation, Extension, New</td><td>Input</td><td>Visible only when toggle On</td><td>--</td></tr>
+          <tr><td>Justify</td><td>Textarea (conditional)</td><td>Free text</td><td>Input</td><td>Visible only when toggle On</td><td>Required <span style="color:var(--terracotta)">*</span> when BE intervention is flagged</td></tr>
+        </tbody>
+      </table>
+
+      <h4 style="font-size:14px;color:var(--teal);margin:16px 0 10px;">Section III: Estimation (MSOR cost model)</h4>
+      <div class="callout callout-amber" style="background:var(--terracotta-sft);border-left:4px solid var(--terracotta);">MSOR 2016 plinth-rate matrix (&#8377; / SQM). Rate auto-fetches from Hill &times; Typology. SQM &harr; SQF conversion factor = 10.7639. Non-MSOR typologies (Kiosks) hide the MSOR fields and use manual cost entry.</div>
+      <table class="brd-table">
+        <thead><tr><th>Field Name</th><th>Field Type</th><th>Input Values</th><th>Input / Autofill</th><th>Logic</th><th>Validation &amp; Error Messages</th></tr></thead>
+        <tbody>
+          <tr><td>Upload Rough Sketch of Requirement</td><td>Attach (.pdf/.jpg/.jpeg/.png)</td><td>File</td><td>Input</td><td>Upload + View</td><td>--</td></tr>
+          <tr><td>Elaborate</td><td>Textarea</td><td>Free text</td><td>Input</td><td>Construction requirement detail</td><td>--</td></tr>
+          <tr><td>Hill Name</td><td>Select</td><td>Khasi Hills, Jaintia Hills, Garo Hills</td><td>Input</td><td>Row index into MSOR matrix</td><td>--</td></tr>
+          <tr><td>Building Typology</td><td>Select</td><td>RCC frame: PPGI sheets and steel truss; RCC frame: Ground Floor Institutional/Public; RCC frame: First Floor Institutional/Public; Kiosks</td><td>Input</td><td>First three = MSOR (auto-calc); Kiosks = non-MSOR (manual)</td><td>--</td></tr>
+          <tr><td>Plinth Rate / SQM &mdash; MSOR 2016 (&#8377;)</td><td>Currency (calculated)</td><td>--</td><td><strong>Autofill (read-only)</strong></td><td><em>Rate = MSOR[Hill][Typology]</em>. Matrix &mdash; Khasi: PPGI 25,701 / GF 26,165 / FF 18,554; Jaintia: PPGI 26,279 / GF 26,754 / FF 27,146; Garo: PPGI 26,665 / GF 18,971 / FF 19,250</td><td>--</td></tr>
+          <tr><td>Possible Plinth Area (SQM)</td><td>Float</td><td>&ge; 0</td><td>Input</td><td>Two-way synced with SQF (SQF = SQM &times; 10.7639)</td><td>Numeric &ge; 0</td></tr>
+          <tr><td>Possible Plinth Area (SQF)</td><td>Float</td><td>&ge; 0</td><td>Input</td><td>Two-way synced with SQM (SQM = SQF &divide; 10.7639)</td><td>Numeric &ge; 0</td></tr>
+          <tr><td>Estimated Built Environment Cost</td><td>Currency (calculated, MSOR)</td><td>--</td><td><strong>Autofill (read-only)</strong></td><td><em>Estimated BE Cost = Plinth Rate &times; Plinth Area (SQM)</em></td><td>--</td></tr>
+          <tr><td>Estimated Built Environment Cost (&#8377;) &mdash; manual</td><td>Currency (conditional)</td><td>&ge; 0</td><td>Input</td><td>Shown only for non-MSOR typology (Kiosks); MSOR rate matrix does not apply</td><td>Numeric &ge; 0</td></tr>
+        </tbody>
+      </table>
+
+      <h4 style="font-size:14px;color:var(--teal);margin:16px 0 10px;">Section IV: Implementation Status &amp; Design Coordination <span style="font-size:11px;color:var(--terracotta);">(SELCO-editable banner)</span></h4>
+      <table class="brd-table">
+        <thead><tr><th>Field Name</th><th>Field Type</th><th>Input Values</th><th>Input / Autofill</th><th>Logic</th><th>Validation &amp; Error Messages</th></tr></thead>
+        <tbody>
+          <tr><td>Implementation Status</td><td>Select</td><td>Pending Design, Design Revision, On hold, Design confirmed, Construction started, Construction complete</td><td>Input <strong>(SELCO-editable)</strong></td><td>Drives Summary status badge</td><td>--</td></tr>
+          <tr><td>Final DPR Built Environment Cost (&#8377;)</td><td>Currency</td><td>&ge; 0</td><td>Input <strong>(SELCO-editable)</strong></td><td>Used as BE cost when Financial Model = &ldquo;Final&rdquo;</td><td>Numeric &ge; 0</td></tr>
+          <tr><td>Design / Drawing Log &mdash; Date</td><td>Child table: Date</td><td>date</td><td>Input</td><td>Defaults to today</td><td>--</td></tr>
+          <tr><td>Design / Drawing Log &mdash; Architecture Drawings</td><td>Child table: Attach</td><td>File (.pdf/.jpg/.png)</td><td>Input</td><td>Upload + View per row</td><td>--</td></tr>
+          <tr><td>Design / Drawing Log &mdash; Feedback</td><td>Child table: Data</td><td>Free text</td><td>Input</td><td>Notes / feedback per revision</td><td>--</td></tr>
+          <tr><td>NOC from Entrepreneur &mdash; Upload NOC</td><td>Attach (.pdf/.jpg/.jpeg/.png)</td><td>File</td><td>Input</td><td>Upload + View</td><td>--</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ===================== ENERGY EFFICIENT MACHINERY ===================== -->
+  <div class="accordion">
+    <div class="accordion-trigger" onclick="this.parentElement.classList.toggle('open')">
+      Tab: Energy Efficient Machinery (EE / Machines) <span class="acc-arrow">&#9660;</span>
+    </div>
+    <div class="accordion-body">
+      <div class="callout callout-terra">Every machine flagged <strong>Required</strong> in the Machinery framework auto-populates here as a collapsible card. <strong>Required machines arrive from the Machinery framework via dropdown selection</strong> &mdash; selecting one auto-fetches its read-only details (product, purpose, cost, condition, procurement status, usage, depreciation). The <strong>SELCO Executive</strong> enters the SELCO price and equipment status per machine.</div>
+
+      <h4 style="font-size:14px;color:var(--teal);margin-bottom:10px;">Section I: Required Machines (collapsible card per machine)</h4>
+      <table class="brd-table">
+        <thead><tr><th>Field Name</th><th>Field Type</th><th>Input Values</th><th>Input / Autofill</th><th>Logic</th><th>Validation &amp; Error Messages</th></tr></thead>
+        <tbody>
+          <tr><td>Machine</td><td>Select / Link</td><td>Machinery framework &rarr; Required tab (dropdown). e.g. Turmeric Grinding Machine, Double Barrel Drum Dryer, Solar Dehydrator 50kg/batch, Sealing Machine Impulse 12&Prime;, PPGI Rooftop Fan 3-phase</td><td><strong>Autofill source (Machinery framework, Required tab)</strong>; selection by user</td><td>Choosing a machine fetches its detail panel</td><td>--</td></tr>
+          <tr><td>SELCO price (&#8377;)</td><td>Currency</td><td>&ge; 0</td><td>Input <strong>(SELCO-editable)</strong></td><td><em>Confirmed SELCO price &mdash; summed into Total Estimated EE Cost</em></td><td>Numeric &ge; 0</td></tr>
+          <tr><td>Equipment Status (per machine)</td><td>Select</td><td>Pending, Implemented</td><td>Input <strong>(SELCO-editable)</strong></td><td>--</td><td>--</td></tr>
+          <tr><td>Fetched detail panel (read-only)</td><td>Read-only group</td><td>Product, Purpose, Cost of Machine, Condition, Procurement Status, Days of Usage/Month, Hours of Usage/Day, Current Usage Capacity/hr, Monthly Output, Depreciation Rate, Monthly Depreciation, Depreciation/Unit</td><td><strong>Autofill from Machinery framework</strong></td><td>Read-only here &mdash; edit in the Machinery framework</td><td>--</td></tr>
+          <tr><td>Total Estimated EE Cost</td><td>Currency (calculated)</td><td>--</td><td><strong>Autofill (read-only)</strong></td><td><em>Total Estimated EE Cost = &sum; SELCO price across all machine cards</em></td><td>--</td></tr>
+        </tbody>
+      </table>
+
+      <h4 style="font-size:14px;color:var(--teal);margin:16px 0 10px;">Section II: Implementation Status &amp; Quotation Log <span style="font-size:11px;color:var(--terracotta);">(SELCO-editable banner)</span></h4>
+      <table class="brd-table">
+        <thead><tr><th>Field Name</th><th>Field Type</th><th>Input Values</th><th>Input / Autofill</th><th>Logic</th><th>Validation &amp; Error Messages</th></tr></thead>
+        <tbody>
+          <tr><td>Implementation Status</td><td>Select</td><td>Pending, Revision, On hold, Quotation confirmed, Order delivered</td><td>Input <strong>(SELCO-editable)</strong></td><td>Drives Summary status badge</td><td>--</td></tr>
+          <tr><td>Final EE Quotation Total (&#8377;)</td><td>Currency</td><td>&ge; 0</td><td>Input <strong>(SELCO-editable)</strong></td><td>Used as EE cost when Financial Model = &ldquo;Final&rdquo;</td><td>Numeric &ge; 0</td></tr>
+          <tr><td>Quotation Log &mdash; Date</td><td>Child table: Date</td><td>date</td><td>Input</td><td>Defaults to today</td><td>--</td></tr>
+          <tr><td>Quotation Log &mdash; Quotation</td><td>Child table: Attach</td><td>File</td><td>Input</td><td>Upload + View per row</td><td>--</td></tr>
+          <tr><td>Quotation Log &mdash; Feedback</td><td>Child table: Data</td><td>Free text</td><td>Input</td><td>Notes / feedback per revision</td><td>--</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ===================== CLEAN ENERGY ===================== -->
+  <div class="accordion">
+    <div class="accordion-trigger" onclick="this.parentElement.classList.toggle('open')">
+      Tab: Clean Energy (CE / Solar) <span class="acc-arrow">&#9660;</span>
+    </div>
+    <div class="accordion-body">
+      <div class="callout callout-teal">Clean-energy assessment &mdash; electricity unit cost, solarisation decisions and CE tracking. The solarisation table dropdown lists <strong>all</strong> machines from the Machinery framework (Existing + Required); the Required/Existing tag auto-fetches. The <strong>SELCO Executive</strong> approves and prices the solar lines and sets the Final CE quotation total.</div>
+
+      <h4 style="font-size:14px;color:var(--teal);margin-bottom:10px;">Section I: Need Assessment</h4>
+      <table class="brd-table">
+        <thead><tr><th>Field Name</th><th>Field Type</th><th>Input Values</th><th>Input / Autofill</th><th>Logic</th><th>Validation &amp; Error Messages</th></tr></thead>
+        <tbody>
+          <tr><td>Electricity per Month (&#8377;)</td><td>Currency</td><td>&ge; 0</td><td>Input</td><td>Feeds Electricity per Unit</td><td>Numeric &ge; 0</td></tr>
+          <tr><td>Units Produced per Month</td><td>Read-only (mirrored)</td><td>--</td><td><strong>Autofill (synced from BE)</strong></td><td>Mirrors BE &ldquo;Units Produced per Month&rdquo;</td><td>--</td></tr>
+          <tr><td>Electricity per Unit</td><td>Currency (calculated)</td><td>--</td><td><strong>Autofill (read-only)</strong></td><td><em>Electricity per Unit = Electricity per Month &divide; Units Produced per Month</em> (0 if units = 0). Feeds Unit Pricing &rarr; Electricity Cost</td><td>--</td></tr>
+          <tr><td>Voltage &amp; Phase Configuration</td><td>Select</td><td>Phase I, Phase III</td><td>Input</td><td>--</td><td>--</td></tr>
+        </tbody>
+      </table>
+
+      <h4 style="font-size:14px;color:var(--teal);margin:16px 0 10px;">Section II: Intervention Need</h4>
+      <table class="brd-table">
+        <thead><tr><th>Field Name</th><th>Field Type</th><th>Input Values</th><th>Input / Autofill</th><th>Logic</th><th>Validation &amp; Error Messages</th></tr></thead>
+        <tbody>
+          <tr><td>Need CE Intervention?</td><td>Toggle</td><td>On / Off</td><td>Input</td><td>When On, reveals Type + Justify. Drives Summary CE flag</td><td>--</td></tr>
+          <tr><td>Type of Intervention</td><td>Select (conditional)</td><td>Only lighting/fans/exhaust; Lighting + solar machines; Lighting + manual equipment + solar machines; Lighting + manual equipment</td><td>Input</td><td>Visible only when toggle On</td><td>--</td></tr>
+          <tr><td>Justify</td><td>Textarea (conditional)</td><td>Free text</td><td>Input</td><td>Visible only when toggle On</td><td>Required <span style="color:var(--terracotta)">*</span> when CE intervention is flagged</td></tr>
+        </tbody>
+      </table>
+
+      <h4 style="font-size:14px;color:var(--teal);margin:16px 0 10px;">Section II: Machines considered for Solarization (child table)</h4>
+      <table class="brd-table">
+        <thead><tr><th>Field Name</th><th>Field Type</th><th>Input Values</th><th>Input / Autofill</th><th>Logic</th><th>Validation &amp; Error Messages</th></tr></thead>
+        <tbody>
+          <tr><td>Machine</td><td>Child table: Select / Link</td><td>All Machinery framework machines (Existing + Required)</td><td><strong>Autofill source (Machinery framework, Existing + Required)</strong>; selection by user</td><td>Selecting a machine auto-fills the Required/Existing tag</td><td>--</td></tr>
+          <tr><td>Required / Existing</td><td>Child table: Read-only tag</td><td>Required / Existing</td><td><strong>Autofill</strong></td><td>Derived from the selected machine&rsquo;s source</td><td>--</td></tr>
+          <tr><td>Confirmed by Ground Team</td><td>Child table: Checkbox</td><td>TRUE / FALSE</td><td>Input</td><td>--</td><td>--</td></tr>
+          <tr><td>Approved by SELCO</td><td>Child table: Checkbox</td><td>TRUE / FALSE</td><td>Input <strong>(SELCO-editable)</strong></td><td>--</td><td>--</td></tr>
+          <tr><td>Solar Capacity</td><td>Child table: Data</td><td>e.g. &ldquo;1.5 kWp&rdquo;</td><td>Input <strong>(SELCO-editable)</strong></td><td>--</td><td>--</td></tr>
+          <tr><td>Solar Cost (&#8377;)</td><td>Child table: Currency</td><td>&ge; 0</td><td>Input <strong>(SELCO-editable)</strong></td><td><em>Summed into Total Estimated CE Cost</em></td><td>Numeric &ge; 0</td></tr>
+          <tr><td>Total Estimated CE Cost</td><td>Currency (calculated)</td><td>--</td><td><strong>Autofill (read-only)</strong></td><td><em>Total Estimated CE Cost = &sum; Solar Cost across rows</em></td><td>--</td></tr>
+        </tbody>
+      </table>
+
+      <h4 style="font-size:14px;color:var(--teal);margin:16px 0 10px;">Section III: Implementation Status &amp; BOM/Quotation Log <span style="font-size:11px;color:var(--terracotta);">(SELCO-editable banner)</span></h4>
+      <table class="brd-table">
+        <thead><tr><th>Field Name</th><th>Field Type</th><th>Input Values</th><th>Input / Autofill</th><th>Logic</th><th>Validation &amp; Error Messages</th></tr></thead>
+        <tbody>
+          <tr><td>Implementation Status</td><td>Select</td><td>Pending, Revision, On hold, Quotation confirmed, Order delivered, Installation started, Installation complete</td><td>Input <strong>(SELCO-editable)</strong></td><td>Drives Summary status badge</td><td>--</td></tr>
+          <tr><td>Final CE Quotation Total (&#8377;)</td><td>Currency</td><td>&ge; 0</td><td>Input <strong>(SELCO-editable)</strong></td><td>Used as CE cost when Financial Model = &ldquo;Final&rdquo;</td><td>Numeric &ge; 0</td></tr>
+          <tr><td>BOM / Quotation Log &mdash; Date</td><td>Child table: Date</td><td>date</td><td>Input</td><td>Defaults to today</td><td>--</td></tr>
+          <tr><td>BOM / Quotation Log &mdash; BOM</td><td>Child table: Attach</td><td>File</td><td>Input</td><td>Upload BOM + View per row</td><td>--</td></tr>
+          <tr><td>BOM / Quotation Log &mdash; Feedback</td><td>Child table: Data</td><td>Free text</td><td>Input</td><td>Notes / feedback per revision</td><td>--</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ===================== FINANCIAL MODEL ===================== -->
+  <div class="accordion">
+    <div class="accordion-trigger" onclick="this.parentElement.classList.toggle('open')">
+      Tab: Financial Model (MSOR tier/slab split + LIFCOM EMI) <span class="acc-arrow">&#9660;</span>
+    </div>
+    <div class="accordion-body">
+      <div class="callout callout-terra">The funding model depends on the selected <strong>Project</strong>. <strong>PRIME SELCO Infra-Support</strong> uses fixed cost-based slabs (A/B/C) with static funder %; <strong>Innovation</strong> and <strong>Scale</strong> let the user enter custom funder % that must sum to 100%. Costs feed live from BE/EE/CE per the <strong>Type of Calculation</strong> (Estimation vs Final). EMI applies to PRIME only and is driven by the LIFCOM amount.</div>
+
+      <h4 style="font-size:14px;color:var(--teal);margin-bottom:10px;">Section I: Controls &amp; Cost Summary</h4>
+      <table class="brd-table">
+        <thead><tr><th>Field Name</th><th>Field Type</th><th>Input Values</th><th>Input / Autofill</th><th>Logic</th><th>Validation &amp; Error Messages</th></tr></thead>
+        <tbody>
+          <tr><td>Project (Financial Model Breakup)</td><td>Select</td><td>PRIME SELCO Infra-Support, Innovation, Scale</td><td>Input</td><td>PRIME &rarr; slab + EMI sections shown, funder % static; Innovation/Scale &rarr; editable % inputs + % validation strip, slab/EMI hidden</td><td>--</td></tr>
+          <tr><td>Type of Calculation</td><td>Select</td><td>Estimation, Final</td><td>Input</td><td><em>Estimation</em> pulls BE Estimation + EE SELCO prices + CE Solar Costs; <em>Final</em> pulls Final DPR/Quotation totals from each Implementation Status banner</td><td>--</td></tr>
+          <tr><td>BE Cost / EE Cost / CE Cost</td><td>Currency (calculated)</td><td>--</td><td><strong>Autofill (read-only)</strong></td><td>Per active Type of Calculation</td><td>--</td></tr>
+          <tr><td>Total Infrastructure Cost</td><td>Currency (calculated)</td><td>--</td><td><strong>Autofill (read-only)</strong></td><td><em>Total = BE + EE + CE</em></td><td>--</td></tr>
+        </tbody>
+      </table>
+
+      <h4 style="font-size:14px;color:var(--teal);margin:16px 0 10px;">Section II: Funding Slab/Tier Reference (PRIME SELCO only)</h4>
+      <div class="callout callout-teal">Cost-based slab is auto-selected by Total Infrastructure Cost. Funder shares (SELCO / MBMA / LIFCOM / USER) are <em>fixed per slab</em>; USER is always 5%. Beyond &#8377;25,00,000 the model flags &ldquo;Out of policy&rdquo;.</div>
+      <table class="brd-table">
+        <thead><tr><th>Slab</th><th>Total Cost Range</th><th>SELCO %</th><th>MBMA %</th><th>LIFCOM %</th><th>USER %</th></tr></thead>
+        <tbody>
+          <tr><td>Slab A</td><td>Total &lt; &#8377;5,00,000</td><td>50%</td><td>30%</td><td>15%</td><td>5%</td></tr>
+          <tr><td>Slab B</td><td>&#8377;5,00,000 &le; Total &lt; &#8377;10,00,000</td><td>30%</td><td>40%</td><td>25%</td><td>5%</td></tr>
+          <tr><td>Slab C</td><td>&#8377;10,00,000 &le; Total &lt; &#8377;25,00,000</td><td>20%</td><td>50%</td><td>25%</td><td>5%</td></tr>
+          <tr><td>Out of policy</td><td>Total &ge; &#8377;25,00,000</td><td colspan="4">No slab &mdash; manual override required</td></tr>
+        </tbody>
+      </table>
+
+      <h4 style="font-size:14px;color:var(--teal);margin:16px 0 10px;">Section III: Funding Allocation (funder cards)</h4>
+      <table class="brd-table">
+        <thead><tr><th>Field Name</th><th>Field Type</th><th>Input Values</th><th>Input / Autofill</th><th>Logic</th><th>Validation &amp; Error Messages</th></tr></thead>
+        <tbody>
+          <tr><td>SELCO Foundation &mdash; %</td><td>Static label (PRIME) / Number input (Innovation/Scale)</td><td>0&ndash;100</td><td>Autofill (PRIME) / Input (Innovation/Scale) <strong>(SELCO-editable in custom modes)</strong></td><td>PRIME uses slab %</td><td>In editable modes total must = 100%</td></tr>
+          <tr><td>MBMA &mdash; %</td><td>Static / Number input</td><td>0&ndash;100</td><td>Autofill / Input</td><td>PRIME uses slab %</td><td>--</td></tr>
+          <tr><td>LIFCOM (Loan) &mdash; %</td><td>Static / Number input</td><td>0&ndash;100</td><td>Autofill / Input</td><td>Drives EMI calculator</td><td>--</td></tr>
+          <tr><td>User Contribution &mdash; %</td><td>Static / Number input</td><td>0&ndash;100</td><td>Autofill / Input</td><td>PRIME always 5%</td><td>--</td></tr>
+          <tr><td>Others &mdash; name + %</td><td>Data + Number input</td><td>Free text name; 0&ndash;100</td><td>Input (Innovation/Scale; 0% in PRIME)</td><td>Optional extra funder</td><td>--</td></tr>
+          <tr><td>Funder Amount (each card)</td><td>Currency (calculated)</td><td>--</td><td><strong>Autofill (read-only)</strong></td><td><em>Funder Amount = Total Infrastructure Cost &times; funder %</em></td><td>--</td></tr>
+          <tr><td>% Validation (Innovation/Scale)</td><td>Status strip</td><td>--</td><td>Autofill</td><td><em>&sum;(SELCO+MBMA+LIFCOM+User+Others) must = 100%</em></td><td>Warn until total = 100% (&ldquo;must equal 100% &mdash; X% remaining&rdquo;); OK at exactly 100%</td></tr>
+        </tbody>
+      </table>
+
+      <h4 style="font-size:14px;color:var(--teal);margin:16px 0 10px;">Section IV: LIFCOM Loan EMI Calculator (PRIME SELCO only)</h4>
+      <table class="brd-table">
+        <thead><tr><th>Field Name</th><th>Field Type</th><th>Input Values</th><th>Input / Autofill</th><th>Logic</th><th>Validation &amp; Error Messages</th></tr></thead>
+        <tbody>
+          <tr><td>5-Year LIFCOM EMI</td><td>Currency / month (calculated)</td><td>--</td><td><strong>Autofill (read-only)</strong></td><td><em>EMI(5yr) = LIFCOM Amount &divide; (5 &times; 12) = LIFCOM &divide; 60</em>. Flat division &mdash; no interest</td><td>--</td></tr>
+          <tr><td>3-Year LIFCOM EMI</td><td>Currency / month (calculated)</td><td>--</td><td><strong>Autofill (read-only)</strong></td><td><em>EMI(3yr) = LIFCOM Amount &divide; (3 &times; 12) = LIFCOM &divide; 36</em>. Flat division &mdash; no interest</td><td>--</td></tr>
+        </tbody>
+      </table>
+      <div class="callout callout-amber" style="background:var(--terracotta-sft);border-left:4px solid var(--terracotta);">EMI is a flat division and excludes interest. For finalised loan agreements, refer to the LIFCOM partner&rsquo;s formal sanction letter.</div>
+    </div>
+  </div>
+
+  <!-- ===================== TRACKER (Disbursement) ===================== -->
+  <div class="accordion">
+    <div class="accordion-trigger" onclick="this.parentElement.classList.toggle('open')">
+      Tab: Tracker (Disbursement &amp; Vendor Payments) <span class="acc-arrow">&#9660;</span>
+    </div>
+    <div class="accordion-body">
+      <div class="callout callout-terra">Disbursement tracking. Section I auto-computes tranche allocation per cost head using a cascading priority (<strong>MBMA &rarr; USER &rarr; SELCO &rarr; LIFCOM</strong>); within each tranche cost heads fill in order <strong>BE &rarr; EE &rarr; CE</strong>. Section II logs every vendor payment. The <strong>SELCO Executive</strong> records disbursement and vendor payments.</div>
+
+      <h4 style="font-size:14px;color:var(--teal);margin-bottom:10px;">Section I: Tranche Allocations (auto-computed)</h4>
+      <table class="brd-table">
+        <thead><tr><th>Field Name</th><th>Field Type</th><th>Input Values</th><th>Input / Autofill</th><th>Logic</th><th>Validation &amp; Error Messages</th></tr></thead>
+        <tbody>
+          <tr><td>Tranche Total (MBMA / USER / SELCO / LIFCOM)</td><td>Currency (calculated)</td><td>--</td><td><strong>Autofill</strong></td><td>= that funder&rsquo;s amount from the Financial Model</td><td>--</td></tr>
+          <tr><td>Tranche &rarr; BE / EE / CE (12 cells)</td><td>Currency (calculated)</td><td>--</td><td><strong>Autofill</strong></td><td><em>Cascade order MBMA &rarr; USER &rarr; SELCO &rarr; LIFCOM; within a tranche BE &rarr; EE &rarr; CE. Each cell = min(remaining tranche funds, remaining unallocated cost). Each later tranche sees costs reduced by what earlier tranches paid.</em></td><td>--</td></tr>
+          <tr><td>Unallocated (per tranche)</td><td>Currency (calculated)</td><td>--</td><td><strong>Autofill</strong></td><td><em>= tranche total &minus; (its BE + EE + CE allocations)</em></td><td>--</td></tr>
+          <tr><td>Funding gap warning</td><td>Conditional banner</td><td>--</td><td>Autofill</td><td><em>Shown when any cost head is not fully covered by the four tranches</em></td><td>Warns &ldquo;Unfunded: BE / EE / CE &#8377;&hellip;&rdquo;</td></tr>
+        </tbody>
+      </table>
+
+      <h4 style="font-size:14px;color:var(--teal);margin:16px 0 10px;">Section II: Vendor Payment Tracker &mdash; Sub-section I: Machines &amp; Solar <span style="font-size:11px;color:var(--terracotta);">(SELCO-editable)</span></h4>
+      <table class="brd-table">
+        <thead><tr><th>Field Name</th><th>Field Type</th><th>Input Values</th><th>Input / Autofill</th><th>Logic</th><th>Validation &amp; Error Messages</th></tr></thead>
+        <tbody>
+          <tr><td>Purpose</td><td>Child table: Select</td><td>Machine, Solar</td><td>Input <strong>(SELCO-editable)</strong></td><td>--</td><td>--</td></tr>
+          <tr><td>Paid To</td><td>Child table: Data</td><td>Vendor name</td><td>Input</td><td>--</td><td>--</td></tr>
+          <tr><td>Amount (&#8377;)</td><td>Child table: Currency</td><td>&ge; 0</td><td>Input</td><td>Summed into Machines &amp; Solar sub-total</td><td>Numeric &ge; 0</td></tr>
+          <tr><td>Invoice</td><td>Child table: Attach</td><td>File</td><td>Input</td><td>Upload + View per row</td><td>--</td></tr>
+          <tr><td>Comment</td><td>Child table: Data</td><td>Free text</td><td>Input</td><td>--</td><td>--</td></tr>
+        </tbody>
+      </table>
+
+      <h4 style="font-size:14px;color:var(--teal);margin:16px 0 10px;">Section II: Vendor Payment Tracker &mdash; Sub-section II: Built Environment <span style="font-size:11px;color:var(--terracotta);">(SELCO-editable)</span></h4>
+      <table class="brd-table">
+        <thead><tr><th>Field Name</th><th>Field Type</th><th>Input Values</th><th>Input / Autofill</th><th>Logic</th><th>Validation &amp; Error Messages</th></tr></thead>
+        <tbody>
+          <tr><td>Purpose</td><td>Child table: Data</td><td>Free text</td><td>Input <strong>(SELCO-editable)</strong></td><td>--</td><td>--</td></tr>
+          <tr><td>Paid To</td><td>Child table: Data</td><td>Vendor name</td><td>Input</td><td>--</td><td>--</td></tr>
+          <tr><td>Amount (&#8377;)</td><td>Child table: Currency</td><td>&ge; 0</td><td>Input</td><td>Summed into Built Environment sub-total</td><td>Numeric &ge; 0</td></tr>
+          <tr><td>Invoice</td><td>Child table: Attach</td><td>File</td><td>Input</td><td>Upload + View per row</td><td>--</td></tr>
+          <tr><td>Comment</td><td>Child table: Data</td><td>Free text</td><td>Input</td><td>--</td><td>--</td></tr>
+        </tbody>
+      </table>
+
+      <h4 style="font-size:14px;color:var(--teal);margin:16px 0 10px;">Section II: Balance Card (calculated)</h4>
+      <table class="brd-table">
+        <thead><tr><th>Field Name</th><th>Field Type</th><th>Input Values</th><th>Input / Autofill</th><th>Logic</th><th>Validation &amp; Error Messages</th></tr></thead>
+        <tbody>
+          <tr><td>Total Disbursed</td><td>Currency (calculated)</td><td>--</td><td><strong>Autofill (read-only)</strong></td><td><em>= sum of all 12 tranche &rarr; cost allocations (MBMA+USER+SELCO+LIFCOM)</em></td><td>--</td></tr>
+          <tr><td>Total Paid to Vendors</td><td>Currency (calculated)</td><td>--</td><td><strong>Autofill (read-only)</strong></td><td><em>= Machines &amp; Solar sub-total + Built Environment sub-total</em></td><td>--</td></tr>
+          <tr><td>Balance with Entrepreneur</td><td>Currency (calculated)</td><td>--</td><td><strong>Autofill (read-only)</strong></td><td><em>= Total Disbursed &minus; Total Paid</em></td><td>--</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ===================== LOG BOOK / TASK LOG ===================== -->
+  <div class="accordion">
+    <div class="accordion-trigger" onclick="this.parentElement.classList.toggle('open')">
+      Tab: Log Book (Task Log &mdash; Infrastructure) <span class="acc-arrow">&#9660;</span>
+    </div>
+    <div class="accordion-body">
+      <div class="callout callout-teal">Activity log for the Infrastructure framework. One row per task; the count is shown in the header and mirrored into Summary &ldquo;Tasks Logged&rdquo;. One blank row renders on load.</div>
+      <table class="brd-table">
+        <thead><tr><th>Field Name</th><th>Field Type</th><th>Input Values</th><th>Input / Autofill</th><th>Logic</th><th>Validation &amp; Error Messages</th></tr></thead>
+        <tbody>
+          <tr><td>Date</td><td>Child table: Date</td><td>date</td><td>Input</td><td>Defaults to today</td><td>--</td></tr>
+          <tr><td>Task Name</td><td>Child table: Select</td><td>01 Awareness on Importance of Infrastructure; 02 Awareness on PRIME SELCO Infra Support; 03 Eligibility check completed; 04 Site Assessment for BE; 05 Site Assessment for EE; 06 Site Assessment for CE; 07 BE design Coordination; 08 EE design Coordination; 09 CE design Coordination; 10 NOC &amp; compliance documents collected; 11 DPR approval &amp; sign from Entrepreneur; 12 DPR submitted to Office; 13 Vendor coordination; 14 Quality check / site inspection; 15 If others, specify</td><td>Input</td><td>--</td><td>--</td></tr>
+          <tr><td>Notes / Outcome</td><td>Child table: Data</td><td>Free text</td><td>Input</td><td>--</td><td>--</td></tr>
+          <tr><td>Attachment</td><td>Child table: Attach</td><td>File</td><td>Input</td><td>Upload + View per row</td><td>--</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ===================== RESOURCES ===================== -->
+  <div class="accordion">
+    <div class="accordion-trigger" onclick="this.parentElement.classList.toggle('open')">
+      Tab: Resources <span class="acc-arrow">&#9660;</span>
+    </div>
+    <div class="accordion-body">
+      <div class="callout callout-teal">Reference materials for BE / EE / CE assessment and funding. Static tiles, each with an external link.</div>
+      <table class="brd-table">
+        <thead><tr><th>Resource</th><th>Description</th><th>Action</th></tr></thead>
+        <tbody>
+          <tr><td>MSOR 2016 Plinth Rate Schedule</td><td>Hill-wise plinth rates for BE costing</td><td>Open schedule</td></tr>
+          <tr><td>Site Layout Sketch Template</td><td>Standard sketch template for Extension / New / Renovation</td><td>Download</td></tr>
+          <tr><td>SELCO Solar Sizing Calculator</td><td>Solar capacity (kWp) sizing tool based on connected loads</td><td>Open calculator</td></tr>
+          <tr><td>RWH Guidelines</td><td>Meghalaya-specific rainwater harvesting design guidelines</td><td>Open</td></tr>
+          <tr><td>LIFCOM Loan Application</td><td>Standard LIFCOM loan application template with checklist</td><td>Download</td></tr>
+          <tr><td>EE Equipment List</td><td>Empanelled BEE-rated energy-efficient machinery suppliers</td><td>Open list</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="callout callout-danger">Key validations (whole form): (1) BE/CE intervention &ldquo;Justify&rdquo; is required whenever the corresponding intervention toggle is On. (2) MSOR typologies auto-calc BE cost (<strong>Plinth Rate &times; SQM</strong>) and lock the cost field; non-MSOR typologies (Kiosks) require a manual cost entry. (3) SQM and SQF must stay in sync via factor 10.7639. (4) Innovation/Scale funder percentages must sum to exactly 100% (SELCO + MBMA + LIFCOM + USER + Others). (5) PRIME slab is cost-driven; Total &ge; &#8377;25,00,000 is &ldquo;Out of policy&rdquo; and needs manual override. (6) EMI (PRIME only) = LIFCOM amount &divide; 60 (5yr) or &divide; 36 (3yr) &mdash; flat, no interest. (7) Tranche disbursement must not over-allocate a cost head; uncovered amounts raise a funding-gap warning. (8) Balance with Entrepreneur = Total Disbursed &minus; Total Paid. (9) SELCO Executive may edit only SELCO-relevant fields (SELCO price, equipment status, SELCO approval, solar capacity/cost, implementation status banners, Final cost totals, disbursement &amp; vendor payments) &mdash; all other fields are read-only to that role. (10) Required machines must be selected from the Machinery framework dropdown; their detail panel is read-only here.</div>
+
+  <div class="review-panel" data-section="m-infra">
+    <div class="review-strip">
+      <span style="font-size:12px;color:var(--ink-soft);font-weight:500;">Section Review:</span>
+      <button class="review-status-btn" onclick="setReview('m-infra','draft',this)">Draft</button>
+      <button class="review-status-btn" onclick="setReview('m-infra','review',this)">In Review</button>
+      <button class="review-status-btn" onclick="setReview('m-infra','changes',this)">Needs Changes</button>
+      <button class="review-status-btn" onclick="setReview('m-infra','approved',this)">Approved</button>
+      <button style="margin-left:auto;background:none;border:none;font-size:12px;color:var(--sea);cursor:pointer;font-family:var(--font);text-decoration:underline;" onclick="copyLink('m-infra')">Copy Link</button>
+    </div>
+    <div class="review-comments">
+      <div class="comment-list" id="comments-m-infra"></div>
+      <div class="comment-input-row">
+        <input type="text" placeholder="Your name" style="max-width:120px" id="name-m-infra">
+        <textarea rows="1" placeholder="Add a comment..." id="text-m-infra"></textarea>
+        <button class="comment-add-btn" onclick="addComment('m-infra')">Add</button>
+      </div>
+    </div>
+  </div>
+</div>

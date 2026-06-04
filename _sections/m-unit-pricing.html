@@ -1,0 +1,232 @@
+<div class="brd-section" id="m-unit-pricing">
+  <div class="section-header"><span class="section-id">PR-PRC-001</span><h2 class="section-title">Unit Pricing</h2></div>
+  <div class="section-desc">The Pricing module's cost-buildup engine. It sums seven cost components (raw material, human resource/labour, packaging, transportation, machine depreciation, gas, and rent/electricity overheads) into a Cost per Unit, then applies one of three pricing methods (Cost Plus / Competitor Based / Value Based) across two channels (Offline / Online) to derive Wholesale and Retail prices. It is the heaviest Golden-Thread consumer in the system, and the Retail Price it produces flows back to the Product Profile variants.</div>
+  <div class="callout callout-terra"><strong>Golden-Thread hub.</strong> Pulls RM rate &amp; unit (Raw Materials), labour rate &amp; unit (HR), packaging rate &amp; unit (Packaging), machine depreciation rate (Machinery), rent &amp; electricity per month (Infrastructure / Business Establishment profile), and competitor average prices (Market Research). Pushes the derived <em>Retail Price</em> back to Product Profile variants. Existing-tab cost feeds Existing Unit Pricing; the matching SKU's Optimized-tab cost feeds the Summary's saving comparison.</div>
+
+  <h3 style="font-size:16px;color:var(--teal);margin:18px 0 10px;">On-Screen UI Structure</h3>
+  <div class="card"><div style="font-size:13px;line-height:1.9;color:var(--ink)">A teal title bar reads <em>Unit Pricing Module</em> with crumb <em>PRIME Rural &middot; Pricing Tools</em>. Below it sits a horizontal <strong>tab rail</strong> &mdash; <em>Summary &middot; Existing &middot; Optimized &middot; Resources &middot; Task Log</em> &mdash; the active tab highlighted teal.<br><br>The <strong>Existing</strong> and <strong>Optimized</strong> tabs each hold a list of collapsible <strong>product blocks</strong>. Each block has a sea-green header carrying an inline <strong>SKU selector</strong> (auto-fetched from the Product module), a meta label, and a Remove button; clicking the header collapses/expands the body. The block body is a vertical stack of nine Roman-numbered <strong>cost-buildup sections</strong>: I&nbsp;Raw Materials, II&nbsp;Human Resource, III&nbsp;Packaging, IV&nbsp;Transportation, V&nbsp;Machine Depreciation, VI&nbsp;Gas, VII&nbsp;Others (Rent + Electricity), VIII&nbsp;Unit Cost, and IX&nbsp;Pricing Strategy.<br><br>Sections I, II, III &amp; V are <strong>child-table grids</strong> (No. / item-select / Qty / Unit / Rate / Amount / delete) with an <em>+ Add Row</em> button and a highlighted Subtotal strip. Section IV is two transport inputs + subtotal; Section VI is a single Gas row; Section VII is two overhead blocks (Rent, Electricity) each pulling a from-BE monthly figure. Section VIII is the teal gradient <strong>Unit Cost callout</strong> stacking Total Input Cost, Total Units Produced, Per-Unit Overheads and Cost per Unit. Section IX has a Pricing Method dropdown driving a <strong>two-column channel grid</strong> (Offline | Online); each channel card shows only the method block selected (A / B / C) and a gradient summary strip (Offline = Wholesale + Retail, Online = Retail only).<br><br><strong>Calculated fields</strong> (every Amount, every Subtotal, Cost per Unit, Selling/Wholesale, Retail, Rent/Unit, Electricity/Unit) render <em>italic on cream-deep background</em>, are never editable, and carry a formula tooltip (Rule 1). <strong>Fetched fields</strong> (Unit, Rate, Rent per month, Electricity per month, Competitor Avg when a scope is picked) show read-only with a "Fetched from X" source note (Rule 2). The <strong>Summary</strong> tab is a fully read-only roll-up.</div></div>
+  <div class="flow-container" style="margin-top:12px"><div class="flow-step"><div class="flow-box">Summary</div></div><div class="flow-arrow">&rarr;</div><div class="flow-step"><div class="flow-box">Existing</div></div><div class="flow-arrow">&rarr;</div><div class="flow-step"><div class="flow-box">Optimized</div></div><div class="flow-arrow">&rarr;</div><div class="flow-step"><div class="flow-box">Resources</div></div><div class="flow-arrow">&rarr;</div><div class="flow-step"><div class="flow-box">Task Log</div></div></div>
+
+  <h3 style="font-size:16px;color:var(--teal);margin:18px 0 10px;">User Journey</h3>
+  <div class="card"><div class="flow-container">
+    <div class="flow-step"><div class="flow-box">Open Unit Pricing &amp; add product</div><div class="flow-label">select SKU from Product module</div></div>
+    <div class="flow-arrow">&rarr;</div>
+    <div class="flow-step"><div class="flow-box">Build cost (I&ndash;VII)</div><div class="flow-label">add rows; Rate/Unit auto-fetched</div></div>
+    <div class="flow-arrow">&rarr;</div>
+    <div class="flow-step"><div class="flow-box">Enter Total Units Produced</div><div class="flow-label">Section VIII derives Cost per Unit</div></div>
+    <div class="flow-arrow">&rarr;</div>
+    <div class="flow-step"><div class="flow-box">Choose pricing method</div><div class="flow-label">Cost Plus / Competitor / Value</div></div>
+    <div class="flow-arrow">&rarr;</div>
+    <div class="flow-step"><div class="flow-box">Set markups / margins per channel</div><div class="flow-label">Offline &amp; Online; Wholesale + Retail derived</div></div>
+    <div class="flow-arrow">&rarr;</div>
+    <div class="flow-step"><div class="flow-box">Save &mdash; push Retail to Product</div><div class="flow-label">Summary &amp; variant prices update</div></div>
+  </div></div>
+
+  <!-- ============ TAB 1: SUMMARY ============ -->
+  <div class="accordion open"><div class="accordion-trigger" onclick="this.parentElement.classList.toggle('open')">Tab 1: Summary <span class="acc-arrow">&#9660;</span></div>
+    <div class="accordion-body">
+      <p style="font-size:13px;color:var(--ink-soft);margin-bottom:12px;">Entirely read-only. Auto-populated from the Existing tab (one row per priced SKU) with the Optimized tab supplying the matched-SKU optimized cost for the saving comparison. Recalculates on every switch back to Summary and on any change in Existing/Optimized.</p>
+
+      <h4 style="font-size:14px;color:var(--teal);margin-bottom:10px;">SKU-wise Overview Table</h4>
+      <p style="font-size:12px;color:var(--ink-soft);font-style:italic;margin-bottom:8px;">One row per product; prices read from the active pricing method's channel summary. Optimized columns shaded green.</p>
+      <table class="brd-table"><thead><tr><th>Field Name</th><th>Field Type</th><th>Input Values</th><th>Input / Autofill</th><th>Logic</th><th>Validation &amp; Error Messages</th></tr></thead>
+      <tbody>
+        <tr><td>SKU</td><td>Read-only text</td><td>&mdash;</td><td>Autofill</td><td>From the block's selected SKU; rows with no SKU are skipped.</td><td>&mdash; (display only)</td></tr>
+        <tr><td>Product</td><td>Read-only text (bold)</td><td>&mdash;</td><td>Autofill</td><td>Product name resolved from the selected SKU (block meta label).</td><td>&mdash;</td></tr>
+        <tr><td>Existing Cost / Unit (&#8377;)</td><td>Read-only currency</td><td>&mdash;</td><td>Calculated</td><td>Cost per Unit from this block's Section VIII; &ldquo;&mdash;&rdquo; if 0.</td><td>&mdash;</td></tr>
+        <tr><td>Optimized Cost / Unit (&#8377;) <span style="color:var(--good-ink)">[shaded]</span></td><td>Read-only currency (green)</td><td>&mdash;</td><td>Calculated</td><td>Cost per Unit from the Optimized-tab block whose SKU matches this row; &ldquo;&mdash;&rdquo; if no match.</td><td>&mdash;</td></tr>
+        <tr><td>Difference (&#8377;) <span style="color:var(--good-ink)">[shaded]</span></td><td>Read-only (green/red)</td><td>&mdash;</td><td>Calculated</td><td><em>Difference = Optimized Cost/Unit &minus; Existing Cost/Unit</em> (only when both &gt; 0). Down-arrow &amp; green when &le; 0 (a saving), up-arrow &amp; red when &gt; 0 (cost increase); &ldquo;&mdash;&rdquo; otherwise.</td><td>&mdash;</td></tr>
+        <tr><td>Pricing Method</td><td>Read-only badge</td><td>Cost Plus / Competitor / Value Based / &mdash;</td><td>Autofill</td><td>Mirrors Section IX method. Cost Plus &rarr; blue, Competitor &rarr; teal, Value &rarr; amber, none &rarr; &ldquo;&mdash;&rdquo;.</td><td>&mdash;</td></tr>
+        <tr><td>Offline Wholesale (&#8377;) <span style="color:var(--good-ink)">[shaded]</span></td><td>Read-only currency</td><td>&mdash;</td><td>Calculated</td><td>Offline card Wholesale summary; &ldquo;&mdash;&rdquo; if 0.</td><td>&mdash;</td></tr>
+        <tr><td>Offline Retail (&#8377;) <span style="color:var(--good-ink)">[shaded]</span></td><td>Read-only currency</td><td>&mdash;</td><td>Calculated</td><td>Offline card Retail summary; &ldquo;&mdash;&rdquo; if 0.</td><td>&mdash;</td></tr>
+        <tr><td>Online Retail (&#8377;) <span style="color:var(--good-ink)">[shaded]</span></td><td>Read-only currency</td><td>&mdash;</td><td>Calculated</td><td>Online card Retail summary; &ldquo;&mdash;&rdquo; if 0. (Online has no Wholesale.)</td><td>&mdash;</td></tr>
+      </tbody></table>
+
+      <h4 style="font-size:14px;color:var(--teal);margin:16px 0 10px;">Aggregate Cards (4)</h4>
+      <table class="brd-table"><thead><tr><th>Card / Metric</th><th>Field Type</th><th>Input Values</th><th>Input / Autofill</th><th>Logic</th><th>Validation &amp; Error Messages</th></tr></thead>
+      <tbody>
+        <tr><td>Existing &rarr; Total SKUs</td><td>Read-only number</td><td>&mdash;</td><td>Calculated</td><td>Count of Existing blocks with a SKU selected.</td><td>&mdash;</td></tr>
+        <tr><td>Existing &rarr; Total Units Produced</td><td>Read-only number</td><td>&mdash;</td><td>Calculated</td><td>Sum of each block's Total Units Produced (Section VIII).</td><td>&mdash;</td></tr>
+        <tr><td>Existing &rarr; SKUs with Cost Calculated</td><td>Read-only number (green)</td><td>&mdash;</td><td>Calculated</td><td>Count where Cost per Unit &gt; 0.</td><td>&mdash;</td></tr>
+        <tr><td>Existing &rarr; SKUs with Price Set</td><td>Read-only number (green)</td><td>&mdash;</td><td>Calculated</td><td>Count where Offline Retail &gt; 0 OR Online Retail &gt; 0.</td><td>&mdash;</td></tr>
+        <tr><td>Existing &rarr; SKUs Not Yet Priced</td><td>Read-only number (amber)</td><td>&mdash;</td><td>Calculated</td><td><em>= Total SKUs &minus; SKUs with Price Set.</em></td><td>&mdash;</td></tr>
+        <tr><td>Cost &rarr; Avg Existing Cost / Unit (&#8377;)</td><td>Read-only currency</td><td>&mdash;</td><td>Calculated</td><td>Average of Cost per Unit across blocks where it is &gt; 0; &ldquo;&mdash;&rdquo; if none.</td><td>&mdash;</td></tr>
+        <tr><td>Cost &rarr; Avg Optimized Cost / Unit (&#8377;)</td><td>Read-only currency (green)</td><td>&mdash;</td><td>Calculated</td><td>Average of matched Optimized-tab Cost per Unit (&gt; 0); &ldquo;&mdash;&rdquo; if none.</td><td>&mdash;</td></tr>
+        <tr><td>Cost &rarr; Avg Saving / Unit (&#8377;)</td><td>Read-only (green/red)</td><td>&mdash;</td><td>Calculated</td><td><em>= average of (Optimized &minus; Existing) over SKUs with both set.</em> Down-arrow if &le; 0 (saving), up-arrow if &gt; 0; &ldquo;&mdash;&rdquo; if none.</td><td>&mdash;</td></tr>
+        <tr><td>Interventions &rarr; Cost Plus / Competitor Based / Value Based</td><td>Read-only numbers</td><td>&mdash;</td><td>Calculated</td><td>Count of blocks by selected Pricing Method.</td><td>&mdash;</td></tr>
+        <tr><td>Interventions &rarr; Priced for Offline / Online</td><td>Read-only numbers</td><td>&mdash;</td><td>Calculated</td><td>Count where Offline Retail &gt; 0 / Online Retail &gt; 0 respectively.</td><td>&mdash;</td></tr>
+        <tr><td>Status &rarr; Highest / Lowest Offline Retail (&#8377;)</td><td>Read-only currency</td><td>&mdash;</td><td>Calculated</td><td>Max / Min of Offline Retail across all priced blocks; &ldquo;&mdash;&rdquo; if none.</td><td>&mdash;</td></tr>
+        <tr><td>Status &rarr; Highest / Lowest Online Retail (&#8377;)</td><td>Read-only currency</td><td>&mdash;</td><td>Calculated</td><td>Max / Min of Online Retail across all priced blocks; &ldquo;&mdash;&rdquo; if none.</td><td>&mdash;</td></tr>
+      </tbody></table>
+      <div class="callout callout-teal">Footer: a four-tile <strong>Intervention Flags</strong> strip mirrors the aggregates &mdash; SKUs Priced (= SKUs with Price Set), Cost Plus, Competitor Based, Value Based counts.</div>
+    </div>
+  </div>
+
+  <!-- ============ TAB 2: EXISTING ============ -->
+  <div class="accordion"><div class="accordion-trigger" onclick="this.parentElement.classList.toggle('open')">Tab 2: Existing &mdash; Cost Buildup &amp; Pricing (per product) <span class="acc-arrow">&#9660;</span></div>
+    <div class="accordion-body">
+      <p style="font-size:13px;color:var(--ink-soft);margin-bottom:12px;">The working tab. A list of collapsible product blocks, each running the full nine-section cost buildup for the current (as-is) cost structure. <em>+ Add Product</em> seeds a block with one row in each child table.</p>
+
+      <h4 style="font-size:14px;color:var(--teal);margin-bottom:10px;">Product Block Header</h4>
+      <table class="brd-table"><thead><tr><th>Field Name</th><th>Field Type</th><th>Input Values</th><th>Input / Autofill</th><th>Logic</th><th>Validation &amp; Error Messages</th></tr></thead>
+      <tbody>
+        <tr><td>SKU</td><td>Select (link to Product)</td><td>SKU &middot; Product Name list</td><td>Input</td><td>Options fetched from the Product module's SKU list (e.g. VI-BS-B &middot; Bamboo Shoot Pickle 200g). Selecting one sets the block meta label to the product name.</td><td>Required before the block can feed Summary; unselected blocks are skipped in roll-ups.</td></tr>
+        <tr><td>Product (meta label)</td><td>Read-only text</td><td>&mdash;</td><td>Autofill</td><td>Product name resolved from the chosen SKU; shows &ldquo;No SKU selected&rdquo; when blank.</td><td>&mdash;</td></tr>
+        <tr><td>Remove Product</td><td>Action button</td><td>&mdash;</td><td>Input</td><td>Deletes the whole block after a confirm prompt.</td><td>Confirm: &ldquo;Remove this product?&rdquo;</td></tr>
+      </tbody></table>
+
+      <h4 style="font-size:14px;color:var(--teal);margin:16px 0 10px;">Section I &mdash; Raw Materials <span style="font-size:12px;color:var(--ink-soft)">(child table)</span></h4>
+      <table class="brd-table"><thead><tr><th>Field Name</th><th>Field Type</th><th>Input Values</th><th>Input / Autofill</th><th>Logic</th><th>Validation &amp; Error Messages</th></tr></thead>
+      <tbody>
+        <tr><td>No.</td><td>Read-only sequence</td><td>&mdash;</td><td>Calculated</td><td>Auto row index; renumbered on delete.</td><td>&mdash;</td></tr>
+        <tr><td>Raw Material</td><td>Select</td><td>Bamboo Shoot / Oil / Modi masala / Salt / Chilli powder / Bamboo strips / Eri silk yarn / Lakadong turmeric</td><td>Input</td><td>Options fetched from Raw Materials module. Selecting auto-fills Unit and Rate.</td><td>Required for the row to count.</td></tr>
+        <tr><td>Qty</td><td>Number</td><td>&mdash;</td><td>Input</td><td>Quantity consumed per batch in the material's unit.</td><td>Numeric &ge; 0; blank treated as 0.</td></tr>
+        <tr><td>Unit</td><td>Read-only text</td><td>gms / ml / pcs ...</td><td>Autofill</td><td><strong>Fetched from Raw Materials</strong> for the selected material.</td><td>&mdash; (read-only)</td></tr>
+        <tr><td>Rate (&#8377;)</td><td>Read-only currency</td><td>&mdash;</td><td>Autofill</td><td><strong>Fetched from Raw Materials</strong> (rate per unit, e.g. Bamboo Shoot &#8377;0.50/gm).</td><td>&mdash; (read-only)</td></tr>
+        <tr><td>Amount (&#8377;)</td><td>Read-only currency</td><td>&mdash;</td><td>Calculated</td><td><em>Amount = Qty &times; Rate.</em></td><td>&mdash;</td></tr>
+        <tr><td>Subtotal &mdash; Raw Materials (&#8377;)</td><td>Read-only currency</td><td>&mdash;</td><td>Calculated</td><td><em>= &sum; row Amounts.</em> Feeds Total Input Cost (Section VIII).</td><td>&mdash;</td></tr>
+      </tbody></table>
+      <div class="callout callout-teal">Sections II (Human Resource), III (Packaging) and V (Machine Depreciation) use the identical grid &amp; formula (Amount = Qty &times; Rate; Subtotal = &sum; Amounts), differing only in source &amp; option list:</div>
+
+      <h4 style="font-size:14px;color:var(--teal);margin:16px 0 10px;">Section II &mdash; Human Resource / Labour <span style="font-size:12px;color:var(--ink-soft)">(child table)</span></h4>
+      <table class="brd-table"><thead><tr><th>Field Name</th><th>Field Type</th><th>Input Values</th><th>Input / Autofill</th><th>Logic</th><th>Validation &amp; Error Messages</th></tr></thead>
+      <tbody>
+        <tr><td>Labour</td><td>Select</td><td>Self / Artisan / Weaver</td><td>Input</td><td>Options fetched from HR module; selecting auto-fills Unit (hrs) and Rate.</td><td>Required for the row to count.</td></tr>
+        <tr><td>Qty</td><td>Number</td><td>&mdash;</td><td>Input</td><td>Hours of labour per batch.</td><td>Numeric &ge; 0.</td></tr>
+        <tr><td>Unit</td><td>Read-only text</td><td>hrs</td><td>Autofill</td><td><strong>Fetched from HR.</strong></td><td>&mdash; (read-only)</td></tr>
+        <tr><td>Rate (&#8377;)</td><td>Read-only currency</td><td>&mdash;</td><td>Autofill</td><td><strong>Fetched from HR</strong> (e.g. Self &#8377;80/hr, Artisan/Weaver &#8377;180/hr).</td><td>&mdash; (read-only)</td></tr>
+        <tr><td>Amount (&#8377;)</td><td>Read-only currency</td><td>&mdash;</td><td>Calculated</td><td><em>Amount = Qty &times; Rate.</em></td><td>&mdash;</td></tr>
+        <tr><td>Subtotal &mdash; Human Resource (&#8377;)</td><td>Read-only currency</td><td>&mdash;</td><td>Calculated</td><td><em>= &sum; row Amounts.</em></td><td>&mdash;</td></tr>
+      </tbody></table>
+
+      <h4 style="font-size:14px;color:var(--teal);margin:16px 0 10px;">Section III &mdash; Packaging <span style="font-size:12px;color:var(--ink-soft)">(child table)</span></h4>
+      <table class="brd-table"><thead><tr><th>Field Name</th><th>Field Type</th><th>Input Values</th><th>Input / Autofill</th><th>Logic</th><th>Validation &amp; Error Messages</th></tr></thead>
+      <tbody>
+        <tr><td>Packaging</td><td>Select</td><td>Bottle / Label / Kraft pouch / Hang tag / Tissue paper / Seal / Pouch</td><td>Input</td><td>Options fetched from Packaging module; selecting auto-fills Unit (pcs) and Rate.</td><td>Required for the row to count.</td></tr>
+        <tr><td>Qty</td><td>Number</td><td>&mdash;</td><td>Input</td><td>Pieces consumed per batch.</td><td>Numeric &ge; 0.</td></tr>
+        <tr><td>Unit</td><td>Read-only text</td><td>pcs</td><td>Autofill</td><td><strong>Fetched from Packaging.</strong></td><td>&mdash; (read-only)</td></tr>
+        <tr><td>Rate (&#8377;)</td><td>Read-only currency</td><td>&mdash;</td><td>Autofill</td><td><strong>Fetched from Packaging</strong> (e.g. Bottle &#8377;18.00, Label &#8377;5.00).</td><td>&mdash; (read-only)</td></tr>
+        <tr><td>Amount (&#8377;)</td><td>Read-only currency</td><td>&mdash;</td><td>Calculated</td><td><em>Amount = Qty &times; Rate.</em></td><td>&mdash;</td></tr>
+        <tr><td>Subtotal &mdash; Packaging (&#8377;)</td><td>Read-only currency</td><td>&mdash;</td><td>Calculated</td><td><em>= &sum; row Amounts.</em></td><td>&mdash;</td></tr>
+      </tbody></table>
+
+      <h4 style="font-size:14px;color:var(--teal);margin:16px 0 10px;">Section IV &mdash; Transportation</h4>
+      <table class="brd-table"><thead><tr><th>Field Name</th><th>Field Type</th><th>Input Values</th><th>Input / Autofill</th><th>Logic</th><th>Validation &amp; Error Messages</th></tr></thead>
+      <tbody>
+        <tr><td>Total Cost of Raw Material Transportation (&#8377;)</td><td>Number (currency)</td><td>&mdash;</td><td>Input</td><td>Per-batch cost of moving raw materials in.</td><td>Numeric &ge; 0; blank = 0.</td></tr>
+        <tr><td>Total Cost of Packaging Transportation (&#8377;)</td><td>Number (currency)</td><td>&mdash;</td><td>Input</td><td>Per-batch cost of moving packaging in.</td><td>Numeric &ge; 0; blank = 0.</td></tr>
+        <tr><td>Subtotal &mdash; Transportation (&#8377;)</td><td>Read-only currency</td><td>&mdash;</td><td>Calculated</td><td><em>= RM Transport + Packaging Transport.</em></td><td>&mdash;</td></tr>
+      </tbody></table>
+
+      <h4 style="font-size:14px;color:var(--teal);margin:16px 0 10px;">Section V &mdash; Machine Depreciation <span style="font-size:12px;color:var(--ink-soft)">(child table)</span></h4>
+      <table class="brd-table"><thead><tr><th>Field Name</th><th>Field Type</th><th>Input Values</th><th>Input / Autofill</th><th>Logic</th><th>Validation &amp; Error Messages</th></tr></thead>
+      <tbody>
+        <tr><td>Machine</td><td>Select</td><td>Grinder / Hand carving tools / Traditional loom</td><td>Input</td><td>Options fetched from Machinery module; selecting auto-fills Unit and per-unit depreciation Rate.</td><td>Required for the row to count.</td></tr>
+        <tr><td>Qty</td><td>Number</td><td>default 1</td><td>Input</td><td>Number of machine-units allocated to the batch (defaults to 1).</td><td>Numeric &ge; 0.</td></tr>
+        <tr><td>Unit</td><td>Read-only text</td><td>unit</td><td>Autofill</td><td><strong>Fetched from Machinery.</strong></td><td>&mdash; (read-only)</td></tr>
+        <tr><td>Rate (&#8377;)</td><td>Read-only currency</td><td>&mdash;</td><td>Autofill</td><td><strong>Fetched from Machinery</strong> (per-unit depreciation, e.g. Grinder &#8377;0.86, Traditional loom &#8377;6.39).</td><td>&mdash; (read-only)</td></tr>
+        <tr><td>Amount (&#8377;)</td><td>Read-only currency</td><td>&mdash;</td><td>Calculated</td><td><em>Amount = Qty &times; Rate.</em></td><td>&mdash;</td></tr>
+        <tr><td>Subtotal &mdash; Machine Depreciation (&#8377;)</td><td>Read-only currency</td><td>&mdash;</td><td>Calculated</td><td><em>= &sum; row Amounts.</em></td><td>&mdash;</td></tr>
+      </tbody></table>
+
+      <h4 style="font-size:14px;color:var(--teal);margin:16px 0 10px;">Section VI &mdash; Gas</h4>
+      <table class="brd-table"><thead><tr><th>Field Name</th><th>Field Type</th><th>Input Values</th><th>Input / Autofill</th><th>Logic</th><th>Validation &amp; Error Messages</th></tr></thead>
+      <tbody>
+        <tr><td>Item</td><td>Read-only label</td><td>Gas</td><td>&mdash;</td><td>Single fixed row.</td><td>&mdash;</td></tr>
+        <tr><td>Qty</td><td>Number</td><td>&mdash;</td><td>Input</td><td>Hours of gas use per batch.</td><td>Numeric &ge; 0.</td></tr>
+        <tr><td>Unit</td><td>Read-only text</td><td>hrs</td><td>Autofill</td><td>Fixed as hrs.</td><td>&mdash;</td></tr>
+        <tr><td>Rate (&#8377;/hr)</td><td>Number (currency)</td><td>&mdash;</td><td>Input</td><td>Cost per hour of gas (manually entered).</td><td>Numeric &ge; 0.</td></tr>
+        <tr><td>Amount (&#8377;) / Subtotal</td><td>Read-only currency</td><td>&mdash;</td><td>Calculated</td><td><em>Amount = Qty &times; Rate;</em> the single row's amount is also the section Subtotal.</td><td>&mdash;</td></tr>
+      </tbody></table>
+
+      <h4 style="font-size:14px;color:var(--teal);margin:16px 0 10px;">Section VII &mdash; Others (Rent + Electricity overheads)</h4>
+      <table class="brd-table"><thead><tr><th>Field Name</th><th>Field Type</th><th>Input Values</th><th>Input / Autofill</th><th>Logic</th><th>Validation &amp; Error Messages</th></tr></thead>
+      <tbody>
+        <tr><td>Rent per month (&#8377;)</td><td>Read-only currency</td><td>&mdash;</td><td>Autofill</td><td><strong>Fetched from Infrastructure / Business Establishment profile</strong> (e.g. &#8377;2,000.00).</td><td>&mdash; (read-only)</td></tr>
+        <tr><td>Units produced per month (Rent)</td><td>Number</td><td>&mdash;</td><td>Input</td><td>Monthly output used to apportion rent.</td><td>Numeric &gt; 0 to compute Rent/Unit; 0 yields 0.</td></tr>
+        <tr><td>Rent / Unit (&#8377;)</td><td>Read-only currency</td><td>&mdash;</td><td>Calculated</td><td><em>Rent/Unit = Rent per month &divide; Units produced per month</em> (0 if units = 0).</td><td>&mdash;</td></tr>
+        <tr><td>Electricity per month (&#8377;)</td><td>Read-only currency</td><td>&mdash;</td><td>Autofill</td><td><strong>Fetched from Infrastructure / Business Establishment profile</strong> (e.g. &#8377;500.00).</td><td>&mdash; (read-only)</td></tr>
+        <tr><td>Units produced per month (Electricity)</td><td>Number</td><td>&mdash;</td><td>Input</td><td>Monthly output used to apportion electricity.</td><td>Numeric &gt; 0 to compute Electricity/Unit.</td></tr>
+        <tr><td>Electricity / Unit (&#8377;)</td><td>Read-only currency</td><td>&mdash;</td><td>Calculated</td><td><em>Electricity/Unit = Electricity per month &divide; Units produced per month.</em></td><td>&mdash;</td></tr>
+        <tr><td>Subtotal &mdash; Others / Per-Unit Overheads (&#8377;)</td><td>Read-only currency</td><td>&mdash;</td><td>Calculated</td><td><em>= Rent/Unit + Electricity/Unit.</em> Carried directly into Section VIII as Per-Unit Overheads (NOT divided again by units).</td><td>&mdash;</td></tr>
+      </tbody></table>
+      <div class="callout callout-terra">Note the two distinct denominators: Sections I&ndash;VI build a <em>per-batch</em> Total Input Cost (divided by Total Units Produced in VIII), whereas Section VII is already expressed <em>per unit</em> and is simply added on top.</div>
+
+      <h4 style="font-size:14px;color:var(--teal);margin:16px 0 10px;">Section VIII &mdash; Unit Cost (calculated callout)</h4>
+      <table class="brd-table"><thead><tr><th>Field Name</th><th>Field Type</th><th>Input Values</th><th>Input / Autofill</th><th>Logic</th><th>Validation &amp; Error Messages</th></tr></thead>
+      <tbody>
+        <tr><td>Total Input Cost (Sections I&ndash;VI) (&#8377;)</td><td>Read-only currency</td><td>&mdash;</td><td>Calculated</td><td><em>= RM Subtotal + HR Subtotal + Packaging Subtotal + Transportation Subtotal + Machine Depreciation Subtotal + Gas Subtotal.</em></td><td>&mdash;</td></tr>
+        <tr><td>Total Units Produced</td><td>Number</td><td>&mdash;</td><td>Input</td><td>Batch output used to spread the input cost.</td><td>Numeric &gt; 0 required; if 0 the Cost per Unit stays &#8377;0.00.</td></tr>
+        <tr><td>Per-Unit Overheads (Section VII) (&#8377;)</td><td>Read-only currency</td><td>&mdash;</td><td>Calculated</td><td>Equals the Section VII Subtotal (Rent/Unit + Electricity/Unit).</td><td>&mdash;</td></tr>
+        <tr><td>Cost per Unit (&#8377;)</td><td>Read-only currency (headline)</td><td>&mdash;</td><td>Calculated</td><td><em>Cost per Unit = (Total Input Cost &divide; Total Units Produced) + Per-Unit Overheads.</em> Feeds Section IX (Cost Plus unit cost) and the Summary.</td><td>&mdash;</td></tr>
+      </tbody></table>
+
+      <h4 style="font-size:14px;color:var(--teal);margin:16px 0 10px;">Section IX &mdash; Pricing Strategy (method &times; channel grid)</h4>
+      <p style="font-size:12px;color:var(--ink-soft);font-style:italic;margin-bottom:8px;">One Pricing Method selector drives two channel cards. Only the chosen method block (A/B/C) is shown in each card. <strong>Offline</strong> card yields a Wholesale + Retail summary; <strong>Online</strong> card yields Retail only. Margins/markups are entered per channel, so Offline and Online can differ.</p>
+      <table class="brd-table"><thead><tr><th>Field Name</th><th>Field Type</th><th>Input Values</th><th>Input / Autofill</th><th>Logic</th><th>Validation &amp; Error Messages</th></tr></thead>
+      <tbody>
+        <tr><td>Pricing Method</td><td>Select</td><td>A. Cost Plus / B. Competitor Based / C. Value Based</td><td>Input</td><td>Shows the matching method block in both channel cards; cleared = no block shown.</td><td>Required to derive any price.</td></tr>
+        <tr><td colspan="6" style="background:var(--cream-deep);font-style:italic;color:var(--teal);"><strong>A. Cost Plus</strong> (per channel: Offline &amp; Online)</td></tr>
+        <tr><td>Unit Cost (auto-fetched) (&#8377;)</td><td>Read-only currency</td><td>&mdash;</td><td>Autofill</td><td>Mirrors Cost per Unit from Section VIII.</td><td>&mdash; (read-only)</td></tr>
+        <tr><td>Markup (%)</td><td>Number</td><td>&mdash;</td><td>Input</td><td>Producer margin over cost.</td><td>Numeric &ge; 0.</td></tr>
+        <tr><td>Selling Price / Wholesale (auto-calc) (&#8377;)</td><td>Read-only currency</td><td>&mdash;</td><td>Calculated</td><td><em>Selling = Unit Cost &times; (1 + Markup% &divide; 100).</em></td><td>&mdash;</td></tr>
+        <tr><td>Retailer Margin (%)</td><td>Number</td><td>&mdash;</td><td>Input</td><td>Margin added by the retailer on top of wholesale.</td><td>Numeric &ge; 0.</td></tr>
+        <tr><td>Retail Price (auto-calc) (&#8377;)</td><td>Read-only currency</td><td>&mdash;</td><td>Calculated</td><td><em>Retail = Selling &times; (1 + Retailer Margin% &divide; 100).</em> This is the value pushed back to Product Profile variants.</td><td>&mdash;</td></tr>
+        <tr><td colspan="6" style="background:var(--cream-deep);font-style:italic;color:var(--teal);"><strong>B. Competitor Based</strong> (per channel)</td></tr>
+        <tr><td>Competitor Scope</td><td>Select</td><td>Local Market / State Market / National Market</td><td>Input</td><td>Picking a scope auto-fetches Competitor Avg Price and locks it read-only; clearing scope re-enables manual entry.</td><td>&mdash;</td></tr>
+        <tr><td>Competitor Avg Price (&#8377;)</td><td>Number / Read-only when fetched</td><td>&mdash;</td><td>Input or Autofill</td><td><strong>Fetched from Market Research</strong> (Competitor Pricing) for the chosen scope &amp; channel (placeholder e.g. Offline local &#8377;80, Online national &#8377;165). Manual entry allowed when no scope is set.</td><td>&mdash;</td></tr>
+        <tr><td>Positioning</td><td>Select</td><td>Below &minus;20% / &minus;10% / Match (1.0&times;) / +10% / Premium +20% / +30% / +40% / +50%</td><td>Input</td><td>Position multiplier delta applied to competitor average.</td><td>Required to compute Selling.</td></tr>
+        <tr><td>Selling Price / Wholesale (auto-calc) (&#8377;)</td><td>Read-only currency</td><td>&mdash;</td><td>Calculated</td><td><em>Selling = Competitor Avg &times; (1 + Position Delta).</em> Blank until a positioning is chosen.</td><td>&mdash;</td></tr>
+        <tr><td>Retailer Margin (%)</td><td>Number</td><td>&mdash;</td><td>Input</td><td>Retailer's add-on margin.</td><td>Numeric &ge; 0.</td></tr>
+        <tr><td>Retail Price (auto-calc) (&#8377;)</td><td>Read-only currency</td><td>&mdash;</td><td>Calculated</td><td><em>Retail = Selling &times; (1 + Retailer Margin% &divide; 100).</em></td><td>&mdash;</td></tr>
+        <tr><td colspan="6" style="background:var(--cream-deep);font-style:italic;color:var(--teal);"><strong>C. Value Based</strong> (per channel; back-calculates from target)</td></tr>
+        <tr><td>Target Retail Price (&#8377;)</td><td>Number (currency)</td><td>&mdash;</td><td>Input</td><td>Desired shelf price reflecting perceived value.</td><td>Numeric &ge; 0.</td></tr>
+        <tr><td>Retailer Margin (%)</td><td>Number</td><td>&mdash;</td><td>Input</td><td>Retailer margin embedded in the target retail.</td><td>Numeric &ge; 0.</td></tr>
+        <tr><td>Selling Price / Wholesale (auto-calc) (&#8377;)</td><td>Read-only currency</td><td>&mdash;</td><td>Calculated</td><td><em>Selling = Target Retail &divide; (1 + Retailer Margin% &divide; 100);</em> Retail = Target Retail (as entered).</td><td>&mdash;</td></tr>
+        <tr><td>Value Justification</td><td>Textarea</td><td>&mdash;</td><td>Input</td><td>Free-text rationale for why the price reflects perceived value.</td><td>&mdash; (recommended)</td></tr>
+        <tr><td colspan="6" style="background:var(--cream-deep);font-style:italic;color:var(--teal);"><strong>Channel Summary strip</strong></td></tr>
+        <tr><td>Wholesale Price (&#8377;) <span style="color:var(--ink-soft)">[Offline card only]</span></td><td>Read-only currency (headline)</td><td>&mdash;</td><td>Calculated</td><td>The active method's Selling/Wholesale for that channel.</td><td>&mdash;</td></tr>
+        <tr><td>Retail Price (&#8377;)</td><td>Read-only currency (headline)</td><td>&mdash;</td><td>Calculated</td><td>The active method's Retail for that channel. Online card shows Retail only (no Wholesale).</td><td>&mdash;</td></tr>
+      </tbody></table>
+      <div class="callout callout-teal"><strong>Retail Price &rarr; Product Profile.</strong> On save, each channel's Retail Price is written back to the matching Product Profile variant (per SKU &times; channel), closing the Golden Thread loop.</div>
+    </div>
+  </div>
+
+  <!-- ============ TAB 3: OPTIMIZED ============ -->
+  <div class="accordion"><div class="accordion-trigger" onclick="this.parentElement.classList.toggle('open')">Tab 3: Optimized <span class="acc-arrow">&#9660;</span></div>
+    <div class="accordion-body">
+      <p style="font-size:13px;color:var(--ink-soft);margin-bottom:12px;">Structurally identical to the Existing tab &mdash; the same nine-section cost buildup and pricing grid &mdash; but holds the <em>target / optimised</em> cost structure (after intervention savings on raw material, labour, packaging etc.). Blocks are SKU-keyed so the Summary can match an Optimized block to its Existing counterpart.</p>
+      <table class="brd-table"><thead><tr><th>Field Name</th><th>Field Type</th><th>Input Values</th><th>Input / Autofill</th><th>Logic</th><th>Validation &amp; Error Messages</th></tr></thead>
+      <tbody>
+        <tr><td>(all sections I&ndash;IX)</td><td>As Existing tab</td><td>As Existing</td><td>As Existing</td><td>Same field set, formulas and fetch sources as the Existing tab. Cost per Unit here is matched by SKU against the Existing tab to populate the Summary's Optimized Cost / Unit, Difference and Avg Saving.</td><td>As Existing; SKU must match an Existing block to surface in the comparison.</td></tr>
+      </tbody></table>
+    </div>
+  </div>
+
+  <!-- ============ TAB 4: RESOURCES ============ -->
+  <div class="accordion"><div class="accordion-trigger" onclick="this.parentElement.classList.toggle('open')">Tab 4: Resources <span class="acc-arrow">&#9660;</span></div>
+    <div class="accordion-body">
+      <p style="font-size:13px;color:var(--ink-soft);">Reference view (placeholder in mockup): pricing benchmarks, market-rate references and Business Economics (BE) reference data &mdash; the lookup tables that back the auto-fetched rates and competitor averages.</p>
+    </div>
+  </div>
+
+  <!-- ============ TAB 5: TASK LOG ============ -->
+  <div class="accordion"><div class="accordion-trigger" onclick="this.parentElement.classList.toggle('open')">Tab 5: Task Log <span class="acc-arrow">&#9660;</span></div>
+    <div class="accordion-body">
+      <p style="font-size:13px;color:var(--ink-soft);">Chronological record of pricing decisions, cost revisions and an audit trail (placeholder in mockup).</p>
+    </div>
+  </div>
+
+  <div class="callout callout-danger"><strong>Key validations (whole form):</strong> a block must have a SKU selected before it counts in Summary roll-ups. Child-table rows need a selected item to contribute; at least one row is required per table (deleting the last row is blocked with &ldquo;At least one row is required&rdquo;). Qty, Rate, Markup, Margin and units fields are numeric &ge; 0; blanks are treated as 0. Total Units Produced must be &gt; 0 for Cost per Unit to compute; Units produced per month must be &gt; 0 for Rent/Unit and Electricity/Unit. A Pricing Method must be selected to derive any price; Competitor Based needs a Positioning chosen (and a Competitor Avg, fetched or manual) before Selling computes. Fetched fields (Unit, Rate, Rent/month, Electricity/month, and Competitor Avg when a scope is set) are read-only. All currency in Indian Rupee with Indian number formatting.</div>
+
+  <div class="review-panel" data-section="m-unit-pricing">
+    <div class="review-strip"><span style="font-size:12px;color:var(--ink-soft);font-weight:500;">Section Review:</span>
+      <button class="review-status-btn" onclick="setReview('m-unit-pricing','draft',this)">Draft</button>
+      <button class="review-status-btn" onclick="setReview('m-unit-pricing','review',this)">In Review</button>
+      <button class="review-status-btn" onclick="setReview('m-unit-pricing','changes',this)">Needs Changes</button>
+      <button class="review-status-btn" onclick="setReview('m-unit-pricing','approved',this)">Approved</button>
+      <button style="margin-left:auto;background:none;border:none;font-size:12px;color:var(--sea);cursor:pointer;font-family:var(--font);text-decoration:underline;" onclick="copyLink('m-unit-pricing')">Copy Link</button></div>
+    <div class="review-comments"><div class="comment-list" id="comments-m-unit-pricing"></div>
+      <div class="comment-input-row"><input type="text" placeholder="Your name" style="max-width:120px" id="name-m-unit-pricing"><textarea rows="1" placeholder="Add a comment..." id="text-m-unit-pricing"></textarea><button class="comment-add-btn" onclick="addComment('m-unit-pricing')">Add</button></div></div>
+  </div>
+</div>
