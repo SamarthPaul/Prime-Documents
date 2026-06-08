@@ -1311,7 +1311,7 @@ body > .site-nav { position: fixed; top: 0; left: 0; right: 0; z-index: 9999; }
             <td><strong>Entrepreneur Progress Report</strong> <span style="font-size:11px;color:var(--ink-faint);font-weight:400">(standalone workspace; form/doctype filled per entrepreneur)</span></td>
             <td class="perm-check">Full CRUD</td>
             <td class="perm-check">Full CRUD</td>
-            <td class="perm-check">Create + Edit (own block)</td>
+            <td class="perm-check">View all blocks &middot; Create + Edit own block</td>
             <td class="perm-cross">--</td>
             <td class="perm-cross">--</td>
             <td class="perm-view">View only</td>
@@ -9698,6 +9698,26 @@ body > .site-nav { position: fixed; top: 0; left: 0; right: 0; z-index: 9999; }
         </div>
       </div>
 
+      <h3 style="font-size:16px;color:var(--teal);margin:16px 0 10px;">Access &amp; Permissions</h3>
+      <div class="section-desc" style="margin-bottom:10px;">
+        Entrepreneur Progress Report is a <strong>standalone module</strong> in the left menu. It is visible to <strong>only four roles</strong> — Super Admin, Core Team IT, Core Team Program, and Field User (Fessociate) for working access, plus District Coordinator for read-only oversight. Designer and SELCO Executive do <strong>not</strong> see it in the sidebar, and a direct URL returns 403.
+      </div>
+      <table class="brd-table">
+        <thead><tr><th>Role</th><th>In Left Menu?</th><th>Permission</th><th>Scope</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Super Admin</strong> (System Manager)</td><td>Yes</td><td class="perm-check">Full CRUD</td><td>All entrepreneurs, all blocks</td></tr>
+          <tr><td><strong>Core Team IT</strong></td><td>Yes</td><td class="perm-check">Create + Edit (+ View)</td><td>All entrepreneurs, all blocks</td></tr>
+          <tr><td><strong>Core Team Program</strong></td><td>Yes</td><td class="perm-check">Create + Edit (+ View)</td><td>All entrepreneurs, all blocks (same as Core Team IT)</td></tr>
+          <tr><td><strong>Field User</strong> (Fessociate)</td><td>Yes</td><td class="perm-check">Create + Edit own block &middot; View all blocks</td><td><strong>Write:</strong> only entrepreneurs in the fellow&rsquo;s assigned block. <strong>Read:</strong> every entrepreneur&rsquo;s progress report across all blocks.</td></tr>
+          <tr><td><strong>District Coordinator</strong></td><td>Yes</td><td class="perm-view">View only</td><td>Scoped to assigned district (per global rule)</td></tr>
+          <tr><td><strong>Designer</strong></td><td>No</td><td class="perm-cross">No access</td><td>Hidden from sidebar; direct URL &rarr; 403</td></tr>
+          <tr><td><strong>SELCO Executive</strong></td><td>No</td><td class="perm-cross">No access</td><td>Hidden from sidebar; direct URL &rarr; 403</td></tr>
+        </tbody>
+      </table>
+      <div class="callout callout-amber" style="margin-top:10px;">
+        <strong>Field User scope is read-all / write-own-block &mdash; an intentional asymmetry.</strong> A fellow can <em>open and view</em> the progress report of any entrepreneur in any block (for cross-block reference and learning), but can only <em>create or edit</em> reports for entrepreneurs in their own assigned block. Implementation note: in Frappe this is <strong>not</strong> achievable with a single User Permission (which gates read and write together). It needs a permission query that returns all EPR records for read, with create/write blocked at the controller level (e.g. <code>validate</code> / <code>before_insert</code> raising <code>frappe.PermissionError</code> when the entrepreneur&rsquo;s block &ne; the fellow&rsquo;s assigned block). Note that <code>strict_user_permissions</code> currently being off already leaks cross-block reads elsewhere &mdash; here that behaviour is <em>intended</em>, but the write-block check must be explicit and tested, not assumed from the leak.
+      </div>
+
       <div class="review-panel" data-section="d-ep-progress">
         <div class="review-strip">
           <span style="font-size:12px;color:var(--ink-soft);font-weight:500;">Section Review:</span>
@@ -10349,6 +10369,9 @@ body > .site-nav { position: fixed; top: 0; left: 0; right: 0; z-index: 9999; }
           <tr><td>NF-SEC-003</td><td>Security</td><td>District Coordinator attempts to edit a form</td><td>All edit controls disabled. Save button hidden. Read-only enforced.</td></tr>
           <tr><td>NF-SEC-004</td><td>Security</td><td>Unauthenticated user accesses /app/enterprenur-profile</td><td>Redirected to /login</td></tr>
           <tr><td>NF-SEC-005</td><td>Security</td><td>API call without valid token</td><td>Returns 401 or 403. No data exposed.</td></tr>
+          <tr><td>NF-SEC-006</td><td>Security</td><td>Fessociate opens the Entrepreneur Progress Report of an entrepreneur in <strong>another block</strong> (read-all path)</td><td>Report opens and <strong>all fields are visible</strong> (cross-block read is intended). Save / Edit controls are <strong>disabled</strong> &mdash; no write affordance for another block's EPR.</td></tr>
+          <tr><td>NF-SEC-007</td><td>Security</td><td>Fessociate forces a create/edit of <strong>another block's</strong> Entrepreneur Progress Report via direct API POST (bypassing the disabled UI)</td><td>Server rejects with <strong>403 / PermissionError</strong>. Write-block is enforced <strong>server-side</strong> (controller <code>validate</code>/<code>before_insert</code> comparing entrepreneur block vs the fellow's assigned block) &mdash; not relying on UI or on <code>strict_user_permissions</code>.</td></tr>
+          <tr><td>NF-SEC-008</td><td>Security</td><td>Fessociate creates/edits an EPR for an entrepreneur in their <strong>own</strong> block (happy path)</td><td>Save succeeds. Confirms the write-block guard does not over-block legitimate own-block writes.</td></tr>
           <tr><td>NF-ACC-001</td><td>Accessibility</td><td>Navigate entire form using keyboard only (Tab/Enter/Esc)</td><td>All fields reachable. Focus ring visible (terracotta). Accordions toggle on Enter.</td></tr>
           <tr><td>NF-ACC-002</td><td>Accessibility</td><td>Screen reader reads star rating component</td><td>Announces "Rating: 3 out of 5 stars" for QC/Digital Literacy forms.</td></tr>
           <tr><td>NF-SCALE-001</td><td>Scalability</td><td>System has 80 concurrent users (all fellows online)</td><td>No API timeout. Response times under 3 seconds.</td></tr>
