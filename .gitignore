@@ -1,5 +1,7 @@
 _results_accumulated.json
 *.png
+# Bug-evidence screenshots ARE published (overrides the *.png ignore above)
+!bug-evidence/*.png
 test-results/
 node_modules/
 __pycache__/
@@ -7,3 +9,4 @@ __pycache__/
 # Internal-only — kept OUT of the public Pages repo
 Prime Rural Steerco Meeting_May_2026.pptx
 create_steerco.py
+publish.ps1
