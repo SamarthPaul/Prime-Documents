@@ -75,24 +75,6 @@ var PROJECT_PLAN = [
  {
   "sno": 5,
   "wbs": "1.4",
-  "activity": "MSG91 OTP integration (mobile auth backend)",
-  "level": 2,
-  "module": "System Foundation",
-  "duration": 3,
-  "resources": "Backend Dev",
-  "dependency": "1.1",
-  "owner": "Navneet",
-  "successCriteria": "OTP send + verify endpoints live for Flutter app",
-  "status": "Completed",
-  "uatBatch": "Pre-UAT",
-  "startDate": "07-Sep-2025",
-  "endDate": "09-Sep-2025",
-  "actualStart": "07-Sep-2025",
-  "actualEnd": "09-Sep-2025"
- },
- {
-  "sno": 6,
-  "wbs": "1.5",
   "activity": "Google SSO configuration (Gmail-based users)",
   "level": 2,
   "module": "System Foundation",
@@ -109,14 +91,14 @@ var PROJECT_PLAN = [
   "actualEnd": ""
  },
  {
-  "sno": 7,
-  "wbs": "1.6",
+  "sno": 6,
+  "wbs": "1.5",
   "activity": "Welcome email custom template (set-password link)",
   "level": 2,
   "module": "System Foundation",
   "duration": 1,
   "resources": "Backend Dev",
-  "dependency": "1.5",
+  "dependency": "1.4",
   "owner": "Navneet",
   "successCriteria": "New users receive role-aware welcome email with set-password link",
   "status": "Not Started",
@@ -127,7 +109,7 @@ var PROJECT_PLAN = [
   "actualEnd": ""
  },
  {
-  "sno": 8,
+  "sno": 7,
   "wbs": "2",
   "activity": "User Management",
   "level": 1,
@@ -145,7 +127,7 @@ var PROJECT_PLAN = [
   "actualEnd": ""
  },
  {
-  "sno": 9,
+  "sno": 8,
   "wbs": "2.1",
   "activity": "Add User form (6 fields: name, email, phone, role, district, block)",
   "level": 2,
@@ -154,16 +136,16 @@ var PROJECT_PLAN = [
   "resources": "Frontend Dev",
   "dependency": "1",
   "owner": "Navneet",
-  "successCriteria": "Form validates + creates Frappe User + assigns role; BRD PR-XC-001",
-  "status": "In Progress",
+  "successCriteria": "Form validates + creates Frappe User + assigns role; BRD PR-XC-001 (UAT-1 verified: add/list/edit/deactivate PASS)",
+  "status": "Completed",
   "uatBatch": "UAT-1",
   "startDate": "10-Oct-2025",
-  "endDate": "28-May-2026",
+  "endDate": "07-Jun-2026",
   "actualStart": "10-Oct-2025",
-  "actualEnd": ""
+  "actualEnd": "07-Jun-2026"
  },
  {
-  "sno": 10,
+  "sno": 9,
   "wbs": "2.2",
   "activity": "Role assignment logic (6 roles -> sidebar menu)",
   "level": 2,
@@ -172,16 +154,16 @@ var PROJECT_PLAN = [
   "resources": "Tech Lead",
   "dependency": "2.1",
   "owner": "Bhushan",
-  "successCriteria": "Each role lands on its own workspace; sidebar items hidden per role",
-  "status": "In Progress",
+  "successCriteria": "Each role lands on its own workspace; sidebar items hidden per role (UAT-1 verified for Field User nav)",
+  "status": "Completed",
   "uatBatch": "UAT-1",
   "startDate": "12-Oct-2025",
-  "endDate": "28-May-2026",
+  "endDate": "07-Jun-2026",
   "actualStart": "12-Oct-2025",
-  "actualEnd": ""
+  "actualEnd": "07-Jun-2026"
  },
  {
-  "sno": 11,
+  "sno": 10,
   "wbs": "2.3",
   "activity": "Login flow: email + password",
   "level": 2,
@@ -199,14 +181,14 @@ var PROJECT_PLAN = [
   "actualEnd": "16-Oct-2025"
  },
  {
-  "sno": 12,
+  "sno": 11,
   "wbs": "2.4",
   "activity": "Login flow: Google SSO for Gmail users",
   "level": 2,
   "module": "User Management",
   "duration": 2,
   "resources": "DevOps",
-  "dependency": "1.5",
+  "dependency": "1.4",
   "owner": "Prakash",
   "successCriteria": "Gmail users log in via Google button",
   "status": "Not Started",
@@ -217,7 +199,7 @@ var PROJECT_PLAN = [
   "actualEnd": ""
  },
  {
-  "sno": 13,
+  "sno": 12,
   "wbs": "2.5",
   "activity": "Block assignment for Fessociates -> auto-fill District/Block",
   "level": 2,
@@ -235,7 +217,7 @@ var PROJECT_PLAN = [
   "actualEnd": ""
  },
  {
-  "sno": 14,
+  "sno": 13,
   "wbs": "2.6",
   "activity": "District Coordinator: view-all edit-none permission set",
   "level": 2,
@@ -253,7 +235,7 @@ var PROJECT_PLAN = [
   "actualEnd": ""
  },
  {
-  "sno": 15,
+  "sno": 14,
   "wbs": "2.7",
   "activity": "Designer role: restricted sidebar + upload-only permissions",
   "level": 2,
@@ -271,7 +253,7 @@ var PROJECT_PLAN = [
   "actualEnd": ""
  },
  {
-  "sno": 16,
+  "sno": 15,
   "wbs": "2.8",
   "activity": "SELCO Executive role: restricted to Infrastructure EE tab",
   "level": 2,
@@ -289,7 +271,7 @@ var PROJECT_PLAN = [
   "actualEnd": ""
  },
  {
-  "sno": 17,
+  "sno": 16,
   "wbs": "3",
   "activity": "Masters",
   "level": 1,
@@ -307,7 +289,7 @@ var PROJECT_PLAN = [
   "actualEnd": "05-Oct-2025"
  },
  {
-  "sno": 18,
+  "sno": 17,
   "wbs": "3.1",
   "activity": "District + Block + Village master (Meghalaya hierarchy)",
   "level": 2,
@@ -325,7 +307,7 @@ var PROJECT_PLAN = [
   "actualEnd": "18-Sep-2025"
  },
  {
-  "sno": 19,
+  "sno": 18,
   "wbs": "3.2",
   "activity": "Sector + Business Basket + Product Type masters",
   "level": 2,
@@ -343,7 +325,7 @@ var PROJECT_PLAN = [
   "actualEnd": "20-Sep-2025"
  },
  {
-  "sno": 20,
+  "sno": 19,
   "wbs": "3.3",
   "activity": "Cohort master",
   "level": 2,
@@ -361,7 +343,7 @@ var PROJECT_PLAN = [
   "actualEnd": "21-Sep-2025"
  },
  {
-  "sno": 21,
+  "sno": 20,
   "wbs": "3.4",
   "activity": "Packaging master (12 types: Glass Jar ... Other)",
   "level": 2,
@@ -379,7 +361,7 @@ var PROJECT_PLAN = [
   "actualEnd": "22-Sep-2025"
  },
  {
-  "sno": 22,
+  "sno": 21,
   "wbs": "3.5",
   "activity": "Registration master (20 registration types)",
   "level": 2,
@@ -397,7 +379,7 @@ var PROJECT_PLAN = [
   "actualEnd": "25-Sep-2025"
  },
  {
-  "sno": 23,
+  "sno": 22,
   "wbs": "3.6",
   "activity": "Test Type master (14 test types)",
   "level": 2,
@@ -415,7 +397,7 @@ var PROJECT_PLAN = [
   "actualEnd": "26-Sep-2025"
  },
  {
-  "sno": 24,
+  "sno": 23,
   "wbs": "3.7",
   "activity": "Lab master (12 labs)",
   "level": 2,
@@ -433,7 +415,7 @@ var PROJECT_PLAN = [
   "actualEnd": "27-Sep-2025"
  },
  {
-  "sno": 25,
+  "sno": 24,
   "wbs": "3.8",
   "activity": "Standardisation Type master (13 types)",
   "level": 2,
@@ -451,7 +433,7 @@ var PROJECT_PLAN = [
   "actualEnd": "28-Sep-2025"
  },
  {
-  "sno": 26,
+  "sno": 25,
   "wbs": "3.9",
   "activity": "Scheme master (17 govt schemes)",
   "level": 2,
@@ -469,7 +451,7 @@ var PROJECT_PLAN = [
   "actualEnd": "30-Sep-2025"
  },
  {
-  "sno": 27,
+  "sno": 26,
   "wbs": "3.10",
   "activity": "Role setup: 6 roles with permission rules",
   "level": 2,
@@ -487,7 +469,7 @@ var PROJECT_PLAN = [
   "actualEnd": "05-Oct-2025"
  },
  {
-  "sno": 28,
+  "sno": 27,
   "wbs": "4",
   "activity": "Entrepreneur Profile",
   "level": 1,
@@ -505,7 +487,7 @@ var PROJECT_PLAN = [
   "actualEnd": ""
  },
  {
-  "sno": 29,
+  "sno": 28,
   "wbs": "4.1",
   "activity": "EP doctype backend (all fields + naming rule)",
   "level": 2,
@@ -523,7 +505,7 @@ var PROJECT_PLAN = [
   "actualEnd": "10-Oct-2025"
  },
  {
-  "sno": 30,
+  "sno": 29,
   "wbs": "4.2",
   "activity": "Vue: Profile Dashboard (9 sub-components)",
   "level": 2,
@@ -541,7 +523,7 @@ var PROJECT_PLAN = [
   "actualEnd": "20-Oct-2025"
  },
  {
-  "sno": 31,
+  "sno": 30,
   "wbs": "4.3",
   "activity": "Vue: Selection tab (10 rating fields + Rural E-Champ)",
   "level": 2,
@@ -559,7 +541,7 @@ var PROJECT_PLAN = [
   "actualEnd": "23-Oct-2025"
  },
  {
-  "sno": 32,
+  "sno": 31,
   "wbs": "4.4",
   "activity": "Vue: Prioritisation tab",
   "level": 2,
@@ -577,7 +559,7 @@ var PROJECT_PLAN = [
   "actualEnd": "24-Oct-2025"
  },
  {
-  "sno": 33,
+  "sno": 32,
   "wbs": "4.5",
   "activity": "Vue: Location & Contact + Geolocation pin",
   "level": 2,
@@ -595,7 +577,7 @@ var PROJECT_PLAN = [
   "actualEnd": "27-Oct-2025"
  },
  {
-  "sno": 34,
+  "sno": 33,
   "wbs": "4.6",
   "activity": "Vue: Documents tab + photo gallery",
   "level": 2,
@@ -613,7 +595,7 @@ var PROJECT_PLAN = [
   "actualEnd": "28-Oct-2025"
  },
  {
-  "sno": 35,
+  "sno": 34,
   "wbs": "4.7",
   "activity": "Vue: Networking & Mentoring tab (inline intro + meeting log)",
   "level": 2,
@@ -631,7 +613,7 @@ var PROJECT_PLAN = [
   "actualEnd": "05-Nov-2025"
  },
  {
-  "sno": 36,
+  "sno": 35,
   "wbs": "4.8",
   "activity": "Vue: Intervention Logs (read-only sync from Activity Logger)",
   "level": 2,
@@ -649,7 +631,7 @@ var PROJECT_PLAN = [
   "actualEnd": ""
  },
  {
-  "sno": 37,
+  "sno": 36,
   "wbs": "5",
   "activity": "Product Profile",
   "level": 1,
@@ -667,7 +649,7 @@ var PROJECT_PLAN = [
   "actualEnd": ""
  },
  {
-  "sno": 38,
+  "sno": 37,
   "wbs": "5.1",
   "activity": "Product doctype backend + child tables",
   "level": 2,
@@ -685,7 +667,7 @@ var PROJECT_PLAN = [
   "actualEnd": "08-Nov-2025"
  },
  {
-  "sno": 39,
+  "sno": 38,
   "wbs": "5.2",
   "activity": "Vue: Product Details tab (12 fields)",
   "level": 2,
@@ -703,7 +685,7 @@ var PROJECT_PLAN = [
   "actualEnd": "15-Nov-2025"
  },
  {
-  "sno": 40,
+  "sno": 39,
   "wbs": "5.3",
   "activity": "Vue: Product Variants tab (SKU auto-gen + volume calc)",
   "level": 2,
@@ -721,7 +703,7 @@ var PROJECT_PLAN = [
   "actualEnd": "22-Nov-2025"
  },
  {
-  "sno": 41,
+  "sno": 40,
   "wbs": "5.4",
   "activity": "Vue: Process Flow tab (drag-drop reorderable steps)",
   "level": 2,
@@ -739,7 +721,7 @@ var PROJECT_PLAN = [
   "actualEnd": "28-Nov-2025"
  },
  {
-  "sno": 42,
+  "sno": 41,
   "wbs": "5.5",
   "activity": "Vue: Production Capacity tab (agri-conditional + monthly tracker)",
   "level": 2,
@@ -757,7 +739,7 @@ var PROJECT_PLAN = [
   "actualEnd": ""
  },
  {
-  "sno": 43,
+  "sno": 42,
   "wbs": "5.6",
   "activity": "Available Months checkbox logic -> tracker generation",
   "level": 2,
@@ -775,7 +757,7 @@ var PROJECT_PLAN = [
   "actualEnd": ""
  },
  {
-  "sno": 44,
+  "sno": 43,
   "wbs": "6",
   "activity": "Diagnostic Frameworks (27)",
   "level": 1,
@@ -793,7 +775,7 @@ var PROJECT_PLAN = [
   "actualEnd": ""
  },
  {
-  "sno": 45,
+  "sno": 44,
   "wbs": "6.1",
   "activity": "Manufacturing - Raw Materials",
   "level": 2,
@@ -811,7 +793,7 @@ var PROJECT_PLAN = [
   "actualEnd": "05-Dec-2025"
  },
  {
-  "sno": 46,
+  "sno": 45,
   "wbs": "6.2",
   "activity": "Manufacturing - Machinery",
   "level": 2,
@@ -829,7 +811,7 @@ var PROJECT_PLAN = [
   "actualEnd": "10-Dec-2025"
  },
  {
-  "sno": 47,
+  "sno": 46,
   "wbs": "6.3",
   "activity": "Manufacturing - Human Resource",
   "level": 2,
@@ -847,7 +829,7 @@ var PROJECT_PLAN = [
   "actualEnd": "14-Dec-2025"
  },
  {
-  "sno": 48,
+  "sno": 47,
   "wbs": "6.4",
   "activity": "Pricing - Unit Pricing",
   "level": 2,
@@ -865,7 +847,7 @@ var PROJECT_PLAN = [
   "actualEnd": "22-Dec-2025"
  },
  {
-  "sno": 49,
+  "sno": 48,
   "wbs": "6.5",
   "activity": "Market - Market Research",
   "level": 2,
@@ -883,7 +865,7 @@ var PROJECT_PLAN = [
   "actualEnd": ""
  },
  {
-  "sno": 50,
+  "sno": 49,
   "wbs": "6.6",
   "activity": "Market - Customer Analysis",
   "level": 2,
@@ -901,7 +883,7 @@ var PROJECT_PLAN = [
   "actualEnd": "29-Dec-2025"
  },
  {
-  "sno": 51,
+  "sno": 50,
   "wbs": "6.7",
   "activity": "Market - Market Linkage",
   "level": 2,
@@ -919,7 +901,7 @@ var PROJECT_PLAN = [
   "actualEnd": "02-Jan-2026"
  },
  {
-  "sno": 52,
+  "sno": 51,
   "wbs": "6.8",
   "activity": "Market - Promotions",
   "level": 2,
@@ -937,7 +919,7 @@ var PROJECT_PLAN = [
   "actualEnd": "05-Jan-2026"
  },
  {
-  "sno": 53,
+  "sno": 52,
   "wbs": "6.9",
   "activity": "Product Dev - Registration & Licensing",
   "level": 2,
@@ -955,7 +937,7 @@ var PROJECT_PLAN = [
   "actualEnd": "10-Jan-2026"
  },
  {
-  "sno": 54,
+  "sno": 53,
   "wbs": "6.10",
   "activity": "Product Dev - Prototyping",
   "level": 2,
@@ -964,16 +946,16 @@ var PROJECT_PLAN = [
   "resources": "Frontend Dev",
   "dependency": "5",
   "owner": "Navneet",
-  "successCriteria": "Conditional dropdown (Packaging/Product) + iteration child table",
-  "status": "Completed",
+  "successCriteria": "Conditional dropdown + iteration child table [Bug 54 P1: cannot save - server 500 on framework_name; REGRESSED in UAT-1]",
+  "status": "In Progress",
   "uatBatch": "UAT-1",
   "startDate": "11-Jan-2026",
   "endDate": "14-Jan-2026",
   "actualStart": "11-Jan-2026",
-  "actualEnd": "14-Jan-2026"
+  "actualEnd": ""
  },
  {
-  "sno": 55,
+  "sno": 54,
   "wbs": "6.11",
   "activity": "Product Dev - Testing",
   "level": 2,
@@ -991,7 +973,7 @@ var PROJECT_PLAN = [
   "actualEnd": "18-Jan-2026"
  },
  {
-  "sno": 56,
+  "sno": 55,
   "wbs": "6.12",
   "activity": "Product Dev - Standardization",
   "level": 2,
@@ -1009,7 +991,7 @@ var PROJECT_PLAN = [
   "actualEnd": "22-Jan-2026"
  },
  {
-  "sno": 57,
+  "sno": 56,
   "wbs": "6.13",
   "activity": "Product Dev - Quality Control",
   "level": 2,
@@ -1027,7 +1009,7 @@ var PROJECT_PLAN = [
   "actualEnd": "28-Jan-2026"
  },
  {
-  "sno": 58,
+  "sno": 57,
   "wbs": "6.14",
   "activity": "Product Dev - Packaging",
   "level": 2,
@@ -1045,7 +1027,7 @@ var PROJECT_PLAN = [
   "actualEnd": "04-Feb-2026"
  },
  {
-  "sno": 59,
+  "sno": 58,
   "wbs": "6.15",
   "activity": "Marketing Tools - Brand Name",
   "level": 2,
@@ -1063,7 +1045,7 @@ var PROJECT_PLAN = [
   "actualEnd": "08-Feb-2026"
  },
  {
-  "sno": 60,
+  "sno": 59,
   "wbs": "6.16",
   "activity": "Marketing Tools - Logo",
   "level": 2,
@@ -1081,7 +1063,7 @@ var PROJECT_PLAN = [
   "actualEnd": "11-Feb-2026"
  },
  {
-  "sno": 61,
+  "sno": 60,
   "wbs": "6.17",
   "activity": "Marketing Tools - Business Card",
   "level": 2,
@@ -1099,7 +1081,7 @@ var PROJECT_PLAN = [
   "actualEnd": "14-Feb-2026"
  },
  {
-  "sno": 62,
+  "sno": 61,
   "wbs": "6.18",
   "activity": "Marketing Tools - Label",
   "level": 2,
@@ -1117,7 +1099,7 @@ var PROJECT_PLAN = [
   "actualEnd": ""
  },
  {
-  "sno": 63,
+  "sno": 62,
   "wbs": "6.19",
   "activity": "Marketing Tools - Brochure",
   "level": 2,
@@ -1135,7 +1117,7 @@ var PROJECT_PLAN = [
   "actualEnd": "26-Feb-2026"
  },
  {
-  "sno": 64,
+  "sno": 63,
   "wbs": "6.20",
   "activity": "Skilling - Digital Literacy",
   "level": 2,
@@ -1153,7 +1135,7 @@ var PROJECT_PLAN = [
   "actualEnd": "02-Mar-2026"
  },
  {
-  "sno": 65,
+  "sno": 64,
   "wbs": "6.21",
   "activity": "Skilling - Capacity Building",
   "level": 2,
@@ -1171,7 +1153,7 @@ var PROJECT_PLAN = [
   "actualEnd": "08-Mar-2026"
  },
  {
-  "sno": 66,
+  "sno": 65,
   "wbs": "6.22",
   "activity": "Skilling - Business Plan Canvas",
   "level": 2,
@@ -1189,7 +1171,7 @@ var PROJECT_PLAN = [
   "actualEnd": "11-Mar-2026"
  },
  {
-  "sno": 67,
+  "sno": 66,
   "wbs": "6.23",
   "activity": "Logistics - Packing",
   "level": 2,
@@ -1207,7 +1189,7 @@ var PROJECT_PLAN = [
   "actualEnd": "16-Mar-2026"
  },
  {
-  "sno": 68,
+  "sno": 67,
   "wbs": "6.24",
   "activity": "Logistics - Service",
   "level": 2,
@@ -1225,7 +1207,7 @@ var PROJECT_PLAN = [
   "actualEnd": "21-Mar-2026"
  },
  {
-  "sno": 69,
+  "sno": 68,
   "wbs": "6.25",
   "activity": "Infrastructure (BE + EE + CE combined)",
   "level": 2,
@@ -1243,7 +1225,7 @@ var PROJECT_PLAN = [
   "actualEnd": ""
  },
  {
-  "sno": 70,
+  "sno": 69,
   "wbs": "6.26",
   "activity": "Funding - Pitch Deck",
   "level": 2,
@@ -1261,7 +1243,7 @@ var PROJECT_PLAN = [
   "actualEnd": "25-Mar-2026"
  },
  {
-  "sno": 71,
+  "sno": 70,
   "wbs": "6.27",
   "activity": "Funding - Schemes",
   "level": 2,
@@ -1279,7 +1261,7 @@ var PROJECT_PLAN = [
   "actualEnd": "30-Mar-2026"
  },
  {
-  "sno": 72,
+  "sno": 71,
   "wbs": "7",
   "activity": "Research Notes",
   "level": 1,
@@ -1297,7 +1279,7 @@ var PROJECT_PLAN = [
   "actualEnd": ""
  },
  {
-  "sno": 73,
+  "sno": 72,
   "wbs": "7.1",
   "activity": "Research Notes doctype backend",
   "level": 2,
@@ -1315,7 +1297,7 @@ var PROJECT_PLAN = [
   "actualEnd": "19-Mar-2026"
  },
  {
-  "sno": 74,
+  "sno": 73,
   "wbs": "7.2",
   "activity": "Vue: Research Notes form (11 fields)",
   "level": 2,
@@ -1333,7 +1315,7 @@ var PROJECT_PLAN = [
   "actualEnd": "23-Mar-2026"
  },
  {
-  "sno": 75,
+  "sno": 74,
   "wbs": "7.3",
   "activity": "EP Profile linking (optional)",
   "level": 2,
@@ -1351,7 +1333,7 @@ var PROJECT_PLAN = [
   "actualEnd": ""
  },
  {
-  "sno": 76,
+  "sno": 75,
   "wbs": "8",
   "activity": "Village Survey",
   "level": 1,
@@ -1369,7 +1351,7 @@ var PROJECT_PLAN = [
   "actualEnd": ""
  },
  {
-  "sno": 77,
+  "sno": 76,
   "wbs": "8.1",
   "activity": "Village Survey doctype backend",
   "level": 2,
@@ -1387,7 +1369,7 @@ var PROJECT_PLAN = [
   "actualEnd": "25-Mar-2026"
  },
  {
-  "sno": 78,
+  "sno": 77,
   "wbs": "8.2",
   "activity": "Vue: Survey form (17 fields + geolocation)",
   "level": 2,
@@ -1405,7 +1387,7 @@ var PROJECT_PLAN = [
   "actualEnd": "30-Mar-2026"
  },
  {
-  "sno": 79,
+  "sno": 78,
   "wbs": "8.3",
   "activity": "Master pickers: crops + forest resources + livelihoods (16 pickers)",
   "level": 2,
@@ -1423,7 +1405,7 @@ var PROJECT_PLAN = [
   "actualEnd": "04-Apr-2026"
  },
  {
-  "sno": 80,
+  "sno": 79,
   "wbs": "8.4",
   "activity": "Geo-tag -> Landscape Map integration (village pins)",
   "level": 2,
@@ -1441,7 +1423,7 @@ var PROJECT_PLAN = [
   "actualEnd": ""
  },
  {
-  "sno": 81,
+  "sno": 80,
   "wbs": "9",
   "activity": "Fellow Activity Logger",
   "level": 1,
@@ -1459,7 +1441,7 @@ var PROJECT_PLAN = [
   "actualEnd": ""
  },
  {
-  "sno": 82,
+  "sno": 81,
   "wbs": "9.1",
   "activity": "Replace Tasks workspace with Activity Logger pages",
   "level": 2,
@@ -1477,7 +1459,7 @@ var PROJECT_PLAN = [
   "actualEnd": "08-Apr-2026"
  },
  {
-  "sno": 83,
+  "sno": 82,
   "wbs": "9.2",
   "activity": "Vue: Calendar view (default)",
   "level": 2,
@@ -1495,7 +1477,7 @@ var PROJECT_PLAN = [
   "actualEnd": "15-Apr-2026"
  },
  {
-  "sno": 84,
+  "sno": 83,
   "wbs": "9.3",
   "activity": "Vue: Board view + toggle",
   "level": 2,
@@ -1513,7 +1495,7 @@ var PROJECT_PLAN = [
   "actualEnd": "19-Apr-2026"
  },
  {
-  "sno": 85,
+  "sno": 84,
   "wbs": "9.4",
   "activity": "6 cascading filters (District -> Block -> EP -> Module -> Framework -> Task)",
   "level": 2,
@@ -1531,7 +1513,7 @@ var PROJECT_PLAN = [
   "actualEnd": ""
  },
  {
-  "sno": 86,
+  "sno": 85,
   "wbs": "9.5",
   "activity": "Activity form: branching logic (3 paths: EP-Framework / EP-NonFramework / NonEntrepreneur)",
   "level": 2,
@@ -1549,7 +1531,7 @@ var PROJECT_PLAN = [
   "actualEnd": ""
  },
  {
-  "sno": 87,
+  "sno": 86,
   "wbs": "9.6",
   "activity": "Sync: framework activities -> Log Book tabs",
   "level": 2,
@@ -1567,7 +1549,7 @@ var PROJECT_PLAN = [
   "actualEnd": ""
  },
  {
-  "sno": 88,
+  "sno": 87,
   "wbs": "9.7",
   "activity": "Sync: all EP activities -> Intervention Logs (read-only)",
   "level": 2,
@@ -1585,7 +1567,7 @@ var PROJECT_PLAN = [
   "actualEnd": ""
  },
  {
-  "sno": 89,
+  "sno": 88,
   "wbs": "9.8",
   "activity": "Framework completion tracking (Not Started -> Completed -> xN)",
   "level": 2,
@@ -1603,7 +1585,7 @@ var PROJECT_PLAN = [
   "actualEnd": ""
  },
  {
-  "sno": 90,
+  "sno": 89,
   "wbs": "10",
   "activity": "Landscape Dashboard",
   "level": 1,
@@ -1621,7 +1603,7 @@ var PROJECT_PLAN = [
   "actualEnd": ""
  },
  {
-  "sno": 91,
+  "sno": 90,
   "wbs": "10.1",
   "activity": "Vue: Entrepreneurial Landscape Map (6 filters + clustering + popup)",
   "level": 2,
@@ -1639,7 +1621,7 @@ var PROJECT_PLAN = [
   "actualEnd": ""
  },
  {
-  "sno": 92,
+  "sno": 91,
   "wbs": "10.2",
   "activity": "Village Survey geo-pin overlay on Landscape Map",
   "level": 2,
@@ -1657,7 +1639,7 @@ var PROJECT_PLAN = [
   "actualEnd": ""
  },
  {
-  "sno": 93,
+  "sno": 92,
   "wbs": "11",
   "activity": "Milestone & Activity Tracker",
   "level": 1,
@@ -1666,16 +1648,16 @@ var PROJECT_PLAN = [
   "resources": "Developer / Tech Lead",
   "dependency": "1",
   "owner": "Navneet",
-  "successCriteria": "Progress Matrix workspace with Overview/Activities/Timeline/RACI tabs",
-  "status": "Completed",
+  "successCriteria": "Progress Matrix workspace with Overview/Activities/Timeline/RACI tabs [Bug 55 P1: dashboard non-functional, REGRESSED in UAT-1]",
+  "status": "In Progress",
   "uatBatch": "UAT-2",
   "startDate": "01-Apr-2026",
   "endDate": "12-Apr-2026",
   "actualStart": "01-Apr-2026",
-  "actualEnd": "12-Apr-2026"
+  "actualEnd": ""
  },
  {
-  "sno": 94,
+  "sno": 93,
   "wbs": "11.1",
   "activity": "Vue: Milestone Tracker dashboard (4 tabs + lollipop + Gantt)",
   "level": 2,
@@ -1684,16 +1666,16 @@ var PROJECT_PLAN = [
   "resources": "Frontend Dev",
   "dependency": "1",
   "owner": "Navneet",
-  "successCriteria": "MilestoneTrackerDashboard.vue + 8 sub-components live; lollipop + Gantt render",
-  "status": "Completed",
+  "successCriteria": "UI built; but Bug 55 (P1): get_milestone_data ModuleNotFoundError -> 'Error loading data' + 0 records for ALL roles",
+  "status": "In Progress",
   "uatBatch": "UAT-2",
   "startDate": "01-Apr-2026",
   "endDate": "08-Apr-2026",
   "actualStart": "01-Apr-2026",
-  "actualEnd": "08-Apr-2026"
+  "actualEnd": ""
  },
  {
-  "sno": 95,
+  "sno": 94,
   "wbs": "11.2",
   "activity": "Workspace + Web Page + CHB deployment (Progress Matrix)",
   "level": 2,
@@ -1711,7 +1693,7 @@ var PROJECT_PLAN = [
   "actualEnd": "09-Apr-2026"
  },
  {
-  "sno": 96,
+  "sno": 95,
   "wbs": "11.3",
   "activity": "Milestone Master + Milestone Activity records populated (26 + 85)",
   "level": 2,
@@ -1720,16 +1702,16 @@ var PROJECT_PLAN = [
   "resources": "PM",
   "dependency": "11.2",
   "owner": "Samarth",
-  "successCriteria": "26 milestones + 85 activities loaded from RACI sheet",
-  "status": "Completed",
+  "successCriteria": "26 milestones loaded; the 85 activities were lost in the Bug-55 regression - needs reseed",
+  "status": "In Progress",
   "uatBatch": "UAT-2",
   "startDate": "10-Apr-2026",
   "endDate": "12-Apr-2026",
   "actualStart": "10-Apr-2026",
-  "actualEnd": "12-Apr-2026"
+  "actualEnd": ""
  },
  {
-  "sno": 97,
+  "sno": 96,
   "wbs": "12",
   "activity": "Intervention Dashboard & KPI Form",
   "level": 1,
@@ -1747,7 +1729,7 @@ var PROJECT_PLAN = [
   "actualEnd": ""
  },
  {
-  "sno": 98,
+  "sno": 97,
   "wbs": "12.1",
   "activity": "KPI form spec gathering from client (Minha + Alem)",
   "level": 2,
@@ -1765,7 +1747,7 @@ var PROJECT_PLAN = [
   "actualEnd": ""
  },
  {
-  "sno": 99,
+  "sno": 98,
   "wbs": "12.2",
   "activity": "Intervention Dashboard rebuild (KPIs + Sankey + drill-down)",
   "level": 2,
@@ -1783,7 +1765,7 @@ var PROJECT_PLAN = [
   "actualEnd": ""
  },
  {
-  "sno": 100,
+  "sno": 99,
   "wbs": "12.3",
   "activity": "Sankey Flow component (already built; needs KPI wiring)",
   "level": 2,
@@ -1801,7 +1783,7 @@ var PROJECT_PLAN = [
   "actualEnd": "17-Apr-2026"
  },
  {
-  "sno": 101,
+  "sno": 100,
   "wbs": "13",
   "activity": "Apoorva AI Integration",
   "level": 1,
@@ -1819,7 +1801,7 @@ var PROJECT_PLAN = [
   "actualEnd": ""
  },
  {
-  "sno": 102,
+  "sno": 101,
   "wbs": "13.1",
   "activity": "Integration spec with Apoorva AI team (endpoints + auth + context model)",
   "level": 2,
@@ -1837,7 +1819,7 @@ var PROJECT_PLAN = [
   "actualEnd": ""
  },
  {
-  "sno": 103,
+  "sno": 102,
   "wbs": "13.2",
   "activity": "Chatbot widget on portal (entrepreneur-facing)",
   "level": 2,
@@ -1855,7 +1837,7 @@ var PROJECT_PLAN = [
   "actualEnd": ""
  },
  {
-  "sno": 104,
+  "sno": 103,
   "wbs": "13.3",
   "activity": "AI Generate: Label Storyline (in Labels Required tab)",
   "level": 2,
@@ -1873,7 +1855,7 @@ var PROJECT_PLAN = [
   "actualEnd": ""
  },
  {
-  "sno": 105,
+  "sno": 104,
   "wbs": "13.4",
   "activity": "AI Generate: Brochure Storyline (in Brochure form)",
   "level": 2,
@@ -1891,7 +1873,7 @@ var PROJECT_PLAN = [
   "actualEnd": ""
  },
  {
-  "sno": 106,
+  "sno": 105,
   "wbs": "13.5",
   "activity": "Context-aware responses (pass entrepreneur data to model)",
   "level": 2,
@@ -1909,7 +1891,7 @@ var PROJECT_PLAN = [
   "actualEnd": ""
  },
  {
-  "sno": 107,
+  "sno": 106,
   "wbs": "14",
   "activity": "Claude-based Chatbot",
   "level": 1,
@@ -1927,7 +1909,7 @@ var PROJECT_PLAN = [
   "actualEnd": ""
  },
  {
-  "sno": 108,
+  "sno": 107,
   "wbs": "14.1",
   "activity": "Claude integration spec (MCP scope, tool list, auth model)",
   "level": 2,
@@ -1945,7 +1927,7 @@ var PROJECT_PLAN = [
   "actualEnd": ""
  },
  {
-  "sno": 109,
+  "sno": 108,
   "wbs": "14.2",
   "activity": "Internal-team chatbot widget (Core Team IT / PM use)",
   "level": 2,
@@ -1963,7 +1945,7 @@ var PROJECT_PLAN = [
   "actualEnd": ""
  },
  {
-  "sno": 110,
+  "sno": 109,
   "wbs": "14.3",
   "activity": "Tool integration: entrepreneur queries, status updates, dashboard pulls",
   "level": 2,
@@ -1981,7 +1963,7 @@ var PROJECT_PLAN = [
   "actualEnd": ""
  },
  {
-  "sno": 111,
+  "sno": 110,
   "wbs": "15",
   "activity": "QA, VAPT & Performance",
   "level": 1,
@@ -1999,7 +1981,7 @@ var PROJECT_PLAN = [
   "actualEnd": ""
  },
  {
-  "sno": 112,
+  "sno": 111,
   "wbs": "15.1",
   "activity": "UAT environment setup (separate from staging)",
   "level": 2,
@@ -2017,7 +1999,7 @@ var PROJECT_PLAN = [
   "actualEnd": ""
  },
  {
-  "sno": 113,
+  "sno": 112,
   "wbs": "15.2",
   "activity": "UAT-1 test scripts (User Mgmt + Masters + EP + Product + 27 frameworks + Activity Logger)",
   "level": 2,
@@ -2026,34 +2008,34 @@ var PROJECT_PLAN = [
   "resources": "QA Engineer",
   "dependency": "15.1",
   "owner": "Chitranshi",
-  "successCriteria": "Test scripts cover BRD E2E for UAT-1 scope; checklist signed off",
-  "status": "In Progress",
+  "successCriteria": "330 TDD cases documented + Playwright E2E suite committed; checklist live on GitHub Pages",
+  "status": "Completed",
   "uatBatch": "UAT-1",
   "startDate": "26-May-2026",
-  "endDate": "28-May-2026",
+  "endDate": "07-Jun-2026",
   "actualStart": "26-May-2026",
-  "actualEnd": ""
+  "actualEnd": "07-Jun-2026"
  },
  {
-  "sno": 114,
+  "sno": 113,
   "wbs": "15.3",
-  "activity": "UAT-1 internal dry run",
+  "activity": "UAT-1 internal dry run (E2E against staging)",
   "level": 2,
   "module": "QA, VAPT & Performance",
   "duration": 1,
   "resources": "QA + PM",
   "dependency": "15.2",
   "owner": "Chitranshi / Samarth",
-  "successCriteria": "Critical bugs from dry run fixed before client UAT",
-  "status": "Not Started",
+  "successCriteria": "E2E executed 7-8 Jun: 272 cases run (67 pass / 37 fail / 168 blocked), ~60 bugs logged; 3 P1 fixes pending",
+  "status": "In Progress",
   "uatBatch": "UAT-1",
-  "startDate": "28-May-2026",
-  "endDate": "28-May-2026",
-  "actualStart": "",
+  "startDate": "29-May-2026",
+  "endDate": "08-Jun-2026",
+  "actualStart": "29-May-2026",
   "actualEnd": ""
  },
  {
-  "sno": 115,
+  "sno": 114,
   "wbs": "15.4",
   "activity": "UAT-1 with client (MBMA team)",
   "level": 2,
@@ -2071,7 +2053,7 @@ var PROJECT_PLAN = [
   "actualEnd": ""
  },
  {
-  "sno": 116,
+  "sno": 115,
   "wbs": "15.5",
   "activity": "UAT-1 bug fixing sprint",
   "level": 2,
@@ -2089,7 +2071,7 @@ var PROJECT_PLAN = [
   "actualEnd": ""
  },
  {
-  "sno": 117,
+  "sno": 116,
   "wbs": "15.6",
   "activity": "UAT-2 test scripts (Research Notes + Village Survey + Landscape + Milestone Tracker)",
   "level": 2,
@@ -2107,7 +2089,7 @@ var PROJECT_PLAN = [
   "actualEnd": ""
  },
  {
-  "sno": 118,
+  "sno": 117,
   "wbs": "15.7",
   "activity": "UAT-2 with client (MBMA team)",
   "level": 2,
@@ -2125,7 +2107,7 @@ var PROJECT_PLAN = [
   "actualEnd": ""
  },
  {
-  "sno": 119,
+  "sno": 118,
   "wbs": "15.8",
   "activity": "UAT-2 bug fixing sprint",
   "level": 2,
@@ -2143,7 +2125,7 @@ var PROJECT_PLAN = [
   "actualEnd": ""
  },
  {
-  "sno": 120,
+  "sno": 119,
   "wbs": "15.9",
   "activity": "OWASP ZAP scan + role-based access + SQLi/XSS testing",
   "level": 2,
@@ -2161,7 +2143,7 @@ var PROJECT_PLAN = [
   "actualEnd": ""
  },
  {
-  "sno": 121,
+  "sno": 120,
   "wbs": "15.10",
   "activity": "Load test: 80 concurrent + 1200 EPs + 2000 map pins",
   "level": 2,
@@ -2179,7 +2161,7 @@ var PROJECT_PLAN = [
   "actualEnd": ""
  },
  {
-  "sno": 122,
+  "sno": 121,
   "wbs": "16",
   "activity": "UAT & Go-Live",
   "level": 1,
@@ -2197,7 +2179,7 @@ var PROJECT_PLAN = [
   "actualEnd": ""
  },
  {
-  "sno": 123,
+  "sno": 122,
   "wbs": "16.1",
   "activity": "UAT-3 scope finalization (post requirement gathering)",
   "level": 2,
@@ -2215,7 +2197,7 @@ var PROJECT_PLAN = [
   "actualEnd": ""
  },
  {
-  "sno": 124,
+  "sno": 123,
   "wbs": "16.2",
   "activity": "Production environment setup + SSL + domain",
   "level": 2,
@@ -2233,7 +2215,7 @@ var PROJECT_PLAN = [
   "actualEnd": ""
  },
  {
-  "sno": 125,
+  "sno": 124,
   "wbs": "16.3",
   "activity": "Data migration: Google Sheets -> Frappe",
   "level": 2,
@@ -2251,7 +2233,7 @@ var PROJECT_PLAN = [
   "actualEnd": ""
  },
  {
-  "sno": 126,
+  "sno": 125,
   "wbs": "16.4",
   "activity": "User onboarding: 80 fellows + coordinators",
   "level": 2,
@@ -2269,7 +2251,7 @@ var PROJECT_PLAN = [
   "actualEnd": ""
  },
  {
-  "sno": 127,
+  "sno": 126,
   "wbs": "16.5",
   "activity": "Training sessions for field users (Fessociates + Coordinators)",
   "level": 2,
@@ -2287,7 +2269,7 @@ var PROJECT_PLAN = [
   "actualEnd": ""
  },
  {
-  "sno": 128,
+  "sno": 127,
   "wbs": "16.6",
   "activity": "Go-live sign-off from MBMA",
   "level": 2,

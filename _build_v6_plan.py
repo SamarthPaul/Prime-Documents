@@ -14,7 +14,10 @@ Owner mapping (per user):
   Prakash  = DevOps
   Client   = MBMA / Apoorva AI / client SMEs where applicable
 
-Dates: backdated from current actual completion. Today = 26-May-2026. UAT-1 = 29-May-2026.
+Dates: backdated from current actual completion. Today = 9-Jun-2026 (v6.1).
+UAT-1 internal E2E executed 7-8 Jun 2026 against staging (272 cases run, ~60 bugs).
+v6.1 status reconciliation: User Management verified Completed; Prototyping (Bug 54)
+and Milestone Tracker (Bug 55) marked In Progress after P1 regressions found in UAT-1.
 """
 
 from datetime import date
@@ -66,11 +69,11 @@ ROWS = [
      "Core Team IT can add users, assign roles + blocks; users can log in",
      "In Progress", "UAT-1", D(2025,10,10), D(2026,5,28), D(2025,10,10), None),
     (2, "2.1", "Add User form (6 fields: name, email, phone, role, district, block)", 4, "Frontend Dev", "1", "Navneet",
-     "Form validates + creates Frappe User + assigns role; BRD PR-XC-001",
-     "In Progress", "UAT-1", D(2025,10,10), D(2026,5,28), D(2025,10,10), None),
+     "Form validates + creates Frappe User + assigns role; BRD PR-XC-001 (UAT-1 verified: add/list/edit/deactivate PASS)",
+     "Completed", "UAT-1", D(2025,10,10), D(2026,6,7), D(2025,10,10), D(2026,6,7)),
     (2, "2.2", "Role assignment logic (6 roles -> sidebar menu)", 5, "Tech Lead", "2.1", "Bhushan",
-     "Each role lands on its own workspace; sidebar items hidden per role",
-     "In Progress", "UAT-1", D(2025,10,12), D(2026,5,28), D(2025,10,12), None),
+     "Each role lands on its own workspace; sidebar items hidden per role (UAT-1 verified for Field User nav)",
+     "Completed", "UAT-1", D(2025,10,12), D(2026,6,7), D(2025,10,12), D(2026,6,7)),
     (2, "2.3", "Login flow: email + password", 2, "Backend Dev", "1", "Navneet",
      "Standard Frappe login active for non-Gmail users", "Completed", "UAT-1",
      D(2025,10,15), D(2025,10,16), D(2025,10,15), D(2025,10,16)),
@@ -190,7 +193,7 @@ ROWS = [
     (2, "6.7",  "Market - Market Linkage",            4, "Frontend Dev", "5", "Navneet", "Channel revenue tracking + annualized revenue calc", "Completed", "UAT-1", D(2025,12,30), D(2026,1,2),   D(2025,12,30), D(2026,1,2)),
     (2, "6.8",  "Market - Promotions",                3, "Frontend Dev", "5", "Navneet", "Existing + Required table with channel/mode/platform + frequency", "Completed", "UAT-1", D(2026,1,3),   D(2026,1,5),   D(2026,1,3),   D(2026,1,5)),
     (2, "6.9",  "Product Dev - Registration & Licensing", 5, "Frontend Dev", "5", "Navneet", "20-type master + Lifetime Validity conditional + status chips + 5-status pipeline", "Completed", "UAT-1", D(2026,1,6),   D(2026,1,10),  D(2026,1,6),   D(2026,1,10)),
-    (2, "6.10", "Product Dev - Prototyping",          4, "Frontend Dev", "5", "Navneet", "Conditional dropdown (Packaging/Product) + iteration child table", "Completed", "UAT-1", D(2026,1,11),  D(2026,1,14),  D(2026,1,11),  D(2026,1,14)),
+    (2, "6.10", "Product Dev - Prototyping",          4, "Frontend Dev", "5", "Navneet", "Conditional dropdown + iteration child table [Bug 54 P1: cannot save - server 500 on framework_name; REGRESSED in UAT-1]", "In Progress", "UAT-1", D(2026,1,11),  D(2026,1,14),  D(2026,1,11),  None),
     (2, "6.11", "Product Dev - Testing",              4, "Frontend Dev", "5", "Navneet", "14 test types + 12 labs + consent management + date chain validation", "Completed", "UAT-1", D(2026,1,15),  D(2026,1,18),  D(2026,1,15),  D(2026,1,18)),
     (2, "6.12", "Product Dev - Standardization",      4, "Frontend Dev", "5", "Navneet", "13 SOP types + auto Product Sector + version tracking", "Completed", "UAT-1", D(2026,1,19),  D(2026,1,22),  D(2026,1,19),  D(2026,1,22)),
     (2, "6.13", "Product Dev - Quality Control",      6, "Frontend Dev", "5", "Navneet", "23-question star rating + average + maturity tier + distribution chart", "Completed", "UAT-1", D(2026,1,23),  D(2026,1,28),  D(2026,1,23),  D(2026,1,28)),
@@ -282,17 +285,17 @@ ROWS = [
 
     # WBS 11 -- Milestone & Activity Tracker (UAT-2 - already live)
     (1, "11", "Milestone & Activity Tracker", 12, "Developer / Tech Lead", "1", "Navneet",
-     "Progress Matrix workspace with Overview/Activities/Timeline/RACI tabs",
-     "Completed", "UAT-2", D(2026,4,1), D(2026,4,12), D(2026,4,1), D(2026,4,12)),
+     "Progress Matrix workspace with Overview/Activities/Timeline/RACI tabs [Bug 55 P1: dashboard non-functional, REGRESSED in UAT-1]",
+     "In Progress", "UAT-2", D(2026,4,1), D(2026,4,12), D(2026,4,1), None),
     (2, "11.1", "Vue: Milestone Tracker dashboard (4 tabs + lollipop + Gantt)", 8, "Frontend Dev", "1", "Navneet",
-     "MilestoneTrackerDashboard.vue + 8 sub-components live; lollipop + Gantt render",
-     "Completed", "UAT-2", D(2026,4,1), D(2026,4,8), D(2026,4,1), D(2026,4,8)),
+     "UI built; but Bug 55 (P1): get_milestone_data ModuleNotFoundError -> 'Error loading data' + 0 records for ALL roles",
+     "In Progress", "UAT-2", D(2026,4,1), D(2026,4,8), D(2026,4,1), None),
     (2, "11.2", "Workspace + Web Page + CHB deployment (Progress Matrix)", 1, "Tech Lead", "11.1", "Bhushan",
      "/prime-rural-milestone-tracker live; Progress Matrix workspace seeded",
      "Completed", "UAT-2", D(2026,4,9), D(2026,4,9), D(2026,4,9), D(2026,4,9)),
     (2, "11.3", "Milestone Master + Milestone Activity records populated (26 + 85)", 3, "PM", "11.2", "Samarth",
-     "26 milestones + 85 activities loaded from RACI sheet",
-     "Completed", "UAT-2", D(2026,4,10), D(2026,4,12), D(2026,4,10), D(2026,4,12)),
+     "26 milestones loaded; the 85 activities were lost in the Bug-55 regression - needs reseed",
+     "In Progress", "UAT-2", D(2026,4,10), D(2026,4,12), D(2026,4,10), None),
 
     # WBS 12 -- Intervention Dashboard & KPI Form (UAT-3, Pending Requirements)
     (1, "12", "Intervention Dashboard & KPI Form", None, "Developer + PM + Client", "", "Navneet",
@@ -350,11 +353,11 @@ ROWS = [
      "uat.prime-rural.dhwaniris.in live with prod-like data snapshot",
      "In Progress", "UAT-1", D(2026,5,25), D(2026,5,28), D(2026,5,25), None),
     (2, "15.2", "UAT-1 test scripts (User Mgmt + Masters + EP + Product + 27 frameworks + Activity Logger)", 3, "QA Engineer", "15.1", "Chitranshi",
-     "Test scripts cover BRD E2E for UAT-1 scope; checklist signed off",
-     "In Progress", "UAT-1", D(2026,5,26), D(2026,5,28), D(2026,5,26), None),
-    (2, "15.3", "UAT-1 internal dry run", 1, "QA + PM", "15.2", "Chitranshi / Samarth",
-     "Critical bugs from dry run fixed before client UAT",
-     "Not Started", "UAT-1", D(2026,5,28), D(2026,5,28), None, None),
+     "330 TDD cases documented + Playwright E2E suite committed; checklist live on GitHub Pages",
+     "Completed", "UAT-1", D(2026,5,26), D(2026,6,7), D(2026,5,26), D(2026,6,7)),
+    (2, "15.3", "UAT-1 internal dry run (E2E against staging)", 1, "QA + PM", "15.2", "Chitranshi / Samarth",
+     "E2E executed 7-8 Jun: 272 cases run (67 pass / 37 fail / 168 blocked), ~60 bugs logged; 3 P1 fixes pending",
+     "In Progress", "UAT-1", D(2026,5,29), D(2026,6,8), D(2026,5,29), None),
     (2, "15.4", "UAT-1 with client (MBMA team)", 1, "PM + Client", "15.3", "Samarth",
      "Client signs off UAT-1 scope or files defects",
      "Not Started", "UAT-1", D(2026,5,29), D(2026,5,29), None, None),
@@ -433,8 +436,8 @@ header_lines = [
     ("", "", ""),
     ("Project Start Date", D(2025,9,1), ""),
     ("Planned Go-Live Date", D(2026,8,3), ""),
-    ("Plan Version", "v6.0", ""),
-    ("Plan Date", D(2026,5,26), ""),
+    ("Plan Version", "v6.1", ""),
+    ("Plan Date", D(2026,6,9), ""),
     ("Plan Author", "Samarth Paul (PM)", ""),
     ("", "", ""),
     ("UAT-1 Date", D(2026,5,29), "User Mgmt + Masters + EP Profile + Product Profile + 27 Frameworks + Fellow Activity Logger"),
@@ -577,7 +580,8 @@ prior = [
     [1, "v3", D(2026,3,23), "Initial client xlsx (329 rows). Columns: WBS, Activity, Duration, Resources, Dependency, Owner, Success Criteria, Current Status, Start/End/Actual dates.", "Dhwani PM team", "MBMA", "Superseded"],
     [2, "v4", D(2026,5,10), "Mid-cycle refresh. Statuses adjusted manually. Not repo-validated.", "Dhwani PM team", "-", "Superseded"],
     [3, "v5", D(2026,5,15), "CSV rebuild against repo (234 rows). Stripped date/duration/success criteria columns. Used to populate generated/data/project-plan.js -> plan.html.", "Samarth (PM) + Claude", "-", "Superseded"],
-    [4, "v6", D(2026,5,26), "Cut on Dhwani Setu PM template. 16 WBS roots: 14 user-named milestones + System Foundation + UAT/Go-Live. Owners reassigned (Navneet=Dev, Bhushan=TL, Samarth=PM, Chitranshi=Test, Prakash=DevOps, Client). UAT Batch column added. Planned dates backdated from actuals; tight clustering reflects AI-assisted build velocity. Intervention Dashboard, Apoorva AI, Claude Chatbot left at 'Pending Requirements' with no dates.", "Samarth (PM) + Claude", "Pending MBMA review", "Published"],
+    [4, "v6", D(2026,5,26), "Cut on Dhwani Setu PM template. 16 WBS roots: 14 user-named milestones + System Foundation + UAT/Go-Live. Owners reassigned (Navneet=Dev, Bhushan=TL, Samarth=PM, Chitranshi=Test, Prakash=DevOps, Client). UAT Batch column added. Planned dates backdated from actuals; tight clustering reflects AI-assisted build velocity. Intervention Dashboard, Apoorva AI, Claude Chatbot left at 'Pending Requirements' with no dates.", "Samarth (PM) + Claude", "Pending MBMA review", "Superseded"],
+    [5, "v6.1", D(2026,6,9), "Status reconciliation against the 7-8 Jun internal UAT-1 E2E run (272 cases, ~60 bugs) + the Jun 1-3 dev sprint. User Management (2.1/2.2) -> Completed (verified). UAT-1 test scripts (15.2) -> Completed; internal dry run (15.3) -> In Progress (executed, 3 P1 fixes pending). Prototyping (6.10) and Milestone Tracker (11/11.1/11.3) -> In Progress after P1 regressions (Bug 54 save-500, Bug 55 dashboard non-functional). No new rows.", "Samarth (PM) + Claude", "Pending MBMA review", "Published"],
 ]
 for r, row in enumerate(prior, 2):
     for c, v in enumerate(row, 1):
