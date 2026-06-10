@@ -1339,7 +1339,7 @@ body > .site-nav { position: fixed; top: 0; left: 0; right: 0; z-index: 9999; }
             <td class="perm-check">Full CRUD</td>
             <td class="perm-check">Full CRUD</td>
             <td class="perm-check">Create + Edit</td>
-            <td class="perm-check">Upload drafts (Labels, Brand, Brochure)</td>
+            <td class="perm-check">View + Edit own drafts (Labels, Brand, Brochure) &middot; <strong>no Create</strong> &middot; <strong>no Delete</strong></td>
             <td class="perm-cross">--</td>
             <td class="perm-view">View only</td>
           </tr>
@@ -1349,7 +1349,7 @@ body > .site-nav { position: fixed; top: 0; left: 0; right: 0; z-index: 9999; }
             <td class="perm-check">Full CRUD</td>
             <td class="perm-check">Create + Edit (own block)</td>
             <td class="perm-cross">--</td>
-            <td class="perm-check">View all tabs (BE / EE / CE); edit only SELCO-relevant fields (pricing, equipment status, disbursement)</td>
+            <td class="perm-check">View all tabs (BE / EE / CE); edit only SELCO-relevant fields (pricing, equipment status, disbursement) &middot; <strong>no Create</strong> &middot; <strong>no Delete</strong></td>
             <td class="perm-view">View only</td>
           </tr>
           <tr>
@@ -1411,6 +1411,15 @@ body > .site-nav { position: fixed; top: 0; left: 0; right: 0; z-index: 9999; }
 
       <div class="callout callout-terra">
         <strong>Block-level restriction:</strong> A Fessociate (field user) can see data from all blocks but can <strong>only create and edit forms for entrepreneurs in their own assigned block</strong>. District and block fields auto-fill from the logged-in user's profile.
+      </div>
+
+      <div class="callout callout-terra">
+        <strong>Specialist roles (Designer &amp; SELCO Executive) &mdash; edit-only, single-framework scope:</strong> these roles work <strong>only inside their one assigned framework</strong> &mdash; Designer in Marketing Tools (Branding / Label / Brochure), SELCO Executive in Infrastructure (BE/EE/CE, SELCO fields only). The framework record itself is <strong>created upstream by the Fessociate</strong> during diagnostics; the specialist only <strong>edits</strong> their relevant fields/drafts on that existing record. Therefore:
+        <ul style="margin:8px 0 0 18px;">
+          <li><strong>No Create</strong> &mdash; specialists cannot create new framework records (or any other record).</li>
+          <li><strong>No Delete</strong> &mdash; anywhere.</li>
+          <li><strong>No access outside their framework</strong> &mdash; every "--" cell is a <strong>hard denial enforced server-side</strong> (doctype permission), not merely hidden from the sidebar. A specialist must not be able to reach another workspace's data via direct URL or API (no read, no write) &mdash; including the Entrepreneurial Landscape, Entrepreneur Profile, Products, Masters, and all non-assigned frameworks.</li>
+        </ul>
       </div>
 
       <!-- Sidebar views per role -->
