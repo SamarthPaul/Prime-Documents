@@ -170,6 +170,7 @@ table.matrix tr:nth-child(even) td { background: var(--offwhite); }
       <a href="#api">API Layer</a>
       <a href="#db">Database Layer</a>
       <a href="#security">Security (OWASP)</a>
+      <a href="#s23-reconciliation">S23 BRD Reconciliation</a>
     </div>
   </nav>
 </aside>
@@ -341,7 +342,9 @@ table.matrix tr:nth-child(even) td { background: var(--offwhite); }
         <tr><td>EP Profile — 10Q + Rural E-Champ during profiling</td><td>—</td><td>—</td><td>—</td><td>✓</td><td>—</td><td>—</td></tr>
         <tr><td>Framework Prioritisation</td><td>✓</td><td>—</td><td>✓</td><td>✓</td><td>—</td><td>—</td></tr>
         <tr><td>All 27 frameworks (read)</td><td>✓</td><td>—</td><td>✓</td><td>✓ (assigned EPs)</td><td>Infra only</td><td>Branding only</td></tr>
-        <tr><td>All 27 frameworks (write)</td><td>✓</td><td>—</td><td>✓</td><td>✓ (assigned EPs)</td><td>Infra SELCO fields only</td><td>Branding draft fields only</td></tr>
+        <tr><td>All 27 frameworks (write / edit existing)</td><td>✓</td><td>—</td><td>✓</td><td>✓ (assigned EPs)</td><td>Infra SELCO fields only · edit-only</td><td>Branding draft fields only · edit-only</td></tr>
+        <tr><td>Frameworks — <strong>create</strong> new record</td><td>✓</td><td>—</td><td>✓</td><td>✓ (own block)</td><td><strong>—</strong> no create</td><td><strong>—</strong> no create</td></tr>
+        <tr><td>Frameworks — <strong>delete</strong> record</td><td>✓</td><td>—</td><td>✓</td><td>—</td><td><strong>—</strong> no delete</td><td><strong>—</strong> no delete</td></tr>
         <tr><td>Fellow Activity Logger</td><td>✓</td><td>—</td><td>✓ (view)</td><td>✓</td><td>—</td><td>—</td></tr>
         <tr><td>EP Status Monitor dashboard</td><td>✓</td><td>✓</td><td>✓</td><td>—</td><td>—</td><td>—</td></tr>
         <tr><td>Infra Monitor dashboard</td><td>✓</td><td>—</td><td>✓</td><td>—</td><td>✓</td><td>—</td></tr>
@@ -352,7 +355,7 @@ table.matrix tr:nth-child(even) td { background: var(--offwhite); }
         <tr><td>Notifications — configure triggers</td><td>✓</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td></tr>
       </tbody>
     </table>
-    <p class="brd" style="font-size:11px;color:var(--ink-faint);font-style:italic;margin-top:6px;">Source: BRD §Role-Permission Matrix (PR-OV-003).</p>
+    <p class="brd" style="font-size:11px;color:var(--ink-faint);font-style:italic;margin-top:6px;">Source: BRD §Role-Permission Matrix (PR-OV-004). Specialist roles (SLC, DSG) are <strong>edit-only</strong> inside their single assigned framework — <strong>no create, no delete, no access to any other workspace</strong>; every "—" is a hard denial enforced <strong>server-side</strong> (doctype permission), not just hidden from the sidebar. The deny paths are exercised by PR-TC-SEC-03x (Session-23 reconciliation).</p>
   </section>
 
   <!-- ============================================================ -->
@@ -7428,6 +7431,167 @@ table.matrix tr:nth-child(even) td { background: var(--offwhite); }
           VAPT report shows no Critical or High findings. Medium findings remediated or risk-accepted with sign-off.
         </div>
         <p class="brd">Solution Doc Assumption: VAPT is client responsibility.</p>
+      </div>
+    </div>
+
+  </section>
+
+  <!-- ============================================================ -->
+  <!-- 24. SESSION-23 BRD RECONCILIATION -->
+  <!-- ============================================================ -->
+  <section class="module" id="s23-reconciliation">
+    <h2>24. Session-23 BRD Reconciliation — Permissions, Status Model &amp; KPIs<span class="pid">PR-TC-S23</span></h2>
+    <p class="desc">Cases added/updated on 10-Jun-2026 to align the master with the BRD (PR-OV-004 permission matrix) and the Session-23 PM design rulings (Q-A…Q-F) + the EP status-model redesign + the Landscape KPI redesign. Each card cites its BRD source and the existing case it supersedes. Items marked <strong>UPDATES</strong> change the Expected result of an existing case; <strong>NEW</strong> covers behaviour not previously tested.</p>
+
+    <div class="subsec"><h3>24.1 Role permission enforcement (deny + positive paths)</h3>
+      <p class="subdesc">Specialist/Program roles must be scoped <em>server-side</em>, not just in the nav. Exercises the deny paths behind Bugs 73/75/76.</p></div>
+
+    <div class="tc neg" data-type="sec" data-pol="neg" data-pri="p0" data-role="dsg">
+      <div class="tc-head"><span class="tc-id">PR-TC-SEC-030</span><span class="tag pol-neg">Negative</span><span class="tag pri-p0">P0</span><span class="tag tp sec">Security</span><span class="tag role">Designer</span></div>
+      <div class="tc-title">Designer cannot CREATE a framework record (no create permission)</div>
+      <div class="tc-body">
+        <span class="label">Preconditions</span><ul><li>Logged in as Designer.</li></ul>
+        <span class="label">Steps</span>
+        <ol><li>Open Diagnostics → Branding Identity → click "+ New" (or POST <code>frappe.client.insert</code> for <code>DF Branding Identity</code>).</li><li>Repeat the API insert for a non-Marketing framework (e.g. <code>DF Financials</code>).</li></ol>
+        <div class="exp"><span class="label">Expected</span> No create path exists: the "+ New" action is absent/disabled, and a direct API insert is rejected <strong>403 server-side</strong> for every framework. Designer edits existing records only.</div>
+        <p class="brd">Source: BRD PR-OV-004 — Designer = "View + Edit own drafts … no Create no Delete". NEW (gap exposed by Bug 73).</p>
+      </div>
+    </div>
+
+    <div class="tc neg" data-type="sec" data-pol="neg" data-pri="p0" data-role="dsg">
+      <div class="tc-head"><span class="tc-id">PR-TC-SEC-031</span><span class="tag pol-neg">Negative</span><span class="tag pri-p0">P0</span><span class="tag tp sec">Security</span><span class="tag role">Designer</span></div>
+      <div class="tc-title">Designer cannot reach non-Marketing workspaces via direct URL or API</div>
+      <div class="tc-body">
+        <span class="label">Preconditions</span><ul><li>Logged in as Designer.</li></ul>
+        <span class="label">Steps</span>
+        <ol><li>Direct-navigate to <code>/primerural/</code> (Landscape), <code>/entrepreneurs</code>, <code>/products</code>, <code>/masters</code>, and <code>/d/DF Financials</code>.</li><li>Call <code>get_list</code> on <code>Enterprenur Profile</code>, <code>Sector</code>, <code>Cohort</code>, and non-Marketing <code>DF *</code> doctypes.</li></ol>
+        <div class="exp"><span class="label">Expected</span> Every one is denied — UI shows the permission-denied page; API returns 403 / empty. Designer has <strong>no read or write</strong> outside Branding/Label/Brochure. (Today: Landscape + all frameworks + 49-doctype Masters are reachable and EP data is readable.)</div>
+        <p class="brd">Source: BRD PR-OV-004 — all non-Marketing cells = "--" (server-enforced). NEW (Bug 73: confidentiality leak — reads all EP/Progress Report).</p>
+      </div>
+    </div>
+
+    <div class="tc neg" data-type="sec" data-pol="neg" data-pri="p1" data-role="slc">
+      <div class="tc-head"><span class="tc-id">PR-TC-SEC-032</span><span class="tag pol-neg">Negative</span><span class="tag pri-p1">P1</span><span class="tag tp sec">Security</span><span class="tag role">SELCO</span></div>
+      <div class="tc-title">SELCO cannot edit non-SELCO (Built-Environment) fields, cannot create, cannot leave Infrastructure</div>
+      <div class="tc-body">
+        <span class="label">Preconditions</span><ul><li>Logged in as SELCO Executive; an Infrastructure record exists.</li></ul>
+        <span class="label">Steps</span>
+        <ol><li>Open the Infrastructure record → Built-Environment tab → attempt to edit a civil field (e.g. Plinth Rate / SQM, Land/Rent fields).</li><li>Attempt to create a new Infrastructure record (+ New) and to open any non-Infrastructure framework / EP / Masters.</li></ol>
+        <div class="exp"><span class="label">Expected</span> BE (civil) fields are read-only — edit is blocked and Save does not enable; SELCO edits only EE/CE + SELCO pricing/equipment/disbursement fields. No "+ New" (no create). All non-Infrastructure workspaces denied. (Today: editing Plinth Rate enabled Save = Bug 75.)</div>
+        <p class="brd">Source: BRD PR-OV-004 — SELCO = "View all tabs (BE/EE/CE); edit only SELCO-relevant fields … no Create no Delete". UPDATES the SELCO row-scope assumption; NEW deny detail (Bug 75).</p>
+      </div>
+    </div>
+
+    <div class="tc neg" data-type="sec" data-pol="neg" data-pri="p0" data-role="ctp">
+      <div class="tc-head"><span class="tc-id">PR-TC-SEC-034</span><span class="tag pol-neg">Negative</span><span class="tag pri-p0">P0</span><span class="tag tp sec">Security</span><span class="tag role">CT-Program</span></div>
+      <div class="tc-title">CT-Program is view-only on Users and Masters (no create / edit / delete)</div>
+      <div class="tc-body">
+        <span class="label">Preconditions</span><ul><li>Logged in as Core Team Program.</li></ul>
+        <span class="label">Steps</span>
+        <ol><li>Open User Manager and a Master (Sector / Cohort).</li><li>Attempt create, edit, and delete on each — via UI and via <code>frappe.client.insert</code>/<code>set_value</code>/<code>delete</code>.</li></ol>
+        <div class="exp"><span class="label">Expected</span> Read works; <strong>create / edit / delete are all blocked</strong> (UI controls absent, API 403). <code>has_permission</code> for User/Sector/Cohort create+write+delete = false. (Today: all return true = Bug 76 — CT-Program can delete users + wipe masters.)</div>
+        <p class="brd">Source: BRD PR-OV-004 — CT-Program = "view-only" Users + Masters. UPDATES PR-TC-UM/PR-TC-MS role rows; NEW deny detail (Bug 76).</p>
+      </div>
+    </div>
+
+    <div class="tc pos" data-type="sec" data-pol="pos" data-pri="p1" data-role="dsg">
+      <div class="tc-head"><span class="tc-id">PR-TC-SEC-036</span><span class="tag pol-pos">Positive</span><span class="tag pri-p1">P1</span><span class="tag tp sec">Security</span><span class="tag role">Designer/SELCO</span></div>
+      <div class="tc-title">Specialist positive path — edit own framework's existing record</div>
+      <div class="tc-body">
+        <span class="label">Preconditions</span><ul><li>A Branding (for Designer) / Infrastructure (for SELCO) record already created by the FA.</li></ul>
+        <span class="label">Steps</span>
+        <ol><li>Designer: open the Branding record, upload/edit a draft (Label/Brand/Brochure) field, Save.</li><li>SELCO: open the Infrastructure record, edit a SELCO field (pricing / equipment status / disbursement), Save.</li></ol>
+        <div class="exp"><span class="label">Expected</span> Edit + Save succeed on the assigned framework's existing record (this is the role's one allowed action). Confirms scoping removes everything else but preserves the legitimate edit.</div>
+        <p class="brd">Source: BRD PR-OV-004. NEW positive control.</p>
+      </div>
+    </div>
+
+    <div class="subsec"><h3>24.2 EP status model + Final Selection</h3>
+      <p class="subdesc">Status is two orthogonal fields; MET/Active redefined; Final Selection attachment mandatory.</p></div>
+
+    <div class="tc pos" data-type="func" data-pol="pos" data-pri="p0" data-role="ctp">
+      <div class="tc-head"><span class="tc-id">PR-TC-EP-050</span><span class="tag pol-pos">Positive</span><span class="tag pri-p0">P0</span><span class="tag tp func">Functional</span><span class="tag role">CTIT/CTP</span></div>
+      <div class="tc-title">EP status = two orthogonal fields: selection_status + engagement_status</div>
+      <div class="tc-body">
+        <span class="label">Steps</span>
+        <ol><li>On an EP, set selection_status = Incubated and engagement_status = Discontinued.</li><li>Reload; check the Landscape funnel + Active count.</li></ol>
+        <div class="exp"><span class="label">Expected</span> Both persist independently — an EP can be Incubated <em>and</em> Discontinued (selection outcome retained, engagement ended). selection_status ∈ {MET→Incubated|Supported}; engagement_status ∈ {Active, Discontinued}. (Replaces the single mutually-exclusive enum {Active,Incubated,Supported}.)</div>
+        <p class="brd">Source: S23 PM decision (two-field model). NEW — supersedes any single-status case in §15.</p>
+      </div>
+    </div>
+
+    <div class="tc neg" data-type="func" data-pol="neg" data-pri="p1" data-role="ctp">
+      <div class="tc-head"><span class="tc-id">PR-TC-EP-051</span><span class="tag pol-neg">Negative</span><span class="tag pri-p1">P1</span><span class="tag tp func">Functional</span><span class="tag role">CTIT/CTP</span></div>
+      <div class="tc-title">Final Selection requires a supporting attachment (mandatory gate)</div>
+      <div class="tc-body">
+        <span class="label">Steps</span><ol><li>Set Final Selection = Incubated (or Supported) with no attachment uploaded.</li><li>Save.</li></ol>
+        <div class="exp"><span class="label">Expected</span> Save is blocked with a clear "attachment required" message until a supporting document is attached. (Today the gate is not enforced — Bug 50.)</div>
+        <p class="brd">Source: BRD PR-TC-EP-021 + S23 PM ruling Q-F (mandatory). UPDATES PR-TC-EP-021.</p>
+      </div>
+    </div>
+
+    <div class="subsec"><h3>24.3 Landscape KPI cards</h3>
+      <p class="subdesc">MET replaces Total; Active redefined; Blocks Covered added; coverage cards use distinct non-null geo.</p></div>
+
+    <div class="tc pos" data-type="func" data-pol="pos" data-pri="p1" data-role="ctp">
+      <div class="tc-head"><span class="tc-id">PR-TC-DB-060</span><span class="tag pol-pos">Positive</span><span class="tag pri-p1">P1</span><span class="tag tp func">Functional</span><span class="tag role">CTIT/CTP/DC</span></div>
+      <div class="tc-title">Landscape KPI card set + definitions</div>
+      <div class="tc-body">
+        <span class="label">Steps</span><ol><li>Open Landscape; read the KPI cards.</li></ol>
+        <div class="exp"><span class="label">Expected</span> Cards = <strong>MET (= count of all saved EPs)</strong> · <strong>Active (= engagement_status ≠ Discontinued, includes Incubated/Supported)</strong> · Incubated · Supported · GPS Verified · Districts Covered · <strong>Blocks Covered</strong> · Village Visits. There is <strong>no "Total Entrepreneurs" card</strong> (MET is the headline total). MET must equal the EP-list count. (Today: Total=18 + MET card=Active card=15 duplicate — Bugs 64/68.)</div>
+        <p class="brd">Source: S23 PM KPI redesign + Q-D. NEW — supersedes Landscape KPI cases in §19 referencing "Total Entrepreneurs"/MET-as-profiled-only.</p>
+      </div>
+    </div>
+
+    <div class="tc pos" data-type="func" data-pol="pos" data-pri="p2" data-role="ctp">
+      <div class="tc-head"><span class="tc-id">PR-TC-DB-061</span><span class="tag pol-pos">Positive</span><span class="tag pri-p2">P2</span><span class="tag tp func">Functional</span><span class="tag role">CTIT/CTP/DC</span></div>
+      <div class="tc-title">Districts/Blocks Covered = distinct non-null geo; Village-Visits mode hides EP widgets</div>
+      <div class="tc-body">
+        <span class="label">Steps</span><ol><li>Read Districts Covered + Blocks Covered.</li><li>Switch map mode to "Village Visits".</li></ol>
+        <div class="exp"><span class="label">Expected</span> Districts Covered = <code>COUNT(DISTINCT district WHERE district != '')</code>; Blocks Covered = same over block. In Village-Visits mode the entrepreneur widgets (BY SECTOR panel + MET/Active/Incubated/Supported/GPS cards) are <strong>hidden</strong>; only visit-relevant widgets show. (Today: BY SECTOR + entrepreneur cards persist — Bugs 71/62.)</div>
+        <p class="brd">Source: S23 PM KPI redesign (Bug 69) + Q-on mode-context (Bugs 71/62). NEW.</p>
+      </div>
+    </div>
+
+    <div class="subsec"><h3>24.4 Design rulings (Q-A, Q-B, Q-C, Q-E)</h3></div>
+
+    <div class="tc pos" data-type="func" data-pol="pos" data-pri="p1" data-role="fa">
+      <div class="tc-head"><span class="tc-id">PR-TC-AL-040</span><span class="tag pol-pos">Positive</span><span class="tag pri-p1">P1</span><span class="tag tp func">Functional</span><span class="tag role">FA</span></div>
+      <div class="tc-title">Activity Logger default scope + widenable Field-Associate filter (Q-A)</div>
+      <div class="tc-body">
+        <span class="label">Steps</span><ol><li>Open Activity Logger as an FA.</li><li>Change the Field-Associate filter to another fellow in the same district.</li><li>Try to widen beyond own district.</li></ol>
+        <div class="exp"><span class="label">Expected</span> On load a <strong>default filter</strong> = own district + own block + self (so the default view is own logs). The Field-Associate filter <strong>works</strong> and can be widened up to <strong>own district / all blocks</strong> (other fellows' logs become visible). Widening beyond own district is not allowed. (Today: hard self-scope + the field_associate filter is ignored — Bugs 60/67.)</div>
+        <p class="brd">Source: S23 PM ruling Q-A. UPDATES PR-TC-AL scope cases.</p>
+      </div>
+    </div>
+
+    <div class="tc neg" data-type="func" data-pol="neg" data-pri="p2" data-role="fa">
+      <div class="tc-head"><span class="tc-id">PR-TC-VS-020</span><span class="tag pol-neg">Negative</span><span class="tag pri-p2">P2</span><span class="tag tp func">Functional</span><span class="tag role">FA/CTP</span></div>
+      <div class="tc-title">Village Survey is one-per-village (2nd survey to same village is rejected — by design)</div>
+      <div class="tc-body">
+        <span class="label">Steps</span><ol><li>Create a Village Survey for village X; save.</li><li>Attempt a second survey for the same village X.</li></ol>
+        <div class="exp"><span class="label">Expected</span> The second attempt is <strong>rejected</strong> (duplicate village_id / 409) — <em>this is intended</em>, not a bug. One survey record per village, re-edited over time. (Resolves the Session-20 "repeat-visit?" design flag.)</div>
+        <p class="brd">Source: S23 PM ruling Q-C (autoname=village_id intended).</p>
+      </div>
+    </div>
+
+    <div class="tc pos" data-type="func" data-pol="pos" data-pri="p2" data-role="fa">
+      <div class="tc-head"><span class="tc-id">PR-TC-PR-030</span><span class="tag pol-pos">Positive</span><span class="tag pri-p2">P2</span><span class="tag tp func">Functional</span><span class="tag role">FA/CTP</span></div>
+      <div class="tc-title">Product Sector auto-derives from Business Basket and is read-only (Q-E)</div>
+      <div class="tc-body">
+        <span class="label">Steps</span><ol><li>On a Product, pick a Business Basket (e.g. Candy).</li><li>Observe Sector; attempt to set a different Sector manually.</li></ol>
+        <div class="exp"><span class="label">Expected</span> Sector auto-fills from the Basket (Candy → Food Processing) and is <strong>read-only</strong> — a manual Sector pick is not possible / does not override. (Today it auto-derives but silently overrides a manual pick instead of being read-only — confusing; cf. Bug 49 family.)</div>
+        <p class="brd">Source: S23 PM ruling Q-E (auto-derive wins; make field read-only).</p>
+      </div>
+    </div>
+
+    <div class="tc pos" data-type="func" data-pol="pos" data-pri="p3" data-role="all">
+      <div class="tc-head"><span class="tc-id">PR-TC-NT-030</span><span class="tag pol-pos">Positive</span><span class="tag pri-p3">P3</span><span class="tag tp func">Functional</span><span class="tag role">All</span></div>
+      <div class="tc-title">Bell mark-read syncs the Notification Center record's read_at (Q-B)</div>
+      <div class="tc-body">
+        <span class="label">Steps</span><ol><li>Receive a Notification Center notification (unread).</li><li>Click the bell row to mark it read.</li><li>Open Notification Center; check the record's Read/read_at.</li></ol>
+        <div class="exp"><span class="label">Expected</span> Marking read via the bell <strong>also</strong> sets the Notification Center record's <code>read_at</code> — read state is consistent across both views. (Today the two stores don't cross-sync — Bug 61 minor.)</div>
+        <p class="brd">Source: S23 PM ruling Q-B.</p>
       </div>
     </div>
 
