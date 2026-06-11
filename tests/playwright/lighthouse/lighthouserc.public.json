@@ -1,0 +1,28 @@
+{
+  "//": "Lighthouse-CI — PUBLIC pages (no auth). §10 Performance Baselines: Login budget.",
+  "//run": "npm run lighthouse:public   (or: npx @lhci/cli autorun --config=lighthouse/lighthouserc.public.json)",
+  "//note": "BASE_URL is hardcoded to staging; edit the url below if the host changes. Desktop preset = throttled CPU+network to approximate a real first visit (NOT a warm load).",
+  "ci": {
+    "collect": {
+      "url": ["https://stgprime-rural.dhwaniris.in/login"],
+      "numberOfRuns": 3,
+      "settings": {
+        "preset": "desktop",
+        "throttlingMethod": "simulate",
+        "onlyCategories": ["performance"]
+      }
+    },
+    "assert": {
+      "assertions": {
+        "first-contentful-paint":   ["error", { "maxNumericValue": 1000 }],
+        "largest-contentful-paint": ["error", { "maxNumericValue": 1500 }],
+        "total-blocking-time":      ["error", { "maxNumericValue": 200 }],
+        "cumulative-layout-shift":  ["error", { "maxNumericValue": 0.1 }]
+      }
+    },
+    "upload": {
+      "target": "filesystem",
+      "outputDir": "./lighthouse/.report-public"
+    }
+  }
+}

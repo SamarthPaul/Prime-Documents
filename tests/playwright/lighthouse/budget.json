@@ -1,0 +1,33 @@
+[
+  {
+    "_comment": "Per-page timing budgets transcribed from test-cases §10 (PR-TC-XC-PERF). Milliseconds. Applied via lighthouserc settings.budgetsPath; shown as budget rows in the LH report.",
+    "path": "/login",
+    "timings": [
+      { "metric": "first-contentful-paint", "budget": 1000 },
+      { "metric": "largest-contentful-paint", "budget": 1500 },
+      { "metric": "total-blocking-time", "budget": 200 }
+    ]
+  },
+  {
+    "path": "/primerural/",
+    "timings": [
+      { "metric": "first-contentful-paint", "budget": 1500 },
+      { "metric": "largest-contentful-paint", "budget": 3000 },
+      { "metric": "interactive", "budget": 3500 }
+    ]
+  },
+  {
+    "path": "/primerural/entrepreneurs",
+    "timings": [
+      { "metric": "first-contentful-paint", "budget": 1000 },
+      { "metric": "largest-contentful-paint", "budget": 2000 }
+    ]
+  },
+  {
+    "path": "/primerural/d/*",
+    "timings": [
+      { "metric": "first-contentful-paint", "budget": 1000 },
+      { "metric": "largest-contentful-paint", "budget": 2500 }
+    ]
+  }
+]

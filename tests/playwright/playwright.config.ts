@@ -4,6 +4,9 @@ import * as path from 'path';
 
 dotenv.config({ path: path.resolve(__dirname, '.env') });
 
+/** The §5 cross-browser smoke spec — owned by the firefox/webkit/chromium-smoke projects only. */
+const CROSS_BROWSER_SMOKE = /00-crossbrowser-smoke\.spec\.ts/;
+
 /**
  * PRIME Rural E2E config.
  *
@@ -46,19 +49,23 @@ export default defineConfig({
   },
 
   projects: [
-    // Authenticated projects — one per role. Each reads its storageState.
-    { name: 'sm',       use: { ...devices['Desktop Chrome'], storageState: '.auth/uat-sm.json' } },
-    { name: 'cti',      use: { ...devices['Desktop Chrome'], storageState: '.auth/uat-cti.json' } },
-    { name: 'ctp',      use: { ...devices['Desktop Chrome'], storageState: '.auth/uat-ctp.json' } },
-    { name: 'fa',       use: { ...devices['Desktop Chrome'], storageState: '.auth/uat-fa.json' } },
-    { name: 'selco',    use: { ...devices['Desktop Chrome'], storageState: '.auth/uat-selco.json' } },
-    { name: 'designer', use: { ...devices['Desktop Chrome'], storageState: '.auth/uat-designer.json' } },
+    // Authenticated role projects (Chromium) — run the full suite EXCEPT the
+    // cross-browser smoke (that is owned by the firefox/webkit/chromium-smoke projects).
+    { name: 'sm',       testIgnore: CROSS_BROWSER_SMOKE, use: { ...devices['Desktop Chrome'], storageState: '.auth/uat-sm.json' } },
+    { name: 'cti',      testIgnore: CROSS_BROWSER_SMOKE, use: { ...devices['Desktop Chrome'], storageState: '.auth/uat-cti.json' } },
+    { name: 'ctp',      testIgnore: CROSS_BROWSER_SMOKE, use: { ...devices['Desktop Chrome'], storageState: '.auth/uat-ctp.json' } },
+    { name: 'fa',       testIgnore: CROSS_BROWSER_SMOKE, use: { ...devices['Desktop Chrome'], storageState: '.auth/uat-fa.json' } },
+    { name: 'selco',    testIgnore: CROSS_BROWSER_SMOKE, use: { ...devices['Desktop Chrome'], storageState: '.auth/uat-selco.json' } },
+    { name: 'designer', testIgnore: CROSS_BROWSER_SMOKE, use: { ...devices['Desktop Chrome'], storageState: '.auth/uat-designer.json' } },
 
     // Unauthenticated project — for login / negative-auth tests
-    { name: 'anon',     use: { ...devices['Desktop Chrome'], storageState: { cookies: [], origins: [] } } },
+    { name: 'anon',     testIgnore: CROSS_BROWSER_SMOKE, use: { ...devices['Desktop Chrome'], storageState: { cookies: [], origins: [] } } },
 
-    // Cross-browser sanity (run on demand: --project=firefox or --project=webkit)
-    { name: 'firefox',  use: { ...devices['Desktop Firefox'], storageState: '.auth/uat-sm.json' } },
-    { name: 'webkit',   use: { ...devices['Desktop Safari'],  storageState: '.auth/uat-sm.json' } },
+    // §5 Cross-browser compatibility — these projects run ONLY the cross-browser
+    // smoke spec, on the three desktop engines (Blink / Gecko / WebKit). Run all
+    // three with: npm run test:xbrowser  (or --project=firefox / webkit / chromium-smoke)
+    { name: 'chromium-smoke', testMatch: CROSS_BROWSER_SMOKE, use: { ...devices['Desktop Chrome'],   storageState: '.auth/uat-sm.json' } },
+    { name: 'firefox',        testMatch: CROSS_BROWSER_SMOKE, use: { ...devices['Desktop Firefox'],  storageState: '.auth/uat-sm.json' } },
+    { name: 'webkit',         testMatch: CROSS_BROWSER_SMOKE, use: { ...devices['Desktop Safari'],   storageState: '.auth/uat-sm.json' } },
   ],
 });

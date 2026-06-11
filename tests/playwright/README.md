@@ -76,8 +76,13 @@ already logged in as the Field Associate.
 | `selco`   | SELCO                      | `.auth/uat-selco.json`    |
 | `designer`| Designer                   | `.auth/uat-designer.json` |
 | `anon`    | unauthenticated            | (none)                    |
-| `firefox` | SM in Firefox              | `.auth/uat-sm.json`       |
-| `webkit`  | SM in Safari/WebKit        | `.auth/uat-sm.json`       |
+| `chromium-smoke` | SM, Blink — §5 smoke only | `.auth/uat-sm.json` |
+| `firefox` | SM, Gecko — §5 smoke only  | `.auth/uat-sm.json`       |
+| `webkit`  | SM, WebKit — §5 smoke only | `.auth/uat-sm.json`       |
+
+The `chromium-smoke` / `firefox` / `webkit` projects run **only**
+`00-crossbrowser-smoke.spec.ts` (project `testMatch`); the role projects `testIgnore`
+that file so the full suite stays Chromium-only. See the cross-browser section below.
 
 Run a single project: `npx playwright test --project=fa`.
 
@@ -128,8 +133,54 @@ sweep them.
 
 - on `workflow_dispatch` (manual trigger, with optional `suite` + `project` inputs)
 - nightly at 07:30 IST Mon–Fri
+- installs **Chromium + Firefox + WebKit** (the last two power the §5 cross-browser smoke)
 
 Artifacts: HTML report (always) + traces (on failure). 14-day retention.
+
+`.github/workflows/lighthouse.yml` runs the §10 performance baselines (manual + weekly Mon 08:00 IST).
+
+---
+
+## Cross-browser (§5) & Lighthouse performance (§10)
+
+### §5 — Cross-browser smoke
+
+`tests/00-crossbrowser-smoke.spec.ts` is a small, engine-agnostic smoke (app shell +
+Landscape render, Georgia font resolves, EP list + a framework list load, no JS errors,
+no horizontal scroll). It runs on **three desktop engines** via dedicated projects that
+match **only** this spec (`chromium-smoke`, `firefox`, `webkit`); the role projects
+`testIgnore` it so they stay Chromium-only.
+
+```bash
+npm run install:browsers:all     # chromium + firefox + webkit (once)
+npm run test:xbrowser            # runs the smoke on all 3 engines
+npx playwright test --project=webkit   # one engine
+```
+
+Real Safari-on-iOS / Edge / specific devices still need a cloud device lab
+(BrowserStack / LambdaTest). Per §6 the web app has **no phone scope** — fellows use the
+Flutter app — so desktop engines + laptop form factors are the §5 target.
+
+### §10 — Lighthouse baselines
+
+`lighthouse/` holds the Lighthouse-CI configs (desktop preset, **throttled** — i.e. a
+realistic first visit, not a warm load), with budgets transcribed from §10
+(`budget.json`):
+
+```bash
+npm run lighthouse:public        # login page — HARD budget (FCP<1s, LCP<1.5s, TBT<200, CLS<0.1)
+npm run lighthouse:auth          # dashboard/list/form — needs UAT_SM_PASSWORD; WARN-level
+npm run lighthouse               # both
+```
+
+- `lighthouserc.public.json` — login page, assertions at **error** (fails CI on breach).
+- `lighthouserc.auth.json` — authenticated pages; logs in via `lh-login.js`
+  (`POST /api/method/login` as Super Admin → session cookie), assertions at **warn**.
+- `budget.json` — per-page FCP/LCP targets from the §10 table.
+
+> **Draft status:** the public/login budget is enforced; the authenticated pages are
+> warn-level pending stable baselines. Tune `lighthouserc.auth.json` assertions to
+> `error` and per-page once the numbers settle. Needs `UAT_SM_PASSWORD` in env (CI: GH secret).
 
 ---
 

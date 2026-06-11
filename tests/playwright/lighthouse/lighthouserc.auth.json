@@ -1,0 +1,34 @@
+{
+  "//": "Lighthouse-CI — AUTHENTICATED pages. §10 Performance Baselines: Dashboard / List / Form.",
+  "//run": "npm run lighthouse:auth   (needs UAT_SM_PASSWORD in env — see lh-login.js)",
+  "//budgets": "Per-page targets differ (see budget.json + §10 table), so per-metric assertions here are WARN-level. budget.json is applied via settings.budgetsPath for per-path numeric budgets in the report. Tune to 'error' once baselines are stable.",
+  "ci": {
+    "collect": {
+      "url": [
+        "https://stgprime-rural.dhwaniris.in/primerural/",
+        "https://stgprime-rural.dhwaniris.in/primerural/entrepreneurs",
+        "https://stgprime-rural.dhwaniris.in/primerural/d/DF Financials"
+      ],
+      "numberOfRuns": 2,
+      "puppeteerScript": "./lighthouse/lh-login.js",
+      "settings": {
+        "preset": "desktop",
+        "throttlingMethod": "simulate",
+        "onlyCategories": ["performance"],
+        "budgetsPath": "./lighthouse/budget.json"
+      }
+    },
+    "assert": {
+      "assertions": {
+        "first-contentful-paint":   ["warn", { "maxNumericValue": 1500 }],
+        "largest-contentful-paint": ["warn", { "maxNumericValue": 3000 }],
+        "total-blocking-time":      ["warn", { "maxNumericValue": 300 }],
+        "cumulative-layout-shift":  ["warn", { "maxNumericValue": 0.1 }]
+      }
+    },
+    "upload": {
+      "target": "filesystem",
+      "outputDir": "./lighthouse/.report-auth"
+    }
+  }
+}
