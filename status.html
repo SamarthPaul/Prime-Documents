@@ -120,7 +120,7 @@
   <div class="header">
     <h1>PRIME Rural CRM - Project Status Summary</h1>
     <div class="subtitle">MBMA Meghalaya | Dhwani Rural Information Services</div>
-    <div class="date">As on: 11 June 2026 | Build %s are delivery-team estimates reconciled against the 7&ndash;8 June internal E2E run + the 9&ndash;10 June per-role security pass (Sessions 22&ndash;23, see UAT Findings below) | Section header % now equals its subtotal row in every section | Click any module row to see remaining items</div>
+    <div class="date">As on: 12 June 2026 | Build %s reconciled against the 7&ndash;8 June E2E run, the 9&ndash;10 June per-role security pass, and the 11 June full retest of bugs 46&ndash;81 (see UAT Findings below) | Section header % equals its subtotal row in every section | Click any module row to see remaining items</div>
   </div>
 
 
@@ -128,7 +128,7 @@
   <div class="kpi-strip">
     <div class="kpi-card">
       <div class="label">Total Activities</div>
-      <div class="value">235</div>
+      <div class="value">236</div>
     </div>
     <div class="kpi-card">
       <div class="label">Completed</div>
@@ -140,7 +140,7 @@
     </div>
     <div class="kpi-card">
       <div class="label">Remaining</div>
-      <div class="value amber">79</div>
+      <div class="value amber">80</div>
     </div>
     <div class="kpi-card">
       <div class="label">Overall Completion</div>
@@ -148,7 +148,7 @@
     </div>
   </div>
   <div style="font-size:11px;color:var(--text-secondary);margin:-8px 0 16px;padding:0 4px;">
-    Overall % = (Completed + &frac12;&middot;In&nbsp;Progress) &divide; Total, reconciled to the section subtotals below. <strong>The build did not advance since the 9-Jun snapshot &mdash; Sessions 22&ndash;23 (9&ndash;10 Jun) were a per-role security/UAT pass, not new build.</strong> The +1 pt (60&rarr;61%) is one fix (Bug 46, CT-IT User CRUD) + QA execution + the now-out-of-scope Intervention Dashboard leaving the denominator, partly offset by 3 new permission defects (Bugs 73/76 P1, 75 P2) booked as remediation activities. Two earlier P1 regressions (Milestone Tracker Bug 55, Prototyping Bug 54) remain open.
+    Overall % = (Completed + &frac12;&middot;In&nbsp;Progress) &divide; Total, reconciled to the section subtotals below. <strong>Overall holds at 61%</strong> after the 11-Jun retest: the 11-Jun partial deploy fixed Milestone Tracker (Bug 55) and partially shipped the Landscape KPI redesign, but those are dashboard items already counted as in-progress, so the fixes lift the Dashboards section (62&rarr;72%) without converting any activity to "done". One new P1 (Bug 79) was booked as remaining. <strong>&#9888; The deploy is PARTIAL/STALE</strong> &mdash; only 5 of 36 retested bugs are verified fixed; the permission P1s (73/76/79), header, and schema fixes are NOT live and await a full <code>build&rarr;migrate&rarr;clear-cache&rarr;restart</code>.
   </div>
 
   <div class="legend">
@@ -161,21 +161,25 @@
   <!-- ============ UAT-1 / E2E FINDINGS ============ -->
   <div class="type-section" style="border-left:3px solid var(--prime-green);">
     <div class="type-header">
-      <h2>Internal UAT-1 / E2E Findings &mdash; staging, 7&ndash;10 June 2026</h2>
-      <div class="pct" style="font-size:14px;">76 findings</div>
+      <h2>Internal UAT-1 / E2E Findings &mdash; staging, 7&ndash;11 June 2026</h2>
+      <div class="pct" style="font-size:14px;">81 findings</div>
     </div>
     <div style="padding:16px 24px;font-size:13px;color:var(--text);">
-      <p style="margin-bottom:12px;">A full end-to-end pass was driven against staging as a real Field User (7&ndash;8 Jun, after the Jun 1&ndash;3 dev sprint): <strong>272 of 330 cases executed &mdash; 67 pass / 37 fail / 168 blocked</strong> (blocked = needs per-role login, manual, or infra). A follow-on <strong>per-role security pass (9&ndash;10 Jun, Sessions 22&ndash;23)</strong> then logged in as CT-IT, CT-Program, Designer and SELCO. Bug tracker now runs to <strong>ID 76</strong>; the test-case master has grown to <strong>765 cases</strong>. District Coordinator role still pending creds.</p>
+      <p style="margin-bottom:12px;">A full end-to-end pass was driven against staging as a real Field User (7&ndash;8 Jun): <strong>272 of 330 cases executed &mdash; 67 pass / 37 fail / 168 blocked</strong>. A <strong>per-role security pass (9&ndash;10 Jun)</strong> logged in as CT-IT, CT-Program, Designer and SELCO. A <strong>full retest of bugs 46&ndash;81 (11 Jun)</strong> then re-verified every finding against staging: <strong>5 FIXED &middot; 19 still OPEN &middot; 12 not re-exercised</strong> (need record-creation/multi-step flows). Bug tracker now runs to <strong>ID 81</strong>; test-case master at <strong>765 cases</strong>. District Coordinator role still pending creds.</p>
+
+      <div style="background:#fff7ed;border:1px solid #fdba74;border-radius:6px;padding:10px 14px;margin-bottom:14px;font-size:12px;color:#9a3412;">
+        <strong>&#9888; DEPLOYMENT IS PARTIAL / STALE (11-Jun retest).</strong> The dev reported "all bugs fixed + deployed", but a cache-busted re-verify against the PM-confirmed host (<code>stgprime-rural.dhwaniris.in</code>) shows only <strong>two</strong> areas actually shipped: Milestone Tracker backend (Bug 55) and the Landscape KPI redesign (Bugs 63/64/68). Live proof the rest is NOT deployed: header still reads "the Doorstep" (Bug 70); <code>has_permission</code> still returns Designer&rarr;framework write = true and CT-Program&rarr;User delete = true (Bugs 73/76); EP doctype has no <code>selection_status</code>/<code>engagement_status</code> fields (migrate not run). <strong>Action for dev:</strong> confirm deployed commit == fix branch, then <code>bench build</code> &rarr; <code>migrate</code> &rarr; <code>clear-cache</code> &rarr; <code>restart</code>, then re-run the 46&ndash;81 sweep.
+      </div>
 
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
         <div>
-          <h3 style="font-size:13px;color:#b91c1c;margin-bottom:6px;">&#9888; P1 / Blockers (5)</h3>
+          <h3 style="font-size:13px;color:#b91c1c;margin-bottom:6px;">&#9888; P1 / Blockers still OPEN (5)</h3>
           <ul style="padding-left:18px;font-size:12px;color:var(--text-secondary);">
-            <li style="margin-bottom:4px;"><strong>Bug 73 (NEW, per-role pass)</strong> &mdash; Designer role effectively UNSCOPED: read + <em>write</em> on all 27 frameworks, full Masters (49 doctypes via URL), full Landscape. Nav is trimmed but doctype permissions are not enforced. Confidentiality breach.</li>
-            <li style="margin-bottom:4px;"><strong>Bug 76 (NEW, per-role pass)</strong> &mdash; CT-Program over-privileged: <code>has_permission</code> confirms create / write / <em>DELETE</em> on Users + Masters + EP + frameworks (BRD = view-only Users/Masters).</li>
-            <li style="margin-bottom:4px;"><strong>Bug 54</strong> &mdash; DF Product Prototyping cannot save (server 500, controller references missing <code>framework_name</code>). 1 of 27 frameworks.</li>
-            <li style="margin-bottom:4px;"><strong>Bug 55</strong> &mdash; Milestone Tracker dashboard non-functional for all roles (<code>get_milestone_data</code> ModuleNotFoundError; 85 seeded activities gone). Re-confirmed from a privileged session (Session 22).</li>
-            <li style="margin-bottom:4px;"><strong>Bug 48</strong> &mdash; 17 of 42 Masters-page cards are dead links (route to non-existent doctypes; data intact under prefixed names). Config fix.</li>
+            <li style="margin-bottom:4px;"><strong>Bug 73</strong> &mdash; Designer role effectively UNSCOPED: read + <em>write</em> on all 27 frameworks, full Masters (49 doctypes via URL), full Landscape. Re-confirmed OPEN 11-Jun (<code>has_permission</code> still true). Confidentiality breach.</li>
+            <li style="margin-bottom:4px;"><strong>Bug 76</strong> &mdash; CT-Program over-privileged: <code>has_permission</code> confirms create / write / <em>DELETE</em> on Users + Masters + EP + frameworks (BRD = view-only). Re-confirmed OPEN 11-Jun.</li>
+            <li style="margin-bottom:4px;"><strong>Bug 79 (NEW, 11-Jun retest)</strong> &mdash; role-profile save fails (502/417) &rarr; new users can be created <em>role-less</em>. Residual of the Bug 46 user-create flow.</li>
+            <li style="margin-bottom:4px;"><strong>Bug 54</strong> &mdash; DF Product Prototyping cannot save (server 500, missing <code>framework_name</code>). Not re-exercised 11-Jun (narrow deploy &rArr; very likely still open).</li>
+            <li style="margin-bottom:4px;"><strong>Bug 48</strong> &mdash; 17 of 42 Masters-page cards are dead links. Not re-exercised 11-Jun (probe inconclusive under swapped session).</li>
           </ul>
           <h3 style="font-size:13px;color:var(--amber);margin:10px 0 6px;">Notable P2 (selection)</h3>
           <ul style="padding-left:18px;font-size:12px;color:var(--text-secondary);">
@@ -187,9 +191,11 @@
           </ul>
         </div>
         <div>
-          <h3 style="font-size:13px;color:var(--prime-green);margin-bottom:6px;">&#10003; Verified working / positives</h3>
+          <h3 style="font-size:13px;color:var(--prime-green);margin-bottom:6px;">&#10003; Fixed &amp; verified (11-Jun retest: 5)</h3>
           <ul style="padding-left:18px;font-size:12px;color:var(--text-secondary);">
-            <li style="margin-bottom:4px;"><strong>Bug 46 RESOLVED</strong> &mdash; CT-IT full User CRUD now persists + deletes (create save threw a transient 502 but the commit landed); the Allow-dropdown 403 is gone.</li>
+            <li style="margin-bottom:4px;"><strong>Bug 55 FIXED &amp; DEPLOYED</strong> &mdash; Milestone Tracker backend restored (<code>get_milestone_data</code> now returns 200 + data); dashboard loads for all roles.</li>
+            <li style="margin-bottom:4px;"><strong>Bugs 63 / 64 / 68 FIXED &amp; DEPLOYED</strong> &mdash; Landscape KPI redesign partially shipped: redundant "Total Entrepreneurs" card removed, MET now = all-saved EPs (=18), MET/Active duplicate resolved.</li>
+            <li style="margin-bottom:4px;"><strong>Bug 46 RESOLVED</strong> &mdash; CT-IT full User CRUD now persists + deletes; the Allow-dropdown 403 is gone (residual Bug 79 on role-profile save).</li>
             <li style="margin-bottom:4px;"><strong>Real notification flow CONFIRMED</strong> (Session 22) &mdash; CT-IT &rarr; Field User: bell unread + Center + EP deep-link + mark-read all work.</li>
             <li style="margin-bottom:4px;"><strong>26 of 27 diagnostic frameworks</strong> create + save + persist cleanly as a Field User.</li>
             <li style="margin-bottom:4px;"><strong>Ex-#1 UAT blocker appears FIXED</strong> &mdash; the binding family (EP District/Block, Product Sector/Type, Final Selection) no longer reproduces; pending dev confirmation.</li>
@@ -200,7 +206,7 @@
           </ul>
         </div>
       </div>
-      <p style="margin-top:12px;font-size:11px;color:#999;">Full bug list in <code>generated/test-cases.xlsx</code> (Bugs Only) and the bug tracker (IDs 46&ndash;76). <strong>PM ruling (9-Jun): Intervention Dashboard is OUT OF SCOPE</strong> &mdash; being redeveloped against new requirements; excluded from all counts below. <strong>PM ruling (10-Jun): scoped roles (Designer/SELCO) must see + edit only their own framework, no create, no delete</strong> &mdash; remediation target for Bugs 73/75. Landscape KPI model redesigned (split selection vs engagement status; build pending). Remaining E2E surface: District Coordinator login, deep cost-grid calcs (Unit Pricing line items, Infrastructure Financial Model), Notifications, Village-Survey GPS capture.</p>
+      <p style="margin-top:12px;font-size:11px;color:#999;">Full bug list in <code>generated/test-cases.xlsx</code> (Bugs Only) and the bug tracker (IDs 46&ndash;81, each carrying an 11-Jun retest verdict). <strong>PM ruling (9-Jun): Intervention Dashboard is OUT OF SCOPE</strong> &mdash; excluded from all counts below. <strong>PM ruling (10-Jun): scoped roles (Designer/SELCO) must see + edit only their own framework, no create, no delete</strong> &mdash; remediation target for Bugs 73/75 (both still OPEN). Landscape KPI redesign (split selection vs engagement status) is partially shipped &mdash; cards done, but the <code>selection_status</code>/<code>engagement_status</code> schema migration is not yet run. Remaining E2E surface: District Coordinator login (Bugs 77/78), deep cost-grid calcs, Notifications, Village-Survey GPS capture, plus the 12 not-re-exercised bugs (47/48/49/51/52/53/54/59/60/61/66/67).</p>
     </div>
   </div>
 
@@ -208,7 +214,7 @@
   <div class="type-section">
     <div class="type-header">
       <h2>Dashboards</h2>
-      <div class="pct">62%</div>
+      <div class="pct">72%</div>
     </div>
     <div class="module-row subheader">
       <div>Dashboard</div>
@@ -224,13 +230,14 @@
       <div class="count completed">0</div>
       <div class="count inprogress">1</div>
       <div class="count notstarted">0</div>
-      <div class="progress-wrap"><div class="progress-bar"><div class="progress-fill blue-fill" style="width:70%"></div></div></div>
-      <div class="pct-cell mid">70%</div>
+      <div class="progress-wrap"><div class="progress-bar"><div class="progress-fill blue-fill" style="width:75%"></div></div></div>
+      <div class="pct-cell mid">75%</div>
     </div>
     <div class="remaining-drawer" id="d1">
       <ul>
-        <li class="ri-pending">Filter expansion needed (6 filters + clustering + popup). Vue component + bundle exist.</li>
-        <li class="ri-pending">&#9888; KPI model REDESIGN pending (PM 10-Jun): split <code>selection_status</code> {MET/Incubated/Supported} from <code>engagement_status</code> {Active/Discontinued}; new card set incl. Blocks Covered; retire "Total Entrepreneurs". Open: Bugs 64/68&ndash;72.</li>
+        <li class="ri-done">&#9888;&rarr;&#10003; KPI redesign PARTIALLY shipped (11-Jun): Bugs 63/64/68 fixed &mdash; "Total Entrepreneurs" card removed, MET now = all-saved EPs (=18), MET/Active duplicate resolved.</li>
+        <li class="ri-pending">Schema half of the redesign NOT shipped: <code>selection_status</code>/<code>engagement_status</code> split not migrated; "Blocks Covered" card missing (Bug 69); BY-SECTOR shows in Village-Visits mode (Bug 71); density-legend dupes (Bug 72).</li>
+        <li class="ri-pending">Filter expansion (6 filters + clustering + popup); header still "the Doorstep" (Bug 70).</li>
         <li class="ri-pending">Data quality: ~83% of EPs have no district/block; test EPs inflate KPIs.</li>
       </ul>
     </div>
@@ -248,17 +255,18 @@
     </div>
 
     <div class="module-row" onclick="toggle('d3')">
-      <div class="module-name"><span class="chevron" id="d3c">&#9654;</span>Milestone Tracker <span class="tech-badge">10 Vue components</span> <span class="tech-badge" style="background:#fde8e8;color:#b91c1c">P1 REGRESSED</span></div>
+      <div class="module-name"><span class="chevron" id="d3c">&#9654;</span>Milestone Tracker <span class="tech-badge">10 Vue components</span> <span class="tech-badge" style="background:#e8f5ec;color:#1a6b3c">P1 FIXED 11-Jun</span></div>
       <div class="count completed">0</div>
       <div class="count inprogress">1</div>
       <div class="count notstarted">0</div>
-      <div class="progress-wrap"><div class="progress-bar"><div class="progress-fill amber" style="width:30%"></div></div></div>
-      <div class="pct-cell low">30%</div>
+      <div class="progress-wrap"><div class="progress-bar"><div class="progress-fill blue-fill" style="width:90%"></div></div></div>
+      <div class="pct-cell high">90%</div>
     </div>
     <div class="remaining-drawer" id="d3">
       <ul>
         <li class="ri-done">UI built (10 Vue components) in Sessions 2&ndash;3</li>
-        <li class="ri-pending">&#9888; Bug 55 (P1): dashboard NON-FUNCTIONAL on staging &mdash; <code>get_milestone_data</code> throws ModuleNotFoundError, shows "Error loading data" + 0 records for ALL roles (role-independent backend break). The 85 seeded Milestone Activities are also gone. Verified 7-Jun E2E. Doctype CRUD itself still works via API.</li>
+        <li class="ri-done">&#9888;&rarr;&#10003; Bug 55 (P1) FIXED &amp; DEPLOYED (11-Jun retest): <code>get_milestone_data</code> now returns 200 + data; the dashboard loads for all roles (was a role-independent backend break + lost seed data 7-Jun).</li>
+        <li class="ri-pending">Full milestone CRUD / seeding flow not deeply re-exercised post-fix; holding at 90% pending a deep pass.</li>
       </ul>
     </div>
 
@@ -324,10 +332,10 @@
       <div class="count completed">0</div>
       <div class="count inprogress">6</div>
       <div class="count notstarted">0</div>
-      <div class="progress-wrap"><div class="progress-bar"><div class="progress-fill blue-fill" style="width:62%"></div></div></div>
-      <div class="pct-cell mid">62%</div>
+      <div class="progress-wrap"><div class="progress-bar"><div class="progress-fill blue-fill" style="width:72%"></div></div></div>
+      <div class="pct-cell mid">72%</div>
     </div>
-    <div style="padding:8px 24px;font-size:10px;color:#999;background:#fafbfc;">Dashboards are tracked at dashboard granularity (each is one in-progress item), so the section % is the average of the six in-scope dashboard estimates (70/30/90/75/55/50) = 62% &mdash; not done&divide;total, which would read 0%. Header and subtotal now match.</div>
+    <div style="padding:8px 24px;font-size:10px;color:#999;background:#fafbfc;">Dashboards are tracked at dashboard granularity (each is one in-progress item), so the section % is the average of the six in-scope dashboard estimates (75/90/90/75/55/50) = 72% &mdash; not done&divide;total, which would read 0%. Up from 62% after the 11-Jun deploy fixed Milestone Tracker (30&rarr;90) and partially shipped the Landscape KPI redesign (70&rarr;75). Header and subtotal match.</div>
   </div>
 
   <!-- ============ FRAMEWORK FORMS ============ -->
@@ -904,7 +912,7 @@
   <div class="type-section">
     <div class="type-header">
       <h2>QA, Security &amp; Go-Live</h2>
-      <div class="pct">20%</div>
+      <div class="pct">19%</div>
     </div>
     <div class="module-row subheader">
       <div>Module</div>
@@ -942,25 +950,27 @@
       <ul>
         <li class="ri-done">765 TDD test cases documented in test-cases.html (6 layers; grew from 330 after Session-23 BRD reconciliation + §24 permission/Landscape cases) &mdash; live on GitHub Pages</li>
         <li class="ri-done">6 UAT test users seeded on staging; Playwright E2E scaffold committed + executed against staging</li>
-        <li class="ri-done">Internal UAT-1 / E2E DONE (29 May + deep pass 7&ndash;8 Jun): 272 cases executed (67 pass / 37 fail / 168 blocked); per-role security pass 9&ndash;10 Jun (CT-IT/CT-Program/Designer/SELCO); bug tracker through ID 76 (see UAT Findings section)</li>
-        <li class="ri-pending">Client UAT sessions (UAT-2 proposed 12 Jun, UAT-3 TBD) &mdash; not started</li>
-        <li class="ri-pending">Bug-fixing sprints post-UAT (5 P1, several P2/P3 open) &mdash; not started</li>
-        <li class="ri-pending">Remaining E2E surface: District Coordinator login, deep cost-grid calcs, Notifications, Village-Survey GPS</li>
+        <li class="ri-done">Internal UAT-1 / E2E DONE: deep pass 7&ndash;8 Jun (272 cases), per-role security pass 9&ndash;10 Jun, <strong>full retest of 46&ndash;81 on 11 Jun (5 fixed / 19 open / 12 not re-exercised)</strong>; bug tracker through ID 81 (see UAT Findings section)</li>
+        <li class="ri-pending">Client UAT sessions (UAT-2, UAT-3 TBD) &mdash; not started</li>
+        <li class="ri-pending">Bug-fixing sprints post-UAT (5 P1 still open: 73/76/79/54/48, several P2/P3) &mdash; not started; blocked on a FULL redeploy first</li>
+        <li class="ri-pending">Remaining E2E surface: District Coordinator login (Bugs 77/78), deep cost-grid calcs, Notifications, Village-Survey GPS, + 12 not-re-exercised bugs</li>
       </ul>
     </div>
     <div class="module-row" onclick="toggle('q5')">
       <div class="module-name"><span class="chevron" id="q5c">&#9654;</span>Permission Remediation <span class="tech-badge" style="background:#fde8e8;color:#b91c1c">UAT-1 per-role pass</span></div>
       <div class="count completed">0</div>
       <div class="count inprogress">0</div>
-      <div class="count notstarted">3</div>
+      <div class="count notstarted">4</div>
       <div class="progress-wrap"><div class="progress-bar"><div class="progress-fill green" style="width:0%"></div></div></div>
       <div class="pct-cell zero">0%</div>
     </div>
     <div class="remaining-drawer" id="q5">
       <ul>
-        <li class="ri-pending">&#9888; Bug 73 (P1): Designer role doctype-perms not enforced &mdash; read + write on all 27 frameworks + full Masters + Landscape. PM target: own-framework only, no create, no delete.</li>
-        <li class="ri-pending">&#9888; Bug 76 (P1): CT-Program has create/write/DELETE on Users + Masters + EP + frameworks; BRD = view-only Users/Masters.</li>
+        <li class="ri-pending">&#9888; Bug 73 (P1, re-confirmed OPEN 11-Jun): Designer role doctype-perms not enforced &mdash; read + write on all 27 frameworks + full Masters + Landscape. PM target: own-framework only, no create, no delete.</li>
+        <li class="ri-pending">&#9888; Bug 76 (P1, re-confirmed OPEN 11-Jun): CT-Program has create/write/DELETE on Users + Masters + EP + frameworks; BRD = view-only Users/Masters.</li>
+        <li class="ri-pending">&#9888; Bug 79 (P1, NEW 11-Jun): role-profile save fails (502/417) &rarr; users can be created role-less.</li>
         <li class="ri-pending">&#9888; Bug 75 (P2): SELCO row-level edit not enforced (edited a non-SELCO Built-Environment field, Save enabled).</li>
+        <li class="ri-pending">District Coordinator role (Bugs 77/78) untested &mdash; no creds yet; remediation scope TBD.</li>
       </ul>
     </div>
     <div class="module-row" onclick="toggle('q4')">
@@ -978,23 +988,23 @@
       </ul>
     </div>
     <div class="type-subtotal">
-      <div>QA/Security/Go-Live Total (44)</div>
+      <div>QA/Security/Go-Live Total (45)</div>
       <div class="count completed">7</div>
       <div class="count inprogress">3</div>
-      <div class="count notstarted">34</div>
-      <div class="progress-wrap"><div class="progress-bar"><div class="progress-fill blue-fill" style="width:20%"></div></div></div>
-      <div class="pct-cell low">20%</div>
+      <div class="count notstarted">35</div>
+      <div class="progress-wrap"><div class="progress-bar"><div class="progress-fill blue-fill" style="width:19%"></div></div></div>
+      <div class="pct-cell low">19%</div>
     </div>
   </div>
 
   <!-- Key Remaining Work -->
   <div class="remaining-section">
-    <h3>Key Remaining Work (79 not started &middot; 26 in progress)</h3>
+    <h3>Key Remaining Work (80 not started &middot; 26 in progress)</h3>
     <div class="remaining-grid">
       <div class="remaining-item" style="border:1px solid #f3c6c6;">
-        <div class="ri-label" style="color:#b91c1c;">&#9888; P1 Bug Fixes (UAT-1)</div>
+        <div class="ri-label" style="color:#b91c1c;">&#9888; P1 Bug Fixes still OPEN (UAT-1)</div>
         <div class="ri-count">5 blockers</div>
-        <div class="ri-desc">Designer unscoped (Bug 73), CT-Program over-privileged (Bug 76), Prototyping save-500 (Bug 54), Milestone Tracker page method (Bug 55), Masters dead links (Bug 48)</div>
+        <div class="ri-desc">Designer unscoped (Bug 73), CT-Program over-privileged (Bug 76), role-less user creation (Bug 79), Prototyping save-500 (Bug 54), Masters dead links (Bug 48). Bug 55 (Milestone Tracker) FIXED &amp; deployed 11-Jun.</div>
       </div>
       <div class="remaining-item">
         <div class="ri-label">QA, VAPT, Load &amp; Client UAT</div>
@@ -1028,14 +1038,15 @@
   <div class="notes">
     <h3>Key Highlights</h3>
     <ul>
-      <li><strong>Per-role security pass executed (9&ndash;10 Jun, Sessions 22&ndash;23):</strong> logged in as CT-IT, CT-Program, Designer, SELCO. <strong>Scoped roles are badly UNDER-restricted</strong> &mdash; nav is trimmed per role but doctype permissions are NOT enforced. NEW P1s: Designer effectively unscoped (Bug 73, read+write all 27 frameworks), CT-Program over-privileged incl. DELETE (Bug 76); NEW P2: SELCO row-level edit not enforced (Bug 75). These are authority/confidentiality breaches and the top remediation priority.</li>
-      <li><strong>Bug 46 RESOLVED:</strong> CT-IT full User CRUD now persists + deletes; the real CT-IT&rarr;Field-User notification flow is confirmed working end to end.</li>
-      <li><strong>Internal UAT-1 / E2E (7&ndash;8 Jun):</strong> 272 cases run (67 pass / 37 fail / 168 blocked). <strong>26 of 27 diagnostic frameworks verified create+save+persist</strong> as a real Field User; ex-#1 autocomplete-binding blocker no longer reproduces (pending dev confirmation); header-leak resolved (0/27).</li>
-      <li><strong>Still-open P1 regressions:</strong> Milestone Tracker dashboard non-functional (Bug 55, re-confirmed from a privileged session) and DF Product Prototyping cannot save (Bug 54) &mdash; both previously shown as 100%. Plus Masters dead links (Bug 48).</li>
-      <li><strong>Intervention Dashboard moved OUT OF SCOPE</strong> (PM 9-Jun) &mdash; being redeveloped against new requirements; excluded from all counts. <strong>Landscape KPI model redesigned</strong> (PM 10-Jun): split selection vs engagement status; build pending.</li>
+      <li><strong>&#9888; 11-Jun retest exposed a PARTIAL/STALE deploy:</strong> the dev reported "all fixed + deployed" but only <strong>5 of 36 bugs (46&ndash;81) are verified fixed</strong> &mdash; Milestone Tracker (Bug 55) + the Landscape KPI cards (Bugs 63/64/68). 19 stayed OPEN, 12 not re-exercised. Live proof the rest is undeployed: header still "the Doorstep", Designer/CT-Program permissions unchanged, no <code>selection_status</code> schema. Dev must do a full <code>build&rarr;migrate&rarr;clear-cache&rarr;restart</code>, then re-sweep 46&ndash;81.</li>
+      <li><strong>Permission P1s remain the top risk &mdash; all OPEN:</strong> Designer effectively unscoped (Bug 73, read+write all 27 frameworks), CT-Program over-privileged incl. DELETE (Bug 76), and new role-less user creation (Bug 79). Nav is trimmed per role but doctype permissions are NOT enforced &mdash; authority/confidentiality breaches.</li>
+      <li><strong>Verified fixed:</strong> Milestone Tracker dashboard now loads (Bug 55, deployed); Landscape KPI redesign partially shipped (Total card removed, MET=18); Bug 46 CT-IT User CRUD persists + deletes; CT-IT&rarr;Field-User notification flow works end to end.</li>
+      <li><strong>Still-open P1s:</strong> DF Product Prototyping cannot save (Bug 54, previously shown 100%) and Masters dead links (Bug 48) &mdash; both "not re-exercised" on 11-Jun, very likely still open given the narrow deploy.</li>
+      <li><strong>Internal UAT-1 / E2E (7&ndash;8 Jun):</strong> 272 cases run (67 pass / 37 fail / 168 blocked). <strong>26 of 27 diagnostic frameworks verified create+save+persist</strong> as a real Field User; ex-#1 autocomplete-binding blocker no longer reproduces; header-leak resolved (0/27).</li>
+      <li><strong>Intervention Dashboard moved OUT OF SCOPE</strong> (PM 9-Jun) &mdash; excluded from all counts. <strong>Landscape KPI redesign</strong> (PM 10-Jun, split selection vs engagement status): cards shipped, <code>selection_status</code>/<code>engagement_status</code> schema migration still pending.</li>
       <li><strong>Living BRD 100% complete</strong> (27 frameworks, ~10,800 lines); reconciled to the Session-23 permission rulings (PR-OV-004). <strong>765 TDD test cases</strong> (up from 330) live on GitHub Pages.</li>
       <li><strong>12 framework/modules verified at 100%:</strong> Customer Analysis, Market Linkage, Promotions, Testing, Standardization, Brochure, Capacity Building, BPC, Logistics Packing, Logistics Service, Schemes Funding, Networking &amp; Mentoring. Infrastructure EE/CE + Financial Model remain the largest framework gap.</li>
-      <li><strong>Overall completion 61%</strong> (was 60%). <strong>The build did not advance since 9 Jun</strong> &mdash; Sessions 22&ndash;23 were testing, not new build. The +1 pt is one fix (Bug 46) + QA execution + the Intervention scope cut, partly offset by 3 new permission defects booked as remediation. Section header % now equals its subtotal in every section (the old Dashboards 29%/40% split is fixed).</li>
+      <li><strong>Overall completion holds at 61%.</strong> The 11-Jun fixes (Milestone Tracker, Landscape KPI) lift the Dashboards section 62&rarr;72%, but they are dashboard items already counted as in-progress, so no activity converts to "done"; one new P1 (Bug 79) was booked as remaining. Section header % equals its subtotal in every section.</li>
     </ul>
   </div>
 
