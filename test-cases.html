@@ -5761,16 +5761,16 @@ table.matrix tr:nth-child(even) td { background: var(--offwhite); }
         <span class="tag pol-pos">Positive</span><span class="tag pri-p1">P1</span>
         <span class="tag tp func">Functional</span><span class="tag role">FA / CTP</span>
       </div>
-      <div class="tc-title">Add 2 route legs with frequency; monthly cost auto-computed</div>
+      <div class="tc-title">Add a route with legs + a frequency; monthly/annual cost auto-computed (route-frequency model)</div>
       <div class="tc-body">
         <span class="label">Steps</span>
         <ol>
-          <li>Leg 1: Mawphlang → Shillong, ₹ 500/trip, 4 trips/month.</li>
-          <li>Leg 2: Shillong → Guwahati, ₹ 1,500/trip, 2 trips/month.</li>
+          <li>Existing tab → + Add Logistics Route. Set Route name, Direction = Outbound, <strong>Frequency = Weekly</strong> (the build's frequency multipliers: Daily ×30/month · Twice a week · Weekly ×4 · Twice a month ×2 · Monthly ×1 · Every 2 months ×0.5).</li>
+          <li>Save once (legs need the saved parent route ID), then + Add Leg ×2: Leg 1 Mawphlang → Shillong, Cost ₹ 500; Leg 2 Shillong → Guwahati, Cost ₹ 1,500.</li>
         </ol>
         <div class="exp">
           <span class="label">Expected</span>
-          Monthly cost = (500×4) + (1,500×2) = ₹ 5,000. Annual = ₹ 60,000.
+          Frequency sets Trips/Month at the <em>route</em> level (not per leg). Total Cost Per Trip = Σ leg costs = 500 + 1,500 = ₹ 2,000. Trips/Month = 4 (Weekly). Monthly Cost = Total Cost Per Trip × Trips/Month = 2,000 × 4 = ₹ 8,000. Annual Cost = Monthly × 12 = ₹ 96,000. The All-Routes total bar sums Monthly/Annual across routes. [Verified live, S26 14-Jun-2026: ₹2,000 / 4 / ₹8,000 / ₹96,000.]
         </div>
       </div>
     </div>
