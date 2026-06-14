@@ -6579,118 +6579,57 @@ body > .site-nav { position: fixed; top: 0; left: 0; right: 0; z-index: 9999; }
     <div class="brd-section" id="m-qc">
   <div class="section-header"><span class="section-id">PR-PD-005</span><h2 class="section-title">Quality Control</h2></div>
   <div class="section-desc">Part of the Product Development module &mdash; a maturity-style Quality Control assessment in which the Fessociate adds and rates QC checklist items against a <strong>4-level practice scale</strong> (1 Not aware/Not practiced &middot; 2 Aware but not implemented &middot; 3 Partially implemented &middot; 4 Fully implemented), sets a Required Target level per item, and the system auto-computes a per-item Score (4-level mapped to <strong>0 / 33 / 66 / 100</strong>), a per-item Gap and Priority, and an aggregate <strong>QC Compliance Score as a percentage</strong> that is banded into a <strong>Score Category</strong> (Critical / Below Average / Average / Good / Excellent).</div>
-  <div class="callout callout-teal"><strong>BRD note (reconciled to the deployed build, Session 26, 14-Jun-2026):</strong> the QC scoring model below has been updated to match staging &mdash; a <strong>4-level</strong> rating (not 1&ndash;5 stars), a <strong>percentage</strong> Compliance Score (each item scored 0/33/66/100, averaged), and a 5-band <strong>Score Category</strong> (Critical&hellip;Excellent), with checklist items <strong>added on demand</strong> (not a fixed pre-loaded list of 23). The live tab rail is <em>Details &middot; Existing &middot; Post Implementation &middot; Resources &middot; Log Book</em>. <em>The Summary aggregate-card and Optimized-tab structure described further below still reflects the earlier 1&ndash;5 star design and is flagged for a dedicated structural rewrite once that part of the build is fully re-explored &mdash; the scoring model, scale, score bands and per-item fields here are build-accurate.</em></div>
+  <div class="callout callout-teal"><strong>BRD note (reconciled to the deployed build, Session 26, 14-Jun-2026):</strong> the QC scoring model below has been updated to match staging &mdash; a <strong>4-level</strong> rating (not 1&ndash;5 stars), a <strong>percentage</strong> Compliance Score (each item scored 0/33/66/100, averaged), and a 5-band <strong>Score Category</strong> (Critical&hellip;Excellent), with checklist items <strong>added on demand</strong> (not a fixed pre-loaded list of 23). The live tab rail is <em>Details &middot; Existing &middot; Post Implementation &middot; Resources &middot; Log Book</em>. <em>The tab structure below (Details / Existing / Post Implementation / Resources / Log Book) and the scoring model, scale, score bands and per-item fields are all reconciled to the deployed build.</em></div>
 
   <div class="callout callout-terra"><strong>Key behaviour &mdash; 4-level practice scale with a percentage Compliance Score and a per-item Required-Target gap engine.</strong> The Existing tab carries an <em>Awareness Baseline</em> (Yes/No) and an Assessment table to which the Fessociate <strong>adds checklist items on demand</strong> (&ldquo;+ Add Item&rdquo;). Each item is rated on a 4-level scale (1 Not aware/Not practiced &middot; 2 Aware but not implemented &middot; 3 Partially implemented &middot; 4 Fully implemented); the <em>Score auto-derives from the rating as 0 / 33 / 66 / 100</em>. Each item also carries a <em>Required Target</em> (same 4-level scale), from which <em>Gap</em> and <em>Priority</em> (Low / Medium / High) derive, plus a per-item <em>Status</em> (Pending / In Progress / Completed / On Hold / Not Feasible). The aggregate <strong>QC Compliance Score = the mean of the per-item Scores, shown as a percentage</strong>, and is banded into a <strong>Score Category</strong>: Critical / Below Average / Average / Good / Excellent.</div>
 
   <h3 style="font-size:16px;color:var(--teal);margin:18px 0 10px;">On-Screen UI Structure</h3>
   <div class="card"><div style="font-size:13px;line-height:1.9;color:var(--ink)">
     <strong>Top bar:</strong> teal header &ldquo;Quality Control&rdquo; with crumb &ldquo;PRIME Rural &middot; Quality &amp; Compliance&rdquo;, and an entrepreneur chip (avatar + name) auto-fetched from the profile. <br>
-    <strong>Tab rail:</strong> horizontal pill bar with five tabs &mdash; Summary &middot; Existing &middot; Optimized &middot; Resources &middot; Task Log; the active tab renders teal-on-white (Summary opens by default). <br>
-    <strong>Body layout:</strong> each tab is a panel. <em>Summary</em> is read-only: a Practice-wise Overview table (one row per practice, Existing vs Target with gap + priority), a 2&times;2 grid of four Aggregate cards (Existing Assessment / Required Target / Interventions / Rating Distribution) and a 4-cell Intervention-flag strip. <em>Existing</em> and <em>Optimized</em> each show a 5-tier star Legend strip followed by a 23-row Assessment table and an aggregate Average strip. <br>
-    <strong>Special widgets:</strong> (1) <em>Star-rating control</em> &mdash; each of the 23 assessment rows carries a 5-star clickable rating (hover preview, click to set, &times; clear button) plus a free-text Notes field. (2) <em>Legend strip</em> &mdash; a 5-cell key mapping 1&ndash;5 stars to maturity labels (Not aware / Not practiced &rarr; Fully implemented). (3) <em>Average strip</em> &mdash; a teal gradient panel showing Practices Rated (n / 23), the numeric Average Rating and an average-star rendering. (4) <em>Intervention Need toggle</em> (Existing) &mdash; an on/off switch &ldquo;Need improvement in Quality Control?&rdquo; that reveals a conditional Justification textarea. (5) <em>Implementation Status</em> selector + Notes (Optimized). (6) <em>Distribution bars</em> &mdash; a 5-tier bar chart of how many practices fall in each star band. <br>
-    Per Rule&nbsp;1, every calculated / autofilled field (all Summary aggregates and overview cells, both Average strips, the per-practice Gap and Priority, the maturity tier, the distribution counts) renders <em>italic on a cream-deep background</em> and is non-editable, with a tooltip describing its source / formula.
+    <strong>Tab rail:</strong> horizontal pill bar with five tabs &mdash; Details &middot; Existing &middot; Post Implementation &middot; Resources &middot; Log Book; the active tab renders teal-on-white (<strong>Details</strong> opens by default). <em>There is no Summary or Optimized tab in the build.</em> <br>
+    <strong>Body layout:</strong> each tab is a panel. <em>Details</em> carries the entrepreneur link + read-only context (Module / Applicable To). <em>Existing</em> = an Awareness Baseline (Yes/No) + an Assessment table of on-demand checklist items (4-level rating &rarr; Score 0/33/66/100, with Required Target / Gap / Priority / Status per item) + an aggregate Average strip. <em>Post Implementation</em> = a Target Assessment table (rate the level reached after the intervention, with Action Date / Action Taken / Done By / Outcome Notes per item) + its own Average strip. <em>Resources</em> = a reference-materials list; <em>Log Book</em> = the dated activity log. <br>
+    <strong>Special widgets:</strong> (1) <em>4-level rating select</em> &mdash; each assessment row carries a dropdown (1 Not aware/Not practiced &middot; 2 Aware but not implemented &middot; 3 Partially implemented &middot; 4 Fully implemented) that drives the row Score (0/33/66/100). (2) <em>&ldquo;+ Add Item&rdquo;</em> &mdash; checklist items are added on demand (no fixed pre-loaded list). (3) <em>Average strip</em> &mdash; a teal gradient panel per tab showing Items Rated, the percentage Average Score (QC Compliance Score) and the Phase. (4) <em>Score Category</em> &mdash; the Compliance % banded into Critical / Below Average / Average / Good / Excellent (shown per record in the Quality Control list). (5) <em>Per-item Required Target + Gap + Priority + Status</em> (Existing) and <em>Action tracking</em> (Post Implementation). <br>
+    Per Rule&nbsp;1, every calculated field (per-item Score, Gap, the percentage Average Score and the Score Category) renders <em>italic on a cream-deep background</em> and is non-editable, with a tooltip describing its source / formula.
   </div></div>
   <div class="flow-container" style="margin-top:12px">
-    <div class="flow-step"><div class="flow-box">Summary</div></div>
+    <div class="flow-step"><div class="flow-box">Details</div></div>
     <div class="flow-arrow">&rarr;</div>
     <div class="flow-step"><div class="flow-box">Existing</div></div>
     <div class="flow-arrow">&rarr;</div>
-    <div class="flow-step"><div class="flow-box">Optimized</div></div>
+    <div class="flow-step"><div class="flow-box">Post Implementation</div></div>
     <div class="flow-arrow">&rarr;</div>
     <div class="flow-step"><div class="flow-box">Resources</div></div>
     <div class="flow-arrow">&rarr;</div>
-    <div class="flow-step"><div class="flow-box">Task Log</div></div>
+    <div class="flow-step"><div class="flow-box">Log Book</div></div>
   </div>
 
   <h3 style="font-size:16px;color:var(--teal);margin:18px 0 10px;">User Journey</h3>
   <div class="card"><div class="flow-container">
     <div class="flow-step"><div class="flow-box">Open</div><div class="flow-label">Diagnostics &rarr; Product Development &rarr; Quality Control (entrepreneur auto-fetched)</div></div>
     <div class="flow-arrow">&rarr;</div>
-    <div class="flow-step"><div class="flow-box">Rate Existing</div><div class="flow-label">Existing tab &rarr; star-rate all 23 QC practices 1&ndash;5 against what is observed; add per-practice notes</div></div>
+    <div class="flow-step"><div class="flow-box">Rate Existing</div><div class="flow-label">Existing tab &rarr; set the Awareness Baseline, then add &amp; rate checklist items on the 4-level scale; set each item&rsquo;s Required Target</div></div>
     <div class="flow-arrow">&rarr;</div>
-    <div class="flow-step"><div class="flow-box">Flag Need</div><div class="flow-label">Toggle &ldquo;Need improvement?&rdquo; with justification if quality control gaps warrant intervention</div></div>
+    <div class="flow-step"><div class="flow-box">Review Score</div><div class="flow-label">Average Score (%) + Score Category compute live from the per-item Scores (0/33/66/100); Gap &amp; Priority derive per item</div></div>
     <div class="flow-arrow">&rarr;</div>
-    <div class="flow-step"><div class="flow-box">Set Target</div><div class="flow-label">Optimized tab &rarr; set the target star level per practice; system computes gap &amp; priority</div></div>
+    <div class="flow-step"><div class="flow-box">Post Implementation</div><div class="flow-label">After the intervention, rate the level reached per item and log Action Date / Action Taken / Done By / Outcome Notes</div></div>
     <div class="flow-arrow">&rarr;</div>
-    <div class="flow-step"><div class="flow-box">Track</div><div class="flow-label">Set Implementation Status + notes; attach Resources; review Summary roll-up &amp; QC score</div></div>
-    <div class="flow-arrow">&rarr;</div>
-    <div class="flow-step"><div class="flow-box">Log &amp; Save</div><div class="flow-label">Capture visits / trainings in Task Log; save</div></div>
+    <div class="flow-step"><div class="flow-box">Log &amp; Save</div><div class="flow-label">Attach Resources; capture visits / trainings in the Log Book; save</div></div>
   </div></div>
 
-  <!-- ============ TAB 1: SUMMARY ============ -->
+  <!-- ============ TAB 1: DETAILS ============ -->
   <div class="accordion open">
-    <div class="accordion-trigger" onclick="this.parentElement.classList.toggle('open')">Tab 1 &mdash; Summary (read-only roll-up; QC score &amp; gap engine)</div>
+    <div class="accordion-trigger" onclick="this.parentElement.classList.toggle('open')">Tab 1 &mdash; Details (entrepreneur + context; default tab)</div>
     <div class="accordion-body">
-      <p style="font-size:13px;color:var(--ink);margin-bottom:10px;">Entirely auto-populated from the Existing and Optimized tabs &mdash; no data entry on this tab. It contains three blocks: (1) a Practice-wise Overview table, (2) a 2&times;2 grid of four Aggregate cards, (3) an Intervention-flag strip. Rows with a gap &ge; 2 render on an amber background (<code>row-gap2</code>); gap &ge; 3 render orange (<code>row-gap3</code>).</p>
-
-      <p style="font-size:14px;font-weight:600;color:var(--teal);margin:12px 0 6px;">1.1 Practice-wise Overview table (one row per practice; auto-built; 23 rows)</p>
+      <p style="font-size:13px;color:var(--ink);margin-bottom:10px;">The default tab on load. It carries the entrepreneur link and read-only context; the entrepreneur chip (&ldquo;EN &middot; auto-fetched from profile&rdquo;) sits above the tab rail. <strong>There is no separate Summary tab in the build</strong> &mdash; the QC roll-up is the per-tab <em>Average strip</em> (Items Rated &middot; Average Score % &middot; Phase) on the Existing and Post Implementation tabs, plus the <em>Score Category</em> shown per record in the Quality Control list view.</p>
       <table class="brd-field-table">
         <thead><tr><th>Field Name</th><th>Field Type</th><th>Input Values</th><th>Input / Autofill</th><th>Logic</th><th>Validation &amp; Error Messages</th></tr></thead>
         <tbody>
-          <tr><td>#</td><td>Read-only index</td><td>01&ndash;23</td><td>Calculated</td><td>Zero-padded practice number matching the fixed practice list.</td><td>&mdash;</td></tr>
-          <tr><td>Practice</td><td>Read-only text</td><td>&mdash;</td><td>Autofill</td><td>The QC practice text from the fixed list (e.g. &ldquo;Raw material inspection before use&rdquo;).</td><td>&mdash;</td></tr>
-          <tr><td>Existing Rating</td><td>Read-only stars + value</td><td>&mdash; / 1&ndash;5 stars</td><td>Autofill</td><td>Star rating set for this practice in the Existing tab; renders &ldquo;Not rated&rdquo; if unset. Cell on a peach background.</td><td>&mdash;</td></tr>
-          <tr><td>Required Target</td><td>Read-only stars + value</td><td>&mdash; / 1&ndash;5 stars</td><td>Autofill</td><td>Target star rating set in the Optimized tab; renders &ldquo;Not set&rdquo; if unset. Cell on a green background.</td><td>&mdash;</td></tr>
-          <tr><td>Gap</td><td>Read-only signed number</td><td>&mdash; / 0 / +1&hellip;+4</td><td>Calculated</td><td>= Required Target &minus; Existing Rating, shown only when both are set; colour-coded (red &ge; 3, amber &ge; 2, green = 0). &ldquo;&mdash;&rdquo; if either rating is missing.</td><td>&mdash;</td></tr>
-          <tr><td>Priority</td><td>Read-only badge</td><td>Critical / High / Low / At Target / &mdash;</td><td>Calculated</td><td>Derived from Gap: gap &ge; 3 &rarr; Critical (red); gap &ge; 2 &rarr; High (amber); gap = 1 &rarr; Low (cream); gap = 0 &rarr; At Target (green); &ldquo;&mdash;&rdquo; when gap cannot be computed.</td><td>&mdash;</td></tr>
+          <tr><td>Entrepreneur</td><td>Link (search)</td><td>Search Enterprenur Profile&hellip;</td><td>Input</td><td>The entrepreneur this assessment belongs to; auto-fetches the chip.</td><td>Required: &ldquo;Entrepreneur is mandatory.&rdquo; (Save disabled until set.)</td></tr>
+          <tr><td>Module</td><td>Read-only label</td><td>Product Development</td><td>Autofill</td><td>Fixed module classification for Quality Control.</td><td>&mdash;</td></tr>
+          <tr><td>Applicable To</td><td>Read-only label</td><td>Product</td><td>Autofill</td><td>QC is assessed at the product level.</td><td>&mdash;</td></tr>
         </tbody>
       </table>
-
-      <p style="font-size:14px;font-weight:600;color:var(--teal);margin:14px 0 6px;">1.2 Aggregate cards &mdash; 2&times;2 grid (four cards, all read-only / calculated)</p>
-      <h4 style="font-size:13px;color:var(--sea);margin:10px 0 4px;">Card A &mdash; Existing Assessment</h4>
-      <table class="brd-field-table">
-        <thead><tr><th>Field Name</th><th>Field Type</th><th>Input Values</th><th>Input / Autofill</th><th>Logic</th><th>Validation &amp; Error Messages</th></tr></thead>
-        <tbody>
-          <tr><td>Items Rated</td><td>Read-only count</td><td>n</td><td>Calculated</td><td>Count of checklist items given an Existing rating (items are added on demand &mdash; no fixed denominator).</td><td>&mdash;</td></tr>
-          <tr><td>QC Compliance Score (Average Score)</td><td>Read-only percent</td><td>&mdash; / 0&ndash;100%</td><td>Calculated</td><td><strong>QC score</strong> = mean of the per-item Scores, where each item&rsquo;s 4-level Rating maps to <strong>0 / 33 / 66 / 100</strong>; shown as a percentage; &ldquo;0.00%&rdquo; / &ldquo;&mdash;&rdquo; when nothing is rated. (e.g. one item rated &ldquo;4. Fully implemented&rdquo; &rarr; 100%.)</td><td>&mdash;</td></tr>
-          <tr><td>Score Category</td><td>Read-only label</td><td>Critical &middot; Below Average &middot; Average &middot; Good &middot; Excellent</td><td>Calculated</td><td>Band keyed by the QC Compliance Score percentage (low &rarr; Critical, high &rarr; Excellent).</td><td>&mdash;</td></tr>
-          <tr><td>Fully Implemented (&starf;&starf;&starf;&starf;&starf;)</td><td>Read-only count (green)</td><td>&mdash;</td><td>Calculated</td><td>Count of Existing practices rated exactly 5 stars.</td><td>&mdash;</td></tr>
-          <tr><td>Not Aware / Not Practiced (&starf;)</td><td>Read-only count (red)</td><td>&mdash;</td><td>Calculated</td><td>Count of Existing practices rated exactly 1 star.</td><td>&mdash;</td></tr>
-          <tr><td>Intervention Flagged</td><td>Read-only Yes / No (amber)</td><td>Yes / No</td><td>Calculated</td><td>&ldquo;Yes&rdquo; when the Existing &ldquo;Need improvement?&rdquo; toggle is on; else &ldquo;No&rdquo;.</td><td>&mdash;</td></tr>
-        </tbody>
-      </table>
-
-      <h4 style="font-size:13px;color:var(--sea);margin:12px 0 4px;">Card B &mdash; Required (Target Profile)</h4>
-      <table class="brd-field-table">
-        <thead><tr><th>Field Name</th><th>Field Type</th><th>Input Values</th><th>Input / Autofill</th><th>Logic</th><th>Validation &amp; Error Messages</th></tr></thead>
-        <tbody>
-          <tr><td>Practices Set</td><td>Read-only count</td><td>n / 23</td><td>Calculated</td><td>Count of practices given a Target star rating in the Optimized tab, out of 23.</td><td>&mdash;</td></tr>
-          <tr><td>Target Average</td><td>Read-only decimal</td><td>&mdash; / 1.00&ndash;5.00</td><td>Calculated</td><td>Mean of all set Target stars, to 2 decimals; &ldquo;&mdash;&rdquo; when none set.</td><td>&mdash;</td></tr>
-          <tr><td>Target Tier</td><td>Read-only label</td><td>(same 5 maturity labels)</td><td>Calculated</td><td>Tier label keyed by round(Target Average).</td><td>&mdash;</td></tr>
-          <tr><td>Implementation Status</td><td>Read-only label</td><td>Pending / In Progress / Completed / On Hold / Not Feasible</td><td>Autofill</td><td>Mirrors the Implementation Status selector on the Optimized tab.</td><td>&mdash;</td></tr>
-        </tbody>
-      </table>
-
-      <h4 style="font-size:13px;color:var(--sea);margin:12px 0 4px;">Card C &mdash; Interventions (gap analytics)</h4>
-      <table class="brd-field-table">
-        <thead><tr><th>Field Name</th><th>Field Type</th><th>Input Values</th><th>Input / Autofill</th><th>Logic</th><th>Validation &amp; Error Messages</th></tr></thead>
-        <tbody>
-          <tr><td>High Priority Gaps (gap &ge; 2)</td><td>Read-only count (red)</td><td>&mdash;</td><td>Calculated</td><td>Count of practices whose Gap (Target &minus; Existing) is &ge; 2.</td><td>&mdash;</td></tr>
-          <tr><td>Critical Gaps (gap &ge; 3)</td><td>Read-only count (red)</td><td>&mdash;</td><td>Calculated</td><td>Count of practices whose Gap is &ge; 3.</td><td>&mdash;</td></tr>
-          <tr><td>Already at Target (gap = 0)</td><td>Read-only count (green)</td><td>&mdash;</td><td>Calculated</td><td>Count of practices rated in both tabs with Gap = 0.</td><td>&mdash;</td></tr>
-          <tr><td>Average Gap (across rated)</td><td>Read-only decimal</td><td>&mdash; / 0.0&ndash;4.0</td><td>Calculated</td><td>Mean of positive gaps across practices rated in both tabs (negative gaps floored at 0), to 1 decimal; &ldquo;&mdash;&rdquo; if none comparable.</td><td>&mdash;</td></tr>
-        </tbody>
-      </table>
-
-      <h4 style="font-size:13px;color:var(--sea);margin:12px 0 4px;">Card D &mdash; Rating Distribution (Existing)</h4>
-      <table class="brd-field-table">
-        <thead><tr><th>Field Name</th><th>Field Type</th><th>Input Values</th><th>Input / Autofill</th><th>Logic</th><th>Validation &amp; Error Messages</th></tr></thead>
-        <tbody>
-          <tr><td>1&starf; &hellip; 5&starf; bars</td><td>Read-only bar chart</td><td>&mdash;</td><td>Calculated</td><td>Five tier rows (1&starf;&ndash;5&starf;), each a coloured bar (tier-1 poor &rarr; tier-5 good) sized to count &divide; max-bucket, with the count to the right. Empty state: &ldquo;Rate practices in the Existing tab to see distribution.&rdquo;</td><td>&mdash;</td></tr>
-        </tbody>
-      </table>
-
-      <p style="font-size:14px;font-weight:600;color:var(--teal);margin:14px 0 6px;">1.3 Intervention Flag strip (four count cards)</p>
-      <table class="brd-field-table">
-        <thead><tr><th>Field Name</th><th>Field Type</th><th>Input Values</th><th>Input / Autofill</th><th>Logic</th><th>Validation &amp; Error Messages</th></tr></thead>
-        <tbody>
-          <tr><td>Practices Rated</td><td>Read-only count card</td><td>&mdash;</td><td>Calculated</td><td>= Existing &middot; Practices Rated (count only).</td><td>&mdash;</td></tr>
-          <tr><td>Intervention Flagged</td><td>Read-only Yes / No card</td><td>Yes / No</td><td>Calculated</td><td>= Existing &ldquo;Need improvement?&rdquo; toggle state.</td><td>&mdash;</td></tr>
-          <tr><td>High Priority Gaps</td><td>Read-only count card</td><td>&mdash;</td><td>Calculated</td><td>= count of gaps &ge; 2.</td><td>&mdash;</td></tr>
-          <tr><td>At Target</td><td>Read-only count card</td><td>&mdash;</td><td>Calculated</td><td>= count of practices with gap = 0.</td><td>&mdash;</td></tr>
-        </tbody>
-      </table>
+      <div class="callout callout-teal"><strong>Roll-up note (replaces the old Summary cards):</strong> the build does not render the Practice-wise Overview / Aggregate cards / Rating Distribution. The headline QC figure is the <strong>QC Compliance Score</strong> (mean of per-item Scores as a %) with its <strong>Score Category</strong> band, surfaced on each tab&rsquo;s Average strip and on the list row.</div>
     </div>
   </div>
 
@@ -6756,7 +6695,7 @@ body > .site-nav { position: fixed; top: 0; left: 0; right: 0; z-index: 9999; }
           <tr><td>23</td><td>Labelled storage containers</td><td>4-level (1&ndash;4)</td><td>Rating &rarr; Score 0/33/66/100; feeds the mean Compliance %</td></tr>
         </tbody>
       </table>
-      <div class="callout"><strong>Aggregate QC score (per tab).</strong> Average Rating = (sum of all rated stars) &divide; (number of practices rated). Only rated practices are included &mdash; unrated practices do not drag the mean down. The result is shown to 2 decimals and mapped to a Maturity Tier via round(): 1 = Not aware / Not practiced, 2 = Aware but not implemented, 3 = Partially implemented, 4 = Mostly implemented, 5 = Fully implemented. The 5-star &ldquo;Average&rdquo; rendering fills round(Average) stars.</div>
+      <div class="callout"><strong>Aggregate QC score (per tab).</strong> QC Compliance Score (Average Score) = (sum of the per-item Scores) &divide; (number of items rated), where each item&rsquo;s 4-level Rating maps to a Score of 0 / 33 / 66 / 100. Only rated items are included &mdash; unrated items do not drag the mean down. The result is shown as a percentage and banded into a Score Category: Critical / Below Average / Average / Good / Excellent.</div>
 
       <p style="font-size:14px;font-weight:600;color:var(--teal);margin:14px 0 6px;">2.4 Average strip (teal gradient summary, read-only)</p>
       <table class="brd-field-table">
@@ -6768,51 +6707,40 @@ body > .site-nav { position: fixed; top: 0; left: 0; right: 0; z-index: 9999; }
         </tbody>
       </table>
 
-      <p style="font-size:14px;font-weight:600;color:var(--teal);margin:14px 0 6px;">2.5 Intervention Need (terracotta panel) &mdash; whole-assessment flag</p>
-      <table class="brd-field-table">
-        <thead><tr><th>Field Name</th><th>Field Type</th><th>Input Values</th><th>Input / Autofill</th><th>Logic</th><th>Validation &amp; Error Messages</th></tr></thead>
-        <tbody>
-          <tr><td>Need improvement in Quality Control?</td><td>Toggle (on/off)</td><td>Off (default) / On</td><td>Input</td><td>When On: the note reads &ldquo;Flagged &rarr; Set target profile in Optimized tab&rdquo;, the Justification field is revealed, and Summary &ldquo;Intervention Flagged&rdquo; = Yes. When Off, note reads &ldquo;Not flagged&rdquo;.</td><td>&mdash;</td></tr>
-          <tr><td>Justification</td><td>Textarea (conditional)</td><td>Free text (e.g. &ldquo;gaps observed, regulatory drivers, scale-up readiness&rdquo;)</td><td>Input</td><td>Shown only when the toggle is on; captures what practices need improvement and why.</td><td>&mdash;</td></tr>
-        </tbody>
-      </table>
     </div>
   </div>
 
-  <!-- ============ TAB 3: OPTIMIZED / REQUIRED ============ -->
+  <!-- ============ TAB 3: POST IMPLEMENTATION ============ -->
   <div class="accordion">
-    <div class="accordion-trigger" onclick="this.parentElement.classList.toggle('open')">Tab 3 &mdash; Optimized (set target rating profile + Implementation Status)</div>
+    <div class="accordion-trigger" onclick="this.parentElement.classList.toggle('open')">Tab 3 &mdash; Post Implementation (Target Assessment after intervention + action tracking)</div>
     <div class="accordion-body">
-      <p style="font-size:13px;color:var(--ink);margin-bottom:10px;">Caption: &ldquo;Set the target rating profile &mdash; what level the entrepreneur should reach for each practice.&rdquo; Mirrors the Existing tab structure (Legend &rarr; Target Assessment table over the same 23 practices &rarr; Target Average strip), then adds a terracotta Implementation Status panel. Setting a Target star for a practice rated in Existing drives the per-practice Gap and Priority in Summary.</p>
+      <p style="font-size:13px;color:var(--ink);margin-bottom:10px;">Caption: &ldquo;Rate the target practice level for each checklist item after implementation. Compare against the Existing baseline to gauge progress.&rdquo; Items are added via <em>+ Add Item</em>; each row uses the same 4-level rating &rarr; Score 0/33/66/100 and additionally captures what was done. The bottom strip shows Items Rated, Average Score (%) and Phase = <em>Post-Implementation</em>.</p>
 
-      <p style="font-size:14px;font-weight:600;color:var(--teal);margin:12px 0 6px;">3.1 Target Assessment table &mdash; per-practice row fields (same 23 practices as 2.3)</p>
+      <p style="font-size:14px;font-weight:600;color:var(--teal);margin:12px 0 6px;">3.1 Target Assessment table &mdash; per-item row fields</p>
       <table class="brd-field-table">
         <thead><tr><th>Field Name</th><th>Field Type</th><th>Input Values</th><th>Input / Autofill</th><th>Logic</th><th>Validation &amp; Error Messages</th></tr></thead>
         <tbody>
-          <tr><td>Row No.</td><td>Read-only index</td><td>01&ndash;23</td><td>Calculated</td><td>Fixed zero-padded practice number.</td><td>&mdash;</td></tr>
-          <tr><td>Practice (Question)</td><td>Read-only text</td><td>&mdash;</td><td>Static</td><td>Same fixed QC practice list as the Existing tab.</td><td>&mdash;</td></tr>
-          <tr><td>Target Rating</td><td>Star rating (1&ndash;5)</td><td>1 / 2 / 3 / 4 / 5 stars</td><td>Input</td><td>Target maturity level for the practice; feeds Target average, tier and Gap = Target &minus; Existing.</td><td>&mdash;</td></tr>
-          <tr><td>Clear (&times;)</td><td>Action button</td><td>&mdash;</td><td>Input</td><td>Clears the target for the row (&ldquo;Not set&rdquo;), removing it from Target aggregates and gap.</td><td>&mdash;</td></tr>
-        </tbody>
-      </table>
-      <div class="callout"><strong>Gap &amp; Priority engine.</strong> For each practice set in both tabs: <em>Gap = Target Rating &minus; Existing Rating</em> (negative gaps treated as 0 in averages). Priority: gap &ge; 3 &rarr; <strong>Critical</strong>; gap &ge; 2 &rarr; <strong>High</strong>; gap = 1 &rarr; <strong>Low</strong>; gap = 0 &rarr; <strong>At Target</strong>. These feed the Summary overview rows (amber at gap &ge; 2, orange at gap &ge; 3) and the Interventions card counts.</div>
-
-      <p style="font-size:14px;font-weight:600;color:var(--teal);margin:14px 0 6px;">3.2 Target Average strip (teal gradient summary, read-only)</p>
-      <table class="brd-field-table">
-        <thead><tr><th>Field Name</th><th>Field Type</th><th>Input Values</th><th>Input / Autofill</th><th>Logic</th><th>Validation &amp; Error Messages</th></tr></thead>
-        <tbody>
-          <tr><td>Practices Set</td><td>Read-only count</td><td>n / 23</td><td>Calculated</td><td>Count of practices given a Target star rating.</td><td>&mdash;</td></tr>
-          <tr><td>Target Average</td><td>Read-only decimal</td><td>&mdash; / 1.00&ndash;5.00</td><td>Calculated</td><td>Mean of set Target stars, 2 decimals.</td><td>&mdash;</td></tr>
-          <tr><td>Target (stars)</td><td>Read-only star render</td><td>&starf;&hellip;&star; (0&ndash;5 filled)</td><td>Calculated</td><td>round(Target Average) filled stars.</td><td>&mdash;</td></tr>
+          <tr><td>Row No.</td><td>Read-only index</td><td>01, 02&hellip;</td><td>Calculated</td><td>Zero-padded row number (rows added on demand).</td><td>&mdash;</td></tr>
+          <tr><td>Checklist Item</td><td>Search / autocomplete</td><td>From the QC checklist-item suggestions</td><td>Input</td><td>The practice being re-assessed after the intervention.</td><td>Required for the row to count.</td></tr>
+          <tr><td>Category</td><td>Text</td><td>e.g. Hygiene, Storage</td><td>Input</td><td>Grouping label for the item.</td><td>&mdash;</td></tr>
+          <tr><td>Description</td><td>Text</td><td>What this item checks</td><td>Input</td><td>Optional clarifying note.</td><td>&mdash;</td></tr>
+          <tr><td>Rating</td><td>Select (4-level)</td><td>1 Not aware/Not practiced / 2 Aware but not implemented / 3 Partially implemented / 4 Fully implemented</td><td>Input</td><td>The level reached after implementation; drives the row Score.</td><td>&mdash;</td></tr>
+          <tr><td>Score</td><td>Read-only percent (italic)</td><td>0 / 33 / 66 / 100</td><td>Calculated</td><td><strong>= 4-level Rating mapped to 0 / 33 / 66 / 100</strong>; feeds the Post-Implementation Average Score (%). Compare to the Existing baseline to gauge progress.</td><td>&mdash;</td></tr>
+          <tr><td>Action Date</td><td>Date</td><td>Calendar date</td><td>Input</td><td>When the improvement action was taken.</td><td>&mdash;</td></tr>
+          <tr><td>Action Taken</td><td>Text</td><td>Free text (e.g. &ldquo;Hygiene training, SOP introduced&rdquo;)</td><td>Input</td><td>What was done to improve this practice.</td><td>&mdash;</td></tr>
+          <tr><td>Done By</td><td>Text</td><td>Free text (person / fellow)</td><td>Input</td><td>Who carried out the action.</td><td>&mdash;</td></tr>
+          <tr><td>Outcome Notes</td><td>Textarea</td><td>Free text</td><td>Input</td><td>Result / remarks after the action.</td><td>&mdash;</td></tr>
+          <tr><td>Remove (&times;)</td><td>Action button</td><td>&mdash;</td><td>Input</td><td>Deletes the item row and removes it from the aggregate.</td><td>&mdash;</td></tr>
         </tbody>
       </table>
 
-      <p style="font-size:14px;font-weight:600;color:var(--teal);margin:14px 0 6px;">3.3 Implementation Status (terracotta panel)</p>
+      <p style="font-size:14px;font-weight:600;color:var(--teal);margin:14px 0 6px;">3.2 Average strip (teal gradient summary, read-only)</p>
       <table class="brd-field-table">
         <thead><tr><th>Field Name</th><th>Field Type</th><th>Input Values</th><th>Input / Autofill</th><th>Logic</th><th>Validation &amp; Error Messages</th></tr></thead>
         <tbody>
-          <tr><td>Status</td><td>Select</td><td>Pending (default) / In Progress / Completed / On Hold / Not Feasible</td><td>Input</td><td>Tracks progress against the target profile; mirrored to Summary Card B &ldquo;Implementation Status&rdquo;.</td><td>&mdash;</td></tr>
-          <tr><td>Notes</td><td>Textarea</td><td>Free text (&ldquo;Implementation notes, blockers, next steps&hellip;&rdquo;)</td><td>Input</td><td>Free-form progress notes for the QC improvement plan.</td><td>&mdash;</td></tr>
+          <tr><td>Items Rated</td><td>Read-only count</td><td>n</td><td>Calculated</td><td>Count of post-implementation items rated.</td><td>&mdash;</td></tr>
+          <tr><td>Average Score</td><td>Read-only percent</td><td>&mdash; / 0&ndash;100%</td><td>Calculated</td><td>Mean of the per-item Scores (each 4-level Rating mapped to 0/33/66/100), shown as a percentage; compare to the Existing tab&rsquo;s Average Score to see improvement.</td><td>&mdash;</td></tr>
+          <tr><td>Phase</td><td>Read-only label</td><td>Post-Implementation</td><td>Calculated</td><td>Identifies this strip as the post-implementation phase.</td><td>&mdash;</td></tr>
         </tbody>
       </table>
     </div>
@@ -6836,7 +6764,7 @@ body > .site-nav { position: fixed; top: 0; left: 0; right: 0; z-index: 9999; }
 
   <!-- ============ TAB 5: TASK LOG ============ -->
   <div class="accordion">
-    <div class="accordion-trigger" onclick="this.parentElement.classList.toggle('open')">Tab 5 &mdash; Task Log (visits, trainings &amp; interventions child table)</div>
+    <div class="accordion-trigger" onclick="this.parentElement.classList.toggle('open')">Tab 5 &mdash; Log Book (visits, trainings &amp; interventions activity log)</div>
     <div class="accordion-body">
       <p style="font-size:13px;color:var(--ink);margin-bottom:10px;">Caption: &ldquo;Log every visit, training, and intervention conducted to improve quality practices.&rdquo; Repeating child table added via <em>+ Add Log Entry</em>; row No. auto-renumbers (01, 02, &hellip;) on add / delete. New rows default Date to today. Per row:</p>
       <table class="brd-field-table">
@@ -6853,7 +6781,7 @@ body > .site-nav { position: fixed; top: 0; left: 0; right: 0; z-index: 9999; }
     </div>
   </div>
 
-  <div class="callout callout-danger"><strong>Key validations (whole form):</strong> The aggregate QC score on each tab is the <em>mean of rated stars only</em> (sum &divide; rated count) &mdash; unrated practices are excluded, not counted as zero. Existing and Optimized share the same fixed 23-practice list; a per-practice Gap (Target &minus; Existing) and Priority are computed only when a practice is rated in <em>both</em> tabs, otherwise Gap / Priority show &ldquo;&mdash;&rdquo;. Average Gap floors negative gaps at 0. Maturity Tier is keyed by round(average) onto the five fixed labels. The Existing &ldquo;Need improvement?&rdquo; toggle, when on, reveals (and expects) a Justification and sets Summary &ldquo;Intervention Flagged&rdquo; = Yes. Task Log rows auto-renumber on add / delete and seed Date to today.</div>
+  <div class="callout callout-danger"><strong>Key validations (whole form):</strong> Entrepreneur is mandatory (Save disabled until set). The aggregate QC score on each tab is the <em>mean of the per-item Scores</em> (each 4-level Rating mapped to 0 / 33 / 66 / 100), shown as a percentage and banded into a Score Category &mdash; unrated items are excluded, not counted as zero. Checklist items are added on demand (no fixed pre-loaded list). On the Existing tab, a per-item Gap = Required Target &minus; Rating (4-level steps) and a Priority (Low / Medium / High) + Status (Pending / In Progress / Completed / On Hold / Not Feasible) are captured per item. The Post Implementation tab re-rates each item after the intervention (with Action Date / Action Taken / Done By / Outcome Notes) so its Average Score can be compared to the Existing baseline. Log Book rows auto-renumber on add / delete and seed Date to today.</div>
 
   <div class="review-panel" data-section="m-qc">
     <div class="review-strip"><span style="font-size:12px;color:var(--ink-soft);font-weight:500;">Section Review:</span>
