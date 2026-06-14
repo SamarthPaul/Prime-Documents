@@ -5745,12 +5745,13 @@ table.matrix tr:nth-child(even) td { background: var(--offwhite); }
       <div class="tc-body">
         <span class="label">Steps</span>
         <ol>
-          <li>Existing tab → + Add Product → Save (product needs a saved ID). In Section I "Packing Details", + Add Row packing items: Type of Packing = Outer / Inner / Cushion, Unit = ml / kg / meter, with Price per Unit (e.g. Outer ₹50, Inner ₹10) and Qty/Month.</li>
-          <li>In "Monthly Shipment Quantities" matrix (one row/month, one column per packing item), enter monthly quantities.</li>
+          <li>Pre-req: the <code>Logistic Packing Type</code> master must be seeded (e.g. Inner / Outer / Cushion) — see Bug 84.</li>
+          <li>Existing tab → + Add Product → Save (product needs a saved ID). In Section I "Packing Details", + Add Row: Type of Packing = Outer (from the master), Unit = kg, Price per Unit = ₹50.</li>
+          <li>In the "Monthly Shipment Quantities" matrix (one row/month, one column per packing item), enter a monthly quantity (e.g. Apr = 100).</li>
         </ol>
         <div class="exp">
           <span class="label">Expected</span>
-          Packing is per-PRODUCT, by transit LAYER (Type of Packing ∈ Inner / Outer / Cushion). The shipment matrix cost columns = Qty × Price/Unit; the "All Existing Packing — Total" footer shows Monthly Cost = Σ(qty × Price/Unit) and Annual Cost = Monthly × 12 (e.g. Outer 100×₹50 + Inner 200×₹10 = ₹7,000/mo → ₹84,000/yr). [Build model verified live — saved a record; type enum Inner/Outer/Cushion + unit ml/kg/meter + per-item price_per_unit/qty_per_month confirmed; "Cost columns multiply qty × Price/Unit" per the build. Rewritten from the old 3-layer-weights framing. End-to-end matrix roll-up to a non-zero total NOT driven (nested product→save→packing-item→save→matrix flow) — manual spot-check pending; cf. Bug 82.]
+          Packing is per-PRODUCT, by transit LAYER (Type of Packing = Link to the <code>Logistic Packing Type</code> master). The matrix column shows "Outer · @ ₹50.00/unit"; <strong>Month Total = qty × Price/Unit = 100 × 50 = ₹5,000</strong>. The "All Existing Packing — Total" footer: <strong>Annual Units = Σ monthly qty = 100; Annual Cost = Σ(monthly qty × Price/Unit) = ₹5,000; Monthly Cost = Annual ÷ 12 (average) = ₹417.</strong> [VERIFIED live, S26 15-Jun-2026, after seeding the master: column "Outer @ ₹50/unit", Annual Units 100, Annual Cost ₹5,000, Monthly Cost ₹417. The calc is correct; the only blocker was the unseeded master (Bug 84).]
         </div>
       </div>
     </div>
