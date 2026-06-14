@@ -5660,11 +5660,11 @@ table.matrix tr:nth-child(even) td { background: var(--offwhite); }
       <div class="tc-body">
         <span class="label">Steps</span>
         <ol>
-          <li>Existing tab → + Add Packaging (pick a product + packaging Type + Price per Unit). In Section III "Monthly Order Schedule", + Add Month rows with Qty and Price/Unit (e.g. Jan Qty 100 @ ₹5, Feb Qty 50 @ ₹5).</li>
+          <li>Existing tab → + Add Packaging (Type of Packaging from the <code>Packaging Master</code>, Material from <code>Material Master</code>, Price per Unit ₹5). In the "Monthly Order Schedule", + Add Month with Qty (e.g. 100).</li>
         </ol>
         <div class="exp">
           <span class="label">Expected</span>
-          Per-packaging model (NOT per-variant): each month row Total = Qty × Price/Unit (100×5 = ₹500). The card header shows "Qty N · ₹ M" running totals; parent <code>total_annual_quantity</code> = Σ monthly Qty (100+50 = 150) and the "All Existing — Total" footer rolls up Total Monthly Spend. [Build model verified live (Monthly Order Schedule child with Month/Qty/Price-Unit/Total; "Cost = Qty × Price/Unit"); rewritten from the old per-variant framing. End-to-end roll-up to a non-zero total NOT driven (month rows need a product + packaging type + save-to-bridge) — manual spot-check pending; cf. Bug 82 where a Unit Pricing roll-up silently stayed ₹0.]
+          Per-packaging model (NOT per-variant): each month row <code>total_order_cost</code> = Quantity Ordered × Price/Unit = 100 × 5 = <strong>₹500</strong> (server-computed). The card header shows the running total <strong>"Qty 100 · ₹ 500"</strong>. [VERIFIED live, S26 15-Jun-2026: built a record (Type "Plastic Packaging", Price ₹5, Apr qty 100) → monthly total_order_cost ₹500, card "Qty 100 · ₹500", month-row Total ₹500. Calc CORRECT. Masters are seeded (Packaging Master=1, Material Master=1). MINOR: the persisted parent <code>total_annual_quantity</code> stays 0 on save (UI shows the correct per-card qty/cost; the denormalized field isn't set server-side) — relevant only if a report reads that field directly.]
         </div>
       </div>
     </div>
