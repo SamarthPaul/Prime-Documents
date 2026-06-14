@@ -4834,15 +4834,15 @@ table.matrix tr:nth-child(even) td { background: var(--offwhite); }
         <span class="tag pol-pos">Positive</span><span class="tag pri-p1">P1</span>
         <span class="tag tp func">Functional</span><span class="tag role">FA / CTP</span>
       </div>
-      <div class="tc-title">Variant SKU auto-generates from Variant + Sub Variant + Net Weight + Unit</div>
+      <div class="tc-title">Variant SKU (sku_code) auto-generates from Variant + Sub Variant + Net Weight + Unit</div>
       <div class="tc-body">
         <span class="label">Steps</span>
         <ol>
-          <li>Add variants: (Wildflower, Raw, 250, g), (Wildflower, Raw, 500, g), (Wildflower, Raw, 1, kg).</li>
+          <li>Add a variant: Variant = Wildflower, Sub Variant = Raw, Net Weight = 250, Unit = gram, (L=10, B=5, H=4).</li>
         </ol>
         <div class="exp">
           <span class="label">Expected</span>
-          Variant SKUs = WILDFLOWER-RAW-250-G, WILDFLOWER-RAW-500-G, WILDFLOWER-RAW-1-KG (join of Variant-SubVariant-Weight-Unit; stripped, UPPERCASED, empty segments dropped). [No "APIC-HHF" master-expansion-with-numeric-suffix scheme exists in the wireframe.]
+          <code>sku_code</code> = <code>{Variant Name} {Sub Variant}-{Net Weight}{Unit}</code> = <strong>"Wildflower Raw-250gram"</strong> (Variant + Sub-Variant combine into <code>size_variant</code>; weight+unit concatenated with no separator). A separate auto-id <code>product_sku</code> (SKU-00000NN) is also assigned. Title-case as stored — NOT uppercased/hyphen-segmented. [Verified live via API, S26 15-Jun-2026: sku_code = "Wildflower Raw-250gram". Reconciled to deployed build; flagged a recommendation to UPPERCASE if SKUs are used as keys.]
         </div>
         <p class="brd">BRD: SKU = Variant-SubVariant-Weight-Unit join (per wireframe).</p>
       </div>
@@ -5656,15 +5656,15 @@ table.matrix tr:nth-child(even) td { background: var(--offwhite); }
         <span class="tag pol-pos">Positive</span><span class="tag pri-p1">P1</span>
         <span class="tag tp func">Functional</span><span class="tag role">FA / CTP</span>
       </div>
-      <div class="tc-title">Monthly packaging qty sums across variants per month</div>
+      <div class="tc-title">Packaging Monthly Order Schedule: Total = Qty × Price/Unit; qty rolls up to annual</div>
       <div class="tc-body">
         <span class="label">Steps</span>
         <ol>
-          <li>Variant A: 100 units in Jan. Variant B: 50 in Jan.</li>
+          <li>Existing tab → + Add Packaging (pick a product + packaging Type + Price per Unit). In Section III "Monthly Order Schedule", + Add Month rows with Qty and Price/Unit (e.g. Jan Qty 100 @ ₹5, Feb Qty 50 @ ₹5).</li>
         </ol>
         <div class="exp">
           <span class="label">Expected</span>
-          Jan total = 150 units. Annual sum row also computed.
+          Per-packaging model (NOT per-variant): each month row Total = Qty × Price/Unit (100×5 = ₹500). The card header shows "Qty N · ₹ M" running totals; parent <code>total_annual_quantity</code> = Σ monthly Qty (100+50 = 150) and the "All Existing — Total" footer rolls up Total Monthly Spend. [Build model verified live (Monthly Order Schedule child with Month/Qty/Price-Unit/Total; "Cost = Qty × Price/Unit"); rewritten from the old per-variant framing. End-to-end roll-up to a non-zero total NOT driven (month rows need a product + packaging type + save-to-bridge) — manual spot-check pending; cf. Bug 82 where a Unit Pricing roll-up silently stayed ₹0.]
         </div>
       </div>
     </div>
@@ -5741,13 +5741,16 @@ table.matrix tr:nth-child(even) td { background: var(--offwhite); }
         <span class="tag pol-pos">Positive</span><span class="tag pri-p2">P2</span>
         <span class="tag tp func">Functional</span><span class="tag role">FA / CTP</span>
       </div>
-      <div class="tc-title">Add transit packaging spec: outer carton, secondary pouch, inner sealed</div>
+      <div class="tc-title">Logistic Packing: per-product transit layers + monthly shipment matrix → Monthly/Annual cost</div>
       <div class="tc-body">
         <span class="label">Steps</span>
-        <ol><li>3 layers, weights, costs.</li></ol>
+        <ol>
+          <li>Existing tab → + Add Product → Save (product needs a saved ID). In Section I "Packing Details", + Add Row packing items: Type of Packing = Outer / Inner / Cushion, Unit = ml / kg / meter, with Price per Unit (e.g. Outer ₹50, Inner ₹10) and Qty/Month.</li>
+          <li>In "Monthly Shipment Quantities" matrix (one row/month, one column per packing item), enter monthly quantities.</li>
+        </ol>
         <div class="exp">
           <span class="label">Expected</span>
-          Total transit cost computed.
+          Packing is per-PRODUCT, by transit LAYER (Type of Packing ∈ Inner / Outer / Cushion). The shipment matrix cost columns = Qty × Price/Unit; the "All Existing Packing — Total" footer shows Monthly Cost = Σ(qty × Price/Unit) and Annual Cost = Monthly × 12 (e.g. Outer 100×₹50 + Inner 200×₹10 = ₹7,000/mo → ₹84,000/yr). [Build model verified live — saved a record; type enum Inner/Outer/Cushion + unit ml/kg/meter + per-item price_per_unit/qty_per_month confirmed; "Cost columns multiply qty × Price/Unit" per the build. Rewritten from the old 3-layer-weights framing. End-to-end matrix roll-up to a non-zero total NOT driven (nested product→save→packing-item→save→matrix flow) — manual spot-check pending; cf. Bug 82.]
         </div>
       </div>
     </div>

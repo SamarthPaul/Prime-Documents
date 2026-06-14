@@ -2848,13 +2848,14 @@ body > .site-nav { position: fixed; top: 0; left: 0; right: 0; z-index: 9999; }
             <thead><tr><th>Column</th><th>Type</th><th>Input Values</th><th>Input / Autofill</th><th>Logic</th><th>Validation</th></tr></thead>
             <tbody>
               <tr><td>No</td><td>Int (auto)</td><td>Sequential</td><td>Auto-increment</td><td>Row number</td><td>--</td></tr>
-              <tr><td>SKU</td><td>Data (auto)</td><td>--</td><td><strong>Calculated:</strong> VARIANT-SUBVARIANT-WEIGHT-UNIT</td><td>Auto-generates on variant name/sub-variant/weight/unit change</td><td>Read-only</td></tr>
+              <tr><td>SKU (sku_code)</td><td>Data (auto)</td><td>--</td><td><strong>Calculated:</strong> <code>{Variant Name} {Sub Variant}-{Net Weight}{Unit}</code> &mdash; e.g. "Wildflower Raw-250gram". (Variant + Sub-Variant combine into <code>size_variant</code>; weight+unit are concatenated with no separator.) <em>Note: Title-case as stored, not uppercased &mdash; recommend the build UPPERCASE + strip spaces if SKUs are used as keys.</em></td><td>Auto-generates on variant/sub-variant/weight/unit change. A separate auto-id <code>product_sku</code> (SKU-00000NN) is also assigned per variant.</td><td>Read-only</td></tr>
               <tr><td>Variant Status</td><td>Select</td><td>Existing, New</td><td>Input</td><td>--</td><td>Required</td></tr>
               <tr><td>Variant Name</td><td>Data</td><td>Free text</td><td>Input</td><td>Feeds SKU generation</td><td>Required</td></tr>
               <tr><td>Sub Variant</td><td>Data</td><td>Free text</td><td>Input</td><td>Feeds SKU generation</td><td>--</td></tr>
               <tr><td>Net Weight</td><td>Float</td><td>Numeric</td><td>Input</td><td>Feeds SKU generation</td><td>Must be &gt; 0</td></tr>
-              <tr><td>Unit</td><td>Select</td><td>g, kg, ml, L, pcs, bundle</td><td>Input</td><td>Feeds SKU generation</td><td>Required</td></tr>
-              <tr><td>Dimensions L x B x H</td><td>3x Float + Select</td><td>Numeric + unit (mm, cm, m, in)</td><td>Input</td><td>Three separate inputs + unit selector</td><td>All 3 required if any entered</td></tr>
+              <tr><td>Unit</td><td>Link (DF Module Unit Type)</td><td>gram, kg, bag (from the unit master)</td><td>Input</td><td>Feeds SKU generation (appended to Net Weight, e.g. "250gram")</td><td>Required</td></tr>
+              <tr><td>Dimensions L x B x H</td><td>3x Float</td><td>Numeric (cm)</td><td>Input</td><td>Length, Breadth, Height inputs</td><td>--</td></tr>
+              <tr><td>Volume</td><td>Float (auto)</td><td>--</td><td><strong>Calculated:</strong> = Length &times; Breadth &times; Height (e.g. 10 &times; 5 &times; 4 = 200)</td><td>Auto-computes server-side on save when L/B/H are set</td><td>Read-only</td></tr>
               <tr><td>Volume</td><td>Float (auto)</td><td>--</td><td><strong>Calculated:</strong> L x B x H + unit cubed</td><td>Recalculates on dimension change</td><td>Read-only</td></tr>
               <tr><td>Retail Price</td><td>Currency (auto)</td><td>--</td><td><strong>Autofill from Unit Pricing module</strong></td><td>"Fetched from Pricing module" hint shown</td><td>Read-only. Shows as placeholder until pricing filled</td></tr>
               <tr><td>Image</td><td>Attach Image</td><td>File upload</td><td>Input</td><td>Per-variant image</td><td>--</td></tr>
