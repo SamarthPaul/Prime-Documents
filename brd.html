@@ -3275,7 +3275,7 @@ body > .site-nav { position: fixed; top: 0; left: 0; right: 0; z-index: 9999; }
   <div class="card"><div class="flow-container">
     <div class="flow-step"><div class="flow-box">Open</div><div class="flow-label">Diagnostics &rarr; Manufacturing &rarr; Machinery (entrepreneur auto-fetched)</div></div>
     <div class="flow-arrow">&rarr;</div>
-    <div class="flow-step"><div class="flow-box">Record Existing</div><div class="flow-label">Add each owned machine/tool; specs, capacity, cost, condition &mdash; depreciation auto-computes</div></div>
+    <div class="flow-step"><div class="flow-box">Record Existing</div><div class="flow-label">Add each owned machine/tool; specs, capacity, cost, salvage &amp; useful life &mdash; depreciation auto-computes (straight-line)</div></div>
     <div class="flow-arrow">&rarr;</div>
     <div class="flow-step"><div class="flow-box">Flag Needs</div><div class="flow-label">Toggle Servicing / Capacity Upgrade on machines needing intervention</div></div>
     <div class="flow-arrow">&rarr;</div>
@@ -3391,14 +3391,16 @@ body > .site-nav { position: fixed; top: 0; left: 0; right: 0; z-index: 9999; }
         <tbody>
           <tr><td>Cost of Machine / Tool (&#8377;)</td><td>Number / currency</td><td>&ge; 0</td><td>Input</td><td>Purchase cost; base for depreciation.</td><td>Must be &ge; 0: &ldquo;Cost cannot be negative.&rdquo;</td></tr>
           <tr><td>Brand Series</td><td>Text</td><td>Free text</td><td>Input</td><td>Make / model series.</td><td>&mdash;</td></tr>
-          <tr><td>Machinery Condition</td><td>Select</td><td>&mdash; Select &mdash; / Good (10% depreciation) / Fair (20% depreciation) / Poor (30% depreciation)</td><td>Input</td><td>Drives the annual Depreciation Rate (Good=10%, Fair=20%, Poor=30%).</td><td>Required to compute depreciation; if blank, depreciation shows &ldquo;&mdash;&rdquo;.</td></tr>
+          <tr><td>Salvage / Residual Value (&#8377;)</td><td>Number / currency</td><td>&ge; 0 (default 0)</td><td>Input</td><td>Estimated end-of-life value; subtracted from Cost before depreciating (straight-line model).</td><td>Must be &ge; 0 and &le; Cost: &ldquo;Salvage cannot exceed cost.&rdquo;</td></tr>
           <tr><td>Critical / Non-Critical</td><td>Select</td><td>&mdash; Select &mdash; / Critical / Non-Critical</td><td>Input</td><td>Marks production-critical equipment.</td><td>&mdash;</td></tr>
           <tr><td>If Critical, provide reason</td><td>Textarea</td><td>Free text</td><td>Input (conditional)</td><td>Shown / required when Critical / Non-Critical = Critical.</td><td>Conditionally required: &ldquo;Provide a reason for marking this machine critical.&rdquo;</td></tr>
           <tr><td>Servicing Required?</td><td>Select</td><td>&mdash; Select &mdash; / Yes / No</td><td>Input</td><td>Declares whether routine servicing is due.</td><td>&mdash;</td></tr>
           <tr><td>Upkeep Cost (&#8377;)</td><td>Number / currency</td><td>&ge; 0</td><td>Input</td><td>Recurring maintenance cost.</td><td>Must be &ge; 0.</td></tr>
           <tr><td>Age of Machinery (years)</td><td>Number</td><td>&ge; 0</td><td>Input</td><td>Years in service.</td><td>Must be &ge; 0.</td></tr>
-          <tr><td>Depreciation Rate</td><td>Read-only calc (italic)</td><td>&mdash;</td><td>Calculated</td><td><strong>= rate by Condition</strong> (Good 10% / Fair 20% / Poor 30%), shown &ldquo;NN% per year&rdquo;.</td><td>&mdash;</td></tr>
-          <tr><td>Monthly Depreciation</td><td>Read-only calc (italic)</td><td>&mdash;</td><td>Calculated</td><td><strong>= (Cost &times; annual rate) / 12</strong>, shown &ldquo;&#8377;N / month&rdquo;.</td><td>&mdash;</td></tr>
+          <tr><td>Useful Life (years)</td><td>Number</td><td>&gt; 0 (default 10)</td><td>Input</td><td>Expected service life; the straight-line denominator.</td><td>Must be &gt; 0: &ldquo;Useful life must be greater than zero.&rdquo;</td></tr>
+          <tr><td>Remaining Life</td><td>Read-only calc (italic)</td><td>&mdash;</td><td>Calculated</td><td><strong>= Useful Life &minus; Age of Machinery</strong>, shown &ldquo;N.N years&rdquo; (floored at 0).</td><td>&mdash;</td></tr>
+          <tr><td>Depreciation Rate (straight-line)</td><td>Read-only calc (italic)</td><td>&mdash;</td><td>Calculated</td><td><strong>= ((Cost &minus; Salvage) / Useful Life) / Cost</strong>, shown &ldquo;NN% / yr&rdquo;. (e.g. Cost &#8377;50,000, Salvage &#8377;5,000, Life 10 &rarr; 9.0% / yr.)</td><td>&mdash;</td></tr>
+          <tr><td>Monthly Depreciation</td><td>Read-only calc (italic)</td><td>&mdash;</td><td>Calculated</td><td><strong>= (Cost &minus; Salvage) / Useful Life / 12</strong>, shown &ldquo;&#8377;N / month&rdquo; (e.g. &#8377;375 for the example above).</td><td>&mdash;</td></tr>
           <tr><td>Depreciation / Unit</td><td>Read-only calc (italic)</td><td>&mdash;</td><td>Calculated</td><td><strong>= Monthly Depreciation / Monthly Output</strong>, shown &ldquo;&#8377;N.NN / unit&rdquo;; &ldquo;&#8377;0.00&rdquo; if Output=0. Auto-fetches to Existing Unit Pricing &rarr; Machinery Depreciation / Unit (per machine).</td><td>&mdash;</td></tr>
         </tbody>
       </table>
@@ -3454,7 +3456,7 @@ body > .site-nav { position: fixed; top: 0; left: 0; right: 0; z-index: 9999; }
         <tbody>
           <tr><td>Implementation Status (header)</td><td>Select</td><td>Pending (default) / In Progress / Completed</td><td>Input</td><td>Mirrors to Summary; In Progress / Completed counts toward &ldquo;In Procurement&rdquo;.</td><td>&mdash;</td></tr>
           <tr><td>Procurement Status</td><td>Select</td><td>Pending / Vendor Selected / EE Procurement - Selected / EE Completed / Procured (Self)</td><td>Input</td><td>Tracks how the machine is being procured. &ldquo;EE Procurement - Selected&rdquo; / &ldquo;EE Completed&rdquo; denote procurement routed through the Entrepreneurship Enablement (EE) channel (selected via dropdown, not auto-pushed).</td><td>&mdash;</td></tr>
-          <tr><td>Depreciation / Unit (New)</td><td>Read-only calc (italic)</td><td>&mdash;</td><td>Calculated</td><td>Same formula as Existing: (Cost &times; rate)/12 / Monthly Output, &ldquo;&#8377;N.NN / unit&rdquo;. Auto-fetches to Required Unit Pricing &rarr; Machinery Depreciation / Unit.</td><td>&mdash;</td></tr>
+          <tr><td>Depreciation / Unit (New)</td><td>Read-only calc (italic)</td><td>&mdash;</td><td>Calculated</td><td>Same formula as Existing: ((Cost &minus; Salvage) / Useful Life / 12) / Monthly Output, &ldquo;&#8377;N.NN / unit&rdquo;. Auto-fetches to Required Unit Pricing &rarr; Machinery Depreciation / Unit.</td><td>&mdash;</td></tr>
         </tbody>
       </table>
 
@@ -6576,9 +6578,10 @@ body > .site-nav { position: fixed; top: 0; left: 0; right: 0; z-index: 9999; }
     <!-- QUALITY CONTROL -->
     <div class="brd-section" id="m-qc">
   <div class="section-header"><span class="section-id">PR-PD-005</span><h2 class="section-title">Quality Control</h2></div>
-  <div class="section-desc">Part of the Product Development module &mdash; a maturity-style Quality Control assessment in which the Fessociate rates the entrepreneur&rsquo;s premises against 23 standard QC practices on a 1&ndash;5 star scale (Existing), sets a target rating profile (Optimized / Required), and the system auto-computes a per-practice gap, priority and an aggregate QC score (mean of all rated stars) with a maturity tier and rating distribution.</div>
+  <div class="section-desc">Part of the Product Development module &mdash; a maturity-style Quality Control assessment in which the Fessociate adds and rates QC checklist items against a <strong>4-level practice scale</strong> (1 Not aware/Not practiced &middot; 2 Aware but not implemented &middot; 3 Partially implemented &middot; 4 Fully implemented), sets a Required Target level per item, and the system auto-computes a per-item Score (4-level mapped to <strong>0 / 33 / 66 / 100</strong>), a per-item Gap and Priority, and an aggregate <strong>QC Compliance Score as a percentage</strong> that is banded into a <strong>Score Category</strong> (Critical / Below Average / Average / Good / Excellent).</div>
+  <div class="callout callout-teal"><strong>BRD note (reconciled to the deployed build, Session 26, 14-Jun-2026):</strong> the QC scoring model below has been updated to match staging &mdash; a <strong>4-level</strong> rating (not 1&ndash;5 stars), a <strong>percentage</strong> Compliance Score (each item scored 0/33/66/100, averaged), and a 5-band <strong>Score Category</strong> (Critical&hellip;Excellent), with checklist items <strong>added on demand</strong> (not a fixed pre-loaded list of 23). The live tab rail is <em>Details &middot; Existing &middot; Post Implementation &middot; Resources &middot; Log Book</em>. <em>The Summary aggregate-card and Optimized-tab structure described further below still reflects the earlier 1&ndash;5 star design and is flagged for a dedicated structural rewrite once that part of the build is fully re-explored &mdash; the scoring model, scale, score bands and per-item fields here are build-accurate.</em></div>
 
-  <div class="callout callout-terra"><strong>Key behaviour &mdash; star-rated maturity scale with an Existing &rarr; Required gap engine.</strong> The same fixed list of 23 QC practices appears in both the Existing and Optimized tabs. In Existing each practice is rated 1&ndash;5 stars on what is observed at the entrepreneur&rsquo;s premises; in Optimized the target star level is set. For every practice rated in both tabs, the system calculates <em>Gap = Target &minus; Existing</em> and derives a Priority (Critical &ge; 3, High &ge; 2, Low = 1, At Target = 0). The aggregate QC score per tab is the <em>mean of all rated stars</em>, rounded to a maturity tier. A single &ldquo;Intervention Need&rdquo; toggle (with justification) on the Existing tab flags the whole assessment for improvement; the Optimized tab then carries one Implementation Status.</div>
+  <div class="callout callout-terra"><strong>Key behaviour &mdash; 4-level practice scale with a percentage Compliance Score and a per-item Required-Target gap engine.</strong> The Existing tab carries an <em>Awareness Baseline</em> (Yes/No) and an Assessment table to which the Fessociate <strong>adds checklist items on demand</strong> (&ldquo;+ Add Item&rdquo;). Each item is rated on a 4-level scale (1 Not aware/Not practiced &middot; 2 Aware but not implemented &middot; 3 Partially implemented &middot; 4 Fully implemented); the <em>Score auto-derives from the rating as 0 / 33 / 66 / 100</em>. Each item also carries a <em>Required Target</em> (same 4-level scale), from which <em>Gap</em> and <em>Priority</em> (Low / Medium / High) derive, plus a per-item <em>Status</em> (Pending / In Progress / Completed / On Hold / Not Feasible). The aggregate <strong>QC Compliance Score = the mean of the per-item Scores, shown as a percentage</strong>, and is banded into a <strong>Score Category</strong>: Critical / Below Average / Average / Good / Excellent.</div>
 
   <h3 style="font-size:16px;color:var(--teal);margin:18px 0 10px;">On-Screen UI Structure</h3>
   <div class="card"><div style="font-size:13px;line-height:1.9;color:var(--ink)">
@@ -6639,9 +6642,9 @@ body > .site-nav { position: fixed; top: 0; left: 0; right: 0; z-index: 9999; }
       <table class="brd-field-table">
         <thead><tr><th>Field Name</th><th>Field Type</th><th>Input Values</th><th>Input / Autofill</th><th>Logic</th><th>Validation &amp; Error Messages</th></tr></thead>
         <tbody>
-          <tr><td>Practices Rated</td><td>Read-only count</td><td>n / 23</td><td>Calculated</td><td>Count of practices given an Existing star rating, out of 23.</td><td>&mdash;</td></tr>
-          <tr><td>Average Rating</td><td>Read-only decimal</td><td>&mdash; / 1.00&ndash;5.00</td><td>Calculated</td><td><strong>QC score</strong> = mean of all rated Existing stars (sum &divide; rated count), to 2 decimals; &ldquo;&mdash;&rdquo; when nothing is rated.</td><td>&mdash;</td></tr>
-          <tr><td>Maturity Tier</td><td>Read-only label</td><td>Not aware / Not practiced &middot; Aware but not implemented &middot; Partially implemented &middot; Mostly implemented &middot; Fully implemented</td><td>Calculated</td><td>Tier label keyed by round(Average Rating); coloured green (tier &ge; 4) or red (tier &le; 2).</td><td>&mdash;</td></tr>
+          <tr><td>Items Rated</td><td>Read-only count</td><td>n</td><td>Calculated</td><td>Count of checklist items given an Existing rating (items are added on demand &mdash; no fixed denominator).</td><td>&mdash;</td></tr>
+          <tr><td>QC Compliance Score (Average Score)</td><td>Read-only percent</td><td>&mdash; / 0&ndash;100%</td><td>Calculated</td><td><strong>QC score</strong> = mean of the per-item Scores, where each item&rsquo;s 4-level Rating maps to <strong>0 / 33 / 66 / 100</strong>; shown as a percentage; &ldquo;0.00%&rdquo; / &ldquo;&mdash;&rdquo; when nothing is rated. (e.g. one item rated &ldquo;4. Fully implemented&rdquo; &rarr; 100%.)</td><td>&mdash;</td></tr>
+          <tr><td>Score Category</td><td>Read-only label</td><td>Critical &middot; Below Average &middot; Average &middot; Good &middot; Excellent</td><td>Calculated</td><td>Band keyed by the QC Compliance Score percentage (low &rarr; Critical, high &rarr; Excellent).</td><td>&mdash;</td></tr>
           <tr><td>Fully Implemented (&starf;&starf;&starf;&starf;&starf;)</td><td>Read-only count (green)</td><td>&mdash;</td><td>Calculated</td><td>Count of Existing practices rated exactly 5 stars.</td><td>&mdash;</td></tr>
           <tr><td>Not Aware / Not Practiced (&starf;)</td><td>Read-only count (red)</td><td>&mdash;</td><td>Calculated</td><td>Count of Existing practices rated exactly 1 star.</td><td>&mdash;</td></tr>
           <tr><td>Intervention Flagged</td><td>Read-only Yes / No (amber)</td><td>Yes / No</td><td>Calculated</td><td>&ldquo;Yes&rdquo; when the Existing &ldquo;Need improvement?&rdquo; toggle is on; else &ldquo;No&rdquo;.</td><td>&mdash;</td></tr>
@@ -6693,57 +6696,64 @@ body > .site-nav { position: fixed; top: 0; left: 0; right: 0; z-index: 9999; }
 
   <!-- ============ TAB 2: EXISTING ============ -->
   <div class="accordion">
-    <div class="accordion-trigger" onclick="this.parentElement.classList.toggle('open')">Tab 2 &mdash; Existing (rate the 23 QC practices 1&ndash;5)</div>
+    <div class="accordion-trigger" onclick="this.parentElement.classList.toggle('open')">Tab 2 &mdash; Existing (Awareness Baseline + add &amp; rate QC checklist items, 4-level)</div>
     <div class="accordion-body">
-      <p style="font-size:13px;color:var(--ink);margin-bottom:10px;">Caption: &ldquo;Rate each practice on a 1&ndash;5 scale based on what you observe at the entrepreneur&rsquo;s premises.&rdquo; The tab shows the 5-tier Legend strip, then the Assessment table of all 23 practices, then the Average strip, then the terracotta Intervention Need panel.</p>
+      <p style="font-size:13px;color:var(--ink);margin-bottom:10px;">The Existing tab opens with an <strong>Awareness Baseline</strong> question (&ldquo;Is the entrepreneur aware of Quality &amp; Control practices?&rdquo; &mdash; Yes/No), then the <strong>Assessment</strong> section where the rater <strong>adds checklist items on demand</strong> (&ldquo;+ Add Item&rdquo;), rates each on the 4-level scale, sets a Required Target, and reads the live Items-Rated count, Average Score (%) and Phase. Scores derive automatically from the 4-level rating.</p>
 
-      <p style="font-size:14px;font-weight:600;color:var(--teal);margin:12px 0 6px;">2.1 Legend strip (rating key, read-only)</p>
+      <p style="font-size:14px;font-weight:600;color:var(--teal);margin:12px 0 6px;">2.1 Rating scale key (read-only)</p>
       <table class="brd-field-table">
         <thead><tr><th>Field Name</th><th>Field Type</th><th>Input Values</th><th>Input / Autofill</th><th>Logic</th><th>Validation &amp; Error Messages</th></tr></thead>
         <tbody>
-          <tr><td>Star Scale Key</td><td>Read-only legend (5 cells)</td><td>1&starf; Not aware / Not practiced &middot; 2&starf; Aware but not implemented &middot; 3&starf; Partially implemented &middot; 4&starf; Mostly implemented &middot; 5&starf; Fully implemented</td><td>Static</td><td>Fixed maturity key shown above the assessment for rater reference; identical key appears on the Optimized tab.</td><td>&mdash;</td></tr>
+          <tr><td>4-Level Scale Key</td><td>Read-only legend</td><td>1 Not aware / Not practiced (Score 0) &middot; 2 Aware but not implemented (33) &middot; 3 Partially implemented (66) &middot; 4 Fully implemented (100)</td><td>Static</td><td>The 4-level maturity key; each level maps to a Score of 0 / 33 / 66 / 100 used in the Compliance % average. Same key applies to the Required Target.</td><td>&mdash;</td></tr>
+          <tr><td>Awareness Baseline</td><td>Select</td><td>&mdash; Select &mdash; / Yes / No</td><td>Input</td><td>&ldquo;Is the entrepreneur aware of Quality &amp; Control practices?&rdquo; &mdash; baseline context for the assessment.</td><td>&mdash;</td></tr>
         </tbody>
       </table>
 
-      <p style="font-size:14px;font-weight:600;color:var(--teal);margin:14px 0 6px;">2.2 Assessment table &mdash; per-practice row fields</p>
+      <p style="font-size:14px;font-weight:600;color:var(--teal);margin:14px 0 6px;">2.2 Assessment table &mdash; per-item row fields (items added via &ldquo;+ Add Item&rdquo;)</p>
       <table class="brd-field-table">
         <thead><tr><th>Field Name</th><th>Field Type</th><th>Input Values</th><th>Input / Autofill</th><th>Logic</th><th>Validation &amp; Error Messages</th></tr></thead>
         <tbody>
-          <tr><td>Row No.</td><td>Read-only index</td><td>01&ndash;23</td><td>Calculated</td><td>Fixed zero-padded practice number.</td><td>&mdash;</td></tr>
-          <tr><td>Practice (Question)</td><td>Read-only text</td><td>&mdash;</td><td>Static</td><td>The QC practice from the fixed list (see 2.3 below).</td><td>&mdash;</td></tr>
-          <tr><td>Rating</td><td>Star rating (1&ndash;5)</td><td>1 / 2 / 3 / 4 / 5 stars</td><td>Input</td><td>Click a star to set the rating (hover previews); value feeds Existing average, distribution, tier and the per-practice gap.</td><td>&mdash;</td></tr>
-          <tr><td>Clear (&times;)</td><td>Action button</td><td>&mdash;</td><td>Input</td><td>Clears the rating for the row, returning it to &ldquo;Not rated&rdquo; and removing it from all aggregates.</td><td>&mdash;</td></tr>
-          <tr><td>Notes</td><td>Text</td><td>Free text</td><td>Input</td><td>Optional per-practice observation note.</td><td>&mdash;</td></tr>
+          <tr><td>Row No.</td><td>Read-only index</td><td>01, 02&hellip;</td><td>Calculated</td><td>Zero-padded row number (rows added on demand, no fixed count).</td><td>&mdash;</td></tr>
+          <tr><td>Checklist Item</td><td>Search / autocomplete</td><td>From the QC checklist-item suggestions (see 2.3)</td><td>Input</td><td>Pick or type the practice being assessed.</td><td>Required for the row to count.</td></tr>
+          <tr><td>Category</td><td>Text</td><td>e.g. Hygiene, Storage</td><td>Input</td><td>Grouping label for the item.</td><td>&mdash;</td></tr>
+          <tr><td>Description</td><td>Text</td><td>What this item checks</td><td>Input</td><td>Optional clarifying note for the item.</td><td>&mdash;</td></tr>
+          <tr><td>Rating</td><td>Select (4-level)</td><td>1 Not aware/Not practiced / 2 Aware but not implemented / 3 Partially implemented / 4 Fully implemented</td><td>Input</td><td>Drives the row Score (0/33/66/100) and the Gap vs Required Target.</td><td>&mdash;</td></tr>
+          <tr><td>Score</td><td>Read-only percent (italic)</td><td>0 / 33 / 66 / 100</td><td>Calculated</td><td><strong>= 4-level Rating mapped to 0 / 33 / 66 / 100</strong>; feeds the Average Score (%).</td><td>&mdash;</td></tr>
+          <tr><td>Required Target</td><td>Select (4-level)</td><td>(same 4-level scale)</td><td>Input</td><td>The level this item should reach; drives Gap.</td><td>&mdash;</td></tr>
+          <tr><td>Gap</td><td>Read-only (italic)</td><td>&mdash;</td><td>Calculated</td><td><strong>= Required Target &minus; Rating</strong> (4-level steps).</td><td>&mdash;</td></tr>
+          <tr><td>Priority</td><td>Select</td><td>Low / Medium / High</td><td>Input</td><td>Intervention priority for the item.</td><td>&mdash;</td></tr>
+          <tr><td>Status</td><td>Select</td><td>Pending / In Progress / Completed / On Hold / Not Feasible</td><td>Input</td><td>Implementation status of the item.</td><td>&mdash;</td></tr>
+          <tr><td>Remove (&times;)</td><td>Action button</td><td>&mdash;</td><td>Input</td><td>Deletes the item row and removes it from all aggregates.</td><td>&mdash;</td></tr>
         </tbody>
       </table>
 
-      <p style="font-size:14px;font-weight:600;color:var(--teal);margin:14px 0 6px;">2.3 The 23 fixed QC practices (each rated 1&ndash;5 stars; identical list in Existing &amp; Optimized)</p>
+      <p style="font-size:14px;font-weight:600;color:var(--teal);margin:14px 0 6px;">2.3 Standard QC checklist-item suggestions (picked on demand; each rated on the 4-level scale)</p>
       <table class="brd-field-table">
         <thead><tr><th>#</th><th>Practice (Question)</th><th>Rating Type</th><th>Scoring</th></tr></thead>
         <tbody>
-          <tr><td>01</td><td>Is Entrepreneur aware of Quality and Control practices?</td><td>1&ndash;5 stars</td><td>Star value feeds mean QC score</td></tr>
-          <tr><td>02</td><td>Raw material inspection before use</td><td>1&ndash;5 stars</td><td>Star value feeds mean QC score</td></tr>
-          <tr><td>03</td><td>Batch labeling done</td><td>1&ndash;5 stars</td><td>Star value feeds mean QC score</td></tr>
-          <tr><td>04</td><td>Expiry date tracking</td><td>1&ndash;5 stars</td><td>Star value feeds mean QC score</td></tr>
-          <tr><td>05</td><td>Rejection of defective products</td><td>1&ndash;5 stars</td><td>Star value feeds mean QC score</td></tr>
-          <tr><td>06</td><td>Standard measurement tools used</td><td>1&ndash;5 stars</td><td>Star value feeds mean QC score</td></tr>
-          <tr><td>07</td><td>Written SOP available</td><td>1&ndash;5 stars</td><td>Star value feeds mean QC score</td></tr>
-          <tr><td>08</td><td>Clean Production Workspace</td><td>1&ndash;5 stars</td><td>Star value feeds mean QC score</td></tr>
-          <tr><td>09</td><td>Personal protective gear (gloves, cap, apron)</td><td>1&ndash;5 stars</td><td>Star value feeds mean QC score</td></tr>
-          <tr><td>10</td><td>Separate raw and finished goods area</td><td>1&ndash;5 stars</td><td>Star value feeds mean QC score</td></tr>
-          <tr><td>11</td><td>Equipment cleaning schedule</td><td>1&ndash;5 stars</td><td>Star value feeds mean QC score</td></tr>
-          <tr><td>12</td><td>Pest control measures</td><td>1&ndash;5 stars</td><td>Star value feeds mean QC score</td></tr>
-          <tr><td>13</td><td>Proper ventilation</td><td>1&ndash;5 stars</td><td>Star value feeds mean QC score</td></tr>
-          <tr><td>14</td><td>Handwashing facility available</td><td>1&ndash;5 stars</td><td>Star value feeds mean QC score</td></tr>
-          <tr><td>15</td><td>Use of clean water</td><td>1&ndash;5 stars</td><td>Star value feeds mean QC score</td></tr>
-          <tr><td>16</td><td>Covered waste bins</td><td>1&ndash;5 stars</td><td>Star value feeds mean QC score</td></tr>
-          <tr><td>17</td><td>Nails trimmed / no jewellery</td><td>1&ndash;5 stars</td><td>Star value feeds mean QC score</td></tr>
-          <tr><td>18</td><td>Regular cleaning of utensils</td><td>1&ndash;5 stars</td><td>Star value feeds mean QC score</td></tr>
-          <tr><td>19</td><td>Raw materials off the floor</td><td>1&ndash;5 stars</td><td>Star value feeds mean QC score</td></tr>
-          <tr><td>20</td><td>Use of pallets or racks</td><td>1&ndash;5 stars</td><td>Star value feeds mean QC score</td></tr>
-          <tr><td>21</td><td>FIFO (First In First Out) followed</td><td>1&ndash;5 stars</td><td>Star value feeds mean QC score</td></tr>
-          <tr><td>22</td><td>Storage away from moisture</td><td>1&ndash;5 stars</td><td>Star value feeds mean QC score</td></tr>
-          <tr><td>23</td><td>Labelled storage containers</td><td>1&ndash;5 stars</td><td>Star value feeds mean QC score</td></tr>
+          <tr><td>01</td><td>Is Entrepreneur aware of Quality and Control practices?</td><td>4-level (1&ndash;4)</td><td>Rating &rarr; Score 0/33/66/100; feeds the mean Compliance %</td></tr>
+          <tr><td>02</td><td>Raw material inspection before use</td><td>4-level (1&ndash;4)</td><td>Rating &rarr; Score 0/33/66/100; feeds the mean Compliance %</td></tr>
+          <tr><td>03</td><td>Batch labeling done</td><td>4-level (1&ndash;4)</td><td>Rating &rarr; Score 0/33/66/100; feeds the mean Compliance %</td></tr>
+          <tr><td>04</td><td>Expiry date tracking</td><td>4-level (1&ndash;4)</td><td>Rating &rarr; Score 0/33/66/100; feeds the mean Compliance %</td></tr>
+          <tr><td>05</td><td>Rejection of defective products</td><td>4-level (1&ndash;4)</td><td>Rating &rarr; Score 0/33/66/100; feeds the mean Compliance %</td></tr>
+          <tr><td>06</td><td>Standard measurement tools used</td><td>4-level (1&ndash;4)</td><td>Rating &rarr; Score 0/33/66/100; feeds the mean Compliance %</td></tr>
+          <tr><td>07</td><td>Written SOP available</td><td>4-level (1&ndash;4)</td><td>Rating &rarr; Score 0/33/66/100; feeds the mean Compliance %</td></tr>
+          <tr><td>08</td><td>Clean Production Workspace</td><td>4-level (1&ndash;4)</td><td>Rating &rarr; Score 0/33/66/100; feeds the mean Compliance %</td></tr>
+          <tr><td>09</td><td>Personal protective gear (gloves, cap, apron)</td><td>4-level (1&ndash;4)</td><td>Rating &rarr; Score 0/33/66/100; feeds the mean Compliance %</td></tr>
+          <tr><td>10</td><td>Separate raw and finished goods area</td><td>4-level (1&ndash;4)</td><td>Rating &rarr; Score 0/33/66/100; feeds the mean Compliance %</td></tr>
+          <tr><td>11</td><td>Equipment cleaning schedule</td><td>4-level (1&ndash;4)</td><td>Rating &rarr; Score 0/33/66/100; feeds the mean Compliance %</td></tr>
+          <tr><td>12</td><td>Pest control measures</td><td>4-level (1&ndash;4)</td><td>Rating &rarr; Score 0/33/66/100; feeds the mean Compliance %</td></tr>
+          <tr><td>13</td><td>Proper ventilation</td><td>4-level (1&ndash;4)</td><td>Rating &rarr; Score 0/33/66/100; feeds the mean Compliance %</td></tr>
+          <tr><td>14</td><td>Handwashing facility available</td><td>4-level (1&ndash;4)</td><td>Rating &rarr; Score 0/33/66/100; feeds the mean Compliance %</td></tr>
+          <tr><td>15</td><td>Use of clean water</td><td>4-level (1&ndash;4)</td><td>Rating &rarr; Score 0/33/66/100; feeds the mean Compliance %</td></tr>
+          <tr><td>16</td><td>Covered waste bins</td><td>4-level (1&ndash;4)</td><td>Rating &rarr; Score 0/33/66/100; feeds the mean Compliance %</td></tr>
+          <tr><td>17</td><td>Nails trimmed / no jewellery</td><td>4-level (1&ndash;4)</td><td>Rating &rarr; Score 0/33/66/100; feeds the mean Compliance %</td></tr>
+          <tr><td>18</td><td>Regular cleaning of utensils</td><td>4-level (1&ndash;4)</td><td>Rating &rarr; Score 0/33/66/100; feeds the mean Compliance %</td></tr>
+          <tr><td>19</td><td>Raw materials off the floor</td><td>4-level (1&ndash;4)</td><td>Rating &rarr; Score 0/33/66/100; feeds the mean Compliance %</td></tr>
+          <tr><td>20</td><td>Use of pallets or racks</td><td>4-level (1&ndash;4)</td><td>Rating &rarr; Score 0/33/66/100; feeds the mean Compliance %</td></tr>
+          <tr><td>21</td><td>FIFO (First In First Out) followed</td><td>4-level (1&ndash;4)</td><td>Rating &rarr; Score 0/33/66/100; feeds the mean Compliance %</td></tr>
+          <tr><td>22</td><td>Storage away from moisture</td><td>4-level (1&ndash;4)</td><td>Rating &rarr; Score 0/33/66/100; feeds the mean Compliance %</td></tr>
+          <tr><td>23</td><td>Labelled storage containers</td><td>4-level (1&ndash;4)</td><td>Rating &rarr; Score 0/33/66/100; feeds the mean Compliance %</td></tr>
         </tbody>
       </table>
       <div class="callout"><strong>Aggregate QC score (per tab).</strong> Average Rating = (sum of all rated stars) &divide; (number of practices rated). Only rated practices are included &mdash; unrated practices do not drag the mean down. The result is shown to 2 decimals and mapped to a Maturity Tier via round(): 1 = Not aware / Not practiced, 2 = Aware but not implemented, 3 = Partially implemented, 4 = Mostly implemented, 5 = Fully implemented. The 5-star &ldquo;Average&rdquo; rendering fills round(Average) stars.</div>
@@ -6752,9 +6762,9 @@ body > .site-nav { position: fixed; top: 0; left: 0; right: 0; z-index: 9999; }
       <table class="brd-field-table">
         <thead><tr><th>Field Name</th><th>Field Type</th><th>Input Values</th><th>Input / Autofill</th><th>Logic</th><th>Validation &amp; Error Messages</th></tr></thead>
         <tbody>
-          <tr><td>Practices Rated</td><td>Read-only count</td><td>n / 23</td><td>Calculated</td><td>Live count of practices given a star rating in this tab.</td><td>&mdash;</td></tr>
-          <tr><td>Average Rating</td><td>Read-only decimal</td><td>&mdash; / 1.00&ndash;5.00</td><td>Calculated</td><td>Mean of rated stars (the QC score), 2 decimals; &ldquo;&mdash;&rdquo; when nothing rated.</td><td>&mdash;</td></tr>
-          <tr><td>Average (stars)</td><td>Read-only star render</td><td>&starf;&hellip;&star; (0&ndash;5 filled)</td><td>Calculated</td><td>round(Average Rating) filled stars over a 5-star track.</td><td>&mdash;</td></tr>
+          <tr><td>Items Rated</td><td>Read-only count</td><td>n</td><td>Calculated</td><td>Live count of checklist items given a rating in this tab (added on demand).</td><td>&mdash;</td></tr>
+          <tr><td>Average Score</td><td>Read-only percent</td><td>&mdash; / 0&ndash;100%</td><td>Calculated</td><td>Mean of the per-item Scores (each 4-level Rating mapped to 0/33/66/100), shown as a percentage; &ldquo;0%&rdquo; / &ldquo;&mdash;&rdquo; when nothing rated.</td><td>&mdash;</td></tr>
+          <tr><td>Phase</td><td>Read-only label</td><td>Existing / &hellip;</td><td>Calculated</td><td>The assessment phase this strip summarises.</td><td>&mdash;</td></tr>
         </tbody>
       </table>
 
@@ -10250,7 +10260,7 @@ body > .site-nav { position: fixed; top: 0; left: 0; right: 0; z-index: 9999; }
               <tr><td>F-CALC-021</td><td>Infrastructure FM</td><td>LIFCOM Amount=2,00,000</td><td>EMI section renders</td><td>5-Year EMI = 3,333/month, 3-Year EMI = 5,556/month</td></tr>
               <tr><td>F-CALC-022</td><td>Market Linkage</td><td>Price=100, Avg Units/Month=50</td><td>Both entered</td><td>Avg Revenue/Month = 5,000. Annual Revenue = 60,000</td></tr>
               <tr><td>F-CALC-023</td><td>Market Linkage Sales</td><td>Price=100, Jan=10, Feb=20, Mar=30, rest=0</td><td>Monthly qty entered</td><td>Total Units = 60, Annual Revenue = 6,000</td></tr>
-              <tr><td>F-CALC-024</td><td>Quality Control</td><td>15 of 23 questions rated, sum=55</td><td>Ratings entered</td><td>Practices Rated = 15/23, Average = 3.67, Tier = Established</td></tr>
+              <tr><td>F-CALC-024</td><td>Quality Control</td><td>15 items rated on the 4-level scale (Scores 0/33/66/100)</td><td>Ratings entered</td><td>Items Rated = 15, Average Score = mean of the 15 item Scores as a % (e.g. all &ldquo;3 Partially implemented&rdquo; &rarr; 66%), Score Category banded (Critical&hellip;Excellent)</td></tr>
               <tr><td>F-CALC-025</td><td>Packaging</td><td>Cost/Unit=5, Qty/Batch=200</td><td>Both entered</td><td>Total Cost = 1,000</td></tr>
               <tr><td>F-CALC-026</td><td>Capacity Building</td><td>Baseline=2, Current=3, Target=5</td><td>Scorecard filled</td><td>Gap = 2 (Target - Current). Color = amber.</td></tr>
               <tr><td>F-CALC-027</td><td>Logistics Service</td><td>Leg costs: 200+300+150, Frequency=Weekly(x4)</td><td>Route filled</td><td>Trip Cost=650, Monthly Cost=2,600</td></tr>
@@ -10454,7 +10464,7 @@ body > .site-nav { position: fixed; top: 0; left: 0; right: 0; z-index: 9999; }
           <tr><td>E2E-FES-010</td><td>Fessociate</td><td>10. Verify price feedback</td><td>Go back to Product Variants</td><td>Retail Price column now shows the selling price from Unit Pricing.</td></tr>
           <tr><td>E2E-FES-011</td><td>Fessociate</td><td>11. Fill Market Research</td><td>Add channel research, competitor pricing</td><td>Competitor avg auto-calculates. SWOT editable.</td></tr>
           <tr><td>E2E-FES-012</td><td>Fessociate</td><td>12. Fill Registration</td><td>Add FSSAI license with Lifetime Validity checked</td><td>Valid Till field hidden. Status chip shows "Received" in green.</td></tr>
-          <tr><td>E2E-FES-013</td><td>Fessociate</td><td>13. Fill Quality Control</td><td>Rate 23 practices using stars</td><td>Average calculates. Maturity tier shows. Summary tab populates after save.</td></tr>
+          <tr><td>E2E-FES-013</td><td>Fessociate</td><td>13. Fill Quality Control</td><td>Add &amp; rate QC checklist items on the 4-level scale</td><td>Average Score (%) calculates. Score Category shows. Summary populates after save.</td></tr>
           <tr><td>E2E-FES-014</td><td>Fessociate</td><td>14. Fill Infrastructure</td><td>Enter rent, units, electricity. Flag BE intervention.</td><td>Rent/unit and Elec/unit auto-calc. Values appear in Unit Pricing on refresh.</td></tr>
           <tr><td>E2E-FES-015</td><td>Fessociate</td><td>15. Log Activity</td><td>Open Fellow Activity Logger. Add Framework activity for EP + RM framework.</td><td>Calendar tile appears. Entry syncs to RM Log Book. Entry shows in EP Intervention Logs.</td></tr>
           <tr><td>E2E-FES-016</td><td>Fessociate</td><td>16. Verify completion tracking</td><td>Check EP Profile Dashboard for RM framework</td><td>Shows "Completed" (was "Not Started"). If logged again, shows "Completed x2".</td></tr>
