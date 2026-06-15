@@ -5745,13 +5745,13 @@ table.matrix tr:nth-child(even) td { background: var(--offwhite); }
       <div class="tc-body">
         <span class="label">Steps</span>
         <ol>
-          <li>Pre-req: the <code>Logistic Packing Type</code> master must be seeded (e.g. Inner / Outer / Cushion) — see Bug 84.</li>
+          <li>Pre-req: the <code>Logistic Packing Type</code> master must be seeded (e.g. Inner / Outer / Cushion) — see Bug 69.</li>
           <li>Existing tab → + Add Product → Save (product needs a saved ID). In Section I "Packing Details", + Add Row: Type of Packing = Outer (from the master), Unit = kg, Price per Unit = ₹50.</li>
           <li>In the "Monthly Shipment Quantities" matrix (one row/month, one column per packing item), enter a monthly quantity (e.g. Apr = 100).</li>
         </ol>
         <div class="exp">
           <span class="label">Expected</span>
-          Packing is per-PRODUCT, by transit LAYER (Type of Packing = Link to the <code>Logistic Packing Type</code> master). The matrix column shows "Outer · @ ₹50.00/unit"; <strong>Month Total = qty × Price/Unit = 100 × 50 = ₹5,000</strong>. The "All Existing Packing — Total" footer: <strong>Annual Units = Σ monthly qty = 100; Annual Cost = Σ(monthly qty × Price/Unit) = ₹5,000; Monthly Cost = Annual ÷ 12 (average) = ₹417.</strong> [VERIFIED live, S26 15-Jun-2026, after seeding the master: column "Outer @ ₹50/unit", Annual Units 100, Annual Cost ₹5,000, Monthly Cost ₹417. The calc is correct; the only blocker was the unseeded master (Bug 84).]
+          Packing is per-PRODUCT, by transit LAYER (Type of Packing = Link to the <code>Logistic Packing Type</code> master). The matrix column shows "Outer · @ ₹50.00/unit"; <strong>Month Total = qty × Price/Unit = 100 × 50 = ₹5,000</strong>. The "All Existing Packing — Total" footer: <strong>Annual Units = Σ monthly qty = 100; Annual Cost = Σ(monthly qty × Price/Unit) = ₹5,000; Monthly Cost = Annual ÷ 12 (average) = ₹417.</strong> [VERIFIED live, S26 15-Jun-2026, after seeding the master: column "Outer @ ₹50/unit", Annual Units 100, Annual Cost ₹5,000, Monthly Cost ₹417. The calc is correct; the only blocker was the unseeded master (Bug 69).]
         </div>
       </div>
     </div>
@@ -7458,7 +7458,7 @@ table.matrix tr:nth-child(even) td { background: var(--offwhite); }
         <span class="label">Steps</span>
         <ol><li>Open Diagnostics → Branding Identity → click "+ New" (or POST <code>frappe.client.insert</code> for <code>DF Branding Identity</code>).</li><li>Repeat the API insert for a non-Marketing framework (e.g. <code>DF Financials</code>).</li></ol>
         <div class="exp"><span class="label">Expected</span> No create path exists: the "+ New" action is absent/disabled, and a direct API insert is rejected <strong>403 server-side</strong> for every framework. Designer edits existing records only.</div>
-        <p class="brd">Source: BRD PR-OV-004 — Designer = "View + Edit own drafts … no Create no Delete". NEW (gap exposed by Bug 73).</p>
+        <p class="brd">Source: BRD PR-OV-004 — Designer = "View + Edit own drafts … no Create no Delete". NEW (gap exposed by Bug 58).</p>
       </div>
     </div>
 
@@ -7470,7 +7470,7 @@ table.matrix tr:nth-child(even) td { background: var(--offwhite); }
         <span class="label">Steps</span>
         <ol><li>Direct-navigate to <code>/primerural/</code> (Landscape), <code>/entrepreneurs</code>, <code>/products</code>, <code>/masters</code>, and <code>/d/DF Financials</code>.</li><li>Call <code>get_list</code> on <code>Enterprenur Profile</code>, <code>Sector</code>, <code>Cohort</code>, and non-Marketing <code>DF *</code> doctypes.</li></ol>
         <div class="exp"><span class="label">Expected</span> Every one is denied — UI shows the permission-denied page; API returns 403 / empty. Designer has <strong>no read or write</strong> outside Branding/Label/Brochure. (Today: Landscape + all frameworks + 49-doctype Masters are reachable and EP data is readable.)</div>
-        <p class="brd">Source: BRD PR-OV-004 — all non-Marketing cells = "--" (server-enforced). NEW (Bug 73: confidentiality leak — reads all EP/Progress Report).</p>
+        <p class="brd">Source: BRD PR-OV-004 — all non-Marketing cells = "--" (server-enforced). NEW (Bug 58: confidentiality leak — reads all EP/Progress Report).</p>
       </div>
     </div>
 
@@ -7481,8 +7481,8 @@ table.matrix tr:nth-child(even) td { background: var(--offwhite); }
         <span class="label">Preconditions</span><ul><li>Logged in as SELCO Executive; an Infrastructure record exists.</li></ul>
         <span class="label">Steps</span>
         <ol><li>Open the Infrastructure record → Built-Environment tab → attempt to edit a civil field (e.g. Plinth Rate / SQM, Land/Rent fields).</li><li>Attempt to create a new Infrastructure record (+ New) and to open any non-Infrastructure framework / EP / Masters.</li></ol>
-        <div class="exp"><span class="label">Expected</span> BE (civil) fields are read-only — edit is blocked and Save does not enable; SELCO edits only EE/CE + SELCO pricing/equipment/disbursement fields. No "+ New" (no create). All non-Infrastructure workspaces denied. (Today: editing Plinth Rate enabled Save = Bug 75.)</div>
-        <p class="brd">Source: BRD PR-OV-004 — SELCO = "View all tabs (BE/EE/CE); edit only SELCO-relevant fields … no Create no Delete". UPDATES the SELCO row-scope assumption; NEW deny detail (Bug 75).</p>
+        <div class="exp"><span class="label">Expected</span> BE (civil) fields are read-only — edit is blocked and Save does not enable; SELCO edits only EE/CE + SELCO pricing/equipment/disbursement fields. No "+ New" (no create). All non-Infrastructure workspaces denied. (Today: editing Plinth Rate enabled Save = Bug 60.)</div>
+        <p class="brd">Source: BRD PR-OV-004 — SELCO = "View all tabs (BE/EE/CE); edit only SELCO-relevant fields … no Create no Delete". UPDATES the SELCO row-scope assumption; NEW deny detail (Bug 60).</p>
       </div>
     </div>
 
@@ -7493,8 +7493,8 @@ table.matrix tr:nth-child(even) td { background: var(--offwhite); }
         <span class="label">Preconditions</span><ul><li>Logged in as Core Team Program.</li></ul>
         <span class="label">Steps</span>
         <ol><li>Open User Manager and a Master (Sector / Cohort).</li><li>Attempt create, edit, and delete on each — via UI and via <code>frappe.client.insert</code>/<code>set_value</code>/<code>delete</code>.</li></ol>
-        <div class="exp"><span class="label">Expected</span> Read works; <strong>create / edit / delete are all blocked</strong> (UI controls absent, API 403). <code>has_permission</code> for User/Sector/Cohort create+write+delete = false. (Today: all return true = Bug 76 — CT-Program can delete users + wipe masters.)</div>
-        <p class="brd">Source: BRD PR-OV-004 — CT-Program = "view-only" Users + Masters. UPDATES PR-TC-UM/PR-TC-MS role rows; NEW deny detail (Bug 76).</p>
+        <div class="exp"><span class="label">Expected</span> Read works; <strong>create / edit / delete are all blocked</strong> (UI controls absent, API 403). <code>has_permission</code> for User/Sector/Cohort create+write+delete = false. (Today: all return true = Bug 61 — CT-Program can delete users + wipe masters.)</div>
+        <p class="brd">Source: BRD PR-OV-004 — CT-Program = "view-only" Users + Masters. UPDATES PR-TC-UM/PR-TC-MS role rows; NEW deny detail (Bug 61).</p>
       </div>
     </div>
 
@@ -7529,7 +7529,7 @@ table.matrix tr:nth-child(even) td { background: var(--offwhite); }
       <div class="tc-title">Final Selection requires a supporting attachment (mandatory gate)</div>
       <div class="tc-body">
         <span class="label">Steps</span><ol><li>Set Final Selection = Incubated (or Supported) with no attachment uploaded.</li><li>Save.</li></ol>
-        <div class="exp"><span class="label">Expected</span> Save is blocked with a clear "attachment required" message until a supporting document is attached. (Today the gate is not enforced — Bug 50.)</div>
+        <div class="exp"><span class="label">Expected</span> Save is blocked with a clear "attachment required" message until a supporting document is attached. (Today the gate is not enforced — Bug 34.)</div>
         <p class="brd">Source: BRD PR-TC-EP-021 + S23 PM ruling Q-F (mandatory). UPDATES PR-TC-EP-021.</p>
       </div>
     </div>
@@ -7553,7 +7553,7 @@ table.matrix tr:nth-child(even) td { background: var(--offwhite); }
       <div class="tc-body">
         <span class="label">Steps</span><ol><li>Read Districts Covered + Blocks Covered.</li><li>Switch map mode to "Village Visits".</li></ol>
         <div class="exp"><span class="label">Expected</span> Districts Covered = <code>COUNT(DISTINCT district WHERE district != '')</code>; Blocks Covered = same over block. In Village-Visits mode the entrepreneur widgets (BY SECTOR panel + MET/Active/Incubated/Supported/GPS cards) are <strong>hidden</strong>; only visit-relevant widgets show. (Today: BY SECTOR + entrepreneur cards persist — Bugs 71/62.)</div>
-        <p class="brd">Source: S23 PM KPI redesign (Bug 69) + Q-on mode-context (Bugs 71/62). NEW.</p>
+        <p class="brd">Source: S23 PM KPI redesign (Bug 54) + Q-on mode-context (Bugs 71/62). NEW.</p>
       </div>
     </div>
 
@@ -7584,7 +7584,7 @@ table.matrix tr:nth-child(even) td { background: var(--offwhite); }
       <div class="tc-title">Product Sector auto-derives from Business Basket and is read-only (Q-E)</div>
       <div class="tc-body">
         <span class="label">Steps</span><ol><li>On a Product, pick a Business Basket (e.g. Candy).</li><li>Observe Sector; attempt to set a different Sector manually.</li></ol>
-        <div class="exp"><span class="label">Expected</span> Sector auto-fills from the Basket (Candy → Food Processing) and is <strong>read-only</strong> — a manual Sector pick is not possible / does not override. (Today it auto-derives but silently overrides a manual pick instead of being read-only — confusing; cf. Bug 49 family.)</div>
+        <div class="exp"><span class="label">Expected</span> Sector auto-fills from the Basket (Candy → Food Processing) and is <strong>read-only</strong> — a manual Sector pick is not possible / does not override. (Today it auto-derives but silently overrides a manual pick instead of being read-only — confusing; cf. Bug 33 family.)</div>
         <p class="brd">Source: S23 PM ruling Q-E (auto-derive wins; make field read-only).</p>
       </div>
     </div>
@@ -7594,7 +7594,7 @@ table.matrix tr:nth-child(even) td { background: var(--offwhite); }
       <div class="tc-title">Bell mark-read syncs the Notification Center record's read_at (Q-B)</div>
       <div class="tc-body">
         <span class="label">Steps</span><ol><li>Receive a Notification Center notification (unread).</li><li>Click the bell row to mark it read.</li><li>Open Notification Center; check the record's Read/read_at.</li></ol>
-        <div class="exp"><span class="label">Expected</span> Marking read via the bell <strong>also</strong> sets the Notification Center record's <code>read_at</code> — read state is consistent across both views. (Today the two stores don't cross-sync — Bug 61 minor.)</div>
+        <div class="exp"><span class="label">Expected</span> Marking read via the bell <strong>also</strong> sets the Notification Center record's <code>read_at</code> — read state is consistent across both views. (Today the two stores don't cross-sync — Bug 46 minor.)</div>
         <p class="brd">Source: S23 PM ruling Q-B.</p>
       </div>
     </div>
