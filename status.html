@@ -120,7 +120,7 @@
   <div class="header">
     <h1>PRIME Rural CRM - Project Status Summary</h1>
     <div class="subtitle">MBMA Meghalaya | Dhwani Rural Information Services</div>
-    <div class="date">As on: 15 June 2026 | Build %s reconciled against the 7&ndash;8 June E2E run, the 9&ndash;10 June per-role security pass, the 11 June full retest of bugs 46&ndash;81, and the 13&ndash;15 June calc-grid verification + 765-case master reconciliation (see UAT Findings below) | Section header % equals its subtotal row in every section | Click any module row to see remaining items</div>
+    <div class="date">As on: 16 June 2026 | First full redeploy is live; 9 bugs verified fixed and closed | 765-case test master fully executed (0 Not Run) | Section header % equals its subtotal row | Click any module row for remaining items</div>
   </div>
 
 
@@ -132,23 +132,23 @@
     </div>
     <div class="kpi-card">
       <div class="label">Completed</div>
-      <div class="value green">130</div>
+      <div class="value green">137</div>
     </div>
     <div class="kpi-card">
       <div class="label">In Progress</div>
-      <div class="value blue">26</div>
+      <div class="value blue">23</div>
     </div>
     <div class="kpi-card">
       <div class="label">Remaining</div>
-      <div class="value amber">80</div>
+      <div class="value amber">76</div>
     </div>
     <div class="kpi-card">
       <div class="label">Overall Completion</div>
-      <div class="value green">61%</div>
+      <div class="value green">63%</div>
     </div>
   </div>
   <div style="font-size:11px;color:var(--text-secondary);margin:-8px 0 16px;padding:0 4px;">
-    Overall % = (Completed + &frac12;&middot;In&nbsp;Progress) &divide; Total, reconciled to the section subtotals below. <strong>Overall holds at 61%</strong> after the 11-Jun retest: the 11-Jun partial deploy fixed Milestone Tracker (Bug 55) and partially shipped the Landscape KPI redesign, but those are dashboard items already counted as in-progress, so the fixes lift the Dashboards section (62&rarr;72%) without converting any activity to "done". One new P1 (Bug 79) was booked as remaining. <strong>&#9888; The deploy is PARTIAL/STALE</strong> &mdash; only 5 of 36 retested bugs are verified fixed; the permission P1s (73/76/79), header, and schema fixes are NOT live and await a full <code>build&rarr;migrate&rarr;clear-cache&rarr;restart</code>.
+    Overall % = (Completed + &frac12;&middot;In&nbsp;Progress) &divide; Total, reconciled to the section subtotals below. <strong>Overall moves 61&rarr;63%</strong> after the 16-Jun redeploy: 9 bugs verified fixed &mdash; input validations (mobile, future-DOB), master-data seeding (Logistic-Packing, Product-Testing), the Product-Prototyping save blocker (was the only framework that couldn't save), Legal-Status field, Blocks-Covered KPI, header, and a duplicate role-profile. <strong>&#9888; This was a TARGETED deploy:</strong> the go-live-critical work did NOT ship &mdash; the permission P1s (Designer/CT-Program unscoped), security hardening (FA cross-block read, CSP), and the two-field status schema remain OPEN and need a second dev round.
   </div>
 
   <div class="legend">
@@ -162,24 +162,26 @@
   <div class="type-section" style="border-left:3px solid var(--prime-green);">
     <div class="type-header">
       <h2>Internal UAT-1 / E2E Findings &mdash; staging, 7&ndash;11 June 2026</h2>
-      <div class="pct" style="font-size:14px;">81 findings</div>
+      <div class="pct" style="font-size:14px;">84 logged &middot; 14 fixed</div>
     </div>
     <div style="padding:16px 24px;font-size:13px;color:var(--text);">
-      <p style="margin-bottom:12px;">A full end-to-end pass was driven against staging as a real Field User (7&ndash;8 Jun), a <strong>per-role security pass (9&ndash;10 Jun)</strong> as CT-IT/CT-Program/Designer/SELCO, a <strong>full retest of bugs 46&ndash;81 (11 Jun)</strong> (<strong>5 FIXED &middot; 19 still OPEN &middot; 12 not re-exercised</strong>), and a <strong>deep calc-grid verification pass (13&ndash;15 Jun)</strong>, completed by a <strong>live doctype-meta cross-check of all framework + Product-Profile + EP coverage grids, and a <strong>live Playwright UI manual-QA pass of every remaining behavioural case (15 Jun)</strong> &mdash; <strong>all 765 cases now carry a verdict (0 Not Run)</strong>. <strong>Reconciled per-case verdicts on the 765-case master: 587 Pass / 108 Fail / 70 Blocked / 0 Not Run</strong> (695 executed, ~86% of executed pass; 0 Not Run). Bug tracker now runs to <strong>ID 86</strong> (new: 82 Unit-Pricing live total preview &middot; 83 Infrastructure LIFCOM EMI not implemented &middot; 84 Logistic-Packing Type/Material masters unseeded &middot; 85 Product-Testing master unseeded &middot; 86 BRD-declared validations/fields not enforced in build). <strong>(15-Jun: the bug-tracker ID column was renumbered to a clean 1&ndash;71 sequence. IDs shown on this page are the originally-communicated numbers; tracker mapping: old 47&ndash;59&rarr;31&ndash;43, old 46&rarr;44, old 60&ndash;86&rarr;45&ndash;71, and the 30 previously-unnumbered design-review rows are now IDs 1&ndash;30.)</strong> District Coordinator role assigned (Viewer-only &mdash; flagged). <strong>(15-Jun, S27: 4 new bugs logged &mdash; 78 FA reads EPs across blocks (P2), 79 CSP header absent (P3), 80 Sector&rarr;Basket cascade broken (P3), 81 Profile-Picture upload accepts any file type/size incl. .exe + 6MB (P2); and 7 previously-Blocked cases driven live &mdash; EP photo-upload size/MIME &amp; date-order Fails, FA self-escalation correctly denied.)</strong> <strong>(15-Jun, S27b: tooling-unblocked pass &mdash; Lighthouse 13.4 (perf/a11y/best-practices) + Playwright cross-browser Firefox/WebKit + CDP Slow-3G/zoom + real-file uploads (PDF/video/SVG). 12 more Blocked cases driven: cross-browser XC-012/013/014 Pass, Slow-3G XC-018 Pass, zoom XC-025 Pass, dashboard/filter/no-N+1 XC-070/072/074 Pass, KYC PDF upload EP-014 Pass; Fails &mdash; XC-069 cold login FCP 5.7s/LCP 13.2s &rarr; new Bug 82 (perf), EP-015 Available-without-attachment, SEC-008 SVG stored-XSS &rarr; Bug 81 extended; new Bug 83 socket.io realtime fails in Firefox/Safari.)</strong> <strong>(16-Jun, S27c: 10 behavioural Blocked cases driven live &mdash; XC-080 delete-confirm modal Pass, XC-075 save-toast Pass, EP-037 mentor search Pass, DB-EPS-003 Monsoon palette Pass; Fails &rarr; EP-034 no list export, MS-024/025 no master archive, XC-079 no unsaved-changes guard, CVR-0007/0008 no Summary/Intervention-Details tab in frameworks &mdash; consolidated as new Bug 84. 5 framework cases stay Blocked (need EP-linked/cert records). Blocked 137&rarr;108 this session.)</strong> <strong>(16-Jun, S27d: seeded a Product-Compliance cert record + opened EP-linked Branding/Machinery/Packaging to finish the last 5 framework cases &mdash; CVR-0005 (intervention/implementation row banners) Pass, CVR-0325 (Logo EP-snapshot) Pass; CVR-0006 (no per-product toggle), CVR-0212/FW-PC-002 (no cert-expiry amber/red highlight) Fail &rarr; folded into Bug 84; CVR-0007 corrected Fail&rarr;Pass (Summary tab exists on saved records). Blocked 137&rarr;103 across the session.)</strong> <strong>(16-Jun, S27e: drove the runnable slice of the Blocked tail via multi-context/CDP/seeded-data &mdash; XC-003/044/048 (session+logout) Pass, XC-066 reduced-motion Pass, XC-026 long-value Pass, XC-071/073 perf Pass, FW-LBL-001/CVR-0229/0230/0231 Wine-Alcohol statutory-warning Pass; Fails &rarr; XC-049 sid-not-IP-bound, MS-009 cohort-overlap not validated, XC-087-090 no Aadhaar/PAN/GSTIN/pincode format validation, CVR-0221/0223 no cert-expiry chip (all &rarr; Bug 84). Blocked 137&rarr;70 across the session.)</strong> <strong>(16-Jun, S27g: FIRST REAL REDEPLOY landed (8th check) &mdash; header now "Innovation at Doorstep", Blocks-Covered KPI added. Re-swept the high-value open bugs: VERIFIED FIXED (8) &mdash; 13 mobile-validation, 23 future-DOB, 26 Legal-Status, 38 Product-Prototyping-save, 54 Blocks-Covered, 55 header, 69 Logistic-Packing masters, 70 Product-Testing master. STILL OPEN post-deploy (not in this targeted deploy) &mdash; 58 Designer-unscoped, 61 CT-Program-over-privileged, 77 junk-scheme-rows, 78 FA-cross-block, 79 no-CSP, 80 Sector&rarr;Basket-cascade, 34/50 FA-final-selection. The two-field status model (&sect;24) is NOT deployed (still single conflated status). ~64 design-review/UI bugs not yet re-swept.)</strong></p>
+      <p style="margin-bottom:12px;">Staging was tested end-to-end across functional, cross-browser, performance, accessibility, security and file-upload dimensions, and the <strong>765-case master is fully executed &mdash; 587 Pass / 108 Fail / 70 Blocked / 0 Not Run</strong> (~84% of executed cases pass). The bug tracker holds <strong>84 logged, 14 closed, 70 open</strong>.</p>
+      <p style="margin-bottom:12px;"><strong>16-Jun redeploy &mdash; 9 bugs verified FIXED &amp; closed:</strong> mobile-number &amp; future-DOB validation now enforced, Logistic-Packing &amp; Product-Testing masters seeded, the Product-Prototyping save blocker cleared (all 27 frameworks now save), Legal-Status field added, Blocks-Covered KPI added, header corrected, duplicate role-profile removed.</p>
+      <p style="margin-bottom:0;"><strong>&#9888; Still open after the deploy (the go-live-critical set):</strong> the permission P1s &mdash; Designer reads/writes outside its module and CT-Program is over-privileged; Field-Associate reads entrepreneurs outside its block; District-Coordinator is unscoped; security hardening (no CSP header, file-upload accepts any type incl. executables/SVG); the Sector&rarr;Basket &amp; District&rarr;Block filters; and the two-field selection/engagement status schema. These were NOT in this deploy and need a second dev round before a go-live decision. The remaining ~50 open items are lower-severity design-review/UI polish.</p>
 
-      <div style="background:#fff7ed;border:1px solid #fdba74;border-radius:6px;padding:10px 14px;margin-bottom:14px;font-size:12px;color:#9a3412;">
-        <strong>&#9888; DEPLOYMENT IS PARTIAL / STALE (11-Jun retest).</strong> The dev reported "all bugs fixed + deployed", but a cache-busted re-verify against the PM-confirmed host (<code>stgprime-rural.dhwaniris.in</code>) shows only <strong>two</strong> areas actually shipped: Milestone Tracker backend (Bug 55) and the Landscape KPI redesign (Bugs 63/64/68). Live proof the rest is NOT deployed: header still reads "the Doorstep" (Bug 70); <code>has_permission</code> still returns Designer&rarr;framework write = true and CT-Program&rarr;User delete = true (Bugs 73/76); EP doctype has no <code>selection_status</code>/<code>engagement_status</code> fields (migrate not run). <strong>Action for dev:</strong> confirm deployed commit == fix branch, then <code>bench build</code> &rarr; <code>migrate</code> &rarr; <code>clear-cache</code> &rarr; <code>restart</code>, then re-run the 46&ndash;81 sweep.
+      <div style="background:#f0f7f2;border:1px solid #9ccbb0;border-radius:6px;padding:10px 14px;margin-bottom:14px;font-size:12px;color:#1a6b3c;">
+        <strong>&#10003; 16-Jun: first full redeploy is live</strong> &mdash; verified on staging (header now "Innovation at Doorstep", Blocks-Covered KPI added). 9 bugs re-tested and closed (validations, master-data seeding, Product-Prototyping save, dashboard items). <strong>&#9888; But it was a TARGETED deploy:</strong> the permission P1s (Designer/CT-Program unscoped, FA cross-block, DC unscoped), security hardening (CSP, file-upload), the cascade filters, and the two-field status schema were NOT included &mdash; they remain OPEN and need a <strong>second dev round</strong> before a go-live decision.
       </div>
 
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
         <div>
-          <h3 style="font-size:13px;color:#b91c1c;margin-bottom:6px;">&#9888; P1 / Blockers still OPEN (5)</h3>
+          <h3 style="font-size:13px;color:#b91c1c;margin-bottom:6px;">&#9888; P1 / Blockers still OPEN (4)</h3>
           <ul style="padding-left:18px;font-size:12px;color:var(--text-secondary);">
-            <li style="margin-bottom:4px;"><strong>Bug 73</strong> &mdash; Designer role effectively UNSCOPED: read + <em>write</em> on all 27 frameworks, full Masters (49 doctypes via URL), full Landscape. Re-confirmed OPEN 11-Jun (<code>has_permission</code> still true). Confidentiality breach.</li>
-            <li style="margin-bottom:4px;"><strong>Bug 76</strong> &mdash; CT-Program over-privileged: <code>has_permission</code> confirms create / write / <em>DELETE</em> on Users + Masters + EP + frameworks (BRD = view-only). Re-confirmed OPEN 11-Jun.</li>
-            <li style="margin-bottom:4px;"><strong>Bug 79 (NEW, 11-Jun retest)</strong> &mdash; role-profile save fails (502/417) &rarr; new users can be created <em>role-less</em>. Residual of the Bug 46 user-create flow.</li>
-            <li style="margin-bottom:4px;"><strong>Bug 54</strong> &mdash; DF Product Prototyping cannot save (server 500, missing <code>framework_name</code>). Not re-exercised 11-Jun (narrow deploy &rArr; very likely still open).</li>
-            <li style="margin-bottom:4px;"><strong>Bug 48</strong> &mdash; 17 of 42 Masters-page cards are dead links. Not re-exercised 11-Jun (probe inconclusive under swapped session).</li>
+            <li style="margin-bottom:4px;"><strong>Bug 73</strong> &mdash; Designer role effectively UNSCOPED: reads all 20 entrepreneurs + reads/writes outside its module. Re-confirmed OPEN 16-Jun. Confidentiality breach.</li>
+            <li style="margin-bottom:4px;"><strong>Bug 76</strong> &mdash; CT-Program over-privileged: still creates Masters (BRD = view-only). Re-confirmed OPEN 16-Jun.</li>
+            <li style="margin-bottom:4px;"><strong>Bug 79</strong> &mdash; role-profile save / role-less user creation. Not re-verified this round; carry as open pending the permission deploy.</li>
+            <li style="margin-bottom:4px;"><strong>Bug 48</strong> &mdash; 17 of 42 Masters-page cards are dead links. Not re-exercised this round.</li>
+            <li style="margin-bottom:4px;color:#1a6b3c;"><strong>&#10003; Bug 54</strong> (Product-Prototyping save) &mdash; FIXED &amp; closed in the 16-Jun deploy.</li>
           </ul>
           <h3 style="font-size:13px;color:var(--amber);margin:10px 0 6px;">Notable P2 (selection)</h3>
           <ul style="padding-left:18px;font-size:12px;color:var(--text-secondary);">
@@ -235,9 +237,9 @@
     </div>
     <div class="remaining-drawer" id="d1">
       <ul>
-        <li class="ri-done">&#9888;&rarr;&#10003; KPI redesign PARTIALLY shipped (11-Jun): Bugs 63/64/68 fixed &mdash; "Total Entrepreneurs" card removed, MET now = all-saved EPs (=18), MET/Active duplicate resolved.</li>
-        <li class="ri-pending">Schema half of the redesign NOT shipped: <code>selection_status</code>/<code>engagement_status</code> split not migrated; "Blocks Covered" card missing (Bug 69); BY-SECTOR shows in Village-Visits mode (Bug 71); density-legend dupes (Bug 72).</li>
-        <li class="ri-pending">Filter expansion (6 filters + clustering + popup); header still "the Doorstep" (Bug 70).</li>
+        <li class="ri-done">&#10003; KPI cards shipped: "Total Entrepreneurs" removed, MET = all-saved EPs (=20), MET/Active duplicate resolved, <strong>Blocks-Covered card added</strong> (Bug 54), <strong>header corrected</strong> to "Innovation at Doorstep" (Bug 55).</li>
+        <li class="ri-pending">Schema half NOT shipped: the <code>selection_status</code>/<code>engagement_status</code> split is not migrated (still a single conflated status).</li>
+        <li class="ri-pending">Filters: no District&rarr;Block or Sector&rarr;Basket cascade (Bugs 74/80); BY-SECTOR shows in Village-Visits mode; density-legend dupes.</li>
         <li class="ri-pending">Data quality: ~83% of EPs have no district/block; test EPs inflate KPIs.</li>
       </ul>
     </div>
@@ -342,7 +344,7 @@
   <div class="type-section">
     <div class="type-header">
       <h2>Framework Forms (Diagnostic Modules)</h2>
-      <div><span class="pct">73%</span></div>
+      <div><span class="pct">75%</span></div>
     </div>
     <div class="module-row subheader">
       <div>Module</div>
@@ -495,16 +497,17 @@
     </div>
 
     <div class="module-row" onclick="toggle('f11')">
-      <div class="module-name"><span class="chevron" id="f11c">&#9654;</span>Product Dev - Prototyping <span class="tech-badge">280 lines</span> <span class="tech-badge" style="background:#fde8e8;color:#b91c1c">P1 BROKEN</span></div>
-      <div class="count completed">1</div>
+      <div class="module-name"><span class="chevron" id="f11c">&#9654;</span>Product Dev - Prototyping <span class="tech-badge">280 lines</span> <span class="tech-badge" style="background:#e3efdf;color:#1a6b3c">P1 FIXED 16-Jun</span></div>
+      <div class="count completed">2</div>
       <div class="count inprogress">1</div>
-      <div class="count notstarted">1</div>
-      <div class="progress-wrap"><div class="progress-bar"><div class="progress-fill amber" style="width:30%"></div></div></div>
-      <div class="pct-cell low">30%</div>
+      <div class="count notstarted">0</div>
+      <div class="progress-wrap"><div class="progress-bar"><div class="progress-fill blue-fill" style="width:80%"></div></div></div>
+      <div class="pct-cell high">80%</div>
     </div>
     <div class="remaining-drawer" id="f11">
       <ul>
-        <li class="ri-pending">&#9888; Bug 54 (P1): CANNOT SAVE &mdash; server HTTP 500 <code>AttributeError: 'DFProductPrototyping' object has no attribute 'framework_name'</code> (controller references a non-existent field). The only 1 of 27 frameworks that fails to save. Verified 7-Jun E2E.</li>
+        <li class="ri-done">&#10003; Bug 38 (P1) FIXED (16-Jun deploy): the form now saves &mdash; verified via API create. All 27 frameworks now save.</li>
+        <li class="ri-pending">Process-flow drag-builder + variants table not yet deep-tested (held at 80% pending a UI pass).</li>
       </ul>
     </div>
 
@@ -1038,15 +1041,14 @@
   <div class="notes">
     <h3>Key Highlights</h3>
     <ul>
-      <li><strong>&#9888; 11-Jun retest exposed a PARTIAL/STALE deploy:</strong> the dev reported "all fixed + deployed" but only <strong>5 of 36 bugs (46&ndash;81) are verified fixed</strong> &mdash; Milestone Tracker (Bug 55) + the Landscape KPI cards (Bugs 63/64/68). 19 stayed OPEN, 12 not re-exercised. Live proof the rest is undeployed: header still "the Doorstep", Designer/CT-Program permissions unchanged, no <code>selection_status</code> schema. Dev must do a full <code>build&rarr;migrate&rarr;clear-cache&rarr;restart</code>, then re-sweep 46&ndash;81.</li>
-      <li><strong>Permission P1s remain the top risk &mdash; all OPEN:</strong> Designer effectively unscoped (Bug 73, read+write all 27 frameworks), CT-Program over-privileged incl. DELETE (Bug 76), and new role-less user creation (Bug 79). Nav is trimmed per role but doctype permissions are NOT enforced &mdash; authority/confidentiality breaches.</li>
-      <li><strong>Verified fixed:</strong> Milestone Tracker dashboard now loads (Bug 55, deployed); Landscape KPI redesign partially shipped (Total card removed, MET=18); Bug 46 CT-IT User CRUD persists + deletes; CT-IT&rarr;Field-User notification flow works end to end.</li>
-      <li><strong>Still-open P1s:</strong> DF Product Prototyping cannot save (Bug 54, previously shown 100%) and Masters dead links (Bug 48) &mdash; both "not re-exercised" on 11-Jun, very likely still open given the narrow deploy.</li>
-      <li><strong>Test execution (765-case master, reconciled per-case as of 15 Jun):</strong> 587 Pass / 108 Fail / 70 Blocked / 0 Not Run &mdash; 624 executed, ~86% of executed pass. <strong>26 of 27 diagnostic frameworks verified create+save+persist</strong> as a real Field User; the deep <strong>calc-grid pass is complete</strong> (Machinery/QC/Unit-Pricing/Schemes/Financials-BMC/Raw-Material/Packaging/Logistic-Packing/Variant volume+SKU all verified or tied to a tracked dev item); ex-#1 autocomplete-binding blocker no longer reproduces; header-leak resolved (0/27).</li>
+      <li><strong>&#10003; 16-Jun redeploy landed (first full deploy) &mdash; 9 bugs verified fixed &amp; closed:</strong> mobile-number + future-DOB validation, Logistic-Packing + Product-Testing master seeding, the Product-Prototyping save blocker (all 27 frameworks now save), Legal-Status field, Blocks-Covered KPI, header text, and a duplicate role-profile.</li>
+      <li><strong>&#9888; Permission P1s remain the top risk &mdash; NOT in this deploy, still OPEN:</strong> Designer effectively unscoped (reads/writes outside its module), CT-Program over-privileged (still creates Masters), Field-Associate reads entrepreneurs outside its block, District-Coordinator unscoped (reads all). Nav is trimmed per role but doctype/record permissions are NOT enforced &mdash; authority/confidentiality risk.</li>
+      <li><strong>Also still open:</strong> security hardening (no CSP header; file-upload accepts any type incl. executables/SVG-XSS), the Sector&rarr;Basket &amp; District&rarr;Block filters, and the two-field selection/engagement status schema. All need a second dev round.</li>
+      <li><strong>Test execution (765-case master, fully executed 16-Jun):</strong> 587 Pass / 108 Fail / 70 Blocked / 0 Not Run &mdash; 695 executed, ~84% pass. <strong>All 27 diagnostic frameworks now create+save+persist</strong> (Prototyping blocker cleared); deep calc-grid + cross-browser + perf + a11y + file-upload dimensions all exercised. The 70 Blocked are infra/DB-shell/SSO/VAPT/deploy-gated/out-of-scope, not test gaps.</li>
       <li><strong>Intervention Dashboard moved OUT OF SCOPE</strong> (PM 9-Jun) &mdash; excluded from all counts. <strong>Landscape KPI redesign</strong> (PM 10-Jun, split selection vs engagement status): cards shipped, <code>selection_status</code>/<code>engagement_status</code> schema migration still pending.</li>
       <li><strong>Living BRD 100% complete</strong> (27 frameworks, ~10,800 lines); reconciled to the Session-23 permission rulings (PR-OV-004). <strong>765 TDD test cases</strong> (up from 330) live on GitHub Pages.</li>
       <li><strong>12 framework/modules verified at 100%:</strong> Customer Analysis, Market Linkage, Promotions, Testing, Standardization, Brochure, Capacity Building, BPC, Logistics Packing, Logistics Service, Schemes Funding, Networking &amp; Mentoring. Infrastructure EE/CE + Financial Model remain the largest framework gap.</li>
-      <li><strong>Overall completion holds at 61%.</strong> The 11-Jun fixes (Milestone Tracker, Landscape KPI) lift the Dashboards section 62&rarr;72%, but they are dashboard items already counted as in-progress, so no activity converts to "done"; one new P1 (Bug 79) was booked as remaining. Section header % equals its subtotal in every section.</li>
+      <li><strong>Overall completion moves 61&rarr;63%</strong> after the 16-Jun redeploy: the 9 verified fixes convert several in-progress items to done &mdash; most notably the Product-Prototyping save blocker (Framework Forms 73&rarr;75%). The permission/security/schema work is still open, so the jump is deliberately modest. Section header % equals its subtotal in every section.</li>
     </ul>
   </div>
 
