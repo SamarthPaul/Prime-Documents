@@ -929,10 +929,10 @@
       <ul>
         <li class="ri-done">765 TDD test cases documented in test-cases.html (6 layers; grew from 330 after Session-23 BRD reconciliation + §24 permission/Landscape cases) &mdash; live on GitHub Pages</li>
         <li class="ri-done">6 UAT test users seeded on staging; Playwright E2E scaffold committed + executed against staging</li>
-        <li class="ri-done">Internal UAT-1 / E2E DONE: deep pass 7&ndash;8 Jun, per-role security pass 9&ndash;10 Jun, full retest of 46&ndash;81 on 11 Jun, and a <strong>deep calc-grid verification pass 13&ndash;15 Jun</strong> with a live doctype-meta cross-check + a live UI manual-QA pass closing every remaining case (0 Not Run). Reconciled per-case verdicts on the 765-case master: <strong>587 Pass / 108 Fail / 70 Blocked / 0 Not Run</strong> (695 executed, 0 Not Run). Bug tracker through <strong>ID 86</strong> (new: 82 Unit-Pricing live total preview, 83 Infrastructure LIFCOM EMI not implemented, 84 Logistic-Packing Type/Material masters unseeded, 85 Product-Testing master unseeded, 86 BRD-declared validations/fields not enforced) (see UAT Findings section). [Tracker renumbered 15-Jun to 1-71; this page keeps the original IDs - map old 47-59=>31-43, 46=>44, 60-86=>45-71, design rows 1-30]</li>
+        <li class="ri-done">Internal UAT-1 / E2E complete &mdash; the 765-case master is fully executed (587 Pass / 108 Fail / 70 Blocked / 0 Not Run). Full per-case verdicts + defect list on the <strong>Bug Tracker</strong> tab.</li>
         <li class="ri-pending">Client UAT sessions (UAT-2, UAT-3 TBD) &mdash; not started</li>
-        <li class="ri-pending">Bug-fixing sprints post-UAT (5 P1 still open: 73/76/79/54/48, several P2/P3) &mdash; not started; blocked on a FULL redeploy first</li>
-        <li class="ri-pending">Remaining E2E surface: District Coordinator login (Bugs 77/78), deep cost-grid calcs, Notifications, Village-Survey GPS, + 12 not-re-exercised bugs</li>
+        <li class="ri-pending">Bug-fixing round 2 &mdash; permission P1s + security + status-schema still open (see Bug Tracker tab); needs a second dev deploy</li>
+        <li class="ri-pending">Remaining E2E surface: District-Coordinator scoping, deep cost-grid calcs, Notifications, Village-Survey GPS</li>
       </ul>
     </div>
     <div class="module-row" onclick="toggle('q5')">
@@ -945,11 +945,9 @@
     </div>
     <div class="remaining-drawer" id="q5">
       <ul>
-        <li class="ri-pending">&#9888; Bug 73 (P1, re-confirmed OPEN 11-Jun): Designer role doctype-perms not enforced &mdash; read + write on all 27 frameworks + full Masters + Landscape. PM target: own-framework only, no create, no delete.</li>
-        <li class="ri-pending">&#9888; Bug 76 (P1, re-confirmed OPEN 11-Jun): CT-Program has create/write/DELETE on Users + Masters + EP + frameworks; BRD = view-only Users/Masters.</li>
-        <li class="ri-pending">&#9888; Bug 79 (P1, NEW 11-Jun): role-profile save fails (502/417) &rarr; users can be created role-less.</li>
-        <li class="ri-pending">&#9888; Bug 75 (P2): SELCO row-level edit not enforced (edited a non-SELCO Built-Environment field, Save enabled).</li>
-        <li class="ri-pending">District Coordinator role (Bugs 77/78) untested &mdash; no creds yet; remediation scope TBD.</li>
+        <li class="ri-pending">&#9888; Role/record permissions are not enforced at the doctype level &mdash; Designer &amp; CT-Program are over-privileged, Field-Associate reads across blocks, District-Coordinator is unscoped. PM target: each scoped role sees/edits only its own slice (no create/delete).</li>
+        <li class="ri-pending">Re-confirmed OPEN after the 16-Jun deploy (the permission work was not included). The specific defects + their status are on the <strong>Bug Tracker</strong> tab.</li>
+        <li class="ri-pending">Needs the dedicated permission/security deploy (round 2), then a per-role re-verification pass.</li>
       </ul>
     </div>
     <div class="module-row" onclick="toggle('q4')">
@@ -978,12 +976,12 @@
 
   <!-- Key Remaining Work -->
   <div class="remaining-section">
-    <h3>Key Remaining Work (80 not started &middot; 26 in progress)</h3>
+    <h3>Key Remaining Work (76 not started &middot; 23 in progress)</h3>
     <div class="remaining-grid">
       <div class="remaining-item" style="border:1px solid #f3c6c6;">
-        <div class="ri-label" style="color:#b91c1c;">&#9888; P1 Bug Fixes still OPEN (UAT-1)</div>
-        <div class="ri-count">5 blockers</div>
-        <div class="ri-desc">Designer unscoped (Bug 73), CT-Program over-privileged (Bug 76), role-less user creation (Bug 79), Prototyping save-500 (Bug 54), Masters dead links (Bug 48). Bug 55 (Milestone Tracker) FIXED &amp; deployed 11-Jun.</div>
+        <div class="ri-label" style="color:#b91c1c;">&#9888; P1 permission/security work</div>
+        <div class="ri-count">open</div>
+        <div class="ri-desc">Designer &amp; CT-Program over-privileged, Field-Associate cross-block read, District-Coordinator unscoped &mdash; doctype permissions not enforced. Needs a dedicated dev deploy. Full list + status on the Bug Tracker tab.</div>
       </div>
       <div class="remaining-item">
         <div class="ri-label">QA, VAPT, Load &amp; Client UAT</div>
