@@ -1,0 +1,939 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Brochures Module · PRIME Rural</title>
+<style>
+:root {
+  --teal:#0E4D4E; --sea:#1A6B6D; --terracotta:#C26849; --terracotta-dk:#A85738;
+  --cream:#FBF5E5; --cream-deep:#F4ECD3; --offwhite:#FDFAF0; --panel:#FFFFFF;
+  --ink:#2A2520; --ink-soft:#6B6359; --ink-faint:#9C9384;
+  --border:#E8DFC9; --border-dk:#D6CDB6;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:Georgia,serif;background:var(--cream);color:var(--ink);line-height:1.4}
+.page{max-width:1100px;margin:0 auto;padding:24px}
+
+.header{background:var(--teal);color:#fff;padding:16px 20px;border-radius:12px 12px 0 0;display:flex;justify-content:space-between;align-items:center}
+.header h1{font-size:18px;font-weight:normal;letter-spacing:0.5px}
+.header .crumb{font-size:11px;opacity:0.75;text-transform:uppercase;letter-spacing:1px}
+
+.card{background:var(--cream);border:1px solid var(--border-dk);border-top:none;border-radius:0 0 12px 12px}
+
+.tab-bar{display:flex;background:var(--cream-deep);border-bottom:1px solid var(--border-dk)}
+.tab{padding:12px 22px;cursor:pointer;font-size:12px;text-transform:uppercase;letter-spacing:1px;color:var(--ink-soft);border-right:1px solid var(--border)}
+.tab.active{background:var(--teal);color:#fff}
+.tab:hover:not(.active){background:#EADFC0}
+
+.content{padding:22px}
+
+.section{background:var(--cream-deep);padding:16px;border-radius:10px;margin-bottom:16px;border:1px solid var(--border)}
+.section-title{font-size:13px;text-transform:uppercase;letter-spacing:1.5px;color:var(--teal);margin-bottom:12px;padding-bottom:8px;border-bottom:1px solid var(--border-dk);font-weight:bold}
+.eyebrow{font-size:10px;text-transform:uppercase;color:var(--ink-soft);margin-bottom:8px;letter-spacing:1px}
+
+.field-row{display:flex;gap:12px;margin-bottom:10px;flex-wrap:wrap;align-items:center}
+.field-label{width:240px;font-size:12px;color:var(--ink-soft);padding-top:6px}
+.field-val{flex:1;background:#fff;border:1px solid var(--border-dk);padding:8px 10px;border-radius:6px;font-size:12px;min-width:200px;font-family:Georgia,serif}
+textarea.field-val{font-family:Georgia,serif;resize:vertical;min-height:60px;width:100%}
+select.field-val{cursor:pointer}
+
+.btn{padding:5px 12px;border-radius:20px;border:1px solid var(--border-dk);background:#fff;cursor:pointer;font-size:11px;color:var(--ink);font-family:Georgia,serif}
+.btn:hover{background:var(--cream-deep)}
+.btn-primary{background:var(--teal);color:#fff;border-color:var(--teal)}
+.btn-primary:hover{background:var(--sea)}
+.btn-ai{background:var(--terracotta);color:#fff;border-color:var(--terracotta);font-style:italic}
+
+.toggle{width:36px;height:18px;border-radius:20px;background:#ccc;display:inline-block;cursor:pointer;position:relative;flex-shrink:0}
+.toggle::after{content:'';width:14px;height:14px;background:#fff;border-radius:50%;position:absolute;top:2px;left:2px;transition:left 0.2s}
+.toggle.on{background:var(--terracotta)}
+.toggle.on::after{left:20px}
+
+.hidden{display:none !important}
+
+table.data-table{width:100%;border-collapse:collapse;background:#fff;border-radius:8px;overflow:hidden;border:1px solid var(--border-dk);font-size:11px}
+table.data-table th{background:var(--teal);color:#fff;padding:10px 8px;text-align:left;font-weight:normal;text-transform:uppercase;letter-spacing:0.5px;font-size:10px;border-right:1px solid var(--sea);white-space:nowrap}
+table.data-table th:last-child{border-right:none}
+table.data-table td{padding:8px;border-bottom:1px solid var(--border);border-right:1px solid var(--border);vertical-align:middle}
+table.data-table td:last-child{border-right:none}
+table.data-table tr:last-child td{border-bottom:none}
+table.data-table input[type=text],table.data-table input[type=number],table.data-table select,table.data-table textarea{width:100%;border:1px solid var(--border);padding:5px 6px;border-radius:4px;font-family:Georgia,serif;font-size:11px;background:var(--offwhite)}
+table.data-table input:focus,table.data-table select:focus,table.data-table textarea:focus{outline:none;border-color:var(--teal);background:#fff}
+
+.table-actions{display:flex;justify-content:flex-end;margin-top:10px;gap:8px}
+
+.upload-cell{display:flex;gap:4px;align-items:center;flex-wrap:nowrap}
+.upload-cell .btn{padding:3px 8px;font-size:10px}
+
+.row-delete{background:transparent;border:none;color:var(--terracotta);cursor:pointer;font-size:14px;padding:2px 6px}
+.row-delete:hover{color:var(--terracotta-dk)}
+
+.placeholder-tab{padding:40px;text-align:center;color:var(--ink-faint);font-style:italic;background:var(--cream-deep);border-radius:10px;border:1px dashed var(--border-dk)}
+
+.checkbox-cell{text-align:center}
+.checkbox-cell input{width:16px;height:16px;cursor:pointer}
+
+/* ─── Section banners (teal = data, terracotta = status/implementation) ─── */
+.section-block{margin-bottom:18px}
+.section-banner{
+  background:var(--teal);color:#fff;
+  padding:12px 18px;border-radius:10px 10px 0 0;
+  display:flex;align-items:center;gap:12px;
+  font-family:Georgia,serif;
+}
+.section-banner.implementation{background:var(--terracotta)}
+.section-banner .sb-title{
+  font-size:13px;font-weight:bold;
+  text-transform:uppercase;letter-spacing:1.2px;
+}
+.section-banner .sb-spacer{flex:1}
+.section-banner .sb-meta{font-size:11px;opacity:0.85;font-style:italic}
+.section-body{
+  background:var(--cream-deep);
+  border:1px solid var(--border);
+  border-top:none;
+  border-radius:0 0 10px 10px;
+  padding:16px;
+}
+.section-body .section{
+  background:transparent;
+  border:none;
+  padding:0;
+  margin:0 0 16px;
+}
+.section-body .section:last-child{margin-bottom:0}
+.section-body .section .section-title{
+  font-size:12px;text-transform:uppercase;letter-spacing:1.2px;
+  color:var(--teal);margin-bottom:10px;padding-bottom:6px;
+  border-bottom:1px solid var(--border-dk);font-weight:bold;
+}
+
+/* Status dropdown chips — terracotta fill */
+.status-cell select{
+  background:var(--terracotta-sft, #F5E2D6) !important;
+  color:var(--terracotta-dk) !important;
+  border-color:var(--terracotta) !important;
+  font-weight:bold;
+}
+.status-cell select:focus{background:#fff !important;color:var(--ink) !important}
+
+/* Brochure Status table — terracotta header */
+#brochureStatusTable th{
+  background:var(--terracotta);
+  border-right-color:var(--terracotta-dk);
+}
+
+/* Task log section */
+.task-section{background:var(--cream-deep);padding:16px;border-radius:10px;border:1px solid var(--border)}
+.task-section-title{
+  font-size:13px;text-transform:uppercase;letter-spacing:1.5px;
+  color:var(--teal);margin-bottom:12px;padding-bottom:8px;
+  border-bottom:1px solid var(--border-dk);font-weight:bold;
+  display:flex;justify-content:space-between;align-items:center;
+}
+.task-section-title .ts-roman{color:var(--terracotta);font-style:italic;margin-right:8px}
+.task-section-title .ts-count{
+  font-size:11px;color:var(--ink-faint);
+  letter-spacing:normal;text-transform:none;font-weight:normal;font-style:italic;
+}
+.num-col{text-align:center;color:var(--ink-soft);font-size:11px;font-weight:bold}
+
+/* Summary KPI tiles */
+.summary-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:16px}
+.kpi-tile{
+  background:var(--offwhite);
+  border:1px solid var(--border-dk);
+  border-radius:10px;
+  padding:18px;
+}
+.kpi-tile .kpi-lbl{font-size:10px;text-transform:uppercase;letter-spacing:0.12em;color:var(--ink-faint);margin-bottom:8px}
+.kpi-tile .kpi-val{font-size:28px;color:var(--ink);font-family:Georgia,serif;letter-spacing:0.5px;font-variant-numeric:tabular-nums}
+.kpi-tile .kpi-sub{font-size:11px;color:var(--ink-soft);font-style:italic;margin-top:4px}
+.kpi-tile.kpi-tile--accent{background:var(--teal);color:#fff;border-color:var(--teal)}
+.kpi-tile.kpi-tile--accent .kpi-lbl{color:rgba(251,245,229,0.75)}
+.kpi-tile.kpi-tile--accent .kpi-val{color:#fff}
+.status-pill{display:inline-block;padding:3px 8px;border-radius:12px;font-size:10px;text-transform:uppercase;letter-spacing:0.5px}
+/* ─── Summary — Labels/RM style ─── */
+.summary-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px}
+.summary-card{background:#fff;border:1px solid var(--border);border-radius:10px;padding:14px}
+.summary-card h3{font-size:11px;text-transform:uppercase;letter-spacing:1px;color:var(--teal);margin-bottom:10px;padding-bottom:6px;border-bottom:1px solid var(--border);font-weight:bold}
+.metric-row{display:flex;justify-content:space-between;padding:5px 0;font-size:12px;border-bottom:1px solid #f0e9d6}
+.metric-row:last-child{border-bottom:none}
+.metric-label{color:var(--ink-soft)}
+.metric-value{font-weight:bold;color:var(--ink)}
+.metric-value.green{color:#3F6B3A}
+.metric-value.amber{color:var(--terracotta-dk)}
+.metric-value.red{color:#8B2A0F}
+.flags-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+.flag-card{background:#fff;border:1px solid var(--border);border-radius:8px;padding:12px;text-align:left}
+.flag-icon{width:30px;height:30px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:14px;margin-bottom:8px;background:var(--cream-deep);color:var(--teal)}
+.flag-icon.amber{background:#FBE9DF;color:#7A3B22}
+.flag-icon.green{background:#E3EFDF;color:#3F6B3A}
+.flag-icon.blue{background:#D6E3EE;color:#2C5A82}
+.flag-count{font-size:20px;font-weight:bold;color:var(--ink)}
+.flag-label{font-size:10px;color:var(--ink-soft);text-transform:uppercase;letter-spacing:0.5px;margin-top:4px}
+table.ov-tbl{width:100%;border-collapse:collapse;background:#fff;border-radius:6px;overflow:hidden;border:1px solid var(--border-dk);font-size:11px}
+table.ov-tbl th{background:var(--teal);color:#fff;padding:9px 8px;text-align:left;font-weight:normal;text-transform:uppercase;letter-spacing:0.5px;font-size:10px;border-right:1px solid var(--sea)}
+table.ov-tbl th:last-child{border-right:none}
+table.ov-tbl th.th-status{background:var(--terracotta-dk)}
+table.ov-tbl td{padding:7px 8px;border-bottom:1px solid var(--border);border-right:1px solid var(--border);vertical-align:middle}
+table.ov-tbl td:last-child{border-right:none}
+table.ov-tbl tr:last-child td{border-bottom:none}
+</style>
+</head>
+<body>
+
+<div class="page">
+<div class="header">
+  <h1>Brochures Module</h1>
+  <div class="crumb">PRIME Rural · Marketing Tools</div>
+</div>
+<div class="card">
+
+<div class="tab-bar">
+  <div class="tab" onclick="showTab('summary',this)">Summary</div>
+  <div class="tab active" onclick="showTab('existing',this)">Existing</div>
+  <div class="tab" onclick="showTab('required',this)">Required</div>
+  <div class="tab" onclick="showTab('resources',this)">Resources</div>
+  <div class="tab" onclick="showTab('tasklog',this)">Task Log</div>
+</div>
+
+<div class="content">
+
+<!-- ============ SUMMARY ============ -->
+<div id="summary" class="panel hidden">
+
+  <!-- ① BROCHURE-WISE OVERVIEW -->
+  <div class="section">
+    <div class="section-title">Brochure-wise Overview</div>
+    <p style="font-size:11px;color:var(--ink-soft);font-style:italic;margin-bottom:10px">One row per brochure. Product Names lists all included products. Intervention Stage shows the furthest draft raised.</p>
+    <div style="overflow-x:auto">
+    <table class="ov-tbl">
+      <thead>
+        <tr>
+          <th>Brochure Title</th>
+          <th>Product Names</th>
+          <th>Brochure Type</th>
+          <th>Market Scope</th>
+          <th>Designer</th>
+          <th>Intervention Stage</th>
+          <th class="th-status">Implementation Status</th>
+          <th class="th-status">Approved</th>
+        </tr>
+      </thead>
+      <tbody id="sumOverviewBody">
+        <tr><td colspan="8" style="text-align:center;color:var(--ink-faint);font-style:italic;padding:14px">Auto-populated from Existing and Required tabs</td></tr>
+      </tbody>
+    </table>
+    </div>
+  </div>
+
+  <!-- ② AGGREGATES -->
+  <div class="section">
+    <div class="section-title">Aggregates</div>
+    <div class="summary-grid">
+      <div class="summary-card">
+        <h3>Existing</h3>
+        <div class="metric-row"><span class="metric-label">Total Existing Brochures</span><span class="metric-value" id="agg-ex-total">0</span></div>
+        <div class="metric-row"><span class="metric-label">Need New Brochure</span><span class="metric-value amber" id="agg-ex-need">0</span></div>
+        <div class="metric-row"><span class="metric-label">No Change Needed</span><span class="metric-value" id="agg-ex-noneed">0</span></div>
+        <div class="metric-row"><span class="metric-label">Products Included</span><span class="metric-value" id="agg-products-included">0</span></div>
+      </div>
+      <div class="summary-card">
+        <h3>Cost</h3>
+        <div class="metric-row"><span class="metric-label">Brochure Type</span><span class="metric-value" id="agg-brochure-type" style="font-size:11px">—</span></div>
+        <div class="metric-row"><span class="metric-label">Market Scope</span><span class="metric-value" id="agg-market-scope" style="font-size:11px">—</span></div>
+        <div class="metric-row"><span class="metric-label">Print Format</span><span class="metric-value" id="agg-print-format" style="font-size:11px">—</span></div>
+        <div class="metric-row"><span class="metric-label">Page Count</span><span class="metric-value" id="agg-page-count">—</span></div>
+        <div class="metric-row"><span class="metric-label">Designer</span><span class="metric-value" id="agg-designer" style="font-size:11px">—</span></div>
+      </div>
+      <div class="summary-card">
+        <h3>Interventions</h3>
+        <div class="metric-row"><span class="metric-label">Total in Design</span><span class="metric-value" id="agg-int-total">0</span></div>
+        <div class="metric-row"><span class="metric-label">Draft 1 Raised</span><span class="metric-value" id="agg-int-d1">0</span></div>
+        <div class="metric-row"><span class="metric-label">Draft 2 Raised</span><span class="metric-value" id="agg-int-d2">0</span></div>
+        <div class="metric-row"><span class="metric-label">Draft 3 Raised</span><span class="metric-value" id="agg-int-d3">0</span></div>
+      </div>
+      <div class="summary-card">
+        <h3>Status</h3>
+        <div class="metric-row"><span class="metric-label">Approved by Entrepreneur</span><span class="metric-value green" id="agg-approved">0</span></div>
+        <div class="metric-row"><span class="metric-label">Under Review</span><span class="metric-value amber" id="agg-review">0</span></div>
+        <div class="metric-row"><span class="metric-label">Redo</span><span class="metric-value amber" id="agg-redo">0</span></div>
+        <div class="metric-row"><span class="metric-label">Pending</span><span class="metric-value" id="agg-pending">0</span></div>
+        <div class="metric-row"><span class="metric-label">Not Approved</span><span class="metric-value red" id="agg-notapproved">0</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ③ FLAGS -->
+  <div class="section">
+    <div class="section-title">Intervention Flags</div>
+    <div class="flags-grid">
+      <div class="flag-card"><div class="flag-icon amber">!</div><div class="flag-count" id="flag-need-new">0</div><div class="flag-label">Need New Brochure</div></div>
+      <div class="flag-card"><div class="flag-icon blue">✏</div><div class="flag-count" id="flag-in-design">0</div><div class="flag-label">In Design Process</div></div>
+      <div class="flag-card"><div class="flag-icon green">✓</div><div class="flag-count" id="flag-approved">0</div><div class="flag-label">Approved</div></div>
+      <div class="flag-card"><div class="flag-icon amber">↻</div><div class="flag-count" id="flag-redo">0</div><div class="flag-label">Redo / Not Approved</div></div>
+    </div>
+  </div>
+
+  <span id="sum-products" style="display:none"></span>
+  <span id="sum-required" style="display:none"></span>
+  <span id="sum-approved" style="display:none"></span>
+
+</div>
+
+<!-- ============ EXISTING ============ -->
+<div id="existing" class="panel">
+
+  <div class="section">
+    <div class="section-title">Entrepreneur</div>
+    <div class="field-row">
+      <div class="field-label">Entrepreneur Name</div>
+      <div class="field-val" style="background:var(--offwhite);font-style:italic;color:var(--ink-soft)">Auto fetched from profile</div>
+    </div>
+    <div class="field-row">
+      <div class="field-label">Enterprise Name</div>
+      <div class="field-val" style="background:var(--offwhite);font-style:italic;color:var(--ink-soft)">Auto fetched from profile</div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Existing Brochure</div>
+    <table class="data-table" id="existingBrochureTable">
+      <thead>
+        <tr>
+          <th style="width:25%">Brochure / Catalogue Title</th>
+          <th style="width:25%">Upload Existing File</th>
+          <th style="width:15%">Need New Brochure?</th>
+          <th style="width:30%">Justify</th>
+          <th style="width:5%"></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><input type="text" placeholder="Enter title"></td>
+          <td>
+            <div class="upload-cell">
+              <input type="file" class="hidden">
+              <button class="btn" onclick="this.previousElementSibling.click()">Upload</button>
+              <button class="btn">View ▷</button>
+            </div>
+          </td>
+          <td style="text-align:center"><span class="toggle" onclick="this.classList.toggle('on')"></span></td>
+          <td><input type="text" placeholder="Justification"></td>
+          <td><button class="row-delete" onclick="deleteRow(this)">✕</button></td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="table-actions">
+      <button class="btn btn-primary" onclick="addExistingRow()">+ Add Row</button>
+    </div>
+  </div>
+
+</div>
+
+<!-- ============ REQUIRED ============ -->
+<div id="required" class="panel hidden">
+
+  <!-- ─── Section I: Brochure Details (teal banner, with Product Listings as sub-section) ─── -->
+  <div class="section-block">
+    <div class="section-banner">
+      <span class="sb-title">Brochure Details</span>
+      <span class="sb-spacer"></span>
+      <span class="sb-meta">Setup + product listings</span>
+    </div>
+    <div class="section-body">
+
+      <div class="section">
+        <div class="section-title">Brochure Setup</div>
+
+        <div class="field-row">
+          <div class="field-label">Enterprise Name</div>
+          <input type="text" class="field-val" placeholder="Enter enterprise name">
+        </div>
+
+        <div class="field-row">
+          <div class="field-label">Brochure Type</div>
+          <select class="field-val brochure-type-select" multiple size="5" id="brochureTypeSelect" onchange="syncBrochureTypeOptions();refreshSummary()" style="height:auto;padding:4px">
+            <option>Single Product Brochure</option>
+            <option>Multi-Product Catalogue</option>
+            <option>Tri-fold Leaflet</option>
+            <option>Bi-fold Leaflet</option>
+            <option>Single-page Flyer</option>
+          </select>
+          <div style="font-size:10px;color:var(--ink-faint);font-style:italic;margin-top:4px;flex-basis:100%">Hold Ctrl / Cmd to select multiple types</div>
+        </div>
+
+        <div class="field-row">
+          <div class="field-label">Market Scope</div>
+          <select class="field-val">
+            <option>Select scope ▾</option>
+            <option>Local / State</option>
+            <option>National</option>
+          </select>
+        </div>
+
+        <div class="field-row">
+          <div class="field-label">Brochure Tagline / Headline</div>
+          <input type="text" class="field-val" placeholder="Enter tagline">
+        </div>
+
+        <div class="field-row">
+          <div class="field-label">Brochure Storyline (AI)</div>
+          <textarea class="field-val" placeholder="Enter or generate via AI"></textarea>
+          <button class="btn btn-ai" onclick="alert('AI generation triggered')">✨ Generate with AI</button>
+        </div>
+
+        <div class="field-row">
+          <div class="field-label">About the Enterprise</div>
+          <textarea class="field-val" placeholder="Short description of the enterprise"></textarea>
+        </div>
+
+        <div class="field-row">
+          <div class="field-label">Contact Number</div>
+          <input type="text" class="field-val" placeholder="Enter contact">
+        </div>
+
+        <div class="field-row">
+          <div class="field-label">Email</div>
+          <input type="text" class="field-val" placeholder="Enter email">
+        </div>
+
+        <div class="field-row">
+          <div class="field-label">Address / Location</div>
+          <textarea class="field-val" placeholder="Enter address"></textarea>
+        </div>
+      </div>
+
+      <!-- Product Listings nested as a section inside Brochure Details -->
+      <div class="section">
+        <div class="section-title">Product Listings</div>
+        <div style="overflow-x:auto">
+        <table class="data-table" id="productListingTable">
+          <thead>
+            <tr>
+              <th>Brochure Type</th>
+              <th>Product Name</th>
+              <th>Product Brief</th>
+              <th>Dimensions</th>
+              <th>Price</th>
+              <th>MOQ</th>
+              <th>Product Pictures</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>
+                <select class="product-brochure-type" multiple size="3" style="width:100%;font-size:10px;padding:3px;border:1px solid var(--border);border-radius:4px;background:var(--offwhite)" onchange="refreshSummary()">
+                  <option>Single Product Brochure</option>
+                  <option>Multi-Product Catalogue</option>
+                  <option>Tri-fold Leaflet</option>
+                  <option>Bi-fold Leaflet</option>
+                  <option>Single-page Flyer</option>
+                </select>
+              </td>
+              <td>
+                <select>
+                  <option>Select product ▾</option>
+                  <option>Product 1</option>
+                  <option>Product 2</option>
+                  <option>Product 3</option>
+                </select>
+              </td>
+              <td><textarea rows="2" placeholder="Brief"></textarea></td>
+              <td><input type="text" placeholder="L × B × H"></td>
+              <td><input type="text" placeholder="₹"></td>
+              <td><input type="text" placeholder="MOQ"></td>
+              <td>
+                <div class="upload-cell">
+                  <input type="file" class="hidden" multiple>
+                  <button class="btn" onclick="this.previousElementSibling.click()">Upload</button>
+                  <button class="btn">View ▷</button>
+                </div>
+              </td>
+              <td><button class="row-delete" onclick="deleteRow(this)">✕</button></td>
+            </tr>
+          </tbody>
+        </table>
+        </div>
+        <div class="table-actions">
+          <button class="btn btn-primary" onclick="addProductListingRow()">+ Add Product</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ─── Section II: Brochure Status (terracotta banner) ─── -->
+  <div class="section-block">
+    <div class="section-banner implementation">
+      <span class="sb-title">Brochure Status</span>
+      <span class="sb-spacer"></span>
+      <span class="sb-meta">Designer · Drafts · Approval</span>
+    </div>
+    <div class="section-body">
+
+      <div class="field-row">
+        <div class="field-label">Add Designer</div>
+        <select class="field-val">
+          <option>Select designer ▾</option>
+          <option>Designer A</option>
+          <option>Designer B</option>
+          <option>AI Generated</option>
+        </select>
+      </div>
+
+      <div class="field-row">
+        <div class="field-label">Print Format</div>
+        <select class="field-val">
+          <option>Select format ▾</option>
+          <option>A4</option>
+          <option>A5</option>
+          <option>DL (99 × 210 mm)</option>
+          <option>Custom</option>
+        </select>
+      </div>
+
+      <div class="field-row">
+        <div class="field-label">Page Count</div>
+        <input type="number" class="field-val" placeholder="e.g., 4">
+      </div>
+
+      <div style="margin-top:16px;overflow-x:auto">
+      <table class="data-table" id="brochureStatusTable">
+        <thead>
+          <tr>
+            <th>Brochure Title</th>
+            <th>Draft 1</th>
+            <th>Status</th>
+            <th>Draft 2</th>
+            <th>Status</th>
+            <th>Draft 3</th>
+            <th>Status</th>
+            <th>Approved by Entrepreneur</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><input type="text" placeholder="Title"></td>
+            <td>
+              <div class="upload-cell">
+                <input type="file" class="hidden">
+                <button class="btn" onclick="this.previousElementSibling.click()">Upload</button>
+                <button class="btn">View ▷</button>
+              </div>
+            </td>
+            <td class="status-cell">
+              <select>
+                <option>Pending</option>
+                <option>Under Review</option>
+                <option>Redo</option>
+                <option>Approved</option>
+                <option>Not Approved</option>
+              </select>
+            </td>
+            <td>
+              <div class="upload-cell">
+                <input type="file" class="hidden">
+                <button class="btn" onclick="this.previousElementSibling.click()">Upload</button>
+                <button class="btn">View ▷</button>
+              </div>
+            </td>
+            <td class="status-cell">
+              <select>
+                <option>Pending</option>
+                <option>Under Review</option>
+                <option>Redo</option>
+                <option>Approved</option>
+                <option>Not Approved</option>
+              </select>
+            </td>
+            <td>
+              <div class="upload-cell">
+                <input type="file" class="hidden">
+                <button class="btn" onclick="this.previousElementSibling.click()">Upload</button>
+                <button class="btn">View ▷</button>
+              </div>
+            </td>
+            <td class="status-cell">
+              <select>
+                <option>Pending</option>
+                <option>Under Review</option>
+                <option>Redo</option>
+                <option>Approved</option>
+                <option>Not Approved</option>
+              </select>
+            </td>
+            <td class="checkbox-cell"><input type="checkbox"></td>
+            <td><button class="row-delete" onclick="deleteRow(this)">✕</button></td>
+          </tr>
+        </tbody>
+      </table>
+      </div>
+      <div class="table-actions">
+        <button class="btn btn-primary" onclick="addStatusRow()">+ Add Row</button>
+      </div>
+
+    </div>
+  </div>
+
+</div>
+
+<!-- ============ RESOURCES ============ -->
+<div id="resources" class="panel hidden">
+  <div class="placeholder-tab">Resources view — brochure templates, design references, print specifications, and brand guidelines.</div>
+</div>
+
+<!-- ============ TASK LOG ============ -->
+<div id="tasklog" class="panel hidden">
+  <div class="task-section">
+    <div class="task-section-title">
+      <span><span class="ts-roman">I.</span>Task Log — Brochures</span>
+      <span class="ts-count"><span id="task-count">0</span> entries</span>
+    </div>
+    <table class="data-table" id="taskLogTable">
+      <thead>
+        <tr>
+          <th style="width:5%">No.</th>
+          <th style="width:13%">Date</th>
+          <th style="width:42%">Task Name</th>
+          <th style="width:30%">Notes / Outcome</th>
+          <th style="width:7%">Attachment</th>
+          <th style="width:3%"></th>
+        </tr>
+      </thead>
+      <tbody id="taskLogBody"></tbody>
+    </table>
+    <div class="table-actions">
+      <button class="btn btn-primary" onclick="addTaskRow()">+ Add Entry</button>
+    </div>
+  </div>
+</div>
+
+</div>
+</div>
+</div>
+
+<script>
+function showTab(id, el){
+  document.querySelectorAll('.panel').forEach(p => p.classList.add('hidden'));
+  document.getElementById(id).classList.remove('hidden');
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  el.classList.add('active');
+  if(id === 'summary') refreshSummary();
+}
+
+function deleteRow(btn){
+  const row = btn.closest('tr');
+  const tbody = row.parentElement;
+  if(tbody.rows.length > 1){
+    row.remove();
+  } else {
+    alert('At least one row is required.');
+  }
+}
+
+function cloneAndReset(tableId){
+  const tbody = document.querySelector('#' + tableId + ' tbody');
+  const row = tbody.rows[0].cloneNode(true);
+  row.querySelectorAll('input').forEach(i => {
+    if(i.type === 'checkbox') i.checked = false;
+    else if(i.type !== 'file') i.value = '';
+  });
+  row.querySelectorAll('textarea').forEach(t => t.value = '');
+  row.querySelectorAll('select').forEach(s => s.selectedIndex = 0);
+  row.querySelectorAll('.toggle').forEach(t => t.classList.remove('on'));
+  tbody.appendChild(row);
+}
+
+// Sync product-level Brochure Type options whenever the master multiselect changes
+function syncBrochureTypeOptions(){
+  const masterSel = document.getElementById('brochureTypeSelect');
+  const selected  = masterSel ? [...masterSel.selectedOptions].map(o=>o.value) : [];
+  const TYPES = ['Single Product Brochure','Multi-Product Catalogue','Tri-fold Leaflet','Bi-fold Leaflet','Single-page Flyer'];
+  document.querySelectorAll('#productListingTable .product-brochure-type').forEach(sel => {
+    const prev = [...sel.selectedOptions].map(o=>o.value);
+    sel.innerHTML = TYPES.map(t=>`<option${prev.includes(t)?' selected':''}>${t}</option>`).join('');
+  });
+}
+
+function addExistingRow(){ cloneAndReset('existingBrochureTable'); }
+function addProductListingRow(){
+  const tbody = document.querySelector('#productListingTable tbody');
+  const row = tbody.rows[0].cloneNode(true);
+  row.querySelectorAll('input').forEach(i => { if(i.type!=='file') i.value=''; });
+  row.querySelectorAll('textarea').forEach(t => t.value='');
+  row.querySelectorAll('select:not(.product-brochure-type)').forEach(s => s.selectedIndex=0);
+  row.querySelectorAll('.product-brochure-type option').forEach(o => o.selected=false);
+  tbody.appendChild(row);
+}
+function addStatusRow(){ cloneAndReset('brochureStatusTable'); }
+
+// ============ TASK LOG ============
+const BROCHURE_TASKS = [
+  '01 — Awareness on Importance of Brochure',
+  '02 — Data Collection for Brochure Creation',
+  '03 — Brainstorm and Sketch Brochure Ideas',
+  '04 — Draft coordinations with Designer',
+  '05 — Brochure approved by Core Team',
+  '06 — Brochure approved by Entrepreneur',
+  '07 — Delivered Brochure Files to Entrepreneur',
+  '08 — Brochure printed and collected by Entrepreneur locally',
+  '09 — Brochure printed and delivered in PRIME office',
+  '10 — Brochure printed and delivered to the Entrepreneur via local cabs',
+  '11 — Follow up on Brochure usage and printing',
+  '12 — If others, specify in comments',
+];
+const BROCHURE_TASK_OPTIONS = BROCHURE_TASKS.map(t => `<option value="${t}">${t}</option>`).join('');
+let taskLogCounter = 0;
+
+function addTaskRow(){
+  taskLogCounter++;
+  const tbody = document.getElementById('taskLogBody');
+  const tr = document.createElement('tr');
+  tr.innerHTML = `
+    <td class="num-col">${String(taskLogCounter).padStart(2,'0')}</td>
+    <td><input type="date" style="width:100%"></td>
+    <td><select style="width:100%"><option value="">— Select Task —</option>${BROCHURE_TASK_OPTIONS}</select></td>
+    <td><input type="text" placeholder="Notes / Outcome" style="width:100%"></td>
+    <td><button class="btn" style="padding:3px 8px;font-size:10px">Upload</button></td>
+    <td><button class="row-delete" onclick="deleteTaskRow(this)">✕</button></td>
+  `;
+  tbody.appendChild(tr);
+  refreshTaskCount();
+}
+
+function deleteTaskRow(btn){
+  const tbody = btn.closest('tbody');
+  btn.closest('tr').remove();
+  tbody.querySelectorAll('tr').forEach((tr, i) => {
+    tr.querySelector('.num-col').textContent = String(i+1).padStart(2,'0');
+  });
+  taskLogCounter = tbody.rows.length;
+  refreshTaskCount();
+}
+
+function refreshTaskCount(){
+  const el = document.getElementById('task-count');
+  if(el) el.textContent = document.querySelectorAll('#taskLogBody tr').length;
+}
+
+// ============ SUMMARY REFRESH ============
+function refreshSummary(){
+  const s = (id,v) => { const el=document.getElementById(id); if(el) el.textContent=v; };
+
+  const existingRows = document.querySelectorAll('#existingBrochureTable tbody tr');
+  const productRows  = document.querySelectorAll('#productListingTable tbody tr');
+  const statusRows   = document.querySelectorAll('#brochureStatusTable tbody tr');
+
+  // Existing tab
+  let exTotal=existingRows.length, needNew=0, noNeed=0;
+  const needNewMap = {};
+  existingRows.forEach(tr => {
+    const name = tr.querySelector('input[type=text]')?.value?.trim() || '';
+    const on   = tr.querySelector('.toggle')?.classList.contains('on');
+    if(on) needNew++; else noNeed++;
+    if(name) needNewMap[name] = on;
+  });
+
+  // Required — Brochure Type from master multiselect
+  const masterTypeSel = document.getElementById('brochureTypeSelect');
+  const selectedTypes = masterTypeSel ? [...masterTypeSel.selectedOptions].map(o=>o.value) : [];
+  const brochureType  = selectedTypes.length > 0 ? selectedTypes.join(', ') : '—';
+
+  // Required — Market Scope
+  const setupSels  = document.querySelectorAll('#required .section-body .section:first-child select');
+  const marketScope  = (setupSels[0]?.value && !setupSels[0].value.includes('Select')) ? setupSels[0].value : '—';
+
+  // Required — Status section selects (Designer, Print Format)
+  const allReqSels  = document.querySelectorAll('#required .section-body select');
+  let designer='—', printFormat='—';
+  allReqSels.forEach(sel => {
+    const v = sel.value || '';
+    if(!v.includes('Select') && ['Designer A','Designer B','AI Generated'].some(x=>v===x)) designer=v;
+    if(!v.includes('Select') && ['A4','A5','DL (99 × 210 mm)','Custom'].some(x=>v===x)) printFormat=v;
+  });
+  const pageCountEl = document.querySelector('#required input[type=number]');
+  const pageCount   = pageCountEl?.value || '—';
+
+  // Product listings — included = at least one brochure type selected in the per-product multiselect
+  let included = 0;
+  productRows.forEach(tr => {
+    const sel = tr.querySelector('.product-brochure-type');
+    if(sel && [...sel.selectedOptions].length > 0) included++;
+  });
+
+  // Status rows
+  let approved=0, underReview=0, redo=0, pending=0, notApproved=0;
+  let d1count=0, d2count=0, d3count=0;
+  statusRows.forEach(tr => {
+    const ss = tr.querySelectorAll('.status-cell select');
+    const d1=ss[0]?.value||'Pending', d2=ss[1]?.value||'Pending', d3=ss[2]?.value||'Pending';
+    const isApproved = tr.querySelector('input[type=checkbox]')?.checked;
+    if(d3!=='Pending') d3count++; else if(d2!=='Pending') d2count++; else if(d1!=='Pending') d1count++;
+    const latest = d3!=='Pending'?d3:d2!=='Pending'?d2:d1;
+    if(isApproved)               approved++;
+    if(latest==='Under Review')   underReview++;
+    if(latest==='Redo')           redo++;
+    if(latest==='Pending')        pending++;
+    if(latest==='Not Approved')   notApproved++;
+  });
+
+  // ① Overview table — one row per brochure status row
+  const tbody = document.getElementById('sumOverviewBody');
+  let html = '';
+
+  // Collect included product names (any brochure type selected = included)
+  const includedProducts = [];
+  productRows.forEach(tr => {
+    const typeSel = tr.querySelector('.product-brochure-type');
+    if(!typeSel || [...typeSel.selectedOptions].length === 0) return;
+    const nameSel = tr.querySelector('select:not(.product-brochure-type)');
+    const name = (nameSel?.value && !nameSel.value.includes('Select')) ? nameSel.value : null;
+    if(name) includedProducts.push(name);
+  });
+  const productsCell = includedProducts.length > 0
+    ? includedProducts.map(n => `<div style="font-size:11px;padding:1px 0">• ${n}</div>`).join('')
+    : '<span style="color:var(--ink-faint)">—</span>';
+
+  if(statusRows.length > 0){
+    statusRows.forEach(tr => {
+      const title = tr.querySelector('input[type=text]')?.value?.trim() || '';
+      const ss = tr.querySelectorAll('.status-cell select');
+      const d1=ss[0]?.value||'Pending', d2=ss[1]?.value||'Pending', d3=ss[2]?.value||'Pending';
+      const isApproved = tr.querySelector('input[type=checkbox]')?.checked;
+
+      let intStage = '<span style="color:var(--ink-faint)">—</span>';
+      if(d3!=='Pending')      intStage='<span style="display:inline-block;padding:2px 8px;border-radius:12px;font-size:10px;font-weight:bold;background:#D6E3EE;color:#2C5A82">✏ Draft 3</span>';
+      else if(d2!=='Pending') intStage='<span style="display:inline-block;padding:2px 8px;border-radius:12px;font-size:10px;font-weight:bold;background:var(--cream-deep);color:var(--teal)">✏ Draft 2</span>';
+      else if(d1!=='Pending') intStage='<span style="display:inline-block;padding:2px 8px;border-radius:12px;font-size:10px;font-weight:bold;background:var(--cream-deep);color:var(--ink-soft)">✏ Draft 1</span>';
+
+      const latest = d3!=='Pending'?d3:d2!=='Pending'?d2:d1;
+      const approvedCell = isApproved
+        ? '<span style="color:#3F6B3A;font-weight:bold">✓ Yes</span>'
+        : '<span style="color:var(--ink-faint);font-style:italic">—</span>';
+
+      html += `<tr>
+        <td><strong>${title||'<em style="color:var(--ink-faint)">Untitled</em>'}</strong></td>
+        <td>${productsCell}</td>
+        <td style="font-size:11px">${brochureType}</td>
+        <td style="font-size:11px">${marketScope}</td>
+        <td style="font-size:11px">${designer}</td>
+        <td>${intStage}</td>
+        <td style="background:#FDF3EE">${statusPill(latest)}</td>
+        <td style="background:#EDF6EA">${approvedCell}</td>
+      </tr>`;
+    });
+  } else {
+    html = '<tr><td colspan="8" style="text-align:center;color:var(--ink-faint);font-style:italic;padding:14px">Add brochures in Required tab → Brochure Status to populate</td></tr>';
+  }
+  tbody.innerHTML = html;
+
+  // ② Aggregates
+  s('agg-ex-total',         exTotal);   s('agg-ex-need',          needNew);
+  s('agg-ex-noneed',        noNeed);    s('agg-products-included', included);
+  s('agg-brochure-type',    brochureType); s('agg-market-scope',   marketScope);
+  s('agg-print-format',     printFormat);  s('agg-page-count',     pageCount);
+  s('agg-designer',         designer);
+  s('agg-int-total',d1count+d2count+d3count); s('agg-int-d1',d1count); s('agg-int-d2',d2count); s('agg-int-d3',d3count);
+  s('agg-approved',approved); s('agg-review',underReview); s('agg-redo',redo); s('agg-pending',pending); s('agg-notapproved',notApproved);
+
+  // ③ Flags
+  s('flag-need-new',needNew); s('flag-in-design',statusRows.length); s('flag-approved',approved); s('flag-redo',redo+notApproved);
+
+  // Ghost IDs
+  s('sum-products',included); s('sum-required',needNew); s('sum-approved',approved);
+}
+
+function statusPill(s){
+  if(!s||s==='—') return '<span style="color:var(--ink-faint);font-style:italic">—</span>';
+  const m={'Pending':'background:var(--cream-deep);color:var(--ink-soft)','Under Review':'background:#FFE9A8;color:#7A5A1B','Redo':'background:#F5E2D6;color:var(--terracotta-dk)','Approved':'background:#D9E8E5;color:var(--teal)','Not Approved':'background:#F5D0C5;color:#7A2E15'};
+  return `<span class="status-pill" style="${m[s]||m['Pending']}">${s}</span>`;
+}
+
+// ============ SEED + INIT ============
+window.addEventListener('DOMContentLoaded', () => {
+
+  // Existing tab
+  const exTbody = document.querySelector('#existingBrochureTable tbody');
+  if(exTbody){
+    const SEED = [
+      {title:'Herbal Products Catalogue',on:true, justify:'Outdated design, no QR code'},
+      {title:'Soap Product Flyer',       on:true, justify:'Products added since last print'},
+      {title:'Price List 2024',          on:false,justify:''},
+    ];
+    exTbody.innerHTML='';
+    SEED.forEach(item => {
+      const tr=document.createElement('tr');
+      tr.innerHTML=`<td><input type="text" value="${item.title}"></td>
+        <td><div class="upload-cell"><input type="file" class="hidden"><button class="btn" onclick="this.previousElementSibling.click()">Upload</button><button class="btn">View ▷</button></div></td>
+        <td style="text-align:center"><span class="toggle${item.on?' on':''}" onclick="this.classList.toggle('on');refreshSummary()"></span></td>
+        <td><input type="text" value="${item.justify}"></td>
+        <td><button class="row-delete" onclick="deleteRow(this)">✕</button></td>`;
+      exTbody.appendChild(tr);
+    });
+  }
+
+  // Required — Market Scope, Designer, Print Format
+  document.querySelectorAll('#required select').forEach(sel => {
+    const opts = [...sel.options].map(o=>o.value);
+    if(opts.includes('Local / State')) sel.value='Local / State';
+    if(opts.includes('Designer A'))    sel.value='Designer A';
+    if(opts.includes('A4'))            sel.value='A4';
+  });
+  const pgInput = document.querySelector('#required input[type=number]');
+  if(pgInput) pgInput.value='4';
+
+  // Master Brochure Type multiselect — select Multi-Product Catalogue
+  const masterTypeSel = document.getElementById('brochureTypeSelect');
+  if(masterTypeSel){
+    [...masterTypeSel.options].forEach(o => {
+      o.selected = (o.value === 'Multi-Product Catalogue' || o.value === 'Single-page Flyer');
+    });
+    syncBrochureTypeOptions();
+  }
+
+  // Product Listings — set on existing row + add one more
+  const plRow1 = document.querySelector('#productListingTable tbody tr');
+  if(plRow1){
+    const typeSel = plRow1.querySelector('.product-brochure-type');
+    if(typeSel) [...typeSel.options].forEach(o => { o.selected = (o.value==='Multi-Product Catalogue'); });
+    const nameSel = plRow1.querySelector('select:not(.product-brochure-type)');
+    if(nameSel){const o=document.createElement('option');o.value='Turmeric Soap';o.textContent='Turmeric Soap';nameSel.appendChild(o);nameSel.value='Turmeric Soap';}
+    const ti=plRow1.querySelectorAll('input[type=text]');
+    if(ti[0])ti[0].value='10×6×4 cm'; if(ti[1])ti[1].value='₹120'; if(ti[2])ti[2].value='12 pcs';
+  }
+  addProductListingRow();
+  const plRow2=document.querySelector('#productListingTable tbody tr:last-child');
+  if(plRow2){
+    const typeSel = plRow2.querySelector('.product-brochure-type');
+    if(typeSel) [...typeSel.options].forEach(o => { o.selected = (o.value==='Multi-Product Catalogue' || o.value==='Single-page Flyer'); });
+    const nameSel = plRow2.querySelector('select:not(.product-brochure-type)');
+    if(nameSel){const o=document.createElement('option');o.value='Neem Face Wash';o.textContent='Neem Face Wash';nameSel.appendChild(o);nameSel.value='Neem Face Wash';}
+    const ti=plRow2.querySelectorAll('input[type=text]');
+    if(ti[0])ti[0].value='8×5×5 cm'; if(ti[1])ti[1].value='₹180'; if(ti[2])ti[2].value='6 pcs';
+  }
+
+  // Brochure Status — set on existing row + add one more
+  const SEED_BS=[
+    {title:'Herbal Products Catalogue',d1:'Approved',d2:'Approved',d3:'Under Review',approved:false},
+    {title:'Soap Product Flyer',       d1:'Approved',d2:'Redo',    d3:'Pending',     approved:false},
+  ];
+  SEED_BS.forEach((item,i) => {
+    let row=document.querySelector('#brochureStatusTable tbody').rows[i];
+    if(!row){addStatusRow();row=document.querySelector('#brochureStatusTable tbody tr:last-child');}
+    const ti=row.querySelector('input[type=text]'); if(ti)ti.value=item.title;
+    const ss=row.querySelectorAll('.status-cell select');
+    if(ss[0])ss[0].value=item.d1; if(ss[1])ss[1].value=item.d2; if(ss[2])ss[2].value=item.d3;
+    const cb=row.querySelector('input[type=checkbox]'); if(cb)cb.checked=item.approved;
+  });
+
+  refreshSummary();
+  showTab('summary', document.querySelector('.tab'));
+});
+</script>
+
+</body>
+</html>

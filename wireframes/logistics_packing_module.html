@@ -1,0 +1,1704 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Logistics Packing Module · PRIME Rural</title>
+<style>
+:root {
+  --teal:#0E4D4E; --sea:#1A6B6D; --terracotta:#C26849; --terracotta-dk:#A85738;
+  --terracotta-sft:#F5E2D6;
+  --cream:#FBF5E5; --cream-deep:#F4ECD3; --offwhite:#FDFAF0; --panel:#FFFFFF;
+  --ink:#2A2520; --ink-soft:#6B6359; --ink-faint:#9C9384;
+  --border:#E8DFC9; --border-dk:#D6CDB6;
+  --good-bg:#E3EFDF; --good-ink:#3F6B3A;
+  --fair-bg:#FBE9DF; --fair-ink:#7A3B22;
+  --poor-bg:#F5D6CC; --poor-ink:#8B2A0F;
+  --highlight:#FFF8E1;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:Georgia,serif;background:var(--cream);color:var(--ink);line-height:1.4}
+.page{max-width:1200px;margin:0 auto;padding:24px}
+
+.header{background:var(--teal);color:#fff;padding:16px 20px;border-radius:12px 12px 0 0;display:flex;justify-content:space-between;align-items:center}
+.header h1{font-size:18px;font-weight:normal;letter-spacing:0.5px}
+.header .crumb{font-size:11px;opacity:0.75;text-transform:uppercase;letter-spacing:1px}
+
+.card{background:var(--cream);border:1px solid var(--border-dk);border-top:none;border-radius:0 0 12px 12px}
+
+.tab-bar{display:flex;background:var(--cream-deep);border-bottom:1px solid var(--border-dk);overflow-x:auto}
+.tab{padding:12px 22px;cursor:pointer;font-size:12px;text-transform:uppercase;letter-spacing:1px;color:var(--ink-soft);border-right:1px solid var(--border);white-space:nowrap}
+.tab.active{background:var(--teal);color:#fff}
+.tab:hover:not(.active){background:#EADFC0}
+
+.content{padding:22px}
+
+.entrepreneur-chip{display:inline-flex;align-items:center;gap:10px;background:#fff;border:1px solid var(--border-dk);padding:6px 14px;border-radius:20px;font-size:12px;margin-bottom:18px}
+.ent-avatar{width:24px;height:24px;background:var(--teal);color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:bold}
+
+.section{background:var(--cream-deep);padding:16px;border-radius:10px;margin-bottom:16px;border:1px solid var(--border)}
+.section-title{font-size:13px;text-transform:uppercase;letter-spacing:1.5px;color:var(--teal);margin-bottom:12px;padding-bottom:8px;border-bottom:1px solid var(--border-dk);font-weight:bold;display:flex;justify-content:space-between;align-items:center}
+.section-title-roman{color:var(--terracotta);margin-right:8px;font-style:italic}
+
+.field-row{display:flex;gap:12px;margin-bottom:10px;flex-wrap:wrap;align-items:center}
+.field-label{width:280px;font-size:12px;color:var(--ink-soft)}
+.field-val{flex:1;background:var(--offwhite);border:1px solid var(--border-dk);padding:6px 10px;border-radius:5px;font-size:12px;min-width:140px;font-family:Georgia,serif}
+.field-val[readonly],.field-val.auto{background:var(--cream-deep);color:var(--ink-soft);font-style:italic}
+textarea.field-val{font-family:Georgia,serif;resize:vertical;min-height:50px}
+select.field-val{cursor:pointer}
+
+.btn{padding:5px 12px;border-radius:20px;border:1px solid var(--border-dk);background:#fff;cursor:pointer;font-size:11px;color:var(--ink);font-family:Georgia,serif}
+.btn:hover{background:var(--cream-deep)}
+.btn-primary{background:var(--teal);color:#fff;border-color:var(--teal)}
+.btn-primary:hover{background:var(--sea)}
+.btn-accent{background:var(--terracotta);color:#fff;border-color:var(--terracotta)}
+.btn-accent:hover{background:var(--terracotta-dk)}
+
+table.data-table{width:100%;border-collapse:collapse;background:var(--offwhite);border-radius:6px;overflow:hidden;border:1px solid var(--border-dk);font-size:11px}
+table.data-table th{background:var(--teal);color:#fff;padding:9px 8px;text-align:left;font-weight:normal;text-transform:uppercase;letter-spacing:0.5px;font-size:10px;border-right:1px solid var(--sea);white-space:nowrap}
+table.data-table th:last-child{border-right:none}
+table.data-table td{padding:7px 8px;border-bottom:1px solid var(--border);border-right:1px solid var(--border);vertical-align:middle}
+table.data-table td:last-child{border-right:none}
+table.data-table tr:last-child td{border-bottom:none}
+table.data-table input,table.data-table select,table.data-table textarea{width:100%;border:1px solid var(--border);padding:5px 6px;border-radius:3px;font-family:Georgia,serif;font-size:11px;background:#fff}
+table.data-table input:focus,table.data-table select:focus{outline:none;border-color:var(--teal)}
+table.data-table .num-col{width:40px;text-align:center;color:var(--ink-soft)}
+table.data-table .amount-col{font-weight:bold;color:var(--teal);text-align:right}
+table.data-table tr.total-row td{background:var(--highlight);font-weight:bold;color:var(--terracotta-dk);border-top:2px solid var(--border-dk)}
+
+.table-actions{display:flex;justify-content:space-between;align-items:center;margin-top:10px}
+.row-delete{background:transparent;border:none;color:var(--terracotta);cursor:pointer;font-size:14px;padding:2px 6px}
+.row-delete:hover{color:var(--terracotta-dk)}
+
+.summary-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px}
+.summary-card{background:#fff;border:1px solid var(--border);border-radius:10px;padding:14px}
+.summary-card.full{grid-column:1 / -1}
+.summary-card h3{font-size:11px;text-transform:uppercase;letter-spacing:1px;color:var(--teal);margin-bottom:10px;padding-bottom:6px;border-bottom:1px solid var(--border)}
+.metric-row{display:flex;justify-content:space-between;padding:5px 0;font-size:12px;border-bottom:1px solid #f0e9d6}
+.metric-row:last-child{border-bottom:none}
+.metric-label{color:var(--ink-soft)}
+.metric-value{font-weight:bold;color:var(--ink)}
+.metric-value.green{color:var(--good-ink)}
+.metric-value.amber{color:var(--terracotta-dk)}
+
+.picture-strip{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;background:var(--teal);padding:14px;border-radius:10px;color:#fff;margin-top:10px}
+.picture-strip .ps-cell{padding:6px 4px}
+.picture-strip .ps-label{font-size:10px;text-transform:uppercase;letter-spacing:0.8px;opacity:0.7;margin-bottom:4px}
+.picture-strip .ps-val{font-size:18px;font-weight:bold}
+.picture-strip .ps-val.amber{color:#FFD580}
+
+.flags-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+.flag-card{background:#fff;border:1px solid var(--border);border-radius:8px;padding:12px;text-align:left}
+.flag-icon{width:30px;height:30px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:14px;margin-bottom:8px}
+.flag-icon.amber{background:var(--terracotta-sft);color:var(--terracotta-dk)}
+.flag-icon.red{background:#F5D6CC;color:#8B2A0F}
+.flag-icon.blue{background:#D6E3EE;color:#2C5A82}
+.flag-icon.green{background:var(--good-bg);color:var(--good-ink)}
+.flag-count{font-size:20px;font-weight:bold;color:var(--ink)}
+.flag-label{font-size:10px;color:var(--ink-soft);text-transform:uppercase;letter-spacing:0.5px;margin-top:4px}
+
+.status-badge{display:inline-flex;align-items:center;gap:5px;padding:2px 9px;border-radius:14px;font-size:10px;font-weight:bold}
+.status-completed{background:var(--good-bg);color:var(--good-ink)}
+.status-progress{background:var(--fair-bg);color:var(--fair-ink)}
+.status-pending{background:var(--cream-deep);color:var(--ink-soft)}
+
+.toggle{width:36px;height:18px;border-radius:20px;background:#ccc;display:inline-block;cursor:pointer;position:relative;flex-shrink:0;vertical-align:middle}
+.toggle::after{content:'';width:14px;height:14px;background:#fff;border-radius:50%;position:absolute;top:2px;left:2px;transition:left 0.2s}
+.toggle.on{background:var(--teal)}
+.toggle.on::after{left:20px}
+
+/* Product block */
+.machine-block{background:#fff;border:1px solid var(--border-dk);border-radius:10px;margin-bottom:14px;overflow:hidden}
+.machine-block-head{background:var(--sea);color:#fff;padding:10px 14px;display:flex;justify-content:space-between;align-items:center;cursor:pointer;user-select:none;font-size:13px;flex-wrap:wrap;gap:8px}
+.machine-block-head:hover{background:var(--teal)}
+.machine-block-head .mb-name{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.chevron{font-size:12px;transition:transform 0.2s}
+.machine-block.collapsed .chevron{transform:rotate(-90deg)}
+.machine-block.collapsed .mb-body{display:none}
+.mb-body{padding:14px}
+.mb-remove{background:transparent;border:1px solid rgba(255,255,255,0.4);color:#fff;padding:3px 10px;border-radius:14px;cursor:pointer;font-size:11px;font-family:Georgia,serif}
+.mb-remove:hover{background:var(--terracotta);border-color:var(--terracotta)}
+
+.subsection{background:var(--cream-deep);padding:12px;border-radius:8px;margin-bottom:10px;border:1px solid var(--border)}
+.subsection-title{font-size:11px;text-transform:uppercase;letter-spacing:1px;color:var(--teal);margin-bottom:10px;font-weight:bold;display:flex;justify-content:space-between;align-items:center}
+.subsection-title .sst-roman{color:var(--terracotta);font-style:italic;margin-right:6px}
+
+/* Packing item row */
+.pkg-row{background:#fff;border:1px solid var(--border-dk);border-radius:8px;padding:10px;margin-bottom:10px;position:relative}
+.pkg-row .pkg-cell{font-size:11px}
+.pkg-row .pkg-cell-label{font-size:10px;color:var(--ink-soft);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:3px}
+.pkg-dim-trio{display:flex;gap:3px;align-items:center}
+.pkg-dim-trio input{width:42px !important;padding:5px 4px !important;text-align:center}
+.pkg-dim-trio .x{color:var(--ink-faint);font-size:10px;font-weight:bold}
+.pkg-dim-trio select.dim-unit{width:54px !important;padding:5px 4px !important}
+.pkg-row .pkg-cell input,.pkg-row .pkg-cell select{width:100%;border:1px solid var(--border);padding:5px 6px;border-radius:3px;font-family:Georgia,serif;font-size:11px;background:var(--offwhite)}
+.pkg-row .pkg-cell input:focus,.pkg-row .pkg-cell select:focus{outline:none;border-color:var(--teal);background:#fff}
+.pkg-row .pkg-delete{position:absolute;top:6px;right:6px;background:transparent;border:none;color:var(--terracotta);cursor:pointer;font-size:13px;padding:2px 5px}
+
+/* Damage / fragile / reusable pills */
+.check-pill-group{display:flex;flex-wrap:wrap;gap:8px;margin-top:6px}
+.check-pill{display:inline-flex;align-items:center;gap:5px;padding:4px 12px;border-radius:14px;font-size:10px;font-weight:bold;letter-spacing:0.5px;cursor:pointer;border:1px solid var(--border-dk);background:var(--offwhite);color:var(--ink-soft);user-select:none;transition:all 0.15s}
+.check-pill:hover{border-color:var(--teal);color:var(--teal)}
+.check-pill.on{background:var(--teal);color:#fff;border-color:var(--teal)}
+.check-pill.on-red{background:var(--poor-bg);color:var(--poor-ink);border-color:var(--poor-ink)}
+
+/* New packing body */
+.new-pkg-body .pkg-cell input,.new-pkg-body .pkg-cell select{width:100%;border:1px solid var(--border);padding:5px 6px;border-radius:3px;font-family:Georgia,serif;font-size:11px;background:var(--offwhite)}
+.new-pkg-body .pkg-cell input:focus,.new-pkg-body .pkg-cell select:focus{outline:none;border-color:var(--teal);background:#fff}
+.new-pkg-body .pkg-cell{font-size:11px}
+.new-pkg-body .pkg-cell-label{font-size:10px;color:var(--ink-soft);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:3px}
+
+/* Intervention block */
+.intervention-block{background:var(--terracotta-sft);border:1px solid var(--terracotta);border-radius:8px;padding:12px;margin-top:10px}
+.intervention-block-title{font-size:11px;text-transform:uppercase;letter-spacing:1px;color:var(--terracotta-dk);margin-bottom:10px;font-weight:bold}
+.int-item{background:#fff;border:1px solid var(--border);border-radius:6px;padding:10px;margin-bottom:8px}
+.int-item:last-child{margin-bottom:0}
+.int-item-row{display:flex;align-items:center;gap:12px;margin-bottom:8px;flex-wrap:wrap}
+.int-item-row:last-child{margin-bottom:0}
+.int-item-label{font-size:11px;color:var(--ink-soft);min-width:160px}
+.int-item-input{flex:1;border:1px solid var(--border);padding:6px 8px;border-radius:4px;font-family:Georgia,serif;font-size:11px;background:var(--offwhite);min-width:200px}
+.int-item-input:focus{outline:none;border-color:var(--teal);background:#fff}
+
+/* Total bar */
+.total-bar{background:var(--teal);color:#fff;padding:14px 18px;border-radius:10px;margin-top:14px}
+.total-bar-title{font-size:11px;text-transform:uppercase;letter-spacing:1px;opacity:0.7;margin-bottom:10px}
+.total-grid{display:grid;gap:14px}
+.total-cell .total-label{font-size:10px;opacity:0.6;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:3px}
+.total-cell .total-value{font-weight:bold;font-size:14px}
+.total-cell .total-value.amber{color:#FFD580;font-size:11px}
+
+/* Required rows */
+.opt-row{background:#fff;border:1px solid var(--border-dk);border-radius:10px;margin-bottom:12px;overflow:hidden}
+.opt-row-head{background:var(--cream-deep);padding:12px 16px;display:grid;gap:12px;align-items:center;border-bottom:1px solid var(--border-dk)}
+.opt-readonly-label{font-size:10px;color:var(--ink-soft);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:3px}
+.opt-readonly-val{font-size:12px;font-weight:bold;color:var(--teal)}
+.int-type{display:inline-flex;align-items:center;gap:5px;padding:3px 10px;border-radius:14px;font-size:10px;font-weight:bold}
+.int-log{background:var(--terracotta-sft);color:var(--terracotta-dk)}
+.int-new{background:var(--good-bg);color:var(--good-ink)}
+
+.add-row-bar{text-align:center;padding:14px;background:var(--cream-deep);border:1px dashed var(--border-dk);border-radius:10px;margin-top:10px}
+.hidden{display:none !important}
+</style>
+</head>
+<body>
+
+<div class="page">
+<div class="header">
+  <h1>Logistics Packing Module</h1>
+  <div class="crumb">PRIME Rural · DF Logistics</div>
+</div>
+<div class="card">
+
+<div class="tab-bar">
+  <div class="tab active" onclick="showTab('summary',this)">Summary</div>
+  <div class="tab" onclick="showTab('existing',this)">Existing</div>
+  <div class="tab" onclick="showTab('required',this)">Required</div>
+  <div class="tab" onclick="showTab('resources',this)">Resources</div>
+  <div class="tab" onclick="showTab('tasklog',this)">Task Log</div>
+  <div class="tab" onclick="showTab('logbook',this)">Log Book</div>
+</div>
+
+<div class="content">
+
+<div class="entrepreneur-chip">
+  <div class="ent-avatar">EN</div>
+  <span style="color:var(--ink-soft);font-style:italic">Auto-fetched from profile</span>
+</div>
+
+<!-- ============ SUMMARY ============ -->
+<div id="summary" class="panel">
+
+  <!-- ① PACKING-WISE OVERVIEW -->
+  <div class="section">
+    <div class="section-title">Packing-wise Overview</div>
+    <p style="font-size:11px;color:var(--ink-soft);font-style:italic;margin-bottom:10px">One row per packing type per product. New Price / Unit and Saving populate when an intervention is in progress.</p>
+    <div style="overflow-x:auto">
+    <table class="data-table" style="min-width:820px">
+      <thead>
+        <tr>
+          <th>Product</th>
+          <th>Packing Type</th>
+          <th>Material</th>
+          <th>Damage Risk</th>
+          <th>Properties</th>
+          <th>Price / Unit (₹)</th>
+          <th>Intervention Type</th>
+          <th>Implementation Status</th>
+          <th style="background:#7A3B22">New Price / Unit (₹)</th>
+          <th style="background:#3F6B3A">Saving / Unit</th>
+        </tr>
+      </thead>
+      <tbody id="summaryProductTable">
+        <tr><td colspan="10" style="text-align:center;color:var(--ink-faint);font-style:italic;padding:14px">Auto-populated from Existing and Required tabs</td></tr>
+      </tbody>
+    </table>
+    </div>
+  </div>
+
+  <!-- ② AGGREGATES -->
+  <div class="section">
+    <div class="section-title">Aggregates</div>
+    <div class="summary-grid">
+
+      <div class="summary-card">
+        <h3>Existing</h3>
+        <div class="metric-row"><span class="metric-label">Products with Packing</span><span class="metric-value" id="agg-ex-products">0</span></div>
+        <div class="metric-row"><span class="metric-label">Total Packing Types</span><span class="metric-value" id="agg-ex-items">0</span></div>
+        <div class="metric-row"><span class="metric-label">Annual Qty Shipped</span><span class="metric-value" id="agg-ex-qty">0</span></div>
+        <div class="metric-row"><span class="metric-label">Damage Risk Flagged</span><span class="metric-value amber" id="agg-ex-damage">0</span></div>
+        <div class="metric-row"><span class="metric-label">Fragile Items</span><span class="metric-value" id="agg-ex-fragile">0</span></div>
+      </div>
+
+      <div class="summary-card">
+        <h3>Cost</h3>
+        <div class="metric-row"><span class="metric-label">Annual Cost — Before (₹)</span><span class="metric-value" id="agg-ex-cost">₹ 0.00</span></div>
+        <div class="metric-row"><span class="metric-label">Price / Unit — Before (₹)</span><span class="metric-value" id="agg-ex-cpu">—</span></div>
+        <div class="metric-row"><span class="metric-label">Price / Unit — After (₹)</span><span class="metric-value green" id="agg-impl-cpu">—</span></div>
+        <div class="metric-row"><span class="metric-label">Saving / Unit (₹)</span><span class="metric-value green" id="agg-impl-saving">—</span></div>
+        <div style="font-size:10px;color:var(--ink-faint);font-style:italic;margin-top:6px">After = Implemented interventions only.</div>
+      </div>
+
+      <div class="summary-card">
+        <h3>Interventions</h3>
+        <div class="metric-row"><span class="metric-label">Packing Types Flagged</span><span class="metric-value amber" id="agg-flag-items">0</span></div>
+        <div class="metric-row"><span class="metric-label">Replacements</span><span class="metric-value" id="agg-flag-replace">0</span></div>
+        <div class="metric-row"><span class="metric-label">New Packing Added</span><span class="metric-value" id="agg-flag-new">0</span></div>
+        <div class="metric-row"><span class="metric-label">Total</span><span class="metric-value" id="agg-flag-total">0</span></div>
+      </div>
+
+      <div class="summary-card">
+        <h3>Status</h3>
+        <div class="metric-row"><span class="metric-label">Implemented</span><span class="metric-value green" id="agg-flag-completed">0</span></div>
+        <div class="metric-row"><span class="metric-label">In Progress</span><span class="metric-value amber" id="agg-flag-progress">0</span></div>
+        <div class="metric-row"><span class="metric-label">Pending</span><span class="metric-value" id="agg-flag-pending">0</span></div>
+        <div class="metric-row"><span class="metric-label">Not Feasible</span><span class="metric-value" id="agg-flag-notfeasible">0</span></div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ③ FLAGS -->
+  <div class="section">
+    <div class="section-title">Intervention Flags</div>
+    <div class="flags-grid">
+      <div class="flag-card"><div class="flag-icon amber">↻</div><div class="flag-count" id="flag-int-count">0</div><div class="flag-label">Intervention Needed</div></div>
+      <div class="flag-card"><div class="flag-icon red">!</div><div class="flag-count" id="flag-damage-count">0</div><div class="flag-label">Damage Risk Flagged</div></div>
+      <div class="flag-card"><div class="flag-icon blue">◈</div><div class="flag-count" id="flag-fragile-count">0</div><div class="flag-label">Fragile Items</div></div>
+      <div class="flag-card"><div class="flag-icon green">↺</div><div class="flag-count" id="flag-reusable-count">0</div><div class="flag-label">Reusable Packing</div></div>
+    </div>
+  </div>
+
+  <!-- ghost IDs -->
+  <span id="ps-products" style="display:none"></span>
+  <span id="ps-items"    style="display:none"></span>
+  <span id="ps-cost"     style="display:none"></span>
+
+</div>
+
+<!-- ============ EXISTING ============ -->
+<div id="existing" class="panel hidden">
+
+  <div id="existingProductList"></div>
+
+  <div class="add-row-bar">
+    <button class="btn btn-primary" onclick="addExistingProduct()">+ Add Product</button>
+  </div>
+
+  <div class="section" style="margin-top:16px">
+    <div class="section-title"><span><span class="section-title-roman">II.</span>Monthly Shipment Quantities — All Products</span></div>
+    <p style="font-size:12px;color:var(--ink-soft);margin-bottom:12px;font-style:italic">Months as rows · Packing types (across all products) as columns. Columns auto-populate from Section I of each product block above.</p>
+    <div style="overflow-x:auto"><table class="data-table" id="sharedMonthlyTable"></table></div>
+  </div>
+
+  <div class="total-bar">
+    <div class="total-bar-title">⚙ All Existing Logistics Packing — Total</div>
+    <div class="total-grid" style="grid-template-columns:repeat(5,1fr)">
+      <div class="total-cell"><div class="total-label">Products</div><div class="total-value" id="ex-tot-products">0</div></div>
+      <div class="total-cell"><div class="total-label">Packing Items</div><div class="total-value" id="ex-tot-items">0</div></div>
+      <div class="total-cell"><div class="total-label">Annual Qty</div><div class="total-value" id="ex-tot-qty">0</div></div>
+      <div class="total-cell"><div class="total-label">Annual Cost</div><div class="total-value" id="ex-tot-cost">₹ 0.00</div></div>
+      <div class="total-cell"><div class="total-label">Auto-fetches to</div><div class="total-value amber">Logistics Pricing → Summary</div></div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ============ REQUIRED ============ -->
+<div id="required" class="panel hidden">
+
+  <div class="section">
+    <div class="section-title"><span><span class="section-title-roman">I.</span>Packing Interventions</span></div>
+    <p style="font-size:12px;color:var(--ink-soft);margin-bottom:12px;font-style:italic">Auto-populated from Existing tab when "Intervention needed?" is flagged on a packing type.</p>
+    <div id="pkgInterventionList">
+      <div class="empty-msg" style="text-align:center;color:var(--ink-faint);font-style:italic;padding:20px;background:#fff;border:1px dashed var(--border-dk);border-radius:8px">No packing interventions flagged yet — toggle the flag in the Existing tab to populate this section.</div>
+    </div>
+    <div class="add-row-bar">
+      <button class="btn" onclick="addPkgInterventionRow()">+ Add Packing Intervention</button>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title"><span><span class="section-title-roman">II.</span>New Logistics Packing</span></div>
+    <p style="font-size:12px;color:var(--ink-soft);margin-bottom:12px;font-style:italic">Standalone new packing items not linked to any existing product — add freely.</p>
+    <div id="newPackagingList"></div>
+    <div class="add-row-bar">
+      <button class="btn btn-primary" onclick="addNewPackaging()">+ Add New Packing</button>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title"><span><span class="section-title-roman">III.</span>Monthly Shipment Quantities — Required</span></div>
+    <p style="font-size:12px;color:var(--ink-soft);margin-bottom:12px;font-style:italic">Months as rows · Required packing types as columns. Columns auto-populate from Sections I and II above.</p>
+    <div style="overflow-x:auto"><table class="data-table" id="sharedMonthlyTableRequired"></table></div>
+  </div>
+
+  <div class="total-bar">
+    <div class="total-bar-title">⚙ Required Packing — Status Overview</div>
+    <div class="total-grid" style="grid-template-columns:repeat(5,1fr)">
+      <div class="total-cell"><div class="total-label">Total Interventions</div><div class="total-value" id="req-tot-int">0</div></div>
+      <div class="total-cell"><div class="total-label">New Packing Items</div><div class="total-value" id="req-tot-new">0</div></div>
+      <div class="total-cell"><div class="total-label">Pending</div><div class="total-value" id="req-tot-pending">0</div></div>
+      <div class="total-cell"><div class="total-label">In Progress</div><div class="total-value" id="req-tot-progress">0</div></div>
+      <div class="total-cell"><div class="total-label">Implemented</div><div class="total-value" id="req-tot-completed">0</div></div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ============ RESOURCES ============ -->
+<div id="resources" class="panel hidden">
+  <div class="section">
+    <div class="section-title">Reference Materials</div>
+    <table class="data-table" id="resourcesTable">
+      <thead>
+        <tr>
+          <th style="width:25%">Resource Title</th>
+          <th style="width:18%">Category</th>
+          <th style="width:12%">Type</th>
+          <th style="width:30%">Description / Notes</th>
+          <th style="width:10%">File</th>
+          <th style="width:5%"></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><input type="text" placeholder="Resource title"></td>
+          <td>
+            <select>
+              <option>— Select —</option>
+              <option>Transporter Contact</option>
+              <option>Packing Material Sample</option>
+              <option>Quotation</option>
+              <option>Route Map</option>
+              <option>Specification Sheet</option>
+              <option>Insurance Reference</option>
+            </select>
+          </td>
+          <td>
+            <select>
+              <option>— Select —</option>
+              <option>Contact</option>
+              <option>Reference</option>
+              <option>Quotation</option>
+              <option>Specification</option>
+              <option>Photo / Sample</option>
+            </select>
+          </td>
+          <td><input type="text" placeholder="Notes"></td>
+          <td>
+            <button class="btn" style="padding:3px 8px;font-size:10px">Upload</button>
+            <button class="btn" style="padding:3px 8px;font-size:10px">View ▷</button>
+          </td>
+          <td><button class="row-delete" onclick="deleteRow(this)">✕</button></td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="table-actions">
+      <span></span>
+      <button class="btn btn-primary" onclick="addRow('resourcesTable')">+ Add Resource</button>
+    </div>
+  </div>
+</div>
+
+<!-- ============ TASK LOG ============ -->
+<div id="tasklog" class="panel hidden">
+  <div class="section">
+    <div class="section-title">Task Log — Logistics Packing Activities</div>
+    <table class="data-table" id="taskLogTable">
+      <thead>
+        <tr>
+          <th style="width:5%">No.</th>
+          <th style="width:35%">Task Name</th>
+          <th style="width:12%">Phase</th>
+          <th style="width:12%">Status</th>
+          <th style="width:15%">Owner</th>
+          <th style="width:11%">Due Date</th>
+          <th style="width:10%">Notes</th>
+        </tr>
+      </thead>
+      <tbody id="taskLogBody"></tbody>
+    </table>
+  </div>
+</div>
+
+<!-- ============ LOG BOOK ============ -->
+<div id="logbook" class="panel hidden">
+  <div class="section">
+    <div class="section-title">Log Book</div>
+    <table class="data-table" id="logBookTable">
+      <thead>
+        <tr>
+          <th style="width:12%">Date</th>
+          <th style="width:14%">Product / Activity</th>
+          <th style="width:14%">Activity Type</th>
+          <th style="width:32%">Notes / Observations</th>
+          <th style="width:13%">Logged By</th>
+          <th style="width:10%">Evidence</th>
+          <th style="width:5%"></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><input type="date"></td>
+          <td><input type="text" placeholder="Product / transporter"></td>
+          <td>
+            <select>
+              <option>— Select —</option>
+              <option>Site Visit</option>
+              <option>Transporter Meeting</option>
+              <option>Sample Review</option>
+              <option>Trial Shipment</option>
+              <option>Procurement</option>
+              <option>Damage Inspection</option>
+              <option>Route Assessment</option>
+            </select>
+          </td>
+          <td><input type="text" placeholder="Notes"></td>
+          <td><input type="text" placeholder="Name"></td>
+          <td><button class="btn" style="padding:3px 8px;font-size:10px">Upload</button></td>
+          <td><button class="row-delete" onclick="deleteRow(this)">✕</button></td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="table-actions">
+      <span></span>
+      <button class="btn btn-primary" onclick="addRow('logBookTable')">+ Add Entry</button>
+    </div>
+  </div>
+</div>
+
+</div>
+</div>
+</div>
+
+<script>
+// ============ CONSTANTS ============
+const PKG_TYPES     = ['Corrugated Box','Wooden Crate','Jute Bag','HDPE Sack','Thermocol Box','Bubble Wrap Pack','Carton','Plastic Crate','Gunny Bag','Tin Container'];
+const PKG_MATERIALS = ['Corrugated Board','Wood','Jute','HDPE','Thermocol','Bubble Wrap','Cardboard','Plastic','Gunny','Tin'];
+const PKG_UNITS     = ['pcs','kg','L','dozen','bundle'];
+const TRANSPORT_MODES = ['Road','Rail','Air','Water','Cold Chain'];
+const MONTHS        = ['Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec','Jan','Feb','Mar'];
+
+// ============ STATE ============
+let productCounter      = 0;
+let pkgItemCounter      = 0;
+let interventionCounter = 0;
+let newPkgCounter       = 0;
+
+// ============ TAB SWITCHING ============
+function showTab(id, el){
+  document.querySelectorAll('.panel').forEach(p => p.classList.add('hidden'));
+  document.getElementById(id).classList.remove('hidden');
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  el.classList.add('active');
+  if(id === 'summary') refreshSummary();
+}
+
+// ============ EXISTING PRODUCT BLOCK ============
+function addExistingProduct(){
+  productCounter++;
+  const pid = `lp${productCounter}`;
+  const list = document.getElementById('existingProductList');
+  const block = document.createElement('div');
+  block.className = 'machine-block';
+  block.id = pid;
+  block.innerHTML = renderProductBlock(pid, productCounter);
+  list.appendChild(block);
+  addPkgItemRow(pid);
+  refreshSharedMonthlyTable();
+  refreshInterventionList(pid);
+  recalcExistingTotals();
+}
+
+function renderProductBlock(pid, idx){
+  return `
+  <div class="machine-block-head" onclick="toggleProduct('${pid}')">
+    <div class="mb-name">
+      <span class="chevron">▾</span>
+      <span style="opacity:0.85">Row ${idx} ·</span>
+      <input type="text" placeholder="Product Name" id="${pid}-productName"
+        style="background:rgba(255,255,255,0.15);border:1px solid rgba(255,255,255,0.3);color:#fff;padding:3px 8px;border-radius:4px;font-family:Georgia,serif;font-size:13px;width:200px"
+        oninput="refreshSharedMonthlyTable();refreshSummary()" onclick="event.stopPropagation()">
+      <input type="text" placeholder="SKU" id="${pid}-productSku"
+        style="background:rgba(255,255,255,0.15);border:1px solid rgba(255,255,255,0.3);color:#fff;padding:3px 8px;border-radius:4px;font-family:Georgia,serif;font-size:12px;width:120px"
+        oninput="refreshSummary()" onclick="event.stopPropagation()">
+    </div>
+    <button class="mb-remove" onclick="event.stopPropagation();removeProduct('${pid}')">Remove</button>
+  </div>
+  <div class="mb-body">
+    <div class="subsection">
+      <div class="subsection-title">
+        <span><span class="sst-roman">I.</span>Packing Details</span>
+        <button class="btn" onclick="addPkgItemRow('${pid}')" style="font-size:10px;padding:3px 10px">+ Add Row</button>
+      </div>
+      <div id="${pid}-pkgItems"></div>
+    </div>
+    <div class="intervention-block">
+      <div class="intervention-block-title">⚠ Section III — Intervention Need</div>
+      <div id="${pid}-interventionList"></div>
+    </div>
+  </div>`;
+}
+
+function toggleProduct(pid){
+  document.getElementById(pid).classList.toggle('collapsed');
+}
+
+function removeProduct(pid){
+  if(confirm('Remove this product?')){
+    document.querySelectorAll(`[data-bridge-product="${pid}"]`).forEach(el => el.remove());
+    document.getElementById(pid).remove();
+    refreshEmptyMessages();
+    refreshSharedMonthlyTable();
+    recalcExistingTotals();
+    refreshSummary();
+  }
+}
+
+// ============ SECTION I — PACKING ITEM ROWS ============
+function addPkgItemRow(pid){
+  pkgItemCounter++;
+  const iid = `${pid}-item${pkgItemCounter}`;
+  const container = document.getElementById(`${pid}-pkgItems`);
+  const div = document.createElement('div');
+  div.className = 'pkg-row';
+  div.id = iid;
+
+  const typeOpts  = PKG_TYPES.map(t => `<option>${t}</option>`).join('');
+  const matOpts   = PKG_MATERIALS.map(m => `<option>${m}</option>`).join('');
+  const unitOpts  = PKG_UNITS.map(u => `<option>${u}</option>`).join('');
+  const modeOpts  = TRANSPORT_MODES.map(m => `<option>${m}</option>`).join('');
+
+  div.innerHTML = `
+    <button class="pkg-delete" onclick="removePkgItem('${pid}','${iid}')">✕</button>
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:10px">
+      <div class="pkg-cell">
+        <div class="pkg-cell-label">Type of Packing *</div>
+        <select class="pkg-type-select" onchange="onPkgTypeChange('${pid}')">
+          <option value="">— Select —</option>${typeOpts}
+        </select>
+      </div>
+      <div class="pkg-cell">
+        <div class="pkg-cell-label">Material</div>
+        <select><option value="">— Select —</option>${matOpts}</select>
+      </div>
+      <div class="pkg-cell">
+        <div class="pkg-cell-label">Purchase Source</div>
+        <select>
+          <option value="">— Select —</option>
+          <option>Local Market</option>
+          <option>Online</option>
+          <option>Manufacturer Direct</option>
+          <option>Wholesaler</option>
+        </select>
+      </div>
+      <div class="pkg-cell">
+        <div class="pkg-cell-label">Dimensions (L × B × H)</div>
+        <div class="pkg-dim-trio">
+          <input type="number" class="dim-l" placeholder="L">
+          <span class="x">×</span>
+          <input type="number" class="dim-b" placeholder="B">
+          <span class="x">×</span>
+          <input type="number" class="dim-h" placeholder="H">
+          <select class="dim-unit"><option>cm</option><option>mm</option><option>m</option><option>in</option></select>
+        </div>
+      </div>
+      <div class="pkg-cell">
+        <div class="pkg-cell-label">Capacity / Volume</div>
+        <input type="number" placeholder="0" step="0.01">
+      </div>
+      <div class="pkg-cell">
+        <div class="pkg-cell-label">Unit</div>
+        <select><option value="">— Select —</option>${unitOpts}</select>
+      </div>
+      <div class="pkg-cell">
+        <div class="pkg-cell-label">Price / Unit (₹)</div>
+        <input type="number" class="pkg-price" placeholder="0.00" step="0.01" oninput="onPkgPriceChange('${pid}')">
+      </div>
+      <div class="pkg-cell">
+        <div class="pkg-cell-label">Transport Mode</div>
+        <select><option value="">— Select —</option>${modeOpts}</select>
+      </div>
+      <div class="pkg-cell">
+        <div class="pkg-cell-label">Max Load (kg)</div>
+        <input type="number" placeholder="0" step="0.1">
+      </div>
+      <div class="pkg-cell">
+        <div class="pkg-cell-label">Stacking Layers</div>
+        <input type="number" placeholder="0" min="1">
+      </div>
+      <div class="pkg-cell">
+        <div class="pkg-cell-label">Damage Observed</div>
+        <select class="pkg-damage" onchange="refreshSummary()">
+          <option value="">— Select —</option>
+          <option value="None">None</option>
+          <option value="Minor">Minor</option>
+          <option value="Moderate">Moderate</option>
+          <option value="Severe">Severe</option>
+        </select>
+      </div>
+      <div class="pkg-cell">
+        <div class="pkg-cell-label">Picture</div>
+        <button class="btn" style="padding:3px 8px;font-size:10px;width:100%">Upload</button>
+      </div>
+    </div>
+    <div style="padding-top:10px;border-top:1px dashed var(--border-dk)">
+      <div class="pkg-cell-label" style="margin-bottom:4px">Properties</div>
+      <div class="check-pill-group">
+        <span class="check-pill pkg-fragile" onclick="togglePill(this,'${pid}')">◈ Fragile Suitable</span>
+        <span class="check-pill pkg-reusable" onclick="togglePill(this,'${pid}')">↺ Reusable</span>
+        <span class="check-pill" onclick="this.classList.toggle('on')">💧 Waterproof</span>
+        <span class="check-pill" onclick="this.classList.toggle('on')">❄ Cold Chain</span>
+      </div>
+    </div>
+    <div style="margin-top:10px;padding-top:10px;border-top:1px dashed var(--border-dk)">
+      <div class="pkg-cell-label">Note / Observations</div>
+      <textarea style="width:100%;margin-top:4px;border:1px solid var(--border);padding:5px 6px;border-radius:3px;font-family:Georgia,serif;font-size:11px;background:var(--offwhite);resize:vertical;min-height:40px" placeholder="Any observations about this packing type..."></textarea>
+    </div>
+  `;
+  container.appendChild(div);
+  onPkgTypeChange(pid);
+}
+
+function togglePill(el, pid){
+  el.classList.toggle('on');
+  refreshSummary();
+}
+
+function removePkgItem(pid, iid){
+  const container = document.getElementById(`${pid}-pkgItems`);
+  if(container.children.length > 1){
+    document.getElementById(iid).remove();
+    onPkgTypeChange(pid);
+  } else {
+    alert('At least one packing item is required.');
+  }
+}
+
+function onPkgTypeChange(pid){
+  refreshSharedMonthlyTable();
+  refreshInterventionList(pid);
+  recalcExistingTotals();
+  refreshSummary();
+}
+
+function onPkgPriceChange(pid){
+  recalcSharedMonthlyTable();
+  recalcExistingTotals();
+  refreshSummary();
+}
+
+// ============ SECTION II — SHARED MONTHLY SHIPMENT TABLE ============
+function refreshSharedMonthlyTable(){
+  const allTypes = getAllProductTypes();
+  const table = document.getElementById('sharedMonthlyTable');
+  if(!table) return;
+  const saved = {};
+  table.querySelectorAll('input.qty-cell').forEach(inp => { saved[inp.dataset.key] = inp.value; });
+
+  let head = '<thead><tr><th style="width:90px">Month</th>';
+  if(!allTypes.length){
+    head += '<th style="color:#FFD580;font-style:italic;text-transform:none;letter-spacing:normal">Add a Packing Type in Section I (under any product) to populate columns</th>';
+  } else {
+    allTypes.forEach((t, idx) => {
+      head += `<th><div>${t.label}</div><div style="font-size:9px;opacity:0.7;font-weight:normal">${t.productLabel} · @ ₹${t.price.toFixed(2)} / unit</div></th>`;
+    });
+    head += '<th style="width:120px;background:var(--terracotta)">Month Total (₹)</th>';
+  }
+  head += '</tr></thead>';
+
+  let body = '<tbody>';
+  MONTHS.forEach(m => {
+    body += `<tr><td style="font-weight:bold;color:var(--teal)">${m}</td>`;
+    if(!allTypes.length){
+      body += '<td style="color:var(--ink-faint);font-style:italic">—</td>';
+    } else {
+      allTypes.forEach((t, idx) => {
+        const key = `${m}|${idx}`;
+        body += `<td><input type="number" class="qty-cell" data-key="${key}" data-month="${m}" data-typeidx="${idx}" data-pid="${t.pid}" placeholder="0" value="${saved[key]||''}" oninput="recalcSharedMonthlyTable()"></td>`;
+      });
+      body += `<td class="amount-col" id="shared-mtot-${m}">₹ 0.00</td>`;
+    }
+    body += '</tr>';
+  });
+  if(allTypes.length){
+    body += `<tr class="total-row"><td>Annual Total</td>`;
+    allTypes.forEach((t, idx) => { body += `<td class="amount-col" id="shared-typetot-${idx}">0 units</td>`; });
+    body += `<td class="amount-col" id="shared-grandtotal">₹ 0.00</td></tr>`;
+  }
+  body += '</tbody>';
+  table.innerHTML = head + body;
+  recalcSharedMonthlyTable();
+}
+
+function getAllProductTypes(){
+  const all = [];
+  document.querySelectorAll('#existingProductList .machine-block').forEach(b => {
+    const pid = b.id;
+    const productLabel = document.getElementById(`${pid}-productName`)?.value?.trim() || `Product (${pid})`;
+    b.querySelectorAll(`#${pid}-pkgItems .pkg-row`).forEach(item => {
+      const t = item.querySelector('.pkg-type-select')?.value;
+      const p = parseFloat(item.querySelector('.pkg-price')?.value) || 0;
+      if(t) all.push({ pid, productLabel, label:t, price:p, itemId:item.id });
+    });
+  });
+  return all;
+}
+
+function recalcSharedMonthlyTable(){
+  const allTypes = getAllProductTypes();
+  if(!allTypes.length) return;
+  const typeQty = new Array(allTypes.length).fill(0);
+  let grandCost = 0;
+  MONTHS.forEach(m => {
+    let monthCost = 0;
+    allTypes.forEach((t, idx) => {
+      const q = parseFloat(document.querySelector(`#sharedMonthlyTable input[data-key="${m}|${idx}"]`)?.value) || 0;
+      monthCost += q * t.price;
+      typeQty[idx] += q;
+    });
+    grandCost += monthCost;
+    const cell = document.getElementById(`shared-mtot-${m}`);
+    if(cell) cell.textContent = `₹ ${monthCost.toFixed(2)}`;
+  });
+  allTypes.forEach((t, idx) => {
+    const cell = document.getElementById(`shared-typetot-${idx}`);
+    if(cell) cell.textContent = `${typeQty[idx]} units`;
+  });
+  const grand = document.getElementById('shared-grandtotal');
+  if(grand) grand.textContent = `₹ ${grandCost.toFixed(2)}`;
+  recalcExistingTotals();
+  refreshSummary();
+}
+
+function getAnnualQtyForProductType(pid, typeLabel){
+  const allTypes = getAllProductTypes();
+  let total = 0;
+  allTypes.forEach((t, idx) => {
+    if(t.pid === pid && t.label === typeLabel){
+      MONTHS.forEach(m => {
+        total += parseFloat(document.querySelector(`#sharedMonthlyTable input[data-key="${m}|${idx}"]`)?.value) || 0;
+      });
+    }
+  });
+  return total;
+}
+
+// ============ REQUIRED-SIDE SHARED MONTHLY TABLE ============
+function getAllRequiredTypes(){
+  const all = [];
+  document.querySelectorAll('#pkgInterventionList .opt-row').forEach(r => {
+    const iid = r.id;
+    const productLabel = r.querySelector('.bridge-product')?.textContent?.trim() || `Intervention (${iid})`;
+    const pkgRow = r.querySelector('.pkg-row');
+    if(!pkgRow) return;
+    const t = pkgRow.querySelector('.pkg-type-select')?.value;
+    const p = parseFloat(pkgRow.querySelector('.pkg-price')?.value) || 0;
+    if(t) all.push({ iid, productLabel, label:t, price:p });
+  });
+  document.querySelectorAll('#newPackagingList .opt-row').forEach(r => {
+    const iid = r.id;
+    const productLabel = r.querySelector('.new-pkg-product')?.value?.trim() || `New Packing (${iid})`;
+    const t = r.querySelector('.new-pkg-type')?.value;
+    const p = parseFloat(r.querySelector('.new-pkg-price')?.value) || 0;
+    if(t) all.push({ iid, productLabel, label:t, price:p });
+  });
+  return all;
+}
+
+function refreshSharedMonthlyTableRequired(){
+  const allTypes = getAllRequiredTypes();
+  const table = document.getElementById('sharedMonthlyTableRequired');
+  if(!table) return;
+  const saved = {};
+  table.querySelectorAll('input.req-qty-cell').forEach(inp => { saved[inp.dataset.key] = inp.value; });
+
+  let head = '<thead><tr><th style="width:90px">Month</th>';
+  if(!allTypes.length){
+    head += '<th style="color:#FFD580;font-style:italic;text-transform:none;letter-spacing:normal">Set a Packing Type in any Required row above to populate columns</th>';
+  } else {
+    allTypes.forEach((t, idx) => {
+      head += `<th><div>${t.label}</div><div style="font-size:9px;opacity:0.7;font-weight:normal">${t.productLabel} · @ ₹${t.price.toFixed(2)} / unit</div></th>`;
+    });
+    head += '<th style="width:120px;background:var(--terracotta)">Month Total (₹)</th>';
+  }
+  head += '</tr></thead>';
+
+  let body = '<tbody>';
+  MONTHS.forEach(m => {
+    body += `<tr><td style="font-weight:bold;color:var(--teal)">${m}</td>`;
+    if(!allTypes.length){
+      body += '<td style="color:var(--ink-faint);font-style:italic">—</td>';
+    } else {
+      allTypes.forEach((t, idx) => {
+        const key = `${m}|${idx}`;
+        body += `<td><input type="number" class="req-qty-cell" data-key="${key}" data-month="${m}" data-typeidx="${idx}" data-iid="${t.iid}" placeholder="0" value="${saved[key]||''}" oninput="recalcSharedMonthlyTableRequired()"></td>`;
+      });
+      body += `<td class="amount-col" id="req-mtot-${m}">₹ 0.00</td>`;
+    }
+    body += '</tr>';
+  });
+  if(allTypes.length){
+    body += `<tr class="total-row"><td>Annual Total</td>`;
+    allTypes.forEach((t, idx) => { body += `<td class="amount-col" id="req-typetot-${idx}">0 units</td>`; });
+    body += `<td class="amount-col" id="req-grandtotal">₹ 0.00</td></tr>`;
+  }
+  body += '</tbody>';
+  table.innerHTML = head + body;
+  recalcSharedMonthlyTableRequired();
+}
+
+function recalcSharedMonthlyTableRequired(){
+  const allTypes = getAllRequiredTypes();
+  if(!allTypes.length) return;
+  const typeQty = new Array(allTypes.length).fill(0);
+  let grandCost = 0;
+  MONTHS.forEach(m => {
+    let monthCost = 0;
+    allTypes.forEach((t, idx) => {
+      const q = parseFloat(document.querySelector(`#sharedMonthlyTableRequired input[data-key="${m}|${idx}"]`)?.value) || 0;
+      monthCost += q * t.price;
+      typeQty[idx] += q;
+    });
+    grandCost += monthCost;
+    const cell = document.getElementById(`req-mtot-${m}`);
+    if(cell) cell.textContent = `₹ ${monthCost.toFixed(2)}`;
+  });
+  allTypes.forEach((t, idx) => {
+    const cell = document.getElementById(`req-typetot-${idx}`);
+    if(cell) cell.textContent = `${typeQty[idx]} units`;
+  });
+  const grand = document.getElementById('req-grandtotal');
+  if(grand) grand.textContent = `₹ ${grandCost.toFixed(2)}`;
+}
+
+// ============ SECTION III — INTERVENTION LIST (per product) ============
+function refreshInterventionList(pid){
+  const productTypes = getProductTypes(pid);
+  const list = document.getElementById(`${pid}-interventionList`);
+  if(!list) return;
+
+  const saved = {};
+  list.querySelectorAll('.int-group').forEach(group => {
+    const lbl = group.dataset.typeLabel;
+    if(lbl){
+      saved[lbl] = {
+        pkgOn:    group.querySelector('.pkg-toggle')?.classList.contains('on') || false,
+        pkgJustify: group.querySelector('.pkg-justify-input')?.value || ''
+      };
+    }
+  });
+
+  if(!productTypes.length){
+    list.innerHTML = '<div style="text-align:center;color:var(--ink-faint);font-style:italic;padding:14px;background:var(--cream-deep);border-radius:6px">Add a Packing Type in Section I to populate this list.</div>';
+    return;
+  }
+
+  const seen = new Set();
+  let html = '';
+  productTypes.forEach(t => {
+    if(seen.has(t.label)) return;
+    seen.add(t.label);
+    const prev = saved[t.label] || { pkgOn:false, pkgJustify:'' };
+    html += `
+    <div class="int-group" data-type-label="${t.label}" style="background:var(--terracotta-sft);border:1px solid var(--terracotta);border-radius:6px;padding:8px;margin-bottom:10px">
+      <div style="font-size:12px;font-weight:bold;color:var(--teal);padding:2px 4px 6px;border-bottom:1px solid var(--border-dk);margin-bottom:8px">${t.label}</div>
+      <div class="int-item">
+        <div class="int-item-row">
+          <div class="int-item-label" style="font-weight:bold;min-width:230px">Logistics Packing Intervention Needed?</div>
+          <span class="toggle pkg-toggle ${prev.pkgOn?'on':''}" onclick="toggleInterventionFlag(this,'${pid}','${t.label}')"></span>
+        </div>
+        <div class="int-item-row">
+          <div class="int-item-label">Justification</div>
+          <input type="text" class="int-item-input pkg-justify-input" placeholder="Reason for packing intervention..." value="${prev.pkgJustify.replace(/"/g,'&quot;')}" oninput="syncBridgeJustify('${pid}','${t.label}',this.value)">
+        </div>
+      </div>
+    </div>`;
+  });
+  list.innerHTML = html;
+
+  productTypes.forEach(t => {
+    if(saved[t.label]?.pkgOn){
+      const bridgeKey = `${pid}|${t.label}`;
+      if(!document.querySelector(`[data-bridge-key="${bridgeKey}"]`)) bridgeToRequired(pid, t.label);
+    }
+  });
+}
+
+function getProductTypes(pid){
+  const types = [];
+  document.querySelectorAll(`#${pid}-pkgItems .pkg-row`).forEach(item => {
+    const t = item.querySelector('.pkg-type-select')?.value;
+    const p = parseFloat(item.querySelector('.pkg-price')?.value) || 0;
+    if(t) types.push({ label:t, price:p, itemId:item.id });
+  });
+  return types;
+}
+
+function toggleInterventionFlag(el, pid, typeLabel){
+  el.classList.toggle('on');
+  if(el.classList.contains('on')) bridgeToRequired(pid, typeLabel);
+  else removeBridge(pid, typeLabel);
+  refreshSummary();
+}
+
+function syncBridgeJustify(pid, typeLabel, val){
+  const bridgeKey = `${pid}|${typeLabel}`;
+  const target = document.querySelector(`[data-bridge-key="${bridgeKey}"] .bridge-justify`);
+  if(target && target.value !== val) target.value = val;
+}
+
+// ============ REQUIRED BRIDGE ============
+function bridgeToRequired(pid, typeLabel){
+  const bridgeKey = `${pid}|${typeLabel}`;
+  if(document.querySelector(`[data-bridge-key="${bridgeKey}"]`)) return;
+  addPkgInterventionRow(pid, typeLabel);
+}
+
+function removeBridge(pid, typeLabel){
+  const bridgeKey = `${pid}|${typeLabel}`;
+  const row = document.querySelector(`[data-bridge-key="${bridgeKey}"]`);
+  if(row) row.remove();
+  refreshEmptyMessages();
+  recalcRequiredTotals();
+  refreshSharedMonthlyTableRequired();
+}
+
+function addPkgInterventionRow(pid, typeLabel){
+  const list = document.getElementById('pkgInterventionList');
+  const empty = list.querySelector('.empty-msg');
+  if(empty) empty.remove();
+
+  interventionCounter++;
+  const iid = `pkgint${interventionCounter}`;
+  const div = document.createElement('div');
+  div.className = 'opt-row';
+  div.id = iid;
+
+  let product='—', sku='—', currentMaterial='—', currentPrice='—', annualQty=0, justify='';
+
+  if(pid && typeLabel){
+    div.setAttribute('data-bridge-product', pid);
+    div.setAttribute('data-bridge-type', typeLabel);
+    div.setAttribute('data-bridge-key', `${pid}|${typeLabel}`);
+    product = document.getElementById(`${pid}-productName`)?.value || '—';
+    sku     = document.getElementById(`${pid}-productSku`)?.value || '—';
+    document.querySelectorAll(`#${pid}-pkgItems .pkg-row`).forEach(item => {
+      if(item.querySelector('.pkg-type-select')?.value === typeLabel){
+        const matSel = item.querySelectorAll('select')[1];
+        currentMaterial = matSel?.value || '—';
+        const pv = parseFloat(item.querySelector('.pkg-price')?.value) || 0;
+        currentPrice = pv > 0 ? `₹${pv.toFixed(2)}` : '—';
+      }
+    });
+    annualQty = getAnnualQtyForProductType(pid, typeLabel);
+    const intGroup = document.querySelector(`#${pid}-interventionList .int-group[data-type-label="${typeLabel}"]`);
+    justify = intGroup?.querySelector('.pkg-justify-input')?.value || '';
+  }
+
+  const typeOpts = PKG_TYPES.map(t => `<option ${t===typeLabel?'selected':''}>${t}</option>`).join('');
+  const matOpts  = PKG_MATERIALS.map(m => `<option>${m}</option>`).join('');
+  const unitOpts = PKG_UNITS.map(u => `<option>${u}</option>`).join('');
+  const modeOpts = TRANSPORT_MODES.map(m => `<option>${m}</option>`).join('');
+
+  div.innerHTML = `
+    <div class="opt-row-head" style="grid-template-columns:1fr 1fr 1fr 1fr 1fr auto">
+      <div>
+        <div class="opt-readonly-label">Product</div>
+        <div class="opt-readonly-val bridge-product">${product}</div>
+      </div>
+      <div>
+        <div class="opt-readonly-label">SKU</div>
+        <div class="opt-readonly-val">${sku}</div>
+      </div>
+      <div>
+        <div class="opt-readonly-label">Existing Type (Replacing)</div>
+        <div class="opt-readonly-val bridge-type">${typeLabel||'—'}</div>
+      </div>
+      <div>
+        <div class="opt-readonly-label">Existing Material / Price</div>
+        <div class="opt-readonly-val">${currentMaterial} · ${currentPrice}</div>
+      </div>
+      <div>
+        <div class="opt-readonly-label">Annual Qty (Existing)</div>
+        <div class="opt-readonly-val">${annualQty} units</div>
+      </div>
+      <span class="int-type int-log">↻ Replacement</span>
+    </div>
+    <div style="padding:14px">
+      <div style="margin-bottom:14px">
+        <div class="opt-readonly-label">Justification (synced with Existing)</div>
+        <textarea class="field-val bridge-justify" placeholder="Reason for packing intervention..." style="width:100%;min-height:36px">${justify}</textarea>
+      </div>
+      <div class="subsection" style="margin-bottom:10px">
+        <div class="subsection-title"><span><span class="sst-roman">I.</span>Recommended Replacement Specification</span></div>
+        <div class="pkg-row" id="${iid}-pkgRow" style="background:var(--cream)">
+          <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:10px">
+            <div class="pkg-cell">
+              <div class="pkg-cell-label">Type of Packing *</div>
+              <select class="pkg-type-select" onchange="refreshSharedMonthlyTableRequired()">
+                <option value="">— Select —</option>${typeOpts}
+              </select>
+            </div>
+            <div class="pkg-cell">
+              <div class="pkg-cell-label">Material</div>
+              <select><option value="">— Select —</option>${matOpts}</select>
+            </div>
+            <div class="pkg-cell">
+              <div class="pkg-cell-label">Purchase Source</div>
+              <select>
+                <option value="">— Select —</option>
+                <option>Local Market</option><option>Online</option>
+                <option>Manufacturer Direct</option><option>Wholesaler</option>
+              </select>
+            </div>
+            <div class="pkg-cell">
+              <div class="pkg-cell-label">Capacity / Volume</div>
+              <input type="number" placeholder="0" step="0.01">
+            </div>
+            <div class="pkg-cell">
+              <div class="pkg-cell-label">Unit</div>
+              <select><option value="">— Select —</option>${unitOpts}</select>
+            </div>
+            <div class="pkg-cell">
+              <div class="pkg-cell-label">Price / Unit (₹)</div>
+              <input type="number" class="pkg-price" placeholder="0.00" step="0.01" oninput="recalcSharedMonthlyTableRequired()">
+            </div>
+            <div class="pkg-cell">
+              <div class="pkg-cell-label">Transport Mode</div>
+              <select><option value="">— Select —</option>${modeOpts}</select>
+            </div>
+            <div class="pkg-cell">
+              <div class="pkg-cell-label">Max Load (kg)</div>
+              <input type="number" placeholder="0" step="0.1">
+            </div>
+            <div class="pkg-cell">
+              <div class="pkg-cell-label">Picture</div>
+              <button class="btn" style="padding:3px 8px;font-size:10px;width:100%">Upload</button>
+            </div>
+          </div>
+          <div style="padding-top:8px;border-top:1px dashed var(--border-dk)">
+            <div class="pkg-cell-label" style="margin-bottom:4px">Properties</div>
+            <div class="check-pill-group">
+              <span class="check-pill" onclick="this.classList.toggle('on')">◈ Fragile Suitable</span>
+              <span class="check-pill" onclick="this.classList.toggle('on')">↺ Reusable</span>
+              <span class="check-pill" onclick="this.classList.toggle('on')">💧 Waterproof</span>
+              <span class="check-pill" onclick="this.classList.toggle('on')">❄ Cold Chain</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div style="margin-top:12px;background:var(--terracotta-sft);border:1px solid var(--terracotta);border-radius:8px;padding:12px">
+        <div style="font-size:11px;text-transform:uppercase;letter-spacing:1px;color:var(--terracotta-dk);font-weight:bold;margin-bottom:10px">Implementation Status</div>
+        <div class="field-row" style="margin-bottom:8px">
+          <div class="field-label">Implementation Status</div>
+          <select class="field-val int-status-select" onchange="recalcRequiredTotals();refreshSummary()">
+            <option>Pending</option>
+            <option>In Progress</option>
+            <option>Implemented</option>
+            <option>Replace Existing</option>
+            <option>Not Feasible</option>
+          </select>
+        </div>
+        <div class="field-row" style="margin-bottom:0">
+          <div class="field-label">Implementation Notes</div>
+          <textarea class="field-val" placeholder="Notes on implementation..." style="min-height:40px"></textarea>
+        </div>
+      </div>
+    </div>
+    <div style="padding:0 14px 14px;text-align:right">
+      <button class="btn" onclick="removePkgIntervention('${iid}')" style="color:var(--terracotta)">Remove</button>
+    </div>`;
+  list.appendChild(div);
+  recalcRequiredTotals();
+  refreshSharedMonthlyTableRequired();
+}
+
+function removePkgIntervention(iid){
+  if(confirm('Remove this row?')){
+    const row = document.getElementById(iid);
+    const pid       = row.getAttribute('data-bridge-product');
+    const typeLabel = row.getAttribute('data-bridge-type');
+    row.remove();
+    if(pid && typeLabel){
+      const intGroup = document.querySelector(`#${pid}-interventionList .int-group[data-type-label="${typeLabel}"]`);
+      const toggle = intGroup?.querySelector('.pkg-toggle');
+      if(toggle?.classList.contains('on')) toggle.classList.remove('on');
+    }
+    refreshEmptyMessages();
+    recalcRequiredTotals();
+    refreshSharedMonthlyTableRequired();
+    refreshSummary();
+  }
+}
+
+// ============ REQUIRED — SECTION II (New Logistics Packing) ============
+function addNewPackaging(){
+  newPkgCounter++;
+  const nid = `newpkg${newPkgCounter}`;
+  const list = document.getElementById('newPackagingList');
+  const div = document.createElement('div');
+  div.className = 'opt-row';
+  div.id = nid;
+
+  const typeOpts = PKG_TYPES.map(t => `<option>${t}</option>`).join('');
+  const matOpts  = PKG_MATERIALS.map(m => `<option>${m}</option>`).join('');
+  const unitOpts = PKG_UNITS.map(u => `<option>${u}</option>`).join('');
+  const modeOpts = TRANSPORT_MODES.map(m => `<option>${m}</option>`).join('');
+
+  div.innerHTML = `
+    <div class="opt-row-head" style="grid-template-columns:2fr 1fr auto">
+      <div>
+        <div class="opt-readonly-label">Product / Purpose</div>
+        <input type="text" class="new-pkg-product opt-readonly-val" placeholder="Product name or purpose"
+          style="background:transparent;border:none;border-bottom:1px solid var(--border-dk);width:100%;font-family:Georgia,serif;font-size:12px;font-weight:bold;color:var(--teal);padding:2px 0;outline:none"
+          oninput="refreshSharedMonthlyTableRequired()">
+      </div>
+      <div>
+        <div class="opt-readonly-label">SKU / Reference</div>
+        <input type="text" class="opt-readonly-val" placeholder="SKU or ref"
+          style="background:transparent;border:none;border-bottom:1px solid var(--border-dk);width:100%;font-family:Georgia,serif;font-size:12px;font-weight:bold;color:var(--teal);padding:2px 0;outline:none">
+      </div>
+      <span class="int-type int-new">+ New Packing</span>
+    </div>
+    <div class="new-pkg-body" style="padding:14px;background:var(--offwhite)">
+      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:10px;background:#fff;border:1px solid var(--border-dk);border-radius:8px;padding:10px;margin-bottom:10px">
+        <div class="pkg-cell">
+          <div class="pkg-cell-label">Type of Packing *</div>
+          <select class="new-pkg-type" onchange="refreshSharedMonthlyTableRequired()">
+            <option value="">— Select —</option>${typeOpts}
+          </select>
+        </div>
+        <div class="pkg-cell">
+          <div class="pkg-cell-label">Material</div>
+          <select><option value="">— Select —</option>${matOpts}</select>
+        </div>
+        <div class="pkg-cell">
+          <div class="pkg-cell-label">Purchase Source</div>
+          <select>
+            <option value="">— Select —</option>
+            <option>Local Market</option><option>Online</option>
+            <option>Manufacturer Direct</option><option>Wholesaler</option>
+          </select>
+        </div>
+        <div class="pkg-cell">
+          <div class="pkg-cell-label">Capacity / Volume</div>
+          <input type="number" placeholder="0" step="0.01">
+        </div>
+        <div class="pkg-cell">
+          <div class="pkg-cell-label">Unit</div>
+          <select><option value="">— Select —</option>${unitOpts}</select>
+        </div>
+        <div class="pkg-cell">
+          <div class="pkg-cell-label">Price / Unit (₹)</div>
+          <input type="number" class="new-pkg-price" placeholder="0.00" step="0.01" oninput="refreshSharedMonthlyTableRequired()">
+        </div>
+        <div class="pkg-cell">
+          <div class="pkg-cell-label">Transport Mode</div>
+          <select><option value="">— Select —</option>${modeOpts}</select>
+        </div>
+        <div class="pkg-cell">
+          <div class="pkg-cell-label">Max Load (kg)</div>
+          <input type="number" placeholder="0" step="0.1">
+        </div>
+        <div class="pkg-cell">
+          <div class="pkg-cell-label">Picture</div>
+          <button class="btn" style="padding:3px 8px;font-size:10px;width:100%">Upload</button>
+        </div>
+      </div>
+      <div style="padding:10px;background:#fff;border:1px solid var(--border-dk);border-radius:8px;margin-bottom:10px">
+        <div class="pkg-cell-label" style="margin-bottom:6px">Properties</div>
+        <div class="check-pill-group">
+          <span class="check-pill" onclick="this.classList.toggle('on')">◈ Fragile Suitable</span>
+          <span class="check-pill" onclick="this.classList.toggle('on')">↺ Reusable</span>
+          <span class="check-pill" onclick="this.classList.toggle('on')">💧 Waterproof</span>
+          <span class="check-pill" onclick="this.classList.toggle('on')">❄ Cold Chain</span>
+        </div>
+      </div>
+      <div style="background:var(--terracotta-sft);border:1px solid var(--terracotta);border-radius:8px;padding:12px">
+        <div style="font-size:11px;text-transform:uppercase;letter-spacing:1px;color:var(--terracotta-dk);font-weight:bold;margin-bottom:10px">Implementation Status</div>
+        <div class="field-row" style="margin-bottom:8px">
+          <div class="field-label">Implementation Status</div>
+          <select class="field-val new-pkg-status-select" onchange="recalcRequiredTotals();refreshSummary()">
+            <option>Pending</option>
+            <option>In Progress</option>
+            <option>Implemented</option>
+            <option>On Hold</option>
+          </select>
+        </div>
+        <div class="field-row" style="margin-bottom:0">
+          <div class="field-label">Implementation Notes</div>
+          <textarea class="field-val" placeholder="Notes on implementation..." style="min-height:40px"></textarea>
+        </div>
+      </div>
+    </div>
+    <div style="padding:10px 14px 14px;text-align:right;background:var(--offwhite)">
+      <button class="btn" onclick="removeNewPackaging('${nid}')" style="color:var(--terracotta)">Remove</button>
+    </div>`;
+  list.appendChild(div);
+  recalcRequiredTotals();
+  refreshSharedMonthlyTableRequired();
+}
+
+function removeNewPackaging(nid){
+  if(confirm('Remove this new packing item?')){
+    document.getElementById(nid).remove();
+    recalcRequiredTotals();
+    refreshSharedMonthlyTableRequired();
+    refreshSummary();
+  }
+}
+
+function refreshEmptyMessages(){
+  const list = document.getElementById('pkgInterventionList');
+  if(list && list.children.length === 0){
+    list.innerHTML = '<div class="empty-msg" style="text-align:center;color:var(--ink-faint);font-style:italic;padding:20px;background:#fff;border:1px dashed var(--border-dk);border-radius:8px">No packing interventions flagged yet — toggle the flag in the Existing tab to populate this section.</div>';
+  }
+}
+
+function recalcRequiredTotals(){
+  const rows = document.querySelectorAll('#pkgInterventionList .opt-row');
+  let count=rows.length, completed=0, pending=0, progress=0;
+  rows.forEach(r => {
+    const s = r.querySelector('.int-status-select');
+    if(!s) return;
+    if(s.value==='Implemented') completed++;
+    else if(s.value==='In Progress') progress++;
+    else if(s.value==='Pending') pending++;
+  });
+  const newRows = document.querySelectorAll('#newPackagingList .opt-row');
+  let newCount = newRows.length;
+  newRows.forEach(r => {
+    const s = r.querySelector('.new-pkg-status-select');
+    if(!s) return;
+    if(s.value==='Implemented') completed++;
+    else if(s.value==='In Progress') progress++;
+    else if(s.value==='Pending') pending++;
+  });
+  if(document.getElementById('req-tot-int'))       document.getElementById('req-tot-int').textContent       = count;
+  if(document.getElementById('req-tot-new'))       document.getElementById('req-tot-new').textContent       = newCount;
+  if(document.getElementById('req-tot-completed')) document.getElementById('req-tot-completed').textContent = completed;
+  if(document.getElementById('req-tot-progress'))  document.getElementById('req-tot-progress').textContent  = progress;
+  if(document.getElementById('req-tot-pending'))   document.getElementById('req-tot-pending').textContent   = pending;
+}
+
+// ============ AGGREGATES & SUMMARY ============
+function recalcExistingTotals(){
+  const blocks = document.querySelectorAll('#existingProductList .machine-block');
+  let products=blocks.length, items=0, qty=0;
+  blocks.forEach(b => { items += b.querySelectorAll('.pkg-row').length; });
+  document.querySelectorAll('#sharedMonthlyTable input.qty-cell').forEach(i => { qty += parseFloat(i.value)||0; });
+  const grand = document.getElementById('shared-grandtotal')?.textContent || '';
+  const cost = parseFloat(grand.replace(/[^\d.]/g,'')) || 0;
+  document.getElementById('ex-tot-products').textContent = products;
+  document.getElementById('ex-tot-items').textContent    = items;
+  document.getElementById('ex-tot-qty').textContent      = qty.toLocaleString();
+  document.getElementById('ex-tot-cost').textContent     = `₹ ${cost.toFixed(2)}`;
+}
+
+function refreshSummary(){
+  const blocks = document.querySelectorAll('#existingProductList .machine-block');
+  let products=blocks.length, items=0, qtyAll=0, costAll=0;
+  let flagInt=0, fragileCount=0, reusableCount=0, damageCount=0;
+  let implDone=0, implProgress=0, implPending=0, implNotFeasible=0;
+  let allOldPrices=[], compOldPrices=[], compNewPrices=[];
+
+  // Build lookup: bridgeKey → intervention row from Required tab
+  const reqLookup = {};
+  document.querySelectorAll('#pkgInterventionList .opt-row').forEach(row => {
+    const pid       = row.getAttribute('data-bridge-product');
+    const typeLabel = row.getAttribute('data-bridge-type');
+    if(!pid || !typeLabel) return;
+    const key      = `${pid}|${typeLabel}`;
+    const newPkg   = row.querySelector(`#${row.id}-pkgRow`);
+    const newPrice = parseFloat(newPkg?.querySelector('.pkg-price')?.value) || 0;
+    const newMat   = newPkg?.querySelectorAll('select')[1]?.value || '—';
+    const status   = row.querySelector('.int-status-select')?.value || 'Pending';
+    reqLookup[key] = { newPrice, newMat, status, type:'replacement' };
+  });
+  document.querySelectorAll('#newPackagingList .opt-row').forEach(row => {
+    const product  = row.querySelector('.new-pkg-product')?.value || '—';
+    const typeLabel= row.querySelector('.new-pkg-type')?.value || '—';
+    const newPrice = parseFloat(row.querySelector('.new-pkg-price')?.value) || 0;
+    const newMat   = row.querySelectorAll('select')[1]?.value || '—';
+    const status   = row.querySelector('.new-pkg-status-select')?.value || 'Pending';
+    // Store as standalone new packing
+    row._summaryData = { product, typeLabel, newPrice, newMat, status, type:'new' };
+  });
+
+  // ── ① TABLE ──────────────────────────────────────────────────
+  const tbody = document.getElementById('summaryProductTable');
+  let html = '';
+
+  blocks.forEach(b => {
+    const pid          = b.id;
+    const product      = document.getElementById(`${pid}-productName`)?.value || '—';
+    const productTypes = getProductTypes(pid);
+    items += b.querySelectorAll('.pkg-row').length;
+
+    b.querySelectorAll('.pkg-row').forEach(item => {
+      const typeLabel = item.querySelector('.pkg-type-select')?.value;
+      if(!typeLabel) return;
+
+      const matSel    = item.querySelectorAll('select')[1];
+      const material  = matSel?.value || '—';
+      const price     = parseFloat(item.querySelector('.pkg-price')?.value) || 0;
+      const damage    = item.querySelector('.pkg-damage')?.value || '';
+      const isFragile = item.querySelector('.pkg-fragile')?.classList.contains('on');
+      const isReusable= item.querySelector('.pkg-reusable')?.classList.contains('on');
+      const qty       = getAnnualQtyForProductType(pid, typeLabel);
+      const lineCost  = qty * price;
+
+      qtyAll  += qty;
+      costAll += lineCost;
+      if(isFragile)  fragileCount++;
+      if(isReusable) reusableCount++;
+      if(damage && damage !== 'None' && damage !== '') damageCount++;
+      if(price > 0) allOldPrices.push(price);
+
+      const damageCls  = damage==='Severe'?'condition-poor':damage==='Moderate'?'condition-fair':damage==='Minor'?'condition-fair':'';
+      const damageCell = damage && damage!=='None' && damage!==''
+        ? `<span class="condition-badge ${damageCls}">${damage}</span>`
+        : '<span style="color:var(--ink-faint)">—</span>';
+
+      const props = [];
+      if(isFragile)  props.push('<span class="condition-badge condition-fair">◈ Fragile</span>');
+      if(isReusable) props.push('<span class="condition-badge condition-good">↺ Reusable</span>');
+      const propsCell = props.length > 0 ? props.join(' ') : '—';
+
+      const key = `${pid}|${typeLabel}`;
+      const req = reqLookup[key];
+      const flagged = b.querySelector(`#${pid}-interventionList .int-group[data-type-label="${typeLabel}"] .pkg-toggle`)?.classList.contains('on');
+      if(flagged) flagInt++;
+
+      // Intervention Type cell
+      let intTypeCell = '<span style="color:var(--ink-faint)">—</span>';
+      let intStatusCell = '<span style="color:var(--ink-faint)">—</span>';
+      if(req){
+        const sCls = req.status==='Implemented'?'status-completed':req.status==='In Progress'?'status-progress':'status-pending';
+        intTypeCell   = `<span class="status-badge status-progress">↻ Replacement</span>`;
+        intStatusCell = `<span class="status-badge ${sCls}">${req.status}</span>`;
+        if(req.status==='Implemented')      implDone++;
+        else if(req.status==='In Progress') implProgress++;
+        else if(req.status==='Not Feasible') implNotFeasible++;
+        else implPending++;
+      }
+
+      // New Price / Unit
+      let newPriceCell = '<span style="color:var(--ink-faint)">—</span>';
+      if(req && req.newPrice > 0)
+        newPriceCell = `<strong style="color:var(--terracotta-dk)">₹${req.newPrice.toFixed(2)}</strong>`;
+      else if(req)
+        newPriceCell = '<span style="font-size:10px;color:var(--ink-faint);font-style:italic">Pending</span>';
+
+      // Saving
+      let savingCell = '<span style="color:var(--ink-faint)">—</span>';
+      if(req && req.newPrice > 0 && price > 0){
+        const diff = price - req.newPrice;
+        const sign = diff>0?'▼':diff<0?'▲':'=';
+        const cls  = diff>0?'condition-good':diff<0?'condition-poor':'';
+        const txt  = diff>0?'Saving':diff<0?'Higher':'No change';
+        savingCell = `<span class="condition-badge ${cls}">${sign} ₹${Math.abs(diff).toFixed(2)} ${txt}</span>`;
+        if(req.status==='Implemented'){ compOldPrices.push(price); compNewPrices.push(req.newPrice); }
+      }
+
+      html += `<tr>
+        <td style="font-size:11px">${product}</td>
+        <td><strong>${typeLabel}</strong></td>
+        <td style="font-size:11px">${material}</td>
+        <td>${damageCell}</td>
+        <td>${propsCell}</td>
+        <td style="font-weight:bold;color:var(--teal)">${price > 0 ? `₹${price.toFixed(2)}` : '—'}</td>
+        <td>${intTypeCell}</td>
+        <td>${intStatusCell}</td>
+        <td style="background:#FDF3EE">${newPriceCell}</td>
+        <td style="background:#EDF6EA">${savingCell}</td>
+      </tr>`;
+    });
+  });
+
+  // New packing rows
+  const newPkgRows = document.querySelectorAll('#newPackagingList .opt-row');
+  const newPkgCount = newPkgRows.length;
+  newPkgRows.forEach(row => {
+    const product   = row.querySelector('.new-pkg-product')?.value || '—';
+    const typeLabel = row.querySelector('.new-pkg-type')?.value || '—';
+    const newMat    = row.querySelectorAll('select')[1]?.value || '—';
+    const newPrice  = parseFloat(row.querySelector('.new-pkg-price')?.value) || 0;
+    const status    = row.querySelector('.new-pkg-status-select')?.value || 'Pending';
+    const sCls      = status==='Implemented'?'status-completed':status==='In Progress'?'status-progress':'status-pending';
+    if(status==='Implemented')     implDone++;
+    else if(status==='In Progress') implProgress++;
+    else if(status==='Not Feasible') implNotFeasible++;
+    else implPending++;
+    html += `<tr style="background:var(--highlight)">
+      <td style="font-size:11px">${product}</td>
+      <td><strong>${typeLabel||'—'}</strong></td>
+      <td style="font-size:11px">${newMat||'—'}</td>
+      <td style="color:var(--ink-faint)">—</td>
+      <td style="color:var(--ink-faint)">—</td>
+      <td style="color:var(--ink-faint)">${newPrice > 0 ? `₹${newPrice.toFixed(2)}` : '—'}</td>
+      <td><span class="status-badge status-completed">+ New Packing</span></td>
+      <td><span class="status-badge ${sCls}">${status}</span></td>
+      <td style="background:#FDF3EE;color:var(--ink-faint)">—</td>
+      <td style="background:#EDF6EA;color:var(--ink-faint)">—</td>
+    </tr>`;
+  });
+
+  tbody.innerHTML = (html === '')
+    ? '<tr><td colspan="9" style="text-align:center;color:var(--ink-faint);font-style:italic;padding:14px">Auto-populated from Existing and Required tabs</td></tr>'
+    : html + `<tr class="total-row"><td colspan="10" style="font-size:10px;font-style:italic;color:var(--ink-faint)">Annual cost auto-fetches to Logistics Pricing → Summary</td></tr>`;
+
+  // ── ② AGGREGATES ─────────────────────────────────────────────
+  const intRows  = document.querySelectorAll('#pkgInterventionList .opt-row');
+  const avg      = arr => arr.length ? arr.reduce((a,b)=>a+b,0)/arr.length : null;
+  const avgBefore= avg(allOldPrices);
+  const avgAfter = avg(compNewPrices);
+  const avgOldComp = avg(compOldPrices);
+
+  document.getElementById('agg-ex-products').textContent = products;
+  document.getElementById('agg-ex-items').textContent    = items;
+  document.getElementById('agg-ex-qty').textContent      = qtyAll.toLocaleString();
+  document.getElementById('agg-ex-damage').textContent   = damageCount;
+  document.getElementById('agg-ex-fragile').textContent  = fragileCount;
+  document.getElementById('agg-ex-cost').textContent     = `₹ ${costAll.toFixed(2)}`;
+
+  // Cost card
+  const cpuBefore = document.getElementById('agg-ex-cpu');
+  const cpuAfter  = document.getElementById('agg-impl-cpu');
+  const saving    = document.getElementById('agg-impl-saving');
+  if(cpuBefore) cpuBefore.textContent = avgBefore !== null ? `₹${avgBefore.toFixed(2)}` : '—';
+  if(avgAfter !== null && avgOldComp !== null){
+    const diff = avgOldComp - avgAfter;
+    if(cpuAfter){ cpuAfter.textContent=`₹${avgAfter.toFixed(2)}`; cpuAfter.style.color=diff>0?'var(--good-ink)':diff<0?'var(--poor-ink)':''; }
+    if(saving){   saving.textContent=diff!==0?`${diff>0?'▼':'▲'} ₹${Math.abs(diff).toFixed(2)} / unit`:'—'; saving.style.color=diff>0?'var(--good-ink)':diff<0?'var(--poor-ink)':''; }
+  } else {
+    if(cpuAfter) cpuAfter.textContent='—';
+    if(saving)   saving.textContent='—';
+  }
+
+  document.getElementById('agg-flag-items').textContent      = flagInt;
+  document.getElementById('agg-flag-replace').textContent    = intRows.length;
+  document.getElementById('agg-flag-new').textContent        = newPkgCount;
+  document.getElementById('agg-flag-total').textContent      = intRows.length + newPkgCount;
+  document.getElementById('agg-flag-completed').textContent  = implDone;
+  document.getElementById('agg-flag-progress').textContent   = implProgress;
+  document.getElementById('agg-flag-pending').textContent    = implPending;
+  document.getElementById('agg-flag-notfeasible').textContent= implNotFeasible;
+
+  // ── ③ FLAGS ──────────────────────────────────────────────────
+  document.getElementById('flag-int-count').textContent     = flagInt;
+  document.getElementById('flag-damage-count').textContent  = damageCount;
+  document.getElementById('flag-fragile-count').textContent = fragileCount;
+  document.getElementById('flag-reusable-count').textContent= reusableCount;
+
+  // Ghost IDs
+  const g = id => document.getElementById(id);
+  if(g('ps-products')) g('ps-products').textContent = products;
+  if(g('ps-items'))    g('ps-items').textContent    = items;
+  if(g('ps-cost'))     g('ps-cost').textContent     = `₹ ${costAll.toFixed(2)}`;
+  if(g('req-tot-int'))       g('req-tot-int').textContent       = intRows.length;
+  if(g('req-tot-new'))       g('req-tot-new').textContent       = newPkgCount;
+  if(g('req-tot-completed')) g('req-tot-completed').textContent = implDone;
+  if(g('req-tot-progress'))  g('req-tot-progress').textContent  = implProgress;
+  if(g('req-tot-pending'))   g('req-tot-pending').textContent   = implPending;
+}
+
+// ============ TASK LOG SEED ============
+const TASKS = [
+  ['Existing Packing Inventory Recorded',       'Existing'],
+  ['Material & Source Mapped',                  'Existing'],
+  ['Transport Mode Identified',                 'Existing'],
+  ['Monthly Shipment Volumes Logged',           'Existing'],
+  ['Damage / Loss Assessment Completed',        'Existing'],
+  ['Fragile & Reusable Items Flagged',          'Existing'],
+  ['Annual Logistics Spend Calculated',         'Existing'],
+  ['Packing Intervention Need Identified',      'Required'],
+  ['Damage / Sustainability Issues Flagged',    'Required'],
+  ['New Packing Supplier Research Done',        'Required'],
+  ['Sample / Quotation Received',               'Required'],
+  ['Trial Shipment with New Packing Done',      'Required'],
+  ['Cost Comparison Completed',                 'Required'],
+  ['New Packing Approved & Implemented',        'Required'],
+];
+
+function seedTaskLog(){
+  const tbody = document.getElementById('taskLogBody');
+  tbody.innerHTML = TASKS.map((t,i) => {
+    const num = String(i+1).padStart(2,'0');
+    const phaseClass = t[1]==='Existing' ? 'status-pending' : 'status-progress';
+    return `<tr>
+      <td class="num-col">${num}</td>
+      <td>${t[0]}</td>
+      <td><span class="status-badge ${phaseClass}">${t[1]}</span></td>
+      <td><select><option>Pending</option><option>In Progress</option><option>Completed</option><option>Blocked</option></select></td>
+      <td><input type="text" placeholder="Owner"></td>
+      <td><input type="date"></td>
+      <td><input type="text" placeholder="Notes"></td>
+    </tr>`;
+  }).join('');
+}
+
+// ============ GENERIC HELPERS ============
+function addRow(tableId){
+  const tbody = document.querySelector('#'+tableId+' tbody');
+  const row = tbody.rows[0].cloneNode(true);
+  row.querySelectorAll('input').forEach(i => { if(i.type !== 'file') i.value = ''; });
+  row.querySelectorAll('select').forEach(s => s.selectedIndex = 0);
+  tbody.appendChild(row);
+}
+function deleteRow(btn){
+  const row = btn.closest('tr');
+  const tbody = row.parentElement;
+  if(tbody.rows.length > 1) row.remove();
+  else alert('At least one row is required.');
+}
+
+// Init
+window.addEventListener('DOMContentLoaded', () => {
+  seedTaskLog();
+  refreshSharedMonthlyTableRequired();
+
+  addExistingProduct(); // lp1 — Turmeric Soap
+  addExistingProduct(); // lp2 — Neem Face Wash
+  addExistingProduct(); // lp3 — Herbal Hair Oil
+
+  setTimeout(() => {
+
+    // ── lp1: Turmeric Soap ──────────────────────────────────────
+    document.getElementById('lp1-productName').value = 'Turmeric Soap';
+    document.getElementById('lp1-productSku').value  = 'TS-001';
+
+    // Row 1 — Corrugated Box, Corrugated Board, ₹18.00, Minor damage, Reusable
+    const lp1r1 = document.querySelector('#lp1-pkgItems .pkg-row');
+    if(lp1r1){
+      const sels = lp1r1.querySelectorAll('select');
+      sels[0].value = 'Corrugated Box';
+      sels[1].value = 'Corrugated Board';
+      sels[2].value = 'Wholesaler';
+      lp1r1.querySelector('.pkg-price').value   = '18.00';
+      lp1r1.querySelector('.pkg-damage').value  = 'Minor';
+      lp1r1.querySelector('.pkg-reusable')?.classList.add('on');
+    }
+
+    // Row 2 — Jute Bag, Jute, ₹6.50, no damage, Fragile
+    addPkgItemRow('lp1');
+    const lp1rows = document.querySelectorAll('#lp1-pkgItems .pkg-row');
+    const lp1r2 = lp1rows[lp1rows.length - 1];
+    if(lp1r2){
+      const sels = lp1r2.querySelectorAll('select');
+      sels[0].value = 'Jute Bag';
+      sels[1].value = 'Jute';
+      sels[2].value = 'Local Market';
+      lp1r2.querySelector('.pkg-price').value = '6.50';
+      lp1r2.querySelector('.pkg-fragile')?.classList.add('on');
+    }
+
+    onPkgTypeChange('lp1');
+
+    // ── lp2: Neem Face Wash ─────────────────────────────────────
+    document.getElementById('lp2-productName').value = 'Neem Face Wash';
+    document.getElementById('lp2-productSku').value  = 'NF-002';
+
+    const lp2r1 = document.querySelector('#lp2-pkgItems .pkg-row');
+    if(lp2r1){
+      const sels = lp2r1.querySelectorAll('select');
+      sels[0].value = 'Carton';
+      sels[1].value = 'Cardboard';
+      sels[2].value = 'Local Market';
+      lp2r1.querySelector('.pkg-price').value  = '12.00';
+      lp2r1.querySelector('.pkg-damage').value = 'Moderate';
+    }
+
+    onPkgTypeChange('lp2');
+
+    // ── lp3: Herbal Hair Oil ────────────────────────────────────
+    document.getElementById('lp3-productName').value = 'Herbal Hair Oil';
+    document.getElementById('lp3-productSku').value  = 'HH-003';
+
+    const lp3r1 = document.querySelector('#lp3-pkgItems .pkg-row');
+    if(lp3r1){
+      const sels = lp3r1.querySelectorAll('select');
+      sels[0].value = 'HDPE Sack';
+      sels[1].value = 'HDPE';
+      sels[2].value = 'Online';
+      lp3r1.querySelector('.pkg-price').value  = '9.00';
+      lp3r1.querySelector('.pkg-damage').value = 'None';
+    }
+
+    onPkgTypeChange('lp3');
+    recalcExistingTotals();
+
+    // ── Flag interventions ──────────────────────────────────────
+    // lp1 Corrugated Box — flag for replacement
+    // lp2 Carton — flag for replacement
+    setTimeout(() => {
+      const t1 = document.querySelector('#lp1-interventionList .int-group[data-type-label="Corrugated Box"] .pkg-toggle');
+      if(t1 && !t1.classList.contains('on')) toggleInterventionFlag(t1, 'lp1', 'Corrugated Box');
+
+      const t2 = document.querySelector('#lp2-interventionList .int-group[data-type-label="Carton"] .pkg-toggle');
+      if(t2 && !t2.classList.contains('on')) toggleInterventionFlag(t2, 'lp2', 'Carton');
+
+      setTimeout(() => {
+        // ── Required: lp1 Corrugated Box → Plastic Crate at ₹14.00, Implemented
+        const row1 = document.querySelector('#pkgInterventionList .opt-row[data-bridge-key="lp1|Corrugated Box"]');
+        if(row1){
+          const pkgRow = row1.querySelector(`#${row1.id}-pkgRow`);
+          if(pkgRow){
+            const sels = pkgRow.querySelectorAll('select');
+            sels[0].value = 'Plastic Crate';
+            sels[1].value = 'Plastic';
+            sels[2].value = 'Manufacturer Direct';
+            pkgRow.querySelector('.pkg-price').value = '14.00';
+          }
+          const statusSel = row1.querySelector('.int-status-select');
+          if(statusSel) statusSel.value = 'Implemented';
+        }
+
+        // ── Required: lp2 Carton → Corrugated Box at ₹10.50, In Progress
+        const row2 = document.querySelector('#pkgInterventionList .opt-row[data-bridge-key="lp2|Carton"]');
+        if(row2){
+          const pkgRow = row2.querySelector(`#${row2.id}-pkgRow`);
+          if(pkgRow){
+            const sels = pkgRow.querySelectorAll('select');
+            sels[0].value = 'Corrugated Box';
+            sels[1].value = 'Corrugated Board';
+            sels[2].value = 'Wholesaler';
+            pkgRow.querySelector('.pkg-price').value = '10.50';
+          }
+          const statusSel = row2.querySelector('.int-status-select');
+          if(statusSel) statusSel.value = 'In Progress';
+        }
+
+        recalcRequiredTotals();
+        refreshSharedMonthlyTableRequired();
+        refreshSummary();
+        showTab('summary', document.querySelector('.tab'));
+      }, 100);
+    }, 100);
+  }, 150);
+});
+</script>
+
+</body>
+</html>

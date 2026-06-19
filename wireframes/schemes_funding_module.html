@@ -1,0 +1,1050 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Schemes &amp; Funding · PRIME Rural</title>
+<style>
+:root {
+  --teal:#0E4D4E; --sea:#1A6B6D; --terracotta:#C26849; --terracotta-dk:#A85738;
+  --terracotta-sft:#F5E2D6;
+  --cream:#FBF5E5; --cream-deep:#F4ECD3; --offwhite:#FDFAF0; --panel:#FFFFFF;
+  --ink:#2A2520; --ink-soft:#6B6359; --ink-faint:#9C9384;
+  --border:#E8DFC9; --border-dk:#D6CDB6;
+  --good-bg:#E3EFDF; --good-ink:#3F6B3A;
+  --fair-bg:#FBE9DF; --fair-ink:#7A3B22;
+  --poor-bg:#F5D6CC; --poor-ink:#8B2A0F;
+  --info-bg:#E1ECF7; --info-ink:#1F4A78;
+  --highlight:#FFF8E1;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:Georgia,serif;background:var(--cream);color:var(--ink);line-height:1.4}
+.page{max-width:1280px;margin:0 auto;padding:24px}
+
+.header{background:var(--teal);color:#fff;padding:16px 20px;border-radius:12px 12px 0 0;display:flex;justify-content:space-between;align-items:center}
+.header h1{font-size:18px;font-weight:normal;letter-spacing:0.5px}
+.header .crumb{font-size:11px;opacity:0.75;text-transform:uppercase;letter-spacing:1px}
+
+.card{background:var(--cream);border:1px solid var(--border-dk);border-top:none;border-radius:0 0 12px 12px}
+
+.tab-bar{display:flex;background:var(--cream-deep);border-bottom:1px solid var(--border-dk);overflow-x:auto}
+.tab{padding:12px 22px;cursor:pointer;font-size:11px;text-transform:uppercase;letter-spacing:1px;color:var(--ink-soft);border-right:1px solid var(--border);white-space:nowrap}
+.tab.active{background:var(--teal);color:#fff}
+.tab:hover:not(.active){background:#EADFC0}
+
+.content{padding:22px}
+
+.entrepreneur-chip{display:inline-flex;align-items:center;gap:10px;background:#fff;border:1px solid var(--border-dk);padding:6px 14px;border-radius:20px;font-size:12px;margin-bottom:18px}
+.ent-avatar{width:24px;height:24px;background:var(--teal);color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:bold}
+
+.section-caption{background:var(--cream-deep);border-left:3px solid var(--terracotta);padding:8px 12px;border-radius:0 6px 6px 0;font-size:12px;color:var(--ink-soft);font-style:italic;margin-bottom:14px}
+
+/* Section header (Section I / Section II) */
+.section-block{margin-bottom:20px}
+.section-head{font-size:13px;text-transform:uppercase;letter-spacing:1.5px;color:var(--teal);font-weight:bold;padding:10px 0;border-bottom:2px solid var(--border-dk);margin-bottom:14px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px}
+.section-head .sh-roman{color:var(--terracotta);font-style:italic;margin-right:6px;font-weight:normal;font-size:15px}
+.section-head .sh-count{font-size:11px;color:var(--ink-soft);font-weight:normal;text-transform:none;letter-spacing:0;font-style:italic}
+
+/* Scheme row card with collapsible body */
+.scheme-card{background:#fff;border:1px solid var(--border-dk);border-radius:10px;margin-bottom:12px;overflow:hidden}
+.scheme-card.flagged{border-left:4px solid var(--terracotta)}
+.scheme-banner{background:var(--sea);color:#fff;padding:10px 14px;display:flex;justify-content:space-between;align-items:center;cursor:pointer;gap:10px;flex-wrap:wrap}
+.scheme-banner:hover{background:#155A5C}
+.scheme-banner .sb-left{display:flex;align-items:center;gap:10px;flex:1;min-width:0;flex-wrap:wrap}
+.scheme-banner .sb-chevron{font-size:14px;transition:transform 0.2s;flex-shrink:0}
+.scheme-banner.collapsed .sb-chevron{transform:rotate(-90deg)}
+.scheme-banner .sb-num{background:rgba(255,255,255,0.2);padding:2px 8px;border-radius:10px;font-size:11px;font-weight:bold;flex-shrink:0}
+.scheme-banner select.scheme-name-select{flex:1;min-width:200px;background:rgba(255,255,255,0.15);color:#fff;border:1px solid rgba(255,255,255,0.3);border-radius:5px;padding:5px 10px;font-size:13px;font-family:Georgia,serif}
+.scheme-banner select.scheme-name-select option{background:#fff;color:var(--ink)}
+.scheme-banner select.scheme-name-select:focus{outline:none;background:rgba(255,255,255,0.25)}
+.scheme-banner select.banner-status-select{flex:0 0 auto;min-width:140px;background:rgba(255,255,255,0.15);color:#fff;border:1px solid rgba(255,255,255,0.3);border-radius:5px;padding:5px 10px;font-size:12px;font-family:Georgia,serif}
+.scheme-banner select.banner-status-select option{background:#fff;color:var(--ink)}
+.scheme-banner select.banner-status-select:focus{outline:none;background:rgba(255,255,255,0.25)}
+.scheme-banner .sb-right{display:flex;gap:8px;align-items:center;flex-wrap:wrap;flex-shrink:0}
+.scheme-banner .sb-locked-name{flex:1;min-width:200px;background:rgba(255,255,255,0.1);padding:5px 10px;border-radius:5px;font-size:13px;color:#fff;border:1px dashed rgba(255,255,255,0.3)}
+
+/* Status chips on banner */
+.status-chip{display:inline-flex;align-items:center;gap:4px;padding:3px 9px;border-radius:11px;font-size:10px;font-weight:bold;text-transform:uppercase;letter-spacing:0.5px;background:rgba(255,255,255,0.2);color:#fff;border:1px solid rgba(255,255,255,0.3)}
+.status-chip.applied{background:#FFE3A8;color:#7A3B22;border-color:transparent}
+.status-chip.sanctioned{background:var(--info-bg);color:var(--info-ink);border-color:transparent}
+.status-chip.disbursed{background:var(--good-bg);color:var(--good-ink);border-color:transparent}
+.status-chip.rejected{background:var(--poor-bg);color:var(--poor-ink);border-color:transparent}
+.status-chip.review{background:rgba(255,255,255,0.85);color:var(--ink);border-color:transparent}
+.status-chip.flagged{background:var(--terracotta);color:#fff;border-color:transparent}
+.status-chip.pending{background:var(--cream-deep);color:var(--ink-soft);border-color:transparent}
+.status-chip.onhold{background:#FFE3A8;color:#7A4F1B;border-color:transparent}
+
+.scheme-body{padding:16px;background:#fff}
+.scheme-body.collapsed{display:none}
+
+/* Sub-section inside body */
+.subsection{background:var(--cream-deep);padding:14px;border-radius:8px;margin-bottom:12px;border:1px solid var(--border)}
+.subsection-title{font-size:12px;text-transform:uppercase;letter-spacing:1.2px;color:var(--teal);margin-bottom:10px;padding-bottom:6px;border-bottom:1px solid var(--border-dk);font-weight:bold;display:flex;justify-content:space-between;align-items:center}
+.subsection-title .ss-roman{color:var(--terracotta);font-style:italic;margin-right:6px}
+
+/* Field rows */
+.field-row{display:flex;gap:12px;margin-bottom:10px;flex-wrap:wrap;align-items:flex-start}
+.field-label{width:200px;font-size:12px;color:var(--ink-soft);padding-top:8px}
+.field-label .req{color:var(--terracotta);font-weight:bold}
+.field-val{flex:1;background:var(--offwhite);border:1px solid var(--border-dk);padding:6px 10px;border-radius:5px;font-size:12px;min-width:200px;font-family:Georgia,serif}
+.field-val[readonly]{background:var(--cream-deep);color:var(--ink-soft);font-style:italic}
+textarea.field-val{font-family:Georgia,serif;resize:vertical;min-height:50px}
+select.field-val{cursor:pointer}
+.field-val.derived{background:var(--info-bg);border-color:#9CB7D5;color:var(--info-ink);font-style:italic;font-weight:bold}
+
+/* Two-up grid for compact pairs */
+.two-up{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+@media (max-width:800px){.two-up{grid-template-columns:1fr}}
+
+/* Toggle widget */
+.toggle-wrap{flex:1;min-width:200px;display:flex;align-items:center;gap:10px}
+.toggle{position:relative;display:inline-block;width:36px;height:18px;flex-shrink:0}
+.toggle input{display:none}
+.toggle .slider{position:absolute;cursor:pointer;top:0;left:0;right:0;bottom:0;background:var(--border-dk);border-radius:18px;transition:0.2s}
+.toggle .slider::before{content:'';position:absolute;height:14px;width:14px;left:2px;bottom:2px;background:#fff;border-radius:50%;transition:0.2s}
+.toggle input:checked + .slider{background:var(--teal)}
+.toggle input:checked + .slider::before{transform:translateX(18px)}
+.toggle-label{font-size:12px;color:var(--ink)}
+
+/* Upload */
+.upload-wrap{flex:1;min-width:280px;display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+.upload-btn{display:inline-flex;align-items:center;gap:4px;padding:6px 12px;background:#fff;border:1px solid var(--border-dk);border-radius:5px;cursor:pointer;font-size:11px;color:var(--ink-soft);font-family:Georgia,serif}
+.upload-btn:hover{border-color:var(--teal);color:var(--teal);background:var(--cream-deep)}
+.upload-btn input[type="file"]{display:none}
+.view-btn{padding:6px 12px;background:transparent;border:1px solid var(--border-dk);border-radius:5px;cursor:pointer;font-size:11px;color:var(--ink-faint);font-family:Georgia,serif}
+.view-btn:not(:disabled){color:var(--teal);border-color:var(--teal)}
+.view-btn:disabled{cursor:not-allowed}
+.file-pill{display:inline-flex;align-items:center;gap:6px;padding:4px 10px;background:var(--cream-deep);border:1px solid var(--border-dk);border-radius:14px;font-size:11px;color:var(--ink);max-width:260px}
+.file-pill .file-name{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;flex:1}
+.file-pill .file-x{cursor:pointer;color:var(--terracotta);font-weight:bold}
+.file-pill .file-x:hover{color:var(--terracotta-dk)}
+
+/* Buttons */
+.btn{padding:5px 12px;border-radius:20px;border:1px solid var(--border-dk);background:#fff;cursor:pointer;font-size:11px;color:var(--ink);font-family:Georgia,serif}
+.btn:hover{background:var(--cream-deep)}
+.btn-primary{background:var(--teal);color:#fff;border-color:var(--teal)}
+.btn-primary:hover{background:var(--sea)}
+.btn-danger{background:transparent;color:var(--terracotta);border-color:var(--terracotta)}
+.btn-danger:hover{background:var(--terracotta-sft)}
+
+/* Intervention block — terracotta-soft */
+.intervention-block{background:var(--terracotta-sft);border:1px solid var(--terracotta);border-radius:8px;padding:14px;margin-top:12px}
+.intervention-block-title{font-size:11px;text-transform:uppercase;letter-spacing:1px;color:var(--terracotta-dk);margin-bottom:10px;font-weight:bold}
+
+/* Implementation Status block — same terracotta family */
+.implementation-block{background:var(--terracotta-sft);border:1px solid var(--terracotta);border-radius:8px;padding:14px;margin-top:12px}
+.implementation-block-title{font-size:11px;text-transform:uppercase;letter-spacing:1px;color:var(--terracotta-dk);margin-bottom:10px;font-weight:bold}
+
+/* Bridged pill in banner */
+.bridged-pill{display:inline-flex;align-items:center;gap:4px;padding:2px 8px;background:var(--highlight);color:#7A4F1B;border:1px solid #E8C97A;border-radius:10px;font-size:10px;font-weight:bold;letter-spacing:0.3px}
+
+/* Empty state */
+.empty-msg{text-align:center;color:var(--ink-faint);font-style:italic;padding:24px;background:var(--cream-deep);border:1px dashed var(--border-dk);border-radius:10px;margin-bottom:14px}
+
+/* Add row CTA */
+.add-row-wrap{display:flex;justify-content:flex-end;margin-top:10px;margin-bottom:6px}
+
+/* Integration note */
+.integration-note{display:inline-flex;align-items:center;gap:6px;font-size:10px;color:var(--info-ink);background:var(--info-bg);padding:3px 8px;border-radius:10px;border:1px solid #9CB7D5;font-style:italic}
+
+/* Calc summary strip */
+.calc-summary{background:linear-gradient(135deg,var(--teal),var(--sea));color:#fff;padding:10px 14px;border-radius:8px;margin-top:10px;display:flex;flex-wrap:wrap;gap:14px;font-size:12px}
+.calc-summary .cs-item{flex:1;min-width:140px}
+.calc-summary .cs-label{font-size:10px;opacity:0.85;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:2px}
+.calc-summary .cs-val{font-size:14px;font-weight:bold;font-family:Georgia,serif}
+
+/* Summary tab */
+.summary-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;margin-bottom:14px}
+@media (max-width:800px){.summary-grid{grid-template-columns:1fr}}
+.summary-card{background:#fff;border:1px solid var(--border-dk);border-radius:10px;padding:14px}
+.summary-card h3{font-size:11px;text-transform:uppercase;letter-spacing:1px;color:var(--teal);margin-bottom:8px;font-weight:bold;padding-bottom:6px;border-bottom:1px solid var(--border-dk)}
+.summary-stat{display:flex;justify-content:space-between;align-items:center;padding:6px 0;font-size:13px;border-bottom:1px solid #F0E9D6;gap:8px}
+.summary-stat:last-child{border-bottom:none}
+.summary-stat .stat-label{color:var(--ink-soft)}
+.summary-stat .stat-val{font-weight:bold;color:var(--ink);text-align:right}
+.summary-stat .stat-val.big{font-size:14px;color:var(--teal)}
+.summary-stat .stat-val.flagged{color:var(--terracotta-dk)}
+.summary-stat .stat-val.unflagged{color:var(--ink-faint);font-style:italic;font-weight:normal}
+
+/* Status distribution bar */
+.status-dist{display:flex;height:18px;border-radius:5px;overflow:hidden;margin:8px 0;background:var(--cream-deep);border:1px solid var(--border)}
+.status-dist > div{display:flex;align-items:center;justify-content:center;font-size:10px;color:#fff;font-weight:bold;letter-spacing:0.3px}
+.status-dist .sd-applied{background:#D4A24A;color:#5A2F0F}
+.status-dist .sd-sanctioned{background:#3F6B89}
+.status-dist .sd-disbursed{background:var(--good-ink)}
+.status-dist .sd-rejected{background:var(--poor-ink)}
+.status-dist .sd-review{background:var(--ink-faint)}
+.status-dist-legend{display:flex;flex-wrap:wrap;gap:10px;font-size:10px;color:var(--ink-soft);margin-top:4px}
+.status-dist-legend .sdl-item{display:inline-flex;align-items:center;gap:3px}
+.status-dist-legend .sdl-swatch{width:8px;height:8px;border-radius:2px}
+
+/* Log tables */
+.log-table{background:#fff;border:1px solid var(--border-dk);border-radius:8px;overflow:hidden}
+.log-table table{width:100%;border-collapse:collapse;font-size:12px}
+.log-table th{background:var(--teal);color:#fff;padding:8px;text-align:left;font-weight:normal;text-transform:uppercase;letter-spacing:0.5px;font-size:10px;border-right:1px solid var(--sea)}
+.log-table th:last-child{border-right:none}
+.log-table td{padding:8px;border-bottom:1px solid var(--border);border-right:1px solid var(--border)}
+.log-table td:last-child{border-right:none}
+.log-table tr:last-child td{border-bottom:none}
+.log-table input,.log-table select,.log-table textarea{width:100%;border:1px solid var(--border);padding:5px 8px;border-radius:3px;font-family:Georgia,serif;font-size:11px;background:#fff}
+.log-table textarea{resize:vertical;min-height:30px}
+.log-table input:focus,.log-table select:focus,.log-table textarea:focus{outline:none;border-color:var(--teal)}
+.row-delete{background:transparent;border:none;color:var(--terracotta);cursor:pointer;font-size:14px;padding:2px 6px}
+.row-delete:hover{color:var(--terracotta-dk)}
+.table-actions{display:flex;justify-content:space-between;align-items:center;margin-top:10px}
+
+/* Resources */
+.resource-list{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+@media (max-width:800px){.resource-list{grid-template-columns:1fr}}
+.resource-tile{background:#fff;border:1px solid var(--border-dk);border-radius:8px;padding:14px;display:flex;flex-direction:column;gap:6px}
+.resource-tile h4{font-size:13px;color:var(--teal);font-weight:bold}
+.resource-tile p{font-size:11px;color:var(--ink-soft);line-height:1.5}
+.resource-tile a{display:inline-block;margin-top:4px;font-size:11px;color:var(--terracotta);text-decoration:none;font-weight:bold}
+.resource-tile a:hover{color:var(--terracotta-dk);text-decoration:underline}
+
+.hidden{display:none !important}
+</style>
+</head>
+<body>
+
+<div class="page">
+<div class="header">
+  <h1>Schemes &amp; Funding</h1>
+  <div class="crumb">PRIME Rural · Capital Access</div>
+</div>
+<div class="card">
+
+<div class="tab-bar">
+  <div class="tab active" onclick="showTab('summary',this)">Summary</div>
+  <div class="tab" onclick="showTab('existing',this)">Existing</div>
+  <div class="tab" onclick="showTab('required',this)">Required</div>
+  <div class="tab" onclick="showTab('resources',this)">Resources</div>
+  <div class="tab" onclick="showTab('task',this)">Task</div>
+  <div class="tab" onclick="showTab('logbook',this)">Log Book</div>
+</div>
+
+<div class="content">
+
+<div class="entrepreneur-chip">
+  <div class="ent-avatar">EN</div>
+  <span style="color:var(--ink-soft);font-style:italic">Auto-fetched from profile</span>
+</div>
+
+<!-- ============ SUMMARY ============ -->
+<div id="summary" class="panel">
+  <div class="section-caption">Live snapshot of every scheme this entrepreneur has accessed or applied for. Edit Existing / Required tabs to update this view.</div>
+
+  <div class="summary-grid">
+    <div class="summary-card">
+      <h3>Existing Schemes &amp; Funding</h3>
+      <div class="summary-stat"><span class="stat-label">Total schemes recorded</span><span class="stat-val big" id="sum-existing-count">0</span></div>
+      <div class="summary-stat"><span class="stat-label">Sanctioned (₹)</span><span class="stat-val" id="sum-existing-sanctioned">₹ 0.00</span></div>
+      <div class="summary-stat"><span class="stat-label">Disbursed (₹)</span><span class="stat-val" id="sum-existing-disbursed">₹ 0.00</span></div>
+      <div class="summary-stat"><span class="stat-label">Outstanding loan (₹)</span><span class="stat-val" id="sum-existing-outstanding">₹ 0.00</span></div>
+      <div class="summary-stat"><span class="stat-label">Total EMI / month (₹)</span><span class="stat-val" id="sum-existing-emi">₹ 0.00</span></div>
+      <div class="summary-stat"><span class="stat-label">Flagged for intervention</span><span class="stat-val flagged" id="sum-existing-flagged">0</span></div>
+    </div>
+    <div class="summary-card">
+      <h3>Required Schemes &amp; Funding</h3>
+      <div class="summary-stat"><span class="stat-label">Total in pipeline</span><span class="stat-val big" id="sum-required-count">0</span></div>
+      <div class="summary-stat"><span class="stat-label">Bridged from existing</span><span class="stat-val" id="sum-required-bridged">0</span></div>
+      <div class="summary-stat"><span class="stat-label">Newly identified</span><span class="stat-val" id="sum-required-new">0</span></div>
+      <div class="summary-stat"><span class="stat-label">Sanctioned amount sought (₹)</span><span class="stat-val" id="sum-required-sanctioned">₹ 0.00</span></div>
+      <div class="summary-stat"><span class="stat-label">Implementation pending</span><span class="stat-val" id="sum-required-pending">0</span></div>
+      <div class="summary-stat"><span class="stat-label">Implementation applied</span><span class="stat-val" id="sum-required-applied">0</span></div>
+    </div>
+  </div>
+
+  <div class="summary-card">
+    <h3>Existing — Status Distribution</h3>
+    <div class="status-dist" id="sum-status-dist"></div>
+    <div class="status-dist-legend">
+      <span class="sdl-item"><span class="sdl-swatch" style="background:#D4A24A"></span>Applied <span id="sdl-applied">0</span></span>
+      <span class="sdl-item"><span class="sdl-swatch" style="background:#3F6B89"></span>Sanctioned <span id="sdl-sanctioned">0</span></span>
+      <span class="sdl-item"><span class="sdl-swatch" style="background:var(--good-ink)"></span>Disbursed <span id="sdl-disbursed">0</span></span>
+      <span class="sdl-item"><span class="sdl-swatch" style="background:var(--poor-ink)"></span>Rejected <span id="sdl-rejected">0</span></span>
+      <span class="sdl-item"><span class="sdl-swatch" style="background:var(--ink-faint)"></span>Under Review <span id="sdl-review">0</span></span>
+    </div>
+  </div>
+</div>
+
+<!-- ============ EXISTING ============ -->
+<div id="existing" class="panel hidden">
+  <div class="section-caption">Every scheme, grant, or loan the entrepreneur has accessed. Loan repayment fields auto-fetch from the Financial module where available. Toggle on the Intervention block to flag a scheme for follow-up — this auto-creates a row in Required → Section I.</div>
+
+  <div class="section-block">
+    <div class="section-head">
+      <span><span class="sh-roman">I.</span>Schemes / Funding Details</span>
+      <span class="sh-count" id="existing-count-label">0 schemes</span>
+    </div>
+    <div id="existingContainer"></div>
+    <div class="empty-msg" id="existingEmpty">No schemes recorded yet. Click "+ Add Scheme" to start.</div>
+    <div class="add-row-wrap">
+      <button class="btn btn-primary" onclick="addExistingRow()">+ Add Scheme</button>
+    </div>
+  </div>
+</div>
+
+<!-- ============ REQUIRED ============ -->
+<div id="required" class="panel hidden">
+  <div class="section-caption">Section I auto-populates from Existing schemes flagged for intervention. Section II is for genuinely new scheme applications you've identified for this entrepreneur.</div>
+
+  <!-- Section I — Flagged -->
+  <div class="section-block">
+    <div class="section-head">
+      <span><span class="sh-roman">I.</span>Schemes / Funding — Flagged</span>
+      <span class="sh-count" id="flagged-count-label">0 flagged</span>
+    </div>
+    <div class="empty-msg" id="flaggedEmpty">No schemes flagged from Existing. Toggle "Need Intervention?" on a scheme in the Existing tab to bring it here.</div>
+    <div id="flaggedContainer"></div>
+  </div>
+
+  <!-- Section II — New -->
+  <div class="section-block">
+    <div class="section-head">
+      <span><span class="sh-roman">II.</span>Schemes / Funding — New</span>
+      <span class="sh-count" id="new-count-label">0 new</span>
+    </div>
+    <div id="newContainer"></div>
+    <div class="empty-msg" id="newEmpty">No new schemes added yet. Click "+ Add New Scheme" to identify a fresh opportunity.</div>
+    <div class="add-row-wrap">
+      <button class="btn btn-primary" onclick="addNewRow()">+ Add New Scheme</button>
+    </div>
+  </div>
+</div>
+
+<!-- ============ RESOURCES ============ -->
+<div id="resources" class="panel hidden">
+  <div class="section-caption">Reference material and templates relevant to scheme identification, application, and disbursement tracking.</div>
+  <div class="resource-list">
+    <div class="resource-tile">
+      <h4>Scheme Master List</h4>
+      <p>Authoritative list of central + Meghalaya state schemes with eligibility criteria, application windows, and quantum.</p>
+      <a href="#" onclick="event.preventDefault()">Open list ↗</a>
+    </div>
+    <div class="resource-tile">
+      <h4>PMEGP Application Guide</h4>
+      <p>Step-by-step PMEGP application walkthrough — DIC vs KVIC channels, project report format, required documents.</p>
+      <a href="#" onclick="event.preventDefault()">Open guide ↗</a>
+    </div>
+    <div class="resource-tile">
+      <h4>MUDRA Loan Reference</h4>
+      <p>Shishu / Kishore / Tarun categories, eligible activities, and partner banks for rural micro-enterprise loans.</p>
+      <a href="#" onclick="event.preventDefault()">Open reference ↗</a>
+    </div>
+    <div class="resource-tile">
+      <h4>Stand-Up India Eligibility</h4>
+      <p>Eligibility checklist for SC/ST and women entrepreneurs, Composite Loan up to ₹1 Crore.</p>
+      <a href="#" onclick="event.preventDefault()">Open checklist ↗</a>
+    </div>
+    <div class="resource-tile">
+      <h4>Project Report Template</h4>
+      <p>Standard project report template aligned with DIC / KVIB / NABARD scheme requirements.</p>
+      <a href="#" onclick="event.preventDefault()">Download template ↗</a>
+    </div>
+    <div class="resource-tile">
+      <h4>Loan Documentation Checklist</h4>
+      <p>Universal documentation checklist for loan applications — KYC, business proof, financials, collateral papers.</p>
+      <a href="#" onclick="event.preventDefault()">Open checklist ↗</a>
+    </div>
+  </div>
+</div>
+
+<!-- ============ TASK ============ -->
+<div id="task" class="panel hidden">
+  <div class="section-caption">Log every action taken on a scheme — application submission, follow-up, document handover, sanctioned-letter receipt.</div>
+  <div class="log-table">
+    <table>
+      <thead>
+        <tr>
+          <th style="width:40px">#</th>
+          <th style="min-width:120px">Date</th>
+          <th style="min-width:160px">Action Taken</th>
+          <th style="min-width:120px">Done By</th>
+          <th>Outcome / Notes</th>
+          <th style="width:30px"></th>
+        </tr>
+      </thead>
+      <tbody id="taskBody"></tbody>
+    </table>
+  </div>
+  <div class="table-actions">
+    <span></span>
+    <button class="btn btn-primary" onclick="addTaskRow()">+ Add Task</button>
+  </div>
+</div>
+
+<!-- ============ LOG BOOK ============ -->
+<div id="logbook" class="panel hidden">
+  <div class="section-caption">Free-form record of every visit, interview, or observation related to scheme applications.</div>
+  <div class="log-table">
+    <table>
+      <thead>
+        <tr>
+          <th style="width:40px">#</th>
+          <th style="min-width:120px">Date</th>
+          <th style="min-width:140px">Visit Type</th>
+          <th style="min-width:140px">Person Met</th>
+          <th>Discussion / Observations</th>
+          <th style="width:30px"></th>
+        </tr>
+      </thead>
+      <tbody id="logBookBody"></tbody>
+    </table>
+  </div>
+  <div class="table-actions">
+    <span></span>
+    <button class="btn btn-primary" onclick="addLogBookRow()">+ Add Log Book Entry</button>
+  </div>
+</div>
+
+</div>
+</div>
+</div>
+
+<script>
+// ============ MASTERS (placeholder — Harshit's authoritative list pending) ============
+const SCHEME_MASTER = [
+  'PMEGP — Prime Minister\'s Employment Generation Programme',
+  'MUDRA — Shishu (up to ₹50,000)',
+  'MUDRA — Kishore (₹50,001 to ₹5,00,000)',
+  'MUDRA — Tarun (₹5,00,001 to ₹10,00,000)',
+  'Stand-Up India',
+  'Startup India Seed Fund',
+  'Mission Organic Value Chain Development NER (MOVCDNER)',
+  'NABARD — Capital Investment Subsidy Scheme',
+  'NABARD — Rural Innovation Fund',
+  'KVIB Loan Scheme',
+  'DIC — District Industries Centre Loan',
+  'CMEGP Meghalaya',
+  'MBMA Livelihood Programme',
+  'SELCO Foundation Grant',
+  'LIFCOM Loan',
+  'NEHHDC Marketing Support',
+  'MSME Champions Scheme',
+  'Credit Guarantee Fund Trust for MSE (CGTMSE)',
+  'NSIC Single Point Registration',
+  'Other'
+];
+
+const STATUS_OPTIONS = ['Applied','Sanctioned','Disbursed','Rejected','Under Review'];
+const ELIGIBILITY_OPTIONS = ['Eligible','Not Eligible','Document Pending'];
+const IMPLEMENTATION_OPTIONS = ['Pending','On hold','Applied','Rejected'];
+
+let existingCounter = 0;
+let newCounter = 0;
+let taskCounter = 0;
+let logBookCounter = 0;
+
+// Bridge map: existingRowId -> flaggedRowId (created when flagged)
+const bridgeMap = {};
+
+// ============ TAB SWITCHING ============
+function showTab(id, el){
+  document.querySelectorAll('.panel').forEach(p => p.classList.add('hidden'));
+  document.getElementById(id).classList.remove('hidden');
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  el.classList.add('active');
+  if(id === 'summary') refreshSummary();
+}
+
+// ============ SCHEME ROW BUILDER ============
+// Builds the body markup. For "context" = 'existing' | 'flagged' | 'new'
+function buildSchemeBody(rowId, ctx){
+  const showIntervention   = (ctx === 'existing');
+  const showImplementation = (ctx === 'flagged' || ctx === 'new');
+  const showEligibility    = true;  // present in all tabs (eligibility added per cleanup spec)
+  const showFinancialSync  = (ctx === 'existing');
+
+  return `
+    <!-- Scheme & Eligibility -->
+    <div class="subsection">
+      <div class="subsection-title"><span><span class="ss-roman">a.</span>Scheme &amp; Eligibility</span></div>
+      <div class="field-row">
+        <div class="field-label">Department / Agency</div>
+        <input type="text" class="field-val" id="${rowId}-dept" placeholder="e.g., DIC East Khasi Hills, KVIB, NABARD">
+      </div>
+      <div class="field-row">
+        <div class="field-label">Eligibility Status</div>
+        <select class="field-val" id="${rowId}-eligibility">
+          <option value="">— Select —</option>
+          ${ELIGIBILITY_OPTIONS.map(o => `<option>${o}</option>`).join('')}
+        </select>
+      </div>
+    </div>
+
+    <!-- Application & Amounts -->
+    <div class="subsection">
+      <div class="subsection-title"><span><span class="ss-roman">b.</span>Application &amp; Amounts</span></div>
+      <div class="two-up">
+        <div class="field-row">
+          <div class="field-label">Application Date</div>
+          <input type="date" class="field-val" id="${rowId}-appdate" onchange="onSchemeChange()">
+        </div>
+        <div class="field-row">
+          <div class="field-label">Disbursement Date</div>
+          <input type="date" class="field-val" id="${rowId}-disbdate">
+        </div>
+      </div>
+      <div class="two-up">
+        <div class="field-row">
+          <div class="field-label">Total Sanction Amount (₹)</div>
+          <input type="number" class="field-val" id="${rowId}-sanctioned" placeholder="0.00" step="0.01" oninput="onSchemeChange()">
+        </div>
+        <div class="field-row">
+          <div class="field-label">Disbursed Amount (₹)</div>
+          <input type="number" class="field-val" id="${rowId}-disbursed" placeholder="0.00" step="0.01" oninput="onSchemeChange()">
+        </div>
+      </div>
+      <div class="two-up">
+        <div class="field-row">
+          <div class="field-label">Loan Amount (₹)</div>
+          <input type="text" class="field-val" id="${rowId}-loanamt-grant" placeholder="0.00">
+        </div>
+        <div class="field-row">
+          <div class="field-label">Grant Amount (₹)</div>
+          <input type="text" class="field-val" id="${rowId}-grantamt" placeholder="0.00">
+        </div>
+      </div>
+      <div class="field-row">
+        <div class="field-label">User Contribution Amount (₹)</div>
+        <input type="text" class="field-val" id="${rowId}-usercontrib" placeholder="0.00">
+      </div>
+    </div>
+
+    <!-- Loan Repayment Details -->
+    <div class="subsection">
+      <div class="subsection-title">
+        <span><span class="ss-roman">c.</span>Loan Repayment Details</span>
+        ${showFinancialSync ? '<span class="integration-note">↻ Auto-fetch from Financial Module where available</span>' : ''}
+      </div>
+      <div class="two-up">
+        <div class="field-row">
+          <div class="field-label">Loan No.</div>
+          <input type="text" class="field-val" id="${rowId}-loanno" placeholder="Bank loan reference">
+        </div>
+        <div class="field-row">
+          <div class="field-label">Loan Amount (₹)</div>
+          <input type="number" class="field-val" id="${rowId}-loanamt" placeholder="0.00" step="0.01" oninput="recalcLoan('${rowId}')">
+        </div>
+      </div>
+      <div class="two-up">
+        <div class="field-row">
+          <div class="field-label">Loan Interest (% p.a.)</div>
+          <input type="number" class="field-val" id="${rowId}-loanint" placeholder="0.0" step="0.01">
+        </div>
+        <div class="field-row">
+          <div class="field-label">Outstanding Loan (₹)</div>
+          <input type="number" class="field-val" id="${rowId}-outstanding" placeholder="0.00" step="0.01" oninput="onSchemeChange()">
+        </div>
+      </div>
+      <div class="two-up">
+        <div class="field-row">
+          <div class="field-label">Loan Term (months)</div>
+          <input type="number" class="field-val" id="${rowId}-loanterm" placeholder="0" step="1" oninput="recalcLoan('${rowId}')">
+        </div>
+        <div class="field-row">
+          <div class="field-label">EMI / Month (₹)</div>
+          <input type="text" class="field-val derived" id="${rowId}-emi" readonly value="₹ 0.00">
+        </div>
+      </div>
+      <div class="two-up">
+        <div class="field-row">
+          <div class="field-label">Loan Start Date</div>
+          <input type="date" class="field-val" id="${rowId}-loanstart">
+        </div>
+        <div class="field-row">
+          <div class="field-label">Loan End Date</div>
+          <input type="date" class="field-val" id="${rowId}-loanend">
+        </div>
+      </div>
+      <div class="two-up">
+        <div class="field-row">
+          <div class="field-label">Loan Contribution %</div>
+          <input type="number" class="field-val" id="${rowId}-loanpct" placeholder="0.0" step="0.01" min="0" max="100">
+        </div>
+        <div class="field-row">
+          <div class="field-label">Moratorium Period (months)</div>
+          <input type="number" class="field-val" id="${rowId}-moratorium" placeholder="0" step="1" min="0">
+        </div>
+      </div>
+      <div class="field-row" style="align-items:flex-start">
+        <div class="field-label" style="padding-top:6px">Collateral Provided</div>
+        <textarea class="field-val" id="${rowId}-collateral" placeholder="Describe collateral pledged — land papers, FD, hypothecation of stock, third-party guarantee..."></textarea>
+      </div>
+      <div class="field-row">
+        <div class="field-label">Security &amp; Documents</div>
+        <div class="upload-wrap" id="${rowId}-secdoc-uploadWrap">
+          <label class="upload-btn">⬆ Upload<input type="file" accept=".pdf,.jpg,.jpeg,.png,.doc,.docx" onchange="onFileUpload('${rowId}-secdoc',this)"></label>
+          <button class="view-btn" id="${rowId}-secdoc-viewBtn" disabled onclick="onFileView('${rowId}-secdoc')">View</button>
+        </div>
+      </div>
+    </div>
+
+    ${showIntervention ? `
+      <!-- Intervention Need -->
+      <div class="intervention-block">
+        <div class="intervention-block-title">⚠ Intervention Need</div>
+        <div class="field-row">
+          <div class="toggle-wrap">
+            <label class="toggle">
+              <input type="checkbox" id="${rowId}-int-flag" onchange="onInterventionToggle('${rowId}')">
+              <span class="slider"></span>
+            </label>
+            <span class="toggle-label">Need Funding / Scheme intervention?</span>
+          </div>
+        </div>
+        <div class="field-row" style="align-items:flex-start">
+          <div class="field-label" style="padding-top:6px">Justification</div>
+          <textarea class="field-val" id="${rowId}-int-justify" placeholder="Why does this scheme need intervention? — partial disbursement, EMI burden, eligibility re-assessment..." oninput="onJustifyChange('${rowId}')"></textarea>
+        </div>
+      </div>
+    ` : ''}
+
+    ${showImplementation ? `
+      <!-- Implementation Status -->
+      <div class="implementation-block">
+        <div class="implementation-block-title">⚑ Implementation Status</div>
+        <div class="field-row">
+          <div class="field-label">Status</div>
+          <select class="field-val" id="${rowId}-impl-status" onchange="onImplStatusChange('${rowId}')">
+            <option value="">— Select —</option>
+            ${IMPLEMENTATION_OPTIONS.map(o => `<option>${o}</option>`).join('')}
+          </select>
+        </div>
+        <div class="field-row" style="align-items:flex-start">
+          <div class="field-label" style="padding-top:6px">Feedback</div>
+          <textarea class="field-val" id="${rowId}-impl-feedback" placeholder="Notes on progress, blockers, conversations with the lender, next steps..."></textarea>
+        </div>
+      </div>
+    ` : ''}
+  `;
+}
+
+// ============ EXISTING TAB ============
+function addExistingRow(){
+  existingCounter++;
+  const rowId = `ex${existingCounter}`;
+  const container = document.getElementById('existingContainer');
+  const card = document.createElement('div');
+  card.className = 'scheme-card';
+  card.id = rowId;
+  card.dataset.context = 'existing';
+  card.innerHTML = `
+    <div class="scheme-banner" onclick="toggleScheme(event,'${rowId}')">
+      <div class="sb-left">
+        <span class="sb-chevron">▾</span>
+        <span class="sb-num" id="${rowId}-num">#${existingCounter}</span>
+        <select class="scheme-name-select" id="${rowId}-scheme" onclick="event.stopPropagation()" onchange="onSchemeNameChange('${rowId}')">
+          <option value="">— Select Scheme —</option>
+          ${SCHEME_MASTER.map(s => `<option>${s}</option>`).join('')}
+        </select>
+        <select class="banner-status-select" id="${rowId}-status" onclick="event.stopPropagation()" onchange="onStatusChange('${rowId}')">
+          <option value="">— Status —</option>
+          ${STATUS_OPTIONS.map(o => `<option>${o}</option>`).join('')}
+        </select>
+      </div>
+      <div class="sb-right">
+        <span class="status-chip" id="${rowId}-status-chip" style="display:none"></span>
+        <span class="status-chip flagged" id="${rowId}-flagged-chip" style="display:none">⚠ Flagged</span>
+        <button class="btn btn-danger" onclick="event.stopPropagation();removeExistingRow('${rowId}')" title="Remove">✕</button>
+      </div>
+    </div>
+    <div class="scheme-body" id="${rowId}-body">
+      ${buildSchemeBody(rowId,'existing')}
+    </div>
+  `;
+  container.appendChild(card);
+  document.getElementById('existingEmpty').style.display = 'none';
+  updateExistingCount();
+}
+
+function removeExistingRow(rowId){
+  if(!confirm('Remove this scheme record? The flagged Required entry (if any) will also be removed.')) return;
+  // remove its bridge if flagged
+  if(bridgeMap[rowId]){
+    const flaggedId = bridgeMap[rowId];
+    const flaggedEl = document.getElementById(flaggedId);
+    if(flaggedEl) flaggedEl.remove();
+    delete bridgeMap[rowId];
+    updateFlaggedCount();
+  }
+  document.getElementById(rowId)?.remove();
+  updateExistingCount();
+  refreshSummary();
+}
+
+function updateExistingCount(){
+  const count = document.querySelectorAll('#existingContainer > .scheme-card').length;
+  document.getElementById('existing-count-label').textContent = count === 1 ? '1 scheme' : `${count} schemes`;
+  document.getElementById('existingEmpty').style.display = count === 0 ? 'block' : 'none';
+}
+
+// ============ FLAG-BRIDGE ============
+function onInterventionToggle(existingRowId){
+  const flag = document.getElementById(`${existingRowId}-int-flag`)?.checked;
+  const flaggedChip = document.getElementById(`${existingRowId}-flagged-chip`);
+  if(flaggedChip) flaggedChip.style.display = flag ? 'inline-flex' : 'none';
+
+  if(flag){
+    // Spawn flagged row in Required tab if not already there
+    if(!bridgeMap[existingRowId]){
+      const flaggedId = createFlaggedRow(existingRowId);
+      bridgeMap[existingRowId] = flaggedId;
+      // Sync scheme name + justify
+      syncBridgeFields(existingRowId, flaggedId);
+    }
+  } else {
+    // Remove flagged row if it exists
+    const flaggedId = bridgeMap[existingRowId];
+    if(flaggedId){
+      const el = document.getElementById(flaggedId);
+      if(el) el.remove();
+      delete bridgeMap[existingRowId];
+    }
+  }
+  updateFlaggedCount();
+  refreshSummary();
+}
+
+function createFlaggedRow(existingRowId){
+  const flaggedId = `fl_${existingRowId}`;
+  const container = document.getElementById('flaggedContainer');
+  const card = document.createElement('div');
+  card.className = 'scheme-card flagged';
+  card.id = flaggedId;
+  card.dataset.context = 'flagged';
+  card.dataset.bridgeSource = existingRowId;
+
+  const idx = container.querySelectorAll('.scheme-card').length + 1;
+
+  // The scheme name is locked to the Existing source
+  card.innerHTML = `
+    <div class="scheme-banner" onclick="toggleScheme(event,'${flaggedId}')">
+      <div class="sb-left">
+        <span class="sb-chevron">▾</span>
+        <span class="sb-num">#${idx}</span>
+        <span class="sb-locked-name" id="${flaggedId}-locked-name">— synced from Existing —</span>
+        <span class="bridged-pill">↻ Bridged</span>
+      </div>
+      <div class="sb-right">
+        <span class="status-chip" id="${flaggedId}-status-chip" style="display:none"></span>
+      </div>
+    </div>
+    <div class="scheme-body" id="${flaggedId}-body">
+      ${buildSchemeBody(flaggedId,'flagged')}
+    </div>
+  `;
+  container.appendChild(card);
+  return flaggedId;
+}
+
+function syncBridgeFields(existingId, flaggedId){
+  const schemeName = document.getElementById(`${existingId}-scheme`)?.value;
+  const justify    = document.getElementById(`${existingId}-int-justify`)?.value;
+
+  const lockedNameEl = document.getElementById(`${flaggedId}-locked-name`);
+  if(lockedNameEl) lockedNameEl.textContent = schemeName || '— pick scheme in Existing —';
+}
+
+function onSchemeNameChange(rowId){
+  // If this row is bridged, sync the locked name forward
+  const flaggedId = bridgeMap[rowId];
+  if(flaggedId){
+    syncBridgeFields(rowId, flaggedId);
+  }
+  refreshSummary();
+}
+
+function onJustifyChange(rowId){
+  // No further sync needed — justification is captured in Existing only.
+  // (Implementation Status replaces it on the Required side.)
+}
+
+function updateFlaggedCount(){
+  const count = document.querySelectorAll('#flaggedContainer > .scheme-card').length;
+  document.getElementById('flagged-count-label').textContent = count === 1 ? '1 flagged' : `${count} flagged`;
+  document.getElementById('flaggedEmpty').style.display = count === 0 ? 'block' : 'none';
+}
+
+// ============ REQUIRED — SECTION II (NEW) ============
+function addNewRow(){
+  newCounter++;
+  const rowId = `nw${newCounter}`;
+  const container = document.getElementById('newContainer');
+  const card = document.createElement('div');
+  card.className = 'scheme-card';
+  card.id = rowId;
+  card.dataset.context = 'new';
+
+  card.innerHTML = `
+    <div class="scheme-banner" onclick="toggleScheme(event,'${rowId}')">
+      <div class="sb-left">
+        <span class="sb-chevron">▾</span>
+        <span class="sb-num">#${newCounter}</span>
+        <select class="scheme-name-select" id="${rowId}-scheme" onclick="event.stopPropagation()" onchange="refreshSummary()">
+          <option value="">— Select Scheme —</option>
+          ${SCHEME_MASTER.map(s => `<option>${s}</option>`).join('')}
+        </select>
+      </div>
+      <div class="sb-right">
+        <span class="status-chip" id="${rowId}-status-chip" style="display:none"></span>
+        <button class="btn btn-danger" onclick="event.stopPropagation();removeNewRow('${rowId}')" title="Remove">✕</button>
+      </div>
+    </div>
+    <div class="scheme-body" id="${rowId}-body">
+      ${buildSchemeBody(rowId,'new')}
+    </div>
+  `;
+  container.appendChild(card);
+  updateNewCount();
+}
+
+function removeNewRow(rowId){
+  if(!confirm('Remove this new scheme entry?')) return;
+  document.getElementById(rowId)?.remove();
+  updateNewCount();
+  refreshSummary();
+}
+
+function updateNewCount(){
+  const count = document.querySelectorAll('#newContainer > .scheme-card').length;
+  document.getElementById('new-count-label').textContent = count === 1 ? '1 new' : `${count} new`;
+  document.getElementById('newEmpty').style.display = count === 0 ? 'block' : 'none';
+}
+
+// ============ COLLAPSIBLE BANNER ============
+function toggleScheme(e, rowId){
+  // Don't toggle if click was on a control inside the banner
+  if(e.target.closest('select,button,input')) return;
+  const banner = e.currentTarget;
+  const body = document.getElementById(`${rowId}-body`);
+  if(!body) return;
+  const collapsed = body.classList.toggle('collapsed');
+  banner.classList.toggle('collapsed', collapsed);
+}
+
+// ============ STATUS CHIP ON BANNER (Existing — application status) ============
+function onStatusChange(rowId){
+  const status = document.getElementById(`${rowId}-status`)?.value;
+  const chip = document.getElementById(`${rowId}-status-chip`);
+  if(!chip) return;
+  chip.classList.remove('applied','sanctioned','disbursed','rejected','review','pending','onhold');
+  if(!status){ chip.style.display = 'none'; refreshSummary(); return; }
+  const map = {
+    'Applied':'applied', 'Sanctioned':'sanctioned', 'Disbursed':'disbursed',
+    'Rejected':'rejected', 'Under Review':'review'
+  };
+  chip.classList.add(map[status] || 'review');
+  chip.textContent = status;
+  chip.style.display = 'inline-flex';
+  refreshSummary();
+}
+
+// ============ IMPL STATUS CHANGE (Required — implementation status → chip) ============
+function onImplStatusChange(rowId){
+  const status = document.getElementById(`${rowId}-impl-status`)?.value;
+  const chip = document.getElementById(`${rowId}-status-chip`);
+  if(!chip) return;
+  chip.classList.remove('applied','sanctioned','disbursed','rejected','review','pending','onhold');
+  if(!status){ chip.style.display = 'none'; refreshSummary(); return; }
+  const map = {
+    'Pending':'pending', 'On hold':'onhold',
+    'Applied':'applied', 'Rejected':'rejected'
+  };
+  chip.classList.add(map[status] || 'review');
+  chip.textContent = status;
+  chip.style.display = 'inline-flex';
+  refreshSummary();
+}
+
+// ============ LOAN EMI CALC (flat) ============
+function recalcLoan(rowId){
+  const amt   = parseFloat(document.getElementById(`${rowId}-loanamt`)?.value) || 0;
+  const term  = parseFloat(document.getElementById(`${rowId}-loanterm`)?.value) || 0;
+  const emi   = (term > 0) ? (amt / term) : 0;
+  const emiEl = document.getElementById(`${rowId}-emi`);
+  if(emiEl) emiEl.value = `₹ ${emi.toFixed(2)}`;
+  onSchemeChange();
+}
+
+function onSchemeChange(){
+  refreshSummary();
+}
+
+// ============ FILE UPLOAD ============
+function onFileUpload(scope, input){
+  const wrap = document.getElementById(`${scope}-uploadWrap`);
+  const file = input.files?.[0];
+  if(!file || !wrap) return;
+  const existingPill = wrap.querySelector('.file-pill');
+  if(existingPill) existingPill.remove();
+  const pill = document.createElement('span');
+  pill.className = 'file-pill';
+  pill.innerHTML = `📎 <span class="file-name" title="${file.name}">${file.name}</span><span class="file-x" onclick="onFileRemove('${scope}')">×</span>`;
+  pill.dataset.fileUrl = URL.createObjectURL(file);
+  wrap.appendChild(pill);
+  const viewBtn = document.getElementById(`${scope}-viewBtn`);
+  if(viewBtn) viewBtn.disabled = false;
+}
+function onFileView(scope){
+  const wrap = document.getElementById(`${scope}-uploadWrap`);
+  const pill = wrap?.querySelector('.file-pill');
+  const url = pill?.dataset.fileUrl;
+  if(url) window.open(url, '_blank');
+}
+function onFileRemove(scope){
+  const wrap = document.getElementById(`${scope}-uploadWrap`);
+  const pill = wrap?.querySelector('.file-pill');
+  if(pill) pill.remove();
+  const viewBtn = document.getElementById(`${scope}-viewBtn`);
+  if(viewBtn) viewBtn.disabled = true;
+  const fileInput = wrap?.querySelector('input[type="file"]');
+  if(fileInput) fileInput.value = '';
+}
+
+// ============ SUMMARY ============
+function refreshSummary(){
+  // Existing rollup
+  const existingCards = document.querySelectorAll('#existingContainer > .scheme-card');
+  let exSanctioned = 0, exDisbursed = 0, exOutstanding = 0, exEmi = 0, exFlagged = 0;
+  const statusBuckets = { Applied:0, Sanctioned:0, Disbursed:0, Rejected:0, 'Under Review':0 };
+
+  existingCards.forEach(card => {
+    const rowId = card.id;
+    exSanctioned  += parseFloat(document.getElementById(`${rowId}-sanctioned`)?.value)  || 0;
+    exDisbursed   += parseFloat(document.getElementById(`${rowId}-disbursed`)?.value)   || 0;
+    exOutstanding += parseFloat(document.getElementById(`${rowId}-outstanding`)?.value) || 0;
+    const emiText = document.getElementById(`${rowId}-emi`)?.value || '';
+    const emiNum = parseFloat(emiText.replace(/[₹,\s]/g,'')) || 0;
+    exEmi += emiNum;
+    if(document.getElementById(`${rowId}-int-flag`)?.checked) exFlagged++;
+    const st = document.getElementById(`${rowId}-status`)?.value;
+    if(st && statusBuckets[st] !== undefined) statusBuckets[st]++;
+  });
+
+  document.getElementById('sum-existing-count').textContent = existingCards.length;
+  document.getElementById('sum-existing-sanctioned').textContent  = `₹ ${exSanctioned.toFixed(2)}`;
+  document.getElementById('sum-existing-disbursed').textContent   = `₹ ${exDisbursed.toFixed(2)}`;
+  document.getElementById('sum-existing-outstanding').textContent = `₹ ${exOutstanding.toFixed(2)}`;
+  document.getElementById('sum-existing-emi').textContent         = `₹ ${exEmi.toFixed(2)}`;
+  document.getElementById('sum-existing-flagged').textContent     = exFlagged;
+
+  // Required rollup
+  const flaggedCards = document.querySelectorAll('#flaggedContainer > .scheme-card');
+  const newCards     = document.querySelectorAll('#newContainer > .scheme-card');
+  const reqTotal     = flaggedCards.length + newCards.length;
+  let reqSanctioned = 0, reqPending = 0, reqApplied = 0;
+  [...flaggedCards, ...newCards].forEach(card => {
+    const rowId = card.id;
+    reqSanctioned += parseFloat(document.getElementById(`${rowId}-sanctioned`)?.value) || 0;
+    const impl = document.getElementById(`${rowId}-impl-status`)?.value;
+    if(impl === 'Pending')  reqPending++;
+    if(impl === 'Applied')  reqApplied++;
+  });
+  document.getElementById('sum-required-count').textContent      = reqTotal;
+  document.getElementById('sum-required-bridged').textContent    = flaggedCards.length;
+  document.getElementById('sum-required-new').textContent        = newCards.length;
+  document.getElementById('sum-required-sanctioned').textContent = `₹ ${reqSanctioned.toFixed(2)}`;
+  document.getElementById('sum-required-pending').textContent    = reqPending;
+  document.getElementById('sum-required-applied').textContent    = reqApplied;
+
+  // Status distribution bar
+  const distEl = document.getElementById('sum-status-dist');
+  if(distEl){
+    const total = Object.values(statusBuckets).reduce((a,b) => a+b, 0);
+    if(total === 0){
+      distEl.innerHTML = '<div style="flex:1;color:var(--ink-faint);font-style:italic;font-size:11px;display:flex;align-items:center;justify-content:center">No status data yet</div>';
+    } else {
+      const pct = (n) => (n/total)*100;
+      distEl.innerHTML = `
+        <div class="sd-applied"    style="width:${pct(statusBuckets.Applied)}%">${pct(statusBuckets.Applied) >= 8 ? statusBuckets.Applied : ''}</div>
+        <div class="sd-sanctioned" style="width:${pct(statusBuckets.Sanctioned)}%">${pct(statusBuckets.Sanctioned) >= 8 ? statusBuckets.Sanctioned : ''}</div>
+        <div class="sd-disbursed"  style="width:${pct(statusBuckets.Disbursed)}%">${pct(statusBuckets.Disbursed) >= 8 ? statusBuckets.Disbursed : ''}</div>
+        <div class="sd-rejected"   style="width:${pct(statusBuckets.Rejected)}%">${pct(statusBuckets.Rejected) >= 8 ? statusBuckets.Rejected : ''}</div>
+        <div class="sd-review"     style="width:${pct(statusBuckets['Under Review'])}%">${pct(statusBuckets['Under Review']) >= 8 ? statusBuckets['Under Review'] : ''}</div>
+      `;
+    }
+    document.getElementById('sdl-applied').textContent    = statusBuckets.Applied;
+    document.getElementById('sdl-sanctioned').textContent = statusBuckets.Sanctioned;
+    document.getElementById('sdl-disbursed').textContent  = statusBuckets.Disbursed;
+    document.getElementById('sdl-rejected').textContent   = statusBuckets.Rejected;
+    document.getElementById('sdl-review').textContent     = statusBuckets['Under Review'];
+  }
+}
+
+// ============ TASK / LOG BOOK ============
+function addTaskRow(){
+  taskCounter++;
+  const rid = `tk${taskCounter}`;
+  const tbody = document.getElementById('taskBody');
+  const tr = document.createElement('tr');
+  tr.id = rid;
+  const today = new Date().toISOString().split('T')[0];
+  tr.innerHTML = `
+    <td style="text-align:center;color:var(--ink-faint);font-size:10px"></td>
+    <td><input type="date" value="${today}"></td>
+    <td><input type="text" placeholder="e.g., PMEGP application submitted, Bank meeting"></td>
+    <td><input type="text" placeholder="Field officer name"></td>
+    <td><textarea rows="1" placeholder="Outcome, follow-ups, blockers..."></textarea></td>
+    <td><button class="row-delete" onclick="removeTaskRow('${rid}')">✕</button></td>
+  `;
+  tbody.appendChild(tr);
+  renumberLog('taskBody');
+}
+function removeTaskRow(rid){
+  document.getElementById(rid).remove();
+  renumberLog('taskBody');
+}
+
+function addLogBookRow(){
+  logBookCounter++;
+  const rid = `lb${logBookCounter}`;
+  const tbody = document.getElementById('logBookBody');
+  const tr = document.createElement('tr');
+  tr.id = rid;
+  const today = new Date().toISOString().split('T')[0];
+  tr.innerHTML = `
+    <td style="text-align:center;color:var(--ink-faint);font-size:10px"></td>
+    <td><input type="date" value="${today}"></td>
+    <td>
+      <select>
+        <option value="">— Select —</option>
+        <option>Site Visit</option>
+        <option>Bank Visit</option>
+        <option>DIC / Govt Office Visit</option>
+        <option>Phone Call</option>
+        <option>Document Handover</option>
+        <option>Mentoring</option>
+        <option>Other</option>
+      </select>
+    </td>
+    <td><input type="text" placeholder="Bank manager, DIC officer, lender..."></td>
+    <td><textarea rows="1" placeholder="Discussion summary, decisions, next steps..."></textarea></td>
+    <td><button class="row-delete" onclick="removeLogBookRow('${rid}')">✕</button></td>
+  `;
+  tbody.appendChild(tr);
+  renumberLog('logBookBody');
+}
+function removeLogBookRow(rid){
+  document.getElementById(rid).remove();
+  renumberLog('logBookBody');
+}
+
+function renumberLog(tbodyId){
+  const tbody = document.getElementById(tbodyId);
+  if(!tbody) return;
+  Array.from(tbody.children).forEach((tr, i) => {
+    const numCell = tr.querySelector('td:first-child');
+    if(numCell) numCell.textContent = String(i+1).padStart(2,'0');
+  });
+}
+
+// ============ INIT ============
+window.addEventListener('DOMContentLoaded', () => {
+  refreshSummary();
+});
+</script>
+
+</body>
+</html>

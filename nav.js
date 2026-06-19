@@ -4,7 +4,8 @@
     { href: 'index.html', label: 'Home' },
     { href: 'brd.html', label: 'Living BRD' },
     { href: 'plan.html', label: 'Project Plan' },
-    { href: 'status.html', label: 'Status Summary' }
+    { href: 'status.html', label: 'Status Summary' },
+    { href: 'wireframes.html', label: 'Wireframes' }
   ];
 
   var current = location.pathname.split('/').pop() || 'index.html';

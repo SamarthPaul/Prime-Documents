@@ -1,0 +1,967 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Marketing Tools · PRIME Rural</title>
+<style>
+:root {
+  --teal:           #0E4D4E;
+  --sea:            #1A6B6D;
+  --terracotta:     #C26849;
+  --terracotta-dk:  #A85738;
+  --terracotta-sft: #F5E2D6;
+  --terracotta-mid: #ECC9B6;
+  --cream:          #FBF5E5;
+  --cream-deep:     #F4ECD3;
+  --offwhite:       #FDFAF0;
+  --panel:          #FFFFFF;
+  --ink:            #2A2520;
+  --ink-soft:       #6B6359;
+  --ink-faint:      #9C9384;
+  --border:         #E8DFC9;
+  --border-soft:    #F0E9D6;
+  --border-dk:      #D6CDB6;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body {
+  min-height: 100vh;
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: 14px;
+  color: var(--ink);
+  line-height: 1.5;
+  background: var(--cream);
+  -webkit-font-smoothing: antialiased;
+}
+.page { max-width: 980px; margin: 0 auto; padding: 32px 20px 60px; }
+
+/* Header */
+.app-header {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 14px 22px; background: var(--teal);
+  border-radius: 14px 14px 0 0;
+}
+.app-logo { font-size: 13px; letter-spacing: 0.12em; text-transform: uppercase; color: rgba(251,245,229,0.85); font-weight: 600; }
+.app-logo span { color: var(--cream); font-weight: 700; }
+.breadcrumb { font-size: 11px; color: rgba(251,245,229,0.55); letter-spacing: 0.06em; }
+
+.card {
+  background: var(--cream);
+  border: 1px solid var(--border-dk);
+  border-radius: 0 0 16px 16px;
+  overflow: hidden;
+  box-shadow: 0 12px 40px rgba(14,77,78,0.10), 0 2px 8px rgba(42,37,32,0.06);
+}
+
+/* Tabs */
+.tab-bar {
+  display: flex; background: var(--cream-deep);
+  border-bottom: 1px solid var(--border-dk);
+  overflow-x: auto;
+}
+.tab-bar::-webkit-scrollbar { height: 4px; }
+.tab-bar::-webkit-scrollbar-thumb { background: var(--border-dk); border-radius: 2px; }
+.tab {
+  flex-shrink: 0; padding: 11px 18px; font-size: 11px;
+  letter-spacing: 0.12em; text-transform: uppercase;
+  color: var(--ink-soft); cursor: pointer;
+  border-bottom: 2px solid transparent;
+  white-space: nowrap; user-select: none;
+  border-right: 1px solid var(--border);
+}
+.tab:hover:not(.active) { color: var(--ink); background: rgba(251,245,229,0.6); }
+.tab.active {
+  color: var(--panel); background: var(--teal);
+  border-bottom-color: var(--sea); font-weight: 600;
+}
+
+.content { padding: 24px; }
+.panel { display: none; }
+.panel.active { display: block; }
+
+/* Eyebrow / sections */
+.eyebrow {
+  font-size: 10px; letter-spacing: 0.18em;
+  text-transform: uppercase; color: var(--ink-soft);
+  font-weight: 600; margin-bottom: 14px;
+}
+.section {
+  background: var(--cream-deep);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 16px 18px 18px;
+  margin-bottom: 16px;
+}
+.section:last-child { margin-bottom: 0; }
+
+/* Field rows */
+.field-row {
+  display: flex; align-items: center; gap: 12px;
+  padding: 9px 0; border-bottom: 1px solid var(--border);
+  font-size: 13px; flex-wrap: wrap;
+}
+.field-row:last-child { border-bottom: none; }
+.field-label {
+  flex: 0 0 220px; color: var(--ink-soft);
+  font-size: 12.5px; line-height: 1.4;
+}
+.field-val {
+  flex: 1; min-width: 160px;
+  background: var(--panel);
+  border: 1px solid var(--border-dk);
+  border-radius: 6px;
+  padding: 7px 11px;
+  color: var(--ink-faint);
+  font-style: italic;
+  font-size: 12.5px;
+  min-height: 34px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  font-family: Georgia, serif;
+}
+.field-val.auto {
+  background: var(--offwhite);
+  color: var(--teal);
+  font-style: normal;
+  font-weight: 600;
+  font-size: 11.5px;
+  letter-spacing: 0.04em;
+}
+input.field-val, select.field-val, textarea.field-val {
+  color: var(--ink); font-style: normal;
+  font-family: Georgia, serif;
+}
+input.field-val::placeholder, textarea.field-val::placeholder {
+  color: var(--ink-faint); font-style: italic;
+}
+textarea.field-val { min-height: 60px; resize: vertical; align-items: flex-start; }
+
+/* Chips */
+.scope-chip { display: flex; gap: 6px; flex-wrap: wrap; }
+.chip {
+  padding: 4px 14px; border-radius: 20px;
+  font-size: 11px; cursor: pointer;
+  border: 1px solid var(--border-dk);
+  background: var(--offwhite); color: var(--ink-soft);
+  user-select: none;
+}
+.chip:hover { border-color: var(--teal); color: var(--teal); }
+.chip.active { background: var(--teal); color: var(--cream); border-color: var(--teal); }
+
+/* Buttons */
+.btn {
+  padding: 5px 14px;
+  border: 1px solid var(--border-dk);
+  border-radius: 20px;
+  font-size: 11px; color: var(--ink-soft);
+  background: var(--offwhite);
+  cursor: pointer; font-family: Georgia, serif;
+  white-space: nowrap;
+}
+.btn:hover { border-color: var(--terracotta); color: var(--terracotta); }
+.btn-primary { background: var(--teal); color: #fff; border-color: var(--teal); }
+.btn-primary:hover { background: var(--sea); color: #fff; }
+
+/* Toggle */
+.toggle {
+  position: relative; width: 36px; height: 20px;
+  border-radius: 999px; background: var(--border-dk);
+  cursor: pointer; flex-shrink: 0; user-select: none;
+}
+.toggle::after {
+  content: ''; position: absolute; top: 2px; left: 2px;
+  width: 16px; height: 16px; border-radius: 50%;
+  background: var(--panel); box-shadow: 0 1px 3px rgba(0,0,0,0.18);
+  transition: left 0.15s;
+}
+.toggle.on { background: var(--teal); }
+.toggle.on::after { left: 18px; }
+
+/* Drafts */
+.draft-row {
+  display: flex; align-items: center; gap: 10px;
+  padding: 8px 0; border-bottom: 1px solid var(--border);
+  font-size: 12.5px;
+}
+.draft-row:last-child { border-bottom: none; }
+.draft-dot {
+  width: 8px; height: 8px; border-radius: 50%;
+  background: var(--terracotta); flex-shrink: 0;
+}
+.draft-dot.pending { background: var(--border-dk); }
+.draft-name { flex: 1; }
+.draft-name.dim { color: var(--ink-faint); }
+.draft-pending-label { font-size: 11px; color: var(--ink-faint); }
+
+/* Approvals */
+.approval-row { display: flex; gap: 14px; margin-top: 16px; }
+.approval-block { flex: 1; }
+.approval-block .eyebrow { margin-bottom: 8px; }
+.approval-select {
+  width: 100%;
+  background: var(--panel);
+  border: 1px solid var(--border-dk);
+  border-radius: 6px;
+  padding: 7px 11px;
+  font-family: Georgia, serif;
+  font-size: 12.5px;
+  color: var(--ink-faint);
+  cursor: pointer;
+}
+.approval-select:focus { outline: none; border-color: var(--teal); }
+
+/* Tables */
+table.data-table {
+  width: 100%; border-collapse: collapse;
+  background: var(--offwhite);
+  border-radius: 6px; overflow: hidden;
+  border: 1px solid var(--border-dk);
+  font-size: 11.5px;
+}
+table.data-table th {
+  background: var(--teal); color: #fff;
+  padding: 9px 8px; text-align: left;
+  font-weight: normal; text-transform: uppercase;
+  letter-spacing: 0.5px; font-size: 10px;
+  border-right: 1px solid var(--sea);
+  white-space: nowrap;
+}
+table.data-table th:last-child { border-right: none; }
+table.data-table td {
+  padding: 7px 8px;
+  border-bottom: 1px solid var(--border);
+  border-right: 1px solid var(--border);
+  vertical-align: middle;
+}
+table.data-table td:last-child { border-right: none; }
+table.data-table tr:last-child td { border-bottom: none; }
+table.data-table input,
+table.data-table select,
+table.data-table textarea {
+  width: 100%; border: 1px solid var(--border);
+  padding: 5px 6px; border-radius: 3px;
+  font-family: Georgia, serif; font-size: 11px;
+  background: #fff;
+}
+table.data-table input:focus, table.data-table select:focus {
+  outline: none; border-color: var(--teal);
+}
+.row-delete {
+  background: transparent; border: none;
+  color: var(--terracotta); cursor: pointer;
+  font-size: 14px; padding: 2px 6px;
+}
+.row-delete:hover { color: var(--terracotta-dk); }
+.table-actions {
+  display: flex; justify-content: flex-end;
+  margin-top: 10px; gap: 8px;
+}
+
+/* Placeholder tabs */
+.placeholder-tab {
+  padding: 40px; text-align: center;
+  color: var(--ink-faint); font-style: italic;
+  background: var(--cream-deep);
+  border-radius: 10px;
+  border: 1px dashed var(--border-dk);
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+  .field-label { flex: 0 0 100%; }
+  .approval-row { flex-direction: column; }
+  .content { padding: 16px; }
+}
+/* ─── Section banners (teal = assessment/data, terracotta = implementation/action) ─── */
+.section-block { margin-bottom: 20px; }
+.section-banner {
+  background: var(--teal);
+  color: var(--cream, #FBF5E5);
+  padding: 12px 18px;
+  border-radius: 10px 10px 0 0;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-family: var(--font, Georgia, serif);
+}
+.section-banner.intervention,
+.section-banner.implementation { background: var(--terracotta); }
+.section-banner .sb-title {
+  font-size: 13px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+}
+.section-banner .sb-spacer { flex: 1; }
+.section-banner .sb-meta {
+  font-size: 11px;
+  opacity: 0.85;
+  font-style: italic;
+}
+.section-body {
+  background: var(--cream-deep);
+  border: 1px solid var(--border, #E8DFC9);
+  border-top: none;
+  border-radius: 0 0 10px 10px;
+  padding: 16px 18px;
+}
+.section-body .section {
+  background: transparent;
+  border: none;
+  padding: 0;
+  margin: 0 0 14px;
+}
+.section-body .section:last-child { margin-bottom: 0; }
+.section-body .section .eyebrow {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--ink-soft, #6B6359);
+  margin-bottom: 8px;
+  font-weight: 600;
+}
+.section-body .approval-row { margin-top: 0; }
+
+</style>
+</head>
+<body>
+
+<div class="page">
+  <header class="app-header">
+    <div class="app-logo"><span>PRIME Rural</span> | Marketing Tools</div>
+    <div class="breadcrumb">Diagnostics / Marketing Tools</div>
+  </header>
+
+  <div class="card">
+
+    <div class="tab-bar">
+      <div class="tab active" data-panel="summary">Summary</div>
+      <div class="tab" data-panel="brand">Brand</div>
+      <div class="tab" data-panel="logo">Logo</div>
+      <div class="tab" data-panel="bizcard">Business Card</div>
+      <div class="tab" data-panel="resources">Resources</div>
+      <div class="tab" data-panel="tasklog">Task Log</div>
+    </div>
+
+    <div class="content">
+
+      <!-- ============ SUMMARY ============ -->
+      <div class="panel active" id="panel-summary">
+
+        <!-- Brand Profile Card -->
+        <div class="section" style="background:#fff;border:1px solid var(--border-dk);border-radius:12px;padding:0;overflow:hidden;margin-bottom:16px">
+          <div style="background:var(--teal);padding:20px 24px;display:flex;align-items:center;gap:20px">
+            <div style="width:80px;height:80px;background:rgba(255,255,255,0.15);border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0;border:2px dashed rgba(255,255,255,0.3)">
+              <span style="color:rgba(255,255,255,0.5);font-size:11px;text-align:center;line-height:1.4">Logo<br>Upload</span>
+            </div>
+            <div style="flex:1">
+              <div style="font-size:11px;text-transform:uppercase;letter-spacing:1px;color:rgba(255,255,255,0.6);margin-bottom:4px">Enterprise</div>
+              <div style="font-size:20px;color:#fff;font-weight:normal;margin-bottom:4px" id="sum-brand-name">—</div>
+              <div style="font-size:13px;color:rgba(255,255,255,0.7);font-style:italic" id="sum-tagline">—</div>
+            </div>
+            <div style="text-align:right">
+              <div style="font-size:10px;text-transform:uppercase;letter-spacing:1px;color:rgba(255,255,255,0.5);margin-bottom:6px">Market Scope</div>
+              <div style="font-size:12px;color:#FFD580" id="sum-scope">—</div>
+            </div>
+          </div>
+          <div style="padding:16px 24px;background:var(--cream-deep);border-bottom:1px solid var(--border)">
+            <div style="font-size:10px;text-transform:uppercase;letter-spacing:1px;color:var(--ink-soft);margin-bottom:4px">USP</div>
+            <div style="font-size:13px;color:var(--ink)" id="sum-usp">—</div>
+          </div>
+          <div style="padding:16px 24px;display:grid;grid-template-columns:1fr 1fr;gap:16px">
+            <div>
+              <div style="font-size:10px;text-transform:uppercase;letter-spacing:1px;color:var(--ink-soft);margin-bottom:4px">Current Brand Name</div>
+              <div style="font-size:13px;color:var(--ink);font-weight:bold" id="sum-current-name">—</div>
+            </div>
+            <div>
+              <div style="font-size:10px;text-transform:uppercase;letter-spacing:1px;color:var(--ink-soft);margin-bottom:4px">New Brand Name</div>
+              <div style="font-size:13px;color:var(--teal);font-weight:bold" id="sum-new-name">—</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Track Status Cards -->
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:16px">
+
+          <!-- Brand track -->
+          <div style="background:#fff;border:1px solid var(--border);border-radius:10px;overflow:hidden">
+            <div style="background:var(--sea);color:#fff;padding:10px 14px;font-size:11px;text-transform:uppercase;letter-spacing:1px">Brand</div>
+            <div style="padding:14px">
+              <div style="margin-bottom:8px">
+                <div style="font-size:10px;color:var(--ink-soft);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:3px">Entrepreneur Approval</div>
+                <span id="sum-brand-ent-approval" class="status-badge status-pending">—</span>
+              </div>
+              <div>
+                <div style="font-size:10px;color:var(--ink-soft);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:3px">Core Team Approval</div>
+                <span id="sum-brand-core-approval" class="status-badge status-pending">—</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Logo track -->
+          <div style="background:#fff;border:1px solid var(--border);border-radius:10px;overflow:hidden">
+            <div style="background:var(--sea);color:#fff;padding:10px 14px;font-size:11px;text-transform:uppercase;letter-spacing:1px">Logo</div>
+            <div style="padding:14px">
+              <div style="margin-bottom:8px">
+                <div style="font-size:10px;color:var(--ink-soft);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:3px">New Logo Needed</div>
+                <span id="sum-logo-needed" class="status-badge status-pending">—</span>
+              </div>
+              <div style="margin-bottom:8px">
+                <div style="font-size:10px;color:var(--ink-soft);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:3px">Entrepreneur Approval</div>
+                <span id="sum-logo-ent-approval" class="status-badge status-pending">—</span>
+              </div>
+              <div>
+                <div style="font-size:10px;color:var(--ink-soft);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:3px">Core Team Approval</div>
+                <span id="sum-logo-core-approval" class="status-badge status-pending">—</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Business Card track -->
+          <div style="background:#fff;border:1px solid var(--border);border-radius:10px;overflow:hidden">
+            <div style="background:var(--sea);color:#fff;padding:10px 14px;font-size:11px;text-transform:uppercase;letter-spacing:1px">Business Card</div>
+            <div style="padding:14px">
+              <div style="margin-bottom:8px">
+                <div style="font-size:10px;color:var(--ink-soft);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:3px">Entrepreneur Approval</div>
+                <span id="sum-card-ent-approval" class="status-badge status-pending">—</span>
+              </div>
+              <div>
+                <div style="font-size:10px;color:var(--ink-soft);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:3px">Core Team Approval</div>
+                <span id="sum-card-core-approval" class="status-badge status-pending">—</span>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+
+      <!-- ============ BRAND ============ -->
+      <div class="panel" id="panel-brand">
+
+        <!-- Section I — Brand Identity Data (teal) -->
+        <div class="section-block">
+          <div class="section-banner">
+            <span class="sb-title">Brand Identity Data</span>
+            <span class="sb-spacer"></span>
+            <span class="sb-meta">Assessment &amp; positioning</span>
+          </div>
+          <div class="section-body">
+            <div class="section">
+              <div class="field-row">
+                <div class="field-label">Enterprise Name</div>
+                <div class="field-val auto">Auto-fetched</div>
+              </div>
+              <div class="field-row">
+                <div class="field-label">Storyline of the Enterprise</div>
+                <div class="field-val auto">Auto-fetched</div>
+              </div>
+              <div class="field-row">
+                <div class="field-label">Current Brand Name</div>
+                <input type="text" class="field-val" placeholder="Enter current name">
+              </div>
+              <div class="field-row">
+                <div class="field-label">Need New Brand Name?</div>
+                <div class="field-val">
+                  <span class="toggle" onclick="this.classList.toggle('on')"></span>
+                  <span style="color:var(--ink-soft);font-style:normal;">Toggle if intervention needed</span>
+                </div>
+              </div>
+              <div class="field-row">
+                <div class="field-label">New Brand Name (if advised)</div>
+                <input type="text" class="field-val" placeholder="Enter proposed name">
+              </div>
+              <div class="field-row">
+                <div class="field-label">Justification</div>
+                <textarea class="field-val" placeholder="Enter justification for brand change"></textarea>
+              </div>
+              <div class="field-row">
+                <div class="field-label">USP of Brand</div>
+                <input type="text" class="field-val" placeholder="Enter USP">
+              </div>
+              <div class="field-row">
+                <div class="field-label">Brand Tagline</div>
+                <input type="text" class="field-val" placeholder="Enter tagline">
+              </div>
+              <div class="field-row">
+                <div class="field-label">Entrepreneur Media Folder Link</div>
+                <div class="field-val auto">Auto-fetched</div>
+              </div>
+            </div>
+
+            <div class="section">
+              <div class="eyebrow">Market Scope</div>
+              <div class="field-row" style="border:none;padding-top:6px;">
+                <div class="scope-chip">
+                  <div class="chip active">Local / State</div>
+                  <div class="chip">National</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Section II — Implementation Status (terracotta) -->
+        <div class="section-block">
+          <div class="section-banner implementation">
+            <span class="sb-title">Implementation Status</span>
+            <span class="sb-spacer"></span>
+            <span class="sb-meta">Approvals</span>
+          </div>
+          <div class="section-body">
+            <div class="approval-row">
+              <div class="approval-block">
+                <div class="eyebrow">Entrepreneur Approval</div>
+                <select class="approval-select"><option value="">Select status ▾</option><option>Approved</option><option>Pending</option><option>Rejected</option></select>
+              </div>
+              <div class="approval-block">
+                <div class="eyebrow">Core Team Approval</div>
+                <select class="approval-select"><option value="">Select status ▾</option><option>Approved</option><option>Pending</option><option>Rejected</option></select>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- ============ LOGO ============ -->
+      <div class="panel" id="panel-logo">
+
+        <div class="section">
+          <div class="eyebrow">Entrepreneur Snapshot</div>
+          <div class="field-row">
+            <div class="field-label">Entrepreneur Name</div>
+            <div class="field-val auto">Auto-fetched from profile</div>
+          </div>
+          <div class="field-row">
+            <div class="field-label">Profile Link</div>
+            <div class="field-val"><button class="btn">Go to profile</button></div>
+          </div>
+        </div>
+
+        <!-- Section I — Existing Logo (teal) -->
+        <div class="section-block">
+          <div class="section-banner">
+            <span class="sb-title">Existing Logo</span>
+            <span class="sb-spacer"></span>
+            <span class="sb-meta">Current state &amp; intervention flag</span>
+          </div>
+          <div class="section-body">
+            <div class="section">
+              <div class="field-row">
+                <div class="field-label">Existing Logo in HD</div>
+                <div class="field-val">
+                  <button class="btn">Upload</button>
+                  <button class="btn">View ▷</button>
+                </div>
+              </div>
+              <div class="field-row">
+                <div class="field-label">Open File (if available)</div>
+                <div class="field-val"><button class="btn">Upload</button></div>
+              </div>
+              <div class="field-row">
+                <div class="field-label">Need New Logo?</div>
+                <div class="field-val">
+                  <span class="toggle" onclick="this.classList.toggle('on')"></span>
+                  <span style="color:var(--ink-soft);font-style:normal;">Toggle if intervention needed</span>
+                </div>
+              </div>
+              <div class="field-row">
+                <div class="field-label">Justification</div>
+                <textarea class="field-val" placeholder="Enter reason"></textarea>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Section II — Implementation Status (terracotta) -->
+        <div class="section-block">
+          <div class="section-banner implementation">
+            <span class="sb-title">Implementation Status</span>
+            <span class="sb-spacer"></span>
+            <span class="sb-meta">Designer · Drafts · Approvals</span>
+          </div>
+          <div class="section-body">
+            <div class="section">
+              <div class="eyebrow">Assign Designer</div>
+              <div class="field-row">
+                <div class="field-label">Designer</div>
+                <select class="field-val">
+                  <option>Select designer ▾</option>
+                  <option>Designer A</option>
+                  <option>Designer B</option>
+                  <option>AI Generated</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="section">
+              <div class="eyebrow">Draft Versions</div>
+              <div class="draft-row">
+                <div class="draft-dot"></div>
+                <div class="draft-name">Draft 1</div>
+                <button class="btn">Upload</button>
+                <button class="btn">View ▷</button>
+              </div>
+              <div class="draft-row">
+                <div class="draft-dot pending"></div>
+                <div class="draft-name dim">Draft 2</div>
+                <span class="draft-pending-label">Pending</span>
+              </div>
+              <div class="draft-row">
+                <div class="draft-dot pending"></div>
+                <div class="draft-name dim">Draft 3</div>
+                <span class="draft-pending-label">Pending</span>
+              </div>
+            </div>
+
+            <div class="approval-row">
+              <div class="approval-block">
+                <div class="eyebrow">Entrepreneur Approval</div>
+                <select class="approval-select"><option value="">Select status ▾</option><option>Approved</option><option>Pending</option><option>Rejected</option></select>
+              </div>
+              <div class="approval-block">
+                <div class="eyebrow">Core Team Approval</div>
+                <select class="approval-select"><option value="">Select status ▾</option><option>Approved</option><option>Pending</option><option>Rejected</option></select>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- ============ BUSINESS CARD ============ -->
+      <div class="panel" id="panel-bizcard">
+
+        <!-- Section I — Card Content (teal) -->
+        <div class="section-block">
+          <div class="section-banner">
+            <span class="sb-title">Card Content</span>
+            <span class="sb-spacer"></span>
+            <span class="sb-meta">Auto-populated from profile</span>
+          </div>
+          <div class="section-body">
+            <div class="section">
+              <div class="field-row">
+                <div class="field-label">Name of Entrepreneur</div>
+                <div class="field-val auto">Auto-fetched</div>
+              </div>
+              <div class="field-row">
+                <div class="field-label">Name of Enterprise</div>
+                <div class="field-val auto">Auto-fetched</div>
+              </div>
+              <div class="field-row">
+                <div class="field-label">Brand Tagline</div>
+                <div class="field-val auto">Auto-fetched</div>
+              </div>
+              <div class="field-row">
+                <div class="field-label">Contact Number</div>
+                <div class="field-val auto">Auto-fetched</div>
+              </div>
+              <div class="field-row">
+                <div class="field-label">Email</div>
+                <div class="field-val auto">Auto-fetched</div>
+              </div>
+            </div>
+
+            <div class="section">
+              <div class="eyebrow">Digital Assets</div>
+              <div class="field-row">
+                <div class="field-label">WhatsApp Catalogue QR</div>
+                <div class="field-val">
+                  <button class="btn">Upload</button>
+                  <button class="btn">View ▷</button>
+                </div>
+              </div>
+              <div class="field-row">
+                <div class="field-label">Instagram QR</div>
+                <div class="field-val">
+                  <button class="btn">Upload</button>
+                  <button class="btn">View ▷</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Section II — Implementation Status (terracotta) -->
+        <div class="section-block">
+          <div class="section-banner implementation">
+            <span class="sb-title">Implementation Status</span>
+            <span class="sb-spacer"></span>
+            <span class="sb-meta">Designer · Drafts · Approvals</span>
+          </div>
+          <div class="section-body">
+            <div class="section">
+              <div class="eyebrow">Assign Designer</div>
+              <div class="field-row">
+                <div class="field-label">Designer</div>
+                <select class="field-val">
+                  <option>Select designer ▾</option>
+                  <option>Designer A</option>
+                  <option>Designer B</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="section">
+              <div class="eyebrow">Draft Versions</div>
+              <div class="draft-row">
+                <div class="draft-dot"></div>
+                <div class="draft-name">Draft 1</div>
+                <button class="btn">Upload</button>
+                <button class="btn">View ▷</button>
+              </div>
+              <div class="draft-row">
+                <div class="draft-dot pending"></div>
+                <div class="draft-name dim">Draft 2</div>
+                <span class="draft-pending-label">Pending</span>
+              </div>
+              <div class="draft-row">
+                <div class="draft-dot pending"></div>
+                <div class="draft-name dim">Draft 3</div>
+                <span class="draft-pending-label">Pending</span>
+              </div>
+            </div>
+
+            <div class="approval-row">
+              <div class="approval-block">
+                <div class="eyebrow">Entrepreneur Approval</div>
+                <select class="approval-select"><option value="">Select status ▾</option><option>Approved</option><option>Pending</option><option>Rejected</option></select>
+              </div>
+              <div class="approval-block">
+                <div class="eyebrow">Core Team Approval</div>
+                <select class="approval-select"><option value="">Select status ▾</option><option>Approved</option><option>Pending</option><option>Rejected</option></select>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- ============ RESOURCES ============ -->
+      <div class="panel" id="panel-resources">
+        <div class="section">
+          <div class="eyebrow">Reference Materials</div>
+          <table class="data-table" id="resourcesTable">
+            <thead>
+              <tr>
+                <th style="width:25%">Resource Title</th>
+                <th style="width:18%">Category</th>
+                <th style="width:12%">Type</th>
+                <th style="width:30%">Description / Notes</th>
+                <th style="width:10%">File</th>
+                <th style="width:5%"></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><input type="text" placeholder="Resource title"></td>
+                <td>
+                  <select>
+                    <option>— Select —</option>
+                    <option>Brand</option>
+                    <option>Logo</option>
+                    <option>Business Card</option>
+                    <option>General</option>
+                  </select>
+                </td>
+                <td>
+                  <select>
+                    <option>— Select —</option>
+                    <option>Template</option>
+                    <option>Reference</option>
+                    <option>Guideline</option>
+                    <option>Example</option>
+                  </select>
+                </td>
+                <td><input type="text" placeholder="Notes"></td>
+                <td>
+                  <button class="btn" style="padding:3px 8px;font-size:10px">Upload</button>
+                  <button class="btn" style="padding:3px 8px;font-size:10px">View ▷</button>
+                </td>
+                <td><button class="row-delete" onclick="deleteRow(this)">✕</button></td>
+              </tr>
+            </tbody>
+          </table>
+          <div class="table-actions">
+            <button class="btn btn-primary" onclick="addRow('resourcesTable')">+ Add Resource</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- ============ TASK LOG ============ -->
+      <div class="panel" id="panel-tasklog">
+        <div class="section">
+          <div class="eyebrow">Task Log</div>
+          <table class="data-table" id="taskLogTable">
+            <thead>
+              <tr>
+                <th style="width:5%">No.</th>
+                <th style="width:13%">Date</th>
+                <th style="width:42%">Task Name</th>
+                <th style="width:30%">Notes / Outcome</th>
+                <th style="width:7%">Attachment</th>
+                <th style="width:3%"></th>
+              </tr>
+            </thead>
+            <tbody id="taskLogBody"></tbody>
+          </table>
+          <div class="table-actions">
+            <button class="btn btn-primary" onclick="addTaskRow()">+ Add Entry</button>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<script>
+// Tab switching
+document.querySelectorAll('.tab').forEach(tab => {
+  tab.addEventListener('click', () => {
+    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+    tab.classList.add('active');
+    document.getElementById('panel-' + tab.dataset.panel).classList.add('active');
+    if(tab.dataset.panel === 'summary') refreshSummary();
+  });
+});
+
+// Chip group toggle
+document.querySelectorAll('.scope-chip').forEach(group => {
+  group.querySelectorAll('.chip').forEach(chip => {
+    chip.addEventListener('click', () => {
+      group.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
+      chip.classList.add('active');
+    });
+  });
+});
+
+// Generic row helpers
+function addRow(tableId){
+  const tbody = document.querySelector('#' + tableId + ' tbody');
+  const row = tbody.rows[0].cloneNode(true);
+  row.querySelectorAll('input').forEach(i => i.value = '');
+  row.querySelectorAll('select').forEach(s => s.selectedIndex = 0);
+  tbody.appendChild(row);
+}
+function deleteRow(btn){
+  const row = btn.closest('tr');
+  const tbody = row.parentElement;
+  if(tbody.rows.length > 1){ row.remove(); }
+  else { alert('At least one row is required.'); }
+}
+
+// ============ TASK LOG ============
+const BI_TASKS = [
+  '01 — Awareness on Importance of Brand Identity',
+  '02 — Record Existing Brand Information',
+  '03 — Draft Brand Story & USP',
+  '04 — Brainstorm and Research Brand Name Ideas',
+  '05 — Brand Name Approved by Entrepreneur',
+  '06 — Final Brand Name & Tagline Confirmed',
+  '07 — Awareness on Importance of Logo',
+  '08 — Data Collection for Logo Creation',
+  '09 — Brainstorm and Sketch Logo Concepts',
+  '10 — Designer briefing on Logo',
+  '11 — Logo Reviewed by Core Team',
+  '12 — Final Logo Selected and Confirmed by Entrepreneur',
+  '13 — Deliver Final Logo Files to Entrepreneur',
+  '14 — Awareness on Importance of Business Card',
+  '15 — Data Collection for Business Card',
+  '16 — Creation of Business Card on Canva',
+  '17 — Business Card Reviewed by Core Team',
+  '18 — Business Card Approved by Entrepreneur',
+  '19 — Deliver Business Card Files to Entrepreneur',
+  '20 — Business Card Printed by Entrepreneur Locally',
+  '21 — Business Card Printed and Collected from PRIME Office',
+  '22 — Business Card Delivered to Entrepreneur',
+  '23 — Follow-up on Business Card Usage and Reprinting Needs',
+  '24 — If others, specify',
+];
+
+const BI_TASK_OPTIONS = BI_TASKS.map(t => `<option value="${t}">${t}</option>`).join('');
+let taskLogCounter = 0;
+
+function addTaskRow(){
+  taskLogCounter++;
+  const tbody = document.getElementById('taskLogBody');
+  const tr = document.createElement('tr');
+  tr.innerHTML = `
+    <td class="num-col">${String(taskLogCounter).padStart(2,'0')}</td>
+    <td><input type="date" style="width:100%"></td>
+    <td><select style="width:100%"><option value="">— Select Task —</option>${BI_TASK_OPTIONS}</select></td>
+    <td><input type="text" placeholder="Notes / Outcome" style="width:100%"></td>
+    <td><button class="btn" style="padding:3px 8px;font-size:10px">Upload</button></td>
+    <td><button class="row-delete" onclick="deleteTaskRow(this)">✕</button></td>
+  `;
+  tbody.appendChild(tr);
+}
+
+function deleteTaskRow(btn){
+  const tbody = btn.closest('tbody');
+  btn.closest('tr').remove();
+  tbody.querySelectorAll('tr').forEach((tr, i) => {
+    tr.querySelector('.num-col').textContent = String(i+1).padStart(2,'0');
+  });
+  taskLogCounter = tbody.rows.length;
+}
+
+// ============ SUMMARY REFRESH ============
+function refreshSummary(){
+  // Brand fields — pull from Brand tab inputs
+  const brandInputs = document.querySelectorAll('#panel-brand input[type="text"]');
+  const brandSelects = document.querySelectorAll('#panel-brand .approval-select');
+  const currentName = brandInputs[0]?.value || '—';
+  const newName     = brandInputs[1]?.value || '—';
+  const usp         = brandInputs[2]?.value || '—';
+  const tagline     = brandInputs[3]?.value || '—';
+  const activeChip  = document.querySelector('#panel-brand .chip.active');
+  const scope       = activeChip?.textContent || '—';
+
+  document.getElementById('sum-brand-name').textContent   = currentName !== '—' ? currentName : 'Enterprise Name';
+  document.getElementById('sum-tagline').textContent      = tagline;
+  document.getElementById('sum-usp').textContent          = usp;
+  document.getElementById('sum-scope').textContent        = scope;
+  document.getElementById('sum-current-name').textContent = currentName;
+  document.getElementById('sum-new-name').textContent     = newName || '—';
+
+  // Approval badges
+  function approvalBadge(el, val){
+    el.textContent = val || '—';
+    el.className = 'status-badge ' + (val === 'Approved' ? 'status-completed' : val === 'Rejected' ? 'status-progress' : 'status-pending');
+  }
+
+  const brandApprovals = document.querySelectorAll('#panel-brand .approval-select');
+  approvalBadge(document.getElementById('sum-brand-ent-approval'),  brandApprovals[0]?.value);
+  approvalBadge(document.getElementById('sum-brand-core-approval'), brandApprovals[1]?.value);
+
+  // Logo
+  const logoNeededToggle = document.querySelector('#panel-logo .toggle');
+  const logoNeeded = logoNeededToggle?.classList.contains('on') ? 'Yes' : 'No';
+  document.getElementById('sum-logo-needed').textContent = logoNeeded;
+  document.getElementById('sum-logo-needed').className = 'status-badge ' + (logoNeeded === 'Yes' ? 'status-progress' : 'status-completed');
+
+  const logoApprovals = document.querySelectorAll('#panel-logo .approval-select');
+  approvalBadge(document.getElementById('sum-logo-ent-approval'),  logoApprovals[0]?.value);
+  approvalBadge(document.getElementById('sum-logo-core-approval'), logoApprovals[1]?.value);
+
+  // Business Card
+  const cardApprovals = document.querySelectorAll('#panel-bizcard .approval-select');
+  approvalBadge(document.getElementById('sum-card-ent-approval'),  cardApprovals[0]?.value);
+  approvalBadge(document.getElementById('sum-card-core-approval'), cardApprovals[1]?.value);
+}
+
+// Init
+window.addEventListener('DOMContentLoaded', () => {
+  addTaskRow();
+  refreshSummary();
+});
+</script>
+
+</body>
+</html>

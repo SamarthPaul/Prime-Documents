@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>PRIME Rural Fellowship - Wireframes</title>
+<link rel="stylesheet" href="styles.css">
+<style>
+  html, body { margin: 0; height: 100%; }
+  body { font-family: var(--font); background: var(--bg); color: var(--text); display: flex; flex-direction: column; }
+
+  /* Sub-header */
+  .wf-head {
+    background: var(--card); border-bottom: 1px solid var(--border);
+    padding: 12px 20px; display: flex; align-items: center; gap: 16px; flex-wrap: wrap;
+  }
+  .wf-head h1 { font-size: 16px; font-weight: 700; margin: 0; color: var(--prime-green); white-space: nowrap; }
+  .wf-head .sub { font-size: 12px; color: var(--text-secondary); }
+  .wf-search {
+    margin-left: auto; min-width: 200px; flex: 0 1 280px;
+    padding: 7px 12px; font-size: 13px; font-family: var(--font);
+    border: 1px solid var(--border); border-radius: 8px; outline: none;
+  }
+  .wf-search:focus { border-color: var(--prime-green); }
+
+  /* Layout */
+  .wf-layout { flex: 1; display: flex; min-height: 0; }
+
+  /* Sidebar */
+  .wf-side {
+    width: 280px; flex-shrink: 0; background: var(--card);
+    border-right: 1px solid var(--border); overflow-y: auto; padding: 8px 0 24px;
+  }
+  .wf-cat { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .6px;
+    color: var(--text-secondary); padding: 14px 18px 6px; }
+  .wf-item {
+    display: block; padding: 8px 18px; font-size: 13px; color: var(--text);
+    text-decoration: none; border-left: 3px solid transparent; cursor: pointer;
+    transition: background .12s;
+  }
+  .wf-item:hover { background: var(--prime-green-light); }
+  .wf-item.active { background: var(--prime-green-light); border-left-color: var(--prime-green);
+    color: var(--prime-green); font-weight: 600; }
+  .wf-item.hidden { display: none; }
+  .wf-cat.hidden { display: none; }
+  .wf-empty { padding: 18px; font-size: 13px; color: var(--text-secondary); display: none; }
+
+  /* Viewer */
+  .wf-main { flex: 1; display: flex; flex-direction: column; min-width: 0; background: #fff; }
+  .wf-toolbar {
+    display: flex; align-items: center; gap: 12px; padding: 8px 16px;
+    border-bottom: 1px solid var(--border); background: #fafbfc;
+  }
+  .wf-toolbar .name { font-size: 13px; font-weight: 600; }
+  .wf-toolbar .path { font-size: 11px; color: var(--text-secondary); }
+  .wf-toolbar .spacer { margin-left: auto; }
+  .wf-btn {
+    display: inline-flex; align-items: center; gap: 6px; font-size: 12px; font-weight: 600;
+    padding: 6px 12px; border-radius: 7px; text-decoration: none; cursor: pointer;
+    border: 1px solid var(--border); background: #fff; color: var(--text);
+  }
+  .wf-btn:hover { border-color: var(--prime-green); color: var(--prime-green); }
+  .wf-btn-primary { background: var(--prime-green); color: #fff; border-color: var(--prime-green); }
+  .wf-btn-primary:hover { background: var(--prime-green-dark); color: #fff; }
+  .wf-frame-wrap { flex: 1; min-height: 0; position: relative; }
+  iframe#wfFrame { border: 0; width: 100%; height: 100%; display: block; background: #fff; }
+
+  /* Mobile sidebar toggle */
+  .wf-sidetoggle { display: none; }
+  @media (max-width: 760px) {
+    .wf-side { position: fixed; top: var(--site-nav-h); left: 0; bottom: 0; z-index: 50;
+      transform: translateX(-100%); transition: transform .2s; box-shadow: 2px 0 12px rgba(0,0,0,.12); }
+    .wf-side.open { transform: translateX(0); }
+    .wf-sidetoggle { display: inline-flex; }
+  }
+</style>
+</head>
+<body>
+<script src="nav.js"></script>
+
+<div class="wf-head">
+  <button class="wf-btn wf-sidetoggle" id="sideToggle">&#9776; Modules</button>
+  <h1>Wireframes</h1>
+  <span class="sub">All 28 client module mockups &mdash; click any module to view it inline, then compare against the portal.</span>
+  <input type="search" class="wf-search" id="wfSearch" placeholder="Search modules&hellip;" autocomplete="off">
+</div>
+
+<div class="wf-layout">
+  <aside class="wf-side" id="wfSide"></aside>
+  <main class="wf-main">
+    <div class="wf-toolbar">
+      <div>
+        <div class="name" id="wfName">&mdash;</div>
+        <div class="path" id="wfPath"></div>
+      </div>
+      <div class="spacer"></div>
+      <a class="wf-btn wf-btn-primary" id="wfOpen" href="#" target="_blank" rel="noopener">&#8599; Open in new tab</a>
+    </div>
+    <div class="wf-frame-wrap">
+      <iframe id="wfFrame" title="Wireframe preview"></iframe>
+    </div>
+  </main>
+</div>
+
+<script>
+(function () {
+  var WIREFRAMES = [
+    { cat: 'Product Development', items: [
+      { f: 'product_profile_module.html',         l: 'Product Profile' },
+      { f: 'product_prototyping_module.html',     l: 'Product Prototyping' },
+      { f: 'product_standardization_module.html', l: 'Product Standardization' },
+      { f: 'product_testing_module.html',         l: 'Product Testing' },
+      { f: 'product_packaging_module.html',       l: 'Product Packaging' },
+      { f: 'product_compliance_module.html',      l: 'Product Compliance' },
+      { f: 'quality_control_module.html',         l: 'Quality Control' },
+      { f: 'raw_material_module.html',            l: 'Raw Material' }
+    ]},
+    { cat: 'Branding & Marketing', items: [
+      { f: 'branding_identity_module.html',       l: 'Branding & Identity' },
+      { f: 'labels_module.html',                  l: 'Labels' },
+      { f: 'brochures_module.html',               l: 'Brochures' },
+      { f: 'promotions_module.html',              l: 'Promotions' },
+      { f: 'pitch_deck_module.html',              l: 'Pitch Deck' },
+      { f: 'market_research_module.html',         l: 'Market Research' },
+      { f: 'market_linkage_module.html',          l: 'Market Linkage' },
+      { f: 'customer_analysis_module.html',       l: 'Customer Analysis' }
+    ]},
+    { cat: 'Business & Finance', items: [
+      { f: 'business_plan_canvas_module.html',    l: 'Business Plan Canvas' },
+      { f: 'business_registration_module.html',   l: 'Business Registration' },
+      { f: 'financials_module.html',              l: 'Financials' },
+      { f: 'unit_pricing_module.html',            l: 'Unit Pricing' },
+      { f: 'schemes_funding_module.html',         l: 'Schemes & Funding' }
+    ]},
+    { cat: 'Operations', items: [
+      { f: 'infrastructure_module.html',          l: 'Infrastructure' },
+      { f: 'machinery_module.html',               l: 'Machinery' },
+      { f: 'logistics_packing_module.html',       l: 'Logistics – Packing' },
+      { f: 'logistics_service_module.html',       l: 'Logistics – Service' }
+    ]},
+    { cat: 'People & Capacity', items: [
+      { f: 'human_resource_module.html',          l: 'Human Resource' },
+      { f: 'capacity_building_module.html',       l: 'Capacity Building' },
+      { f: 'digital_literacy_module.html',        l: 'Digital Literacy' }
+    ]}
+  ];
+  var BASE = 'wireframes/';
+
+  var side = document.getElementById('wfSide');
+  var frame = document.getElementById('wfFrame');
+  var nameEl = document.getElementById('wfName');
+  var pathEl = document.getElementById('wfPath');
+  var openEl = document.getElementById('wfOpen');
+  var search = document.getElementById('wfSearch');
+  var byFile = {};
+  var firstFile = WIREFRAMES[0].items[0].f;
+
+  // Build sidebar
+  WIREFRAMES.forEach(function (group) {
+    var h = document.createElement('div');
+    h.className = 'wf-cat';
+    h.textContent = group.cat;
+    h.dataset.cat = group.cat;
+    side.appendChild(h);
+    group.items.forEach(function (it) {
+      var a = document.createElement('a');
+      a.className = 'wf-item';
+      a.textContent = it.l;
+      a.href = '#' + it.f.replace(/\.html$/, '');
+      a.dataset.file = it.f;
+      a.dataset.label = it.l.toLowerCase();
+      a.dataset.cat = group.cat;
+      side.appendChild(a);
+      byFile[it.f] = { el: a, label: it.l };
+    });
+  });
+  var empty = document.createElement('div');
+  empty.className = 'wf-empty';
+  empty.id = 'wfEmpty';
+  empty.textContent = 'No modules match your search.';
+  side.appendChild(empty);
+
+  function show(file) {
+    var rec = byFile[file];
+    if (!rec) { file = firstFile; rec = byFile[file]; }
+    frame.src = BASE + file;
+    nameEl.textContent = rec.label;
+    pathEl.textContent = 'from-client/' + file;
+    openEl.href = BASE + file;
+    Object.keys(byFile).forEach(function (f) { byFile[f].el.classList.remove('active'); });
+    rec.el.classList.add('active');
+    document.getElementById('wfSide').classList.remove('open');
+  }
+
+  // Sidebar clicks update the hash; hashchange drives the view
+  side.addEventListener('click', function (e) {
+    var a = e.target.closest('.wf-item');
+    if (!a) return;
+    e.preventDefault();
+    location.hash = a.dataset.file.replace(/\.html$/, '');
+    show(a.dataset.file);
+  });
+
+  function fromHash() {
+    var h = (location.hash || '').replace(/^#/, '');
+    var file = h ? h + '.html' : firstFile;
+    show(byFile[file] ? file : firstFile);
+  }
+  window.addEventListener('hashchange', fromHash);
+
+  // Search filter
+  search.addEventListener('input', function () {
+    var q = search.value.trim().toLowerCase();
+    var anyVisible = false;
+    var visibleByCat = {};
+    side.querySelectorAll('.wf-item').forEach(function (a) {
+      var match = !q || a.dataset.label.indexOf(q) !== -1;
+      a.classList.toggle('hidden', !match);
+      if (match) { anyVisible = true; visibleByCat[a.dataset.cat] = true; }
+    });
+    side.querySelectorAll('.wf-cat').forEach(function (h) {
+      h.classList.toggle('hidden', !visibleByCat[h.dataset.cat]);
+    });
+    document.getElementById('wfEmpty').style.display = anyVisible ? 'none' : 'block';
+  });
+
+  document.getElementById('sideToggle').addEventListener('click', function () {
+    document.getElementById('wfSide').classList.toggle('open');
+  });
+
+  fromHash();
+})();
+</script>
+</body>
+</html>

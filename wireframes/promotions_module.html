@@ -1,0 +1,722 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Promotions · PRIME Rural</title>
+<style>
+:root {
+  --teal:#0E4D4E; --sea:#1A6B6D; --terracotta:#C26849; --terracotta-dk:#A85738;
+  --terracotta-sft:#F5E2D6;
+  --cream:#FBF5E5; --cream-deep:#F4ECD3; --offwhite:#FDFAF0; --panel:#FFFFFF;
+  --ink:#2A2520; --ink-soft:#6B6359; --ink-faint:#9C9384;
+  --border:#E8DFC9; --border-dk:#D6CDB6;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:Georgia,serif;background:var(--cream);color:var(--ink);line-height:1.4}
+.page{max-width:1200px;margin:0 auto;padding:24px}
+
+.header{background:var(--teal);color:#fff;padding:16px 20px;border-radius:12px 12px 0 0;display:flex;justify-content:space-between;align-items:center}
+.header h1{font-size:18px;font-weight:normal;letter-spacing:0.5px}
+.header .crumb{font-size:11px;opacity:0.75;text-transform:uppercase;letter-spacing:1px}
+
+.card{background:var(--cream);border:1px solid var(--border-dk);border-top:none;border-radius:0 0 12px 12px}
+
+.tab-bar{display:flex;background:var(--cream-deep);border-bottom:1px solid var(--border-dk)}
+.tab{padding:12px 22px;cursor:pointer;font-size:12px;text-transform:uppercase;letter-spacing:1px;color:var(--ink-soft);border-right:1px solid var(--border)}
+.tab.active{background:var(--teal);color:#fff}
+.tab:hover:not(.active){background:#EADFC0}
+
+.content{padding:22px}
+
+.entrepreneur-chip{display:inline-flex;align-items:center;gap:10px;background:#fff;border:1px solid var(--border-dk);padding:6px 14px;border-radius:20px;font-size:12px;margin-bottom:18px}
+.ent-avatar{width:24px;height:24px;background:var(--teal);color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:bold}
+
+.section{background:var(--cream-deep);padding:16px;border-radius:10px;margin-bottom:16px;border:1px solid var(--border)}
+.section-title{font-size:13px;text-transform:uppercase;letter-spacing:1.5px;color:var(--teal);margin-bottom:6px;padding-bottom:8px;border-bottom:1px solid var(--border-dk);font-weight:bold;display:flex;justify-content:space-between;align-items:center}
+
+.section-caption{background:var(--cream-deep);border-left:3px solid var(--terracotta);padding:8px 12px;border-radius:0 6px 6px 0;font-size:12px;color:var(--ink-soft);font-style:italic;margin-bottom:14px}
+
+.btn{padding:5px 12px;border-radius:20px;border:1px solid var(--border-dk);background:#fff;cursor:pointer;font-size:11px;color:var(--ink);font-family:Georgia,serif}
+.btn:hover{background:var(--cream-deep)}
+.btn-primary{background:var(--teal);color:#fff;border-color:var(--teal)}
+.btn-primary:hover{background:var(--sea)}
+
+.field-val{flex:1;background:var(--offwhite);border:1px solid var(--border-dk);padding:6px 10px;border-radius:5px;font-size:12px;min-width:200px;font-family:Georgia,serif}
+textarea.field-val{font-family:Georgia,serif;resize:vertical;min-height:50px}
+
+table.data-table{width:100%;border-collapse:collapse;background:var(--offwhite);border-radius:6px;overflow:hidden;border:1px solid var(--border-dk);font-size:11px}
+table.data-table th{background:var(--teal);color:#fff;padding:8px;text-align:left;font-weight:normal;text-transform:uppercase;letter-spacing:0.5px;font-size:10px;border-right:1px solid var(--sea);white-space:nowrap}
+table.data-table th:last-child{border-right:none}
+table.data-table td{padding:6px 7px;border-bottom:1px solid var(--border);border-right:1px solid var(--border);vertical-align:middle}
+table.data-table td:last-child{border-right:none}
+table.data-table tr:last-child td{border-bottom:none}
+table.data-table input,table.data-table select{width:100%;border:1px solid var(--border);padding:4px 6px;border-radius:3px;font-family:Georgia,serif;font-size:11px;background:#fff}
+table.data-table input:focus,table.data-table select:focus{outline:none;border-color:var(--teal)}
+table.data-table .num-col{width:36px;text-align:center;color:var(--ink-soft)}
+
+.row-delete{background:transparent;border:none;color:var(--terracotta);cursor:pointer;font-size:14px;padding:2px 6px}
+.row-delete:hover{color:var(--terracotta-dk)}
+
+.table-actions{display:flex;justify-content:space-between;align-items:center;margin-top:10px}
+
+/* Intervention block */
+.intervention-block{background:var(--terracotta-sft);border:1px solid var(--terracotta);border-radius:8px;padding:14px;margin-top:12px}
+.intervention-block-title{font-size:11px;text-transform:uppercase;letter-spacing:1px;color:var(--terracotta-dk);margin-bottom:10px;font-weight:bold}
+.toggle{width:36px;height:18px;border-radius:20px;background:#ccc;display:inline-block;cursor:pointer;position:relative;flex-shrink:0;vertical-align:middle}
+.toggle::after{content:'';width:14px;height:14px;background:#fff;border-radius:50%;position:absolute;top:2px;left:2px;transition:left 0.2s}
+.toggle.on{background:var(--teal)}
+.toggle.on::after{left:20px}
+.flag-note{font-size:10px;color:var(--ink-faint);font-style:italic;margin:6px 0}
+.flag-note.active{color:var(--terracotta-dk);font-weight:bold;font-style:normal}
+
+.hidden{display:none !important}
+
+/* ─── Summary ─── */
+.sm-section{background:var(--cream-deep);padding:16px;border-radius:10px;margin-bottom:16px;border:1px solid var(--border)}
+.sm-section-title{font-size:13px;text-transform:uppercase;letter-spacing:1.5px;color:var(--teal);margin-bottom:12px;padding-bottom:8px;border-bottom:1px solid var(--border-dk);font-weight:bold}
+.sm-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.sm-card{background:#fff;border:1px solid var(--border);border-radius:10px;padding:14px}
+.sm-card h3{font-size:11px;text-transform:uppercase;letter-spacing:1px;color:var(--teal);margin-bottom:10px;padding-bottom:6px;border-bottom:1px solid var(--border);font-weight:bold}
+.sm-row{display:flex;justify-content:space-between;padding:5px 0;font-size:12px;border-bottom:1px solid #f0e9d6}
+.sm-row:last-child{border-bottom:none}
+.sm-lbl{color:var(--ink-soft)}
+.sm-val{font-weight:bold;color:var(--ink)}
+.sm-val.green{color:#3F6B3A}
+.sm-val.amber{color:#7A3B22}
+.sm-val.blue{color:#1F4A78}
+.sm-flags{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+.sm-flag{background:#fff;border:1px solid var(--border);border-radius:8px;padding:12px}
+.sm-flag-icon{width:30px;height:30px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:14px;margin-bottom:8px}
+.sm-flag-count{font-size:20px;font-weight:bold;color:var(--ink)}
+.sm-flag-label{font-size:10px;color:var(--ink-soft);text-transform:uppercase;letter-spacing:0.5px;margin-top:4px}
+table.ov-tbl{width:100%;border-collapse:collapse;background:var(--offwhite);border-radius:6px;overflow:hidden;border:1px solid var(--border-dk);font-size:11px}
+table.ov-tbl th{background:var(--teal);color:#fff;padding:9px 8px;text-align:left;font-weight:normal;text-transform:uppercase;letter-spacing:0.5px;font-size:10px;border-right:1px solid var(--sea)}
+table.ov-tbl th:last-child{border-right:none}
+table.ov-tbl th.th-req{background:var(--sea)}
+table.ov-tbl td{padding:7px 8px;border-bottom:1px solid var(--border);border-right:1px solid var(--border);vertical-align:middle}
+table.ov-tbl td:last-child{border-right:none}
+table.ov-tbl tr:last-child td{border-bottom:none}
+table.ov-tbl tr.row-new td{background:#FFF8E1}
+</style>
+</head>
+<body>
+
+<div class="page">
+<div class="header">
+  <h1>Promotions</h1>
+  <div class="crumb">PRIME Rural · Marketing Framework</div>
+</div>
+<div class="card">
+
+<div class="tab-bar">
+  <div class="tab" onclick="showTab('summary',this)">Summary</div>
+  <div class="tab active" onclick="showTab('existing',this)">Existing</div>
+  <div class="tab" onclick="showTab('required',this)">Required</div>
+  <div class="tab" onclick="showTab('resources',this)">Resources</div>
+  <div class="tab" onclick="showTab('tasklog',this)">Task Log</div>
+</div>
+
+<div class="content">
+
+<div class="entrepreneur-chip">
+  <div class="ent-avatar">EN</div>
+  <span style="color:var(--ink-soft);font-style:italic">Auto-fetched from profile</span>
+</div>
+
+<!-- ============ SUMMARY ============ -->
+<div id="summary" class="panel hidden">
+
+  <!-- ① Promotion-wise Overview -->
+  <div class="sm-section">
+    <div class="sm-section-title">Promotion-wise Overview</div>
+    <p style="font-size:11px;color:var(--ink-soft);font-style:italic;margin-bottom:10px">One row per existing promotion. Recommended new methods appear highlighted below.</p>
+    <div style="overflow-x:auto">
+    <table class="ov-tbl">
+      <thead>
+        <tr>
+          <th>Promotion Name</th>
+          <th>Type</th>
+          <th>Handled By</th>
+          <th>Frequency</th>
+          <th>Notes</th>
+          <th class="th-req">Intervention Type</th>
+          <th class="th-req">Implementation Status</th>
+        </tr>
+      </thead>
+      <tbody id="sumOverviewBody">
+        <tr><td colspan="7" style="text-align:center;color:var(--ink-faint);font-style:italic;padding:14px">Auto-populated from Existing and Required tabs</td></tr>
+      </tbody>
+    </table>
+    </div>
+  </div>
+
+  <!-- ② Aggregates -->
+  <div class="sm-section">
+    <div class="sm-section-title">Aggregates</div>
+    <div class="sm-grid">
+
+      <div class="sm-card">
+        <h3>Existing</h3>
+        <div class="sm-row"><span class="sm-lbl">Total Promotions</span><span class="sm-val" id="agg-ex-total">0</span></div>
+        <div class="sm-row"><span class="sm-lbl">Online</span><span class="sm-val blue" id="agg-ex-online">0</span></div>
+        <div class="sm-row"><span class="sm-lbl">Offline</span><span class="sm-val" id="agg-ex-offline">0</span></div>
+        <div class="sm-row"><span class="sm-lbl">Intervention Flagged</span><span class="sm-val amber" id="agg-ex-flagged">No</span></div>
+      </div>
+
+      <div class="sm-card">
+        <h3>Cost</h3>
+        <div class="sm-row"><span class="sm-lbl">Daily Frequency</span><span class="sm-val" id="agg-freq-daily">0</span></div>
+        <div class="sm-row"><span class="sm-lbl">Weekly Frequency</span><span class="sm-val" id="agg-freq-weekly">0</span></div>
+        <div class="sm-row"><span class="sm-lbl">Monthly Frequency</span><span class="sm-val" id="agg-freq-monthly">0</span></div>
+        <div class="sm-row"><span class="sm-lbl">Yearly Frequency</span><span class="sm-val" id="agg-freq-yearly">0</span></div>
+      </div>
+
+      <div class="sm-card">
+        <h3>Interventions</h3>
+        <div class="sm-row"><span class="sm-lbl">New Methods Recommended</span><span class="sm-val" id="agg-req-total">0</span></div>
+        <div class="sm-row"><span class="sm-lbl">Online Additions</span><span class="sm-val blue" id="agg-req-online">0</span></div>
+        <div class="sm-row"><span class="sm-lbl">Offline Additions</span><span class="sm-val" id="agg-req-offline">0</span></div>
+        <div class="sm-row"><span class="sm-lbl">Suggested Handled By</span><span class="sm-val" id="agg-req-handler" style="font-size:11px;text-align:right;max-width:160px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">—</span></div>
+      </div>
+
+      <div class="sm-card">
+        <h3>Intervention Status</h3>
+        <div class="sm-row"><span class="sm-lbl">Completed</span><span class="sm-val green" id="agg-impl-completed">0</span></div>
+        <div class="sm-row"><span class="sm-lbl">In Progress</span><span class="sm-val amber" id="agg-impl-progress">0</span></div>
+        <div class="sm-row"><span class="sm-lbl">Pending</span><span class="sm-val" id="agg-impl-pending">0</span></div>
+        <div class="sm-row"><span class="sm-lbl">Not Feasible</span><span class="sm-val" style="color:#8B2A0F" id="agg-impl-notfeasible">0</span></div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ③ Intervention Flags -->
+  <div class="sm-section">
+    <div class="sm-section-title">Intervention Flags</div>
+    <div class="sm-flags">
+      <div class="sm-flag"><div class="sm-flag-icon" style="background:#E3EFDF;color:#3F6B3A">📣</div><div class="sm-flag-count" id="flag-existing">0</div><div class="sm-flag-label">Existing Promotions</div></div>
+      <div class="sm-flag"><div class="sm-flag-icon" style="background:#FBE9DF;color:#7A3B22">↻</div><div class="sm-flag-count" id="flag-flagged">No</div><div class="sm-flag-label">New Methods Needed</div></div>
+      <div class="sm-flag"><div class="sm-flag-icon" style="background:#D6E3EE;color:#1F4A78">🌐</div><div class="sm-flag-count" id="flag-online">0</div><div class="sm-flag-label">Online (Total)</div></div>
+      <div class="sm-flag"><div class="sm-flag-icon" style="background:#F4ECD3;color:#6B6359">🏪</div><div class="sm-flag-count" id="flag-offline">0</div><div class="sm-flag-label">Offline (Total)</div></div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ============ RESOURCES ============ -->
+<div id="resources" class="panel hidden">
+  <div class="sm-section">
+    <div class="sm-section-title">Reference Materials</div>
+    <table class="data-table" id="resourcesTable">
+      <thead>
+        <tr>
+          <th style="width:25%">Resource Title</th>
+          <th style="width:18%">Category</th>
+          <th style="width:12%">Type</th>
+          <th style="width:30%">Description / Notes</th>
+          <th style="width:10%">File</th>
+          <th style="width:5%"></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><input type="text" placeholder="Resource title"></td>
+          <td>
+            <select>
+              <option>— Select —</option>
+              <option>Social Media Guide</option>
+              <option>Platform Reference</option>
+              <option>Content Template</option>
+              <option>Budget Estimate</option>
+              <option>Campaign Tracker</option>
+              <option>Competitor Promotion</option>
+              <option>Govt. Scheme for Promotion</option>
+              <option>Other</option>
+            </select>
+          </td>
+          <td>
+            <select>
+              <option>— Select —</option>
+              <option>Guide / Manual</option>
+              <option>Template</option>
+              <option>Reference</option>
+              <option>Contact</option>
+              <option>Photo / Evidence</option>
+            </select>
+          </td>
+          <td><input type="text" placeholder="Notes"></td>
+          <td>
+            <button class="btn" style="padding:3px 8px;font-size:10px">Upload</button>
+            <button class="btn" style="padding:3px 8px;font-size:10px">View ▷</button>
+          </td>
+          <td><button style="background:transparent;border:none;color:var(--terracotta);cursor:pointer;font-size:14px;padding:2px 6px" onclick="deleteResRow(this)">✕</button></td>
+        </tr>
+      </tbody>
+    </table>
+    <div style="display:flex;justify-content:flex-end;margin-top:10px">
+      <button class="btn btn-primary" onclick="addResRow()">+ Add Resource</button>
+    </div>
+  </div>
+</div>
+
+<!-- ============ TASK LOG ============ -->
+<div id="tasklog" class="panel hidden">
+  <div class="sm-section">
+    <div class="sm-section-title" style="display:flex;justify-content:space-between;align-items:center">
+      <span>Task Log — Promotions Activities</span>
+      <span style="font-size:11px;color:var(--ink-faint);font-weight:normal;text-transform:none;letter-spacing:normal;font-style:italic"><span id="task-count">0</span> entries</span>
+    </div>
+    <table class="data-table" id="taskLogTable">
+      <thead>
+        <tr>
+          <th style="width:5%">No.</th>
+          <th style="width:13%">Date</th>
+          <th style="width:42%">Task Name</th>
+          <th style="width:30%">Notes / Outcome</th>
+          <th style="width:7%">Attachment</th>
+          <th style="width:3%"></th>
+        </tr>
+      </thead>
+      <tbody id="taskLogBody"></tbody>
+    </table>
+    <div style="display:flex;justify-content:flex-end;margin-top:10px">
+      <button class="btn btn-primary" onclick="addTaskRow()">+ Add Entry</button>
+    </div>
+  </div>
+</div>
+
+<!-- ============ EXISTING ============ -->
+<div id="existing" class="panel">
+
+  <div class="section">
+    <div class="section-title"><span>Existing Promotions</span></div>
+    <div class="section-caption">Map how the entrepreneur currently promotes their products — all offline and online activities.</div>
+    <div style="overflow-x:auto">
+      <table class="data-table" id="existingPromoTable">
+        <thead>
+          <tr>
+            <th class="num-col">#</th>
+            <th style="min-width:160px">Promotion Name</th>
+            <th style="min-width:110px">Type</th>
+            <th style="min-width:140px">Handled by</th>
+            <th style="min-width:110px">Frequency</th>
+            <th>Notes</th>
+            <th style="width:30px"></th>
+          </tr>
+        </thead>
+        <tbody id="existingPromoBody"></tbody>
+      </table>
+    </div>
+    <div class="table-actions">
+      <span></span>
+      <button class="btn btn-primary" onclick="addExistingPromoRow()">+ Add Promotion</button>
+    </div>
+  </div>
+
+  <div class="intervention-block">
+    <div class="intervention-block-title">⚠ Intervention Need</div>
+    <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:8px">
+      <div style="font-size:12px;font-weight:bold;color:var(--ink)">Need New Promotion Methods?</div>
+      <span class="toggle" id="upgradeToggle" onclick="toggleUpgrade(this)"></span>
+    </div>
+    <div class="flag-note" id="upgradeNote">Not flagged</div>
+    <div id="justifyWrap" class="hidden" style="margin-top:8px">
+      <div style="font-size:11px;color:var(--ink-soft);margin-bottom:4px">Justification</div>
+      <textarea class="field-val" id="upgradeJustify" placeholder="Reason for needing new promotion methods..." style="width:100%"></textarea>
+    </div>
+  </div>
+
+</div>
+
+<!-- ============ REQUIRED ============ -->
+<div id="required" class="panel hidden">
+
+  <div class="section">
+    <div class="section-title"><span>Recommended Promotions</span></div>
+    <div class="section-caption">Propose promotion strategies to add or upgrade based on identified gaps.</div>
+    <div style="overflow-x:auto">
+      <table class="data-table" id="requiredPromoTable">
+        <thead>
+          <tr>
+            <th class="num-col">#</th>
+            <th style="min-width:160px">Promotion Name</th>
+            <th style="min-width:110px">Type</th>
+            <th style="min-width:160px">Suggested Handled by</th>
+            <th style="min-width:110px">Frequency</th>
+            <th>Notes</th>
+            <th style="min-width:120px">Implementation Status</th>
+            <th style="width:30px"></th>
+          </tr>
+        </thead>
+        <tbody id="requiredPromoBody"></tbody>
+      </table>
+    </div>
+    <div class="table-actions">
+      <span></span>
+      <button class="btn btn-primary" onclick="addRequiredPromoRow()">+ Add Promotion</button>
+    </div>
+  </div>
+
+</div>
+
+</div>
+</div>
+</div>
+
+<script>
+let existingPromoCounter = 0;
+let requiredPromoCounter = 0;
+
+const TYPE_OPTIONS = ['Offline','Online'];
+const FREQUENCY_OPTIONS = ['Daily','Weekly','Monthly','Yearly'];
+
+// ============ TAB SWITCHING ============
+function showTab(id, el){
+  document.querySelectorAll('.panel').forEach(p => p.classList.add('hidden'));
+  document.getElementById(id).classList.remove('hidden');
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  el.classList.add('active');
+  if(id === 'summary') refreshSummary();
+}
+
+// ============ SUMMARY ============
+function refreshSummary(){
+  const s = (id,v) => { const el=document.getElementById(id); if(el) el.textContent=v; };
+
+  const exRows  = document.querySelectorAll('#existingPromoBody tr');
+  const reqRows = document.querySelectorAll('#requiredPromoBody tr');
+
+  // ── Existing ─────────────────────────────────────────────────
+  let exTotal=0, exOnline=0, exOffline=0;
+  let freqDaily=0, freqWeekly=0, freqMonthly=0, freqYearly=0;
+  const isFlagged = document.getElementById('upgradeToggle')?.classList.contains('on');
+
+  let html = '';
+
+  exRows.forEach(tr => {
+    const cells  = tr.querySelectorAll('td');
+    if(cells.length < 6) return;
+    const name    = cells[1]?.querySelector('input')?.value?.trim() || '—';
+    const type    = cells[2]?.querySelector('select')?.value || '—';
+    const handler = cells[3]?.querySelector('input')?.value?.trim() || '—';
+    const freq    = cells[4]?.querySelector('select')?.value || '—';
+    const notes   = cells[5]?.querySelector('input')?.value?.trim() || '—';
+
+    if(!name || name === '—') return;
+    exTotal++;
+    if(type === 'Online')  exOnline++;
+    if(type === 'Offline') exOffline++;
+    if(freq === 'Daily')   freqDaily++;
+    if(freq === 'Weekly')  freqWeekly++;
+    if(freq === 'Monthly') freqMonthly++;
+    if(freq === 'Yearly')  freqYearly++;
+
+    const typeBadge = type && type !== '—'
+      ? `<span style="display:inline-block;padding:2px 8px;border-radius:10px;font-size:10px;font-weight:bold;background:${type==='Online'?'#D6E3EE':'var(--cream-deep)'};color:${type==='Online'?'#1F4A78':'var(--ink-soft)'}">${type}</span>`
+      : '—';
+
+    html += `<tr>
+      <td><strong>${name}</strong></td>
+      <td>${typeBadge}</td>
+      <td style="font-size:11px">${handler}</td>
+      <td style="font-size:11px">${freq||'—'}</td>
+      <td style="font-size:11px;color:var(--ink-soft)">${notes}</td>
+      <td style="background:#FDF3EE"><span style="color:var(--ink-faint)">—</span></td>
+      <td style="background:#EDF6EA"><span style="color:var(--ink-faint)">—</span></td>
+    </tr>`;
+  });
+
+  // ── Required ─────────────────────────────────────────────────
+  let reqTotal=0, reqOnline=0, reqOffline=0;
+  let implCompleted=0, implProgress=0, implPending=0, implNotFeasible=0;
+  const handlers = [];
+
+  reqRows.forEach(tr => {
+    const cells   = tr.querySelectorAll('td');
+    if(cells.length < 6) return;
+    const name    = cells[1]?.querySelector('input')?.value?.trim() || '—';
+    const type    = cells[2]?.querySelector('select')?.value || '—';
+    const handler = cells[3]?.querySelector('input')?.value?.trim() || '';
+    const freq    = cells[4]?.querySelector('select')?.value || '—';
+    const notes   = cells[5]?.querySelector('input')?.value?.trim() || '—';
+    const impl    = tr.querySelector('.req-impl-status')?.value || '';
+
+    if(!name || name === '—') return;
+    reqTotal++;
+    if(type === 'Online')  reqOnline++;
+    if(type === 'Offline') reqOffline++;
+    if(handler) handlers.push(handler);
+    if(impl === 'Completed')    implCompleted++;
+    else if(impl === 'In Progress') implProgress++;
+    else if(impl === 'Not Feasible') implNotFeasible++;
+    else implPending++;
+
+    const typeBadge = type && type !== '—'
+      ? `<span style="display:inline-block;padding:2px 8px;border-radius:10px;font-size:10px;font-weight:bold;background:${type==='Online'?'#D6E3EE':'var(--cream-deep)'};color:${type==='Online'?'#1F4A78':'var(--ink-soft)'}">${type}</span>`
+      : '—';
+
+    const IMPL_CLS = {
+      'Completed':   'background:#E3EFDF;color:#3F6B3A',
+      'In Progress': 'background:#FBE9DF;color:#7A3B22',
+      'Not Feasible':'background:#F5D6CC;color:#8B2A0F',
+      'Pending':     'background:var(--cream-deep);color:var(--ink-soft)',
+    };
+    const implBadge = impl
+      ? `<span style="display:inline-block;padding:3px 9px;border-radius:12px;font-size:10px;font-weight:bold;${IMPL_CLS[impl]||IMPL_CLS['Pending']}">${impl}</span>`
+      : '<span style="color:var(--ink-faint)">—</span>';
+
+    html += `<tr class="row-new">
+      <td><strong>${name}</strong></td>
+      <td>${typeBadge}</td>
+      <td style="font-size:11px">${handler||'—'}</td>
+      <td style="font-size:11px">${freq||'—'}</td>
+      <td style="font-size:11px;color:var(--ink-soft)">${notes}</td>
+      <td style="background:#FDF3EE"><span style="display:inline-block;padding:2px 8px;border-radius:10px;font-size:10px;font-weight:bold;background:#D6E3EE;color:#1F4A78">+ New</span></td>
+      <td style="background:#EDF6EA">${implBadge}</td>
+    </tr>`;
+  });
+
+  document.getElementById('sumOverviewBody').innerHTML = html ||
+    '<tr><td colspan="7" style="text-align:center;color:var(--ink-faint);font-style:italic;padding:14px">Auto-populated from Existing and Required tabs</td></tr>';
+
+  // ── Aggregates ────────────────────────────────────────────────
+  s('agg-ex-total',       exTotal);
+  s('agg-ex-online',      exOnline);
+  s('agg-ex-offline',     exOffline);
+  s('agg-ex-flagged',     isFlagged ? 'Yes' : 'No');
+  document.getElementById('agg-ex-flagged')?.style &&
+    (document.getElementById('agg-ex-flagged').style.color = isFlagged ? '#7A3B22' : '');
+  s('agg-freq-daily',     freqDaily);
+  s('agg-freq-weekly',    freqWeekly);
+  s('agg-freq-monthly',   freqMonthly);
+  s('agg-freq-yearly',    freqYearly);
+  s('agg-req-total',      reqTotal);
+  s('agg-req-online',     reqOnline);
+  s('agg-req-offline',    reqOffline);
+  s('agg-req-handler',    handlers.length > 0 ? [...new Set(handlers)].join(', ') : '—');
+  s('agg-impl-completed', implCompleted);
+  s('agg-impl-progress',  implProgress);
+  s('agg-impl-pending',   implPending);
+  s('agg-impl-notfeasible',implNotFeasible);
+
+  // ── Flags ─────────────────────────────────────────────────────
+  s('flag-existing', exTotal);
+  s('flag-flagged',  isFlagged ? 'Yes' : 'No');
+  s('flag-online',   exOnline + reqOnline);
+  s('flag-offline',  exOffline + reqOffline);
+}
+
+// ============ RESOURCES ============
+function addResRow(){
+  const tbody = document.querySelector('#resourcesTable tbody');
+  const row = tbody.rows[0].cloneNode(true);
+  row.querySelectorAll('input[type=text]').forEach(i => i.value='');
+  row.querySelectorAll('select').forEach(s => s.selectedIndex=0);
+  tbody.appendChild(row);
+}
+function deleteResRow(btn){
+  const tbody = btn.closest('tbody');
+  if(tbody.rows.length > 1) btn.closest('tr').remove();
+  else alert('At least one row is required.');
+}
+
+// ============ TASK LOG ============
+const PR_TASKS = [
+  '01 — Awareness on Importance of Promotions',
+  '02 — Document Existing Promotion Activities',
+  '03 — Assess Reach and Effectiveness of Existing Promotions',
+  '04 — Identify Gaps in Promotion Coverage',
+  '05 — Research Platform Options (Online)',
+  '06 — Recommend New Promotion Methods',
+  '07 — Set Up Social Media Profile / Page',
+  '08 — Create First Content Piece (Photo / Video)',
+  '09 — Publish First Post / Campaign',
+  '10 — Train Entrepreneur on Content Creation',
+  '11 — Review First Month Promotion Performance',
+  '12 — Plan Next Promotion Cycle',
+  '13 — Coordinate with Marketing / Design Partners',
+  '14 — Track Leads / Inquiries from Promotions',
+  '15 — Update Promotions Module in CRM',
+  'If other, specify in comments',
+];
+const PR_TASK_OPTS = PR_TASKS.map(t => `<option value="${t}">${t}</option>`).join('');
+let taskLogCounter = 0;
+
+function addTaskRow(){
+  taskLogCounter++;
+  const tbody = document.getElementById('taskLogBody');
+  const tr = document.createElement('tr');
+  tr.innerHTML = `
+    <td style="width:40px;text-align:center;color:var(--ink-soft)">${String(taskLogCounter).padStart(2,'0')}</td>
+    <td><input type="date" style="width:100%"></td>
+    <td><select style="width:100%"><option value="">— Select Task —</option>${PR_TASK_OPTS}</select></td>
+    <td><input type="text" placeholder="Notes / Outcome" style="width:100%"></td>
+    <td><button class="btn" style="padding:3px 8px;font-size:10px">Upload</button></td>
+    <td><button style="background:transparent;border:none;color:var(--terracotta);cursor:pointer;font-size:14px;padding:2px 6px" onclick="deleteTaskRow(this)">✕</button></td>
+  `;
+  tbody.appendChild(tr);
+  document.getElementById('task-count').textContent = tbody.rows.length;
+}
+function deleteTaskRow(btn){
+  const tbody = btn.closest('tbody');
+  btn.closest('tr').remove();
+  tbody.querySelectorAll('tr').forEach((tr,i) => { tr.cells[0].textContent = String(i+1).padStart(2,'0'); });
+  taskLogCounter = tbody.rows.length;
+  document.getElementById('task-count').textContent = tbody.rows.length;
+}
+
+// ============ INIT ============
+window.addEventListener('DOMContentLoaded', () => {
+  // Seed Existing: Facebook page + WhatsApp status
+  addExistingPromoRow(); addExistingPromoRow();
+  setTimeout(() => {
+    const r1 = document.querySelector('#existingPromoBody tr:nth-child(1)');
+    if(r1){
+      r1.querySelectorAll('td')[1].querySelector('input').value = 'Facebook Page Posts';
+      r1.querySelectorAll('td')[2].querySelector('select').value = 'Online';
+      r1.querySelectorAll('td')[3].querySelector('input').value = 'Self / Daughter';
+      r1.querySelectorAll('td')[4].querySelector('select').value = 'Weekly';
+      r1.querySelectorAll('td')[5].querySelector('input').value = 'Product photos, occasional videos';
+    }
+    const r2 = document.querySelector('#existingPromoBody tr:nth-child(2)');
+    if(r2){
+      r2.querySelectorAll('td')[1].querySelector('input').value = 'WhatsApp Status Updates';
+      r2.querySelectorAll('td')[2].querySelector('select').value = 'Online';
+      r2.querySelectorAll('td')[3].querySelector('input').value = 'Self';
+      r2.querySelectorAll('td')[4].querySelector('select').value = 'Daily';
+      r2.querySelectorAll('td')[5].querySelector('input').value = 'Sends to customer groups';
+    }
+    // Seed Required: Instagram reels
+    addRequiredPromoRow();
+    setTimeout(() => {
+      const rq = document.querySelector('#requiredPromoBody tr:nth-child(1)');
+      if(rq){
+        rq.querySelectorAll('td')[1].querySelector('input').value = 'Instagram Reels';
+        rq.querySelectorAll('td')[2].querySelector('select').value = 'Online';
+        rq.querySelectorAll('td')[3].querySelector('input').value = 'Marketing Intern / Family';
+        rq.querySelectorAll('td')[4].querySelector('select').value = 'Weekly';
+        rq.querySelectorAll('td')[5].querySelector('input').value = 'Short videos showing process and product';
+        rq.querySelector('.req-impl-status').value = 'In Progress';
+      }
+      refreshSummary();
+      showTab('summary', document.querySelector('.tab'));
+    }, 20);
+  }, 20);
+});
+function addExistingPromoRow(){
+  existingPromoCounter++;
+  const rid = `exp${existingPromoCounter}`;
+  const tbody = document.getElementById('existingPromoBody');
+  const tr = document.createElement('tr');
+  tr.id = rid;
+
+  const typeOpts = TYPE_OPTIONS.map(t => `<option>${t}</option>`).join('');
+  const freqOpts = FREQUENCY_OPTIONS.map(f => `<option>${f}</option>`).join('');
+
+  tr.innerHTML = `
+    <td class="num-col"></td>
+    <td><input type="text" placeholder="e.g., Facebook page posts"></td>
+    <td>
+      <select>
+        <option value="">— Select —</option>
+        ${typeOpts}
+      </select>
+    </td>
+    <td><input type="text" placeholder="e.g., Self / Daughter"></td>
+    <td>
+      <select>
+        <option value="">— Select —</option>
+        ${freqOpts}
+      </select>
+    </td>
+    <td><input type="text" placeholder="Reach, spend, observations..."></td>
+    <td><button class="row-delete" onclick="removeExistingPromoRow('${rid}')">✕</button></td>
+  `;
+  tbody.appendChild(tr);
+  renumberRows('existingPromoBody');
+}
+
+function removeExistingPromoRow(rid){
+  document.getElementById(rid).remove();
+  renumberRows('existingPromoBody');
+}
+
+// ============ REQUIRED TAB ============
+function addRequiredPromoRow(){
+  requiredPromoCounter++;
+  const rid = `rqp${requiredPromoCounter}`;
+  const tbody = document.getElementById('requiredPromoBody');
+  const tr = document.createElement('tr');
+  tr.id = rid;
+
+  const typeOpts = TYPE_OPTIONS.map(t => `<option>${t}</option>`).join('');
+  const freqOpts = FREQUENCY_OPTIONS.map(f => `<option>${f}</option>`).join('');
+
+  tr.innerHTML = `
+    <td class="num-col"></td>
+    <td><input type="text" placeholder="e.g., Instagram reels"></td>
+    <td>
+      <select>
+        <option value="">— Select —</option>
+        ${typeOpts}
+      </select>
+    </td>
+    <td><input type="text" placeholder="e.g., Marketing intern, family member"></td>
+    <td>
+      <select>
+        <option value="">— Select —</option>
+        ${freqOpts}
+      </select>
+    </td>
+    <td><input type="text" placeholder="Tactics, budget, justification..."></td>
+    <td>
+      <select class="req-impl-status" onchange="refreshSummary()">
+        <option value="">— Select —</option>
+        <option>Pending</option>
+        <option>In Progress</option>
+        <option>Completed</option>
+        <option>Not Feasible</option>
+      </select>
+    </td>
+    <td><button class="row-delete" onclick="removeRequiredPromoRow('${rid}')">✕</button></td>
+  `;
+  tbody.appendChild(tr);
+  renumberRows('requiredPromoBody');
+}
+
+function removeRequiredPromoRow(rid){
+  document.getElementById(rid).remove();
+  renumberRows('requiredPromoBody');
+}
+
+// ============ INTERVENTION TOGGLE ============
+function toggleUpgrade(el){
+  el.classList.toggle('on');
+  const note = document.getElementById('upgradeNote');
+  const justifyWrap = document.getElementById('justifyWrap');
+  if(el.classList.contains('on')){
+    note.textContent = '↻ Flagged → Add new promotion methods in Required tab';
+    note.classList.add('active');
+    justifyWrap.classList.remove('hidden');
+  } else {
+    note.textContent = 'Not flagged';
+    note.classList.remove('active');
+    justifyWrap.classList.add('hidden');
+  }
+}
+
+// ============ HELPERS ============
+function renumberRows(tbodyId){
+  const tbody = document.getElementById(tbodyId);
+  if(!tbody) return;
+  Array.from(tbody.children).forEach((tr, i) => {
+    const numEl = tr.querySelector('.num-col');
+    if(numEl) numEl.textContent = String(i+1).padStart(2,'0');
+  });
+}
+
+</script>
+
+</body>
+</html>

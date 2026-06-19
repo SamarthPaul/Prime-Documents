@@ -1,0 +1,973 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Customer Analysis · PRIME Rural</title>
+<style>
+:root {
+  --teal:#0E4D4E; --sea:#1A6B6D; --terracotta:#C26849; --terracotta-dk:#A85738;
+  --terracotta-sft:#F5E2D6;
+  --cream:#FBF5E5; --cream-deep:#F4ECD3; --offwhite:#FDFAF0; --panel:#FFFFFF;
+  --ink:#2A2520; --ink-soft:#6B6359; --ink-faint:#9C9384;
+  --border:#E8DFC9; --border-dk:#D6CDB6;
+  --good-bg:#E3EFDF; --good-ink:#3F6B3A;
+  --fair-bg:#FBE9DF; --fair-ink:#7A3B22;
+  --poor-bg:#F5D6CC; --poor-ink:#8B2A0F;
+  --highlight:#FFF8E1;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:Georgia,serif;background:var(--cream);color:var(--ink);line-height:1.4}
+.page{max-width:1200px;margin:0 auto;padding:24px}
+
+.header{background:var(--teal);color:#fff;padding:16px 20px;border-radius:12px 12px 0 0;display:flex;justify-content:space-between;align-items:center}
+.header h1{font-size:18px;font-weight:normal;letter-spacing:0.5px}
+.header .crumb{font-size:11px;opacity:0.75;text-transform:uppercase;letter-spacing:1px}
+
+.card{background:var(--cream);border:1px solid var(--border-dk);border-top:none;border-radius:0 0 12px 12px}
+
+.tab-bar{display:flex;background:var(--cream-deep);border-bottom:1px solid var(--border-dk)}
+.tab{padding:12px 22px;cursor:pointer;font-size:12px;text-transform:uppercase;letter-spacing:1px;color:var(--ink-soft);border-right:1px solid var(--border)}
+.tab.active{background:var(--teal);color:#fff}
+.tab:hover:not(.active){background:#EADFC0}
+
+.content{padding:22px}
+
+.entrepreneur-chip{display:inline-flex;align-items:center;gap:10px;background:#fff;border:1px solid var(--border-dk);padding:6px 14px;border-radius:20px;font-size:12px;margin-bottom:18px}
+.ent-avatar{width:24px;height:24px;background:var(--teal);color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:bold}
+
+/* Section inside product card body */
+.subsection{background:var(--cream-deep);padding:14px;border-radius:8px;margin-bottom:12px;border:1px solid var(--border)}
+.subsection-title{font-size:12px;text-transform:uppercase;letter-spacing:1.5px;color:var(--teal);margin-bottom:10px;padding-bottom:6px;border-bottom:1px solid var(--border-dk);font-weight:bold}
+.subsection-title .sst-roman{color:var(--terracotta);font-style:italic;margin-right:6px}
+
+.field-row{display:flex;gap:12px;margin-bottom:10px;flex-wrap:wrap;align-items:flex-start}
+.field-label{width:240px;font-size:12px;color:var(--ink-soft);padding-top:8px}
+.field-val{flex:1;background:var(--offwhite);border:1px solid var(--border-dk);padding:6px 10px;border-radius:5px;font-size:12px;min-width:200px;font-family:Georgia,serif}
+textarea.field-val{font-family:Georgia,serif;resize:vertical;min-height:50px}
+select.field-val{cursor:pointer}
+
+.btn{padding:5px 12px;border-radius:20px;border:1px solid var(--border-dk);background:#fff;cursor:pointer;font-size:11px;color:var(--ink);font-family:Georgia,serif}
+.btn:hover{background:var(--cream-deep)}
+.btn-primary{background:var(--teal);color:#fff;border-color:var(--teal)}
+.btn-primary:hover{background:var(--sea)}
+
+/* Multiselect chip picker */
+.multi-picker{flex:1;min-width:280px;background:var(--offwhite);border:1px solid var(--border-dk);border-radius:5px;padding:6px;position:relative}
+.multi-picker .chips-area{display:flex;flex-wrap:wrap;gap:4px;min-height:24px}
+.multi-picker .chip{display:inline-flex;align-items:center;gap:5px;padding:3px 8px;background:var(--teal);color:#fff;border-radius:12px;font-size:11px}
+.multi-picker .chip-x{cursor:pointer;font-size:13px;line-height:1;opacity:0.85}
+.multi-picker .chip-x:hover{opacity:1}
+.multi-picker .add-trigger{display:inline-flex;align-items:center;gap:4px;padding:3px 8px;background:transparent;border:1px dashed var(--border-dk);border-radius:12px;font-size:11px;color:var(--ink-soft);cursor:pointer;font-family:Georgia,serif}
+.multi-picker .add-trigger:hover{border-color:var(--teal);color:var(--teal)}
+.multi-picker .dropdown{position:absolute;top:100%;left:0;right:0;background:#fff;border:1px solid var(--border-dk);border-radius:5px;margin-top:4px;max-height:200px;overflow-y:auto;z-index:10;box-shadow:0 4px 12px rgba(0,0,0,0.08);display:none}
+.multi-picker.open .dropdown{display:block}
+.multi-picker .dropdown-item{padding:7px 10px;font-size:12px;cursor:pointer;border-bottom:1px solid #f0e9d6}
+.multi-picker .dropdown-item:last-child{border-bottom:none}
+.multi-picker .dropdown-item:hover{background:var(--cream-deep)}
+.multi-picker .dropdown-item.picked{background:var(--cream-deep);opacity:0.5;cursor:default;font-style:italic}
+.multi-picker .placeholder{color:var(--ink-faint);font-style:italic;font-size:11px;padding:3px 4px}
+
+/* Product collapsible card (mirrors Channels module pattern) */
+.product-block{background:#fff;border:1px solid var(--border-dk);border-radius:10px;margin-bottom:14px;overflow:hidden}
+.product-head{background:var(--sea);color:#fff;padding:10px 14px;display:flex;justify-content:space-between;align-items:center;cursor:pointer;user-select:none;font-size:13px;flex-wrap:wrap;gap:8px}
+.product-head:hover{background:var(--teal)}
+.product-head .ph-name{display:flex;align-items:center;gap:10px;flex-wrap:wrap;flex:1;min-width:0}
+.product-head .ph-name select,.product-head .ph-name input{background:rgba(255,255,255,0.15);border:1px solid rgba(255,255,255,0.3);color:#fff;padding:4px 10px;border-radius:4px;font-family:Georgia,serif;font-size:13px;cursor:pointer;min-width:200px}
+.product-head .ph-name select option{color:var(--ink);background:#fff}
+.chevron{font-size:12px;transition:transform 0.2s}
+.product-block.collapsed .chevron{transform:rotate(-90deg)}
+.product-block.collapsed .ph-body{display:none}
+.ph-body{padding:14px}
+.ph-remove{background:transparent;border:1px solid rgba(255,255,255,0.4);color:#fff;padding:3px 10px;border-radius:14px;cursor:pointer;font-size:11px;font-family:Georgia,serif}
+.ph-remove:hover{background:var(--terracotta);border-color:var(--terracotta)}
+
+/* Intervention block */
+.intervention-block{background:var(--terracotta-sft);border:1px solid var(--terracotta);border-radius:8px;padding:14px;margin-top:8px}
+.intervention-block-title{font-size:11px;text-transform:uppercase;letter-spacing:1px;color:var(--terracotta-dk);margin-bottom:10px;font-weight:bold}
+.toggle{width:36px;height:18px;border-radius:20px;background:#ccc;display:inline-block;cursor:pointer;position:relative;flex-shrink:0;vertical-align:middle}
+.toggle::after{content:'';width:14px;height:14px;background:#fff;border-radius:50%;position:absolute;top:2px;left:2px;transition:left 0.2s}
+.toggle.on{background:var(--teal)}
+.toggle.on::after{left:20px}
+.flag-note{font-size:10px;color:var(--ink-faint);font-style:italic;margin:6px 0}
+.flag-note.active{color:var(--terracotta-dk);font-weight:bold;font-style:normal}
+
+/* Status chip */
+.status-chip{display:inline-block;padding:3px 9px;border-radius:12px;font-size:10px;font-weight:bold;letter-spacing:0.3px;text-transform:uppercase}
+.status-chip.pending{background:var(--cream-deep);color:var(--ink-soft)}
+.status-chip.progress{background:var(--fair-bg);color:var(--fair-ink)}
+.status-chip.completed{background:var(--good-bg);color:var(--good-ink)}
+.status-chip.notfeasible{background:var(--poor-bg);color:var(--poor-ink)}
+
+.add-row-bar{text-align:center;padding:14px;background:var(--cream-deep);border:1px dashed var(--border-dk);border-radius:10px;margin-top:10px}
+
+.empty-msg{text-align:center;color:var(--ink-faint);font-style:italic;padding:30px;background:var(--cream-deep);border:1px dashed var(--border-dk);border-radius:10px;margin-bottom:14px}
+
+.section-caption{background:var(--cream-deep);border-left:3px solid var(--terracotta);padding:8px 12px;border-radius:0 6px 6px 0;font-size:12px;color:var(--ink-soft);font-style:italic;margin-bottom:14px}
+
+.hidden{display:none !important}
+
+/* ─── Summary ─── */
+.sm-section{background:var(--cream-deep);padding:16px;border-radius:10px;margin-bottom:16px;border:1px solid var(--border)}
+.sm-section-title{font-size:13px;text-transform:uppercase;letter-spacing:1.5px;color:var(--teal);margin-bottom:12px;padding-bottom:8px;border-bottom:1px solid var(--border-dk);font-weight:bold}
+.sm-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.sm-card{background:#fff;border:1px solid var(--border);border-radius:10px;padding:14px}
+.sm-card h3{font-size:11px;text-transform:uppercase;letter-spacing:1px;color:var(--teal);margin-bottom:10px;padding-bottom:6px;border-bottom:1px solid var(--border);font-weight:bold}
+.sm-row{display:flex;justify-content:space-between;padding:5px 0;font-size:12px;border-bottom:1px solid #f0e9d6}
+.sm-row:last-child{border-bottom:none}
+.sm-lbl{color:var(--ink-soft)}
+.sm-val{font-weight:bold;color:var(--ink)}
+.sm-val.green{color:var(--good-ink)}
+.sm-val.amber{color:var(--fair-ink)}
+.sm-val.red{color:var(--poor-ink)}
+.sm-val.blue{color:#1F4A78}
+.sm-flags{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+.sm-flag{background:#fff;border:1px solid var(--border);border-radius:8px;padding:12px}
+.sm-flag-icon{width:30px;height:30px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:14px;margin-bottom:8px}
+.sm-flag-count{font-size:20px;font-weight:bold;color:var(--ink)}
+.sm-flag-label{font-size:10px;color:var(--ink-soft);text-transform:uppercase;letter-spacing:0.5px;margin-top:4px}
+table.ov-tbl{width:100%;border-collapse:collapse;background:var(--offwhite);border-radius:6px;overflow:hidden;border:1px solid var(--border-dk);font-size:11px}
+table.ov-tbl th{background:var(--teal);color:#fff;padding:9px 8px;text-align:left;font-weight:normal;text-transform:uppercase;letter-spacing:0.5px;font-size:10px;border-right:1px solid var(--sea)}
+table.ov-tbl th:last-child{border-right:none}
+table.ov-tbl th.th-req{background:var(--sea)}
+table.ov-tbl td{padding:7px 8px;border-bottom:1px solid var(--border);border-right:1px solid var(--border);vertical-align:middle}
+table.ov-tbl td:last-child{border-right:none}
+table.ov-tbl tr:last-child td{border-bottom:none}
+table.ov-tbl tr.row-req td{background:var(--highlight)}
+</style>
+</head>
+<body>
+
+<div class="page">
+<div class="header">
+  <h1>Customer Analysis</h1>
+  <div class="crumb">PRIME Rural · Marketing Framework</div>
+</div>
+<div class="card">
+
+<div class="tab-bar">
+  <div class="tab" onclick="showTab('summary',this)">Summary</div>
+  <div class="tab active" onclick="showTab('existing',this)">Existing</div>
+  <div class="tab" onclick="showTab('required',this)">Required</div>
+  <div class="tab" onclick="showTab('resources',this)">Resources</div>
+  <div class="tab" onclick="showTab('tasklog',this)">Task Log</div>
+</div>
+
+<div class="content">
+
+<div class="entrepreneur-chip">
+  <div class="ent-avatar">EN</div>
+  <span style="color:var(--ink-soft);font-style:italic">Auto-fetched from profile</span>
+</div>
+
+<!-- ============ SUMMARY ============ -->
+<div id="summary" class="panel hidden">
+
+  <!-- ① Product-wise Customer Overview -->
+  <div class="sm-section">
+    <div class="sm-section-title">Product-wise Customer Overview</div>
+    <p style="font-size:11px;color:var(--ink-soft);font-style:italic;margin-bottom:10px">One row per product — Existing customer profile vs aspirational Required target, side by side. Highlighted rows are flagged for upgrade.</p>
+    <div style="overflow-x:auto">
+    <table class="ov-tbl">
+      <thead>
+        <tr>
+          <th rowspan="2" style="vertical-align:middle">Product</th>
+          <th colspan="3" style="text-align:center;border-bottom:1px solid var(--sea)">Existing Profile</th>
+          <th colspan="3" class="th-req" style="text-align:center;border-bottom:1px solid rgba(255,255,255,0.3)">Required — Aspirational Target</th>
+          <th rowspan="2" class="th-req" style="vertical-align:middle">Impl. Status</th>
+        </tr>
+        <tr>
+          <th>Geography</th>
+          <th>Customers</th>
+          <th>Market Readiness</th>
+          <th class="th-req">Geography</th>
+          <th class="th-req">Target Segment</th>
+          <th class="th-req">Market Readiness</th>
+        </tr>
+      </thead>
+      <tbody id="sumOverviewBody">
+        <tr><td colspan="8" style="text-align:center;color:var(--ink-faint);font-style:italic;padding:14px">Auto-populated from Existing and Required tabs</td></tr>
+      </tbody>
+    </table>
+    </div>
+  </div>
+
+  <!-- ② Aggregates -->
+  <div class="sm-section">
+    <div class="sm-section-title">Aggregates</div>
+    <div class="sm-grid">
+
+      <div class="sm-card">
+        <h3>Existing</h3>
+        <div class="sm-row"><span class="sm-lbl">Products Analysed</span><span class="sm-val" id="agg-ex-total">0</span></div>
+        <div class="sm-row"><span class="sm-lbl">Intervention Flagged</span><span class="sm-val amber" id="agg-ex-flagged">0</span></div>
+        <div class="sm-row"><span class="sm-lbl">Not Flagged</span><span class="sm-val" id="agg-ex-notflagged">0</span></div>
+      </div>
+
+      <div class="sm-card">
+        <h3>Market</h3>
+        <div class="sm-row"><span class="sm-lbl">High Market Readiness</span><span class="sm-val green" id="agg-mkt-high">0</span></div>
+        <div class="sm-row"><span class="sm-lbl">Medium Market Readiness</span><span class="sm-val amber" id="agg-mkt-medium">0</span></div>
+        <div class="sm-row"><span class="sm-lbl">Low Market Readiness</span><span class="sm-val red" id="agg-mkt-low">0</span></div>
+        <div class="sm-row"><span class="sm-lbl">Not Set</span><span class="sm-val" id="agg-mkt-na">0</span></div>
+      </div>
+
+      <div class="sm-card">
+        <h3>Interventions</h3>
+        <div class="sm-row"><span class="sm-lbl">Required Profiles Added</span><span class="sm-val" id="agg-req-total">0</span></div>
+        <div class="sm-row"><span class="sm-lbl">Target Segment Set</span><span class="sm-val green" id="agg-req-segment">0</span></div>
+        <div class="sm-row"><span class="sm-lbl">Persona Written</span><span class="sm-val green" id="agg-req-persona">0</span></div>
+      </div>
+
+      <div class="sm-card">
+        <h3>Implementation Status</h3>
+        <div class="sm-row"><span class="sm-lbl">Completed</span><span class="sm-val green" id="agg-impl-completed">0</span></div>
+        <div class="sm-row"><span class="sm-lbl">In Progress</span><span class="sm-val amber" id="agg-impl-progress">0</span></div>
+        <div class="sm-row"><span class="sm-lbl">Pending</span><span class="sm-val" id="agg-impl-pending">0</span></div>
+        <div class="sm-row"><span class="sm-lbl">Not Feasible</span><span class="sm-val red" id="agg-impl-notfeasible">0</span></div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ③ Intervention Flags -->
+  <div class="sm-section">
+    <div class="sm-section-title">Intervention Flags</div>
+    <div class="sm-flags">
+      <div class="sm-flag"><div class="sm-flag-icon" style="background:var(--good-bg);color:var(--good-ink)">👤</div><div class="sm-flag-count" id="flag-total">0</div><div class="sm-flag-label">Products Analysed</div></div>
+      <div class="sm-flag"><div class="sm-flag-icon" style="background:var(--fair-bg);color:var(--fair-ink)">↻</div><div class="sm-flag-count" id="flag-flagged">0</div><div class="sm-flag-label">Upgrade Needed</div></div>
+      <div class="sm-flag"><div class="sm-flag-icon" style="background:var(--good-bg);color:var(--good-ink)">✓</div><div class="sm-flag-count" id="flag-highreadiness">0</div><div class="sm-flag-label">High Market Readiness</div></div>
+      <div class="sm-flag"><div class="sm-flag-icon" style="background:#D6E3EE;color:#1F4A78">🎯</div><div class="sm-flag-count" id="flag-required">0</div><div class="sm-flag-label">New Target Profiles</div></div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ============ RESOURCES ============ -->
+<div id="resources" class="panel hidden">
+  <div class="sm-section">
+    <div class="sm-section-title">Reference Materials</div>
+    <table class="data-table" id="resourcesTable" style="width:100%;border-collapse:collapse;font-size:11px">
+      <thead>
+        <tr>
+          <th style="background:var(--teal);color:#fff;padding:8px;text-align:left;font-size:10px;width:25%">Resource Title</th>
+          <th style="background:var(--teal);color:#fff;padding:8px;text-align:left;font-size:10px;width:18%">Category</th>
+          <th style="background:var(--teal);color:#fff;padding:8px;text-align:left;font-size:10px;width:12%">Type</th>
+          <th style="background:var(--teal);color:#fff;padding:8px;text-align:left;font-size:10px;width:30%">Notes</th>
+          <th style="background:var(--teal);color:#fff;padding:8px;text-align:left;font-size:10px;width:10%">File</th>
+          <th style="background:var(--teal);color:#fff;padding:8px;width:5%"></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td style="padding:6px 8px;border-bottom:1px solid var(--border)"><input type="text" placeholder="Resource title" style="width:100%;border:1px solid var(--border);padding:4px 6px;border-radius:3px;font-family:Georgia,serif;font-size:11px"></td>
+          <td style="padding:6px 8px;border-bottom:1px solid var(--border)">
+            <select style="width:100%;border:1px solid var(--border);padding:4px 6px;border-radius:3px;font-family:Georgia,serif;font-size:11px">
+              <option>— Select —</option>
+              <option>Consumer Survey Data</option>
+              <option>Market Research Report</option>
+              <option>Customer Interview Transcript</option>
+              <option>Competitor Customer Profile</option>
+              <option>Census / Demographics Data</option>
+              <option>Platform Analytics</option>
+              <option>Other</option>
+            </select>
+          </td>
+          <td style="padding:6px 8px;border-bottom:1px solid var(--border)">
+            <select style="width:100%;border:1px solid var(--border);padding:4px 6px;border-radius:3px;font-family:Georgia,serif;font-size:11px">
+              <option>— Select —</option>
+              <option>Report / Study</option>
+              <option>Transcript</option>
+              <option>Reference</option>
+              <option>Template</option>
+              <option>Data</option>
+            </select>
+          </td>
+          <td style="padding:6px 8px;border-bottom:1px solid var(--border)"><input type="text" placeholder="Notes" style="width:100%;border:1px solid var(--border);padding:4px 6px;border-radius:3px;font-family:Georgia,serif;font-size:11px"></td>
+          <td style="padding:6px 8px;border-bottom:1px solid var(--border)">
+            <button class="btn" style="padding:3px 8px;font-size:10px">Upload</button>
+          </td>
+          <td style="padding:6px 8px;border-bottom:1px solid var(--border)"><button style="background:transparent;border:none;color:var(--terracotta);cursor:pointer;font-size:14px" onclick="this.closest('tr').remove()">✕</button></td>
+        </tr>
+      </tbody>
+    </table>
+    <div style="display:flex;justify-content:flex-end;margin-top:10px">
+      <button class="btn btn-primary" onclick="addResRow()">+ Add Resource</button>
+    </div>
+  </div>
+</div>
+
+<!-- ============ TASK LOG ============ -->
+<div id="tasklog" class="panel hidden">
+  <div class="sm-section">
+    <div class="sm-section-title" style="display:flex;justify-content:space-between;align-items:center">
+      <span>Task Log — Customer Analysis Activities</span>
+      <span style="font-size:11px;color:var(--ink-faint);font-weight:normal;text-transform:none;letter-spacing:normal;font-style:italic"><span id="task-count">0</span> entries</span>
+    </div>
+    <table style="width:100%;border-collapse:collapse;font-size:11px">
+      <thead>
+        <tr>
+          <th style="background:var(--teal);color:#fff;padding:8px;text-align:left;font-size:10px;width:5%">No.</th>
+          <th style="background:var(--teal);color:#fff;padding:8px;text-align:left;font-size:10px;width:13%">Date</th>
+          <th style="background:var(--teal);color:#fff;padding:8px;text-align:left;font-size:10px;width:42%">Task Name</th>
+          <th style="background:var(--teal);color:#fff;padding:8px;text-align:left;font-size:10px;width:30%">Notes / Outcome</th>
+          <th style="background:var(--teal);color:#fff;padding:8px;width:10%"></th>
+        </tr>
+      </thead>
+      <tbody id="taskLogBody"></tbody>
+    </table>
+    <div style="display:flex;justify-content:flex-end;margin-top:10px">
+      <button class="btn btn-primary" onclick="addTaskRow()">+ Add Entry</button>
+    </div>
+  </div>
+</div>
+
+<!-- ============ EXISTING ============ -->
+<div id="existing" class="panel">
+  <div class="section-caption">Map the current customer base for each product the entrepreneur is selling. Each product holds its own customer segmentation and target market definition.</div>
+  <div id="existingProductList"></div>
+  <div class="add-row-bar">
+    <button class="btn btn-primary" onclick="addProduct('existing')">+ Add Product</button>
+  </div>
+</div>
+
+<!-- ============ REQUIRED ============ -->
+<div id="required" class="panel hidden">
+  <div class="section-caption">Define the aspirational target market for each product. Track Implementation Status as interventions move through the pipeline.</div>
+  <div id="requiredProductList"></div>
+  <div class="add-row-bar">
+    <button class="btn btn-primary" onclick="addProduct('required')">+ Add Product</button>
+  </div>
+</div>
+
+</div>
+</div>
+</div>
+
+<script>
+// ============ MASTER DATA (placeholders — to be supplied by Harshit) ============
+const MASTERS = {
+  ageGroup: ['Below 18', '18–25', '26–35', '36–45', '46–55', '56–65', 'Above 65'],
+  gender: ['Female', 'Male', 'Non-binary', 'Prefer not to say'],
+  familySize: ['1 (Single)', '2 (Couple)', '3–4 (Small Family)', '5–6 (Mid Family)', '7+ (Joint Family)'],
+  occupation: ['Salaried', 'Self-employed', 'Farmer', 'Student', 'Homemaker', 'Retired', 'Daily Wage', 'Government Employee'],
+  income: ['Below ₹15,000', '₹15,000–₹30,000', '₹30,000–₹60,000', '₹60,000–₹1,00,000', 'Above ₹1,00,000'],
+  education: ['No formal education', 'Primary', 'Secondary', 'Higher Secondary', 'Diploma', 'Graduate', 'Postgraduate'],
+  primaryGeo: ['Local (Block)', 'District', 'State', 'Inter-state', 'National', 'International'],
+  cities: ['Shillong', 'Tura', 'Jowai', 'Nongpoh', 'Williamnagar', 'Baghmara', 'Guwahati', 'Kolkata', 'Delhi', 'Mumbai'],
+  locationType: ['Rural', 'Semi-urban', 'Urban', 'Tier-1 City', 'Tier-2 City', 'Tier-3 City'],
+  valuesLifestyle: ['Health-conscious', 'Eco-conscious', 'Traditional', 'Modern', 'Premium / Luxury', 'Budget-conscious', 'Convenience-driven', 'Adventurous'],
+  buyingMotivation: ['Quality', 'Price', 'Local Origin', 'Brand', 'Health Benefits', 'Convenience', 'Social Status', 'Recommendation'],
+  purchaseBehaviour: ['First-time Buyer', 'Repeat Purchase', 'Bulk Buyer', 'Occasional', 'Seasonal', 'Impulse'],
+  usageRate: ['Heavy User', 'Moderate User', 'Light User', 'Non-user'],
+  loyaltyStatus: ['Hard-core Loyal', 'Soft-core Loyal', 'Shifting Loyal', 'Switcher'],
+  occasion: ['Daily Use', 'Festive', 'Gifting', 'Special Occasion', 'Travel', 'Health Need'],
+  customerSegments: ['Households', 'Restaurants & Cafes', 'Hotels', 'Retail Stores', 'Wholesalers', 'Tourists', 'Online Buyers', 'Institutional Buyers', 'Health-conscious Consumers'],
+  targetSegment: ['Not applicable', 'Urban health-conscious women, 26–45', 'Tourists & diaspora', 'Institutional / HoReCa buyers', 'Export / B2B buyers', 'Gift buyers (festive)', 'Local daily consumers', 'Pan-India e-commerce buyers'],
+  marketReadiness: ['Not applicable', 'High — immediate market exists', 'Medium — needs awareness building', 'Low — market development needed']
+};
+
+// Product master (placeholder)
+const PRODUCT_MASTER = [
+  'Bamboo Shoot Pickle',
+  'Lemongrass Tea',
+  'Lakadong Turmeric',
+  'Eri Silk Muffler',
+  'Bamboo Earring',
+  'Local Honey',
+  'Jadoh Spice Mix'
+];
+
+// Picker state — keyed per-picker via unique field IDs (productId__fieldName)
+const pickerState = {};
+
+// Counters
+let productCounter = 0;
+
+// ============ TAB SWITCHING ============
+function showTab(id, el){
+  document.querySelectorAll('.panel').forEach(p => p.classList.add('hidden'));
+  document.getElementById(id).classList.remove('hidden');
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  el.classList.add('active');
+  if(id === 'summary') refreshSummary();
+}
+
+// ============ SUMMARY ============
+function refreshSummary(){
+  const s = (id,v) => { const el=document.getElementById(id); if(el) el.textContent=v; };
+  const picks = field => pickerState[field] || [];
+
+  const IMPL_CLS = {
+    'Completed':   'background:var(--good-bg);color:var(--good-ink)',
+    'In Progress': 'background:var(--fair-bg);color:var(--fair-ink)',
+    'Not Feasible':'background:var(--poor-bg);color:var(--poor-ink)',
+    'Pending':     'background:var(--cream-deep);color:var(--ink-soft)',
+  };
+  const readBadge = val => {
+    if(!val || val === 'Not applicable') return '<span style="color:var(--ink-faint)">—</span>';
+    const bg = val.startsWith('High') ? 'var(--good-bg)' : val.startsWith('Medium') ? 'var(--fair-bg)' : 'var(--poor-bg)';
+    const cl = val.startsWith('High') ? 'var(--good-ink)' : val.startsWith('Medium') ? 'var(--fair-ink)' : 'var(--poor-ink)';
+    const label = val.split('—')[0].trim();
+    return `<span style="display:inline-block;padding:2px 8px;border-radius:10px;font-size:10px;font-weight:bold;background:${bg};color:${cl}">${label}</span>`;
+  };
+  const implBadge = val => {
+    const st = val || 'Pending';
+    return `<span style="display:inline-block;padding:3px 9px;border-radius:12px;font-size:10px;font-weight:bold;${IMPL_CLS[st]||IMPL_CLS['Pending']}">${st}</span>`;
+  };
+  const getVI = b => {
+    const viSub = [...b.querySelectorAll('.subsection')].find(s => s.querySelector('.sst-roman')?.textContent === 'VI.');
+    const sels = viSub?.querySelectorAll('select') || [];
+    return { targetSeg: sels[0]?.value||'', secondarySeg: sels[1]?.value||'', readiness: sels[2]?.value||'' };
+  };
+
+  const exBlocks = document.querySelectorAll('#existingProductList .product-block');
+  const rqBlocks = document.querySelectorAll('#requiredProductList .product-block');
+
+  // Build Required map: product name → block
+  const rqMap = {};
+  rqBlocks.forEach(b => {
+    const name = b.querySelector('.ph-name select')?.value || '';
+    if(name) rqMap[name] = b;
+  });
+
+  let exTotal=0, exFlagged=0, mktHigh=0, mktMedium=0, mktLow=0, mktNa=0;
+  let rqTotal=rqBlocks.length, rqSegment=0, rqPersona=0;
+  let implCompleted=0, implProgress=0, implPending=0, implNotFeasible=0;
+  const matchedRq = new Set();
+  let html = '';
+
+  // ── One row per Existing product ─────────────────────────────
+  exBlocks.forEach(b => {
+    const pid     = b.id;
+    const product = b.querySelector('.ph-name select')?.value || '';
+    if(!product) return;
+    exTotal++;
+
+    const isFlagged = b.querySelector('.toggle.on') !== null;
+    if(isFlagged) exFlagged++;
+
+    // Existing profile data
+    const exGeo   = picks(`${pid}__primaryGeo`).slice(0,2).join(', ') || '—';
+    const exCust  = picks(`${pid}__primaryCustomers`).slice(0,2).join(', ') || '—';
+    const exVI    = getVI(b);
+    if(exVI.readiness?.startsWith('High'))   mktHigh++;
+    else if(exVI.readiness?.startsWith('Medium')) mktMedium++;
+    else if(exVI.readiness?.startsWith('Low'))    mktLow++;
+    else mktNa++;
+
+    // Find matching Required block by product name
+    const rqBlock = rqMap[product];
+    if(rqBlock) matchedRq.add(product);
+
+    let rqGeo='—', rqTarget='—', rqReadiness='—', implVal='—', implCell='<span style="color:var(--ink-faint)">—</span>';
+
+    if(rqBlock){
+      const rqpid  = rqBlock.id;
+      rqGeo        = picks(`${rqpid}__primaryGeo`).slice(0,2).join(', ') || '—';
+      const rqVI   = getVI(rqBlock);
+      rqTarget     = rqVI.targetSeg && rqVI.targetSeg !== 'Not applicable' ? rqVI.targetSeg : '—';
+      rqReadiness  = rqVI.readiness;
+
+      const chip = rqBlock.querySelector(`#${rqpid}-statusChip`);
+      implVal = chip?.textContent?.trim() || 'Pending';
+      implCell = implBadge(implVal);
+
+      if(implVal==='Completed')    implCompleted++;
+      else if(implVal==='In Progress') implProgress++;
+      else if(implVal==='Not Feasible') implNotFeasible++;
+      else implPending++;
+
+      if(rqTarget !== '—') rqSegment++;
+      const persona = [...rqBlock.querySelectorAll('textarea.field-val')].pop()?.value?.trim();
+      if(persona) rqPersona++;
+    }
+
+    const rowStyle = isFlagged ? 'background:var(--highlight)' : '';
+    const flagBadge = isFlagged
+      ? '<span style="display:inline-block;padding:2px 8px;border-radius:10px;font-size:10px;font-weight:bold;background:var(--fair-bg);color:var(--fair-ink)">↻ Upgrade</span>'
+      : '<span style="color:var(--ink-faint)">—</span>';
+
+    // Arrow separator between Existing and Required columns
+    const arrowCell = isFlagged
+      ? '<td style="text-align:center;font-size:16px;color:var(--teal);padding:4px">→</td>'
+      : '<td style="text-align:center;color:var(--ink-faint)">—</td>';
+
+    html += `<tr style="${rowStyle}">
+      <td>
+        <strong>${product}</strong>
+        <div style="margin-top:3px">${flagBadge}</div>
+      </td>
+      <td style="font-size:11px;background:#FDF3EE">${exGeo}</td>
+      <td style="font-size:11px;background:#FDF3EE">${exCust}</td>
+      <td style="background:#FDF3EE">${readBadge(exVI.readiness)}</td>
+      <td style="background:#EDF6EA;font-size:11px">${rqGeo !== '—' ? rqGeo : '<span style="color:var(--ink-faint)">—</span>'}</td>
+      <td style="background:#EDF6EA;font-size:11px">${rqTarget !== '—' ? rqTarget : '<span style="color:var(--ink-faint)">Not set</span>'}</td>
+      <td style="background:#EDF6EA">${readBadge(rqReadiness)}</td>
+      <td style="background:#EDF6EA">${implCell}</td>
+    </tr>`;
+  });
+
+  // ── Unmatched Required rows (product not in Existing) ─────────
+  rqBlocks.forEach(b => {
+    const product = b.querySelector('.ph-name select')?.value || '';
+    if(!product || matchedRq.has(product)) return;
+
+    const rqpid  = b.id;
+    const rqGeo  = picks(`${rqpid}__primaryGeo`).slice(0,2).join(', ') || '—';
+    const rqVI   = getVI(b);
+    const rqTarget = rqVI.targetSeg && rqVI.targetSeg !== 'Not applicable' ? rqVI.targetSeg : '—';
+    const chip = b.querySelector(`#${rqpid}-statusChip`);
+    const implVal = chip?.textContent?.trim() || 'Pending';
+
+    if(implVal==='Completed') implCompleted++;
+    else if(implVal==='In Progress') implProgress++;
+    else if(implVal==='Not Feasible') implNotFeasible++;
+    else implPending++;
+
+    if(rqTarget !== '—') rqSegment++;
+
+    html += `<tr style="background:var(--highlight)">
+      <td>
+        <strong>${product}</strong>
+        <div style="margin-top:3px"><span style="display:inline-block;padding:2px 8px;border-radius:10px;font-size:10px;font-weight:bold;background:#D6E3EE;color:#1F4A78">+ New Target Only</span></div>
+      </td>
+      <td style="background:#FDF3EE;color:var(--ink-faint);font-style:italic" colspan="3">No existing profile</td>
+      <td style="background:#EDF6EA;font-size:11px">${rqGeo}</td>
+      <td style="background:#EDF6EA;font-size:11px">${rqTarget}</td>
+      <td style="background:#EDF6EA">${readBadge(rqVI.readiness)}</td>
+      <td style="background:#EDF6EA">${implBadge(implVal)}</td>
+    </tr>`;
+  });
+
+  document.getElementById('sumOverviewBody').innerHTML = html ||
+    '<tr><td colspan="8" style="text-align:center;color:var(--ink-faint);font-style:italic;padding:14px">Auto-populated from Existing and Required tabs</td></tr>';
+
+  // ── Aggregates ────────────────────────────────────────────────
+  s('agg-ex-total',         exTotal);
+  s('agg-ex-flagged',       exFlagged);
+  s('agg-ex-notflagged',    exTotal - exFlagged);
+  s('agg-mkt-high',         mktHigh);
+  s('agg-mkt-medium',       mktMedium);
+  s('agg-mkt-low',          mktLow);
+  s('agg-mkt-na',           mktNa);
+  s('agg-req-total',        rqTotal);
+  s('agg-req-segment',      rqSegment);
+  s('agg-req-persona',      rqPersona);
+  s('agg-impl-completed',   implCompleted);
+  s('agg-impl-progress',    implProgress);
+  s('agg-impl-pending',     implPending);
+  s('agg-impl-notfeasible', implNotFeasible);
+  s('flag-total',           exTotal);
+  s('flag-flagged',         exFlagged);
+  s('flag-highreadiness',   mktHigh);
+  s('flag-required',        rqTotal);
+}
+
+  // Helper: get picked values for a field from pickerState
+  const picks = field => pickerState[field] || [];
+  // Helper: most common value across an array of arrays
+  const topValue = arrs => {
+    const counts = {};
+    arrs.flat().forEach(v => { if(v) counts[v] = (counts[v]||0)+1; });
+    const top = Object.entries(counts).sort((a,b) => b[1]-a[1])[0];
+    return top ? top[0] : '—';
+  };
+
+  const exBlocks = document.querySelectorAll('#existingProductList .product-block');
+  const rqBlocks = document.querySelectorAll('#requiredProductList .product-block');
+
+// ============ RESOURCES ============
+function addResRow(){
+  const tbody = document.querySelector('#resourcesTable tbody');
+  const row = tbody.rows[0].cloneNode(true);
+  row.querySelectorAll('input').forEach(i => i.value='');
+  row.querySelectorAll('select').forEach(s => s.selectedIndex=0);
+  tbody.appendChild(row);
+}
+
+// ============ TASK LOG ============
+const CA_TASKS = [
+  '01 — Awareness on Importance of Customer Analysis',
+  '02 — Identify Products for Customer Analysis',
+  '03 — Map Existing Customer Base (Demographic)',
+  '04 — Map Existing Customer Base (Geographic)',
+  '05 — Map Existing Customer Base (Psychographic)',
+  '06 — Map Existing Customer Base (Behavioural)',
+  '07 — Define Primary Customer Segmentation',
+  '08 — Define Secondary Customer Segmentation',
+  '09 — Define Primary Target Segment (Existing)',
+  '10 — Assess Market Readiness (Existing)',
+  '11 — Write Customer Persona (Existing)',
+  '12 — Identify Gaps — Flag for Intervention',
+  '13 — Define Aspirational Target Segment (Required)',
+  '14 — Set Market Readiness (Required)',
+  '15 — Write Aspirational Customer Persona',
+  '16 — Link to Market Research Module',
+  '17 — Link to Market Linkage Module',
+  '18 — Review and Update Status in Module',
+  'If other, specify in comments',
+];
+const CA_TASK_OPTS = CA_TASKS.map(t => `<option value="${t}">${t}</option>`).join('');
+let taskLogCounter = 0;
+
+function addTaskRow(){
+  taskLogCounter++;
+  const tbody = document.getElementById('taskLogBody');
+  const tr = document.createElement('tr');
+  tr.innerHTML = `
+    <td style="text-align:center;color:var(--ink-soft)">${String(taskLogCounter).padStart(2,'0')}</td>
+    <td><input type="date" style="width:100%;border:1px solid var(--border);padding:4px 6px;border-radius:3px;font-family:Georgia,serif;font-size:11px"></td>
+    <td><select style="width:100%;border:1px solid var(--border);padding:4px 6px;border-radius:3px;font-family:Georgia,serif;font-size:11px"><option value="">— Select Task —</option>${CA_TASK_OPTS}</select></td>
+    <td><input type="text" placeholder="Notes / Outcome" style="width:100%;border:1px solid var(--border);padding:4px 6px;border-radius:3px;font-family:Georgia,serif;font-size:11px"></td>
+    <td style="text-align:center"><button style="background:transparent;border:none;color:var(--terracotta);cursor:pointer;font-size:14px" onclick="deleteTaskRow(this)">✕</button></td>
+  `;
+  tbody.appendChild(tr);
+  document.getElementById('task-count').textContent = tbody.rows.length;
+}
+function deleteTaskRow(btn){
+  const tbody = btn.closest('tbody');
+  btn.closest('tr').remove();
+  tbody.querySelectorAll('tr').forEach((tr,i) => { tr.cells[0].textContent = String(i+1).padStart(2,'0'); });
+  taskLogCounter = tbody.rows.length;
+  document.getElementById('task-count').textContent = tbody.rows.length;
+}
+
+
+// ============ INIT ============
+window.addEventListener('DOMContentLoaded', () => {
+  addProduct('existing');
+  addProduct('required');
+
+  setTimeout(() => {
+    // Existing — Bamboo Shoot Pickle with local customer profile
+    const exBlock = document.querySelector('#existingProductList .product-block');
+    if(exBlock){
+      exBlock.querySelector('.ph-name select').value = 'Bamboo Shoot Pickle';
+      const pid = exBlock.id;
+      addPick(`${pid}__primaryGeo`, 'Local (Block)');
+      addPick(`${pid}__primaryGeo`, 'District');
+      addPick(`${pid}__primaryCustomers`, 'Households');
+      addPick(`${pid}__primaryCustomers`, 'Restaurants & Cafes');
+      addPick(`${pid}__buyingMotivation`, 'Local Origin');
+      addPick(`${pid}__buyingMotivation`, 'Quality');
+      addPick(`${pid}__usageRate`, 'Moderate User');
+      const selects = exBlock.querySelectorAll('select.field-val');
+      if(selects[0]) selects[0].value = 'Local daily consumers';
+      if(selects[1]) selects[1].value = 'Medium — needs awareness building';
+    }
+
+    // Required — aspirational pan-India e-commerce target
+    const reqBlock = document.querySelector('#requiredProductList .product-block');
+    if(reqBlock){
+      reqBlock.querySelector('.ph-name select').value = 'Bamboo Shoot Pickle';
+      const pid = reqBlock.id;
+      addPick(`${pid}__primaryGeo`, 'State');
+      addPick(`${pid}__primaryGeo`, 'National');
+      addPick(`${pid}__primaryCustomers`, 'Online Buyers');
+      addPick(`${pid}__primaryCustomers`, 'Health-conscious Consumers');
+      addPick(`${pid}__buyingMotivation`, 'Health Benefits');
+      addPick(`${pid}__buyingMotivation`, 'Local Origin');
+      const selects = reqBlock.querySelectorAll('select.field-val');
+      if(selects[0]) selects[0].value = 'Pan-India e-commerce buyers';
+      if(selects[1]) selects[1].value = 'High — immediate market exists';
+      const implSel = reqBlock.querySelector('.intervention-block select.field-val');
+      if(implSel){ implSel.value = 'In Progress'; updateImplementationStatus(reqBlock.id, 'In Progress'); }
+    }
+
+    refreshSummary();
+    showTab('summary', document.querySelector('.tab'));
+  }, 50);
+});
+function initPickersIn(container){
+  container.querySelectorAll('.multi-picker').forEach(picker => {
+    const field = picker.dataset.field;
+    if(!pickerState[field]) pickerState[field] = [];
+    renderPicker(picker);
+  });
+}
+
+function renderPicker(picker){
+  const field = picker.dataset.field;
+  const master = picker.dataset.master;
+  const options = MASTERS[master] || [];
+  const picked = pickerState[field] || [];
+
+  const chipsHtml = picked.length > 0
+    ? picked.map(v => `<span class="chip">${v}<span class="chip-x" onclick="event.stopPropagation();removePick('${field}','${escapeAttr(v)}')">×</span></span>`).join('')
+    : '<span class="placeholder">— Select one or more —</span>';
+
+  const dropdownHtml = options.map(opt => {
+    const isPicked = picked.includes(opt);
+    return `<div class="dropdown-item ${isPicked ? 'picked' : ''}" onclick="${isPicked ? '' : `addPick('${field}','${escapeAttr(opt)}')`}">${opt}${isPicked ? ' ✓' : ''}</div>`;
+  }).join('');
+
+  picker.innerHTML = `
+    <div class="chips-area" onclick="togglePickerOpen(this.parentElement)">
+      ${chipsHtml}
+      <span class="add-trigger" onclick="event.stopPropagation();togglePickerOpen(this.parentElement.parentElement)">+ Add</span>
+    </div>
+    <div class="dropdown">${dropdownHtml || '<div class="dropdown-item" style="font-style:italic;color:var(--ink-faint)">No options in master</div>'}</div>
+  `;
+}
+
+function escapeAttr(s){ return String(s).replace(/'/g, "&#39;"); }
+
+function togglePickerOpen(picker){
+  document.querySelectorAll('.multi-picker.open').forEach(p => { if(p !== picker) p.classList.remove('open'); });
+  picker.classList.toggle('open');
+}
+
+function addPick(field, val){
+  if(!pickerState[field]) pickerState[field] = [];
+  if(!pickerState[field].includes(val)){
+    pickerState[field].push(val);
+  }
+  const picker = document.querySelector(`.multi-picker[data-field="${field}"]`);
+  if(picker){
+    renderPicker(picker);
+    picker.classList.add('open');
+  }
+  refreshSummary();
+}
+
+function removePick(field, val){
+  if(!pickerState[field]) return;
+  pickerState[field] = pickerState[field].filter(v => v !== val);
+  const picker = document.querySelector(`.multi-picker[data-field="${field}"]`);
+  if(picker) renderPicker(picker);
+  refreshSummary();
+}
+
+// Close any open picker when clicking outside
+document.addEventListener('click', e => {
+  document.querySelectorAll('.multi-picker.open').forEach(p => {
+    if(!p.contains(e.target)) p.classList.remove('open');
+  });
+});
+
+// ============ PRODUCT BLOCK ============
+function addProduct(scope){
+  productCounter++;
+  const pid = `${scope}P${productCounter}`;
+  const list = document.getElementById(`${scope}ProductList`);
+  const block = document.createElement('div');
+  block.className = 'product-block';
+  block.id = pid;
+  block.innerHTML = renderProductBlock(pid, scope);
+  list.appendChild(block);
+  initPickersIn(block);
+}
+
+function removeProduct(pid){
+  if(confirm('Remove this product\'s customer analysis?')){
+    // Clean up picker state for fields under this product
+    Object.keys(pickerState).forEach(k => {
+      if(k.startsWith(pid + '__')) delete pickerState[k];
+    });
+    document.getElementById(pid).remove();
+  }
+}
+
+function toggleProduct(pid){
+  document.getElementById(pid).classList.toggle('collapsed');
+}
+
+function renderProductBlock(pid, scope){
+  const productOpts = PRODUCT_MASTER.map(p => `<option>${p}</option>`).join('');
+  const isExisting = (scope === 'existing');
+
+  // Per-product field IDs prefix
+  const F = (name) => `${pid}__${name}`;
+
+  return `
+  <div class="product-head" onclick="toggleProduct('${pid}')">
+    <div class="ph-name" onclick="event.stopPropagation()">
+      <span class="chevron">▾</span>
+      <select onchange="updateProductHeadStatus('${pid}')">
+        <option value="">— Select Product —</option>
+        ${productOpts}
+      </select>
+      ${isExisting
+        ? `<span class="status-chip pending" id="${pid}-flagChip" style="display:none">↻ Intervention Flagged</span>`
+        : `<span class="status-chip pending" id="${pid}-statusChip">Pending</span>`
+      }
+    </div>
+    <button class="ph-remove" onclick="event.stopPropagation();removeProduct('${pid}')">Remove</button>
+  </div>
+  <div class="ph-body">
+
+    <!-- I. Demographic Segmentation -->
+    <div class="subsection">
+      <div class="subsection-title"><span class="sst-roman">I.</span>Demographic Segmentation</div>
+      <div class="field-row"><div class="field-label">Age Group</div><div class="multi-picker" data-field="${F('ageGroup')}" data-master="ageGroup"></div></div>
+      <div class="field-row"><div class="field-label">Gender</div><div class="multi-picker" data-field="${F('gender')}" data-master="gender"></div></div>
+      <div class="field-row"><div class="field-label">Family Size</div><div class="multi-picker" data-field="${F('familySize')}" data-master="familySize"></div></div>
+      <div class="field-row"><div class="field-label">Occupation</div><div class="multi-picker" data-field="${F('occupation')}" data-master="occupation"></div></div>
+      <div class="field-row"><div class="field-label">Income Bracket</div><div class="multi-picker" data-field="${F('income')}" data-master="income"></div></div>
+      <div class="field-row"><div class="field-label">Education Level</div><div class="multi-picker" data-field="${F('education')}" data-master="education"></div></div>
+      <div class="field-row" style="align-items:flex-start"><div class="field-label" style="padding-top:6px">Notes</div><textarea class="field-val" placeholder="Additional observations on demographic segmentation"></textarea></div>
+    </div>
+
+    <!-- II. Geographic -->
+    <div class="subsection">
+      <div class="subsection-title"><span class="sst-roman">II.</span>Geographic</div>
+      <div class="field-row"><div class="field-label">Primary Geography</div><div class="multi-picker" data-field="${F('primaryGeo')}" data-master="primaryGeo"></div></div>
+      <div class="field-row"><div class="field-label">Key Cities</div><div class="multi-picker" data-field="${F('keyCities')}" data-master="cities"></div></div>
+      <div class="field-row"><div class="field-label">Location Type</div><div class="multi-picker" data-field="${F('locationType')}" data-master="locationType"></div></div>
+      <div class="field-row" style="align-items:flex-start"><div class="field-label" style="padding-top:6px">Notes</div><textarea class="field-val" placeholder="Additional observations on geography"></textarea></div>
+    </div>
+
+    <!-- III. Psychographic -->
+    <div class="subsection">
+      <div class="subsection-title"><span class="sst-roman">III.</span>Psychographic</div>
+      <div class="field-row"><div class="field-label">Values &amp; Lifestyle</div><div class="multi-picker" data-field="${F('valuesLifestyle')}" data-master="valuesLifestyle"></div></div>
+      <div class="field-row"><div class="field-label">Buying Motivation</div><div class="multi-picker" data-field="${F('buyingMotivation')}" data-master="buyingMotivation"></div></div>
+      <div class="field-row" style="align-items:flex-start"><div class="field-label" style="padding-top:6px">Notes</div><textarea class="field-val" placeholder="Additional observations on psychographics"></textarea></div>
+    </div>
+
+    <!-- IV. Behavioural -->
+    <div class="subsection">
+      <div class="subsection-title"><span class="sst-roman">IV.</span>Behavioural</div>
+      <div class="field-row"><div class="field-label">Purchase Behaviour</div><div class="multi-picker" data-field="${F('purchaseBehaviour')}" data-master="purchaseBehaviour"></div></div>
+      <div class="field-row"><div class="field-label">Usage Rate</div><div class="multi-picker" data-field="${F('usageRate')}" data-master="usageRate"></div></div>
+      <div class="field-row"><div class="field-label">Loyalty Status</div><div class="multi-picker" data-field="${F('loyaltyStatus')}" data-master="loyaltyStatus"></div></div>
+      <div class="field-row"><div class="field-label">Occasion</div><div class="multi-picker" data-field="${F('occasion')}" data-master="occasion"></div></div>
+      <div class="field-row" style="align-items:flex-start"><div class="field-label" style="padding-top:6px">Notes</div><textarea class="field-val" placeholder="Additional observations on customer behaviour"></textarea></div>
+    </div>
+
+    <!-- V. Customer Segmentation -->
+    <div class="subsection">
+      <div class="subsection-title"><span class="sst-roman">V.</span>Customer Segmentation</div>
+      <div class="field-row"><div class="field-label">Primary Customers</div><div class="multi-picker" data-field="${F('primaryCustomers')}" data-master="customerSegments"></div></div>
+      <div class="field-row"><div class="field-label">Secondary Customers</div><div class="multi-picker" data-field="${F('secondaryCustomers')}" data-master="customerSegments"></div></div>
+    </div>
+
+    <!-- VI. Target Market Definition -->
+    <div class="subsection">
+      <div class="subsection-title"><span class="sst-roman">VI.</span>Target Market Definition</div>
+      <p style="font-size:11px;color:var(--ink-soft);font-style:italic;margin-bottom:10px">Based on the segmentation above, define the primary and secondary target market for this product.</p>
+      <div class="field-row">
+        <div class="field-label">Primary Target Segment</div>
+        <select class="field-val">
+          ${MASTERS.targetSegment.map(s => `<option>${s}</option>`).join('')}
+        </select>
+      </div>
+      <div class="field-row">
+        <div class="field-label">Secondary Target Segment</div>
+        <select class="field-val">
+          ${MASTERS.targetSegment.map(s => `<option>${s}</option>`).join('')}
+        </select>
+      </div>
+      <div class="field-row">
+        <div class="field-label">Market Readiness</div>
+        <select class="field-val">
+          ${MASTERS.marketReadiness.map(s => `<option>${s}</option>`).join('')}
+        </select>
+      </div>
+      <div class="field-row" style="align-items:flex-start">
+        <div class="field-label" style="padding-top:6px">Target Customer Persona</div>
+        <textarea class="field-val" placeholder="Describe the typical customer in 3–4 sentences..."></textarea>
+      </div>
+    </div>
+
+    ${isExisting ? renderInterventionBlock(pid) : renderImplementationStatusBlock(pid)}
+
+  </div>`;
+}
+
+// Existing-tab Intervention Need block (per product)
+function renderInterventionBlock(pid){
+  return `
+    <div class="intervention-block">
+      <div class="intervention-block-title">⚠ Intervention Need</div>
+      <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:8px">
+        <div style="font-size:12px;font-weight:bold;color:var(--ink)">Upgrade Target Customers?</div>
+        <span class="toggle" onclick="toggleIntervention(this,'${pid}')"></span>
+      </div>
+      <div class="flag-note" id="${pid}-flagNote">Not flagged</div>
+      <div id="${pid}-justifyWrap" class="hidden" style="margin-top:8px">
+        <div style="font-size:11px;color:var(--ink-soft);margin-bottom:4px">Justification</div>
+        <textarea class="field-val" placeholder="Reason for upgrading the target customer profile for this product..." style="width:100%"></textarea>
+      </div>
+    </div>`;
+}
+
+// Required-tab Implementation Status block (per product)
+function renderImplementationStatusBlock(pid){
+  return `
+    <div class="intervention-block">
+      <div class="intervention-block-title">📋 Implementation Status</div>
+      <div class="field-row" style="margin-bottom:0">
+        <div class="field-label">Status</div>
+        <select class="field-val" onchange="updateImplementationStatus('${pid}',this.value)">
+          <option value="Pending">Pending</option>
+          <option value="In Progress">In Progress</option>
+          <option value="Completed">Completed</option>
+          <option value="Not Feasible">Not Feasible</option>
+        </select>
+      </div>
+      <div class="field-row" style="align-items:flex-start;margin-top:10px">
+        <div class="field-label" style="padding-top:6px">Notes</div>
+        <textarea class="field-val" placeholder="Implementation notes, blockers, next steps..."></textarea>
+      </div>
+    </div>`;
+}
+
+// ============ PRODUCT HEAD HELPERS ============
+function updateProductHeadStatus(pid){
+  // Currently no-op; product name change is captured by the select itself.
+  // Hook retained for future cross-tab sync.
+}
+
+function toggleIntervention(el, pid){
+  el.classList.toggle('on');
+  const note = document.getElementById(`${pid}-flagNote`);
+  const justifyWrap = document.getElementById(`${pid}-justifyWrap`);
+  const flagChip = document.getElementById(`${pid}-flagChip`);
+  if(el.classList.contains('on')){
+    note.textContent = '↻ Flagged → Aspirational profile in Required tab';
+    note.classList.add('active');
+    justifyWrap.classList.remove('hidden');
+    if(flagChip) flagChip.style.display = 'inline-block';
+  } else {
+    note.textContent = 'Not flagged';
+    note.classList.remove('active');
+    justifyWrap.classList.add('hidden');
+    if(flagChip) flagChip.style.display = 'none';
+  }
+}
+
+function updateImplementationStatus(pid, val){
+  const chip = document.getElementById(`${pid}-statusChip`);
+  if(!chip) return;
+  chip.classList.remove('pending','progress','completed','notfeasible');
+  if(val === 'In Progress'){ chip.textContent = 'In Progress'; chip.classList.add('progress'); }
+  else if(val === 'Completed'){ chip.textContent = 'Completed'; chip.classList.add('completed'); }
+  else if(val === 'Not Feasible'){ chip.textContent = 'Not Feasible'; chip.classList.add('notfeasible'); }
+  else { chip.textContent = 'Pending'; chip.classList.add('pending'); }
+  refreshSummary();
+}
+
+function toggleIntervention(el, pid){
+  el.classList.toggle('on');
+  const note = document.getElementById(`${pid}-flagNote`);
+  const justifyWrap = document.getElementById(`${pid}-justifyWrap`);
+  const flagChip = document.getElementById(`${pid}-flagChip`);
+  if(el.classList.contains('on')){
+    note.textContent = '↻ Flagged → Aspirational profile in Required tab';
+    note.classList.add('active');
+    justifyWrap.classList.remove('hidden');
+    if(flagChip) flagChip.style.display = 'inline-block';
+  } else {
+    note.textContent = 'Not flagged';
+    note.classList.remove('active');
+    justifyWrap.classList.add('hidden');
+    if(flagChip) flagChip.style.display = 'none';
+  }
+  refreshSummary();
+}
+</script>
+
+</body>
+</html>

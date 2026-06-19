@@ -1,0 +1,1039 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Product Testing · PRIME Rural</title>
+<style>
+:root {
+  --teal:#0E4D4E; --sea:#1A6B6D; --terracotta:#C26849; --terracotta-dk:#A85738;
+  --terracotta-sft:#F5E2D6;
+  --cream:#FBF5E5; --cream-deep:#F4ECD3; --offwhite:#FDFAF0; --panel:#FFFFFF;
+  --ink:#2A2520; --ink-soft:#6B6359; --ink-faint:#9C9384;
+  --border:#E8DFC9; --border-dk:#D6CDB6;
+  --good-bg:#E3EFDF; --good-ink:#3F6B3A;
+  --fair-bg:#FBE9DF; --fair-ink:#7A3B22;
+  --poor-bg:#F5D6CC; --poor-ink:#8B2A0F;
+  --info-bg:#E1ECF7; --info-ink:#1F4A78;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:Georgia,serif;background:var(--cream);color:var(--ink);line-height:1.4}
+.page{max-width:1200px;margin:0 auto;padding:24px}
+
+.header{background:var(--teal);color:#fff;padding:16px 20px;border-radius:12px 12px 0 0;display:flex;justify-content:space-between;align-items:center}
+.header h1{font-size:18px;font-weight:normal;letter-spacing:0.5px}
+.header .crumb{font-size:11px;opacity:0.75;text-transform:uppercase;letter-spacing:1px}
+
+.card{background:var(--cream);border:1px solid var(--border-dk);border-top:none;border-radius:0 0 12px 12px}
+
+.tab-bar{display:flex;background:var(--cream-deep);border-bottom:1px solid var(--border-dk)}
+.tab{padding:12px 22px;cursor:pointer;font-size:12px;text-transform:uppercase;letter-spacing:1px;color:var(--ink-soft);border-right:1px solid var(--border)}
+.tab.active{background:var(--teal);color:#fff}
+.tab:hover:not(.active){background:#EADFC0}
+
+.content{padding:22px}
+
+.entrepreneur-chip{display:inline-flex;align-items:center;gap:10px;background:#fff;border:1px solid var(--border-dk);padding:6px 14px;border-radius:20px;font-size:12px;margin-bottom:18px}
+.ent-avatar{width:24px;height:24px;background:var(--teal);color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:bold}
+
+.section-caption{background:var(--cream-deep);border-left:3px solid var(--terracotta);padding:8px 12px;border-radius:0 6px 6px 0;font-size:12px;color:var(--ink-soft);font-style:italic;margin-bottom:14px}
+
+.btn{padding:5px 12px;border-radius:20px;border:1px solid var(--border-dk);background:#fff;cursor:pointer;font-size:11px;color:var(--ink);font-family:Georgia,serif}
+.btn:hover{background:var(--cream-deep)}
+.btn-primary{background:var(--teal);color:#fff;border-color:var(--teal)}
+.btn-primary:hover{background:var(--sea)}
+
+.add-row-bar{text-align:center;padding:14px;background:var(--cream-deep);border:1px dashed var(--border-dk);border-radius:10px;margin-top:10px}
+
+.empty-msg{text-align:center;color:var(--ink-faint);font-style:italic;padding:30px;background:var(--cream-deep);border:1px dashed var(--border-dk);border-radius:10px;margin-bottom:14px}
+
+/* Test block — collapsible card */
+.test-block{background:#fff;border:1px solid var(--border-dk);border-radius:10px;margin-bottom:14px;overflow:hidden}
+.test-head{background:var(--sea);color:#fff;padding:10px 14px;display:flex;justify-content:space-between;align-items:center;cursor:pointer;user-select:none;font-size:13px;flex-wrap:wrap;gap:8px}
+.test-head:hover{background:var(--teal)}
+.test-head .th-name{display:flex;align-items:center;gap:10px;flex-wrap:wrap;flex:1;min-width:0}
+.test-head select{background:rgba(255,255,255,0.15);border:1px solid rgba(255,255,255,0.3);color:#fff;padding:4px 10px;border-radius:4px;font-family:Georgia,serif;font-size:13px;cursor:pointer;min-width:200px}
+.test-head select option{color:var(--ink);background:#fff}
+.chevron{font-size:12px;transition:transform 0.2s}
+.test-block.collapsed .chevron{transform:rotate(-90deg)}
+.test-block.collapsed .tb-body{display:none}
+.tb-body{padding:14px}
+.th-remove{background:transparent;border:1px solid rgba(255,255,255,0.4);color:#fff;padding:3px 10px;border-radius:14px;cursor:pointer;font-size:11px;font-family:Georgia,serif}
+.th-remove:hover{background:var(--terracotta);border-color:var(--terracotta)}
+
+.subsection{background:var(--cream-deep);padding:14px;border-radius:8px;margin-bottom:12px;border:1px solid var(--border)}
+.subsection-title{font-size:12px;text-transform:uppercase;letter-spacing:1.5px;color:var(--teal);margin-bottom:10px;padding-bottom:6px;border-bottom:1px solid var(--border-dk);font-weight:bold}
+
+.field-row{display:flex;gap:12px;margin-bottom:10px;flex-wrap:wrap;align-items:flex-start}
+.field-label{width:220px;font-size:12px;color:var(--ink-soft);padding-top:8px}
+.field-val{flex:1;background:var(--offwhite);border:1px solid var(--border-dk);padding:6px 10px;border-radius:5px;font-size:12px;min-width:200px;font-family:Georgia,serif}
+.field-val[readonly]{background:var(--cream-deep);color:var(--ink-soft);font-style:italic}
+textarea.field-val{font-family:Georgia,serif;resize:vertical;min-height:50px}
+select.field-val{cursor:pointer}
+
+/* Checkbox label */
+.cb-row{flex:1;min-width:200px;display:inline-flex;align-items:center;gap:8px;font-size:12px;color:var(--ink-soft);background:var(--offwhite);border:1px solid var(--border-dk);border-radius:5px;padding:6px 10px;cursor:pointer}
+.cb-row input[type="checkbox"]{cursor:pointer}
+
+/* Upload + view */
+.upload-wrap{flex:1;min-width:280px;display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+.upload-btn{display:inline-flex;align-items:center;gap:4px;padding:6px 12px;background:#fff;border:1px solid var(--border-dk);border-radius:5px;cursor:pointer;font-size:11px;color:var(--ink-soft);font-family:Georgia,serif}
+.upload-btn:hover{border-color:var(--teal);color:var(--teal);background:var(--cream-deep)}
+.upload-btn input[type="file"]{display:none}
+.view-btn{padding:6px 12px;background:transparent;border:1px solid var(--border-dk);border-radius:5px;cursor:pointer;font-size:11px;color:var(--ink-faint);font-family:Georgia,serif}
+.view-btn:not(:disabled){color:var(--teal);border-color:var(--teal)}
+.view-btn:not(:disabled):hover{background:var(--cream-deep)}
+.view-btn:disabled{cursor:not-allowed}
+.file-pill{display:inline-flex;align-items:center;gap:6px;padding:4px 10px;background:var(--cream-deep);border:1px solid var(--border-dk);border-radius:14px;font-size:11px;color:var(--ink);max-width:260px}
+.file-pill .file-name{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;flex:1}
+.file-pill .file-x{cursor:pointer;color:var(--terracotta);font-weight:bold}
+.file-pill .file-x:hover{color:var(--terracotta-dk)}
+
+/* Intervention block */
+.intervention-block{background:var(--terracotta-sft);border:1px solid var(--terracotta);border-radius:8px;padding:14px;margin-top:8px}
+.intervention-block-title{font-size:11px;text-transform:uppercase;letter-spacing:1px;color:var(--terracotta-dk);margin-bottom:10px;font-weight:bold}
+.toggle{width:36px;height:18px;border-radius:20px;background:#ccc;display:inline-block;cursor:pointer;position:relative;flex-shrink:0;vertical-align:middle}
+.toggle::after{content:'';width:14px;height:14px;background:#fff;border-radius:50%;position:absolute;top:2px;left:2px;transition:left 0.2s}
+.toggle.on{background:var(--teal)}
+.toggle.on::after{left:20px}
+.flag-note{font-size:10px;color:var(--ink-faint);font-style:italic;margin:6px 0}
+.flag-note.active{color:var(--terracotta-dk);font-weight:bold;font-style:normal}
+
+/* Implementation status */
+.impl-block{background:var(--terracotta-sft);border:1px solid var(--terracotta);border-radius:8px;padding:14px;margin-top:12px}
+.impl-block-title{font-size:11px;text-transform:uppercase;letter-spacing:1px;color:var(--terracotta-dk);margin-bottom:10px;font-weight:bold}
+
+/* Status chip */
+.status-chip{display:inline-block;padding:3px 9px;border-radius:12px;font-size:10px;font-weight:bold;letter-spacing:0.3px;text-transform:uppercase}
+.status-chip.pending{background:var(--cream-deep);color:var(--ink-soft)}
+.status-chip.progress{background:var(--fair-bg);color:var(--fair-ink)}
+.status-chip.completed{background:var(--good-bg);color:var(--good-ink)}
+.status-chip.onhold{background:var(--info-bg);color:var(--info-ink)}
+.status-chip.notfeasible{background:var(--poor-bg);color:var(--poor-ink)}
+.status-chip.flag{background:var(--cream-deep);color:var(--ink-soft);border:1px dashed var(--border-dk)}
+.status-chip.flag.active{background:var(--terracotta-sft);color:var(--terracotta-dk);border:1px solid var(--terracotta)}
+
+.bridged-marker{display:inline-flex;align-items:center;gap:4px;font-size:10px;color:var(--terracotta-dk);font-style:italic;background:var(--terracotta-sft);padding:2px 8px;border-radius:10px;border:1px solid var(--terracotta)}
+
+.hidden{display:none !important}
+
+/* ─── Summary ─── */
+.sm-section{background:var(--cream-deep);padding:16px;border-radius:10px;margin-bottom:16px;border:1px solid var(--border)}
+.sm-section-title{font-size:13px;text-transform:uppercase;letter-spacing:1.5px;color:var(--teal);margin-bottom:12px;padding-bottom:8px;border-bottom:1px solid var(--border-dk);font-weight:bold}
+.sm-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.sm-card{background:#fff;border:1px solid var(--border);border-radius:10px;padding:14px}
+.sm-card h3{font-size:11px;text-transform:uppercase;letter-spacing:1px;color:var(--teal);margin-bottom:10px;padding-bottom:6px;border-bottom:1px solid var(--border);font-weight:bold}
+.sm-row{display:flex;justify-content:space-between;padding:5px 0;font-size:12px;border-bottom:1px solid #f0e9d6}
+.sm-row:last-child{border-bottom:none}
+.sm-lbl{color:var(--ink-soft)}
+.sm-val{font-weight:bold;color:var(--ink)}
+.sm-val.green{color:var(--good-ink)}
+.sm-val.amber{color:var(--fair-ink)}
+.sm-val.red{color:var(--poor-ink)}
+.sm-flags{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+.sm-flag{background:#fff;border:1px solid var(--border);border-radius:8px;padding:12px}
+.sm-flag-icon{width:30px;height:30px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:14px;margin-bottom:8px}
+.sm-flag-count{font-size:20px;font-weight:bold;color:var(--ink)}
+.sm-flag-label{font-size:10px;color:var(--ink-soft);text-transform:uppercase;letter-spacing:0.5px;margin-top:4px}
+table.ov-tbl{width:100%;border-collapse:collapse;background:var(--offwhite);border-radius:6px;overflow:hidden;border:1px solid var(--border-dk);font-size:11px}
+table.ov-tbl th{background:var(--teal);color:#fff;padding:9px 8px;text-align:left;font-weight:normal;text-transform:uppercase;letter-spacing:0.5px;font-size:10px;border-right:1px solid var(--sea)}
+table.ov-tbl th:last-child{border-right:none}
+table.ov-tbl th.th-req{background:var(--sea)}
+table.ov-tbl td{padding:7px 8px;border-bottom:1px solid var(--border);border-right:1px solid var(--border);vertical-align:middle}
+table.ov-tbl td:last-child{border-right:none}
+table.ov-tbl tr:last-child td{border-bottom:none}
+</style>
+</head>
+<body>
+
+<div class="page">
+<div class="header">
+  <h1>Product Testing</h1>
+  <div class="crumb">PRIME Rural · Quality &amp; Compliance</div>
+</div>
+<div class="card">
+
+<div class="tab-bar">
+  <div class="tab" onclick="showTab('summary',this)">Summary</div>
+  <div class="tab active" onclick="showTab('existing',this)">Existing</div>
+  <div class="tab" onclick="showTab('required',this)">Required</div>
+  <div class="tab" onclick="showTab('resources',this)">Resources</div>
+  <div class="tab" onclick="showTab('tasklog',this)">Task Log</div>
+</div>
+
+<div class="content">
+
+<div class="entrepreneur-chip">
+  <div class="ent-avatar">EN</div>
+  <span style="color:var(--ink-soft);font-style:italic">Auto-fetched from profile</span>
+</div>
+
+<!-- ============ SUMMARY ============ -->
+<div id="summary" class="panel hidden">
+
+  <!-- ① Test-wise Overview -->
+  <div class="sm-section">
+    <div class="sm-section-title">Test-wise Overview</div>
+    <p style="font-size:11px;color:var(--ink-soft);font-style:italic;margin-bottom:10px">One row per existing test. Intervention Type and Implementation Status reflect the Required tab.</p>
+    <div style="overflow-x:auto">
+    <table class="ov-tbl">
+      <thead>
+        <tr>
+          <th>Product</th>
+          <th>Test Type</th>
+          <th>Lab</th>
+          <th>Result Date</th>
+          <th>Report</th>
+          <th>Retesting Flagged</th>
+          <th class="th-req">Intervention Type</th>
+          <th class="th-req">Implementation Status</th>
+        </tr>
+      </thead>
+      <tbody id="sumOverviewBody">
+        <tr><td colspan="8" style="text-align:center;color:var(--ink-faint);font-style:italic;padding:14px">Auto-populated from Existing and Required tabs</td></tr>
+      </tbody>
+    </table>
+    </div>
+  </div>
+
+  <!-- ② Aggregates -->
+  <div class="sm-section">
+    <div class="sm-section-title">Aggregates</div>
+    <div class="sm-grid">
+
+      <div class="sm-card">
+        <h3>Existing</h3>
+        <div class="sm-row"><span class="sm-lbl">Total Tests Logged</span><span class="sm-val" id="agg-total">0</span></div>
+        <div class="sm-row"><span class="sm-lbl">Unique Products Tested</span><span class="sm-val" id="agg-products">0</span></div>
+        <div class="sm-row"><span class="sm-lbl">Reports Uploaded</span><span class="sm-val green" id="agg-reports">0</span></div>
+        <div class="sm-row"><span class="sm-lbl">Results Received</span><span class="sm-val green" id="agg-results">0</span></div>
+        <div class="sm-row"><span class="sm-lbl">Flagged for Retesting</span><span class="sm-val amber" id="agg-flagged">0</span></div>
+      </div>
+
+      <div class="sm-card">
+        <h3>Cost</h3>
+        <div class="sm-row"><span class="sm-lbl">Most Used Lab</span><span class="sm-val" id="agg-top-lab" style="font-size:11px;text-align:right;max-width:160px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">—</span></div>
+        <div class="sm-row"><span class="sm-lbl">Unique Labs Used</span><span class="sm-val" id="agg-labs">0</span></div>
+        <div class="sm-row"><span class="sm-lbl">Tests with Deposit Date</span><span class="sm-val" id="agg-deposited">0</span></div>
+        <div class="sm-row"><span class="sm-lbl">Tests Awaiting Results</span><span class="sm-val amber" id="agg-awaiting">0</span></div>
+      </div>
+
+      <div class="sm-card">
+        <h3>Interventions</h3>
+        <div class="sm-row"><span class="sm-lbl">Required Tests (Total)</span><span class="sm-val" id="agg-req-total">0</span></div>
+        <div class="sm-row"><span class="sm-lbl">Bridged from Existing</span><span class="sm-val amber" id="agg-bridged">0</span></div>
+        <div class="sm-row"><span class="sm-lbl">Added Manually</span><span class="sm-val" id="agg-manual">0</span></div>
+        <div class="sm-row"><span class="sm-lbl">Consent Signed</span><span class="sm-val green" id="agg-consent">0</span></div>
+        <div class="sm-row"><span class="sm-lbl">Approved by Core Team</span><span class="sm-val green" id="agg-approved">0</span></div>
+      </div>
+
+      <div class="sm-card">
+        <h3>Implementation Status</h3>
+        <div class="sm-row"><span class="sm-lbl">Completed</span><span class="sm-val green" id="agg-completed">0</span></div>
+        <div class="sm-row"><span class="sm-lbl">In Progress</span><span class="sm-val amber" id="agg-inprogress">0</span></div>
+        <div class="sm-row"><span class="sm-lbl">Pending</span><span class="sm-val" id="agg-pending">0</span></div>
+        <div class="sm-row"><span class="sm-lbl">On Hold</span><span class="sm-val" id="agg-onhold">0</span></div>
+        <div class="sm-row"><span class="sm-lbl">Not Feasible</span><span class="sm-val red" id="agg-notfeasible">0</span></div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ③ Intervention Flags -->
+  <div class="sm-section">
+    <div class="sm-section-title">Intervention Flags</div>
+    <div class="sm-flags">
+      <div class="sm-flag"><div class="sm-flag-icon" style="background:var(--good-bg);color:var(--good-ink)">🧪</div><div class="sm-flag-count" id="flag-total">0</div><div class="sm-flag-label">Tests Logged</div></div>
+      <div class="sm-flag"><div class="sm-flag-icon" style="background:var(--fair-bg);color:var(--fair-ink)">↻</div><div class="sm-flag-count" id="flag-flagged">0</div><div class="sm-flag-label">Retesting Flagged</div></div>
+      <div class="sm-flag"><div class="sm-flag-icon" style="background:var(--info-bg);color:var(--info-ink)">📋</div><div class="sm-flag-count" id="flag-required">0</div><div class="sm-flag-label">Tests Required</div></div>
+      <div class="sm-flag"><div class="sm-flag-icon" style="background:var(--good-bg);color:var(--good-ink)">✓</div><div class="sm-flag-count" id="flag-completed">0</div><div class="sm-flag-label">Completed</div></div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ============ RESOURCES ============ -->
+<div id="resources" class="panel hidden">
+  <div class="sm-section">
+    <div class="sm-section-title">Reference Materials</div>
+    <table class="data-table" id="resourcesTable">
+      <thead>
+        <tr>
+          <th style="width:25%">Resource Title</th>
+          <th style="width:18%">Category</th>
+          <th style="width:12%">Type</th>
+          <th style="width:30%">Description / Notes</th>
+          <th style="width:10%">File</th>
+          <th style="width:5%"></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><input type="text" placeholder="Resource title"></td>
+          <td>
+            <select>
+              <option>— Select —</option>
+              <option>Lab Contact / Quotation</option>
+              <option>Previous Test Report</option>
+              <option>FSSAI / Regulatory Guideline</option>
+              <option>NABL Lab List</option>
+              <option>Consent Letter Template</option>
+              <option>Test Parameter Reference</option>
+              <option>Packaging / Shelf Life Standard</option>
+              <option>Export / Certification Standard</option>
+              <option>Other</option>
+            </select>
+          </td>
+          <td>
+            <select>
+              <option>— Select —</option>
+              <option>Report / Study</option>
+              <option>Contact</option>
+              <option>Template</option>
+              <option>Guideline</option>
+              <option>Photo / Evidence</option>
+              <option>Quotation</option>
+            </select>
+          </td>
+          <td><input type="text" placeholder="Notes"></td>
+          <td>
+            <button class="btn" style="padding:3px 8px;font-size:10px">Upload</button>
+            <button class="btn" style="padding:3px 8px;font-size:10px">View ▷</button>
+          </td>
+          <td><button style="background:transparent;border:none;color:var(--terracotta);cursor:pointer;font-size:14px;padding:2px 6px" onclick="deleteResRow(this)">✕</button></td>
+        </tr>
+      </tbody>
+    </table>
+    <div style="display:flex;justify-content:flex-end;margin-top:10px">
+      <button class="btn btn-primary" onclick="addResRow()">+ Add Resource</button>
+    </div>
+  </div>
+</div>
+
+<!-- ============ TASK LOG ============ -->
+<div id="tasklog" class="panel hidden">
+  <div class="sm-section">
+    <div class="sm-section-title" style="display:flex;justify-content:space-between;align-items:center">
+      <span>Task Log — Product Testing Activities</span>
+      <span style="font-size:11px;color:var(--ink-faint);font-weight:normal;text-transform:none;letter-spacing:normal;font-style:italic"><span id="task-count">0</span> entries</span>
+    </div>
+    <table class="data-table" id="taskLogTable">
+      <thead>
+        <tr>
+          <th style="width:5%">No.</th>
+          <th style="width:13%">Date</th>
+          <th style="width:42%">Task Name</th>
+          <th style="width:30%">Notes / Outcome</th>
+          <th style="width:7%">Attachment</th>
+          <th style="width:3%"></th>
+        </tr>
+      </thead>
+      <tbody id="taskLogBody"></tbody>
+    </table>
+    <div style="display:flex;justify-content:flex-end;margin-top:10px">
+      <button class="btn btn-primary" onclick="addTaskRow()">+ Add Entry</button>
+    </div>
+  </div>
+</div>
+
+<!-- ============ EXISTING ============ -->
+<div id="existing" class="panel">
+  <div class="section-caption">Map all product tests already conducted. Flag any that need retesting via the per-card Intervention toggle — flagged tests automatically appear in the Required tab.</div>
+  <div id="existingList"></div>
+  <div class="add-row-bar">
+    <button class="btn btn-primary" onclick="addExistingTest()">+ Add Test</button>
+  </div>
+</div>
+
+<!-- ============ REQUIRED ============ -->
+<div id="required" class="panel hidden">
+  <div class="section-caption">Tests required — auto-populated from the Existing tab when retesting is flagged, or added manually for new tests to be conducted.</div>
+  <div id="requiredList"></div>
+  <div id="requiredEmpty" class="empty-msg">No tests required yet. Flag a test in the Existing tab, or add a new one manually below.</div>
+  <div class="add-row-bar">
+    <button class="btn btn-primary" onclick="addRequiredTest(null)">+ Add New Test</button>
+  </div>
+</div>
+
+</div>
+</div>
+</div>
+
+<script>
+// ============ MASTER DATA (placeholders — to be supplied by Harshit) ============
+const PRODUCT_MASTER = [
+  'Bamboo Shoot Pickle',
+  'Lemongrass Tea',
+  'Lakadong Turmeric',
+  'Eri Silk Muffler',
+  'Bamboo Earring',
+  'Local Honey',
+  'Jadoh Spice Mix'
+];
+
+const TEST_TYPE_MASTER = [
+  'Microbiological Test',
+  'Heavy Metal Test',
+  'Pesticide Residue Test',
+  'Nutritional Analysis',
+  'Shelf Life Test',
+  'Moisture Content',
+  'pH Test',
+  'Curcumin Content (HPLC)',
+  'Aflatoxin Test',
+  'Sensory / Organoleptic',
+  'Packaging Integrity',
+  'Fibre Strength (Textile)',
+  'Colour Fastness (Textile)',
+  'Other'
+];
+
+const LAB_MASTER = [
+  'NIFTEM (Sonipat)',
+  'CFTRI (Mysuru)',
+  'Spices Board Lab (Cochin)',
+  'NABL Accredited Local Lab — Shillong',
+  'NABL Accredited Local Lab — Guwahati',
+  'IIT Guwahati Food Lab',
+  'Assam Agricultural University',
+  'NEHU Lab',
+  'Govt Agmark Lab',
+  'NTH (North-East)',
+  'Private Testing Lab',
+  'Other'
+];
+
+// State
+let existingCounter = 0;
+let requiredCounter = 0;
+
+// ============ TAB SWITCHING ============
+function showTab(id, el){
+  document.querySelectorAll('.panel').forEach(p => p.classList.add('hidden'));
+  document.getElementById(id).classList.remove('hidden');
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  el.classList.add('active');
+  if(id === 'summary') refreshSummary();
+}
+
+// ============ SUMMARY ============
+function refreshSummary(){
+  const s = (id,v) => { const el=document.getElementById(id); if(el) el.textContent=v; };
+
+  // ── Existing tab ─────────────────────────────────────────────
+  const extBlocks = document.querySelectorAll('#existingList .test-block');
+  let total=0, reports=0, results=0, flagged=0, deposited=0, awaiting=0;
+  const products = new Set();
+  const labCounts = {};
+  let html = '';
+
+  // ── Required tab ─────────────────────────────────────────────
+  const reqBlocks = document.querySelectorAll('#requiredList .test-block');
+  let reqTotal=0, bridged=0, manual=0, consentSigned=0, approved=0;
+  let completed=0, inprogress=0, pending=0, onhold=0, notfeasible=0;
+
+  // Build map: bridge-key → required block for status lookup
+  const bridgeMap = {};
+  reqBlocks.forEach(b => {
+    reqTotal++;
+    const bk = b.getAttribute('data-bridge-source');
+    if(bk){ bridged++; bridgeMap[bk] = b; }
+    else manual++;
+    const consentCb = b.querySelector('input[type="checkbox"]');
+    if(consentCb?.checked) consentSigned++;
+    const approvedCb = b.querySelectorAll('input[type="checkbox"]')[0];
+    if(approvedCb?.checked) approved++;
+    const chip = b.querySelector('.status-chip');
+    const status = chip?.textContent?.trim() || 'Pending';
+    if(status === 'Completed')    completed++;
+    else if(status === 'In Progress') inprogress++;
+    else if(status === 'On Hold') onhold++;
+    else if(status === 'Not Feasible') notfeasible++;
+    else pending++;
+  });
+
+  extBlocks.forEach(b => {
+    const tid     = b.id;
+    const product = document.getElementById(`${tid}-product`)?.value || '';
+    const ttype   = document.getElementById(`${tid}-testtype`)?.value || '';
+    const lab     = document.getElementById(`${tid}-lab`)?.value || '';
+    const deposit = document.getElementById(`${tid}-depositDate`)?.value || '';
+    const result  = document.getElementById(`${tid}-resultDate`)?.value || '';
+    const hasReport = !!b.querySelector('.file-pill');
+    const isFlagged = b.querySelector('.toggle.on') !== null;
+
+    if(!product && !ttype) return;
+    total++;
+    if(product) products.add(product);
+    if(hasReport) reports++;
+    if(result) results++;
+    if(deposit) deposited++;
+    if(deposit && !result) awaiting++;
+    if(isFlagged) flagged++;
+    if(lab && lab !== '— Select —') labCounts[lab] = (labCounts[lab]||0) + 1;
+
+    // Look up required card for this existing block
+    const bridgeKey = `bridge-${tid}`;
+    const reqBlock  = bridgeMap[bridgeKey];
+    let intType = '<span style="color:var(--ink-faint)">—</span>';
+    let implStatus = '<span style="color:var(--ink-faint)">—</span>';
+    if(isFlagged){
+      intType = '<span style="display:inline-block;padding:2px 8px;border-radius:10px;font-size:10px;font-weight:bold;background:var(--fair-bg);color:var(--fair-ink)">↻ Retesting</span>';
+    }
+    if(reqBlock){
+      const chip = reqBlock.querySelector('.status-chip');
+      const status = chip?.textContent?.trim() || 'Pending';
+      const cls = {'Completed':'background:var(--good-bg);color:var(--good-ink)',
+                   'In Progress':'background:var(--fair-bg);color:var(--fair-ink)',
+                   'On Hold':'background:var(--info-bg);color:var(--info-ink)',
+                   'Not Feasible':'background:var(--poor-bg);color:var(--poor-ink)',
+                   'Pending':'background:var(--cream-deep);color:var(--ink-soft)'}[status] || '';
+      implStatus = `<span style="display:inline-block;padding:3px 9px;border-radius:12px;font-size:10px;font-weight:bold;${cls}">${status}</span>`;
+    }
+
+    const flagCell = isFlagged
+      ? '<span style="color:var(--fair-ink);font-weight:bold">⚠ Yes</span>'
+      : '<span style="color:var(--ink-faint)">—</span>';
+    const reportCell = hasReport
+      ? '<span style="color:var(--good-ink);font-weight:bold">📎 Yes</span>'
+      : '<span style="color:var(--ink-faint)">—</span>';
+
+    html += `<tr>
+      <td><strong>${product||'—'}</strong></td>
+      <td style="font-size:11px">${ttype||'—'}</td>
+      <td style="font-size:11px">${lab||'—'}</td>
+      <td style="font-size:11px">${result||'—'}</td>
+      <td style="text-align:center">${reportCell}</td>
+      <td style="text-align:center">${flagCell}</td>
+      <td style="background:#FDF3EE">${intType}</td>
+      <td style="background:#EDF6EA">${implStatus}</td>
+    </tr>`;
+  });
+
+  // Also show standalone manual Required tests (not bridged from Existing)
+  reqBlocks.forEach(b => {
+    if(b.getAttribute('data-bridge-source')) return; // already shown via Existing row
+    const prodSel = b.querySelector('.rq-product-select');
+    const typeSel = b.querySelector('.rq-testtype-select');
+    const product = prodSel?.value || '—';
+    const ttype   = typeSel?.value || '—';
+    const chip    = b.querySelector('.status-chip');
+    const status  = chip?.textContent?.trim() || 'Pending';
+    const cls = {'Completed':'background:var(--good-bg);color:var(--good-ink)',
+                 'In Progress':'background:var(--fair-bg);color:var(--fair-ink)',
+                 'On Hold':'background:var(--info-bg);color:var(--info-ink)',
+                 'Not Feasible':'background:var(--poor-bg);color:var(--poor-ink)',
+                 'Pending':'background:var(--cream-deep);color:var(--ink-soft)'}[status] || '';
+    html += `<tr style="background:var(--highlight)">
+      <td><strong>${product}</strong></td>
+      <td style="font-size:11px">${ttype}</td>
+      <td colspan="4" style="color:var(--ink-faint);font-style:italic;font-size:11px">Manually added in Required tab</td>
+      <td style="background:#FDF3EE"><span style="display:inline-block;padding:2px 8px;border-radius:10px;font-size:10px;font-weight:bold;background:#D6E3EE;color:#2C5A82">+ New Test</span></td>
+      <td style="background:#EDF6EA"><span style="display:inline-block;padding:3px 9px;border-radius:12px;font-size:10px;font-weight:bold;${cls}">${status}</span></td>
+    </tr>`;
+  });
+
+  document.getElementById('sumOverviewBody').innerHTML = html ||
+    '<tr><td colspan="8" style="text-align:center;color:var(--ink-faint);font-style:italic;padding:14px">Auto-populated from Existing and Required tabs</td></tr>';
+
+  // Top lab
+  const topLab = Object.entries(labCounts).sort((a,b)=>b[1]-a[1])[0]?.[0] || '—';
+  const uniqueLabs = Object.keys(labCounts).length;
+
+  s('agg-total',      total);
+  s('agg-products',   products.size);
+  s('agg-reports',    reports);
+  s('agg-results',    results);
+  s('agg-flagged',    flagged);
+  s('agg-top-lab',    topLab);
+  s('agg-labs',       uniqueLabs);
+  s('agg-deposited',  deposited);
+  s('agg-awaiting',   awaiting);
+  s('agg-req-total',  reqTotal);
+  s('agg-bridged',    bridged);
+  s('agg-manual',     manual);
+  s('agg-consent',    consentSigned);
+  s('agg-approved',   approved);
+  s('agg-completed',  completed);
+  s('agg-inprogress', inprogress);
+  s('agg-pending',    pending);
+  s('agg-onhold',     onhold);
+  s('agg-notfeasible',notfeasible);
+  s('flag-total',     total);
+  s('flag-flagged',   flagged);
+  s('flag-required',  reqTotal);
+  s('flag-completed', completed);
+}
+
+// ============ RESOURCES ============
+function addResRow(){
+  const tbody = document.querySelector('#resourcesTable tbody');
+  const row = tbody.rows[0].cloneNode(true);
+  row.querySelectorAll('input[type=text]').forEach(i => i.value='');
+  row.querySelectorAll('select').forEach(s => s.selectedIndex=0);
+  tbody.appendChild(row);
+}
+function deleteResRow(btn){
+  const tbody = btn.closest('tbody');
+  if(tbody.rows.length > 1) btn.closest('tr').remove();
+  else alert('At least one row is required.');
+}
+
+// ============ TASK LOG ============
+const PT_TASKS = [
+  '01 — Awareness on Importance of Product Testing',
+  '02 — Identify Products Requiring Testing',
+  '03 — Define Test Parameters Required',
+  '04 — Identify Suitable NABL / Accredited Lab',
+  '05 — Obtain Lab Quotation / Estimate',
+  '06 — Get Core Team Approval for Testing',
+  '07 — Prepare and Sign Consent Letter with Entrepreneur',
+  '08 — Collect Product Sample from Entrepreneur',
+  '09 — Deposit Sample to PRIME Office',
+  '10 — Deposit Sample to Lab',
+  '11 — Follow Up with Lab on Timeline',
+  '12 — Receive and Review Test Report',
+  '13 — Share Test Report with Entrepreneur',
+  '14 — Document Results in CRM',
+  '15 — Flag Failed Parameters — Retesting Required',
+  '16 — Initiate Retesting Process',
+  '17 — Update Final Status in Module',
+  'If other, specify in comments',
+];
+const PT_TASK_OPTS = PT_TASKS.map(t => `<option value="${t}">${t}</option>`).join('');
+let taskLogCounter = 0;
+
+function addTaskRow(){
+  taskLogCounter++;
+  const tbody = document.getElementById('taskLogBody');
+  const tr = document.createElement('tr');
+  tr.innerHTML = `
+    <td style="width:40px;text-align:center;color:var(--ink-soft)">${String(taskLogCounter).padStart(2,'0')}</td>
+    <td><input type="date" style="width:100%"></td>
+    <td><select style="width:100%"><option value="">— Select Task —</option>${PT_TASK_OPTS}</select></td>
+    <td><input type="text" placeholder="Notes / Outcome" style="width:100%"></td>
+    <td><button class="btn" style="padding:3px 8px;font-size:10px">Upload</button></td>
+    <td><button style="background:transparent;border:none;color:var(--terracotta);cursor:pointer;font-size:14px;padding:2px 6px" onclick="deleteTaskRow(this)">✕</button></td>
+  `;
+  tbody.appendChild(tr);
+  document.getElementById('task-count').textContent = tbody.rows.length;
+}
+
+function deleteTaskRow(btn){
+  const tbody = btn.closest('tbody');
+  btn.closest('tr').remove();
+  tbody.querySelectorAll('tr').forEach((tr,i) => {
+    tr.cells[0].textContent = String(i+1).padStart(2,'0');
+  });
+  taskLogCounter = tbody.rows.length;
+  document.getElementById('task-count').textContent = tbody.rows.length;
+}
+
+// ============ INIT ============
+window.addEventListener('DOMContentLoaded', () => {
+  addExistingTest();
+  refreshEmptyMessage();
+  showTab('summary', document.querySelector('.tab'));
+});
+function buildOpts(arr, blank=true){
+  let html = blank ? '<option value="">— Select —</option>' : '';
+  arr.forEach(x => html += `<option>${x}</option>`);
+  return html;
+}
+
+function refreshEmptyMessage(){
+  const list = document.getElementById('requiredList');
+  const empty = document.getElementById('requiredEmpty');
+  if(!list || !empty) return;
+  if(list.children.length === 0) empty.style.display = 'block';
+  else empty.style.display = 'none';
+}
+
+// ============ EXISTING TAB — Test block ============
+function addExistingTest(){
+  existingCounter++;
+  const tid = `ext${existingCounter}`;
+  const list = document.getElementById('existingList');
+  const block = document.createElement('div');
+  block.className = 'test-block';
+  block.id = tid;
+  block.innerHTML = renderExistingBody(tid);
+  list.appendChild(block);
+}
+
+function removeExistingTest(tid){
+  if(confirm('Remove this test?')){
+    // If this card has bridged a Required card, remove that too
+    const bridgedKey = `bridge-${tid}`;
+    const bridged = document.querySelector(`[data-bridge-source="${bridgedKey}"]`);
+    if(bridged) bridged.remove();
+    document.getElementById(tid).remove();
+    refreshEmptyMessage();
+  }
+}
+
+function toggleExistingBlock(tid){
+  document.getElementById(tid).classList.toggle('collapsed');
+}
+
+function renderExistingBody(tid){
+  return `
+    <div class="test-head" onclick="toggleExistingBlock('${tid}')">
+      <div class="th-name" onclick="event.stopPropagation()">
+        <span class="chevron">▾</span>
+        <select id="${tid}-product" onchange="updateExistingHead('${tid}')">
+          <option value="">— Select Product —</option>
+          ${PRODUCT_MASTER.map(p => `<option>${p}</option>`).join('')}
+        </select>
+        <select id="${tid}-testtype" onchange="updateExistingHead('${tid}')">
+          <option value="">— Test Type —</option>
+          ${TEST_TYPE_MASTER.map(t => `<option>${t}</option>`).join('')}
+        </select>
+        <span class="status-chip flag" id="${tid}-flagChip" style="display:none">⚠ Retesting Flagged</span>
+      </div>
+      <button class="th-remove" onclick="event.stopPropagation();removeExistingTest('${tid}')">Remove</button>
+    </div>
+    <div class="tb-body">
+
+      <div class="subsection">
+        <div class="subsection-title">Test Details</div>
+        <div class="field-row">
+          <div class="field-label">Purpose for Testing</div>
+          <input type="text" class="field-val" id="${tid}-purpose" placeholder="e.g., Pre-FSSAI compliance, export sample, shelf life validation">
+        </div>
+        <div class="field-row">
+          <div class="field-label">Lab Name</div>
+          <select class="field-val" id="${tid}-lab">
+            ${buildOpts(LAB_MASTER)}
+          </select>
+        </div>
+        <div class="field-row">
+          <div class="field-label">Date of Sample Deposit</div>
+          <input type="date" class="field-val" id="${tid}-depositDate">
+        </div>
+        <div class="field-row">
+          <div class="field-label">Date of Test Results</div>
+          <input type="date" class="field-val" id="${tid}-resultDate">
+        </div>
+        <div class="field-row">
+          <div class="field-label">Testing Report</div>
+          <div class="upload-wrap" id="${tid}-reportUploadWrap">
+            <label class="upload-btn">
+              ⬆ Upload
+              <input type="file" accept=".pdf,.jpg,.jpeg,.png" onchange="onFileUpload('${tid}-report',this)">
+            </label>
+            <button class="view-btn" id="${tid}-report-viewBtn" disabled onclick="onFileView('${tid}-report')">View</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Intervention -->
+      <div class="intervention-block">
+        <div class="intervention-block-title">⚠ Intervention Need</div>
+        <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:8px">
+          <div style="font-size:12px;font-weight:bold;color:var(--ink)">Need Retesting?</div>
+          <span class="toggle" onclick="toggleIntervention(this,'${tid}')"></span>
+        </div>
+        <div class="flag-note" id="${tid}-flagNote">Not flagged</div>
+        <div id="${tid}-justifyWrap" class="hidden" style="margin-top:8px">
+          <div style="font-size:11px;color:var(--ink-soft);margin-bottom:4px">Justification</div>
+          <textarea class="field-val" id="${tid}-justify" placeholder="Reason — failed parameter, expired report, regulator change, new batch..." style="width:100%" oninput="syncBridgeJustify('${tid}',this.value)"></textarea>
+        </div>
+      </div>
+
+    </div>`;
+}
+
+function updateExistingHead(tid){
+  // Cascade product / test-type changes to bridged Required card if present
+  const bridgedKey = `bridge-${tid}`;
+  const bridged = document.querySelector(`[data-bridge-source="${bridgedKey}"]`);
+  if(!bridged) return;
+  const productSel = bridged.querySelector('.rq-product-select');
+  const testtypeSel = bridged.querySelector('.rq-testtype-select');
+  if(productSel) productSel.value = document.getElementById(`${tid}-product`)?.value || '';
+  if(testtypeSel) testtypeSel.value = document.getElementById(`${tid}-testtype`)?.value || '';
+}
+
+// ============ INTERVENTION TOGGLE — bridges to Required ============
+function toggleIntervention(el, tid){
+  el.classList.toggle('on');
+  const note = document.getElementById(`${tid}-flagNote`);
+  const justifyWrap = document.getElementById(`${tid}-justifyWrap`);
+  const flagChip = document.getElementById(`${tid}-flagChip`);
+  if(el.classList.contains('on')){
+    note.textContent = '↻ Flagged → Required tab';
+    note.classList.add('active');
+    justifyWrap.classList.remove('hidden');
+    flagChip.style.display = 'inline-block';
+    flagChip.classList.add('active');
+    bridgeToRequired(tid);
+  } else {
+    note.textContent = 'Not flagged';
+    note.classList.remove('active');
+    justifyWrap.classList.add('hidden');
+    flagChip.style.display = 'none';
+    flagChip.classList.remove('active');
+    const bridgedKey = `bridge-${tid}`;
+    const bridged = document.querySelector(`[data-bridge-source="${bridgedKey}"]`);
+    if(bridged) bridged.remove();
+    refreshEmptyMessage();
+  }
+}
+
+function syncBridgeJustify(tid, val){
+  const bridgedKey = `bridge-${tid}`;
+  const bridged = document.querySelector(`[data-bridge-source="${bridgedKey}"]`);
+  if(bridged){
+    const justifyEl = bridged.querySelector('.rq-bridge-justify');
+    if(justifyEl) justifyEl.value = val;
+  }
+}
+
+// ============ FILE UPLOAD HANDLER ============
+function onFileUpload(scope, input){
+  const wrap = document.getElementById(`${scope}UploadWrap`) || document.getElementById(`${scope}-uploadWrap`);
+  // Resolve wrap by trying both naming conventions used in the markup
+  const resolved = wrap || document.querySelector(`[id$="${scope}UploadWrap"]`) || document.querySelector(`[id$="${scope}-uploadWrap"]`);
+  const target = resolved || findUploadWrap(scope);
+  const file = input.files?.[0];
+  if(!file || !target) return;
+  const existingPill = target.querySelector('.file-pill');
+  if(existingPill) existingPill.remove();
+  const pill = document.createElement('span');
+  pill.className = 'file-pill';
+  pill.innerHTML = `📎 <span class="file-name" title="${file.name}">${file.name}</span><span class="file-x" onclick="onFileRemove('${scope}')">×</span>`;
+  pill.dataset.fileUrl = URL.createObjectURL(file);
+  target.appendChild(pill);
+  const viewBtn = document.getElementById(`${scope}-viewBtn`);
+  if(viewBtn) viewBtn.disabled = false;
+}
+
+// Helper since the wrap id encodes the scope (e.g., ext1-reportUploadWrap, rqt1-consentUploadWrap)
+function findUploadWrap(scope){
+  // scope is like "ext1-report" or "rqt1-consent"
+  const candidate = document.getElementById(`${scope}UploadWrap`);
+  return candidate;
+}
+
+function onFileView(scope){
+  const wrap = findUploadWrap(scope);
+  const pill = wrap?.querySelector('.file-pill');
+  const url = pill?.dataset.fileUrl;
+  if(url) window.open(url, '_blank');
+}
+
+function onFileRemove(scope){
+  const wrap = findUploadWrap(scope);
+  const pill = wrap?.querySelector('.file-pill');
+  if(pill) pill.remove();
+  const viewBtn = document.getElementById(`${scope}-viewBtn`);
+  if(viewBtn) viewBtn.disabled = true;
+  const fileInput = wrap?.querySelector('input[type="file"]');
+  if(fileInput) fileInput.value = '';
+}
+
+// ============ REQUIRED TAB ============
+function bridgeToRequired(srcTid){
+  const bridgedKey = `bridge-${srcTid}`;
+  if(document.querySelector(`[data-bridge-source="${bridgedKey}"]`)) return;
+
+  const sourceProduct = document.getElementById(`${srcTid}-product`)?.value || '';
+  const sourceTestType = document.getElementById(`${srcTid}-testtype`)?.value || '';
+  const sourcePurpose = document.getElementById(`${srcTid}-purpose`)?.value || '';
+  const sourceLab = document.getElementById(`${srcTid}-lab`)?.value || '';
+  const sourceJustify = document.getElementById(`${srcTid}-justify`)?.value || '';
+
+  addRequiredTest({
+    bridgeKey: bridgedKey,
+    product: sourceProduct,
+    testtype: sourceTestType,
+    purpose: sourcePurpose,
+    lab: sourceLab,
+    justify: sourceJustify
+  });
+  refreshEmptyMessage();
+}
+
+function addRequiredTest(prefill){
+  requiredCounter++;
+  const tid = `rqt${requiredCounter}`;
+  const list = document.getElementById('requiredList');
+  const block = document.createElement('div');
+  block.className = 'test-block';
+  block.id = tid;
+  if(prefill?.bridgeKey){
+    block.setAttribute('data-bridge-source', prefill.bridgeKey);
+  }
+  block.innerHTML = renderRequiredBody(tid, prefill);
+  list.appendChild(block);
+  refreshEmptyMessage();
+}
+
+function removeRequiredTest(tid){
+  const block = document.getElementById(tid);
+  if(!block) return;
+  const bridgeKey = block.getAttribute('data-bridge-source');
+  if(bridgeKey){
+    const srcTid = bridgeKey.replace('bridge-','');
+    const srcToggle = document.querySelector(`#${srcTid} .intervention-block .toggle`);
+    if(srcToggle && srcToggle.classList.contains('on')){
+      srcToggle.classList.remove('on');
+      const srcNote = document.getElementById(`${srcTid}-flagNote`);
+      const srcWrap = document.getElementById(`${srcTid}-justifyWrap`);
+      const srcFlagChip = document.getElementById(`${srcTid}-flagChip`);
+      if(srcNote){ srcNote.textContent = 'Not flagged'; srcNote.classList.remove('active'); }
+      if(srcWrap) srcWrap.classList.add('hidden');
+      if(srcFlagChip){ srcFlagChip.style.display = 'none'; srcFlagChip.classList.remove('active'); }
+    }
+  }
+  if(confirm('Remove this required test?')){
+    block.remove();
+    refreshEmptyMessage();
+  }
+}
+
+function toggleRequiredBlock(tid){
+  document.getElementById(tid).classList.toggle('collapsed');
+}
+
+function renderRequiredBody(tid, prefill){
+  const isBridged = !!prefill?.bridgeKey;
+  const headerLabel = isBridged
+    ? `<span class="bridged-marker">↻ Bridged from Existing</span>`
+    : '';
+
+  return `
+    <div class="test-head" onclick="toggleRequiredBlock('${tid}')">
+      <div class="th-name" onclick="event.stopPropagation()">
+        <span class="chevron">▾</span>
+        <select class="rq-product-select" ${isBridged ? 'disabled title="Locked — sourced from Existing"' : ''}>
+          <option value="">— Select Product —</option>
+          ${PRODUCT_MASTER.map(p => `<option ${prefill?.product === p ? 'selected' : ''}>${p}</option>`).join('')}
+        </select>
+        <select class="rq-testtype-select" ${isBridged ? 'disabled title="Locked — sourced from Existing"' : ''}>
+          <option value="">— Test Type —</option>
+          ${TEST_TYPE_MASTER.map(t => `<option ${prefill?.testtype === t ? 'selected' : ''}>${t}</option>`).join('')}
+        </select>
+        ${headerLabel}
+        <span class="status-chip pending" id="${tid}-implChip">Pending</span>
+      </div>
+      <button class="th-remove" onclick="event.stopPropagation();removeRequiredTest('${tid}')">Remove</button>
+    </div>
+    <div class="tb-body">
+
+      <div class="subsection">
+        <div class="subsection-title">Test Details</div>
+        <div class="field-row">
+          <div class="field-label">Purpose for Testing</div>
+          <input type="text" class="field-val" placeholder="e.g., Pre-FSSAI compliance, export sample" value="${prefill?.purpose || ''}">
+        </div>
+        <div class="field-row">
+          <div class="field-label">Lab Name</div>
+          <select class="field-val">
+            <option value="">— Select —</option>
+            ${LAB_MASTER.map(l => `<option ${prefill?.lab === l ? 'selected' : ''}>${l}</option>`).join('')}
+          </select>
+        </div>
+        <div class="field-row">
+          <div class="field-label">Approved by Core Team</div>
+          <label class="cb-row">
+            <input type="checkbox">
+            <span>Yes — approved by core team</span>
+          </label>
+        </div>
+        <div class="field-row">
+          <div class="field-label">Consent Letter Signed</div>
+          <label class="cb-row">
+            <input type="checkbox" id="${tid}-consentSigned" onchange="onConsentToggle('${tid}',this.checked)" checked>
+            <span>Yes — consent letter signed</span>
+          </label>
+        </div>
+        <div class="field-row hidden" id="${tid}-consentReasonRow">
+          <div class="field-label">If not signed, reason</div>
+          <textarea class="field-val" placeholder="Reason for missing consent..."></textarea>
+        </div>
+        <div class="field-row">
+          <div class="field-label">Upload Consent Letter</div>
+          <div class="upload-wrap" id="${tid}-consentUploadWrap">
+            <label class="upload-btn">
+              ⬆ Upload
+              <input type="file" accept=".pdf,.jpg,.jpeg,.png" onchange="onFileUpload('${tid}-consent',this)">
+            </label>
+            <button class="view-btn" id="${tid}-consent-viewBtn" disabled onclick="onFileView('${tid}-consent')">View</button>
+          </div>
+        </div>
+        <div class="field-row">
+          <div class="field-label">Date of Sample Deposit to Office</div>
+          <input type="date" class="field-val">
+        </div>
+        <div class="field-row">
+          <div class="field-label">Date of Sample Deposit to Lab</div>
+          <input type="date" class="field-val">
+        </div>
+        <div class="field-row">
+          <div class="field-label">Date of Test Results</div>
+          <input type="date" class="field-val">
+        </div>
+        <div class="field-row">
+          <div class="field-label">Testing Report</div>
+          <div class="upload-wrap" id="${tid}-reportUploadWrap">
+            <label class="upload-btn">
+              ⬆ Upload
+              <input type="file" accept=".pdf,.jpg,.jpeg,.png" onchange="onFileUpload('${tid}-report',this)">
+            </label>
+            <button class="view-btn" id="${tid}-report-viewBtn" disabled onclick="onFileView('${tid}-report')">View</button>
+          </div>
+        </div>
+        ${isBridged ? `
+        <div class="field-row" style="align-items:flex-start">
+          <div class="field-label" style="padding-top:6px">Justification (from Existing)</div>
+          <textarea class="field-val rq-bridge-justify" readonly>${prefill.justify || ''}</textarea>
+        </div>` : ''}
+      </div>
+
+      <!-- Implementation Status -->
+      <div class="impl-block">
+        <div class="impl-block-title">📋 Implementation Status</div>
+        <div class="field-row" style="margin-bottom:0">
+          <div class="field-label">Status</div>
+          <select class="field-val" onchange="updateImplementationStatus('${tid}',this.value)">
+            <option value="Pending">Pending</option>
+            <option value="In Progress">In Progress</option>
+            <option value="Completed">Completed</option>
+            <option value="On Hold">On Hold</option>
+            <option value="Not Feasible">Not Feasible</option>
+          </select>
+        </div>
+        <div class="field-row" style="align-items:flex-start;margin-top:10px">
+          <div class="field-label" style="padding-top:6px">Notes</div>
+          <textarea class="field-val" placeholder="Implementation notes, blockers, next steps..."></textarea>
+        </div>
+      </div>
+
+    </div>`;
+}
+
+function onConsentToggle(tid, checked){
+  const row = document.getElementById(`${tid}-consentReasonRow`);
+  if(!row) return;
+  if(checked) row.classList.add('hidden');
+  else row.classList.remove('hidden');
+}
+
+function updateImplementationStatus(tid, val){
+  const chip = document.getElementById(`${tid}-implChip`);
+  if(!chip) return;
+  chip.classList.remove('pending','progress','completed','onhold','notfeasible');
+  if(val === 'In Progress'){ chip.textContent = 'In Progress'; chip.classList.add('progress'); }
+  else if(val === 'Completed'){ chip.textContent = 'Completed'; chip.classList.add('completed'); }
+  else if(val === 'On Hold'){ chip.textContent = 'On Hold'; chip.classList.add('onhold'); }
+  else if(val === 'Not Feasible'){ chip.textContent = 'Not Feasible'; chip.classList.add('notfeasible'); }
+  else { chip.textContent = 'Pending'; chip.classList.add('pending'); }
+}
+
+// end
+</script>
+
+</body>
+</html>

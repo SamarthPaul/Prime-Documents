@@ -1,0 +1,1214 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Business Registration · PRIME Rural</title>
+<style>
+:root {
+  --teal:#0E4D4E; --sea:#1A6B6D; --terracotta:#C26849; --terracotta-dk:#A85738;
+  --terracotta-sft:#F5E2D6;
+  --cream:#FBF5E5; --cream-deep:#F4ECD3; --offwhite:#FDFAF0; --panel:#FFFFFF;
+  --ink:#2A2520; --ink-soft:#6B6359; --ink-faint:#9C9384;
+  --border:#E8DFC9; --border-dk:#D6CDB6;
+  --good-bg:#E3EFDF; --good-ink:#3F6B3A;
+  --fair-bg:#FBE9DF; --fair-ink:#7A3B22;
+  --poor-bg:#F5D6CC; --poor-ink:#8B2A0F;
+  --info-bg:#E1ECF7; --info-ink:#1F4A78;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:Georgia,serif;background:var(--cream);color:var(--ink);line-height:1.4}
+.page{max-width:1200px;margin:0 auto;padding:24px}
+
+.header{background:var(--teal);color:#fff;padding:16px 20px;border-radius:12px 12px 0 0;display:flex;justify-content:space-between;align-items:center}
+.header h1{font-size:18px;font-weight:normal;letter-spacing:0.5px}
+.header .crumb{font-size:11px;opacity:0.75;text-transform:uppercase;letter-spacing:1px}
+
+.card{background:var(--cream);border:1px solid var(--border-dk);border-top:none;border-radius:0 0 12px 12px}
+
+.tab-bar{display:flex;background:var(--cream-deep);border-bottom:1px solid var(--border-dk)}
+.tab{padding:12px 22px;cursor:pointer;font-size:12px;text-transform:uppercase;letter-spacing:1px;color:var(--ink-soft);border-right:1px solid var(--border)}
+.tab.active{background:var(--teal);color:#fff}
+.tab:hover:not(.active){background:#EADFC0}
+
+.content{padding:22px}
+
+.entrepreneur-chip{display:inline-flex;align-items:center;gap:10px;background:#fff;border:1px solid var(--border-dk);padding:6px 14px;border-radius:20px;font-size:12px;margin-bottom:18px}
+.ent-avatar{width:24px;height:24px;background:var(--teal);color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:bold}
+
+.section-caption{background:var(--cream-deep);border-left:3px solid var(--terracotta);padding:8px 12px;border-radius:0 6px 6px 0;font-size:12px;color:var(--ink-soft);font-style:italic;margin-bottom:14px}
+
+.btn{padding:5px 12px;border-radius:20px;border:1px solid var(--border-dk);background:#fff;cursor:pointer;font-size:11px;color:var(--ink);font-family:Georgia,serif}
+.btn:hover{background:var(--cream-deep)}
+.btn-primary{background:var(--teal);color:#fff;border-color:var(--teal)}
+.btn-primary:hover{background:var(--sea)}
+
+.add-row-bar{text-align:center;padding:14px;background:var(--cream-deep);border:1px dashed var(--border-dk);border-radius:10px;margin-top:10px}
+
+/* Registration block — collapsible card (Raw Materials pattern) */
+.reg-block{background:#fff;border:1px solid var(--border-dk);border-radius:10px;margin-bottom:14px;overflow:hidden}
+.reg-head{background:var(--sea);color:#fff;padding:10px 14px;display:flex;justify-content:space-between;align-items:center;cursor:pointer;user-select:none;font-size:13px;flex-wrap:wrap;gap:8px}
+.reg-head:hover{background:var(--teal)}
+.reg-head .rh-name{display:flex;align-items:center;gap:10px;flex-wrap:wrap;flex:1;min-width:0}
+.chevron{font-size:12px;transition:transform 0.2s}
+.reg-block.collapsed .chevron{transform:rotate(-90deg)}
+.reg-block.collapsed .rb-body{display:none}
+.rb-body{padding:14px}
+.rh-remove{background:transparent;border:1px solid rgba(255,255,255,0.4);color:#fff;padding:3px 10px;border-radius:14px;cursor:pointer;font-size:11px;font-family:Georgia,serif}
+.rh-remove:hover{background:var(--terracotta);border-color:var(--terracotta)}
+
+/* Subsection */
+.subsection{background:var(--cream-deep);padding:14px;border-radius:8px;margin-bottom:12px;border:1px solid var(--border)}
+.subsection-title{font-size:12px;text-transform:uppercase;letter-spacing:1.5px;color:var(--teal);margin-bottom:10px;padding-bottom:6px;border-bottom:1px solid var(--border-dk);font-weight:bold}
+
+.field-row{display:flex;gap:12px;margin-bottom:10px;flex-wrap:wrap;align-items:flex-start}
+.field-label{width:200px;font-size:12px;color:var(--ink-soft);padding-top:8px}
+.field-val{flex:1;background:var(--offwhite);border:1px solid var(--border-dk);padding:6px 10px;border-radius:5px;font-size:12px;min-width:200px;font-family:Georgia,serif}
+.field-val[readonly]{background:var(--cream-deep);color:var(--ink-soft);font-style:italic}
+textarea.field-val{font-family:Georgia,serif;resize:vertical;min-height:50px}
+select.field-val{cursor:pointer}
+
+/* Upload & view */
+.upload-wrap{flex:1;min-width:280px;display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+.upload-btn{display:inline-flex;align-items:center;gap:4px;padding:6px 12px;background:#fff;border:1px solid var(--border-dk);border-radius:5px;cursor:pointer;font-size:11px;color:var(--ink-soft);font-family:Georgia,serif}
+.upload-btn:hover{border-color:var(--teal);color:var(--teal);background:var(--cream-deep)}
+.upload-btn input[type="file"]{display:none}
+.view-btn{padding:6px 12px;background:transparent;border:1px solid var(--border-dk);border-radius:5px;cursor:pointer;font-size:11px;color:var(--ink-faint);font-family:Georgia,serif}
+.view-btn:not(:disabled){color:var(--teal);border-color:var(--teal)}
+.view-btn:not(:disabled):hover{background:var(--cream-deep)}
+.view-btn:disabled{cursor:not-allowed}
+.file-pill{display:inline-flex;align-items:center;gap:6px;padding:4px 10px;background:var(--cream-deep);border:1px solid var(--border-dk);border-radius:14px;font-size:11px;color:var(--ink);max-width:260px}
+.file-pill .file-name{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;flex:1}
+.file-pill .file-x{cursor:pointer;color:var(--terracotta);font-weight:bold}
+.file-pill .file-x:hover{color:var(--terracotta-dk)}
+
+/* Intervention block (per-card) */
+.intervention-block{background:var(--terracotta-sft);border:1px solid var(--terracotta);border-radius:8px;padding:14px;margin-top:8px}
+.intervention-block-title{font-size:11px;text-transform:uppercase;letter-spacing:1px;color:var(--terracotta-dk);margin-bottom:10px;font-weight:bold}
+.toggle{width:36px;height:18px;border-radius:20px;background:#ccc;display:inline-block;cursor:pointer;position:relative;flex-shrink:0;vertical-align:middle}
+.toggle::after{content:'';width:14px;height:14px;background:#fff;border-radius:50%;position:absolute;top:2px;left:2px;transition:left 0.2s}
+.toggle.on{background:var(--teal)}
+.toggle.on::after{left:20px}
+.flag-note{font-size:10px;color:var(--ink-faint);font-style:italic;margin:6px 0}
+.flag-note.active{color:var(--terracotta-dk);font-weight:bold;font-style:normal}
+
+/* Implementation status block (Required tab) */
+.impl-block{background:var(--cream-deep);border:1px dashed var(--border-dk);border-radius:8px;padding:12px;margin-top:12px}
+.impl-block-title{font-size:11px;text-transform:uppercase;letter-spacing:1px;color:var(--teal);margin-bottom:10px;font-weight:bold}
+
+/* Status chip */
+.status-chip{display:inline-block;padding:3px 9px;border-radius:12px;font-size:10px;font-weight:bold;letter-spacing:0.3px;text-transform:uppercase}
+.status-chip.pending{background:var(--cream-deep);color:var(--ink-soft)}
+.status-chip.progress{background:var(--fair-bg);color:var(--fair-ink)}
+.status-chip.completed{background:var(--good-bg);color:var(--good-ink)}
+.status-chip.notfeasible{background:var(--poor-bg);color:var(--poor-ink)}
+.status-chip.received{background:var(--good-bg);color:var(--good-ink)}
+.status-chip.notreceived{background:var(--fair-bg);color:var(--fair-ink)}
+.status-chip.applied{background:var(--info-bg);color:var(--info-ink)}
+.status-chip.notapplied{background:var(--cream-deep);color:var(--ink-soft)}
+.status-chip.rejected{background:var(--poor-bg);color:var(--poor-ink)}
+.status-chip.flag{background:var(--cream-deep);color:var(--ink-soft);border:1px dashed var(--border-dk)}
+.status-chip.flag.active{background:var(--terracotta-sft);color:var(--terracotta-dk);border:1px solid var(--terracotta)}
+
+.bridged-marker{display:inline-flex;align-items:center;gap:4px;font-size:10px;color:var(--terracotta-dk);font-style:italic;background:var(--terracotta-sft);padding:2px 8px;border-radius:10px;border:1px solid var(--terracotta)}
+
+.empty-msg{text-align:center;color:var(--ink-faint);font-style:italic;padding:30px;background:var(--cream-deep);border:1px dashed var(--border-dk);border-radius:10px;margin-bottom:14px}
+
+/* Summary tab */
+.summary-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:16px}
+.summary-card{background:#fff;border:1px solid var(--border-dk);border-radius:10px;padding:14px}
+.summary-card h3{font-size:11px;text-transform:uppercase;letter-spacing:1px;color:var(--teal);margin-bottom:10px;padding-bottom:6px;border-bottom:1px solid var(--border);font-weight:bold}
+.metric-row{display:flex;justify-content:space-between;align-items:center;padding:6px 0;font-size:12px;border-bottom:1px dashed var(--border)}
+.metric-row:last-child{border-bottom:none}
+.metric-label{color:var(--ink-soft)}
+.metric-value{font-weight:bold;color:var(--ink);font-variant-numeric:tabular-nums}
+.metric-value.green{color:var(--good-ink)}
+.metric-value.amber{color:var(--terracotta-dk)}
+
+.summary-section{background:#fff;border:1px solid var(--border-dk);border-radius:10px;padding:14px}
+.summary-section-title{font-size:12px;text-transform:uppercase;letter-spacing:1.2px;color:var(--teal);margin-bottom:10px;font-weight:bold}
+
+/* Generic data table wrap + tables */
+.data-table-wrap{background:var(--offwhite);border:1px solid var(--border-dk);border-radius:8px;overflow:auto}
+table.summary-table,table.log-table,table.res-table{width:100%;border-collapse:collapse;font-size:11.5px;font-family:Georgia,serif}
+table.summary-table th,table.log-table th,table.res-table th{background:var(--teal);color:#fff;padding:9px 10px;text-align:left;font-weight:normal;text-transform:uppercase;letter-spacing:0.5px;font-size:10.5px;border-right:1px solid var(--sea);white-space:nowrap}
+table.summary-table th:last-child,table.log-table th:last-child,table.res-table th:last-child{border-right:none}
+table.summary-table td,table.log-table td,table.res-table td{padding:8px 10px;border-bottom:1px solid var(--border);border-right:1px solid var(--border);vertical-align:middle}
+table.summary-table td:last-child,table.log-table td:last-child,table.res-table td:last-child{border-right:none}
+table.summary-table tr:last-child td,table.log-table tr:last-child td,table.res-table tr:last-child td{border-bottom:none}
+table.summary-table .sr,table.log-table .sr,table.res-table .sr{color:var(--ink-soft);text-align:center}
+table.log-table input,table.log-table select,table.log-table textarea,table.res-table input,table.res-table select,table.res-table textarea{width:100%;border:1px solid var(--border);padding:5px 7px;border-radius:4px;font-family:Georgia,serif;font-size:11px;background:var(--panel)}
+table.log-table input:focus,table.log-table select:focus,table.res-table input:focus,table.res-table select:focus{outline:none;border-color:var(--teal)}
+.tbl-del{background:transparent;border:none;color:var(--terracotta);cursor:pointer;font-size:14px;padding:2px 6px}
+.tbl-del:hover{color:var(--terracotta-dk)}
+.tbl-upload{display:inline-flex;align-items:center;gap:4px;padding:4px 8px;background:#fff;border:1px solid var(--border-dk);border-radius:4px;cursor:pointer;font-size:10px;color:var(--ink-soft);font-family:Georgia,serif}
+.tbl-upload:hover{border-color:var(--teal);color:var(--teal)}
+.tbl-upload input[type="file"]{display:none}
+
+.hidden{display:none !important}
+
+/* ─── RM-style summary ─── */
+.sm-section{background:var(--cream-deep);padding:16px;border-radius:10px;margin-bottom:16px;border:1px solid var(--border)}
+.sm-section-title{font-size:13px;text-transform:uppercase;letter-spacing:1.5px;color:var(--teal);margin-bottom:12px;padding-bottom:8px;border-bottom:1px solid var(--border-dk);font-weight:bold}
+.sm-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.sm-card{background:#fff;border:1px solid var(--border);border-radius:10px;padding:14px}
+.sm-card h3{font-size:11px;text-transform:uppercase;letter-spacing:1px;color:var(--teal);margin-bottom:10px;padding-bottom:6px;border-bottom:1px solid var(--border);font-weight:bold}
+.sm-row{display:flex;justify-content:space-between;padding:5px 0;font-size:12px;border-bottom:1px solid #f0e9d6}
+.sm-row:last-child{border-bottom:none}
+.sm-lbl{color:var(--ink-soft)}
+.sm-val{font-weight:bold;color:var(--ink)}
+.sm-val.green{color:var(--good-ink)}
+.sm-val.amber{color:var(--fair-ink)}
+.sm-val.red{color:var(--poor-ink)}
+.sm-val.blue{color:var(--info-ink)}
+.sm-flags{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+.sm-flag{background:#fff;border:1px solid var(--border);border-radius:8px;padding:12px}
+.sm-flag-icon{width:30px;height:30px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:14px;margin-bottom:8px}
+.sm-flag-count{font-size:20px;font-weight:bold;color:var(--ink)}
+.sm-flag-label{font-size:10px;color:var(--ink-soft);text-transform:uppercase;letter-spacing:0.5px;margin-top:4px}
+table.ov-tbl{width:100%;border-collapse:collapse;background:var(--offwhite);border-radius:6px;overflow:hidden;border:1px solid var(--border-dk);font-size:11px}
+table.ov-tbl th{background:var(--teal);color:#fff;padding:9px 8px;text-align:left;font-weight:normal;text-transform:uppercase;letter-spacing:0.5px;font-size:10px;border-right:1px solid var(--sea)}
+table.ov-tbl th:last-child{border-right:none}
+table.ov-tbl th.th-req{background:var(--sea)}
+table.ov-tbl td{padding:7px 8px;border-bottom:1px solid var(--border);border-right:1px solid var(--border);vertical-align:middle}
+table.ov-tbl td:last-child{border-right:none}
+table.ov-tbl tr:last-child td{border-bottom:none}
+table.ov-tbl tr.row-req td{background:#FFF8E1}
+</style>
+</head>
+<body>
+
+<div class="page">
+<div class="header">
+  <h1>Business Registration</h1>
+  <div class="crumb">PRIME Rural · Entrepreneur &amp; Business-level Registrations</div>
+</div>
+<div class="card">
+
+<div class="tab-bar">
+  <div class="tab active" onclick="showTab('summary',this)">Summary</div>
+  <div class="tab" onclick="showTab('existing',this)">Existing</div>
+  <div class="tab" onclick="showTab('required',this)">Required</div>
+  <div class="tab" onclick="showTab('resources',this)">Resources</div>
+  <div class="tab" onclick="showTab('activitylog',this)">Task Log</div>
+</div>
+
+<div class="content">
+
+<div class="entrepreneur-chip">
+  <div class="ent-avatar">EN</div>
+  <span style="color:var(--ink-soft);font-style:italic">Auto-fetched from profile</span>
+</div>
+
+<!-- ============ SUMMARY ============ -->
+<div id="summary" class="panel">
+
+  <!-- ① Registration-wise Overview -->
+  <div class="sm-section">
+    <div class="sm-section-title">Registration-wise Overview</div>
+    <p style="font-size:11px;color:var(--ink-soft);font-style:italic;margin-bottom:10px">One row per registration. Existing registrations are shown first; Required (bridged + new) appear highlighted below.</p>
+    <div style="overflow-x:auto">
+    <table class="ov-tbl">
+      <thead>
+        <tr>
+          <th>Registration</th>
+          <th>Issuing Authority</th>
+          <th>Valid Till</th>
+          <th>Govt. Certified</th>
+          <th>Status</th>
+          <th class="th-req">Intervention Type</th>
+          <th class="th-req">Implementation Status</th>
+        </tr>
+      </thead>
+      <tbody id="summaryTableBody">
+        <tr><td colspan="7" style="text-align:center;color:var(--ink-faint);font-style:italic;padding:14px">Auto-populated from Existing and Required tabs</td></tr>
+      </tbody>
+    </table>
+    </div>
+  </div>
+
+  <!-- ② Aggregates — 4-card 2×2 grid -->
+  <div class="sm-section">
+    <div class="sm-section-title">Aggregates</div>
+    <div class="sm-grid">
+
+      <div class="sm-card">
+        <h3>Existing</h3>
+        <div class="sm-row"><span class="sm-lbl">Total Registrations</span><span class="sm-val" id="agg-exist-count">0</span></div>
+        <div class="sm-row"><span class="sm-lbl">Govt. Certified</span><span class="sm-val green" id="agg-exist-govt">0</span></div>
+        <div class="sm-row"><span class="sm-lbl">Lifetime Validity</span><span class="sm-val" id="agg-exist-lifetime">0</span></div>
+        <div class="sm-row"><span class="sm-lbl">With Scanned Copy</span><span class="sm-val green" id="agg-exist-scan">0</span></div>
+        <div class="sm-row"><span class="sm-lbl">Expiring within 90 Days</span><span class="sm-val amber" id="agg-exist-expiring">0</span></div>
+        <div class="sm-row"><span class="sm-lbl">Flagged for Intervention</span><span class="sm-val amber" id="agg-exist-flagged">0</span></div>
+      </div>
+
+      <div class="sm-card">
+        <h3>Cost</h3>
+        <div class="sm-row"><span class="sm-lbl">Total Required</span><span class="sm-val" id="agg-req-count">0</span></div>
+        <div class="sm-row"><span class="sm-lbl">Bridged from Existing</span><span class="sm-val amber" id="agg-req-bridged">0</span></div>
+        <div class="sm-row"><span class="sm-lbl">New Additions</span><span class="sm-val" id="agg-req-new">0</span></div>
+        <div class="sm-row"><span class="sm-lbl">Intervention Rate</span><span class="sm-val green" id="agg-int-rate">—</span></div>
+        <div style="font-size:10px;color:var(--ink-faint);font-style:italic;margin-top:6px">Required = Flagged renewals + new registrations to acquire.</div>
+      </div>
+
+      <div class="sm-card">
+        <h3>Interventions</h3>
+        <div class="sm-row"><span class="sm-lbl">Intervention Needed</span><span class="sm-val amber" id="flag-int-needed">0</span></div>
+        <div class="sm-row"><span class="sm-lbl">In Progress</span><span class="sm-val blue" id="flag-progress">0</span></div>
+        <div class="sm-row"><span class="sm-lbl">Received</span><span class="sm-val green" id="flag-received">0</span></div>
+        <div class="sm-row"><span class="sm-lbl">Expiring Soon</span><span class="sm-val amber" id="flag-expiring">0</span></div>
+      </div>
+
+      <div class="sm-card">
+        <h3>Implementation Status</h3>
+        <div class="sm-row"><span class="sm-lbl">Applied</span><span class="sm-val blue" id="agg-status-applied">0</span></div>
+        <div class="sm-row"><span class="sm-lbl">Not Yet Applied</span><span class="sm-val" id="agg-status-notapplied">0</span></div>
+        <div class="sm-row"><span class="sm-lbl">Not yet Received</span><span class="sm-val amber" id="agg-status-notreceived">0</span></div>
+        <div class="sm-row"><span class="sm-lbl">Received</span><span class="sm-val green" id="agg-status-received">0</span></div>
+        <div class="sm-row"><span class="sm-lbl">Rejected</span><span class="sm-val red" id="agg-status-rejected">0</span></div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ③ Intervention Flags -->
+  <div class="sm-section">
+    <div class="sm-section-title">Intervention Flags</div>
+    <div class="sm-flags">
+      <div class="sm-flag"><div class="sm-flag-icon" style="background:var(--fair-bg);color:var(--fair-ink)">↻</div><div class="sm-flag-count" id="flag-int-needed2">0</div><div class="sm-flag-label">Intervention Needed</div></div>
+      <div class="sm-flag"><div class="sm-flag-icon" style="background:var(--info-bg);color:var(--info-ink)">⌬</div><div class="sm-flag-count" id="flag-progress2">0</div><div class="sm-flag-label">In Progress</div></div>
+      <div class="sm-flag"><div class="sm-flag-icon" style="background:var(--good-bg);color:var(--good-ink)">✓</div><div class="sm-flag-count" id="flag-received2">0</div><div class="sm-flag-label">Received</div></div>
+      <div class="sm-flag"><div class="sm-flag-icon" style="background:var(--fair-bg);color:var(--fair-ink)">!</div><div class="sm-flag-count" id="flag-expiring2">0</div><div class="sm-flag-label">Expiring Soon</div></div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ============ EXISTING ============ -->
+<div id="existing" class="panel hidden">
+  <div class="section-caption">Map all current entrepreneur and business-level registrations. Flag any that need renewal or replacement via the per-card Intervention toggle.</div>
+
+  <div id="existingList"></div>
+  <div class="add-row-bar">
+    <button class="btn btn-primary" onclick="addExistingRegistration()">+ Add Registration</button>
+  </div>
+</div>
+
+<!-- ============ REQUIRED ============ -->
+<div id="required" class="panel hidden">
+  <div class="section-caption">Registrations required — auto-populated from the Existing tab when an Intervention is flagged, or added manually for new registrations to be acquired.</div>
+  <div id="requiredList"></div>
+  <div id="requiredEmpty" class="empty-msg">No registration interventions required yet. Flag a registration in the Existing tab, or add a new one manually below.</div>
+  <div class="add-row-bar">
+    <button class="btn btn-primary" onclick="addRequiredRegistration(null)">+ Add New Registration</button>
+  </div>
+</div>
+
+<!-- ============ ACTIVITY LOG ============ -->
+<div id="resources" class="panel hidden">
+  <div class="section-caption">Reference materials — application forms, regulatory guidance documents, vendor directories, sample certificates.</div>
+  <div class="data-table-wrap">
+    <table class="res-table">
+      <thead>
+        <tr>
+          <th style="width:32px">#</th>
+          <th style="width:240px">Resource Title</th>
+          <th style="width:160px">Category</th>
+          <th style="width:120px">Type</th>
+          <th>Description / Notes</th>
+          <th style="width:130px">File</th>
+          <th style="width:36px"></th>
+        </tr>
+      </thead>
+      <tbody id="resourcesBody"></tbody>
+    </table>
+  </div>
+  <div class="add-row-bar">
+    <button class="btn btn-primary" onclick="addResourceRow()">+ Add Resource</button>
+  </div>
+</div>
+
+</div>
+</div>
+</div>
+
+<div id="activitylog" class="panel hidden">
+  <div class="section-caption">Free-form log of registration-related activities — applications submitted, follow-ups, vendor calls, document collection, etc.</div>
+  <div class="data-table-wrap">
+    <table class="log-table">
+      <thead>
+        <tr>
+          <th style="width:32px">#</th>
+          <th style="width:120px">Date</th>
+          <th style="width:280px">Task Name</th>
+          <th>Notes / Outcome</th>
+          <th style="width:90px">Attachment</th>
+          <th style="width:36px"></th>
+        </tr>
+      </thead>
+      <tbody id="activityLogBody"></tbody>
+    </table>
+  </div>
+  <div class="add-row-bar">
+    <button class="btn btn-primary" onclick="addActivityLogRow()">+ Add Entry</button>
+  </div>
+</div>
+
+</div>
+</div>
+</div>
+
+<script>
+// ============ MASTER DATA (placeholders — to be supplied by Harshit) ============
+// Entrepreneur / business-level registrations only
+const REGISTRATION_MASTER = [
+  '— Legal Structure —',
+  'Sole Proprietorship',
+  'Partnership Firm',
+  'LLP (Limited Liability Partnership)',
+  'Private Limited Company',
+  'Producer Company',
+  'Cooperative Society',
+  'SHG (Self Help Group)',
+  'FPO (Farmer Producer Organisation)',
+  'Section 8 Company',
+  '— Identity & Tax —',
+  'PAN Card',
+  'Aadhaar (Entrepreneur)',
+  'GST Registration',
+  'TAN Registration',
+  '— Business Operations —',
+  'Udyam Registration (MSME)',
+  'Trade License (Municipal)',
+  'Shop & Establishment',
+  'Bank Account',
+  '— Market Access —',
+  'GeM Registration',
+  'DPIIT Startup Recognition',
+  'APMC Registration',
+  'NEHHDC Registration',
+  'IEC (Import Export Code)',
+  '— NOCs & Compliance —',
+  'Pollution Control NOC',
+  'Fire Safety NOC',
+  'Health & Trade License',
+  'Other'
+];
+
+const EXISTING_STATUSES = ['Received','Not yet Received','Rejected'];
+const REQUIRED_STATUSES = ['Applied','Not Yet Applied','Received','Not yet Received','Rejected'];
+const PHASES = ['New Registration','Renewal'];
+
+const ACTIVITY_TYPES = ['Application Submitted','Document Collection','Vendor Meeting','Follow-up','Inspection','Renewal','Other'];
+const RESOURCE_CATEGORIES = ['Application Form','Regulatory Guidance','Vendor Directory','Sample Certificate','Fee Schedule','Compliance Checklist'];
+const RESOURCE_TYPES = ['Template','Reference','Vendor','Quotation','Specification'];
+
+// State
+let existingCounter = 0;
+let requiredCounter = 0;
+let activityCounter = 0;
+let resourceCounter = 0;
+
+// ============ TAB SWITCHING ============
+function showTab(id, el){
+  document.querySelectorAll('.panel').forEach(p => p.classList.add('hidden'));
+  document.getElementById(id).classList.remove('hidden');
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  el.classList.add('active');
+  if(id === 'summary') refreshSummary();
+}
+
+// ============ HELPERS ============
+function buildOpts(arr, blank=true){
+  let html = blank ? '<option value="">— Select —</option>' : '';
+  arr.forEach(x => html += `<option>${x}</option>`);
+  return html;
+}
+
+function refreshEmptyMessage(){
+  const list = document.getElementById('requiredList');
+  const empty = document.getElementById('requiredEmpty');
+  if(list.children.length === 0) empty.style.display = 'block';
+  else empty.style.display = 'none';
+}
+
+function onLifetimeToggle(rid, checked){
+  const row = document.getElementById(`${rid}-validityRow`);
+  const input = document.getElementById(`${rid}-validity`);
+  if(!row) return;
+  if(checked){
+    row.classList.add('hidden');
+    if(input) input.value = '';
+  } else {
+    row.classList.remove('hidden');
+  }
+}
+
+// ============ EXISTING TAB — Registration Block ============
+function addExistingRegistration(){
+  existingCounter++;
+  const rid = `exr${existingCounter}`;
+  const list = document.getElementById('existingList');
+  const block = document.createElement('div');
+  block.className = 'reg-block';
+  block.id = rid;
+  block.innerHTML = renderExistingBody(rid);
+  list.appendChild(block);
+}
+
+function removeExistingRegistration(rid){
+  if(confirm('Remove this registration?')){
+    // If this card has bridged a Required row, remove it too
+    const bridgedKey = `bridge-${rid}`;
+    const bridged = document.querySelector(`[data-bridge-source="${bridgedKey}"]`);
+    if(bridged) bridged.remove();
+    document.getElementById(rid).remove();
+    refreshEmptyMessage();
+  }
+}
+
+function toggleExistingBlock(rid){
+  document.getElementById(rid).classList.toggle('collapsed');
+}
+
+function renderExistingBody(rid){
+  return `
+    <div class="reg-head" onclick="toggleExistingBlock('${rid}')">
+      <div class="rh-name" onclick="event.stopPropagation()">
+        <span class="chevron">▾</span>
+        <select id="${rid}-name" onchange="updateExistingHead('${rid}')" style="background:rgba(255,255,255,0.15);border:1px solid rgba(255,255,255,0.3);color:#fff;padding:4px 10px;border-radius:4px;font-family:Georgia,serif;font-size:13px;cursor:pointer;min-width:240px">
+          <option value="">— Select Registration —</option>
+          ${REGISTRATION_MASTER.map(r => `<option>${r}</option>`).join('')}
+        </select>
+        <span class="status-chip pending" id="${rid}-statusChip" style="display:none">Status</span>
+        <span class="status-chip flag" id="${rid}-flagChip" style="display:none">⚠ Intervention Flagged</span>
+      </div>
+      <button class="rh-remove" onclick="event.stopPropagation();removeExistingRegistration('${rid}')">Remove</button>
+    </div>
+    <div class="rb-body">
+
+      <!-- Registration Details -->
+      <div class="subsection">
+        <div class="subsection-title">Registration Details</div>
+        <div class="field-row">
+          <div class="field-label">ID No.</div>
+          <input type="text" class="field-val" id="${rid}-idno" placeholder="e.g., 12345678901234">
+        </div>
+        <div class="field-row">
+          <div class="field-label">Issuing Authority</div>
+          <input type="text" class="field-val" id="${rid}-authority" placeholder="e.g., FSSAI, Govt. of Meghalaya">
+        </div>
+        <div class="field-row">
+          <div class="field-label">Issued Date</div>
+          <input type="date" class="field-val" id="${rid}-issued">
+        </div>
+        <div class="field-row">
+          <div class="field-label">Lifetime Validity</div>
+          <label style="display:inline-flex;align-items:center;gap:8px;font-size:12px;color:var(--ink-soft);background:var(--offwhite);border:1px solid var(--border-dk);border-radius:5px;padding:6px 10px;flex:1;min-width:200px;cursor:pointer">
+            <input type="checkbox" id="${rid}-lifetime" onchange="onLifetimeToggle('${rid}',this.checked)">
+            <span>Registration is valid for lifetime (no expiry)</span>
+          </label>
+        </div>
+        <div class="field-row" id="${rid}-validityRow">
+          <div class="field-label">Valid Till</div>
+          <input type="date" class="field-val" id="${rid}-validity">
+        </div>
+        <div class="field-row">
+          <div class="field-label">Govt. Certified?</div>
+          <select class="field-val" id="${rid}-govt">
+            <option value="">— Select —</option>
+            <option>Yes</option>
+            <option>No</option>
+          </select>
+        </div>
+        <div class="field-row">
+          <div class="field-label">Status</div>
+          <select class="field-val" id="${rid}-status" onchange="updateExistingStatus('${rid}')">
+            ${buildOpts(EXISTING_STATUSES)}
+          </select>
+        </div>
+        <div class="field-row">
+          <div class="field-label">Scanned Copy</div>
+          <div class="upload-wrap" id="${rid}-uploadWrap">
+            <label class="upload-btn">
+              ⬆ Upload
+              <input type="file" accept=".pdf,.jpg,.jpeg,.png" onchange="onFileUpload('${rid}',this)">
+            </label>
+            <button class="view-btn" id="${rid}-viewBtn" disabled onclick="onFileView('${rid}')">View</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Intervention -->
+      <div class="intervention-block">
+        <div class="intervention-block-title">⚠ Intervention Need</div>
+        <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:8px">
+          <div style="font-size:12px;font-weight:bold;color:var(--ink)">Need Registration / Licensing Intervention?</div>
+          <span class="toggle" onclick="toggleIntervention(this,'${rid}')"></span>
+        </div>
+        <div class="flag-note" id="${rid}-flagNote">Not flagged</div>
+        <div id="${rid}-justifyWrap" class="hidden" style="margin-top:8px">
+          <div class="field-row">
+            <div class="field-label">Type</div>
+            <select class="field-val" id="${rid}-intType" onchange="syncBridgePhase('${rid}',this.value)">
+              <option value="">— Select —</option>
+              <option>Renewal</option>
+              <option>Reapply</option>
+            </select>
+          </div>
+          <div class="field-row" style="align-items:flex-start">
+            <div class="field-label" style="padding-top:6px">Justification</div>
+            <textarea class="field-val" id="${rid}-justify" placeholder="Reason — expired, missing, needs upgrade, replacement..." oninput="syncBridgeJustify('${rid}',this.value)"></textarea>
+          </div>
+        </div>
+      </div>
+
+    </div>`;
+}
+
+function updateExistingHead(rid){
+  // Cascade rename to bridged Required row if present
+  const bridgedKey = `bridge-${rid}`;
+  const bridged = document.querySelector(`[data-bridge-source="${bridgedKey}"]`);
+  if(bridged){
+    const nameSel = bridged.querySelector('.rq-name-select');
+    if(nameSel){
+      nameSel.value = document.getElementById(`${rid}-name`)?.value || '';
+    }
+  }
+}
+
+function updateExistingStatus(rid){
+  const status = document.getElementById(`${rid}-status`)?.value;
+  const chip = document.getElementById(`${rid}-statusChip`);
+  if(!chip) return;
+  chip.classList.remove('pending','received','notreceived','rejected');
+  if(!status){
+    chip.style.display = 'none';
+    return;
+  }
+  chip.style.display = 'inline-block';
+  chip.textContent = status;
+  if(status === 'Received') chip.classList.add('received');
+  else if(status === 'Not yet Received') chip.classList.add('notreceived');
+  else if(status === 'Rejected') chip.classList.add('rejected');
+  else chip.classList.add('pending');
+}
+
+// ============ FILE UPLOAD HANDLER (front-end only — backend wires later) ============
+function onFileUpload(rid, input){
+  const wrap = document.getElementById(`${rid}-uploadWrap`);
+  const file = input.files?.[0];
+  if(!file) return;
+  // Replace with file pill + view enabled
+  const existingPill = wrap.querySelector('.file-pill');
+  if(existingPill) existingPill.remove();
+  const pill = document.createElement('span');
+  pill.className = 'file-pill';
+  pill.innerHTML = `📎 <span class="file-name" title="${file.name}">${file.name}</span><span class="file-x" onclick="onFileRemove('${rid}')">×</span>`;
+  wrap.appendChild(pill);
+  // Stash the file URL on the pill for view button
+  pill.dataset.fileUrl = URL.createObjectURL(file);
+  const viewBtn = document.getElementById(`${rid}-viewBtn`);
+  if(viewBtn) viewBtn.disabled = false;
+}
+
+function onFileView(rid){
+  const wrap = document.getElementById(`${rid}-uploadWrap`);
+  const pill = wrap?.querySelector('.file-pill');
+  const url = pill?.dataset.fileUrl;
+  if(url) window.open(url, '_blank');
+}
+
+function onFileRemove(rid){
+  const wrap = document.getElementById(`${rid}-uploadWrap`);
+  const pill = wrap?.querySelector('.file-pill');
+  if(pill) pill.remove();
+  const viewBtn = document.getElementById(`${rid}-viewBtn`);
+  if(viewBtn) viewBtn.disabled = true;
+  const fileInput = wrap?.querySelector('input[type="file"]');
+  if(fileInput) fileInput.value = '';
+}
+
+// ============ INTERVENTION TOGGLE — bridges to Required ============
+function toggleIntervention(el, rid){
+  el.classList.toggle('on');
+  const note = document.getElementById(`${rid}-flagNote`);
+  const justifyWrap = document.getElementById(`${rid}-justifyWrap`);
+  const flagChip = document.getElementById(`${rid}-flagChip`);
+  if(el.classList.contains('on')){
+    note.textContent = '↻ Flagged → Required tab';
+    note.classList.add('active');
+    justifyWrap.classList.remove('hidden');
+    flagChip.style.display = 'inline-block';
+    flagChip.classList.add('active');
+    bridgeToRequired(rid);
+  } else {
+    note.textContent = 'Not flagged';
+    note.classList.remove('active');
+    justifyWrap.classList.add('hidden');
+    flagChip.style.display = 'none';
+    flagChip.classList.remove('active');
+    // Remove the bridged row
+    const bridgedKey = `bridge-${rid}`;
+    const bridged = document.querySelector(`[data-bridge-source="${bridgedKey}"]`);
+    if(bridged) bridged.remove();
+    refreshEmptyMessage();
+  }
+}
+
+function syncBridgeJustify(rid, val){
+  const bridgedKey = `bridge-${rid}`;
+  const bridged = document.querySelector(`[data-bridge-source="${bridgedKey}"]`);
+  if(bridged){
+    const justifyEl = bridged.querySelector('.rq-bridge-justify');
+    if(justifyEl) justifyEl.value = val;
+  }
+}
+
+function syncBridgePhase(rid, typeVal){
+  // Map Existing-tab Type (Renewal / Reapply) → Required-tab Phase
+  const phase = (typeVal === 'Renewal') ? 'Renewal'
+              : (typeVal === 'Reapply') ? 'New Registration'
+              : '';
+  const bridgedKey = `bridge-${rid}`;
+  const bridged = document.querySelector(`[data-bridge-source="${bridgedKey}"]`);
+  if(bridged){
+    const phaseEl = bridged.querySelector(`#${bridged.id}-phase`);
+    if(phaseEl) phaseEl.value = phase;
+  }
+}
+
+// ============ REQUIRED TAB — bridge from Existing or manual add ============
+function bridgeToRequired(srcRid){
+  const bridgedKey = `bridge-${srcRid}`;
+  // Skip if already bridged
+  if(document.querySelector(`[data-bridge-source="${bridgedKey}"]`)) return;
+
+  const sourceName = document.getElementById(`${srcRid}-name`)?.value || '';
+  const sourceValidity = document.getElementById(`${srcRid}-validity`)?.value || '';
+  const sourceJustify = document.getElementById(`${srcRid}-justify`)?.value || '';
+  const sourceLifetime = document.getElementById(`${srcRid}-lifetime`)?.checked || false;
+  const sourceType = document.getElementById(`${srcRid}-intType`)?.value || '';
+
+  // Phase from Type: Renewal → Renewal, Reapply → New Registration
+  const phase = (sourceType === 'Renewal') ? 'Renewal'
+              : (sourceType === 'Reapply') ? 'New Registration'
+              : '';
+
+  addRequiredRegistration({
+    bridgeKey: bridgedKey,
+    phase,
+    name: sourceName,
+    validity: sourceValidity,
+    lifetime: sourceLifetime,
+    justify: sourceJustify
+  });
+  refreshEmptyMessage();
+}
+
+function addRequiredRegistration(prefill){
+  requiredCounter++;
+  const rid = `rqr${requiredCounter}`;
+  const list = document.getElementById('requiredList');
+  const block = document.createElement('div');
+  block.className = 'reg-block';
+  block.id = rid;
+  if(prefill?.bridgeKey){
+    block.setAttribute('data-bridge-source', prefill.bridgeKey);
+  }
+  block.innerHTML = renderRequiredBody(rid, prefill);
+  list.appendChild(block);
+  refreshEmptyMessage();
+}
+
+function removeRequiredRegistration(rid){
+  const block = document.getElementById(rid);
+  if(!block) return;
+  // If this was bridged from an Existing card, also untoggle that
+  const bridgeKey = block.getAttribute('data-bridge-source');
+  if(bridgeKey){
+    const srcRid = bridgeKey.replace('bridge-','');
+    const srcToggle = document.querySelector(`#${srcRid} .intervention-block .toggle`);
+    if(srcToggle && srcToggle.classList.contains('on')){
+      // Manually flip without re-triggering bridgeToRequired
+      srcToggle.classList.remove('on');
+      const srcNote = document.getElementById(`${srcRid}-flagNote`);
+      const srcWrap = document.getElementById(`${srcRid}-justifyWrap`);
+      const srcFlagChip = document.getElementById(`${srcRid}-flagChip`);
+      if(srcNote){ srcNote.textContent = 'Not flagged'; srcNote.classList.remove('active'); }
+      if(srcWrap) srcWrap.classList.add('hidden');
+      if(srcFlagChip){ srcFlagChip.style.display = 'none'; srcFlagChip.classList.remove('active'); }
+    }
+  }
+  if(confirm('Remove this required registration?')){
+    block.remove();
+    refreshEmptyMessage();
+  }
+}
+
+function toggleRequiredBlock(rid){
+  document.getElementById(rid).classList.toggle('collapsed');
+}
+
+function renderRequiredBody(rid, prefill){
+  const isBridged = !!prefill?.bridgeKey;
+  const headerLabel = isBridged
+    ? `<span class="bridged-marker">↻ Bridged from Existing</span>`
+    : '';
+  const lifetimeChecked = prefill?.lifetime ? 'checked' : '';
+  const validityRowHidden = prefill?.lifetime ? 'hidden' : '';
+
+  return `
+    <div class="reg-head" onclick="toggleRequiredBlock('${rid}')">
+      <div class="rh-name" onclick="event.stopPropagation()">
+        <span class="chevron">▾</span>
+        <select class="rq-name-select" onchange="updateRequiredHead('${rid}')" ${isBridged ? 'disabled title="Locked — sourced from Existing tab"' : ''} style="background:rgba(255,255,255,0.15);border:1px solid rgba(255,255,255,0.3);color:#fff;padding:4px 10px;border-radius:4px;font-family:Georgia,serif;font-size:13px;cursor:${isBridged ? 'not-allowed' : 'pointer'};min-width:240px">
+          <option value="">— Select Registration —</option>
+          ${REGISTRATION_MASTER.map(r => `<option ${prefill?.name === r ? 'selected' : ''}>${r}</option>`).join('')}
+        </select>
+        ${headerLabel}
+        <span class="status-chip notapplied" id="${rid}-statusChip">Not Yet Applied</span>
+      </div>
+      <button class="rh-remove" onclick="event.stopPropagation();removeRequiredRegistration('${rid}')">Remove</button>
+    </div>
+    <div class="rb-body">
+
+      <div class="subsection">
+        <div class="subsection-title">Registration Details</div>
+        <div class="field-row">
+          <div class="field-label">Phase</div>
+          <select class="field-val" id="${rid}-phase">
+            <option value="">— Select —</option>
+            ${PHASES.map(p => `<option ${prefill?.phase === p ? 'selected' : ''}>${p}</option>`).join('')}
+          </select>
+        </div>
+        <div class="field-row">
+          <div class="field-label">ID No.</div>
+          <input type="text" class="field-val" placeholder="e.g., 12345678901234">
+        </div>
+        <div class="field-row">
+          <div class="field-label">Issuing Authority</div>
+          <input type="text" class="field-val" placeholder="e.g., FSSAI, Govt. of Meghalaya">
+        </div>
+        <div class="field-row">
+          <div class="field-label">Issued Date</div>
+          <input type="date" class="field-val">
+        </div>
+        <div class="field-row">
+          <div class="field-label">Lifetime Validity</div>
+          <label style="display:inline-flex;align-items:center;gap:8px;font-size:12px;color:var(--ink-soft);background:var(--offwhite);border:1px solid var(--border-dk);border-radius:5px;padding:6px 10px;flex:1;min-width:200px;cursor:pointer">
+            <input type="checkbox" id="${rid}-lifetime" ${lifetimeChecked} onchange="onLifetimeToggle('${rid}',this.checked)">
+            <span>Registration is valid for lifetime (no expiry)</span>
+          </label>
+        </div>
+        <div class="field-row ${validityRowHidden}" id="${rid}-validityRow">
+          <div class="field-label">Valid Till</div>
+          <input type="date" class="field-val" id="${rid}-validity" value="${prefill?.validity || ''}">
+        </div>
+        <div class="field-row">
+          <div class="field-label">Govt. Certified?</div>
+          <select class="field-val">
+            <option value="">— Select —</option>
+            <option>Yes</option>
+            <option>No</option>
+          </select>
+        </div>
+        <div class="field-row">
+          <div class="field-label">Scanned Copy</div>
+          <div class="upload-wrap" id="${rid}-uploadWrap">
+            <label class="upload-btn">
+              ⬆ Upload
+              <input type="file" accept=".pdf,.jpg,.jpeg,.png" onchange="onFileUpload('${rid}',this)">
+            </label>
+            <button class="view-btn" id="${rid}-viewBtn" disabled onclick="onFileView('${rid}')">View</button>
+          </div>
+        </div>
+        ${isBridged ? `
+        <div class="field-row" style="align-items:flex-start">
+          <div class="field-label" style="padding-top:6px">Justification (from Existing)</div>
+          <textarea class="field-val rq-bridge-justify" readonly>${prefill.justify || ''}</textarea>
+        </div>` : ''}
+      </div>
+
+      <!-- Status (replaces Implementation Status) -->
+      <div class="impl-block">
+        <div class="impl-block-title">📋 Status</div>
+        <div class="field-row" style="margin-bottom:0">
+          <div class="field-label">Status</div>
+          <select class="field-val" id="${rid}-status" onchange="updateRequiredStatus('${rid}')">
+            <option value="">— Select —</option>
+            ${REQUIRED_STATUSES.map(s => `<option>${s}</option>`).join('')}
+          </select>
+        </div>
+        <div class="field-row" style="align-items:flex-start;margin-top:10px">
+          <div class="field-label" style="padding-top:6px">Notes</div>
+          <textarea class="field-val" placeholder="Application notes, blockers, next steps..."></textarea>
+        </div>
+      </div>
+
+    </div>`;
+}
+
+function updateRequiredHead(rid){
+  // hook retained
+}
+
+function updateRequiredStatus(rid){
+  const status = document.getElementById(`${rid}-status`)?.value;
+  const chip = document.getElementById(`${rid}-statusChip`);
+  if(!chip) return;
+  chip.classList.remove('pending','applied','notapplied','received','notreceived','rejected');
+  if(!status){
+    chip.textContent = '— Set status —';
+    chip.classList.add('pending');
+    return;
+  }
+  chip.textContent = status;
+  if(status === 'Applied') chip.classList.add('applied');
+  else if(status === 'Not Yet Applied') chip.classList.add('notapplied');
+  else if(status === 'Received') chip.classList.add('received');
+  else if(status === 'Not yet Received') chip.classList.add('notreceived');
+  else if(status === 'Rejected') chip.classList.add('rejected');
+  else chip.classList.add('pending');
+}
+
+// ============ SUMMARY REFRESH ============
+function refreshSummary(){
+  const set = (id, v) => { const el = document.getElementById(id); if(el) el.textContent = v; };
+
+  const today = new Date();
+  const ninetyDays = new Date(); ninetyDays.setDate(today.getDate() + 90);
+
+  const STATUS_STYLE = {
+    'Received':          'background:var(--good-bg);color:var(--good-ink)',
+    'Not yet Received':  'background:var(--fair-bg);color:var(--fair-ink)',
+    'Rejected':          'background:var(--poor-bg);color:var(--poor-ink)',
+    'Applied':           'background:var(--info-bg);color:var(--info-ink)',
+    'Not Yet Applied':   'background:var(--cream-deep);color:var(--ink-soft)',
+  };
+  const sBadge = txt => {
+    if(!txt) return '<span style="color:var(--ink-faint)">—</span>';
+    const st = STATUS_STYLE[txt] || 'background:var(--cream-deep);color:var(--ink-soft)';
+    return `<span style="display:inline-block;padding:3px 9px;border-radius:12px;font-size:10px;font-weight:bold;${st}">${txt}</span>`;
+  };
+
+  const existingBlocks = document.querySelectorAll('#existingList .reg-block');
+  const requiredBlocks = document.querySelectorAll('#requiredList .reg-block');
+
+  // ── Existing scan ──────────────────────────────────────────
+  let existGovt=0, existLifetime=0, existExpiring=0, existScan=0, existFlagged=0;
+  const flaggedRids = [];
+
+  existingBlocks.forEach(b => {
+    const rid = b.id;
+    if(document.getElementById(`${rid}-govt`)?.value === 'Yes') existGovt++;
+    const isLifetime = document.getElementById(`${rid}-lifetime`)?.checked;
+    if(isLifetime) existLifetime++;
+    const validity = document.getElementById(`${rid}-validity`)?.value;
+    if(validity && !isLifetime){
+      const d = new Date(validity);
+      if(d >= today && d <= ninetyDays) existExpiring++;
+    }
+    if(document.getElementById(`${rid}-uploadWrap`)?.querySelector('.file-pill')) existScan++;
+    const tog = b.querySelector('.intervention-block .toggle');
+    if(tog?.classList.contains('on')){ existFlagged++; flaggedRids.push(rid); }
+  });
+
+  // ── Required scan ──────────────────────────────────────────
+  let rqBridged=0, rqFresh=0;
+  let stApplied=0, stNotApplied=0, stReceived=0, stNotReceived=0, stRejected=0;
+
+  requiredBlocks.forEach(b => {
+    if(b.getAttribute('data-bridge-source')) rqBridged++; else rqFresh++;
+    const s = document.getElementById(`${b.id}-status`)?.value;
+    if(s==='Applied')              stApplied++;
+    else if(s==='Received')        stReceived++;
+    else if(s==='Not yet Received') stNotReceived++;
+    else if(s==='Rejected')        stRejected++;
+    else                           stNotApplied++;
+  });
+
+  const inProgress = stApplied + stNotReceived;
+
+  // ── Intervention Needed ────────────────────────────────────
+  const DONE = new Set(['Received','Rejected']);
+  let intNeeded = 0;
+  flaggedRids.forEach(rid => {
+    const bridged = document.querySelector(`[data-bridge-source="bridge-${rid}"]`);
+    const s = bridged ? document.getElementById(`${bridged.id}-status`)?.value : '';
+    if(!DONE.has(s)) intNeeded++;
+  });
+
+  // ── Build Overview Table ───────────────────────────────────
+  let html = '';
+
+  // Existing rows
+  existingBlocks.forEach(b => {
+    const rid       = b.id;
+    const name      = document.getElementById(`${rid}-name`)?.value || '';
+    if(!name) return;
+    const authority = document.getElementById(`${rid}-authority`)?.value?.trim() || '—';
+    const isLifetime= document.getElementById(`${rid}-lifetime`)?.checked;
+    const validity  = document.getElementById(`${rid}-validity`)?.value || '';
+    const govt      = document.getElementById(`${rid}-govt`)?.value || '';
+    const exStatus  = document.getElementById(`${rid}-status`)?.value || '';
+    const isFlagged = b.querySelector('.intervention-block .toggle.on') !== null;
+    const intType   = document.getElementById(`${rid}-intType`)?.value || '';
+    const hasScan   = !!document.getElementById(`${rid}-uploadWrap`)?.querySelector('.file-pill');
+
+    // Validity cell
+    let validCell = '—';
+    if(isLifetime){
+      validCell = '<span style="display:inline-block;padding:2px 8px;border-radius:10px;font-size:10px;font-weight:bold;background:var(--good-bg);color:var(--good-ink)">Lifetime</span>';
+    } else if(validity){
+      const d = new Date(validity);
+      const isExp  = d >= today && d <= ninetyDays;
+      const isPast = d < today;
+      validCell = isExp
+        ? `<span style="display:inline-block;padding:2px 8px;border-radius:10px;font-size:10px;font-weight:bold;background:var(--fair-bg);color:var(--fair-ink)">⏰ ${validity}</span>`
+        : isPast
+          ? `<span style="display:inline-block;padding:2px 8px;border-radius:10px;font-size:10px;font-weight:bold;background:var(--poor-bg);color:var(--poor-ink)">Expired ${validity}</span>`
+          : validity;
+    }
+
+    const govtCell = govt==='Yes'
+      ? '<span style="color:var(--good-ink);font-weight:bold">✓ Yes</span>'
+      : govt==='No' ? '<span style="color:var(--ink-faint)">No</span>' : '—';
+
+    const intCell = isFlagged
+      ? `<span style="display:inline-block;padding:2px 8px;border-radius:10px;font-size:10px;font-weight:bold;background:var(--fair-bg);color:var(--fair-ink)">↻ ${intType||'Intervention'}</span>`
+      : '<span style="color:var(--ink-faint)">—</span>';
+
+    // Impl status: read from bridged Required card if flagged
+    let implCell = '<span style="color:var(--ink-faint)">—</span>';
+    if(isFlagged){
+      const bridgedEl = document.querySelector(`[data-bridge-source="bridge-${rid}"]`);
+      const rqSt = bridgedEl ? (document.getElementById(`${bridgedEl.id}-status`)?.value || '') : '';
+      implCell = sBadge(rqSt || 'Not Yet Applied');
+    }
+
+    const scanDot = hasScan ? ' <span style="color:var(--good-ink);font-size:10px">📎</span>' : '';
+
+    html += `<tr>
+      <td><strong>${escapeHtml(name)}</strong>${scanDot}</td>
+      <td style="font-size:11px">${authority}</td>
+      <td style="font-size:11px">${validCell}</td>
+      <td style="text-align:center">${govtCell}</td>
+      <td>${sBadge(exStatus)}</td>
+      <td style="background:#FDF3EE">${intCell}</td>
+      <td style="background:#EDF6EA">${implCell}</td>
+    </tr>`;
+  });
+
+  // Required rows — bridged first, then new
+  const rqSorted = [...requiredBlocks].sort((a,b) =>
+    (!!b.getAttribute('data-bridge-source')) - (!!a.getAttribute('data-bridge-source')) ? -1 : 1
+  );
+  let newIdx = 0;
+  rqSorted.forEach(b => {
+    const rid       = b.id;
+    const isBridged = !!b.getAttribute('data-bridge-source');
+    const nameSel   = b.querySelector('.rq-name-select');
+    const name      = nameSel?.value || '';
+    if(!name) return;
+    const isLifetime= document.getElementById(`${rid}-lifetime`)?.checked;
+    const validity  = document.getElementById(`${rid}-validity`)?.value || '';
+    const phase     = document.getElementById(`${rid}-phase`)?.value || '';
+    const rqStatus  = document.getElementById(`${rid}-status`)?.value || '';
+
+    let validCell = '—';
+    if(isLifetime) validCell = '<span style="display:inline-block;padding:2px 8px;border-radius:10px;font-size:10px;font-weight:bold;background:var(--good-bg);color:var(--good-ink)">Lifetime</span>';
+    else if(validity) validCell = validity;
+
+    const sourceBadge = isBridged
+      ? '<span style="display:inline-block;padding:2px 8px;border-radius:10px;font-size:10px;font-weight:bold;background:var(--fair-bg);color:var(--fair-ink)">↻ Bridged</span>'
+      : '<span style="display:inline-block;padding:2px 8px;border-radius:10px;font-size:10px;font-weight:bold;background:#D6E3EE;color:#1F4A78">+ New</span>';
+
+    html += `<tr class="row-req">
+      <td><strong>${escapeHtml(name)}</strong></td>
+      <td style="font-size:11px">${phase||'—'}</td>
+      <td style="font-size:11px">${validCell}</td>
+      <td style="color:var(--ink-faint);text-align:center">—</td>
+      <td style="color:var(--ink-faint)">—</td>
+      <td style="background:#FDF3EE">${sourceBadge}</td>
+      <td style="background:#EDF6EA">${sBadge(rqStatus)}</td>
+    </tr>`;
+  });
+
+  const tbody = document.getElementById('summaryTableBody');
+  if(tbody) tbody.innerHTML = html ||
+    '<tr><td colspan="7" style="text-align:center;color:var(--ink-faint);font-style:italic;padding:14px">No registrations recorded yet</td></tr>';
+
+  // ── Write Aggregates ──────────────────────────────────────
+  set('agg-exist-count',      existingBlocks.length);
+  set('agg-exist-govt',       existGovt);
+  set('agg-exist-lifetime',   existLifetime);
+  set('agg-exist-scan',       existScan);
+  set('agg-exist-expiring',   existExpiring);
+  set('agg-exist-flagged',    existFlagged);
+  set('agg-req-count',        requiredBlocks.length);
+  set('agg-req-bridged',      rqBridged);
+  set('agg-req-new',          rqFresh);
+  const rate = existingBlocks.length > 0
+    ? Math.round((rqBridged / existingBlocks.length) * 100) + ' %' : '—';
+  set('agg-int-rate',         rate);
+  set('agg-status-applied',   stApplied);
+  set('agg-status-notapplied',stNotApplied);
+  set('agg-status-notreceived',stNotReceived);
+  set('agg-status-received',  stReceived);
+  set('agg-status-rejected',  stRejected);
+  set('agg-status-issues',    stNotReceived + stRejected); // legacy compat
+
+  // ── Write Flags (both primary + duplicate) ────────────────
+  set('flag-int-needed',  intNeeded);  set('flag-int-needed2', intNeeded);
+  set('flag-progress',    inProgress); set('flag-progress2',   inProgress);
+  set('flag-received',    stReceived); set('flag-received2',   stReceived);
+  set('flag-expiring',    existExpiring); set('flag-expiring2',existExpiring);
+}
+  // ── Aggregate counts ──
+  const existingBlocks = document.querySelectorAll('#existingList .reg-block');
+  const requiredBlocks = document.querySelectorAll('#requiredList .reg-block');
+  const existCount = existingBlocks.length;
+  const reqCount = requiredBlocks.length;
+
+  let existGovt = 0, existLifetime = 0, existExpiring = 0;
+  let statusApplied = 0, statusNotApplied = 0, statusReceived = 0, statusIssues = 0;
+  let bridged = 0, fresh = 0;
+
+  const today = new Date();
+  const ninetyDays = new Date(); ninetyDays.setDate(today.getDate() + 90);
+
+  existingBlocks.forEach(b => {
+    const rid = b.id;
+    if(document.getElementById(`${rid}-govt`)?.value === 'Yes') existGovt++;
+    if(document.getElementById(`${rid}-lifetime`)?.checked) existLifetime++;
+    const validity = document.getElementById(`${rid}-validity`)?.value;
+    if(validity){
+      const d = new Date(validity);
+      if(d >= today && d <= ninetyDays) existExpiring++;
+    }
+  });
+
+  requiredBlocks.forEach(b => {
+    if(b.getAttribute('data-bridge-source')) bridged++; else fresh++;
+    const status = document.getElementById(`${b.id}-status`)?.value;
+    if(status === 'Applied') statusApplied++;
+    else if(status === 'Not Yet Applied' || !status) statusNotApplied++;
+    else if(status === 'Received') statusReceived++;
+    else if(status === 'Not yet Received' || status === 'Rejected') statusIssues++;
+  });
+
+function escapeHtml(s){
+  return String(s||'').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+}
+
+// ============ ACTIVITY LOG ============
+// ============ TASK LOG ============
+const BR_TASKS = [
+  '01 — Awareness on Importance of Business Registration',
+  '02 — Record Existing Registrations',
+  '03 — Assess Registration Validity & Status',
+  '04 — Identify Renewal / Reapplication Need',
+  '05 — Identify New Registration Required',
+  '06 — Record Required Registration in Module',
+  '07 — Collect Documents for Registration',
+  '08 — Submit Registration Application',
+  '09 — Follow Up on Application Status',
+  '10 — Upload Registration Certificate & Update Module',
+  '11 — Conduct Registration Follow Up',
+  'If other, specify in comments',
+];
+const BR_TASK_OPTS = BR_TASKS.map(t => `<option value="${t}">${t}</option>`).join('');
+
+function addActivityLogRow(){
+  activityCounter++;
+  const aid = `act${activityCounter}`;
+  const tbody = document.getElementById('activityLogBody');
+  const tr = document.createElement('tr');
+  tr.id = aid;
+  const today = new Date().toISOString().split('T')[0];
+  tr.innerHTML = `
+    <td class="sr">${String(activityCounter).padStart(2,'0')}</td>
+    <td><input type="date" value="${today}" style="width:100%"></td>
+    <td><select style="width:100%"><option value="">— Select Task —</option>${BR_TASK_OPTS}</select></td>
+    <td><input type="text" placeholder="Notes / Outcome" style="width:100%"></td>
+    <td><label class="tbl-upload">⬆ Upload<input type="file"></label></td>
+    <td><button class="tbl-del" onclick="document.getElementById('${aid}').remove();renumberActivityLog()">✕</button></td>
+  `;
+  tbody.appendChild(tr);
+  renumberActivityLog();
+}
+function renumberActivityLog(){
+  document.querySelectorAll('#activityLogBody tr').forEach((tr, i) => {
+    const cell = tr.querySelector('td:first-child');
+    if(cell) cell.textContent = String(i+1).padStart(2,'0');
+  });
+}
+
+// ============ RESOURCES ============
+function addResourceRow(){
+  resourceCounter++;
+  const sid = `res${resourceCounter}`;
+  const tbody = document.getElementById('resourcesBody');
+  const tr = document.createElement('tr');
+  tr.id = sid;
+  tr.innerHTML = `
+    <td class="sr"></td>
+    <td><input type="text" placeholder="Resource title"></td>
+    <td>
+      <select>
+        <option value="">— Select —</option>
+        ${RESOURCE_CATEGORIES.map(c => `<option>${c}</option>`).join('')}
+      </select>
+    </td>
+    <td>
+      <select>
+        <option value="">— Select —</option>
+        ${RESOURCE_TYPES.map(t => `<option>${t}</option>`).join('')}
+      </select>
+    </td>
+    <td><input type="text" placeholder="Notes"></td>
+    <td>
+      <label class="tbl-upload">⬆ Upload<input type="file"></label>
+    </td>
+    <td><button class="tbl-del" onclick="document.getElementById('${sid}').remove();renumberResources()">✕</button></td>
+  `;
+  tbody.appendChild(tr);
+  renumberResources();
+}
+function renumberResources(){
+  document.querySelectorAll('#resourcesBody tr').forEach((tr, i) => {
+    const cell = tr.querySelector('td:first-child');
+    if(cell) cell.textContent = String(i+1).padStart(2,'0');
+  });
+}
+
+// ============ INIT ============
+window.addEventListener('DOMContentLoaded', () => {
+  addExistingRegistration();
+  addActivityLogRow();
+  addResourceRow();
+  refreshEmptyMessage();
+  refreshSummary();
+});
+// ============ LIVE SUMMARY WIRING ============
+(function(){
+  function wire(){
+    ['existingList','requiredList'].forEach(id => {
+      const root = document.getElementById(id);
+      if(!root) return;
+      root.addEventListener('input',  refreshSummary);
+      root.addEventListener('change', refreshSummary);
+      root.addEventListener('click',  refreshSummary);
+      new MutationObserver(refreshSummary).observe(root, { childList:true, subtree:true });
+    });
+  }
+  if(document.readyState !== 'loading') wire();
+  else document.addEventListener('DOMContentLoaded', wire);
+})();
+
+</script>
+
+</body>
+</html>

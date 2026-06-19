@@ -1,0 +1,1056 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Market Linkage · PRIME Rural</title>
+<style>
+:root {
+  --teal:#0E4D4E; --sea:#1A6B6D; --terracotta:#C26849; --terracotta-dk:#A85738;
+  --terracotta-sft:#F5E2D6;
+  --cream:#FBF5E5; --cream-deep:#F4ECD3; --offwhite:#FDFAF0; --panel:#FFFFFF;
+  --ink:#2A2520; --ink-soft:#6B6359; --ink-faint:#9C9384;
+  --border:#E8DFC9; --border-dk:#D6CDB6;
+  --good-bg:#E3EFDF; --good-ink:#3F6B3A;
+  --fair-bg:#FBE9DF; --fair-ink:#7A3B22;
+  --poor-bg:#F5D6CC; --poor-ink:#8B2A0F;
+  --highlight:#FFF8E1;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:Georgia,serif;background:var(--cream);color:var(--ink);line-height:1.4}
+.page{max-width:1400px;margin:0 auto;padding:24px}
+.header{background:var(--teal);color:#fff;padding:16px 20px;border-radius:12px 12px 0 0;display:flex;justify-content:space-between;align-items:center}
+.header h1{font-size:18px;font-weight:normal;letter-spacing:0.5px}
+.header .crumb{font-size:11px;opacity:0.75;text-transform:uppercase;letter-spacing:1px}
+.card{background:var(--cream);border:1px solid var(--border-dk);border-top:none;border-radius:0 0 12px 12px}
+.tab-bar{display:flex;background:var(--cream-deep);border-bottom:1px solid var(--border-dk);overflow-x:auto}
+.tab{padding:12px 22px;cursor:pointer;font-size:12px;text-transform:uppercase;letter-spacing:1px;color:var(--ink-soft);border-right:1px solid var(--border);white-space:nowrap}
+.tab.active{background:var(--teal);color:#fff}
+.tab:hover:not(.active){background:#EADFC0}
+.content{padding:22px}
+.entrepreneur-chip{display:inline-flex;align-items:center;gap:10px;background:#fff;border:1px solid var(--border-dk);padding:6px 14px;border-radius:20px;font-size:12px;margin-bottom:18px}
+.ent-avatar{width:24px;height:24px;background:var(--teal);color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:bold}
+.section{background:var(--cream-deep);padding:16px;border-radius:10px;margin-bottom:16px;border:1px solid var(--border)}
+.section-title{font-size:13px;text-transform:uppercase;letter-spacing:1.5px;color:var(--teal);margin-bottom:12px;padding-bottom:8px;border-bottom:1px solid var(--border-dk);font-weight:bold;display:flex;justify-content:space-between;align-items:center}
+.section-title-roman{color:var(--terracotta);margin-right:8px;font-style:italic}
+.btn{padding:5px 12px;border-radius:20px;border:1px solid var(--border-dk);background:#fff;cursor:pointer;font-size:11px;color:var(--ink);font-family:Georgia,serif}
+.btn:hover{background:var(--cream-deep)}
+.btn-primary{background:var(--teal);color:#fff;border-color:var(--teal)}
+.btn-primary:hover{background:var(--sea)}
+.field-val{flex:1;background:var(--offwhite);border:1px solid var(--border-dk);padding:6px 10px;border-radius:5px;font-size:12px;min-width:160px;font-family:Georgia,serif}
+table.data-table{width:100%;border-collapse:collapse;background:var(--offwhite);border-radius:6px;overflow:hidden;border:1px solid var(--border-dk);font-size:11px}
+table.data-table th{background:var(--teal);color:#fff;padding:8px 7px;text-align:left;font-weight:normal;text-transform:uppercase;letter-spacing:0.5px;font-size:10px;border-right:1px solid var(--sea);white-space:nowrap}
+table.data-table th:last-child{border-right:none}
+table.data-table th.month-col{width:42px;text-align:center;font-size:9px}
+table.data-table td{padding:6px 7px;border-bottom:1px solid var(--border);border-right:1px solid var(--border);vertical-align:middle}
+table.data-table td:last-child{border-right:none}
+table.data-table tr:last-child td{border-bottom:none}
+table.data-table input,table.data-table select{width:100%;border:1px solid var(--border);padding:4px 5px;border-radius:3px;font-family:Georgia,serif;font-size:11px;background:#fff}
+table.data-table input[readonly],.auto-cell{background:var(--cream-deep);color:var(--ink-soft);font-style:italic}
+table.data-table input:focus,table.data-table select:focus{outline:none;border-color:var(--teal)}
+table.data-table .num-col{width:34px;text-align:center;color:var(--ink-soft)}
+table.data-table .month-input input{padding:3px 2px;text-align:right;font-size:10px}
+table.data-table .total-cell{background:var(--terracotta-sft);color:var(--terracotta-dk);font-weight:bold;text-align:right}
+table.data-table tr.total-row td{background:var(--highlight);font-weight:bold;color:var(--terracotta-dk);border-top:2px solid var(--border-dk)}
+.row-delete{background:transparent;border:none;color:var(--terracotta);cursor:pointer;font-size:14px;padding:2px 6px}
+.row-delete:hover{color:var(--terracotta-dk)}
+.table-actions{display:flex;justify-content:space-between;align-items:center;margin-top:10px}
+.add-row-bar{text-align:center;padding:14px;background:var(--cream-deep);border:1px dashed var(--border-dk);border-radius:10px;margin-top:10px}
+.intervention-block{background:var(--terracotta-sft);border:1px solid var(--terracotta);border-radius:8px;padding:14px;margin-top:8px}
+.intervention-block-title{font-size:11px;text-transform:uppercase;letter-spacing:1px;color:var(--terracotta-dk);margin-bottom:10px;font-weight:bold}
+.toggle{width:36px;height:18px;border-radius:20px;background:#ccc;display:inline-block;cursor:pointer;position:relative;flex-shrink:0;vertical-align:middle}
+.toggle::after{content:'';width:14px;height:14px;background:#fff;border-radius:50%;position:absolute;top:2px;left:2px;transition:left 0.2s}
+.toggle.on{background:var(--teal)}
+.toggle.on::after{left:20px}
+.flag-note{font-size:10px;color:var(--ink-faint);font-style:italic;margin:6px 0}
+.flag-note.active{color:var(--terracotta-dk);font-weight:bold;font-style:normal}
+.channel-block{background:#fff;border:1px solid var(--border-dk);border-radius:10px;margin-bottom:14px;overflow:hidden}
+.channel-head{background:var(--sea);color:#fff;padding:10px 14px;display:flex;justify-content:space-between;align-items:center;cursor:pointer;user-select:none;font-size:13px;flex-wrap:wrap;gap:8px}
+.channel-head:hover{background:var(--teal)}
+.channel-head .ch-name{display:flex;align-items:center;gap:8px;flex-wrap:wrap;flex:1;min-width:0}
+.channel-head .ch-name input,.channel-head .ch-name select{background:rgba(255,255,255,0.15);border:1px solid rgba(255,255,255,0.3);color:#fff;padding:3px 8px;border-radius:4px;font-family:Georgia,serif;font-size:12px}
+.channel-head .ch-name input{width:170px}
+.channel-head .ch-name select{cursor:pointer}
+.channel-head .ch-name select option{color:var(--ink);background:#fff}
+.chevron{font-size:12px;transition:transform 0.2s;cursor:pointer}
+.channel-block.collapsed .chevron{transform:rotate(-90deg)}
+.channel-block.collapsed .ch-body{display:none}
+.ch-body{padding:14px}
+.ch-remove{background:transparent;border:1px solid rgba(255,255,255,0.4);color:#fff;padding:3px 10px;border-radius:14px;cursor:pointer;font-size:11px;font-family:Georgia,serif}
+.ch-remove:hover{background:var(--terracotta);border-color:var(--terracotta)}
+.subsection-title{font-size:11px;text-transform:uppercase;letter-spacing:1px;color:var(--teal);margin-bottom:10px;font-weight:bold;display:flex;justify-content:space-between;align-items:center}
+.status-chip{display:inline-block;padding:3px 9px;border-radius:12px;font-size:10px;font-weight:bold;letter-spacing:0.3px;text-transform:uppercase}
+.status-chip.pending{background:var(--cream-deep);color:var(--ink-soft)}
+.status-chip.progress{background:var(--fair-bg);color:var(--fair-ink)}
+.status-chip.completed{background:var(--good-bg);color:var(--good-ink)}
+.status-chip.notfeasible{background:var(--poor-bg);color:var(--poor-ink)}
+.source-tag{display:inline-block;padding:2px 8px;border-radius:10px;font-size:10px;font-weight:bold;text-transform:uppercase;letter-spacing:0.5px;white-space:nowrap;margin-top:3px}
+.source-existing{background:#D6E3EE;color:#2C5A82}
+.source-recommended{background:var(--good-bg);color:var(--good-ink)}
+.source-self{background:var(--terracotta-sft);color:var(--terracotta-dk)}
+.section-caption{background:var(--cream-deep);border-left:3px solid var(--terracotta);padding:8px 12px;border-radius:0 6px 6px 0;font-size:12px;color:var(--ink-soft);font-style:italic;margin-bottom:14px}
+.hidden{display:none !important}
+
+/* Month accordion — CRM style */
+.month-accordion{border:1px solid var(--border-dk);border-radius:8px;margin-bottom:8px;overflow:hidden;background:#fff}
+.month-accordion-head{background:var(--cream-deep);color:var(--teal);padding:9px 16px;display:flex;justify-content:space-between;align-items:center;cursor:pointer;user-select:none;border-bottom:1px solid var(--border-dk)}
+.month-accordion-head:hover{background:#EAE0C8}
+.month-accordion-head .month-label{font-size:13px;font-weight:bold;letter-spacing:0.3px;display:flex;align-items:center;gap:8px;color:var(--teal)}
+.month-accordion-head .month-totals{font-size:11px;color:var(--ink-soft);display:flex;gap:16px}
+.month-accordion-head .month-totals b{color:var(--ink)}
+.month-accordion.collapsed .month-chevron{transform:rotate(-90deg)}
+.month-accordion.collapsed .month-body{display:none}
+.month-chevron{font-size:9px;transition:transform 0.2s;color:var(--teal)}
+
+/* CRM-style inner table */
+.month-body{padding:0;background:#fff}
+.month-body .add-st-row{padding:8px 14px;text-align:right;background:var(--cream-deep);border-top:1px solid var(--border)}
+.st-inner-table{width:100%;border-collapse:collapse;font-size:12px}
+.st-inner-table .st-col-headers td{background:var(--cream-deep);padding:7px 12px;font-size:10px;text-transform:uppercase;letter-spacing:1px;color:var(--ink-soft);font-weight:normal;border-bottom:1px solid var(--border-dk);font-family:Georgia,serif}
+.st-inner-table .st-data-row td{padding:8px 12px;border-bottom:1px solid var(--border);vertical-align:middle;background:#fff;font-size:12px}
+.st-inner-table .st-data-row:last-child td{border-bottom:none}
+.st-inner-table .st-data-row td input,
+.st-inner-table .st-data-row td select{border:1px solid var(--border-dk);padding:5px 8px;border-radius:4px;font-family:Georgia,serif;font-size:12px;background:#fff;width:100%}
+.st-inner-table .st-data-row td input:focus,
+.st-inner-table .st-data-row td select:focus{outline:none;border-color:var(--teal)}
+.st-rev-cell{color:var(--terracotta-dk);font-weight:bold;text-align:right}
+.st-rev-cell.empty{color:#ccc}
+.st-num-col{width:32px;text-align:center;color:var(--ink-faint);font-size:11px}
+.st-del-col{width:32px;text-align:center}
+
+/* ─── Summary tab ─── */
+.sm-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px}
+.sm-card{background:#fff;border:1px solid var(--border);border-radius:10px;padding:14px}
+.sm-card h3{font-size:11px;text-transform:uppercase;letter-spacing:1px;color:var(--teal);margin-bottom:10px;padding-bottom:6px;border-bottom:1px solid var(--border);font-weight:bold}
+.sm-row{display:flex;justify-content:space-between;padding:5px 0;font-size:12px;border-bottom:1px solid #f0e9d6}
+.sm-row:last-child{border-bottom:none}
+.sm-lbl{color:var(--ink-soft)}
+.sm-val{font-weight:bold;color:var(--ink)}
+.sm-val.green{color:var(--good-ink)}
+.sm-val.amber{color:var(--fair-ink)}
+.sm-val.red{color:var(--poor-ink)}
+.sm-flags{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+.sm-flag{background:#fff;border:1px solid var(--border);border-radius:8px;padding:12px;text-align:left}
+.sm-flag-icon{width:30px;height:30px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:14px;margin-bottom:8px;background:var(--cream-deep);color:var(--teal)}
+.sm-flag-icon.amber{background:var(--fair-bg);color:var(--fair-ink)}
+.sm-flag-icon.green{background:var(--good-bg);color:var(--good-ink)}
+.sm-flag-icon.blue{background:#D6E3EE;color:#2C5A82}
+.sm-flag-count{font-size:20px;font-weight:bold;color:var(--ink)}
+.sm-flag-label{font-size:10px;color:var(--ink-soft);text-transform:uppercase;letter-spacing:0.5px;margin-top:4px}
+table.ov-tbl{width:100%;border-collapse:collapse;background:var(--offwhite);border-radius:6px;overflow:hidden;border:1px solid var(--border-dk);font-size:11px}
+table.ov-tbl th{background:var(--teal);color:#fff;padding:9px 8px;text-align:left;font-weight:normal;text-transform:uppercase;letter-spacing:0.5px;font-size:10px;border-right:1px solid var(--sea)}
+table.ov-tbl th:last-child{border-right:none}
+table.ov-tbl th.th-rec{background:var(--sea)}
+table.ov-tbl td{padding:7px 8px;border-bottom:1px solid var(--border);border-right:1px solid var(--border);vertical-align:middle}
+table.ov-tbl td:last-child{border-right:none}
+table.ov-tbl tr:last-child td{border-bottom:none}
+table.ov-tbl tr.total-row td{background:var(--highlight);font-weight:bold;color:var(--terracotta-dk);border-top:2px solid var(--border-dk)}
+</style>
+</head>
+<body>
+<div class="page">
+<div class="header">
+  <h1>Market Linkage</h1>
+  <div class="crumb">PRIME Rural · Marketing Framework</div>
+</div>
+<div class="card">
+<div class="tab-bar">
+  <div class="tab" onclick="showTab('summary',this)">Summary</div>
+  <div class="tab active" onclick="showTab('existing',this)">Existing</div>
+  <div class="tab" onclick="showTab('required',this)">Required</div>
+  <div class="tab" onclick="showTab('tracker',this)">Sales Tracker</div>
+  <div class="tab" onclick="showTab('resources',this)">Resources</div>
+  <div class="tab" onclick="showTab('tasklog',this)">Task Log</div>
+</div>
+<div class="content">
+<div class="entrepreneur-chip">
+  <div class="ent-avatar">EN</div>
+  <span style="color:var(--ink-soft);font-style:italic">Auto-fetched from profile</span>
+</div>
+
+<!-- SUMMARY -->
+<div id="summary" class="panel hidden">
+
+  <!-- ① CHANNEL-WISE OVERVIEW -->
+  <div class="section">
+    <div class="section-title">Channel-wise Overview</div>
+    <p style="font-size:11px;color:var(--ink-soft);font-style:italic;margin-bottom:10px">Existing channels with revenue. Recommended channels show alongside with their implementation status.</p>
+    <div style="overflow-x:auto">
+    <table class="ov-tbl">
+      <thead>
+        <tr>
+          <th>Channel</th>
+          <th>Type</th>
+          <th>Mode</th>
+          <th>Location</th>
+          <th>Avg Rev / Month (Rs)</th>
+          <th>Annual Revenue (Rs)</th>
+          <th class="th-rec">Source</th>
+          <th class="th-rec">Intervention Status</th>
+        </tr>
+      </thead>
+      <tbody id="sumChannelBody">
+        <tr><td colspan="8" style="text-align:center;color:var(--ink-faint);font-style:italic;padding:14px">Auto-populated from Existing and Required tabs</td></tr>
+      </tbody>
+    </table>
+    </div>
+  </div>
+
+  <!-- ② AGGREGATES -->
+  <div class="section">
+    <div class="section-title">Aggregates</div>
+    <div class="sm-grid">
+
+      <div class="sm-card">
+        <h3>Existing</h3>
+        <div class="sm-row"><span class="sm-lbl">Total Channels</span><span class="sm-val" id="agg-ex-total">0</span></div>
+        <div class="sm-row"><span class="sm-lbl">Online</span><span class="sm-val" id="agg-ex-online">0</span></div>
+        <div class="sm-row"><span class="sm-lbl">Offline</span><span class="sm-val" id="agg-ex-offline">0</span></div>
+        <div class="sm-row"><span class="sm-lbl">Upgrade Needed</span><span class="sm-val amber" id="agg-upgrade-flag">No</span></div>
+      </div>
+
+      <div class="sm-card">
+        <h3>Revenue</h3>
+        <div class="sm-row"><span class="sm-lbl">Total Annual Revenue (Rs)</span><span class="sm-val green" id="agg-annual-rev">—</span></div>
+        <div class="sm-row"><span class="sm-lbl">Avg Revenue / Month (Rs)</span><span class="sm-val" id="agg-avg-monthly">—</span></div>
+        <div class="sm-row"><span class="sm-lbl">Best Channel</span><span class="sm-val" id="agg-best-channel" style="font-size:11px;text-align:right;max-width:160px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">—</span></div>
+        <div class="sm-row"><span class="sm-lbl">Tracker Annual Revenue (Rs)</span><span class="sm-val green" id="agg-tracker-rev">—</span></div>
+        <div style="font-size:10px;color:var(--ink-faint);font-style:italic;margin-top:6px">Tracker = actual recorded sales.</div>
+      </div>
+
+      <div class="sm-card">
+        <h3>Interventions</h3>
+        <div class="sm-row"><span class="sm-lbl">Recommended Channels Added</span><span class="sm-val" id="agg-rec-total">0</span></div>
+        <div class="sm-row"><span class="sm-lbl">Products Mapped</span><span class="sm-val" id="agg-products-mapped">0</span></div>
+        <div class="sm-row"><span class="sm-lbl">Unique Products</span><span class="sm-val" id="agg-unique-products">0</span></div>
+        <div class="sm-row"><span class="sm-lbl">B2B</span><span class="sm-val" id="agg-mode-b2b">0</span></div>
+        <div class="sm-row"><span class="sm-lbl">B2C</span><span class="sm-val" id="agg-mode-b2c">0</span></div>
+        <div class="sm-row"><span class="sm-lbl">D2C</span><span class="sm-val" id="agg-mode-d2c">0</span></div>
+        <div class="sm-row"><span class="sm-lbl">Exhibition</span><span class="sm-val" id="agg-mode-exhibition">0</span></div>
+      </div>
+
+      <div class="sm-card">
+        <h3>Intervention Status</h3>
+        <div class="sm-row"><span class="sm-lbl">Completed</span><span class="sm-val green" id="agg-status-completed">0</span></div>
+        <div class="sm-row"><span class="sm-lbl">In Progress</span><span class="sm-val amber" id="agg-status-progress">0</span></div>
+        <div class="sm-row"><span class="sm-lbl">Pending</span><span class="sm-val" id="agg-status-pending">0</span></div>
+        <div class="sm-row"><span class="sm-lbl">Not Feasible</span><span class="sm-val red" id="agg-status-notfeasible">0</span></div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ③ INTERVENTION FLAGS -->
+  <div class="section">
+    <div class="section-title">Intervention Flags</div>
+    <div class="sm-flags">
+      <div class="sm-flag"><div class="sm-flag-icon green">₹</div><div class="sm-flag-count" id="flag-annual-rev">—</div><div class="sm-flag-label">Annual Revenue (Rs)</div></div>
+      <div class="sm-flag"><div class="sm-flag-icon blue">◈</div><div class="sm-flag-count" id="flag-channels">0</div><div class="sm-flag-label">Channels Active</div></div>
+      <div class="sm-flag"><div class="sm-flag-icon amber">↑</div><div class="sm-flag-count" id="flag-upgrade">No</div><div class="sm-flag-label">Upgrade Needed</div></div>
+      <div class="sm-flag"><div class="sm-flag-icon blue">+</div><div class="sm-flag-count" id="flag-recommended">0</div><div class="sm-flag-label">Recommended Channels</div></div>
+    </div>
+  </div>
+
+</div>
+
+<!-- EXISTING -->
+<div id="existing" class="panel">
+  <div class="section">
+    <div class="section-title"><span>Current Selling Channels</span></div>
+    <div class="section-caption">Map where the entrepreneur is currently selling — all offline, online and exhibition channels.</div>
+    <div style="overflow-x:auto">
+      <table class="data-table" id="existingChannelsTable">
+        <thead>
+          <tr>
+            <th class="num-col">#</th>
+            <th style="min-width:150px">Channel Name</th>
+            <th style="min-width:85px">Type</th>
+            <th style="min-width:105px">Selling Mode</th>
+            <th style="min-width:130px">Location</th>
+            <th style="min-width:75px">Price (Rs)</th>
+            <th style="min-width:115px">Avg Revenue / Month (Rs)</th>
+            <th style="min-width:115px">Annual Revenue (Rs)</th>
+            <th style="min-width:115px">Annual Total Revenue (Rs)</th>
+            <th style="width:30px"></th>
+          </tr>
+        </thead>
+        <tbody id="existingChannelsBody"></tbody>
+      </table>
+    </div>
+    <div class="table-actions">
+      <span style="font-size:11px;color:var(--ink-soft);font-style:italic">Avg Revenue/Month, Annual Revenue and Annual Total Revenue auto-calculate.</span>
+      <button class="btn btn-primary" onclick="addExistingChannelRow()">+ Add Channel</button>
+    </div>
+  </div>
+  <div class="intervention-block">
+    <div class="intervention-block-title">Intervention Need</div>
+    <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:8px">
+      <div style="font-size:12px;font-weight:bold;color:var(--ink)">Upgrade / Add New Channels?</div>
+      <span class="toggle" id="upgradeToggle" onclick="toggleUpgrade(this)"></span>
+    </div>
+    <div class="flag-note" id="upgradeNote">Not flagged</div>
+    <div id="justifyWrap" class="hidden" style="margin-top:8px">
+      <div style="font-size:11px;color:var(--ink-soft);margin-bottom:4px">Justification</div>
+      <textarea class="field-val" id="upgradeJustify" placeholder="Reason for upgrading or adding new channels..." style="width:100%;min-height:50px;border:1px solid var(--border-dk);padding:6px 10px;border-radius:5px;font-family:Georgia,serif;font-size:12px"></textarea>
+    </div>
+  </div>
+</div>
+
+<!-- REQUIRED -->
+<div id="required" class="panel hidden">
+  <div class="section">
+    <div class="section-title"><span><span class="section-title-roman">I.</span>Recommended Channels</span></div>
+    <p style="font-size:12px;color:var(--ink-soft);margin-bottom:12px;font-style:italic">Each channel holds its own product mapping table. Type and Selling Mode are set at the channel level and apply to all products within it.</p>
+    <div id="recommendedChannelsList"></div>
+    <div class="add-row-bar">
+      <button class="btn btn-primary" onclick="addRecommendedChannel()">+ Add Recommended Channel</button>
+    </div>
+  </div>
+</div>
+
+<!-- TRACKER -->
+<div id="tracker" class="panel hidden">
+  <div class="section">
+    <div class="section-title">
+      <span>Sales Tracker</span>
+      <div style="display:flex;gap:8px;align-items:center">
+        <span style="font-size:11px;color:var(--ink-soft);background:var(--cream-deep);border:1px solid var(--border-dk);padding:3px 10px;border-radius:10px">Total Units: <b id="st-grand-units">0</b></span>
+        <span style="font-size:11px;color:var(--terracotta-dk);background:var(--terracotta-sft);border:1px solid var(--terracotta);padding:3px 10px;border-radius:10px">Annual Rev: <b id="st-grand-rev">Rs 0.00</b></span>
+      </div>
+    </div>
+    <div class="section-caption">Each month is a collapsible section. Each row = one SKU via one channel. Price can differ per month. Revenue auto-calculates.</div>
+    <div id="stMonthList"></div>
+  </div>
+</div>
+
+<!-- RESOURCES -->
+<div id="resources" class="panel hidden">
+  <div class="section">
+    <div class="section-title">Reference Materials</div>
+    <table class="data-table" id="resourcesTable">
+      <thead>
+        <tr>
+          <th style="width:25%">Resource Title</th>
+          <th style="width:18%">Category</th>
+          <th style="width:12%">Type</th>
+          <th style="width:30%">Description / Notes</th>
+          <th style="width:10%">File</th>
+          <th style="width:5%"></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><input type="text" placeholder="Resource title"></td>
+          <td>
+            <select>
+              <option>— Select —</option>
+              <option>Buyer / Retailer Contact</option>
+              <option>Wholesale Market Directory</option>
+              <option>E-commerce Platform Guide</option>
+              <option>Exhibition / Mela Calendar</option>
+              <option>Govt Scheme / Subsidy</option>
+              <option>Packaging &amp; Branding Reference</option>
+              <option>Pricing Benchmarks</option>
+              <option>SHG / FPO Linkage</option>
+              <option>Other</option>
+            </select>
+          </td>
+          <td>
+            <select>
+              <option>— Select —</option>
+              <option>Contact</option>
+              <option>Reference</option>
+              <option>Quotation</option>
+              <option>Agreement / MOU</option>
+              <option>Map / Location</option>
+              <option>Photo / Evidence</option>
+            </select>
+          </td>
+          <td><input type="text" placeholder="Notes"></td>
+          <td>
+            <button class="btn" style="padding:3px 8px;font-size:10px">Upload</button>
+            <button class="btn" style="padding:3px 8px;font-size:10px">View ▷</button>
+          </td>
+          <td><button class="row-delete" onclick="deleteResRow(this)">✕</button></td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="table-actions">
+      <span></span>
+      <button class="btn btn-primary" onclick="addResRow()">+ Add Resource</button>
+    </div>
+  </div>
+</div>
+
+<!-- TASK LOG -->
+<div id="tasklog" class="panel hidden">
+  <div class="section">
+    <div class="section-title">Task Log — Market Linkage Activities</div>
+    <table class="data-table" id="taskLogTable">
+      <thead>
+        <tr>
+          <th style="width:5%">No.</th>
+          <th style="width:13%">Date</th>
+          <th style="width:42%">Task Name</th>
+          <th style="width:30%">Notes / Outcome</th>
+          <th style="width:7%">Attachment</th>
+          <th style="width:3%"></th>
+        </tr>
+      </thead>
+      <tbody id="taskLogBody"></tbody>
+    </table>
+    <div class="table-actions">
+      <span></span>
+      <button class="btn btn-primary" onclick="addTaskRow()">+ Add Entry</button>
+    </div>
+  </div>
+</div>
+
+</div></div></div>
+
+<script>
+const BLOCK_MASTER = ['Mawkynrew','Mawphlang','Pynursla','Mylliem','Sohra (Cherrapunji)','Mawsynram','Khliehriat','Jowai','Resubelpara','Tura','Williamnagar','Baghmara','Other'];
+const PRODUCT_MASTER = [
+  { sku:'BST-PCK-200-G', product:'Bamboo Shoot Pickle', skuLabel:'200g Standard' },
+  { sku:'BST-PCK-500-G', product:'Bamboo Shoot Pickle', skuLabel:'500g Family' },
+  { sku:'LMG-TEA-50-G',  product:'Lemongrass Tea',      skuLabel:'50g Pouch' },
+  { sku:'LMG-TEA-100-G', product:'Lemongrass Tea',      skuLabel:'100g Tin' },
+  { sku:'LKD-TUR-100-G', product:'Lakadong Turmeric',   skuLabel:'100g Pouch' },
+  { sku:'LKD-TUR-250-G', product:'Lakadong Turmeric',   skuLabel:'250g Jar' },
+  { sku:'ERI-MUF-001',   product:'Eri Silk Muffler',    skuLabel:'180x30 cm' }
+];
+const IDENTIFIED_BY = ['Ground Team','Core Team','Entrepreneur'];
+const STATUS_OPTIONS = ['Pending','In Progress','Completed','Not Feasible'];
+const MONTHS = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+const TYPE_OPTS = '<option value="">— Type —</option><option>Online</option><option>Offline</option>';
+const MODE_OPTS = '<option value="">— Mode —</option><option>B2B</option><option>B2C</option><option>D2C</option><option>Exhibition</option>';
+const SOURCE_OPTS = '<option value="">— Source —</option><option>Existing</option><option>Recommended</option><option>Self-initiated</option>';
+
+let existingRowCounter = 0, recommendedChannelCounter = 0, productRowCounter = 0;
+
+function showTab(id, el){
+  document.querySelectorAll('.panel').forEach(p => p.classList.add('hidden'));
+  document.getElementById(id).classList.remove('hidden');
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  el.classList.add('active');
+  if(id === 'summary') refreshSummary();
+}
+
+// ─── SUMMARY ────────────────────────────────────────────────────
+function refreshSummary(){
+  const s = (id,v) => { const el=document.getElementById(id); if(el) el.textContent=v; };
+  const fmtRev = v => v > 0 ? 'Rs ' + Math.round(v).toLocaleString('en-IN') : '—';
+
+  // ── Existing channels ─────────────────────────────────────────
+  const exRows = document.querySelectorAll('#existingChannelsBody tr');
+  let exTotal=0, exOnline=0, exOffline=0, totalAnnual=0;
+  let bestChannel='—', bestRev=0;
+
+  const channelHtmlParts = [];
+
+  exRows.forEach(tr => {
+    const cells = tr.querySelectorAll('td');
+    if(cells.length < 8) return;
+    const name    = cells[1]?.querySelector('input')?.value?.trim() || '—';
+    const type    = cells[2]?.querySelector('select')?.value || '—';
+    const mode    = cells[3]?.querySelector('select')?.value || '—';
+    const loc     = cells[4]?.querySelector('select')?.value || '—';
+    const avgRev  = parseFloat(cells[7]?.querySelector('input')?.value?.replace(/[^0-9.]/g,'')) || 0;
+    const annRev  = parseFloat(cells[8]?.querySelector('input')?.value?.replace(/[^0-9.]/g,'')) || 0;
+
+    if(!name || name==='—') return;
+    exTotal++;
+    if(type==='Online')  exOnline++;
+    if(type==='Offline') exOffline++;
+    totalAnnual += annRev;
+    if(annRev > bestRev){ bestRev=annRev; bestChannel=name; }
+
+    const typeCls = type==='Online'?'background:#D6E3EE;color:#2C5A82':'background:var(--fair-bg);color:var(--fair-ink)';
+    channelHtmlParts.push(`<tr>
+      <td><strong>${name}</strong></td>
+      <td><span style="display:inline-block;padding:2px 7px;border-radius:10px;font-size:10px;font-weight:bold;${typeCls}">${type||'—'}</span></td>
+      <td style="font-size:11px">${mode||'—'}</td>
+      <td style="font-size:11px">${loc||'—'}</td>
+      <td style="font-weight:bold;color:var(--teal)">${avgRev>0?fmtRev(avgRev):'—'}</td>
+      <td style="font-weight:bold;color:var(--good-ink)">${annRev>0?fmtRev(annRev):'—'}</td>
+      <td><span class="source-tag source-existing">Existing</span></td>
+      <td><span class="status-chip completed">Active</span></td>
+    </tr>`);
+  });
+
+  // Upgrade flag
+  const upgradeOn = document.getElementById('upgradeToggle')?.classList.contains('on');
+
+  // ── Recommended channels ──────────────────────────────────────
+  const recBlocks = document.querySelectorAll('#recommendedChannelsList .channel-block');
+  let recTotal=0, prodMapped=0, uniqueProds=new Set();
+  let statusCompleted=0, statusProgress=0, statusPending=0, statusNotFeasible=0;
+  const modeCounts = { B2B:0, B2C:0, D2C:0, Exhibition:0 };
+
+  // Count modes from existing channels too
+  exRows.forEach(tr => {
+    const mode = tr.querySelectorAll('td')[3]?.querySelector('select')?.value || '';
+    if(modeCounts.hasOwnProperty(mode)) modeCounts[mode]++;
+  });
+
+  recBlocks.forEach(b => {
+    const cid    = b.id;
+    const name   = document.getElementById(cid+'-name')?.value?.trim() || '—';
+    const type   = document.getElementById(cid+'-type')?.value || '—';
+    const mode   = document.getElementById(cid+'-mode')?.value || '—';
+    const loc    = document.getElementById(cid+'-loc')?.value || '—';
+    const chip   = document.getElementById(cid+'-chip');
+    const status = chip?.textContent?.trim() || 'Pending';
+
+    if(!name || name==='—') return;
+    recTotal++;
+    if(modeCounts.hasOwnProperty(mode)) modeCounts[mode]++;
+
+    // Count product rows and statuses
+    const prodRows = document.querySelectorAll('#'+cid+'-pt tbody tr');
+    prodRows.forEach(pr => {
+      const pname  = pr.querySelector('.pname')?.value;
+      const pstatus= pr.querySelector('.pstatus')?.value || 'Pending';
+      if(pname && pname !== '') { prodMapped++; uniqueProds.add(pname); }
+      if(pstatus==='Completed')   statusCompleted++;
+      else if(pstatus==='In Progress') statusProgress++;
+      else if(pstatus==='Not Feasible') statusNotFeasible++;
+      else statusPending++;
+    });
+
+    const typeCls = type==='Online'?'background:#D6E3EE;color:#2C5A82':'background:var(--fair-bg);color:var(--fair-ink)';
+    const chipCls = status==='Completed'?'completed':status==='In Progress'?'progress':status==='Not Feasible'?'notfeasible':'pending';
+    channelHtmlParts.push(`<tr style="background:var(--highlight)">
+      <td><strong>${name}</strong></td>
+      <td><span style="display:inline-block;padding:2px 7px;border-radius:10px;font-size:10px;font-weight:bold;${typeCls}">${type||'—'}</span></td>
+      <td style="font-size:11px">${mode||'—'}</td>
+      <td style="font-size:11px">${loc||'—'}</td>
+      <td style="color:var(--ink-faint)">—</td>
+      <td style="color:var(--ink-faint)">—</td>
+      <td><span class="source-tag source-recommended">Recommended</span></td>
+      <td><span class="status-chip ${chipCls}">${status}</span></td>
+    </tr>`);
+  });
+
+  // Tracker annual revenue
+  let trackerRev = 0;
+  MONTH_KEYS.forEach(mKey => {
+    const revText = document.getElementById('st-'+mKey+'-rev')?.textContent || '';
+    trackerRev += parseFloat(revText.replace(/[^0-9.]/g,'')) || 0;
+  });
+
+  // ── ① Overview table ─────────────────────────────────────────
+  const tbody = document.getElementById('sumChannelBody');
+  if(channelHtmlParts.length > 0){
+    let totalRow = '';
+    if(exTotal > 0) totalRow = `<tr class="total-row"><td colspan="4">TOTAL</td><td>—</td><td>${fmtRev(totalAnnual)}</td><td colspan="2" style="font-size:10px;font-style:italic;color:var(--ink-soft)">Annual revenue across all existing channels</td></tr>`;
+    tbody.innerHTML = channelHtmlParts.join('') + totalRow;
+  } else {
+    tbody.innerHTML = '<tr><td colspan="8" style="text-align:center;color:var(--ink-faint);font-style:italic;padding:14px">Auto-populated from Existing and Required tabs</td></tr>';
+  }
+
+  // ── ② Aggregates ─────────────────────────────────────────────
+  s('agg-ex-total',         exTotal);
+  s('agg-ex-online',        exOnline);
+  s('agg-ex-offline',       exOffline);
+  s('agg-upgrade-flag',     upgradeOn ? 'Yes' : 'No');
+  document.getElementById('agg-upgrade-flag')?.style && (document.getElementById('agg-upgrade-flag').style.color = upgradeOn ? 'var(--fair-ink)' : '');
+
+  s('agg-annual-rev',       exTotal>0 ? fmtRev(totalAnnual) : '—');
+  s('agg-avg-monthly',      exTotal>0 ? fmtRev(totalAnnual/12) : '—');
+  s('agg-best-channel',     bestChannel);
+  s('agg-tracker-rev',      trackerRev>0 ? fmtRev(trackerRev) : '—');
+
+  s('agg-rec-total',         recTotal);
+  s('agg-products-mapped',   prodMapped);
+  s('agg-unique-products',   uniqueProds.size);
+  s('agg-mode-b2b',          modeCounts.B2B);
+  s('agg-mode-b2c',          modeCounts.B2C);
+  s('agg-mode-d2c',          modeCounts.D2C);
+  s('agg-mode-exhibition',   modeCounts.Exhibition);
+
+  s('agg-status-completed',  statusCompleted);
+  s('agg-status-progress',   statusProgress);
+  s('agg-status-pending',    statusPending);
+  s('agg-status-notfeasible',statusNotFeasible);
+
+  // ── ③ Flags ───────────────────────────────────────────────────
+  s('flag-annual-rev',  exTotal>0 ? 'Rs '+Math.round(totalAnnual).toLocaleString('en-IN') : '—');
+  s('flag-channels',    exTotal);
+  s('flag-upgrade',     upgradeOn ? 'Yes' : 'No');
+  s('flag-recommended', recTotal);
+}
+
+// EXISTING
+function addExistingChannelRow(){
+  existingRowCounter++;
+  const rid = 'exch' + existingRowCounter;
+  const tr = document.createElement('tr');
+  tr.id = rid;
+  const blockOpts = BLOCK_MASTER.map(b => '<option>' + b + '</option>').join('');
+  tr.innerHTML =
+    '<td class="num-col"></td>' +
+    '<td><input type="text" placeholder="Channel name"></td>' +
+    '<td><select>' + TYPE_OPTS + '</select></td>' +
+    '<td><select>' + MODE_OPTS + '</select></td>' +
+    '<td><select><option value="">— Select —</option>' + blockOpts + '</select></td>' +
+    '<td><input type="number" class="ex-price" placeholder="0.00" step="0.01" oninput="recalcEx(\'' + rid + '\')"></td>' +
+    '<td><input type="number" class="ex-units" placeholder="0" oninput="recalcEx(\'' + rid + '\')"></td>' +
+    '<td><input type="text" class="auto-cell ex-avg-rev" readonly placeholder="Auto"></td>' +
+    '<td><input type="text" class="auto-cell ex-annual-rev" readonly placeholder="Auto"></td>' +
+    '<td><input type="text" class="auto-cell ex-annual-total" readonly placeholder="Auto"></td>' +
+    '<td><button class="row-delete" onclick="removeExRow(\'' + rid + '\')">x</button></td>';
+  document.getElementById('existingChannelsBody').appendChild(tr);
+  renumber('existingChannelsBody');
+}
+
+function removeExRow(rid){ document.getElementById(rid).remove(); renumber('existingChannelsBody'); }
+
+function recalcEx(rid){
+  const row = document.getElementById(rid);
+  if(!row) return;
+  const price = parseFloat(row.querySelector('.ex-price').value) || 0;
+  const units = parseFloat(row.querySelector('.ex-units').value) || 0;
+  const avg = price * units;
+  const fmt = v => v > 0 ? 'Rs ' + v.toFixed(2) : '';
+  row.querySelector('.ex-avg-rev').value = fmt(avg);
+  row.querySelector('.ex-annual-rev').value = fmt(avg * 12);
+  row.querySelector('.ex-annual-total').value = fmt(price * units * 12);
+}
+
+function toggleUpgrade(el){
+  el.classList.toggle('on');
+  const note = document.getElementById('upgradeNote');
+  const wrap = document.getElementById('justifyWrap');
+  if(el.classList.contains('on')){ note.textContent = 'Flagged — add recommended channels in Required tab'; note.classList.add('active'); wrap.classList.remove('hidden'); }
+  else { note.textContent = 'Not flagged'; note.classList.remove('active'); wrap.classList.add('hidden'); }
+}
+
+// REQUIRED
+function addRecommendedChannel(){
+  recommendedChannelCounter++;
+  const cid = 'rec' + recommendedChannelCounter;
+  const block = document.createElement('div');
+  block.className = 'channel-block';
+  block.id = cid;
+  const blockOpts = BLOCK_MASTER.map(b => '<option>' + b + '</option>').join('');
+  const idByOpts = IDENTIFIED_BY.map(o => '<option>' + o + '</option>').join('');
+  block.innerHTML =
+    '<div class="channel-head" onclick="toggleCh(event,\'' + cid + '\')">' +
+      '<div class="ch-name" onclick="event.stopPropagation()">' +
+        '<span class="chevron" onclick="toggleCh(event,\'' + cid + '\')">v</span>' +
+        '<input type="text" placeholder="Channel Name" id="' + cid + '-name">' +
+        '<select id="' + cid + '-type">' + TYPE_OPTS + '</select>' +
+        '<select id="' + cid + '-mode">' + MODE_OPTS + '</select>' +
+        '<select id="' + cid + '-loc"><option value="">— Location —</option>' + blockOpts + '</select>' +
+        '<select id="' + cid + '-by"><option value="">— Identified By —</option>' + idByOpts + '</select>' +
+        '<span class="status-chip pending" id="' + cid + '-chip">Pending</span>' +
+      '</div>' +
+      '<button class="ch-remove" onclick="event.stopPropagation();removeCh(\'' + cid + '\')">Remove</button>' +
+    '</div>' +
+    '<div class="ch-body">' +
+      '<div class="subsection-title"><span>Products Sold via this Channel</span><button class="btn" onclick="addProdRow(\'' + cid + '\')" style="font-size:10px;padding:3px 10px">+ Add Product</button></div>' +
+      '<div style="overflow-x:auto"><table class="data-table" id="' + cid + '-pt">' +
+        '<thead><tr>' +
+          '<th class="num-col">#</th>' +
+          '<th style="min-width:160px">Product Name</th>' +
+          '<th style="min-width:160px">Product SKU</th>' +
+          '<th style="min-width:85px">Price (Rs)</th>' +
+          '<th>Notes</th>' +
+          '<th style="min-width:130px">Implementation Status</th>' +
+          '<th style="width:30px"></th>' +
+        '</tr></thead>' +
+        '<tbody></tbody>' +
+      '</table></div>' +
+    '</div>';
+  document.getElementById('recommendedChannelsList').appendChild(block);
+  addProdRow(cid);
+}
+
+function removeCh(cid){ if(confirm('Remove this channel and all its products?')) document.getElementById(cid).remove(); }
+function toggleCh(e, cid){ e.stopPropagation(); document.getElementById(cid).classList.toggle('collapsed'); }
+
+function addProdRow(cid){
+  productRowCounter++;
+  const pid = cid + '-p' + productRowCounter;
+  const tbody = document.querySelector('#' + cid + '-pt tbody');
+  const tr = document.createElement('tr');
+  tr.id = pid;
+  const pNames = [...new Set(PRODUCT_MASTER.map(p => p.product))];
+  const pOpts = pNames.map(p => '<option>' + p + '</option>').join('');
+  const sOpts = STATUS_OPTIONS.map(s => '<option>' + s + '</option>').join('');
+  tr.innerHTML =
+    '<td class="num-col"></td>' +
+    '<td><select class="pname" onchange="onProdChange(\'' + pid + '\')">' +
+      '<option value="">— Select Product —</option>' + pOpts + '</select></td>' +
+    '<td><select class="psku"><option value="">— Select Product first —</option></select></td>' +
+    '<td><input type="number" placeholder="0.00" step="0.01"></td>' +
+    '<td><input type="text" placeholder="Notes"></td>' +
+    '<td><select class="pstatus" onchange="recalcChip(\'' + cid + '\')">' + sOpts + '</select></td>' +
+    '<td><button class="row-delete" onclick="removeProd(\'' + cid + '\',\'' + pid + '\')">x</button></td>';
+  tbody.appendChild(tr);
+  renumberEl(tbody);
+  recalcChip(cid);
+}
+
+function removeProd(cid, pid){ document.getElementById(pid).remove(); recalcChip(cid); }
+
+function onProdChange(pid){
+  const row = document.getElementById(pid);
+  if(!row) return;
+  const name = row.querySelector('.pname').value;
+  const sku = row.querySelector('.psku');
+  if(!name){ sku.innerHTML = '<option value="">— Select Product first —</option>'; return; }
+  const filtered = PRODUCT_MASTER.filter(p => p.product === name);
+  sku.innerHTML = '<option value="">— Select SKU —</option>' + filtered.map(p => '<option value="' + p.sku + '">' + p.sku + ' - ' + p.skuLabel + '</option>').join('');
+}
+
+function recalcChip(cid){
+  const rows = document.querySelectorAll('#' + cid + '-pt tbody tr');
+  const chip = document.getElementById(cid + '-chip');
+  if(!chip) return;
+  if(!rows.length){ setChip(chip,'Pending'); return; }
+  const ss = Array.from(rows).map(r => r.querySelector('.pstatus')?.value || 'Pending');
+  let label = 'Pending';
+  if(ss.every(s => s === 'Completed')) label = 'Completed';
+  else if(ss.some(s => s === 'Not Feasible')) label = 'Not Feasible';
+  else if(ss.some(s => s === 'In Progress')) label = 'In Progress';
+  setChip(chip, label);
+}
+
+function setChip(chip, label){
+  chip.textContent = label;
+  chip.className = 'status-chip';
+  if(label === 'Completed') chip.classList.add('completed');
+  else if(label === 'In Progress') chip.classList.add('progress');
+  else if(label === 'Not Feasible') chip.classList.add('notfeasible');
+  else chip.classList.add('pending');
+}
+
+// TRACKER — month accordion CRM style
+const MONTH_NAMES = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+const MONTH_KEYS  = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+let stRowCounters = {};
+
+function buildTrackerMonths(){
+  const list = document.getElementById('stMonthList');
+  list.innerHTML = '';
+  MONTH_NAMES.forEach((mName, idx) => {
+    const mKey = MONTH_KEYS[idx];
+    stRowCounters[mKey] = 0;
+    const acc = document.createElement('div');
+    acc.className = 'month-accordion';
+    acc.id = 'st-month-' + mKey;
+    acc.innerHTML =
+      '<div class="month-accordion-head" onclick="toggleSTMonth(\'' + mKey + '\')">' +
+        '<div class="month-label">' +
+          '<span class="month-chevron">&#9660;</span>' +
+          mName +
+        '</div>' +
+        '<div class="month-totals">' +
+          'Qty &nbsp;<b id="st-' + mKey + '-qty">—</b>' +
+          '&nbsp;&nbsp;&nbsp;Revenue &nbsp;<b id="st-' + mKey + '-rev">—</b>' +
+        '</div>' +
+      '</div>' +
+      '<div class="month-body">' +
+        '<table class="st-inner-table" id="st-tbl-' + mKey + '">' +
+          '<tbody>' +
+            '<tr class="st-col-headers">' +
+              '<td class="st-num-col">#</td>' +
+              '<td style="min-width:95px">Source</td>' +
+              '<td style="min-width:140px">Channel Name</td>' +
+              '<td style="min-width:80px">Type</td>' +
+              '<td style="min-width:100px">Selling Mode</td>' +
+              '<td style="min-width:130px">Product</td>' +
+              '<td style="min-width:130px">SKU</td>' +
+              '<td style="min-width:80px">Quantity</td>' +
+              '<td style="min-width:100px">Price (Rs)</td>' +
+              '<td style="min-width:90px;text-align:right">Revenue</td>' +
+              '<td class="st-del-col"></td>' +
+            '</tr>' +
+          '</tbody>' +
+        '</table>' +
+        '<div class="add-st-row">' +
+          '<button class="btn btn-primary" style="font-size:10px;padding:4px 12px" onclick="addSTRow(\'' + mKey + '\')">+ Add Row</button>' +
+        '</div>' +
+      '</div>';
+    list.appendChild(acc);
+  });
+}
+
+function toggleSTMonth(mKey){
+  document.getElementById('st-month-' + mKey).classList.toggle('collapsed');
+}
+
+function addSTRow(mKey){
+  stRowCounters[mKey]++;
+  const rid = 'st-' + mKey + '-' + stRowCounters[mKey];
+  const tbody = document.querySelector('#st-tbl-' + mKey + ' tbody');
+  const tr = document.createElement('tr');
+  tr.className = 'st-data-row';
+  tr.id = rid;
+  const pNames = [...new Set(PRODUCT_MASTER.map(p => p.product))];
+  const pOpts = pNames.map(p => '<option>' + p + '</option>').join('');
+  tr.innerHTML =
+    '<td class="st-num-col"></td>' +
+    '<td>' +
+      '<select class="st-src" onchange="updateSTTag(\'' + rid + '\',this.value)">' + SOURCE_OPTS + '</select>' +
+      '<div id="' + rid + '-tag" style="margin-top:3px"></div>' +
+    '</td>' +
+    '<td><input type="text" placeholder="Channel name"></td>' +
+    '<td><select>' + TYPE_OPTS + '</select></td>' +
+    '<td><select>' + MODE_OPTS + '</select></td>' +
+    '<td><select class="st-pname" onchange="onSTProdChange(\'' + rid + '\')">' +
+      '<option value="">— Select —</option>' + pOpts +
+    '</select></td>' +
+    '<td><select class="st-psku"><option value="">— Select Product first —</option></select></td>' +
+    '<td><input type="number" class="st-qty" placeholder="0" min="0" oninput="recalcSTRow(\'' + rid + '\',\'' + mKey + '\')"></td>' +
+    '<td><input type="number" class="st-price" placeholder="0.00" step="0.01" oninput="recalcSTRow(\'' + rid + '\',\'' + mKey + '\')"></td>' +
+    '<td class="st-rev-cell empty" id="' + rid + '-rev">—</td>' +
+    '<td class="st-del-col"><button class="row-delete" onclick="removeSTRow(\'' + rid + '\',\'' + mKey + '\')">&#10005;</button></td>';
+  tbody.appendChild(tr);
+  renumberSTMonth(mKey);
+  recalcSTMonth(mKey);
+}
+
+function updateSTTag(rid, val){
+  const el = document.getElementById(rid + '-tag');
+  if(!el) return;
+  const cls = val === 'Existing' ? 'source-existing' : val === 'Recommended' ? 'source-recommended' : 'source-self';
+  el.innerHTML = val ? '<span class="source-tag ' + cls + '">' + val + '</span>' : '';
+}
+
+function onSTProdChange(rid){
+  const row = document.getElementById(rid);
+  if(!row) return;
+  const name = row.querySelector('.st-pname').value;
+  const sku  = row.querySelector('.st-psku');
+  if(!name){ sku.innerHTML = '<option value="">— Select Product first —</option>'; return; }
+  const filtered = PRODUCT_MASTER.filter(p => p.product === name);
+  sku.innerHTML = '<option value="">— Select SKU —</option>' +
+    filtered.map(p => '<option value="' + p.sku + '">' + p.sku + ' - ' + p.skuLabel + '</option>').join('');
+}
+
+function recalcSTRow(rid, mKey){
+  const row = document.getElementById(rid);
+  if(!row) return;
+  const qty   = parseFloat(row.querySelector('.st-qty').value)   || 0;
+  const price = parseFloat(row.querySelector('.st-price').value) || 0;
+  const rev   = qty * price;
+  const cell  = document.getElementById(rid + '-rev');
+  if(rev > 0){ cell.textContent = 'Rs ' + rev.toFixed(2); cell.classList.remove('empty'); }
+  else        { cell.textContent = '—';                   cell.classList.add('empty'); }
+  recalcSTMonth(mKey);
+}
+
+function removeSTRow(rid, mKey){
+  document.getElementById(rid).remove();
+  renumberSTMonth(mKey);
+  recalcSTMonth(mKey);
+}
+
+function renumberSTMonth(mKey){
+  const rows = document.querySelectorAll('#st-tbl-' + mKey + ' .st-data-row');
+  rows.forEach((r, i) => {
+    const n = r.querySelector('.st-num-col');
+    if(n) n.textContent = String(i+1).padStart(2,'0');
+  });
+}
+
+function recalcSTMonth(mKey){
+  const rows = document.querySelectorAll('#st-tbl-' + mKey + ' .st-data-row');
+  let qty = 0, rev = 0;
+  rows.forEach(r => {
+    qty += parseFloat(r.querySelector('.st-qty')?.value) || 0;
+    const revText = document.getElementById(r.id + '-rev')?.textContent || '';
+    rev += parseFloat(revText.replace(/[^0-9.]/g,'')) || 0;
+  });
+  const qtyEl = document.getElementById('st-' + mKey + '-qty');
+  const revEl = document.getElementById('st-' + mKey + '-rev');
+  if(rows.length === 0){ qtyEl.textContent = '—'; revEl.textContent = '—'; }
+  else { qtyEl.textContent = qty.toLocaleString(); revEl.textContent = 'Rs ' + rev.toFixed(2); }
+  recalcSTGrand();
+}
+
+function recalcSTGrand(){
+  let totalQty = 0, totalRev = 0, hasData = false;
+  MONTH_KEYS.forEach(mKey => {
+    const rows = document.querySelectorAll('#st-tbl-' + mKey + ' .st-data-row');
+    if(rows.length) hasData = true;
+    totalQty += parseFloat(document.getElementById('st-' + mKey + '-qty')?.textContent.replace(/[^0-9.]/g,'')) || 0;
+    totalRev += parseFloat(document.getElementById('st-' + mKey + '-rev')?.textContent.replace(/[^0-9.]/g,'')) || 0;
+  });
+  document.getElementById('st-grand-units').textContent = hasData ? totalQty.toLocaleString() : '0';
+  document.getElementById('st-grand-rev').textContent   = hasData ? 'Rs ' + totalRev.toFixed(2) : 'Rs 0.00';
+}
+
+// RESOURCES
+function addResRow(){
+  const tbody = document.querySelector('#resourcesTable tbody');
+  const first = tbody.rows[0].cloneNode(true);
+  first.querySelectorAll('input').forEach(i => i.value = '');
+  first.querySelectorAll('select').forEach(s => s.selectedIndex = 0);
+  tbody.appendChild(first);
+}
+function deleteResRow(btn){
+  const tbody = btn.closest('tbody');
+  if(tbody.rows.length > 1) btn.closest('tr').remove();
+  else alert('At least one row is required.');
+}
+
+// TASK LOG
+const ML_TASKS = [
+  '01 — Map Existing Selling Channels',
+  '02 — Record Channel Revenue Data',
+  '03 — Identify Channel Upgrade / Expansion Need',
+  '04 — Research New Market Channels',
+  '05 — Identify Potential Buyers / Retailers',
+  '06 — Contact Potential Buyer / Retailer',
+  '07 — Conduct Buyer Meeting',
+  '08 — Negotiate Terms / Pricing',
+  '09 — Finalise Channel Agreement / MOU',
+  '10 — Set Up Online Channel (e-commerce / social)',
+  '11 — Register for Exhibition / Mela',
+  '12 — Prepare Products for New Channel',
+  '13 — First Dispatch / Delivery to New Channel',
+  '14 — Monitor Channel Sales Performance',
+  '15 — Review Pricing Strategy by Channel',
+  '16 — Update Sales Tracker',
+  'If other, specify in comments',
+];
+
+const ML_TASK_OPTS = ML_TASKS.map(t => '<option value="' + t + '">' + t + '</option>').join('');
+let taskLogCounter = 0;
+
+function addTaskRow(){
+  taskLogCounter++;
+  const tbody = document.getElementById('taskLogBody');
+  const tr = document.createElement('tr');
+  tr.innerHTML =
+    '<td class="num-col">' + String(taskLogCounter).padStart(2,'0') + '</td>' +
+    '<td><input type="date" style="width:100%"></td>' +
+    '<td><select style="width:100%"><option value="">— Select Task —</option>' + ML_TASK_OPTS + '</select></td>' +
+    '<td><input type="text" placeholder="Notes / Outcome" style="width:100%"></td>' +
+    '<td><button class="btn" style="padding:3px 8px;font-size:10px">Upload</button></td>' +
+    '<td><button class="row-delete" onclick="deleteTaskRow(this)">✕</button></td>';
+  tbody.appendChild(tr);
+}
+
+function deleteTaskRow(btn){
+  const tbody = btn.closest('tbody');
+  btn.closest('tr').remove();
+  tbody.querySelectorAll('tr').forEach((tr, i) => {
+    tr.querySelector('.num-col').textContent = String(i+1).padStart(2,'0');
+  });
+  taskLogCounter = tbody.rows.length;
+}
+
+function renumber(tbodyId){ renumberEl(document.getElementById(tbodyId)); }
+function renumberEl(tbody){
+  if(!tbody) return;
+  Array.from(tbody.children).forEach((tr, i) => {
+    const n = tr.querySelector('.num-col');
+    if(n) n.textContent = String(i+1).padStart(2,'0');
+  });
+}
+
+window.addEventListener('DOMContentLoaded', () => {
+  buildTrackerMonths();
+
+  // ── Seed: 3 existing channels ────────────────────────────────
+  addExistingChannelRow(); // exch1
+  addExistingChannelRow(); // exch2
+  addExistingChannelRow(); // exch3
+
+  setTimeout(() => {
+    // Channel 1 — Local Market stall, Offline B2C
+    const r1 = document.getElementById('exch1');
+    if(r1){
+      r1.querySelectorAll('td')[1].querySelector('input').value = 'Mawkynrew Weekly Market';
+      r1.querySelectorAll('td')[2].querySelector('select').value = 'Offline';
+      r1.querySelectorAll('td')[3].querySelector('select').value = 'B2C';
+      r1.querySelectorAll('td')[4].querySelector('select').value = 'Mawkynrew';
+      r1.querySelectorAll('td')[5].querySelector('input').value = '120';
+      r1.querySelectorAll('td')[6].querySelector('input').value = '80';
+      recalcEx('exch1');
+    }
+    // Channel 2 — Retailer, Offline B2B
+    const r2 = document.getElementById('exch2');
+    if(r2){
+      r2.querySelectorAll('td')[1].querySelector('input').value = 'Shillong Grocery Store';
+      r2.querySelectorAll('td')[2].querySelector('select').value = 'Offline';
+      r2.querySelectorAll('td')[3].querySelector('select').value = 'B2B';
+      r2.querySelectorAll('td')[4].querySelector('select').value = 'Other';
+      r2.querySelectorAll('td')[5].querySelector('input').value = '110';
+      r2.querySelectorAll('td')[6].querySelector('input').value = '150';
+      recalcEx('exch2');
+    }
+    // Channel 3 — WhatsApp Online, D2C
+    const r3 = document.getElementById('exch3');
+    if(r3){
+      r3.querySelectorAll('td')[1].querySelector('input').value = 'WhatsApp Direct Orders';
+      r3.querySelectorAll('td')[2].querySelector('select').value = 'Online';
+      r3.querySelectorAll('td')[3].querySelector('select').value = 'D2C';
+      r3.querySelectorAll('td')[4].querySelector('select').value = 'Other';
+      r3.querySelectorAll('td')[5].querySelector('input').value = '130';
+      r3.querySelectorAll('td')[6].querySelector('input').value = '60';
+      recalcEx('exch3');
+    }
+
+    // Flag upgrade needed
+    const tog = document.getElementById('upgradeToggle');
+    if(tog && !tog.classList.contains('on')) toggleUpgrade(tog);
+
+    // ── Seed: 2 recommended channels ──────────────────────────
+    addRecommendedChannel(); // rec1
+    addRecommendedChannel(); // rec2
+
+    setTimeout(() => {
+      // Rec 1 — Amazon, Online B2C, In Progress
+      const n1 = document.getElementById('rec1-name'); if(n1) n1.value='Amazon India';
+      const t1 = document.getElementById('rec1-type'); if(t1) t1.value='Online';
+      const m1 = document.getElementById('rec1-mode'); if(m1) m1.value='B2C';
+      const by1= document.getElementById('rec1-by');   if(by1) by1.value='Core Team';
+      // Set first product row status
+      const prow1 = document.querySelector('#rec1-pt tbody tr');
+      if(prow1){
+        prow1.querySelector('.pname').value='Lemongrass Tea';
+        onProdChange(prow1.id);
+        prow1.querySelector('.pstatus').value='In Progress';
+        recalcChip('rec1');
+      }
+
+      // Rec 2 — Exhibition, Offline Exhibition, Completed
+      const n2 = document.getElementById('rec2-name'); if(n2) n2.value='Shillong Mela 2025';
+      const t2 = document.getElementById('rec2-type'); if(t2) t2.value='Offline';
+      const m2 = document.getElementById('rec2-mode'); if(m2) m2.value='Exhibition';
+      const by2= document.getElementById('rec2-by');   if(by2) by2.value='Ground Team';
+      const prow2 = document.querySelector('#rec2-pt tbody tr');
+      if(prow2){
+        prow2.querySelector('.pname').value='Bamboo Shoot Pickle';
+        onProdChange(prow2.id);
+        prow2.querySelector('.pstatus').value='Completed';
+        recalcChip('rec2');
+      }
+
+      // ── Seed: Tracker — Jan revenue ───────────────────────────
+      addSTRow('Jan');
+      const stRow = document.querySelector('#st-tbl-Jan .st-data-row');
+      if(stRow){
+        stRow.querySelector('.st-src').value='Existing'; updateSTTag(stRow.id,'Existing');
+        stRow.querySelector('input[type=text]').value='Mawkynrew Weekly Market';
+        stRow.querySelector('.st-pname').value='Bamboo Shoot Pickle'; onSTProdChange(stRow.id);
+        stRow.querySelector('.st-qty').value='40';
+        stRow.querySelector('.st-price').value='120';
+        recalcSTRow(stRow.id,'Jan');
+      }
+
+      addTaskRow();
+      refreshSummary();
+      showTab('summary', document.querySelector('.tab'));
+    }, 100);
+  }, 50);
+});
+</script>
+</body>
+</html>

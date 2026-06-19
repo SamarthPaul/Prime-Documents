@@ -1,0 +1,1364 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Machinery Module · PRIME Rural</title>
+<style>
+:root {
+  --teal:#0E4D4E; --sea:#1A6B6D; --terracotta:#C26849; --terracotta-dk:#A85738;
+  --terracotta-sft:#F5E2D6;
+  --cream:#FBF5E5; --cream-deep:#F4ECD3; --offwhite:#FDFAF0; --panel:#FFFFFF;
+  --ink:#2A2520; --ink-soft:#6B6359; --ink-faint:#9C9384;
+  --border:#E8DFC9; --border-dk:#D6CDB6;
+  --good-bg:#E3EFDF; --good-ink:#3F6B3A;
+  --fair-bg:#FBE9DF; --fair-ink:#7A3B22;
+  --poor-bg:#F5D6CC; --poor-ink:#8B2A0F;
+  --highlight:#FFF8E1;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:Georgia,serif;background:var(--cream);color:var(--ink);line-height:1.4}
+.page{max-width:1200px;margin:0 auto;padding:24px}
+
+.header{background:var(--teal);color:#fff;padding:16px 20px;border-radius:12px 12px 0 0;display:flex;justify-content:space-between;align-items:center}
+.header h1{font-size:18px;font-weight:normal;letter-spacing:0.5px}
+.header .crumb{font-size:11px;opacity:0.75;text-transform:uppercase;letter-spacing:1px}
+
+.card{background:var(--cream);border:1px solid var(--border-dk);border-top:none;border-radius:0 0 12px 12px}
+
+.tab-bar{display:flex;background:var(--cream-deep);border-bottom:1px solid var(--border-dk);overflow-x:auto}
+.tab{padding:12px 22px;cursor:pointer;font-size:12px;text-transform:uppercase;letter-spacing:1px;color:var(--ink-soft);border-right:1px solid var(--border);white-space:nowrap}
+.tab.active{background:var(--teal);color:#fff}
+.tab:hover:not(.active){background:#EADFC0}
+
+.content{padding:22px}
+
+.entrepreneur-chip{display:inline-flex;align-items:center;gap:10px;background:#fff;border:1px solid var(--border-dk);padding:6px 14px;border-radius:20px;font-size:12px;margin-bottom:18px}
+.ent-avatar{width:24px;height:24px;background:var(--teal);color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:bold}
+
+.section{background:var(--cream-deep);padding:16px;border-radius:10px;margin-bottom:16px;border:1px solid var(--border)}
+.section-title{font-size:13px;text-transform:uppercase;letter-spacing:1.5px;color:var(--teal);margin-bottom:12px;padding-bottom:8px;border-bottom:1px solid var(--border-dk);font-weight:bold;display:flex;justify-content:space-between;align-items:center}
+.section-title-roman{color:var(--terracotta);margin-right:8px;font-style:italic}
+.eyebrow{font-size:10px;text-transform:uppercase;color:var(--ink-soft);margin-bottom:8px;letter-spacing:1px}
+
+.field-row{display:flex;gap:12px;margin-bottom:10px;flex-wrap:wrap;align-items:center}
+.field-label{width:280px;font-size:12px;color:var(--ink-soft)}
+.field-val{flex:1;background:var(--offwhite);border:1px solid var(--border-dk);padding:6px 10px;border-radius:5px;font-size:12px;min-width:140px;font-family:Georgia,serif}
+.field-val[readonly],.field-val.auto{background:var(--cream-deep);color:var(--ink-soft);font-style:italic}
+textarea.field-val{font-family:Georgia,serif;resize:vertical;min-height:50px}
+select.field-val{cursor:pointer}
+
+.btn{padding:5px 12px;border-radius:20px;border:1px solid var(--border-dk);background:#fff;cursor:pointer;font-size:11px;color:var(--ink);font-family:Georgia,serif}
+.btn:hover{background:var(--cream-deep)}
+.btn-primary{background:var(--teal);color:#fff;border-color:var(--teal)}
+.btn-primary:hover{background:var(--sea)}
+.btn-accent{background:var(--terracotta);color:#fff;border-color:var(--terracotta)}
+.btn-accent:hover{background:var(--terracotta-dk)}
+
+/* Tables */
+table.data-table{width:100%;border-collapse:collapse;background:var(--offwhite);border-radius:6px;overflow:hidden;border:1px solid var(--border-dk);font-size:11px}
+table.data-table th{background:var(--teal);color:#fff;padding:9px 8px;text-align:left;font-weight:normal;text-transform:uppercase;letter-spacing:0.5px;font-size:10px;border-right:1px solid var(--sea);white-space:nowrap}
+table.data-table th:last-child{border-right:none}
+table.data-table td{padding:7px 8px;border-bottom:1px solid var(--border);border-right:1px solid var(--border);vertical-align:middle}
+table.data-table td:last-child{border-right:none}
+table.data-table tr:last-child td{border-bottom:none}
+table.data-table input,table.data-table select,table.data-table textarea{width:100%;border:1px solid var(--border);padding:5px 6px;border-radius:3px;font-family:Georgia,serif;font-size:11px;background:#fff}
+table.data-table input[readonly],table.data-table .auto-cell{background:var(--cream-deep);color:var(--ink-soft);font-style:italic}
+table.data-table input:focus,table.data-table select:focus{outline:none;border-color:var(--teal)}
+table.data-table .num-col{width:40px;text-align:center;color:var(--ink-soft)}
+table.data-table .amount-col{font-weight:bold;color:var(--teal);text-align:right}
+table.data-table tr.total-row td{background:var(--highlight);font-weight:bold;color:var(--terracotta-dk);border-top:2px solid var(--border-dk)}
+
+.table-actions{display:flex;justify-content:space-between;align-items:center;margin-top:10px}
+.subtotal-row{font-size:12px;color:var(--ink);background:var(--highlight);padding:8px 12px;border-radius:5px;border:1px solid var(--border-dk);display:flex;justify-content:space-between;align-items:center}
+.subtotal-row strong{color:var(--terracotta-dk);font-size:13px}
+
+.row-delete{background:transparent;border:none;color:var(--terracotta);cursor:pointer;font-size:14px;padding:2px 6px}
+.row-delete:hover{color:var(--terracotta-dk)}
+
+/* Summary cards */
+.summary-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px}
+.summary-card{background:#fff;border:1px solid var(--border);border-radius:10px;padding:14px}
+.summary-card.full{grid-column:1 / -1}
+.summary-card h3{font-size:11px;text-transform:uppercase;letter-spacing:1px;color:var(--teal);margin-bottom:10px;padding-bottom:6px;border-bottom:1px solid var(--border)}
+.metric-row{display:flex;justify-content:space-between;padding:5px 0;font-size:12px;border-bottom:1px solid var(--border-soft,#f0e9d6)}
+.metric-row:last-child{border-bottom:none}
+.metric-label{color:var(--ink-soft)}
+.metric-value{font-weight:bold;color:var(--ink)}
+.metric-value.green{color:#3F6B3A}
+.metric-value.amber{color:var(--terracotta-dk)}
+
+/* Picture strip */
+.picture-strip{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;background:var(--teal);padding:14px;border-radius:10px;color:#fff;margin-top:10px}
+.picture-strip .ps-cell{padding:6px 4px}
+.picture-strip .ps-label{font-size:10px;text-transform:uppercase;letter-spacing:0.8px;opacity:0.7;margin-bottom:4px}
+.picture-strip .ps-val{font-size:18px;font-weight:bold}
+.picture-strip .ps-val.amber{color:#FFD580}
+
+/* Flag cards */
+.flags-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:10px}
+.flag-card{background:#fff;border:1px solid var(--border);border-radius:8px;padding:12px;text-align:left}
+.flag-icon{width:30px;height:30px;border-radius:6px;background:var(--terracotta-sft);display:flex;align-items:center;justify-content:center;font-size:14px;margin-bottom:8px}
+.flag-icon.amber{background:var(--terracotta-sft);color:var(--terracotta-dk)}
+.flag-icon.red{background:#F5D6CC;color:#8B2A0F}
+.flag-icon.blue{background:#D6E3EE;color:#2C5A82}
+.flag-icon.purple{background:#E0D6EE;color:#5A3F82}
+.flag-icon.green{background:var(--good-bg);color:var(--good-ink)}
+.flag-count{font-size:20px;font-weight:bold;color:var(--ink)}
+.flag-label{font-size:10px;color:var(--ink-soft);text-transform:uppercase;letter-spacing:0.5px;margin-top:4px}
+
+/* Condition badges */
+.condition-badge{display:inline-flex;align-items:center;gap:5px;padding:2px 9px;border-radius:14px;font-size:10px;font-weight:bold}
+.condition-good{background:var(--good-bg);color:var(--good-ink)}
+.condition-fair{background:var(--fair-bg);color:var(--fair-ink)}
+.condition-poor{background:var(--poor-bg);color:var(--poor-ink)}
+.condition-badge::before{content:'●'}
+
+.status-badge{display:inline-flex;align-items:center;gap:5px;padding:2px 9px;border-radius:14px;font-size:10px;font-weight:bold}
+.status-completed{background:var(--good-bg);color:var(--good-ink)}
+.status-progress{background:var(--fair-bg);color:var(--fair-ink)}
+.status-pending{background:var(--cream-deep);color:var(--ink-soft)}
+
+/* Toggle */
+.toggle{width:36px;height:18px;border-radius:20px;background:#ccc;display:inline-block;cursor:pointer;position:relative;flex-shrink:0;vertical-align:middle}
+.toggle::after{content:'';width:14px;height:14px;background:#fff;border-radius:50%;position:absolute;top:2px;left:2px;transition:left 0.2s}
+.toggle.on{background:var(--teal)}
+.toggle.on::after{left:20px}
+
+/* Machine block (Existing tab) */
+.machine-block{background:#fff;border:1px solid var(--border-dk);border-radius:10px;margin-bottom:14px;overflow:hidden}
+.machine-block-head{background:var(--sea);color:#fff;padding:10px 14px;display:flex;justify-content:space-between;align-items:center;cursor:pointer;user-select:none;font-size:13px}
+.machine-block-head:hover{background:var(--teal)}
+.machine-block-head .mb-name{display:flex;align-items:center;gap:10px}
+.chevron{font-size:12px;transition:transform 0.2s}
+.machine-block.collapsed .chevron{transform:rotate(-90deg)}
+.machine-block.collapsed .mb-body{display:none}
+.mb-body{padding:14px}
+.mb-remove{background:transparent;border:1px solid rgba(255,255,255,0.4);color:#fff;padding:3px 10px;border-radius:14px;cursor:pointer;font-size:11px;font-family:Georgia,serif}
+.mb-remove:hover{background:var(--terracotta);border-color:var(--terracotta)}
+
+/* Subsection inside machine */
+.subsection{background:var(--cream-deep);padding:12px;border-radius:8px;margin-bottom:10px;border:1px solid var(--border)}
+.subsection-title{font-size:11px;text-transform:uppercase;letter-spacing:1px;color:var(--teal);margin-bottom:10px;font-weight:bold}
+
+.calc-strip{background:var(--highlight);border:1px solid var(--border-dk);border-radius:6px;padding:10px;margin-top:10px;display:grid;gap:10px}
+.calc-cell{font-size:11px}
+.calc-label{color:var(--ink-soft);margin-bottom:3px;font-size:10px;text-transform:uppercase;letter-spacing:0.5px}
+.calc-value{font-weight:bold;color:var(--terracotta-dk);font-size:13px}
+
+.intervention-flags{background:var(--terracotta-sft);border:1px solid var(--terracotta);border-radius:8px;padding:12px;margin-top:10px}
+.intervention-flags-title{font-size:11px;text-transform:uppercase;letter-spacing:1px;color:var(--terracotta-dk);margin-bottom:10px;font-weight:bold}
+.intervention-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.intervention-cell{background:#fff;border:1px solid var(--border);border-radius:6px;padding:10px}
+.intervention-toggle-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px}
+.intervention-toggle-row .label{font-size:11px;font-weight:bold;color:var(--ink)}
+.flag-note{font-size:10px;color:var(--ink-faint);font-style:italic}
+.flag-note.active{color:var(--terracotta-dk);font-weight:bold;font-style:normal}
+
+/* Total bar */
+.total-bar{background:var(--teal);color:#fff;padding:14px 18px;border-radius:10px;margin-top:14px}
+.total-bar-title{font-size:11px;text-transform:uppercase;letter-spacing:1px;opacity:0.7;margin-bottom:10px}
+.total-grid{display:grid;gap:14px}
+.total-cell .total-label{font-size:10px;opacity:0.6;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:3px}
+.total-cell .total-value{font-weight:bold;font-size:14px}
+.total-cell .total-value.amber{color:#FFD580;font-size:11px}
+
+/* Required row */
+.opt-row{background:#fff;border:1px solid var(--border-dk);border-radius:10px;margin-bottom:12px;overflow:hidden}
+.opt-row-head{background:var(--cream-deep);padding:12px 16px;display:grid;gap:12px;align-items:center;border-bottom:1px solid var(--border-dk)}
+.opt-readonly-label{font-size:10px;color:var(--ink-soft);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:3px}
+.opt-readonly-val{font-size:12px;font-weight:bold;color:var(--teal)}
+.int-type{display:inline-flex;align-items:center;gap:5px;padding:3px 10px;border-radius:14px;font-size:10px;font-weight:bold}
+.int-solar{background:var(--terracotta-sft);color:var(--terracotta-dk)}
+.int-service{background:#E0D6EE;color:#5A3F82}
+.int-new{background:#D6E3EE;color:#2C5A82}
+
+.add-row-bar{text-align:center;padding:14px;background:var(--cream-deep);border:1px dashed var(--border-dk);border-radius:10px;margin-top:10px}
+
+.placeholder-tab{padding:40px;text-align:center;color:var(--ink-faint);font-style:italic;background:var(--cream-deep);border-radius:10px;border:1px dashed var(--border-dk)}
+
+.hidden{display:none !important}
+
+.checkbox-cell{text-align:center}
+.checkbox-cell input{width:14px;height:14px;cursor:pointer}
+
+.divider{border:none;border-top:2px dashed var(--border-dk);margin:24px 0}
+</style>
+</head>
+<body>
+
+<div class="page">
+<div class="header">
+  <h1>Machinery Module</h1>
+  <div class="crumb">PRIME Rural · DF Machinery</div>
+</div>
+<div class="card">
+
+<div class="tab-bar">
+  <div class="tab active" onclick="showTab('summary',this)">Summary</div>
+  <div class="tab" onclick="showTab('existing',this)">Existing</div>
+  <div class="tab" onclick="showTab('optimized',this)">Required</div>
+  <div class="tab" onclick="showTab('resources',this)">Resources</div>
+  <div class="tab" onclick="showTab('tasklog',this)">Task Log</div>
+</div>
+
+<div class="content">
+
+<div class="entrepreneur-chip">
+  <div class="ent-avatar">EN</div>
+  <span style="color:var(--ink-soft);font-style:italic">Auto-fetched from profile</span>
+</div>
+
+<!-- ============ SUMMARY ============ -->
+<div id="summary" class="panel">
+
+  <!-- ① MACHINE-WISE OVERVIEW -->
+  <div class="section">
+    <div class="section-title">Machine-wise Overview</div>
+    <p style="font-size:11px;color:var(--ink-soft);font-style:italic;margin-bottom:10px">Each machine's depreciation/unit feeds Unit Pricing individually. Intervention Type and Status columns show what's being done on flagged machines.</p>
+    <div style="overflow-x:auto">
+    <table class="data-table" style="min-width:860px">
+      <thead>
+        <tr>
+          <th>Machine</th>
+          <th>Condition</th>
+          <th>Monthly Output</th>
+          <th>Utilisation</th>
+          <th>Capacity Gap</th>
+          <th>Dep / Unit (₹)</th>
+          <th>Intervention Type</th>
+          <th>Implementation Status</th>
+        </tr>
+      </thead>
+      <tbody id="summaryMachineTable">
+        <tr><td colspan="8" style="text-align:center;color:var(--ink-faint);font-style:italic;padding:14px">Auto-populated from Existing and Required tabs</td></tr>
+      </tbody>
+    </table>
+    </div>
+  </div>
+
+  <!-- ② AGGREGATES -->
+  <div class="section">
+    <div class="section-title">Aggregates</div>
+    <div class="summary-grid">
+
+      <div class="summary-card">
+        <h3>Machines</h3>
+        <div class="metric-row"><span class="metric-label">Existing Machines</span><span class="metric-value" id="agg-ex-count">0</span></div>
+        <div class="metric-row"><span class="metric-label">Total Investment (₹)</span><span class="metric-value" id="agg-ex-inv">₹0</span></div>
+        <div class="metric-row"><span class="metric-label">New Machines Added</span><span class="metric-value" id="agg-new-count">0</span></div>
+        <div class="metric-row"><span class="metric-label">Additional Investment (₹)</span><span class="metric-value" id="agg-new-inv">₹0</span></div>
+      </div>
+
+      <div class="summary-card">
+        <h3>Capacity</h3>
+        <div class="metric-row"><span class="metric-label">Current Monthly Output</span><span class="metric-value" id="agg-cap-current">0 units</span></div>
+        <div class="metric-row"><span class="metric-label">Max Potential Output</span><span class="metric-value" id="agg-cap-max">0 units</span></div>
+        <div class="metric-row"><span class="metric-label">Overall Utilisation</span><span class="metric-value amber" id="agg-cap-util">—</span></div>
+        <div class="metric-row"><span class="metric-label">Capacity Gap</span><span class="metric-value amber" id="agg-cap-gap">—</span></div>
+      </div>
+
+      <div class="summary-card">
+        <h3>Cost</h3>
+        <div class="metric-row"><span class="metric-label">Dep / Unit — Before (₹)</span><span class="metric-value" id="agg-ex-dep">₹0.00</span></div>
+        <div class="metric-row"><span class="metric-label">Dep / Unit — After (₹)</span><span class="metric-value green" id="agg-impl-dep">—</span></div>
+        <div style="font-size:10px;color:var(--ink-faint);font-style:italic;margin-top:6px">Before = existing machines. After = existing + new machines combined. Populates when new machines are added.</div>
+      </div>
+
+      <div class="summary-card">
+        <h3>Interventions &amp; Status</h3>
+        <div class="metric-row"><span class="metric-label">Servicing Needed</span><span class="metric-value amber" id="agg-flag-service">0</span></div>
+        <div class="metric-row"><span class="metric-label">Capacity Upgrade Needed</span><span class="metric-value amber" id="agg-flag-capacity">0</span></div>
+        <div class="metric-row"><span class="metric-label">Completed</span><span class="metric-value green" id="agg-impl-completed">0</span></div>
+        <div class="metric-row"><span class="metric-label">In Progress</span><span class="metric-value amber" id="agg-impl-progress">0</span></div>
+        <div class="metric-row"><span class="metric-label">In Procurement</span><span class="metric-value" id="agg-new-procurement">0</span></div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ③ FLAGS -->
+  <div class="section">
+    <div class="section-title">Intervention Flags</div>
+    <div class="flags-grid" style="grid-template-columns:repeat(4,1fr)">
+      <div class="flag-card"><div class="flag-icon amber">🔧</div><div class="flag-count" id="flag-service-count">0</div><div class="flag-label">Servicing Needed</div></div>
+      <div class="flag-card"><div class="flag-icon blue">↑</div><div class="flag-count" id="flag-capacity-count">0</div><div class="flag-label">Capacity Gap</div></div>
+      <div class="flag-card"><div class="flag-icon" style="background:var(--cream-deep);color:var(--teal)">+</div><div class="flag-count" id="flag-new-count">0</div><div class="flag-label">New Machines</div></div>
+      <div class="flag-card"><div class="flag-icon green">✓</div><div class="flag-count" id="flag-procurement-count">0</div><div class="flag-label">In Procurement</div></div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ============ EXISTING ============ -->
+<div id="existing" class="panel hidden">
+
+  <div id="existingMachineList"></div>
+
+  <div class="add-row-bar">
+    <button class="btn btn-primary" onclick="addExistingMachine()">+ Add Machine</button>
+  </div>
+
+  <div class="total-bar">
+    <div class="total-bar-title">⚙ All Existing Machines — Total</div>
+    <div class="total-grid" style="grid-template-columns:repeat(5,1fr)">
+      <div class="total-cell"><div class="total-label">Machine Count</div><div class="total-value" id="ex-tot-count">0</div></div>
+      <div class="total-cell"><div class="total-label">Total Investment</div><div class="total-value" id="ex-tot-inv">₹0</div></div>
+      <div class="total-cell"><div class="total-label">Monthly Output</div><div class="total-value" id="ex-tot-out">0 units</div></div>
+      <div class="total-cell"><div class="total-label">Total Depreciation / Unit</div><div class="total-value" id="ex-tot-dep">₹0.00</div></div>
+      <div class="total-cell"><div class="total-label">Auto-fetches to</div><div class="total-value amber">Existing Unit Pricing → Machinery Depreciation / Unit</div></div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ============ OPTIMIZED ============ -->
+<div id="optimized" class="panel hidden">
+
+  <div class="section">
+    <div class="section-title"><span><span class="section-title-roman">I.</span>Existing Machine Interventions</span></div>
+    <p style="font-size:12px;color:var(--ink-soft);margin-bottom:12px;font-style:italic">Fellow fills intervention details here for machines flagged in Existing tab</p>
+    <div id="interventionList">
+      <div style="text-align:center;color:var(--ink-faint);font-style:italic;padding:20px;background:#fff;border:1px dashed var(--border-dk);border-radius:8px">No interventions yet — click "+ Add Intervention Row" and select a flagged machine from the Existing tab.</div>
+    </div>
+    <div class="add-row-bar">
+      <button class="btn" onclick="addInterventionRow()">+ Add Intervention Row</button>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title"><span><span class="section-title-roman">II.</span>New Machines</span></div>
+    <div id="newMachineList"></div>
+    <div class="add-row-bar">
+      <button class="btn btn-primary" onclick="addNewMachine()">+ Add New Machine</button>
+    </div>
+  </div>
+
+  <div class="total-bar">
+    <div class="total-bar-title">⚙ Total Machinery — Required · Existing + New</div>
+    <div class="total-grid" style="grid-template-columns:repeat(5,1fr)">
+      <div class="total-cell"><div class="total-label">Existing Depreciation / Unit</div><div class="total-value">₹0.00</div></div>
+      <div class="total-cell"><div class="total-label">New Machine Depreciation / Unit</div><div class="total-value">₹0.00</div></div>
+      <div class="total-cell"><div class="total-label">Total Machines</div><div class="total-value">0</div></div>
+      <div class="total-cell"><div class="total-label">Total Depreciation / Unit</div><div class="total-value">₹0.00</div></div>
+      <div class="total-cell"><div class="total-label">Auto-fetches to</div><div class="total-value amber">Required Unit Pricing → Machinery Depreciation / Unit</div></div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ============ RESOURCES ============ -->
+<div id="resources" class="panel hidden">
+  <div class="section">
+    <div class="section-title">Reference Materials</div>
+    <table class="data-table" id="resourcesTable">
+      <thead>
+        <tr>
+          <th style="width:25%">Resource Title</th>
+          <th style="width:18%">Category</th>
+          <th style="width:12%">Type</th>
+          <th style="width:30%">Description / Notes</th>
+          <th style="width:10%">File</th>
+          <th style="width:5%"></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><input type="text" placeholder="Resource title"></td>
+          <td>
+            <select>
+              <option>— Select —</option>
+              <option>Machinery Catalogue</option>
+              <option>Solar Vendor</option>
+              <option>Servicing Contact</option>
+              <option>Procurement Guide</option>
+              <option>Safety / Compliance</option>
+            </select>
+          </td>
+          <td>
+            <select>
+              <option>— Select —</option>
+              <option>Template</option>
+              <option>Reference</option>
+              <option>Vendor</option>
+              <option>Quotation</option>
+              <option>Specification</option>
+            </select>
+          </td>
+          <td><input type="text" placeholder="Notes"></td>
+          <td>
+            <button class="btn" style="padding:3px 8px;font-size:10px">Upload</button>
+            <button class="btn" style="padding:3px 8px;font-size:10px">View ▷</button>
+          </td>
+          <td><button class="row-delete" onclick="deleteRow(this)">✕</button></td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="table-actions">
+      <span></span>
+      <button class="btn btn-primary" onclick="addRow('resourcesTable')">+ Add Resource</button>
+    </div>
+  </div>
+</div>
+
+<!-- ============ TASK LOG ============ -->
+<div id="tasklog" class="panel hidden">
+  <div class="section">
+    <div class="section-title">Task Log — Machinery Activities</div>
+    <table class="data-table" id="taskLogTable">
+      <thead>
+        <tr>
+          <th style="width:5%">No.</th>
+          <th style="width:13%">Date</th>
+          <th style="width:42%">Task Name</th>
+          <th style="width:30%">Notes / Outcome</th>
+          <th style="width:7%">Attachment</th>
+          <th style="width:3%"></th>
+        </tr>
+      </thead>
+      <tbody id="taskLogBody"></tbody>
+    </table>
+    <div class="table-actions">
+      <span></span>
+      <button class="btn btn-primary" onclick="addTaskRow()">+ Add Entry</button>
+    </div>
+  </div>
+</div>
+
+</div>
+</div>
+</div>
+
+<script>
+// ============ TAB SWITCHING ============
+function showTab(id, el){
+  document.querySelectorAll('.panel').forEach(p => p.classList.add('hidden'));
+  document.getElementById(id).classList.remove('hidden');
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  el.classList.add('active');
+  if(id === 'summary') refreshSummary();
+}
+
+// ============ STATE ============
+let machineCounter = 0;
+let interventionCounter = 0;
+let newMachineCounter = 0;
+
+// ============ DEPRECIATION RATE BY CONDITION ============
+const DEP_RATE = { 'Good': 0.10, 'Fair': 0.20, 'Poor': 0.30 };
+
+// ============ EXISTING MACHINE BLOCK ============
+function addExistingMachine(){
+  machineCounter++;
+  const mid = `ex${machineCounter}`;
+  const list = document.getElementById('existingMachineList');
+  const block = document.createElement('div');
+  block.className = 'machine-block';
+  block.id = mid;
+  block.innerHTML = renderExistingMachine(mid, machineCounter);
+  list.appendChild(block);
+  recalcExistingMachine(mid);
+}
+
+function renderExistingMachine(mid, idx){
+  return `
+  <div class="machine-block-head" onclick="toggleMachine('${mid}')">
+    <div class="mb-name">
+      <span class="chevron">▾</span>
+      <span>Row ${idx} — </span>
+      <input type="text" placeholder="Machine name" style="background:rgba(255,255,255,0.15);border:1px solid rgba(255,255,255,0.3);color:#fff;padding:3px 8px;border-radius:4px;font-family:Georgia,serif;font-size:13px;width:200px" oninput="updateMachineName('${mid}',this.value)" onclick="event.stopPropagation()">
+    </div>
+    <button class="mb-remove" onclick="event.stopPropagation();removeMachine('${mid}')">Remove</button>
+  </div>
+  <div class="mb-body">
+
+    <div class="subsection">
+      <div class="subsection-title">Classification & Process Integration</div>
+      <div class="field-row">
+        <div class="field-label">Product</div>
+        <input type="text" class="field-val" placeholder="Auto-fetched from product module">
+      </div>
+      <div class="field-row">
+        <div class="field-label">Name of Machinery / Tool *</div>
+        <input type="text" class="field-val" placeholder="Enter name" id="${mid}-mname" oninput="updateMachineName('${mid}',this.value)">
+      </div>
+      <div class="field-row">
+        <div class="field-label">Process Flow No.</div>
+        <input type="text" class="field-val" placeholder="e.g., Processed Food-Process Flow">
+      </div>
+      <div class="field-row">
+        <div class="field-label">Purpose</div>
+        <input type="text" class="field-val" placeholder="e.g., Shredding">
+      </div>
+    </div>
+
+    <div class="subsection">
+      <div class="subsection-title">Technical & Power Specifications</div>
+      <div class="field-row">
+        <div class="field-label">Power / Phase Needed</div>
+        <select class="field-val">
+          <option>— Select —</option>
+          <option>Single Phase</option>
+          <option>III Phase</option>
+        </select>
+      </div>
+      <div class="field-row">
+        <div class="field-label">Wattage / Load (W)</div>
+        <input type="number" class="field-val" placeholder="0">
+      </div>
+      <div class="field-row">
+        <div class="field-label">No. of Machinery / Tool *</div>
+        <input type="number" class="field-val" placeholder="0" value="1">
+      </div>
+    </div>
+
+    <div class="subsection">
+      <div class="subsection-title">Operational Capacity & Usage</div>
+      <div class="field-row">
+        <div class="field-label">Days of Equipment Usage / Month</div>
+        <input type="number" class="field-val" id="${mid}-days" placeholder="0" oninput="recalcExistingMachine('${mid}')">
+      </div>
+      <div class="field-row">
+        <div class="field-label">Hours of Usage / Day</div>
+        <input type="number" class="field-val" id="${mid}-hours" placeholder="0" oninput="recalcExistingMachine('${mid}')">
+      </div>
+      <div class="field-row">
+        <div class="field-label">Main Usage Time</div>
+        <select class="field-val">
+          <option>— Select —</option>
+          <option>Day</option>
+          <option>Night</option>
+          <option>Both</option>
+        </select>
+      </div>
+      <div class="field-row">
+        <div class="field-label">Current Usage Capacity / hr (units)</div>
+        <input type="number" class="field-val" id="${mid}-capCurrent" placeholder="0" oninput="recalcExistingMachine('${mid}')">
+      </div>
+      <div class="field-row">
+        <div class="field-label">Max Processing Capacity / hr (units)</div>
+        <input type="number" class="field-val" id="${mid}-capMax" placeholder="0" oninput="recalcExistingMachine('${mid}')">
+      </div>
+      <div class="calc-strip" style="grid-template-columns:repeat(3,1fr)">
+        <div class="calc-cell"><div class="calc-label">Monthly Output (days × hrs × cap)</div><div class="calc-value" id="${mid}-monthlyOutput">0 units / month</div></div>
+        <div class="calc-cell"><div class="calc-label">Capacity Utilization</div><div class="calc-value" id="${mid}-util">—</div></div>
+        <div class="calc-cell"><div class="calc-label">Capacity Gap</div><div class="calc-value" id="${mid}-gap">—</div></div>
+      </div>
+    </div>
+
+    <div class="subsection">
+      <div class="subsection-title">Financial & Maintenance Data</div>
+      <div class="field-row">
+        <div class="field-label">Cost of Machine / Tool (₹)</div>
+        <input type="number" class="field-val" id="${mid}-cost" placeholder="0" oninput="recalcExistingMachine('${mid}')">
+      </div>
+      <div class="field-row">
+        <div class="field-label">Brand Series</div>
+        <input type="text" class="field-val" placeholder="—">
+      </div>
+      <div class="field-row">
+        <div class="field-label">Machinery Condition</div>
+        <select class="field-val" id="${mid}-condition" onchange="recalcExistingMachine('${mid}')">
+          <option value="">— Select —</option>
+          <option value="Good">Good (10% depreciation)</option>
+          <option value="Fair">Fair (20% depreciation)</option>
+          <option value="Poor">Poor (30% depreciation)</option>
+        </select>
+      </div>
+      <div class="field-row">
+        <div class="field-label">Critical / Non-Critical</div>
+        <select class="field-val">
+          <option>— Select —</option>
+          <option>Critical</option>
+          <option>Non-Critical</option>
+        </select>
+      </div>
+      <div class="field-row">
+        <div class="field-label">If Critical, provide reason</div>
+        <textarea class="field-val" placeholder="Reason"></textarea>
+      </div>
+      <div class="field-row">
+        <div class="field-label">Servicing Required?</div>
+        <select class="field-val">
+          <option>— Select —</option>
+          <option>Yes</option>
+          <option>No</option>
+        </select>
+      </div>
+      <div class="field-row">
+        <div class="field-label">Upkeep Cost (₹)</div>
+        <input type="number" class="field-val" placeholder="0">
+      </div>
+      <div class="field-row">
+        <div class="field-label">Age of Machinery (years)</div>
+        <input type="number" class="field-val" placeholder="0">
+      </div>
+      <div class="calc-strip" style="grid-template-columns:repeat(4,1fr)">
+        <div class="calc-cell"><div class="calc-label">Depreciation Rate</div><div class="calc-value" id="${mid}-depRate">—</div></div>
+        <div class="calc-cell"><div class="calc-label">Monthly Depreciation</div><div class="calc-value" id="${mid}-depMonthly">₹0</div></div>
+        <div class="calc-cell"><div class="calc-label">Depreciation / Unit</div><div class="calc-value" id="${mid}-depUnit">₹0.00</div></div>
+        <div class="calc-cell"><div class="calc-label">Auto-fetches to</div><div class="calc-value" style="color:var(--teal);font-size:11px">Existing Unit Pricing</div></div>
+      </div>
+    </div>
+
+    <div class="intervention-flags">
+      <div class="intervention-flags-title">⚠ Intervention Need — Flag Only</div>
+      <div class="intervention-grid" style="grid-template-columns:repeat(2,1fr)">
+        <div class="intervention-cell">
+          <div class="intervention-toggle-row"><span class="label">Servicing Needed?</span><span class="toggle" onclick="toggleFlag(this,'${mid}','service')"></span></div>
+          <div class="flag-note" id="${mid}-service-note">Not flagged</div>
+        </div>
+        <div class="intervention-cell">
+          <div class="intervention-toggle-row"><span class="label">Capacity Upgrade Needed?</span><span class="toggle" onclick="toggleFlag(this,'${mid}','capacity')"></span></div>
+          <div class="flag-note" id="${mid}-capacity-note">Not flagged</div>
+        </div>
+      </div>
+    </div>
+
+  </div>`;
+}
+
+function toggleMachine(mid){
+  document.getElementById(mid).classList.toggle('collapsed');
+}
+
+function removeMachine(mid){
+  if(confirm('Remove this machine?')){
+    document.getElementById(mid).remove();
+    recalcExistingTotals();
+  }
+}
+
+function updateMachineName(mid, val){
+  // Header input and field input stay synced visually; no further action needed beyond recalc trigger
+  recalcExistingTotals();
+}
+
+function toggleFlag(el, mid, type){
+  el.classList.toggle('on');
+  const note = document.getElementById(`${mid}-${type}-note`);
+  const labels = { service:'🔧 Flagged → Details in Required Tab', capacity:'↑ Flagged → Details in Required Tab' };
+  if(el.classList.contains('on')){
+    note.textContent = labels[type];
+    note.classList.add('active');
+  } else {
+    note.textContent = 'Not flagged';
+    note.classList.remove('active');
+  }
+}
+
+// ============ EXISTING CALCULATIONS ============
+function recalcExistingMachine(mid){
+  const days = parseFloat(document.getElementById(`${mid}-days`)?.value) || 0;
+  const hours = parseFloat(document.getElementById(`${mid}-hours`)?.value) || 0;
+  const capCur = parseFloat(document.getElementById(`${mid}-capCurrent`)?.value) || 0;
+  const capMax = parseFloat(document.getElementById(`${mid}-capMax`)?.value) || 0;
+  const cost = parseFloat(document.getElementById(`${mid}-cost`)?.value) || 0;
+  const condition = document.getElementById(`${mid}-condition`)?.value;
+
+  const monthlyOutput = days * hours * capCur;
+  document.getElementById(`${mid}-monthlyOutput`).textContent = `${monthlyOutput.toLocaleString()} units / month`;
+
+  if(capMax > 0){
+    const util = (capCur / capMax) * 100;
+    document.getElementById(`${mid}-util`).textContent = `${util.toFixed(0)}% (${capCur}/${capMax})`;
+    const gap = capMax - capCur;
+    document.getElementById(`${mid}-gap`).textContent = `${gap} units / hr unused`;
+  } else {
+    document.getElementById(`${mid}-util`).textContent = '—';
+    document.getElementById(`${mid}-gap`).textContent = '—';
+  }
+
+  if(condition && DEP_RATE[condition]){
+    const rate = DEP_RATE[condition];
+    document.getElementById(`${mid}-depRate`).textContent = `${(rate*100).toFixed(0)}% per year`;
+    const monthlyDep = (cost * rate) / 12;
+    document.getElementById(`${mid}-depMonthly`).textContent = `₹${monthlyDep.toFixed(0)} / month`;
+    if(monthlyOutput > 0){
+      const depUnit = monthlyDep / monthlyOutput;
+      document.getElementById(`${mid}-depUnit`).textContent = `₹${depUnit.toFixed(2)} / unit`;
+    } else {
+      document.getElementById(`${mid}-depUnit`).textContent = '₹0.00';
+    }
+  } else {
+    document.getElementById(`${mid}-depRate`).textContent = '—';
+    document.getElementById(`${mid}-depMonthly`).textContent = '₹0';
+    document.getElementById(`${mid}-depUnit`).textContent = '₹0.00';
+  }
+
+  recalcExistingTotals();
+}
+
+function recalcExistingTotals(){
+  const blocks = document.querySelectorAll('#existingMachineList .machine-block');
+  let count = blocks.length;
+  let totInv = 0, totOutput = 0, totDep = 0;
+  blocks.forEach(b => {
+    const mid = b.id;
+    const cost = parseFloat(document.getElementById(`${mid}-cost`)?.value) || 0;
+    const days = parseFloat(document.getElementById(`${mid}-days`)?.value) || 0;
+    const hours = parseFloat(document.getElementById(`${mid}-hours`)?.value) || 0;
+    const cap = parseFloat(document.getElementById(`${mid}-capCurrent`)?.value) || 0;
+    const out = days * hours * cap;
+    totInv += cost;
+    totOutput += out;
+    const depTxt = document.getElementById(`${mid}-depUnit`)?.textContent || '';
+    const depVal = parseFloat(depTxt.replace(/[^\d.]/g,'')) || 0;
+    totDep += depVal;
+  });
+  document.getElementById('ex-tot-count').textContent = count;
+  document.getElementById('ex-tot-inv').textContent = `₹${totInv.toLocaleString('en-IN')}`;
+  document.getElementById('ex-tot-out').textContent = `${totOutput.toLocaleString()} units`;
+  document.getElementById('ex-tot-dep').textContent = `₹${totDep.toFixed(2)}`;
+}
+
+// ============ REQUIRED — SECTION I (Interventions, collapsible banners) ============
+function addInterventionRow(){
+  const list = document.getElementById('interventionList');
+  // remove placeholder if present
+  const placeholder = list.querySelector('div[style*="dashed"]');
+  if(placeholder) placeholder.remove();
+
+  interventionCounter++;
+  const iid = `int${interventionCounter}`;
+
+  // Build a dropdown of machines from the Existing tab (auto-link source).
+  // Each option carries the originating mid so name + flags can be auto-fetched on selection.
+  const existingOpts = buildExistingMachineOptions();
+
+  const block = document.createElement('div');
+  block.className = 'machine-block';
+  block.id = iid;
+  block.innerHTML = `
+    <div class="machine-block-head" onclick="toggleMachine('${iid}')" style="grid-template-columns:auto 1fr auto auto auto;display:grid;gap:14px;align-items:center">
+      <span class="chevron">▾</span>
+      <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">
+        <span style="font-size:11px;opacity:.75;text-transform:uppercase;letter-spacing:.5px">Machine</span>
+        <select onchange="onInterventionMachineSelect('${iid}',this)" onclick="event.stopPropagation()" style="background:rgba(255,255,255,.15);color:#fff;border:1px solid rgba(255,255,255,.3);border-radius:5px;padding:4px 10px;font-family:Georgia,serif;font-size:12px;min-width:200px">
+          ${existingOpts}
+        </select>
+      </div>
+      <div style="display:flex;align-items:center;gap:6px">
+        <span style="font-size:11px;opacity:.75;text-transform:uppercase;letter-spacing:.5px">Flag</span>
+        <select id="${iid}-flagType" onchange="onInterventionFlagChange('${iid}',this)" onclick="event.stopPropagation()" style="background:rgba(255,255,255,.15);color:#fff;border:1px solid rgba(255,255,255,.3);border-radius:5px;padding:4px 10px;font-family:Georgia,serif;font-size:12px">
+          <option value="">— Auto —</option>
+          <option value="service">🔧 Servicing</option>
+          <option value="capacity">↑ Capacity Upgrade</option>
+        </select>
+      </div>
+      <div style="display:flex;align-items:center;gap:6px">
+        <span style="font-size:11px;opacity:.75;text-transform:uppercase;letter-spacing:.5px">Implementation Status</span>
+        <select id="${iid}-implStatus" onclick="event.stopPropagation()" style="background:rgba(255,255,255,.15);color:#fff;border:1px solid rgba(255,255,255,.3);border-radius:5px;padding:4px 10px;font-family:Georgia,serif;font-size:12px">
+          <option>Pending</option>
+          <option>In Progress</option>
+          <option>Completed</option>
+        </select>
+      </div>
+      <button class="mb-remove" onclick="event.stopPropagation();removeInterventionRow('${iid}')">Remove</button>
+    </div>
+    <div class="mb-body">
+      <div class="subsection">
+        <div class="subsection-title">Intervention Details</div>
+        <div class="field-row">
+          <div class="field-label">Reference (current cost / condition)</div>
+          <input type="text" class="field-val auto" id="${iid}-ref" readonly placeholder="Auto-fetched on machine selection">
+        </div>
+        <div class="field-row">
+          <div class="field-label">Issue / Description</div>
+          <input type="text" class="field-val" placeholder="Describe the issue or scope">
+        </div>
+        <div class="field-row">
+          <div class="field-label">Intervention Cost (₹)</div>
+          <input type="number" class="field-val" placeholder="0">
+        </div>
+        <div class="field-row">
+          <div class="field-label">New Electricity Cost / Unit (after solar)</div>
+          <input type="number" class="field-val" placeholder="0.00" step="0.01">
+        </div>
+      </div>
+    </div>`;
+  list.appendChild(block);
+}
+
+// Build <option> list of existing machines for the Required intervention dropdown
+function buildExistingMachineOptions(){
+  const blocks = document.querySelectorAll('#existingMachineList .machine-block');
+  let opts = '<option value="">— Select machine —</option>';
+  blocks.forEach(b => {
+    const mid = b.id;
+    const name = document.getElementById(`${mid}-mname`)?.value || `Unnamed (${mid})`;
+    opts += `<option value="${mid}">${name}</option>`;
+  });
+  return opts;
+}
+
+// When a machine is picked in the banner, auto-fetch flag type + reference info
+function onInterventionMachineSelect(iid, sel){
+  const mid = sel.value;
+  if(!mid) return;
+  // Determine which flag is currently toggled on this existing machine
+  const solarOn = document.querySelector(`#${mid} .intervention-cell .toggle.on`); // first toggle in the cell row
+  // More robust: check each named toggle by inspecting the cell that owns the named note
+  const flagTypeSel = document.getElementById(`${iid}-flagType`);
+  const serviceNote = document.getElementById(`${mid}-service-note`);
+  const capacityNote = document.getElementById(`${mid}-capacity-note`);
+  // A note has .active class when the flag is on
+  if(serviceNote?.classList.contains('active')){
+    flagTypeSel.value = 'service';
+  } else if(capacityNote?.classList.contains('active')){
+    flagTypeSel.value = 'capacity';
+  } else {
+    flagTypeSel.value = '';
+  }
+  onInterventionFlagChange(iid, flagTypeSel);
+
+  // Auto-fetch reference: current cost + condition
+  const cost = document.getElementById(`${mid}-cost`)?.value || '0';
+  const cond = document.getElementById(`${mid}-condition`)?.value || '—';
+  const refEl = document.getElementById(`${iid}-ref`);
+  if(refEl) refEl.value = `₹${cost} · ${cond}`;
+}
+
+function onInterventionFlagChange(iid, sel){
+  // Hook reserved for future per-flag UI variants. Currently a no-op.
+  void sel;
+}
+
+function removeInterventionRow(iid){
+  if(confirm('Remove this intervention?')){
+    document.getElementById(iid).remove();
+    const list = document.getElementById('interventionList');
+    if(list.children.length === 0){
+      list.innerHTML = '<div style="text-align:center;color:var(--ink-faint);font-style:italic;padding:20px;background:#fff;border:1px dashed var(--border-dk);border-radius:8px">No interventions yet — click "+ Add Intervention Row" and select a flagged machine from the Existing tab.</div>';
+    }
+  }
+}
+
+// ============ REQUIRED — SECTION II (New Machines, full structure like Existing) ============
+function addNewMachine(){
+  newMachineCounter++;
+  const nid = `new${newMachineCounter}`;
+  const list = document.getElementById('newMachineList');
+  const block = document.createElement('div');
+  block.className = 'machine-block';
+  block.id = nid;
+  block.innerHTML = renderNewMachine(nid, newMachineCounter);
+  list.appendChild(block);
+  recalcNewMachine(nid);
+}
+
+function renderNewMachine(nid, idx){
+  return `
+  <div class="machine-block-head" onclick="toggleMachine('${nid}')">
+    <div class="mb-name">
+      <span class="chevron">▾</span>
+      <span>New ${idx} — </span>
+      <input type="text" placeholder="Machine name" style="background:rgba(255,255,255,0.15);border:1px solid rgba(255,255,255,0.3);color:#fff;padding:3px 8px;border-radius:4px;font-family:Georgia,serif;font-size:13px;width:200px" id="${nid}-mname" onclick="event.stopPropagation()">
+    </div>
+    <div style="display:flex;align-items:center;gap:10px">
+      <div style="display:flex;align-items:center;gap:6px">
+        <span style="font-size:11px;opacity:.75;text-transform:uppercase;letter-spacing:.5px">Implementation Status</span>
+        <select id="${nid}-implStatus" onclick="event.stopPropagation()" style="background:rgba(255,255,255,.15);color:#fff;border:1px solid rgba(255,255,255,.3);border-radius:5px;padding:4px 10px;font-family:Georgia,serif;font-size:12px">
+          <option>Pending</option>
+          <option>In Progress</option>
+          <option>Completed</option>
+        </select>
+      </div>
+      <button class="mb-remove" onclick="event.stopPropagation();removeNewMachine('${nid}')">Remove</button>
+    </div>
+  </div>
+  <div class="mb-body">
+
+    <div class="subsection">
+      <div class="subsection-title">Classification & Process Integration</div>
+      <div class="field-row">
+        <div class="field-label">Product</div>
+        <input type="text" class="field-val" placeholder="Auto-fetched from product module">
+      </div>
+      <div class="field-row">
+        <div class="field-label">Name of Machinery / Tool *</div>
+        <input type="text" class="field-val" placeholder="Enter name">
+      </div>
+      <div class="field-row">
+        <div class="field-label">Process Flow No.</div>
+        <input type="text" class="field-val" placeholder="e.g., Processed Food-Process Flow">
+      </div>
+      <div class="field-row">
+        <div class="field-label">Purpose</div>
+        <input type="text" class="field-val" placeholder="e.g., Packaging">
+      </div>
+    </div>
+
+    <div class="subsection">
+      <div class="subsection-title">Technical & Power Specifications</div>
+      <div class="field-row">
+        <div class="field-label">Power / Phase Needed</div>
+        <select class="field-val">
+          <option>— Select —</option>
+          <option>Single Phase</option>
+          <option>III Phase</option>
+        </select>
+      </div>
+      <div class="field-row">
+        <div class="field-label">Wattage / Load (W)</div>
+        <input type="number" class="field-val" placeholder="0">
+      </div>
+      <div class="field-row">
+        <div class="field-label">No. of Machinery / Tool *</div>
+        <input type="number" class="field-val" placeholder="0" value="1">
+      </div>
+    </div>
+
+    <div class="subsection">
+      <div class="subsection-title">Operational Capacity & Usage</div>
+      <div class="field-row">
+        <div class="field-label">Days of Equipment Usage / Month</div>
+        <input type="number" class="field-val" id="${nid}-days" placeholder="0" oninput="recalcNewMachine('${nid}')">
+      </div>
+      <div class="field-row">
+        <div class="field-label">Hours of Usage / Day</div>
+        <input type="number" class="field-val" id="${nid}-hours" placeholder="0" oninput="recalcNewMachine('${nid}')">
+      </div>
+      <div class="field-row">
+        <div class="field-label">Main Usage Time</div>
+        <select class="field-val">
+          <option>— Select —</option>
+          <option>Day</option>
+          <option>Night</option>
+          <option>Both</option>
+        </select>
+      </div>
+      <div class="field-row">
+        <div class="field-label">Current Usage Capacity / hr (units)</div>
+        <input type="number" class="field-val" id="${nid}-cap" placeholder="0" oninput="recalcNewMachine('${nid}')">
+      </div>
+      <div class="field-row">
+        <div class="field-label">Max Processing Capacity / hr (units)</div>
+        <input type="number" class="field-val" id="${nid}-capMax" placeholder="0" oninput="recalcNewMachine('${nid}')">
+      </div>
+      <div class="calc-strip" style="grid-template-columns:repeat(3,1fr)">
+        <div class="calc-cell"><div class="calc-label">Monthly Output (days × hrs × cap)</div><div class="calc-value" id="${nid}-monthlyOutput">0 units / month</div></div>
+        <div class="calc-cell"><div class="calc-label">Capacity Utilization</div><div class="calc-value" id="${nid}-util">—</div></div>
+        <div class="calc-cell"><div class="calc-label">Capacity Gap</div><div class="calc-value" id="${nid}-gap">—</div></div>
+      </div>
+    </div>
+
+    <div class="subsection">
+      <div class="subsection-title">Financial & Maintenance Data</div>
+      <div class="field-row">
+        <div class="field-label">Cost of Machine / Tool (₹)</div>
+        <input type="number" class="field-val" id="${nid}-cost" placeholder="0" oninput="recalcNewMachine('${nid}')">
+      </div>
+      <div class="field-row">
+        <div class="field-label">Brand Series</div>
+        <input type="text" class="field-val" placeholder="—">
+      </div>
+      <div class="field-row">
+        <div class="field-label">Machinery Condition</div>
+        <select class="field-val" id="${nid}-condition" onchange="recalcNewMachine('${nid}')">
+          <option value="">— Select —</option>
+          <option value="Good">Good (10% depreciation)</option>
+          <option value="Fair">Fair (20% depreciation)</option>
+          <option value="Poor">Poor (30% depreciation)</option>
+        </select>
+      </div>
+      <div class="field-row">
+        <div class="field-label">Critical / Non-Critical</div>
+        <select class="field-val">
+          <option>— Select —</option>
+          <option>Critical</option>
+          <option>Non-Critical</option>
+        </select>
+      </div>
+      <div class="field-row">
+        <div class="field-label">If Critical, provide reason</div>
+        <textarea class="field-val" placeholder="Reason"></textarea>
+      </div>
+      <div class="field-row">
+        <div class="field-label">Servicing Required?</div>
+        <select class="field-val">
+          <option>— Select —</option>
+          <option>Yes</option>
+          <option>No</option>
+        </select>
+      </div>
+      <div class="field-row">
+        <div class="field-label">Upkeep Cost (₹)</div>
+        <input type="number" class="field-val" placeholder="0">
+      </div>
+      <div class="field-row">
+        <div class="field-label">Age of Machinery (years)</div>
+        <input type="number" class="field-val" placeholder="0">
+      </div>
+      <div class="field-row">
+        <div class="field-label">Procurement Status</div>
+        <select class="field-val">
+          <option>Pending</option>
+          <option>Vendor Selected</option>
+          <option>EE Procurement - Selected</option>
+          <option>EE Completed</option>
+          <option>Procured (Self)</option>
+        </select>
+      </div>
+      <div class="calc-strip" style="grid-template-columns:repeat(4,1fr)">
+        <div class="calc-cell"><div class="calc-label">Depreciation Rate</div><div class="calc-value" id="${nid}-depRate">—</div></div>
+        <div class="calc-cell"><div class="calc-label">Monthly Depreciation</div><div class="calc-value" id="${nid}-depMonthly">₹0</div></div>
+        <div class="calc-cell"><div class="calc-label">Depreciation / Unit</div><div class="calc-value" id="${nid}-depUnit">₹0.00 / unit</div></div>
+        <div class="calc-cell"><div class="calc-label">Auto-fetches to</div><div class="calc-value" style="color:var(--teal);font-size:11px">Required Unit Pricing</div></div>
+      </div>
+    </div>
+
+  </div>`;
+}
+
+function recalcNewMachine(nid){
+  const days = parseFloat(document.getElementById(`${nid}-days`)?.value) || 0;
+  const hours = parseFloat(document.getElementById(`${nid}-hours`)?.value) || 0;
+  const cap = parseFloat(document.getElementById(`${nid}-cap`)?.value) || 0;
+  const capMax = parseFloat(document.getElementById(`${nid}-capMax`)?.value) || 0;
+  const cost = parseFloat(document.getElementById(`${nid}-cost`)?.value) || 0;
+  const condition = document.getElementById(`${nid}-condition`)?.value;
+
+  const monthlyOutput = days * hours * cap;
+  document.getElementById(`${nid}-monthlyOutput`).textContent = `${monthlyOutput.toLocaleString()} units / month`;
+
+  const utilEl = document.getElementById(`${nid}-util`);
+  const gapEl = document.getElementById(`${nid}-gap`);
+  if(utilEl && gapEl){
+    if(capMax > 0){
+      const util = (cap / capMax) * 100;
+      utilEl.textContent = `${util.toFixed(0)}% (${cap}/${capMax})`;
+      gapEl.textContent = `${capMax - cap} units / hr unused`;
+    } else {
+      utilEl.textContent = '—';
+      gapEl.textContent = '—';
+    }
+  }
+
+  if(condition && DEP_RATE[condition]){
+    const rate = DEP_RATE[condition];
+    document.getElementById(`${nid}-depRate`).textContent = `${(rate*100).toFixed(0)}% per year`;
+    const monthlyDep = (cost * rate) / 12;
+    document.getElementById(`${nid}-depMonthly`).textContent = `₹${monthlyDep.toFixed(0)} / month`;
+    if(monthlyOutput > 0){
+      const depUnit = monthlyDep / monthlyOutput;
+      document.getElementById(`${nid}-depUnit`).textContent = `₹${depUnit.toFixed(2)} / unit`;
+    } else {
+      document.getElementById(`${nid}-depUnit`).textContent = '₹0.00 / unit';
+    }
+  } else {
+    document.getElementById(`${nid}-depRate`).textContent = '—';
+    document.getElementById(`${nid}-depMonthly`).textContent = '₹0';
+    document.getElementById(`${nid}-depUnit`).textContent = '₹0.00 / unit';
+  }
+}
+
+function removeNewMachine(nid){
+  if(confirm('Remove this new machine?')){
+    document.getElementById(nid).remove();
+  }
+}
+
+// ============ SUMMARY REFRESH ============
+function refreshSummary(){
+  const tbody     = document.getElementById('summaryMachineTable');
+  const blocks    = document.querySelectorAll('#existingMachineList .machine-block');
+  const newBlocks = document.querySelectorAll('#newMachineList .machine-block');
+  const intRows   = document.querySelectorAll('#interventionList .machine-block');
+
+  let html = '';
+  let totalInv=0, totalDepEx=0, totalOut=0, totalPotential=0, totalGap=0;
+  let flagService=0, flagCapacity=0;
+
+  // Status counts from intervention rows
+  let implCompleted=0, implProgress=0;
+  intRows.forEach(r => {
+    const st = r.querySelector('[id$="-implStatus"]')?.value || 'Pending';
+    if(st === 'Completed')   implCompleted++;
+    if(st === 'In Progress') implProgress++;
+  });
+
+  // ── Existing machines ────────────────────────────────────────
+  blocks.forEach(b => {
+    const mid     = b.id;
+    const name    = document.getElementById(`${mid}-mname`)?.value || 'Unnamed';
+    const cond    = document.getElementById(`${mid}-condition`)?.value || '—';
+    const cost    = parseFloat(document.getElementById(`${mid}-cost`)?.value) || 0;
+    const days    = parseFloat(document.getElementById(`${mid}-days`)?.value) || 0;
+    const hours   = parseFloat(document.getElementById(`${mid}-hours`)?.value) || 0;
+    const capCur  = parseFloat(document.getElementById(`${mid}-capCurrent`)?.value) || 0;
+    const capMax  = parseFloat(document.getElementById(`${mid}-capMax`)?.value) || 0;
+    const out     = days * hours * capCur;
+    const pot     = days * hours * capMax;
+    const gap     = capMax > capCur ? capMax - capCur : 0;
+    const depTxt  = document.getElementById(`${mid}-depUnit`)?.textContent || '₹0.00';
+    const depVal  = parseFloat(depTxt.replace(/[^\d.]/g,'')) || 0;
+    const svcOn   = document.getElementById(`${mid}-service-note`)?.classList.contains('active');
+    const capOn   = document.getElementById(`${mid}-capacity-note`)?.classList.contains('active');
+
+    if(svcOn)  flagService++;
+    if(capOn || gap > 0) flagCapacity++;
+    totalInv += cost; totalDepEx += depVal; totalOut += out; totalPotential += pot; totalGap += gap;
+
+    const condCls = cond==='Good'?'condition-good':cond==='Fair'?'condition-fair':cond==='Poor'?'condition-poor':'';
+    const condCell = cond!=='—' ? `<span class="condition-badge ${condCls}">${cond}</span>` : '—';
+
+    const utilNum = capMax > 0 ? (capCur / capMax) * 100 : -1;
+    const utilCls = utilNum < 0 ? '' : utilNum >= 80 ? 'condition-good' : utilNum >= 60 ? 'condition-fair' : 'condition-poor';
+    const utilCell = utilNum < 0 ? '—' : `<span class="condition-badge ${utilCls}">${utilNum.toFixed(0)}%</span>`;
+
+    const gapCell = gap > 0 ? `<span style="color:var(--terracotta-dk)">${gap} units/hr</span>` : '—';
+
+    const intBadges = [];
+    if(svcOn) intBadges.push('<span class="status-badge status-progress">🔧 Servicing</span>');
+    if(capOn) intBadges.push('<span class="status-badge status-progress">↑ Capacity</span>');
+    const intTypeCell   = intBadges.length > 0 ? intBadges.join(' ') : '<span style="color:var(--ink-faint)">—</span>';
+    const intStatusCell = '<span style="color:var(--ink-faint)">—</span>';
+
+    html += `<tr>
+      <td style="font-weight:bold">${name}</td>
+      <td>${condCell}</td>
+      <td>${out.toLocaleString()} units</td>
+      <td>${utilCell}</td>
+      <td>${gapCell}</td>
+      <td style="font-weight:bold;color:var(--teal)">₹${depVal.toFixed(2)}</td>
+      <td>${intTypeCell}</td>
+      <td>${intStatusCell}</td>
+    </tr>`;
+  });
+
+  // ── New machines ─────────────────────────────────────────────
+  let newInv=0, newDepSum=0, newProcurement=0;
+  newBlocks.forEach(b => {
+    const nid    = b.id;
+    const name   = document.getElementById(`${nid}-mname`)?.value || 'Unnamed';
+    const cond   = document.getElementById(`${nid}-condition`)?.value || '—';
+    const cost   = parseFloat(document.getElementById(`${nid}-cost`)?.value) || 0;
+    const days   = parseFloat(document.getElementById(`${nid}-days`)?.value) || 0;
+    const hours  = parseFloat(document.getElementById(`${nid}-hours`)?.value) || 0;
+    const cap    = parseFloat(document.getElementById(`${nid}-cap`)?.value) || 0;
+    const capMax = parseFloat(document.getElementById(`${nid}-capMax`)?.value) || 0;
+    const out    = days * hours * cap;
+    const pot    = days * hours * capMax;
+    const gap    = capMax > cap ? capMax - cap : 0;
+    const depTxt = document.getElementById(`${nid}-depUnit`)?.textContent || '₹0.00';
+    const depVal = parseFloat(depTxt.replace(/[^\d.]/g,'')) || 0;
+    const status = document.getElementById(`${nid}-implStatus`)?.value || 'Pending';
+    if(status === 'In Progress' || status === 'Completed') newProcurement++;
+
+    newInv    += cost;
+    newDepSum += depVal;
+    totalOut  += out;
+    totalPotential += pot;
+
+    const condCls = cond==='Good'?'condition-good':cond==='Fair'?'condition-fair':cond==='Poor'?'condition-poor':'';
+    const condCell = cond!=='—' ? `<span class="condition-badge ${condCls}">${cond}</span>` : '—';
+    const sCls = status==='Completed'?'status-completed':status==='In Progress'?'status-progress':'status-pending';
+
+    html += `<tr style="background:var(--highlight)">
+      <td style="font-weight:bold">${name}</td>
+      <td>${condCell}</td>
+      <td>${out > 0 ? out.toLocaleString()+' units' : '—'}</td>
+      <td style="color:var(--ink-faint)">—</td>
+      <td style="color:var(--ink-faint)">—</td>
+      <td style="font-weight:bold;color:var(--teal)">${depVal > 0 ? `₹${depVal.toFixed(2)}` : '—'}</td>
+      <td><span class="status-badge status-completed">+ New Machine</span></td>
+      <td><span class="status-badge ${sCls}">${status}</span></td>
+    </tr>`;
+  });
+
+  const exCount  = blocks.length;
+  const newCount = newBlocks.length;
+
+  if(exCount === 0 && newCount === 0){
+    tbody.innerHTML = '<tr><td colspan="8" style="text-align:center;color:var(--ink-faint);font-style:italic;padding:14px">Auto-populated from Existing and Required tabs</td></tr>';
+  } else {
+    const overallUtil = totalPotential > 0 ? ((totalOut/totalPotential)*100).toFixed(0)+'%' : '—';
+    html += `<tr class="total-row">
+      <td colspan="2">TOTAL (indicative)</td>
+      <td>${totalOut.toLocaleString()} units</td>
+      <td>${overallUtil}</td>
+      <td>${totalGap > 0 ? totalGap+' units/hr' : '—'}</td>
+      <td>₹${totalDepEx.toFixed(2)}</td>
+      <td colspan="2" style="font-size:10px;font-style:italic;color:var(--ink-faint)">Unit Pricing reads each machine individually</td>
+    </tr>`;
+    tbody.innerHTML = html;
+  }
+
+  // ── Aggregates ────────────────────────────────────────────────
+  const overallUtil = totalPotential > 0 ? ((totalOut/totalPotential)*100).toFixed(0)+'%' : '—';
+
+  document.getElementById('agg-ex-count').textContent  = exCount;
+  document.getElementById('agg-ex-inv').textContent    = `₹${totalInv.toLocaleString('en-IN')}`;
+  document.getElementById('agg-new-count').textContent = newCount;
+  document.getElementById('agg-new-inv').textContent   = newInv > 0 ? `₹${newInv.toLocaleString('en-IN')}` : '—';
+
+  document.getElementById('agg-cap-current').textContent = `${totalOut.toLocaleString()} units`;
+  document.getElementById('agg-cap-max').textContent     = `${totalPotential.toLocaleString()} units`;
+  document.getElementById('agg-cap-util').textContent    = overallUtil;
+  document.getElementById('agg-cap-gap').textContent     = totalGap > 0 ? `${totalGap} units/hr` : '—';
+
+  // Cost card — before = existing dep/unit, after = existing + new combined
+  document.getElementById('agg-ex-dep').textContent = `₹${totalDepEx.toFixed(2)}`;
+  const implDepEl = document.getElementById('agg-impl-dep');
+  if(newCount > 0){
+    const combined = totalDepEx + newDepSum;
+    implDepEl.textContent = `₹${combined.toFixed(2)}`;
+    implDepEl.style.color = combined < totalDepEx ? 'var(--good-ink)' : combined > totalDepEx ? 'var(--poor-ink)' : '';
+  } else {
+    implDepEl.textContent = '—';
+  }
+
+  document.getElementById('agg-flag-service').textContent   = flagService;
+  document.getElementById('agg-flag-capacity').textContent  = flagCapacity;
+  document.getElementById('agg-impl-completed').textContent = implCompleted;
+  document.getElementById('agg-impl-progress').textContent  = implProgress;
+  document.getElementById('agg-new-procurement').textContent= newProcurement;
+
+  // Flags
+  document.getElementById('flag-service-count').textContent    = flagService;
+  document.getElementById('flag-capacity-count').textContent   = flagCapacity;
+  document.getElementById('flag-new-count').textContent        = newCount;
+  document.getElementById('flag-procurement-count').textContent= newProcurement;
+
+  // Ghost IDs
+  const g = id => document.getElementById(id);
+  if(g('agg-ex-out')) g('agg-ex-out').textContent = `${totalOut.toLocaleString()} units`;
+  if(g('ex-tot-count')) g('ex-tot-count').textContent = exCount;
+  if(g('ex-tot-inv'))   g('ex-tot-inv').textContent   = `₹${totalInv.toLocaleString('en-IN')}`;
+  if(g('ex-tot-out'))   g('ex-tot-out').textContent   = `${totalOut.toLocaleString()} units`;
+  if(g('ex-tot-dep'))   g('ex-tot-dep').textContent   = `₹${totalDepEx.toFixed(2)}`;
+}
+
+// ============ TASK LOG SEED ============
+// ============ TASK LOG ============
+const MC_TASKS = [
+  '01 — Awareness on Importance of Machinery for Production Capacity',
+  '02 — Record Existing Machinery Data',
+  '03 — Record Power & Solarization Requirements',
+  '04 — Identify Servicing Need',
+  '05 — Identify New Machine Requirement',
+  '06 — Research Required Machinery',
+  '07 — Record Required Machinery',
+  '08 — Research Vendors',
+  '09 — Select Vendor & Receive Quotation',
+  '10 — Facilitate Machinery Procurement',
+  '11 — Confirm Servicing Completion',
+  '12 — Confirm Machinery Delivery',
+  '13 — Complete Installation & Trial Run',
+  '14 — Complete Solarization Installation',
+  '15 — Conduct Post-Installation Follow Up',
+  'If other, specify in comments',
+];
+
+const MC_TASK_OPTIONS = MC_TASKS.map(t => `<option value="${t}">${t}</option>`).join('');
+
+let taskLogCounter = 0;
+
+function addTaskRow(){
+  taskLogCounter++;
+  const tbody = document.getElementById('taskLogBody');
+  const tr = document.createElement('tr');
+  tr.innerHTML = `
+    <td class="num-col">${String(taskLogCounter).padStart(2,'0')}</td>
+    <td><input type="date" style="width:100%"></td>
+    <td>
+      <select style="width:100%">
+        <option value="">— Select Task —</option>
+        ${MC_TASK_OPTIONS}
+      </select>
+    </td>
+    <td><input type="text" placeholder="Notes / Outcome" style="width:100%"></td>
+    <td><button class="btn" style="padding:3px 8px;font-size:10px">Upload</button></td>
+    <td><button class="row-delete" onclick="deleteTaskRow(this)">✕</button></td>
+  `;
+  tbody.appendChild(tr);
+}
+
+function deleteTaskRow(btn){
+  const tbody = btn.closest('tbody');
+  btn.closest('tr').remove();
+  tbody.querySelectorAll('tr').forEach((tr, i) => {
+    tr.querySelector('.num-col').textContent = String(i+1).padStart(2,'0');
+  });
+  taskLogCounter = tbody.rows.length;
+}
+
+function seedTaskLog(){
+  addTaskRow();
+}
+
+// ============ GENERIC ROW HELPERS ============
+function addRow(tableId){
+  const tbody = document.querySelector('#'+tableId+' tbody');
+  const row = tbody.rows[0].cloneNode(true);
+  row.querySelectorAll('input').forEach(i => { if(i.type !== 'file') i.value = ''; });
+  row.querySelectorAll('select').forEach(s => s.selectedIndex = 0);
+  tbody.appendChild(row);
+}
+function deleteRow(btn){
+  const row = btn.closest('tr');
+  const tbody = row.parentElement;
+  if(tbody.rows.length > 1){ row.remove(); }
+  else { alert('At least one row is required.'); }
+}
+
+// Init
+window.addEventListener('DOMContentLoaded', () => {
+  addExistingMachine(); addExistingMachine();
+  addNewMachine();
+  setTimeout(() => {
+    // ── Existing 1: Spice Grinder, Fair, servicing flagged ────────
+    const ex1head = document.querySelector('#ex1 .machine-block-head input[placeholder="Machine name"]');
+    if(ex1head) ex1head.value = 'Spice Grinder';
+    document.getElementById('ex1-mname').value      = 'Spice Grinder';
+    document.getElementById('ex1-condition').value  = 'Fair';
+    document.getElementById('ex1-cost').value       = '45000';
+    document.getElementById('ex1-days').value       = '22';
+    document.getElementById('ex1-hours').value      = '6';
+    document.getElementById('ex1-capCurrent').value = '40';
+    document.getElementById('ex1-capMax').value     = '60';
+    recalcExistingMachine('ex1');
+    // Toggle servicing flag (first toggle in ex1)
+    const svc1 = document.querySelector('#ex1 .toggle');
+    if(svc1 && !svc1.classList.contains('on')) toggleFlag(svc1, 'ex1', 'service');
+
+    // ── Existing 2: Sealing Machine, Good, capacity flag ─────────
+    const ex2head = document.querySelector('#ex2 .machine-block-head input[placeholder="Machine name"]');
+    if(ex2head) ex2head.value = 'Sealing Machine';
+    document.getElementById('ex2-mname').value      = 'Sealing Machine';
+    document.getElementById('ex2-condition').value  = 'Good';
+    document.getElementById('ex2-cost').value       = '28000';
+    document.getElementById('ex2-days').value       = '20';
+    document.getElementById('ex2-hours').value      = '5';
+    document.getElementById('ex2-capCurrent').value = '30';
+    document.getElementById('ex2-capMax').value     = '50';
+    recalcExistingMachine('ex2');
+    // Toggle capacity flag (second toggle in ex2)
+    const togglesEx2 = document.querySelectorAll('#ex2 .toggle');
+    if(togglesEx2[1] && !togglesEx2[1].classList.contains('on')) toggleFlag(togglesEx2[1], 'ex2', 'capacity');
+
+    recalcExistingTotals();
+
+    // ── New 1: Labelling Machine, Good, In Progress ───────────────
+    const new1head = document.querySelector('#new1 .machine-block-head input[placeholder="Machine name"]');
+    if(new1head) new1head.value = 'Labelling Machine';
+    document.getElementById('new1-mname').value     = 'Labelling Machine';
+    document.getElementById('new1-condition').value = 'Good';
+    document.getElementById('new1-cost').value      = '35000';
+    document.getElementById('new1-days').value      = '22';
+    document.getElementById('new1-hours').value     = '6';
+    document.getElementById('new1-cap').value       = '80';
+    document.getElementById('new1-capMax').value    = '80';
+    document.getElementById('new1-implStatus').value= 'In Progress';
+    recalcNewMachine('new1');
+
+    refreshSummary();
+    showTab('summary', document.querySelector('.tab'));
+  }, 150);
+  seedTaskLog();
+});
+</script>
+
+</body>
+</html>

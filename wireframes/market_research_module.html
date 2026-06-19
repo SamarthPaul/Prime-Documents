@@ -1,0 +1,1114 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Market Research · PRIME Rural</title>
+<style>
+:root {
+  --teal:#0E4D4E; --sea:#1A6B6D; --terracotta:#C26849; --terracotta-dk:#A85738;
+  --terracotta-sft:#F5E2D6;
+  --cream:#FBF5E5; --cream-deep:#F4ECD3; --offwhite:#FDFAF0; --panel:#FFFFFF;
+  --ink:#2A2520; --ink-soft:#6B6359; --ink-faint:#9C9384;
+  --border:#E8DFC9; --border-dk:#D6CDB6;
+  --good-bg:#E3EFDF; --good-ink:#3F6B3A;
+  --fair-bg:#FBE9DF; --fair-ink:#7A3B22;
+  --info-bg:#E1ECF7; --info-ink:#1F4A78;
+  --primary-bg:#FAEEDA; --primary-ink:#7A4F1B;
+  --highlight:#FFF8E1;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:Georgia,serif;background:var(--cream);color:var(--ink);line-height:1.4}
+.page{max-width:1200px;margin:0 auto;padding:24px}
+
+.header{background:var(--teal);color:#fff;padding:16px 20px;border-radius:12px 12px 0 0;display:flex;justify-content:space-between;align-items:center}
+.header h1{font-size:18px;font-weight:normal;letter-spacing:0.5px}
+.header .crumb{font-size:11px;opacity:0.75;text-transform:uppercase;letter-spacing:1px}
+
+.card{background:var(--cream);border:1px solid var(--border-dk);border-top:none;border-radius:0 0 12px 12px}
+
+.entrepreneur-chip{display:inline-flex;align-items:center;gap:10px;background:#fff;border:1px solid var(--border-dk);padding:6px 14px;border-radius:20px;font-size:12px;margin:18px 22px 0}
+.ent-avatar{width:24px;height:24px;background:var(--teal);color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:bold}
+
+.tab-bar{display:flex;background:var(--cream-deep);border-bottom:1px solid var(--border-dk);overflow-x:auto;margin-top:18px}
+.tab{padding:12px 22px;cursor:pointer;font-size:12px;text-transform:uppercase;letter-spacing:1px;color:var(--ink-soft);border-right:1px solid var(--border);white-space:nowrap}
+.tab.active{background:var(--teal);color:#fff}
+.tab:hover:not(.active){background:#EADFC0}
+
+.content{padding:22px}
+
+/* Product collapsible card */
+.product-block{background:#fff;border:1px solid var(--border-dk);border-radius:10px;margin-bottom:14px;overflow:hidden}
+.product-head{background:var(--sea);color:#fff;padding:10px 14px;display:flex;justify-content:space-between;align-items:center;cursor:pointer;user-select:none;font-size:13px;flex-wrap:wrap;gap:8px}
+.product-head:hover{background:var(--teal)}
+.product-head .ph-name{display:flex;align-items:center;gap:10px;flex-wrap:wrap;flex:1;min-width:0}
+.product-head .ph-name select{background:rgba(255,255,255,0.15);border:1px solid rgba(255,255,255,0.3);color:#fff;padding:4px 10px;border-radius:4px;font-family:Georgia,serif;font-size:13px;cursor:pointer;min-width:240px}
+.product-head .ph-name select option{color:var(--ink);background:#fff}
+.chevron{font-size:12px;transition:transform 0.2s}
+.product-block.collapsed .chevron{transform:rotate(-90deg)}
+.product-block.collapsed .ph-body{display:none}
+.ph-body{padding:14px}
+.ph-remove{background:transparent;border:1px solid rgba(255,255,255,0.4);color:#fff;padding:3px 10px;border-radius:14px;cursor:pointer;font-size:11px;font-family:Georgia,serif}
+.ph-remove:hover{background:var(--terracotta);border-color:var(--terracotta)}
+
+/* Section inside product card */
+.subsection{background:var(--cream-deep);padding:14px;border-radius:8px;margin-bottom:12px;border:1px solid var(--border)}
+.subsection-title{font-size:12px;text-transform:uppercase;letter-spacing:1.5px;color:var(--teal);margin-bottom:10px;padding-bottom:6px;border-bottom:1px solid var(--border-dk);font-weight:bold;display:flex;justify-content:space-between;align-items:center}
+.subsection-title .sst-roman{color:var(--terracotta);font-style:italic;margin-right:6px}
+.subsection-title .badge{font-size:9px;padding:2px 8px;border-radius:10px;letter-spacing:0.5px;font-weight:bold;text-transform:uppercase}
+.subsection-title .badge.info{background:var(--info-bg);color:var(--info-ink)}
+.subsection-title .badge.primary{background:var(--primary-bg);color:var(--primary-ink)}
+.subsection-title .badge.mixed{background:var(--cream-deep);color:var(--ink-soft);border:1px solid var(--border-dk)}
+
+/* Geographic sub-subsection (Global/India/Meghalaya inside Market Landscape) */
+.geo-block{background:#fff;border:1px solid var(--border-dk);border-radius:6px;padding:12px;margin-bottom:10px}
+.geo-block .geo-title{font-size:11px;text-transform:uppercase;letter-spacing:1px;color:var(--teal);font-weight:bold;margin-bottom:8px;display:flex;justify-content:space-between;align-items:center;padding-bottom:6px;border-bottom:1px solid var(--border-dk)}
+
+.field-row{display:flex;gap:12px;margin-bottom:10px;flex-wrap:wrap;align-items:flex-start}
+.field-label{width:200px;font-size:12px;color:var(--ink-soft);padding-top:8px}
+.field-val{flex:1;background:var(--offwhite);border:1px solid var(--border-dk);padding:6px 10px;border-radius:5px;font-size:12px;min-width:180px;font-family:Georgia,serif}
+.field-val[readonly]{background:var(--cream-deep);color:var(--ink-soft);font-style:italic}
+textarea.field-val{font-family:Georgia,serif;resize:vertical;min-height:60px}
+select.field-val{cursor:pointer}
+
+.field-hint{font-size:10px;color:var(--ink-faint);font-style:italic;margin-top:4px}
+
+.btn{padding:5px 12px;border-radius:20px;border:1px solid var(--border-dk);background:#fff;cursor:pointer;font-size:11px;color:var(--ink);font-family:Georgia,serif}
+.btn:hover{background:var(--cream-deep)}
+.btn-primary{background:var(--teal);color:#fff;border-color:var(--teal)}
+.btn-primary:hover{background:var(--sea)}
+
+.add-row-bar{text-align:center;padding:14px;background:var(--cream-deep);border:1px dashed var(--border-dk);border-radius:10px;margin-top:10px}
+
+/* Currency input */
+.currency-wrap{flex:1;min-width:180px;display:flex;align-items:center;background:var(--offwhite);border:1px solid var(--border-dk);border-radius:5px;overflow:hidden}
+.currency-wrap .currency-prefix{padding:6px 10px;background:var(--cream-deep);color:var(--teal);font-weight:bold;font-size:13px;border-right:1px solid var(--border-dk)}
+.currency-wrap input{flex:1;border:none;padding:6px 10px;background:transparent;font-family:Georgia,serif;font-size:12px;outline:none}
+
+/* Multiselect chip picker */
+.multi-picker{flex:1;min-width:280px;background:var(--offwhite);border:1px solid var(--border-dk);border-radius:5px;padding:6px;position:relative}
+.multi-picker .chips-area{display:flex;flex-wrap:wrap;gap:4px;min-height:24px}
+.multi-picker .chip{display:inline-flex;align-items:center;gap:5px;padding:3px 8px;background:var(--teal);color:#fff;border-radius:12px;font-size:11px}
+.multi-picker .chip-x{cursor:pointer;font-size:13px;line-height:1;opacity:0.85}
+.multi-picker .chip-x:hover{opacity:1}
+.multi-picker .add-trigger{display:inline-flex;align-items:center;gap:4px;padding:3px 8px;background:transparent;border:1px dashed var(--border-dk);border-radius:12px;font-size:11px;color:var(--ink-soft);cursor:pointer;font-family:Georgia,serif}
+.multi-picker .add-trigger:hover{border-color:var(--teal);color:var(--teal)}
+.multi-picker .dropdown{position:absolute;top:100%;left:0;right:0;background:#fff;border:1px solid var(--border-dk);border-radius:5px;margin-top:4px;max-height:200px;overflow-y:auto;z-index:10;box-shadow:0 4px 12px rgba(0,0,0,0.08);display:none}
+.multi-picker.open .dropdown{display:block}
+.multi-picker .dropdown-item{padding:7px 10px;font-size:12px;cursor:pointer;border-bottom:1px solid #f0e9d6}
+.multi-picker .dropdown-item:last-child{border-bottom:none}
+.multi-picker .dropdown-item:hover{background:var(--cream-deep)}
+.multi-picker .dropdown-item.picked{background:var(--cream-deep);opacity:0.5;cursor:default;font-style:italic}
+.multi-picker .placeholder{color:var(--ink-faint);font-style:italic;font-size:11px;padding:3px 4px}
+
+/* Repeater entry inside sections */
+.entry-block{background:#fff;border:1px solid var(--border-dk);border-radius:8px;margin-bottom:10px;overflow:hidden}
+.entry-head{background:var(--sea);color:#fff;padding:8px 14px;display:flex;justify-content:space-between;align-items:center;cursor:pointer;user-select:none;font-size:11px;flex-wrap:wrap;gap:8px}
+.entry-head:hover{background:var(--teal)}
+.entry-head .eh-name{display:flex;align-items:center;gap:10px;flex-wrap:wrap;flex:1;min-width:0}
+.entry-block.collapsed .chevron{transform:rotate(-90deg)}
+.entry-block.collapsed .eb-body{display:none}
+.eb-body{padding:14px}
+.eb-remove{background:transparent;border:1px solid rgba(255,255,255,0.4);color:#fff;padding:2px 9px;border-radius:14px;cursor:pointer;font-size:10px;font-family:Georgia,serif}
+.eb-remove:hover{background:var(--terracotta);border-color:var(--terracotta)}
+
+table.data-table{width:100%;border-collapse:collapse;background:var(--offwhite);border-radius:6px;overflow:hidden;border:1px solid var(--border-dk);font-size:11px}
+table.data-table th{background:var(--teal);color:#fff;padding:8px;text-align:left;font-weight:normal;text-transform:uppercase;letter-spacing:0.5px;font-size:10px;border-right:1px solid var(--sea);white-space:nowrap}
+table.data-table th:last-child{border-right:none}
+table.data-table td{padding:6px 7px;border-bottom:1px solid var(--border);border-right:1px solid var(--border);vertical-align:middle}
+table.data-table td:last-child{border-right:none}
+table.data-table tr:last-child td{border-bottom:none}
+table.data-table input,table.data-table select{width:100%;border:1px solid var(--border);padding:4px 6px;border-radius:3px;font-family:Georgia,serif;font-size:11px;background:#fff}
+table.data-table .num-col{width:36px;text-align:center;color:var(--ink-soft)}
+
+.row-delete{background:transparent;border:none;color:var(--terracotta);cursor:pointer;font-size:14px;padding:2px 6px}
+.row-delete:hover{color:var(--terracotta-dk)}
+
+.table-actions{display:flex;justify-content:space-between;align-items:center;margin-top:10px}
+
+/* SWOT grid */
+.swot-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.swot-cell{background:#fff;border:1px solid var(--border-dk);border-left:4px solid var(--teal);border-radius:8px;padding:14px}
+.swot-cell.s{border-left-color:var(--good-ink)}
+.swot-cell.w{border-left-color:var(--terracotta)}
+.swot-cell.o{border-left-color:var(--info-ink)}
+.swot-cell.t{border-left-color:var(--terracotta-dk)}
+.swot-cell-title{font-size:11px;text-transform:uppercase;letter-spacing:1px;font-weight:bold;color:var(--teal);margin-bottom:8px}
+.swot-cell textarea{width:100%;border:1px solid var(--border);background:var(--offwhite);padding:8px 10px;border-radius:5px;font-family:Georgia,serif;font-size:12px;min-height:90px;resize:vertical}
+
+.task-sub-caption{font-size:11px;color:var(--ink-soft);font-style:italic;margin-bottom:10px}
+
+.location-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;flex:1;min-width:280px}
+.location-grid select{background:var(--offwhite);border:1px solid var(--border-dk);padding:6px 10px;border-radius:5px;font-size:11px;font-family:Georgia,serif}
+
+.hidden{display:none !important}
+
+/* ─── Summary + shared tab additions ─── */
+.sm-section{background:var(--cream-deep);padding:16px;border-radius:10px;margin-bottom:16px;border:1px solid var(--border)}
+.sm-section-title{font-size:13px;text-transform:uppercase;letter-spacing:1.5px;color:var(--teal);margin-bottom:12px;padding-bottom:8px;border-bottom:1px solid var(--border-dk);font-weight:bold}
+.sm-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.sm-card{background:#fff;border:1px solid var(--border);border-radius:10px;padding:14px}
+.sm-card h3{font-size:11px;text-transform:uppercase;letter-spacing:1px;color:var(--teal);margin-bottom:10px;padding-bottom:6px;border-bottom:1px solid var(--border);font-weight:bold}
+.sm-row{display:flex;justify-content:space-between;padding:5px 0;font-size:12px;border-bottom:1px solid #f0e9d6}
+.sm-row:last-child{border-bottom:none}
+.sm-lbl{color:var(--ink-soft)}
+.sm-val{font-weight:bold;color:var(--ink)}
+.sm-val.green{color:var(--good-ink)}
+.sm-val.amber{color:var(--fair-ink)}
+.sm-flags{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+.sm-flag{background:#fff;border:1px solid var(--border);border-radius:8px;padding:12px}
+.sm-flag-icon{width:30px;height:30px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:14px;margin-bottom:8px}
+.sm-flag-count{font-size:20px;font-weight:bold;color:var(--ink)}
+.sm-flag-label{font-size:10px;color:var(--ink-soft);text-transform:uppercase;letter-spacing:0.5px;margin-top:4px}
+table.ov-tbl{width:100%;border-collapse:collapse;background:var(--offwhite);border-radius:6px;overflow:hidden;border:1px solid var(--border-dk);font-size:11px}
+table.ov-tbl th{background:var(--teal);color:#fff;padding:9px 8px;text-align:left;font-weight:normal;text-transform:uppercase;letter-spacing:0.5px;font-size:10px;border-right:1px solid var(--sea)}
+table.ov-tbl th:last-child{border-right:none}
+table.ov-tbl th.th-comp{background:var(--sea)}
+table.ov-tbl td{padding:7px 8px;border-bottom:1px solid var(--border);border-right:1px solid var(--border);vertical-align:middle}
+table.ov-tbl td:last-child{border-right:none}
+table.ov-tbl tr:last-child td{border-bottom:none}
+/* Resources + Task Log section style (shared with RM module) */
+.res-section{background:var(--cream-deep);padding:16px;border-radius:10px;border:1px solid var(--border)}
+.res-section-title{font-size:13px;text-transform:uppercase;letter-spacing:1.5px;color:var(--teal);margin-bottom:12px;padding-bottom:8px;border-bottom:1px solid var(--border-dk);font-weight:bold;display:flex;justify-content:space-between;align-items:center}
+.num-col{width:40px;text-align:center;color:var(--ink-soft)}
+.row-delete-btn{background:transparent;border:none;color:var(--terracotta);cursor:pointer;font-size:14px;padding:2px 6px}
+.row-delete-btn:hover{color:var(--terracotta-dk)}
+</style>
+</head>
+<body>
+
+<div class="page">
+<div class="header">
+  <h1>Market Research</h1>
+  <div class="crumb">PRIME Rural · Marketing Framework</div>
+</div>
+<div class="card">
+
+<div class="entrepreneur-chip">
+  <div class="ent-avatar">EN</div>
+  <span style="color:var(--ink-soft);font-style:italic">Auto-fetched from profile</span>
+</div>
+
+<div class="tab-bar">
+  <div class="tab" onclick="showTab('summary',this)">Summary</div>
+  <div class="tab active" onclick="showTab('research',this)">Market Research</div>
+  <div class="tab" onclick="showTab('competition',this)">Competitive Pricing Assessment</div>
+  <div class="tab" onclick="showTab('resources',this)">Resources</div>
+  <div class="tab" onclick="showTab('tasklog',this)">Task Log</div>
+</div>
+
+<div class="content">
+
+<!-- ============ SUMMARY ============ -->
+<div id="summary" class="panel hidden">
+
+  <!-- ① Product-wise Research Overview -->
+  <div class="sm-section">
+    <div class="sm-section-title">Product-wise Research Overview</div>
+    <p style="font-size:11px;color:var(--ink-soft);font-style:italic;margin-bottom:10px">One row per product. Data auto-read from Market Research and Competitive Pricing tabs.</p>
+    <div style="overflow-x:auto">
+    <table class="ov-tbl">
+      <thead>
+        <tr>
+          <th>Product</th>
+          <th>India Market Size</th>
+          <th>CAGR (India %)</th>
+          <th>Channels Mapped</th>
+          <th>Brands Researched</th>
+          <th>Respondents</th>
+          <th class="th-comp">Local Offline Avg (₹)</th>
+          <th class="th-comp">Local Online Avg (₹)</th>
+          <th class="th-comp">National Offline Avg (₹)</th>
+        </tr>
+      </thead>
+      <tbody id="sumOverviewBody">
+        <tr><td colspan="9" style="text-align:center;color:var(--ink-faint);font-style:italic;padding:14px">Auto-populated from Market Research and Competitive Pricing tabs</td></tr>
+      </tbody>
+    </table>
+    </div>
+  </div>
+
+  <!-- ② Aggregates -->
+  <div class="sm-section">
+    <div class="sm-section-title">Aggregates</div>
+    <div class="sm-grid">
+
+      <div class="sm-card">
+        <h3>Existing</h3>
+        <div class="sm-row"><span class="sm-lbl">Products Researched</span><span class="sm-val" id="agg-products">0</span></div>
+        <div class="sm-row"><span class="sm-lbl">Channels Mapped (Total)</span><span class="sm-val" id="agg-channels">0</span></div>
+        <div class="sm-row"><span class="sm-lbl">Brands Researched (Total)</span><span class="sm-val" id="agg-brands">0</span></div>
+        <div class="sm-row"><span class="sm-lbl">Respondents Interviewed</span><span class="sm-val" id="agg-respondents">0</span></div>
+      </div>
+
+      <div class="sm-card">
+        <h3>Market</h3>
+        <div class="sm-row"><span class="sm-lbl">Products with India Market Size</span><span class="sm-val green" id="agg-india-size">0</span></div>
+        <div class="sm-row"><span class="sm-lbl">Products with Meghalaya Data</span><span class="sm-val green" id="agg-meghalaya">0</span></div>
+        <div class="sm-row"><span class="sm-lbl">Products with CAGR (India)</span><span class="sm-val" id="agg-cagr">0</span></div>
+        <div class="sm-row"><span class="sm-lbl">Products with Global Data</span><span class="sm-val" id="agg-global">0</span></div>
+      </div>
+
+      <div class="sm-card">
+        <h3>Interventions</h3>
+        <div class="sm-row"><span class="sm-lbl">Products with Local Pricing</span><span class="sm-val" id="agg-local-pricing">0</span></div>
+        <div class="sm-row"><span class="sm-lbl">Products with State Pricing</span><span class="sm-val" id="agg-state-pricing">0</span></div>
+        <div class="sm-row"><span class="sm-lbl">Products with National Pricing</span><span class="sm-val" id="agg-national-pricing">0</span></div>
+        <div class="sm-row"><span class="sm-lbl">Competitor Rows Logged (Total)</span><span class="sm-val" id="agg-comp-rows">0</span></div>
+      </div>
+
+      <div class="sm-card">
+        <h3>Status</h3>
+        <div class="sm-row"><span class="sm-lbl">SWOT Completed</span><span class="sm-val green" id="agg-swot">0</span></div>
+        <div class="sm-row"><span class="sm-lbl">Customer Data Captured</span><span class="sm-val green" id="agg-customer-data">0</span></div>
+        <div class="sm-row"><span class="sm-lbl">Channel Data Captured</span><span class="sm-val green" id="agg-channel-data">0</span></div>
+        <div class="sm-row"><span class="sm-lbl">Brand Data Captured</span><span class="sm-val green" id="agg-brand-data">0</span></div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ③ Intervention Flags -->
+  <div class="sm-section">
+    <div class="sm-section-title">Intervention Flags</div>
+    <div class="sm-flags">
+      <div class="sm-flag"><div class="sm-flag-icon" style="background:var(--good-bg);color:var(--good-ink)">📦</div><div class="sm-flag-count" id="flag-products">0</div><div class="sm-flag-label">Products Researched</div></div>
+      <div class="sm-flag"><div class="sm-flag-icon" style="background:#D6E3EE;color:#2C5A82">🏪</div><div class="sm-flag-count" id="flag-channels">0</div><div class="sm-flag-label">Channels Mapped</div></div>
+      <div class="sm-flag"><div class="sm-flag-icon" style="background:var(--fair-bg);color:var(--fair-ink)">🏷</div><div class="sm-flag-count" id="flag-brands">0</div><div class="sm-flag-label">Brands Researched</div></div>
+      <div class="sm-flag"><div class="sm-flag-icon" style="background:var(--info-bg);color:var(--info-ink)">👤</div><div class="sm-flag-count" id="flag-respondents">0</div><div class="sm-flag-label">Respondents</div></div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ============ TAB 1: MARKET RESEARCH ============ -->
+<div id="research" class="panel">
+  <div id="researchProductList"></div>
+  <div class="add-row-bar">
+    <button class="btn btn-primary" onclick="addProduct('research')">+ Add Product</button>
+  </div>
+</div>
+
+<!-- ============ TAB 2: COMPETITION ASSESSMENT ============ -->
+<div id="competition" class="panel hidden">
+  <div id="competitionProductList"></div>
+  <div class="add-row-bar">
+    <button class="btn btn-primary" onclick="addProduct('competition')">+ Add Product</button>
+  </div>
+</div>
+
+
+<!-- ============ RESOURCES ============ -->
+<div id="resources" class="panel hidden">
+  <div class="res-section">
+    <div class="res-section-title">Reference Materials</div>
+    <table class="data-table" id="resourcesTable">
+      <thead>
+        <tr>
+          <th style="width:25%">Resource Title</th>
+          <th style="width:18%">Category</th>
+          <th style="width:12%">Type</th>
+          <th style="width:30%">Description / Notes</th>
+          <th style="width:10%">File</th>
+          <th style="width:5%"></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><input type="text" placeholder="Resource title"></td>
+          <td>
+            <select>
+              <option>— Select —</option>
+              <option>Industry Report</option>
+              <option>Market Survey Data</option>
+              <option>Competitor Product Sample</option>
+              <option>Channel / Buyer Contact</option>
+              <option>Platform Listing Reference</option>
+              <option>Consumer Interview Transcript</option>
+              <option>Field Visit Photo</option>
+              <option>Pricing Benchmark</option>
+              <option>GI / Certification Reference</option>
+              <option>Other</option>
+            </select>
+          </td>
+          <td>
+            <select>
+              <option>— Select —</option>
+              <option>Report / Study</option>
+              <option>Contact</option>
+              <option>Reference</option>
+              <option>Photo / Evidence</option>
+              <option>Transcript</option>
+              <option>Quotation</option>
+              <option>Specification</option>
+            </select>
+          </td>
+          <td><input type="text" placeholder="Notes"></td>
+          <td>
+            <button class="btn" style="padding:3px 8px;font-size:10px">Upload</button>
+            <button class="btn" style="padding:3px 8px;font-size:10px">View ▷</button>
+          </td>
+          <td><button class="row-delete-btn" onclick="deleteResRow(this)">✕</button></td>
+        </tr>
+      </tbody>
+    </table>
+    <div style="display:flex;justify-content:flex-end;margin-top:10px">
+      <button class="btn btn-primary" onclick="addResRow()">+ Add Resource</button>
+    </div>
+  </div>
+</div>
+
+<!-- ============ TASK LOG ============ -->
+<div id="tasklog" class="panel hidden">
+  <div class="res-section">
+    <div class="res-section-title">
+      <span>Task Log — Market Research Activities</span>
+      <span style="font-size:11px;color:var(--ink-faint);font-weight:normal;text-transform:none;letter-spacing:normal;font-style:italic"><span id="task-count">0</span> entries</span>
+    </div>
+    <table class="data-table" id="taskLogTable">
+      <thead>
+        <tr>
+          <th style="width:5%">No.</th>
+          <th style="width:13%">Date</th>
+          <th style="width:42%">Task Name</th>
+          <th style="width:30%">Notes / Outcome</th>
+          <th style="width:7%">Attachment</th>
+          <th style="width:3%"></th>
+        </tr>
+      </thead>
+      <tbody id="taskLogBody"></tbody>
+    </table>
+    <div style="display:flex;justify-content:flex-end;margin-top:10px">
+      <button class="btn btn-primary" onclick="addTaskRow()">+ Add Entry</button>
+    </div>
+  </div>
+</div>
+
+</div>
+</div>
+</div>
+
+<script>
+// ============ MASTERS (placeholders — to be supplied by Harshit) ============
+const PRODUCT_MASTER = ['Bamboo Shoot Pickle','Lemongrass Tea','Lakadong Turmeric','Eri Silk Muffler','Bamboo Earring','Local Honey','Jadoh Spice Mix'];
+
+const PRODUCT_SNAPSHOTS = {
+  'Bamboo Shoot Pickle': 'Traditional fermented bamboo shoot pickle with mustard oil and Khasi spices.',
+  'Lemongrass Tea': 'Hand-rolled dried lemongrass leaves grown in Ri Bhoi.',
+  'Lakadong Turmeric': 'GI-tagged Lakadong turmeric powder, high curcumin content.',
+  'Eri Silk Muffler': 'Hand-woven Eri silk muffler with traditional Khasi motifs.',
+  'Bamboo Earring': 'Hand-crafted bamboo earrings, lightweight and natural finish.',
+  'Local Honey': 'Wild-collected forest honey from Khasi and Garo Hills.',
+  'Jadoh Spice Mix': 'Traditional spice blend for Jadoh — local Khasi rice dish.'
+};
+
+const COUNTRY_MASTER = ['India','China','Thailand','Indonesia','Vietnam','Bangladesh','Nepal','Sri Lanka','USA','UK','Germany','France','Netherlands','UAE','Saudi Arabia','Australia','Japan','Singapore','Other'];
+
+const STATE_MASTER = ['Andhra Pradesh','Arunachal Pradesh','Assam','Bihar','Chhattisgarh','Goa','Gujarat','Haryana','Himachal Pradesh','Jharkhand','Karnataka','Kerala','Madhya Pradesh','Maharashtra','Manipur','Meghalaya','Mizoram','Nagaland','Odisha','Punjab','Rajasthan','Sikkim','Tamil Nadu','Telangana','Tripura','Uttarakhand','Uttar Pradesh','West Bengal','Delhi'];
+
+const MEGHALAYA_LOCATIONS_MASTER = ['Iew Duh / Bara Bazaar (Shillong)','Police Bazaar (Shillong)','Laitumkhrah Market','Mawkhar Market','MeghaMart','NEHHDC Outlets','Tura Main Market','Jowai Market','Williamnagar Market','Cherrapunji Tourist Outlets','Mawsynram Outlets','Ri Bhoi Local Markets','Sohra Bazaar','Khliehriat Market','Other'];
+
+const DISTRICT_MASTER_MEGHALAYA = ['East Khasi Hills','West Khasi Hills','South West Khasi Hills','Eri Bhoi','Jaintia Hills','East Jaintia Hills','West Garo Hills','East Garo Hills','South Garo Hills','North Garo Hills','South West Garo Hills'];
+
+const BLOCK_MASTER = ['Mawkynrew','Mawphlang','Pynursla','Mylliem','Sohra (Cherrapunji)','Mawsynram','Khliehriat','Jowai','Resubelpara','Tura','Williamnagar','Baghmara','Other'];
+
+const OUTLET_TYPES = ['Weekly bazaar','Permanent retail shop','SHG / cooperative store','Govt outlet (NEHHDC etc.)','Supermarket / modern retail','Pharmacy / health store','Tourism shop / souvenir','Wholesale market','Other'];
+
+const SHELF_PLACEMENTS = ['Eye-level / prominent','Bottom shelf','Top shelf','Counter display','End-cap / promotional','Not prominently placed'];
+
+const PLATFORMS = ['Amazon India','Flipkart','Brand website (D2C)','Jiomart / BigBasket','Modern retail (offline)','Instagram / Facebook shop','WhatsApp / direct','Exhibition / trade show','Other'];
+
+const PACKING_MASTER = ['Glass jar','Tin can','Kraft paper pouch','Standard plastic pouch','PET bottle','HDPE bottle','Aluminium foil pouch','Cardboard box','Cloth pouch','Vacuum-sealed','Gift hamper','Other'];
+
+const AGE_GROUPS = ['Below 18','18–25','26–35','36–45','46–55','56–65','Above 65'];
+const GENDER_MASTER = ['Female','Male','Non-binary','Prefer not to say'];
+const OCCUPATION_MASTER = ['Salaried','Self-employed','Farmer','Student','Homemaker','Retired','Daily Wage','Government Employee','Business Owner'];
+
+const FREQUENCIES = ['Daily','Weekly','Fortnightly','Monthly','Seasonally','Festive / Special Occasion only','Once a year'];
+
+// State
+let productCounter = 0;
+let entryCounter = 0;
+const pickerState = {};
+
+// ============ TAB SWITCHING ============
+function showTab(id, el){
+  document.querySelectorAll('.panel').forEach(p => p.classList.add('hidden'));
+  document.getElementById(id).classList.remove('hidden');
+  document.querySelectorAll('.tab-bar > .tab').forEach(t => t.classList.remove('active'));
+  el.classList.add('active');
+  if(id === 'summary') refreshSummary();
+}
+
+// ============ MULTISELECT CHIP PICKER ============
+function initPickersIn(container){
+  container.querySelectorAll('.multi-picker').forEach(picker => {
+    const field = picker.dataset.field;
+    if(!pickerState[field]) pickerState[field] = [];
+    renderPicker(picker);
+  });
+}
+
+function renderPicker(picker){
+  const field = picker.dataset.field;
+  const master = picker.dataset.master;
+  const options = (window[master] || []);
+  const picked = pickerState[field] || [];
+  const chipsHtml = picked.length > 0
+    ? picked.map(v => `<span class="chip">${v}<span class="chip-x" onclick="event.stopPropagation();removePick('${field}','${escapeAttr(v)}')">×</span></span>`).join('')
+    : '<span class="placeholder">— Select one or more —</span>';
+  const dropdownHtml = options.map(opt => {
+    const isPicked = picked.includes(opt);
+    return `<div class="dropdown-item ${isPicked ? 'picked' : ''}" onclick="${isPicked ? '' : `addPick('${field}','${escapeAttr(opt)}')`}">${opt}${isPicked ? ' ✓' : ''}</div>`;
+  }).join('');
+  picker.innerHTML = `
+    <div class="chips-area" onclick="togglePickerOpen(this.parentElement)">
+      ${chipsHtml}
+      <span class="add-trigger" onclick="event.stopPropagation();togglePickerOpen(this.parentElement.parentElement)">+ Add</span>
+    </div>
+    <div class="dropdown">${dropdownHtml || '<div class="dropdown-item" style="font-style:italic;color:var(--ink-faint)">No options in master</div>'}</div>
+  `;
+}
+
+function escapeAttr(s){ return String(s).replace(/'/g, "&#39;"); }
+
+function togglePickerOpen(picker){
+  document.querySelectorAll('.multi-picker.open').forEach(p => { if(p !== picker) p.classList.remove('open'); });
+  picker.classList.toggle('open');
+}
+
+function addPick(field, val){
+  if(!pickerState[field]) pickerState[field] = [];
+  if(!pickerState[field].includes(val)) pickerState[field].push(val);
+  const picker = document.querySelector(`.multi-picker[data-field="${field}"]`);
+  if(picker){ renderPicker(picker); picker.classList.add('open'); }
+}
+
+function removePick(field, val){
+  if(!pickerState[field]) return;
+  pickerState[field] = pickerState[field].filter(v => v !== val);
+  const picker = document.querySelector(`.multi-picker[data-field="${field}"]`);
+  if(picker) renderPicker(picker);
+}
+
+document.addEventListener('click', e => {
+  document.querySelectorAll('.multi-picker.open').forEach(p => {
+    if(!p.contains(e.target)) p.classList.remove('open');
+  });
+});
+
+// expose master arrays on window for picker resolution
+window.COUNTRY_MASTER = COUNTRY_MASTER;
+window.STATE_MASTER = STATE_MASTER;
+window.MEGHALAYA_LOCATIONS_MASTER = MEGHALAYA_LOCATIONS_MASTER;
+
+// ============ HELPERS ============
+function buildOpts(arr, blank=true){
+  let html = blank ? '<option value="">— Select —</option>' : '';
+  arr.forEach(x => html += `<option>${x}</option>`);
+  return html;
+}
+
+// ============ PRODUCT CARD ============
+function addProduct(scope){
+  productCounter++;
+  const pid = `${scope}P${productCounter}`;
+  const list = document.getElementById(`${scope}ProductList`);
+  const block = document.createElement('div');
+  block.className = 'product-block';
+  block.id = pid;
+
+  const productOpts = PRODUCT_MASTER.map(p => `<option>${p}</option>`).join('');
+
+  let bodyHtml = '';
+  if(scope === 'research') bodyHtml = renderResearchBody(pid);
+  else if(scope === 'competition') bodyHtml = renderCompetitionBody(pid);
+
+  block.innerHTML = `
+    <div class="product-head" onclick="toggleProduct('${pid}')">
+      <div class="ph-name" onclick="event.stopPropagation()">
+        <span class="chevron">▾</span>
+        <select onchange="onProductSelectChange('${pid}',this.value)">
+          <option value="">— Select Product —</option>
+          ${productOpts}
+        </select>
+      </div>
+      <button class="ph-remove" onclick="event.stopPropagation();removeProduct('${pid}')">Remove</button>
+    </div>
+    <div class="ph-body">${bodyHtml}</div>
+  `;
+  list.appendChild(block);
+
+  // Seed sub-entries
+  if(scope === 'research'){
+    addChannelEntry(pid);
+    addBrandEntry(pid);
+    addCustomerEntry(pid);
+  }
+  if(scope === 'competition'){
+    // Seed one offline + one online row in the local market section
+    addCompetitorRow(pid, 'local', 'offline');
+    addCompetitorRow(pid, 'local', 'online');
+  }
+
+  initPickersIn(block);
+}
+
+function removeProduct(pid){
+  if(confirm('Remove this product?')){
+    Object.keys(pickerState).forEach(k => { if(k.startsWith(pid + '__')) delete pickerState[k]; });
+    document.getElementById(pid).remove();
+  }
+}
+
+function toggleProduct(pid){
+  document.getElementById(pid).classList.toggle('collapsed');
+}
+
+function onProductSelectChange(pid, val){
+  const snap = document.getElementById(`${pid}-snapshot`);
+  if(snap) snap.value = PRODUCT_SNAPSHOTS[val] || '';
+}
+
+// ============ TAB 1 — MARKET RESEARCH BODY ============
+function renderResearchBody(pid){
+  const F = (name) => `${pid}__${name}`;
+
+  return `
+    <!-- Section I: Market Landscape -->
+    <div class="subsection">
+      <div class="subsection-title"><span><span class="sst-roman">I.</span>Market Landscape</span></div>
+
+      <!-- I.a Product Scope -->
+      <div class="geo-block">
+        <div class="geo-title"><span>I.a Product Scope</span><span class="badge mixed">Auto-fetched</span></div>
+        <div class="field-row">
+          <div class="field-label">Product Name</div>
+          <input type="text" class="field-val" readonly value="" id="${pid}-prodname-fetched" placeholder="Auto-fetched from product card header above">
+          <div style="flex-basis:100%"><div class="field-hint">Fetched from Product Master · sourced via the product card header</div></div>
+        </div>
+        <div class="field-row" style="align-items:flex-start">
+          <div class="field-label" style="padding-top:6px">Product Snapshot</div>
+          <textarea class="field-val" readonly id="${pid}-snapshot" placeholder="Snapshot auto-populates when a product is selected above"></textarea>
+        </div>
+      </div>
+
+      <!-- I.b Global -->
+      <div class="geo-block">
+        <div class="geo-title"><span>I.b Global</span><span class="badge info">Secondary</span></div>
+        <div class="field-row"><div class="field-label">Market Size (USD)</div><input type="text" class="field-val" placeholder="e.g., $3.2 Billion (2024)"></div>
+        <div class="field-row"><div class="field-label">CAGR (%)</div><input type="number" class="field-val" placeholder="e.g., 6.8" step="0.01"></div>
+        <div class="field-row"><div class="field-label">Key Exporting Countries</div><div class="multi-picker" data-field="${F('globalCountries')}" data-master="COUNTRY_MASTER"></div></div>
+        <div class="field-row"><div class="field-label">Key Brands</div><input type="text" class="field-val" placeholder="e.g., Organic India, Pukka Herbs, Numi"></div>
+        <div class="field-row" style="align-items:flex-start"><div class="field-label" style="padding-top:6px">Key Findings</div><textarea class="field-val" placeholder="Trends, consumer behaviour, certifications dominant in international markets..."></textarea></div>
+        <div class="field-row"><div class="field-label">Source / Reference</div><input type="text" class="field-val" placeholder="e.g., FAO, Statista, IBEF"></div>
+      </div>
+
+      <!-- I.c India -->
+      <div class="geo-block">
+        <div class="geo-title"><span>I.c India</span><span class="badge mixed">Secondary + Primary</span></div>
+        <div class="field-row"><div class="field-label">Market Size (INR)</div><input type="text" class="field-val" placeholder="e.g., ₹8,400 Crore (2024)"></div>
+        <div class="field-row"><div class="field-label">CAGR (%)</div><input type="number" class="field-val" placeholder="e.g., 12" step="0.01"></div>
+        <div class="field-row"><div class="field-label">Key States</div><div class="multi-picker" data-field="${F('indiaStates')}" data-master="STATE_MASTER"></div></div>
+        <div class="field-row"><div class="field-label">Key Brands</div><input type="text" class="field-val" placeholder="e.g., Tata Sampann, MTR, Everest"></div>
+        <div class="field-row" style="align-items:flex-start"><div class="field-label" style="padding-top:6px">Key Findings</div><textarea class="field-val" placeholder="Platforms sold on, packaging norms, consumer trends in India..."></textarea></div>
+        <div class="field-row"><div class="field-label">Source / Reference</div><input type="text" class="field-val" placeholder="e.g., IBEF, e-commerce listings, brand websites"></div>
+      </div>
+
+      <!-- I.d Meghalaya / NE -->
+      <div class="geo-block">
+        <div class="geo-title"><span>I.d Meghalaya / North East</span><span class="badge primary">Primary</span></div>
+        <div class="field-row"><div class="field-label">Market Size (INR)</div><input type="text" class="field-val" placeholder="Approximate market size in district / state"></div>
+        <div class="field-row"><div class="field-label">CAGR (%)</div><input type="number" class="field-val" placeholder="e.g., 8" step="0.01"></div>
+        <div class="field-row"><div class="field-label">Key Selling Locations</div><div class="multi-picker" data-field="${F('localLocations')}" data-master="MEGHALAYA_LOCATIONS_MASTER"></div></div>
+        <div class="field-row"><div class="field-label">Key Brands</div><input type="text" class="field-val" placeholder="Names of local brands / sellers"></div>
+        <div class="field-row" style="align-items:flex-start"><div class="field-label" style="padding-top:6px">Key Findings</div><textarea class="field-val" placeholder="Dominant item sizes, packaging, customer profile, distribution patterns..."></textarea></div>
+        <div class="field-row"><div class="field-label">Source / Reference</div><input type="text" class="field-val" placeholder="Field visit dates, contact persons, photos"></div>
+      </div>
+    </div>
+
+    <!-- Section II: Channel Research -->
+    <div class="subsection">
+      <div class="subsection-title"><span><span class="sst-roman">II.</span>Channel Research</span></div>
+      <p class="task-sub-caption">Document outlets visited during channel mapping. Add up to 5 outlets per product.</p>
+      <div id="${pid}-channelList"></div>
+      <div class="add-row-bar"><button class="btn" onclick="addChannelEntry('${pid}')" style="font-size:10px;padding:3px 10px">+ Add Channel</button></div>
+    </div>
+
+    <!-- Section III: Key Brands Research -->
+    <div class="subsection">
+      <div class="subsection-title"><span><span class="sst-roman">III.</span>Key Brands Research</span></div>
+      <p class="task-sub-caption">Research competing and comparable brands across India (online + offline).</p>
+      <div id="${pid}-brandList"></div>
+      <div class="add-row-bar"><button class="btn" onclick="addBrandEntry('${pid}')" style="font-size:10px;padding:3px 10px">+ Add Brand</button></div>
+    </div>
+
+    <!-- Section IV: Customer Research -->
+    <div class="subsection">
+      <div class="subsection-title"><span><span class="sst-roman">IV.</span>Customer Research</span></div>
+      <p class="task-sub-caption">Interview end consumers — document basic profile and product usage.</p>
+      <div id="${pid}-customerList"></div>
+      <div class="add-row-bar"><button class="btn" onclick="addCustomerEntry('${pid}')" style="font-size:10px;padding:3px 10px">+ Add Respondent</button></div>
+    </div>
+  `;
+}
+
+// ============ CHANNEL RESEARCH ENTRY ============
+function addChannelEntry(pid){
+  entryCounter++;
+  const eid = `${pid}-ch${entryCounter}`;
+  const list = document.getElementById(`${pid}-channelList`);
+  const block = document.createElement('div');
+  block.className = 'entry-block';
+  block.id = eid;
+  block.innerHTML = `
+    <div class="entry-head" onclick="toggleEntry('${eid}')">
+      <div class="eh-name"><span class="chevron">▾</span><span>Channel</span></div>
+      <button class="eb-remove" onclick="event.stopPropagation();removeEntry('${eid}')">Remove</button>
+    </div>
+    <div class="eb-body">
+      <div class="field-row"><div class="field-label">Outlet Name</div><input type="text" class="field-val" placeholder="e.g., Iew Duh Market, Stall 12"></div>
+      <div class="field-row"><div class="field-label">Outlet Type</div><select class="field-val">${buildOpts(OUTLET_TYPES)}</select></div>
+      <div class="field-row"><div class="field-label">District</div><select class="field-val">${buildOpts(DISTRICT_MASTER_MEGHALAYA)}</select></div>
+      <div class="field-row"><div class="field-label">Products Found</div><input type="text" class="field-val" placeholder="Similar products on shelf"></div>
+      <div class="field-row"><div class="field-label">Price Range Observed</div><input type="text" class="field-val" placeholder="e.g., ₹80–₹150 per unit"></div>
+      <div class="field-row"><div class="field-label">Shelf Placement</div><select class="field-val">${buildOpts(SHELF_PLACEMENTS)}</select></div>
+      <div class="field-row" style="align-items:flex-start"><div class="field-label" style="padding-top:6px">Field Notes</div><textarea class="field-val" placeholder="Additional observations — packaging, competitor branding, customer behaviour..."></textarea></div>
+    </div>
+  `;
+  list.appendChild(block);
+}
+
+// ============ KEY BRANDS RESEARCH ENTRY ============
+function addBrandEntry(pid){
+  entryCounter++;
+  const eid = `${pid}-br${entryCounter}`;
+  const list = document.getElementById(`${pid}-brandList`);
+  const block = document.createElement('div');
+  block.className = 'entry-block';
+  block.id = eid;
+  block.innerHTML = `
+    <div class="entry-head" onclick="toggleEntry('${eid}')">
+      <div class="eh-name"><span class="chevron">▾</span><span>Brand</span></div>
+      <button class="eb-remove" onclick="event.stopPropagation();removeEntry('${eid}')">Remove</button>
+    </div>
+    <div class="eb-body">
+      <div class="field-row"><div class="field-label">Brand Name</div><input type="text" class="field-val" placeholder="e.g., Organic India"></div>
+      <div class="field-row"><div class="field-label">Origin</div><select class="field-val">${buildOpts(STATE_MASTER)}</select></div>
+      <div class="field-row"><div class="field-label">Platforms</div><select class="field-val">${buildOpts(PLATFORMS)}</select></div>
+      <div class="field-row"><div class="field-label">Brand's Product Name</div><input type="text" class="field-val" placeholder="e.g., Tulsi Original Green Tea, 100g"></div>
+      <div class="field-row"><div class="field-label">Price (INR)</div><div class="currency-wrap"><span class="currency-prefix">₹</span><input type="number" placeholder="0.00" step="0.01"></div></div>
+      <div class="field-row"><div class="field-label">Key USP</div><input type="text" class="field-val" placeholder="e.g., 'Farm to table', curcumin %, origin story"></div>
+      <div class="field-row"><div class="field-label">Packing</div><select class="field-val">${buildOpts(PACKING_MASTER)}</select></div>
+      <div class="field-row" style="align-items:flex-start"><div class="field-label" style="padding-top:6px">Learning for our Product</div><textarea class="field-val" placeholder="What can we learn or differentiate from this brand's positioning, pricing, or packaging?"></textarea></div>
+    </div>
+  `;
+  list.appendChild(block);
+}
+
+// ============ CUSTOMER RESEARCH ENTRY ============
+function addCustomerEntry(pid){
+  entryCounter++;
+  const eid = `${pid}-cu${entryCounter}`;
+  const list = document.getElementById(`${pid}-customerList`);
+  const block = document.createElement('div');
+  block.className = 'entry-block';
+  block.id = eid;
+  block.innerHTML = `
+    <div class="entry-head" onclick="toggleEntry('${eid}')">
+      <div class="eh-name"><span class="chevron">▾</span><span>Respondent</span></div>
+      <button class="eb-remove" onclick="event.stopPropagation();removeEntry('${eid}')">Remove</button>
+    </div>
+    <div class="eb-body">
+      <div class="field-row"><div class="field-label">Age Group</div><select class="field-val">${buildOpts(AGE_GROUPS)}</select></div>
+      <div class="field-row"><div class="field-label">Gender</div><select class="field-val">${buildOpts(GENDER_MASTER)}</select></div>
+      <div class="field-row"><div class="field-label">Occupation</div><select class="field-val">${buildOpts(OCCUPATION_MASTER)}</select></div>
+      <div class="field-row" style="align-items:flex-start">
+        <div class="field-label" style="padding-top:6px">Location</div>
+        <div class="location-grid">
+          <select><option value="">— State —</option>${STATE_MASTER.map(s => `<option>${s}</option>`).join('')}</select>
+          <select><option value="">— District —</option>${DISTRICT_MASTER_MEGHALAYA.map(s => `<option>${s}</option>`).join('')}</select>
+          <select><option value="">— Block —</option>${BLOCK_MASTER.map(s => `<option>${s}</option>`).join('')}</select>
+        </div>
+      </div>
+      <div class="field-row"><div class="field-label">Have you used the product?</div>
+        <select class="field-val" onchange="onUsageChange('${eid}',this.value)">
+          <option value="">— Select —</option>
+          <option>Yes</option>
+          <option>No</option>
+        </select>
+      </div>
+      <div class="field-row" id="${eid}-freqRow" style="display:none">
+        <div class="field-label">Purchase Frequency</div>
+        <select class="field-val">${buildOpts(FREQUENCIES)}</select>
+      </div>
+      <div class="field-row" style="align-items:flex-start"><div class="field-label" style="padding-top:6px">Remarks</div><textarea class="field-val" placeholder="Verbatim notes or key quotes from the conversation..."></textarea></div>
+    </div>
+  `;
+  list.appendChild(block);
+}
+
+function onUsageChange(eid, val){
+  const row = document.getElementById(`${eid}-freqRow`);
+  if(!row) return;
+  row.style.display = (val === 'Yes') ? 'flex' : 'none';
+}
+
+function toggleEntry(eid){ document.getElementById(eid).classList.toggle('collapsed'); }
+function removeEntry(eid){ if(confirm('Remove this entry?')) document.getElementById(eid).remove(); }
+
+// ============ TAB 2 — COMPETITION ASSESSMENT BODY ============
+function renderCompetitionBody(pid){
+  const scopeMeta = [
+    { key:'local',    roman:'I',   title:'Local Market' },
+    { key:'state',    roman:'II',  title:'State Market' },
+    { key:'national', roman:'III', title:'National Market' }
+  ];
+
+  const buildScopeSection = (s) => `
+    <div class="subsection" id="${pid}-scope-${s.key}">
+      <div class="subsection-title"><span><span class="sst-roman">${s.roman}.</span>${s.title}</span></div>
+
+      <!-- Offline channels -->
+      <div style="background:#fff;border:1px solid var(--border-dk);border-radius:8px;padding:12px;margin-bottom:10px">
+        <div style="font-size:11px;text-transform:uppercase;letter-spacing:1px;color:var(--teal);font-weight:bold;margin-bottom:10px;padding-bottom:6px;border-bottom:1px solid var(--border-dk)">Offline Channels</div>
+        <div style="overflow-x:auto">
+          <table class="data-table" id="${pid}-${s.key}-offline-table">
+            <thead>
+              <tr>
+                <th class="num-col">#</th>
+                <th style="min-width:140px">Brand / Competitor</th>
+                <th style="min-width:140px">Outlet / Channel</th>
+                <th style="min-width:120px">Item Size</th>
+                <th style="min-width:100px">Price (₹)</th>
+                <th>Notes</th>
+                <th style="width:30px"></th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+            <tfoot>
+              <tr style="background:var(--cream-deep);font-weight:bold">
+                <td colspan="4" style="text-align:right;padding:8px 7px;color:var(--teal);text-transform:uppercase;letter-spacing:0.5px;font-size:10px">Competitor Average Price</td>
+                <td colspan="2" style="padding:8px 7px;color:var(--teal)" id="${pid}-${s.key}-offline-avg">₹ 0.00</td>
+                <td></td>
+              </tr>
+            </tfoot>
+          </table>
+        </div>
+        <div class="table-actions"><span style="font-size:10px;color:var(--ink-faint);font-style:italic">Auto-fetched into Unit Pricing · Competitor Based method</span><button class="btn" onclick="addCompetitorRow('${pid}','${s.key}','offline')" style="font-size:10px;padding:3px 10px">+ Add Offline Row</button></div>
+      </div>
+
+      <!-- Online channels -->
+      <div style="background:#fff;border:1px solid var(--border-dk);border-radius:8px;padding:12px;margin-bottom:10px">
+        <div style="font-size:11px;text-transform:uppercase;letter-spacing:1px;color:var(--teal);font-weight:bold;margin-bottom:10px;padding-bottom:6px;border-bottom:1px solid var(--border-dk)">Online Channels</div>
+        <div style="overflow-x:auto">
+          <table class="data-table" id="${pid}-${s.key}-online-table">
+            <thead>
+              <tr>
+                <th class="num-col">#</th>
+                <th style="min-width:140px">Brand / Competitor</th>
+                <th style="min-width:140px">Platform</th>
+                <th style="min-width:120px">Item Size</th>
+                <th style="min-width:100px">Price (₹)</th>
+                <th>Notes</th>
+                <th style="width:30px"></th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+            <tfoot>
+              <tr style="background:var(--cream-deep);font-weight:bold">
+                <td colspan="4" style="text-align:right;padding:8px 7px;color:var(--teal);text-transform:uppercase;letter-spacing:0.5px;font-size:10px">Competitor Average Price</td>
+                <td colspan="2" style="padding:8px 7px;color:var(--teal)" id="${pid}-${s.key}-online-avg">₹ 0.00</td>
+                <td></td>
+              </tr>
+            </tfoot>
+          </table>
+        </div>
+        <div class="table-actions"><span style="font-size:10px;color:var(--ink-faint);font-style:italic">Auto-fetched into Unit Pricing · Competitor Based method</span><button class="btn" onclick="addCompetitorRow('${pid}','${s.key}','online')" style="font-size:10px;padding:3px 10px">+ Add Online Row</button></div>
+      </div>
+    </div>
+  `;
+
+  return `
+    ${scopeMeta.map(buildScopeSection).join('')}
+
+    <!-- Section IV: SWOT Analysis -->
+    <div class="subsection">
+      <div class="subsection-title"><span><span class="sst-roman">IV.</span>SWOT Analysis</span></div>
+      <p class="task-sub-caption">Assess this product vs. competitors across the four dimensions.</p>
+      <div class="swot-grid">
+        <div class="swot-cell s">
+          <div class="swot-cell-title">Strengths (vs Competitor)</div>
+          <textarea placeholder="What does this product do better than competitors? — origin story, GI tag, hand-craft, ingredient quality..."></textarea>
+        </div>
+        <div class="swot-cell w">
+          <div class="swot-cell-title">Weaknesses (vs Competitor)</div>
+          <textarea placeholder="Where do competitors out-perform — distribution, packaging, brand recall, certifications, scale..."></textarea>
+        </div>
+        <div class="swot-cell o">
+          <div class="swot-cell-title">Opportunities</div>
+          <textarea placeholder="Market openings — un-met segments, channel gaps, festival demand, export potential..."></textarea>
+        </div>
+        <div class="swot-cell t">
+          <div class="swot-cell-title">Threats</div>
+          <textarea placeholder="External risks — new entrants, regulation, raw material price volatility, substitutes..."></textarea>
+        </div>
+      </div>
+    </div>
+  `;
+}
+
+function addCompetitorRow(pid, scope, kind){
+  entryCounter++;
+  const rid = `${pid}-${scope}-${kind}-r${entryCounter}`;
+  const tbody = document.querySelector(`#${pid}-${scope}-${kind}-table tbody`);
+  if(!tbody) return;
+  const tr = document.createElement('tr');
+  tr.id = rid;
+
+  const channelOpts = (kind === 'online') ? PLATFORMS : OUTLET_TYPES;
+  const channelOptsHtml = `<option value="">— Select —</option>${channelOpts.map(o => `<option>${o}</option>`).join('')}`;
+
+  tr.innerHTML = `
+    <td class="num-col"></td>
+    <td><input type="text" placeholder="Brand name"></td>
+    <td><select>${channelOptsHtml}</select></td>
+    <td><input type="text" placeholder="e.g., 200g pouch"></td>
+    <td><input type="number" class="price-cell" placeholder="0.00" step="0.01" oninput="recalcCompetitorAvg('${pid}','${scope}','${kind}')"></td>
+    <td><input type="text" placeholder="USPs, packaging, certs..."></td>
+    <td><button class="row-delete" onclick="removeCompetitorRow('${rid}','${pid}','${scope}','${kind}')">✕</button></td>
+  `;
+  tbody.appendChild(tr);
+  renumberCompetitorRows(pid, scope, kind);
+  recalcCompetitorAvg(pid, scope, kind);
+}
+
+function removeCompetitorRow(rid, pid, scope, kind){
+  document.getElementById(rid).remove();
+  renumberCompetitorRows(pid, scope, kind);
+  recalcCompetitorAvg(pid, scope, kind);
+}
+
+function recalcCompetitorAvg(pid, scope, kind){
+  const tbody = document.querySelector(`#${pid}-${scope}-${kind}-table tbody`);
+  const target = document.getElementById(`${pid}-${scope}-${kind}-avg`);
+  if(!tbody || !target) return;
+  const prices = Array.from(tbody.querySelectorAll('.price-cell'))
+    .map(i => parseFloat(i.value))
+    .filter(v => !isNaN(v) && v > 0);
+  if(prices.length === 0){
+    target.textContent = '₹ 0.00';
+    return;
+  }
+  const avg = prices.reduce((a,b) => a + b, 0) / prices.length;
+  target.textContent = `₹ ${avg.toFixed(2)}`;
+}
+
+function renumberCompetitorRows(pid, scope, kind){
+  const tbody = document.querySelector(`#${pid}-${scope}-${kind}-table tbody`);
+  if(!tbody) return;
+  Array.from(tbody.children).forEach((tr, i) => {
+    const numEl = tr.querySelector('.num-col');
+    if(numEl) numEl.textContent = String(i+1).padStart(2,'0');
+  });
+}
+
+// ============ SUMMARY ============
+function refreshSummary(){
+  const s = (id,v) => { const el=document.getElementById(id); if(el) el.textContent=v; };
+  const readAvg = id => {
+    const el = document.getElementById(id);
+    if(!el) return null;
+    const v = parseFloat((el.textContent||'').replace(/[^0-9.]/g,''));
+    return v > 0 ? v : null;
+  };
+
+  const researchBlocks    = document.querySelectorAll('#researchProductList .product-block');
+  const competitionBlocks = document.querySelectorAll('#competitionProductList .product-block');
+
+  const compMap = {};
+  competitionBlocks.forEach(b => {
+    const name = b.querySelector('.ph-name select')?.value || '';
+    if(name) compMap[name] = b.id;
+  });
+
+  let totalProducts=0, totalChannels=0, totalBrands=0, totalRespondents=0;
+  let indiaSize=0, meghalayaData=0, cagrData=0, globalData=0;
+  let localPricing=0, statePricing=0, nationalPricing=0, totalCompRows=0;
+  let swotDone=0, customerData=0, channelData=0, brandData=0;
+  let html='';
+
+  researchBlocks.forEach(b => {
+    const pid      = b.id;
+    const prodName = b.querySelector('.ph-name select')?.value || '';
+    if(!prodName) return;
+    totalProducts++;
+
+    const geoBlocks  = b.querySelectorAll('.geo-block');
+    const globalBlk  = geoBlocks[1];
+    const indiaBlk   = geoBlocks[2];
+    const megBlk     = geoBlocks[3];
+
+    const indiaMarketSize = indiaBlk?.querySelector('input[type=text]')?.value?.trim() || '';
+    const indiaCagr       = indiaBlk?.querySelectorAll('input')[1]?.value?.trim() || '';
+    const meghaSize       = megBlk?.querySelector('input[type=text]')?.value?.trim() || '';
+    const globalSize      = globalBlk?.querySelector('input[type=text]')?.value?.trim() || '';
+
+    if(indiaMarketSize) indiaSize++;
+    if(meghaSize)       meghalayaData++;
+    if(indiaCagr)       cagrData++;
+    if(globalSize)      globalData++;
+
+    const channels    = b.querySelectorAll(`#${pid}-channelList .entry-block`).length;
+    const brands      = b.querySelectorAll(`#${pid}-brandList .entry-block`).length;
+    const respondents = b.querySelectorAll(`#${pid}-customerList .entry-block`).length;
+    totalChannels    += channels;
+    totalBrands      += brands;
+    totalRespondents += respondents;
+    if(channels > 0)    channelData++;
+    if(brands > 0)      brandData++;
+    if(respondents > 0) customerData++;
+
+    const cpid = compMap[prodName];
+    if(cpid){
+      const swotTexts = document.querySelectorAll(`#${cpid} .swot-grid textarea`);
+      if([...swotTexts].some(t => t.value.trim())) swotDone++;
+
+      ['local','state','national'].forEach(scope => {
+        totalCompRows += document.querySelectorAll(`#${cpid}-${scope}-offline-table tbody tr`).length;
+        totalCompRows += document.querySelectorAll(`#${cpid}-${scope}-online-table tbody tr`).length;
+      });
+
+      const localOffAvg = readAvg(`${cpid}-local-offline-avg`);
+      const localOnAvg  = readAvg(`${cpid}-local-online-avg`);
+      const stateOffAvg = readAvg(`${cpid}-state-offline-avg`);
+      const natOffAvg   = readAvg(`${cpid}-national-offline-avg`);
+
+      if(localOffAvg || localOnAvg) localPricing++;
+      if(stateOffAvg)  statePricing++;
+      if(natOffAvg)    nationalPricing++;
+
+      html += `<tr>
+        <td><strong>${prodName}</strong></td>
+        <td style="font-size:11px">${indiaMarketSize||'—'}</td>
+        <td style="text-align:center">${indiaCagr?indiaCagr+'%':'—'}</td>
+        <td style="text-align:center;font-weight:bold;color:var(--teal)">${channels||'—'}</td>
+        <td style="text-align:center;font-weight:bold;color:var(--teal)">${brands||'—'}</td>
+        <td style="text-align:center">${respondents||'—'}</td>
+        <td style="background:#EDF6EA;font-weight:bold;color:var(--good-ink)">${localOffAvg?'₹ '+localOffAvg.toFixed(2):'—'}</td>
+        <td style="background:#EDF6EA;font-weight:bold;color:var(--good-ink)">${localOnAvg?'₹ '+localOnAvg.toFixed(2):'—'}</td>
+        <td style="background:#EDF6EA;font-weight:bold;color:var(--good-ink)">${natOffAvg?'₹ '+natOffAvg.toFixed(2):'—'}</td>
+      </tr>`;
+    } else {
+      html += `<tr>
+        <td><strong>${prodName}</strong></td>
+        <td style="font-size:11px">${indiaMarketSize||'—'}</td>
+        <td style="text-align:center">${indiaCagr?indiaCagr+'%':'—'}</td>
+        <td style="text-align:center;font-weight:bold;color:var(--teal)">${channels||'—'}</td>
+        <td style="text-align:center;font-weight:bold;color:var(--teal)">${brands||'—'}</td>
+        <td style="text-align:center">${respondents||'—'}</td>
+        <td colspan="3" style="color:var(--ink-faint);font-style:italic;text-align:center">Add in Competitive Pricing tab</td>
+      </tr>`;
+    }
+  });
+
+  document.getElementById('sumOverviewBody').innerHTML = html ||
+    '<tr><td colspan="9" style="text-align:center;color:var(--ink-faint);font-style:italic;padding:14px">Auto-populated from Market Research and Competitive Pricing tabs</td></tr>';
+
+  s('agg-products',         totalProducts);
+  s('agg-channels',         totalChannels);
+  s('agg-brands',           totalBrands);
+  s('agg-respondents',      totalRespondents);
+  s('agg-india-size',       indiaSize);
+  s('agg-meghalaya',        meghalayaData);
+  s('agg-cagr',             cagrData);
+  s('agg-global',           globalData);
+  s('agg-local-pricing',    localPricing);
+  s('agg-state-pricing',    statePricing);
+  s('agg-national-pricing', nationalPricing);
+  s('agg-comp-rows',        totalCompRows);
+  s('agg-swot',             swotDone);
+  s('agg-customer-data',    customerData);
+  s('agg-channel-data',     channelData);
+  s('agg-brand-data',       brandData);
+  s('flag-products',        totalProducts);
+  s('flag-channels',        totalChannels);
+  s('flag-brands',          totalBrands);
+  s('flag-respondents',     totalRespondents);
+}
+
+// ============ RESOURCES ============
+function addResRow(){
+  const tbody = document.querySelector('#resourcesTable tbody');
+  const row = tbody.rows[0].cloneNode(true);
+  row.querySelectorAll('input').forEach(i => { if(i.type !== 'file') i.value = ''; });
+  row.querySelectorAll('select').forEach(s => s.selectedIndex = 0);
+  tbody.appendChild(row);
+}
+function deleteResRow(btn){
+  const tbody = btn.closest('tbody');
+  if(tbody.rows.length > 1) btn.closest('tr').remove();
+  else alert('At least one row is required.');
+}
+
+// ============ TASK LOG ============
+const MR_TASKS = [
+  '01 — Define Research Scope and Objectives',
+  '02 — Secondary Research — Global Market Data',
+  '03 — Secondary Research — India Market Data',
+  '04 — Secondary Research — Meghalaya / NE Market Data',
+  '05 — Identify Key Selling Channels (Offline)',
+  '06 — Identify Key Selling Channels (Online / E-commerce)',
+  '07 — Field Visit — Channel Mapping',
+  '08 — Document Competitor Brands (Online)',
+  '09 — Document Competitor Brands (Offline)',
+  '10 — Record Competitor Prices (Local Market)',
+  '11 — Record Competitor Prices (State Market)',
+  '12 — Record Competitor Prices (National Market)',
+  '13 — Conduct Customer / Consumer Interviews',
+  '14 — Compile Customer Research Findings',
+  '15 — SWOT Analysis — vs Competitor',
+  '16 — Identify Key Differentiators for Entrepreneur',
+  '17 — Share Research Summary with Core Team',
+  '18 — Update Market Research in CRM',
+  'If other, specify in comments',
+];
+const MR_TASK_OPTS = MR_TASKS.map(t => `<option value="${t}">${t}</option>`).join('');
+let taskLogCounter = 0;
+
+function addTaskRow(){
+  taskLogCounter++;
+  const tbody = document.getElementById('taskLogBody');
+  const tr = document.createElement('tr');
+  tr.innerHTML = `
+    <td class="num-col">${String(taskLogCounter).padStart(2,'0')}</td>
+    <td><input type="date" style="width:100%"></td>
+    <td><select style="width:100%"><option value="">— Select Task —</option>${MR_TASK_OPTS}</select></td>
+    <td><input type="text" placeholder="Notes / Outcome" style="width:100%"></td>
+    <td><button class="btn" style="padding:3px 8px;font-size:10px">Upload</button></td>
+    <td><button class="row-delete-btn" onclick="deleteTaskRow(this)">✕</button></td>
+  `;
+  tbody.appendChild(tr);
+  document.getElementById('task-count').textContent = tbody.rows.length;
+}
+
+function deleteTaskRow(btn){
+  const tbody = btn.closest('tbody');
+  btn.closest('tr').remove();
+  tbody.querySelectorAll('tr').forEach((tr, i) => {
+    tr.querySelector('.num-col').textContent = String(i+1).padStart(2,'0');
+  });
+  taskLogCounter = tbody.rows.length;
+  document.getElementById('task-count').textContent = tbody.rows.length;
+}
+
+// ============ INIT ============
+window.addEventListener('DOMContentLoaded', () => {
+  addProduct('research');
+  addProduct('competition');
+  showTab('summary', document.querySelector('.tab'));
+});
+</script>
+
+</body>
+</html>

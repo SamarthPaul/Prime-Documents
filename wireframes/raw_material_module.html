@@ -1,0 +1,1554 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Raw Material Module · PRIME Rural</title>
+<style>
+:root {
+  --teal:#0E4D4E; --sea:#1A6B6D; --terracotta:#C26849; --terracotta-dk:#A85738;
+  --terracotta-sft:#F5E2D6;
+  --cream:#FBF5E5; --cream-deep:#F4ECD3; --offwhite:#FDFAF0; --panel:#FFFFFF;
+  --ink:#2A2520; --ink-soft:#6B6359; --ink-faint:#9C9384;
+  --border:#E8DFC9; --border-dk:#D6CDB6;
+  --good-bg:#E3EFDF; --good-ink:#3F6B3A;
+  --fair-bg:#FBE9DF; --fair-ink:#7A3B22;
+  --poor-bg:#F5D6CC; --poor-ink:#8B2A0F;
+  --highlight:#FFF8E1;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:Georgia,serif;background:var(--cream);color:var(--ink);line-height:1.4}
+.page{max-width:1200px;margin:0 auto;padding:24px}
+
+.header{background:var(--teal);color:#fff;padding:16px 20px;border-radius:12px 12px 0 0;display:flex;justify-content:space-between;align-items:center}
+.header h1{font-size:18px;font-weight:normal;letter-spacing:0.5px}
+.header .crumb{font-size:11px;opacity:0.75;text-transform:uppercase;letter-spacing:1px}
+
+.card{background:var(--cream);border:1px solid var(--border-dk);border-top:none;border-radius:0 0 12px 12px}
+
+.tab-bar{display:flex;background:var(--cream-deep);border-bottom:1px solid var(--border-dk);overflow-x:auto}
+.tab{padding:12px 22px;cursor:pointer;font-size:12px;text-transform:uppercase;letter-spacing:1px;color:var(--ink-soft);border-right:1px solid var(--border);white-space:nowrap}
+.tab.active{background:var(--teal);color:#fff}
+.tab:hover:not(.active){background:#EADFC0}
+
+.content{padding:22px}
+
+.entrepreneur-chip{display:inline-flex;align-items:center;gap:10px;background:#fff;border:1px solid var(--border-dk);padding:6px 14px;border-radius:20px;font-size:12px;margin-bottom:18px}
+.ent-avatar{width:24px;height:24px;background:var(--teal);color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:bold}
+
+.section{background:var(--cream-deep);padding:16px;border-radius:10px;margin-bottom:16px;border:1px solid var(--border)}
+.section-title{font-size:13px;text-transform:uppercase;letter-spacing:1.5px;color:var(--teal);margin-bottom:12px;padding-bottom:8px;border-bottom:1px solid var(--border-dk);font-weight:bold;display:flex;justify-content:space-between;align-items:center}
+.section-title-roman{color:var(--terracotta);margin-right:8px;font-style:italic}
+
+.field-row{display:flex;gap:12px;margin-bottom:10px;flex-wrap:wrap;align-items:center}
+.field-label{width:280px;font-size:12px;color:var(--ink-soft)}
+.field-val{flex:1;background:var(--offwhite);border:1px solid var(--border-dk);padding:6px 10px;border-radius:5px;font-size:12px;min-width:140px;font-family:Georgia,serif}
+.field-val[readonly],.field-val.auto{background:var(--cream-deep);color:var(--ink-soft);font-style:italic}
+textarea.field-val{font-family:Georgia,serif;resize:vertical;min-height:50px}
+select.field-val{cursor:pointer}
+
+.btn{padding:5px 12px;border-radius:20px;border:1px solid var(--border-dk);background:#fff;cursor:pointer;font-size:11px;color:var(--ink);font-family:Georgia,serif}
+.btn:hover{background:var(--cream-deep)}
+.btn-primary{background:var(--teal);color:#fff;border-color:var(--teal)}
+.btn-primary:hover{background:var(--sea)}
+.btn-accent{background:var(--terracotta);color:#fff;border-color:var(--terracotta)}
+.btn-accent:hover{background:var(--terracotta-dk)}
+
+table.data-table{width:100%;border-collapse:collapse;background:var(--offwhite);border-radius:6px;overflow:hidden;border:1px solid var(--border-dk);font-size:11px}
+table.data-table th{background:var(--teal);color:#fff;padding:9px 8px;text-align:left;font-weight:normal;text-transform:uppercase;letter-spacing:0.5px;font-size:10px;border-right:1px solid var(--sea);white-space:nowrap}
+table.data-table th:last-child{border-right:none}
+table.data-table td{padding:7px 8px;border-bottom:1px solid var(--border);border-right:1px solid var(--border);vertical-align:middle}
+table.data-table td:last-child{border-right:none}
+table.data-table tr:last-child td{border-bottom:none}
+table.data-table input,table.data-table select,table.data-table textarea{width:100%;border:1px solid var(--border);padding:5px 6px;border-radius:3px;font-family:Georgia,serif;font-size:11px;background:#fff}
+table.data-table input:focus,table.data-table select:focus{outline:none;border-color:var(--teal)}
+table.data-table .num-col{width:40px;text-align:center;color:var(--ink-soft)}
+table.data-table .amount-col{font-weight:bold;color:var(--teal);text-align:right}
+table.data-table tr.total-row td{background:var(--highlight);font-weight:bold;color:var(--terracotta-dk);border-top:2px solid var(--border-dk)}
+
+.table-actions{display:flex;justify-content:space-between;align-items:center;margin-top:10px}
+.row-delete{background:transparent;border:none;color:var(--terracotta);cursor:pointer;font-size:14px;padding:2px 6px}
+.row-delete:hover{color:var(--terracotta-dk)}
+
+.summary-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px}
+.summary-card{background:#fff;border:1px solid var(--border);border-radius:10px;padding:14px}
+.summary-card.full{grid-column:1 / -1}
+.summary-card h3{font-size:11px;text-transform:uppercase;letter-spacing:1px;color:var(--teal);margin-bottom:10px;padding-bottom:6px;border-bottom:1px solid var(--border)}
+.metric-row{display:flex;justify-content:space-between;padding:5px 0;font-size:12px;border-bottom:1px solid #f0e9d6}
+.metric-row:last-child{border-bottom:none}
+.metric-label{color:var(--ink-soft)}
+.metric-value{font-weight:bold;color:var(--ink)}
+.metric-value.green{color:var(--good-ink)}
+.metric-value.amber{color:var(--terracotta-dk)}
+
+.picture-strip{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;background:var(--teal);padding:14px;border-radius:10px;color:#fff;margin-top:10px}
+.picture-strip .ps-cell{padding:6px 4px}
+.picture-strip .ps-label{font-size:10px;text-transform:uppercase;letter-spacing:0.8px;opacity:0.7;margin-bottom:4px}
+.picture-strip .ps-val{font-size:18px;font-weight:bold}
+.picture-strip .ps-val.amber{color:#FFD580}
+
+.flags-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+.flag-card{background:#fff;border:1px solid var(--border);border-radius:8px;padding:12px;text-align:left}
+.flag-icon{width:30px;height:30px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:14px;margin-bottom:8px}
+.flag-icon.amber{background:var(--terracotta-sft);color:var(--terracotta-dk)}
+.flag-icon.red{background:#F5D6CC;color:#8B2A0F}
+.flag-icon.blue{background:#D6E3EE;color:#2C5A82}
+.flag-icon.green{background:var(--good-bg);color:var(--good-ink)}
+.flag-count{font-size:20px;font-weight:bold;color:var(--ink)}
+.flag-label{font-size:10px;color:var(--ink-soft);text-transform:uppercase;letter-spacing:0.5px;margin-top:4px}
+
+.condition-badge{display:inline-flex;align-items:center;gap:5px;padding:2px 9px;border-radius:14px;font-size:10px;font-weight:bold}
+.condition-good{background:var(--good-bg);color:var(--good-ink)}
+.condition-fair{background:var(--fair-bg);color:var(--fair-ink)}
+.condition-poor{background:var(--poor-bg);color:var(--poor-ink)}
+.condition-badge::before{content:'●'}
+
+.status-badge{display:inline-flex;align-items:center;gap:5px;padding:2px 9px;border-radius:14px;font-size:10px;font-weight:bold}
+.status-completed{background:var(--good-bg);color:var(--good-ink)}
+.status-progress{background:var(--fair-bg);color:var(--fair-ink)}
+.status-pending{background:var(--cream-deep);color:var(--ink-soft)}
+
+.toggle{width:36px;height:18px;border-radius:20px;background:#ccc;display:inline-block;cursor:pointer;position:relative;flex-shrink:0;vertical-align:middle}
+.toggle::after{content:'';width:14px;height:14px;background:#fff;border-radius:50%;position:absolute;top:2px;left:2px;transition:left 0.2s}
+.toggle.on{background:var(--teal)}
+.toggle.on::after{left:20px}
+
+/* Material block */
+.machine-block{background:#fff;border:1px solid var(--border-dk);border-radius:10px;margin-bottom:14px;overflow:hidden}
+.machine-block-head{background:var(--sea);color:#fff;padding:10px 14px;display:flex;justify-content:space-between;align-items:center;cursor:pointer;user-select:none;font-size:13px;flex-wrap:wrap;gap:8px}
+.machine-block-head:hover{background:var(--teal)}
+.machine-block-head .mb-name{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.chevron{font-size:12px;transition:transform 0.2s}
+.machine-block.collapsed .chevron{transform:rotate(-90deg)}
+.machine-block.collapsed .mb-body{display:none}
+.mb-body{padding:14px}
+.mb-remove{background:transparent;border:1px solid rgba(255,255,255,0.4);color:#fff;padding:3px 10px;border-radius:14px;cursor:pointer;font-size:11px;font-family:Georgia,serif}
+.mb-remove:hover{background:var(--terracotta);border-color:var(--terracotta)}
+.mb-tag{background:var(--terracotta);color:#fff;padding:2px 8px;border-radius:10px;font-size:10px;letter-spacing:0.5px;text-transform:uppercase}
+.mb-tag.middleman{background:var(--terracotta-dk)}
+.mb-tag.essential{background:var(--good-ink)}
+
+.subsection{background:var(--cream-deep);padding:12px;border-radius:8px;margin-bottom:10px;border:1px solid var(--border)}
+.subsection-title{font-size:11px;text-transform:uppercase;letter-spacing:1px;color:var(--teal);margin-bottom:10px;font-weight:bold}
+
+.calc-strip{background:var(--highlight);border:1px solid var(--border-dk);border-radius:6px;padding:10px;margin-top:10px;display:grid;gap:10px}
+.calc-cell{font-size:11px}
+.calc-label{color:var(--ink-soft);margin-bottom:3px;font-size:10px;text-transform:uppercase;letter-spacing:0.5px}
+.calc-value{font-weight:bold;color:var(--terracotta-dk);font-size:13px}
+
+.calc-summary{background:var(--teal);color:#fff;border-radius:8px;padding:14px;margin-top:12px;font-family:'Courier New',monospace;font-size:12px;line-height:1.7}
+.calc-summary-title{font-size:10px;text-transform:uppercase;letter-spacing:1px;opacity:0.7;margin-bottom:8px;font-family:Georgia,serif}
+.calc-summary .total-line{margin-top:8px;padding-top:8px;border-top:1px solid rgba(255,255,255,0.2);color:#FFD580;font-weight:bold;font-size:14px}
+
+.intervention-flags{background:var(--terracotta-sft);border:1px solid var(--terracotta);border-radius:8px;padding:12px;margin-top:10px}
+.intervention-flags-title{font-size:11px;text-transform:uppercase;letter-spacing:1px;color:var(--terracotta-dk);margin-bottom:10px;font-weight:bold}
+.intervention-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.intervention-cell{background:#fff;border:1px solid var(--border);border-radius:6px;padding:10px}
+.intervention-toggle-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+.intervention-toggle-row .label{font-size:11px;font-weight:bold;color:var(--ink)}
+.flag-note{font-size:10px;color:var(--ink-faint);font-style:italic;margin-bottom:6px}
+.flag-note.active{color:var(--terracotta-dk);font-weight:bold;font-style:normal}
+.intervention-cell textarea{width:100%;border:1px solid var(--border);padding:5px 6px;border-radius:3px;font-family:Georgia,serif;font-size:11px;background:var(--offwhite);resize:vertical;min-height:40px}
+
+.total-bar{background:var(--teal);color:#fff;padding:14px 18px;border-radius:10px;margin-top:14px}
+.total-bar-title{font-size:11px;text-transform:uppercase;letter-spacing:1px;opacity:0.7;margin-bottom:10px}
+.total-grid{display:grid;gap:14px}
+.total-cell .total-label{font-size:10px;opacity:0.6;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:3px}
+.total-cell .total-value{font-weight:bold;font-size:14px}
+.total-cell .total-value.amber{color:#FFD580;font-size:11px}
+
+/* Required tab rows */
+.opt-row{background:#fff;border:1px solid var(--border-dk);border-radius:10px;margin-bottom:12px;overflow:hidden}
+.opt-row-head{background:var(--cream-deep);padding:12px 16px;display:grid;gap:12px;align-items:center;border-bottom:1px solid var(--border-dk)}
+.opt-readonly-label{font-size:10px;color:var(--ink-soft);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:3px}
+.opt-readonly-val{font-size:12px;font-weight:bold;color:var(--teal)}
+.int-type{display:inline-flex;align-items:center;gap:5px;padding:3px 10px;border-radius:14px;font-size:10px;font-weight:bold}
+.int-source{background:var(--terracotta-sft);color:var(--terracotta-dk)}
+.int-material{background:#D6E3EE;color:#2C5A82}
+.int-new{background:var(--good-bg);color:var(--good-ink)}
+
+.add-row-bar{text-align:center;padding:14px;background:var(--cream-deep);border:1px dashed var(--border-dk);border-radius:10px;margin-top:10px}
+.hidden{display:none !important}
+</style>
+</head>
+<body>
+
+<div class="page">
+<div class="header">
+  <h1>Raw Material Module</h1>
+  <div class="crumb">PRIME Rural · DF Raw Material</div>
+</div>
+<div class="card">
+
+<div class="tab-bar">
+  <div class="tab active" onclick="showTab('summary',this)">Summary</div>
+  <div class="tab" onclick="showTab('existing',this)">Existing</div>
+  <div class="tab" onclick="showTab('required',this)">Required</div>
+  <div class="tab" onclick="showTab('resources',this)">Resources</div>
+  <div class="tab" onclick="showTab('tasklog',this)">Task Log</div>
+</div>
+
+<div class="content">
+
+<div class="entrepreneur-chip">
+  <div class="ent-avatar">EN</div>
+  <span style="color:var(--ink-soft);font-style:italic">Auto-fetched from profile</span>
+</div>
+
+<!-- ============ SUMMARY ============ -->
+<div id="summary" class="panel">
+
+  <!-- ① MATERIAL-WISE OVERVIEW -->
+  <div class="section">
+    <div class="section-title">Material-wise Overview</div>
+    <p style="font-size:11px;color:var(--ink-soft);font-style:italic;margin-bottom:10px">Each row feeds Unit Pricing individually. New Price / Unit and Saving populate when an intervention is in progress.</p>
+    <div style="overflow-x:auto">
+    <table class="data-table" style="min-width:800px">
+      <thead>
+        <tr>
+          <th>Product</th>
+          <th>Raw Material</th>
+          <th>Source</th>
+          <th>Availability</th>
+          <th>Essential</th>
+          <th>Price / Unit (₹)</th>
+          <th>Intervention Type</th>
+          <th>Implementation Status</th>
+          <th style="background:#7A3B22">New Price / Unit (₹)</th>
+          <th style="background:#3F6B3A">Saving</th>
+        </tr>
+      </thead>
+      <tbody id="summaryMaterialTable">
+        <tr><td colspan="10" style="text-align:center;color:var(--ink-faint);font-style:italic;padding:14px">Auto-populated from Existing and Required tabs</td></tr>
+      </tbody>
+    </table>
+    </div>
+  </div>
+
+  <!-- ② AGGREGATES -->
+  <div class="section">
+    <div class="section-title">Aggregates</div>
+    <div class="summary-grid">
+
+      <div class="summary-card">
+        <h3>Materials</h3>
+        <div class="metric-row"><span class="metric-label">Total Logged</span><span class="metric-value" id="agg-ex-count">0</span></div>
+        <div class="metric-row"><span class="metric-label">Essential</span><span class="metric-value" id="agg-ex-essential">0</span></div>
+        <div class="metric-row"><span class="metric-label">Difficult Availability</span><span class="metric-value amber" id="agg-flag-difficult">0</span></div>
+        <div class="metric-row"><span class="metric-label">New Added</span><span class="metric-value" id="ps-new-count">0</span></div>
+      </div>
+
+      <div class="summary-card">
+        <h3>Cost</h3>
+        <div class="metric-row"><span class="metric-label">Monthly Spend (₹)</span><span class="metric-value" id="agg-ex-spend">₹0</span></div>
+        <div class="metric-row"><span class="metric-label">Price / Unit — Before (₹)</span><span class="metric-value" id="agg-ex-cpu">—</span></div>
+        <div class="metric-row"><span class="metric-label">Price / Unit — After (₹)</span><span class="metric-value green" id="agg-impl-cpu">—</span></div>
+        <div class="metric-row"><span class="metric-label">Saving / Unit (₹)</span><span class="metric-value green" id="agg-impl-saving">—</span></div>
+        <div style="font-size:10px;color:var(--ink-faint);font-style:italic;margin-top:6px">Before = existing avg. After = Completed interventions only.</div>
+      </div>
+
+      <div class="summary-card">
+        <h3>Interventions</h3>
+        <div class="metric-row"><span class="metric-label">Alt. Source Flagged</span><span class="metric-value amber" id="agg-flag-source">0</span></div>
+        <div class="metric-row"><span class="metric-label">Alt. Material Flagged</span><span class="metric-value amber" id="agg-flag-material">0</span></div>
+        <div class="metric-row"><span class="metric-label">New Material Needed</span><span class="metric-value" id="agg-flag-new">0</span></div>
+        <div class="metric-row"><span class="metric-label">Total</span><span class="metric-value" id="sum-req-tot-source">0</span></div>
+      </div>
+
+      <div class="summary-card">
+        <h3>Status</h3>
+        <div class="metric-row"><span class="metric-label">Completed</span><span class="metric-value green" id="sum-req-tot-completed">0</span></div>
+        <div class="metric-row"><span class="metric-label">In Progress</span><span class="metric-value amber" id="agg-impl-progress">0</span></div>
+        <div class="metric-row"><span class="metric-label">Pending</span><span class="metric-value" id="agg-impl-pending">0</span></div>
+        <div class="metric-row"><span class="metric-label">Not Feasible</span><span class="metric-value" id="agg-impl-notfeasible">0</span></div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ③ FLAGS -->
+  <div class="section">
+    <div class="section-title">Intervention Flags</div>
+    <div class="flags-grid">
+      <div class="flag-card"><div class="flag-icon amber">↻</div><div class="flag-count" id="flag-source-count">0</div><div class="flag-label">Alt. Source Needed</div></div>
+      <div class="flag-card"><div class="flag-icon blue">⇄</div><div class="flag-count" id="flag-material-count">0</div><div class="flag-label">Alt. Material Needed</div></div>
+      <div class="flag-card"><div class="flag-icon red">!</div><div class="flag-count" id="flag-difficult-count">0</div><div class="flag-label">Difficult Availability</div></div>
+      <div class="flag-card"><div class="flag-icon green">✓</div><div class="flag-count" id="flag-essential-count">0</div><div class="flag-label">Essential Materials</div></div>
+    </div>
+  </div>
+
+  <!-- ghost IDs -->
+  <span id="sum-req-tot-material" style="display:none"></span>
+  <span id="ps-mat-count"         style="display:none"></span>
+  <span id="ps-essential"         style="display:none"></span>
+
+</div>
+
+<!-- ============ EXISTING ============ -->
+<div id="existing" class="panel hidden">
+
+  <div id="existingMaterialList"></div>
+
+  <div class="add-row-bar">
+    <button class="btn btn-primary" onclick="addExistingMaterial()">+ Add Raw Material</button>
+  </div>
+
+  <div class="total-bar">
+    <div class="total-bar-title">⚙ All Existing Raw Materials — Total</div>
+    <div class="total-grid" style="grid-template-columns:repeat(5,1fr)">
+      <div class="total-cell"><div class="total-label">Material Count</div><div class="total-value" id="ex-tot-count">0</div></div>
+      <div class="total-cell"><div class="total-label">Essential Materials</div><div class="total-value" id="ex-tot-essential">0</div></div>
+      <div class="total-cell"><div class="total-label">Total Monthly Spend</div><div class="total-value" id="ex-tot-spend">₹0</div></div>
+      <div class="total-cell"><div class="total-label">Total RM Cost / Unit</div><div class="total-value" id="ex-tot-cpu">₹0.00</div></div>
+      <div class="total-cell"><div class="total-label">Auto-fetches to</div><div class="total-value amber">Existing Unit Pricing → Raw Materials</div></div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ============ REQUIRED ============ -->
+<div id="required" class="panel hidden">
+
+  <div class="section">
+    <div class="section-title"><span><span class="section-title-roman">I.</span>Alternate Procurement Sources</span></div>
+    <p style="font-size:12px;color:var(--ink-soft);margin-bottom:12px;font-style:italic">Auto-populated from Existing tab when "Alternate procurement source needed?" is flagged.</p>
+    <div id="altSourceList">
+      <div class="empty-msg" style="text-align:center;color:var(--ink-faint);font-style:italic;padding:20px;background:#fff;border:1px dashed var(--border-dk);border-radius:8px">No alternate source interventions flagged yet — toggle the flag in the Existing tab to populate this section.</div>
+    </div>
+    <div class="add-row-bar">
+      <button class="btn" onclick="addAltSourceRow()">+ Add Alternate Source Row</button>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title"><span><span class="section-title-roman">II.</span>Alternate Raw Materials</span></div>
+    <p style="font-size:12px;color:var(--ink-soft);margin-bottom:12px;font-style:italic">Auto-populated from Existing tab when "Alternate raw material needed?" is flagged.</p>
+    <div id="altMaterialList">
+      <div class="empty-msg" style="text-align:center;color:var(--ink-faint);font-style:italic;padding:20px;background:#fff;border:1px dashed var(--border-dk);border-radius:8px">No alternate material interventions flagged yet — toggle the flag in the Existing tab to populate this section.</div>
+    </div>
+    <div class="add-row-bar">
+      <button class="btn" onclick="addAltMaterialRow()">+ Add Alternate Material Row</button>
+    </div>
+  </div>
+
+  <!-- SECTION III — New Raw Material -->
+  <div class="section">
+    <div class="section-title"><span><span class="section-title-roman">III.</span>New Raw Material</span></div>
+    <p style="font-size:12px;color:var(--ink-soft);margin-bottom:12px;font-style:italic">Standalone new raw materials not linked to any existing material — add freely.</p>
+    <div id="newMaterialList"></div>
+    <div class="add-row-bar">
+      <button class="btn btn-primary" onclick="addNewMaterialRow()">+ Add New Raw Material</button>
+    </div>
+  </div>
+
+  <div class="total-bar">
+    <div class="total-bar-title">⚙ Required Raw Materials — Optimised View</div>
+    <div class="total-grid" style="grid-template-columns:repeat(5,1fr)">
+      <div class="total-cell"><div class="total-label">Alternate Sources</div><div class="total-value" id="req-tot-source">0</div></div>
+      <div class="total-cell"><div class="total-label">Alternate Materials</div><div class="total-value" id="req-tot-material">0</div></div>
+      <div class="total-cell"><div class="total-label">New Raw Materials</div><div class="total-value" id="req-tot-new">0</div></div>
+      <div class="total-cell"><div class="total-label">Status: Completed</div><div class="total-value" id="req-tot-completed">0</div></div>
+      <div class="total-cell"><div class="total-label">Auto-fetches to</div><div class="total-value amber">Optimised Unit Pricing → Raw Materials</div></div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ============ RESOURCES ============ -->
+<div id="resources" class="panel hidden">
+  <div class="section">
+    <div class="section-title">Reference Materials</div>
+    <table class="data-table" id="resourcesTable">
+      <thead>
+        <tr>
+          <th style="width:25%">Resource Title</th>
+          <th style="width:18%">Category</th>
+          <th style="width:12%">Type</th>
+          <th style="width:30%">Description / Notes</th>
+          <th style="width:10%">File</th>
+          <th style="width:5%"></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><input type="text" placeholder="Resource title"></td>
+          <td>
+            <select>
+              <option>— Select —</option>
+              <option>Supplier Directory</option>
+              <option>Wholesaler Contact</option>
+              <option>FPO / Cooperative</option>
+              <option>Quality Standards</option>
+              <option>Seasonal Calendar</option>
+              <option>Substitute Material</option>
+            </select>
+          </td>
+          <td>
+            <select>
+              <option>— Select —</option>
+              <option>Contact</option>
+              <option>Reference</option>
+              <option>Quotation</option>
+              <option>Specification</option>
+              <option>Map / Location</option>
+            </select>
+          </td>
+          <td><input type="text" placeholder="Notes"></td>
+          <td>
+            <button class="btn" style="padding:3px 8px;font-size:10px">Upload</button>
+            <button class="btn" style="padding:3px 8px;font-size:10px">View ▷</button>
+          </td>
+          <td><button class="row-delete" onclick="deleteRow(this)">✕</button></td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="table-actions">
+      <span></span>
+      <button class="btn btn-primary" onclick="addRow('resourcesTable')">+ Add Resource</button>
+    </div>
+  </div>
+</div>
+
+<!-- ============ TASK LOG ============ -->
+<div id="tasklog" class="panel hidden">
+  <div class="section">
+    <div class="section-title">Task Log — Raw Material Activities</div>
+    <table class="data-table" id="taskLogTable">
+      <thead>
+        <tr>
+          <th style="width:5%">No.</th>
+          <th style="width:13%">Date</th>
+          <th style="width:42%">Task Name</th>
+          <th style="width:30%">Notes / Outcome</th>
+          <th style="width:7%">Attachment</th>
+          <th style="width:3%"></th>
+        </tr>
+      </thead>
+      <tbody id="taskLogBody"></tbody>
+    </table>
+    <div class="table-actions">
+      <span></span>
+      <button class="btn btn-primary" onclick="addTaskRow()">+ Add Entry</button>
+    </div>
+  </div>
+</div>
+
+</div>
+</div>
+</div>
+
+<script>
+// ============ TAB SWITCHING ============
+function showTab(id, el){
+  document.querySelectorAll('.panel').forEach(p => p.classList.add('hidden'));
+  document.getElementById(id).classList.remove('hidden');
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  el.classList.add('active');
+  if(id === 'summary') refreshSummary();
+}
+
+// ============ STATE ============
+let materialCounter    = 0;
+let altSourceCounter   = 0;
+let altMaterialCounter = 0;
+let newMaterialCounter = 0;
+
+// ============ EXISTING MATERIAL BLOCK ============
+function addExistingMaterial(){
+  materialCounter++;
+  const mid = `rm${materialCounter}`;
+  const list = document.getElementById('existingMaterialList');
+  const block = document.createElement('div');
+  block.className = 'machine-block';
+  block.id = mid;
+  block.innerHTML = renderExistingMaterial(mid, materialCounter);
+  list.appendChild(block);
+  recalcExistingMaterial(mid);
+}
+
+function renderExistingMaterial(mid, idx){
+  return `
+  <div class="machine-block-head" onclick="toggleMaterial('${mid}')">
+    <div class="mb-name">
+      <span class="chevron">▾</span>
+      <span style="opacity:0.85">Row ${idx} ·</span>
+      <input type="text" placeholder="Product" id="${mid}-headProduct"
+        style="background:rgba(255,255,255,0.15);border:1px solid rgba(255,255,255,0.3);color:#fff;padding:3px 8px;border-radius:4px;font-family:Georgia,serif;font-size:13px;width:160px"
+        oninput="syncHead('${mid}')" onclick="event.stopPropagation()">
+      <span style="opacity:0.5">·</span>
+      <input type="text" placeholder="Raw Material" id="${mid}-headMaterial"
+        style="background:rgba(255,255,255,0.15);border:1px solid rgba(255,255,255,0.3);color:#fff;padding:3px 8px;border-radius:4px;font-family:Georgia,serif;font-size:13px;width:160px"
+        oninput="syncHead('${mid}')" onclick="event.stopPropagation()">
+      <span class="mb-tag" id="${mid}-tagSource" style="display:none">Middleman</span>
+      <span class="mb-tag essential" id="${mid}-tagEssential" style="display:none">Essential</span>
+    </div>
+    <button class="mb-remove" onclick="event.stopPropagation();removeMaterial('${mid}')">Remove</button>
+  </div>
+  <div class="mb-body">
+
+    <div class="subsection">
+      <div class="subsection-title"><span style="color:var(--terracotta);font-style:italic;margin-right:6px">I.</span>Material Identity</div>
+      <div class="field-row">
+        <div class="field-label">Product Name *</div>
+        <input type="text" class="field-val" id="${mid}-productName" placeholder="Product name" oninput="syncProductName('${mid}')">
+      </div>
+      <div class="field-row">
+        <div class="field-label">Product SKU</div>
+        <input type="text" class="field-val" placeholder="SKU">
+      </div>
+      <div class="field-row">
+        <div class="field-label">Current Status of Use *</div>
+        <select class="field-val">
+          <option value="">— Select —</option>
+          <option>Yes</option>
+          <option>No</option>
+        </select>
+      </div>
+      <div class="field-row">
+        <div class="field-label">Name of Raw Material *</div>
+        <input type="text" class="field-val" id="${mid}-materialName" placeholder="Enter material name" oninput="syncMaterialName('${mid}')">
+      </div>
+      <div class="field-row">
+        <div class="field-label">Is It Essential? *</div>
+        <select class="field-val" id="${mid}-essential" onchange="updateEssentialTag('${mid}',this.value);recalcExistingTotals();refreshSummary()">
+          <option value="">— Select —</option>
+          <option value="Yes">Yes</option>
+          <option value="No">No</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="subsection">
+      <div class="subsection-title"><span style="color:var(--terracotta);font-style:italic;margin-right:6px">I.</span>Supply & Procurement</div>
+      <div class="field-row">
+        <div class="field-label">Availability</div>
+        <select class="field-val" id="${mid}-availability" onchange="refreshSummary()">
+          <option value="">— Select —</option>
+          <option value="Easy">Easy</option>
+          <option value="Moderate">Moderate</option>
+          <option value="Difficult">Difficult</option>
+        </select>
+      </div>
+      <div class="field-row">
+        <div class="field-label">Procurement Frequency</div>
+        <select class="field-val">
+          <option value="">— Select —</option>
+          <option>Daily</option>
+          <option>Weekly</option>
+          <option>Monthly</option>
+          <option>Seasonal</option>
+        </select>
+      </div>
+      <div class="field-row">
+        <div class="field-label">Procured Season Time</div>
+        <input type="text" class="field-val" placeholder="e.g., Oct–Mar">
+      </div>
+      <div class="field-row">
+        <div class="field-label">Procurement Source</div>
+        <select class="field-val" id="${mid}-source" onchange="updateSourceTag('${mid}',this.value)">
+          <option value="">— Select —</option>
+          <option value="Market">Market</option>
+          <option value="Wholesaler">Wholesaler</option>
+          <option value="Middleman">Middleman</option>
+          <option value="Farm">Farm</option>
+          <option value="Forest">Forest</option>
+          <option value="Online">Online</option>
+          <option value="Others">Others</option>
+        </select>
+      </div>
+      <div class="field-row">
+        <div class="field-label">Source Name</div>
+        <input type="text" class="field-val" placeholder="Enter source name">
+      </div>
+      <div class="field-row">
+        <div class="field-label">Source Location</div>
+        <input type="text" class="field-val" placeholder="Enter location">
+      </div>
+      <div class="field-row">
+        <div class="field-label">Source Contact</div>
+        <input type="text" class="field-val" placeholder="Phone / email">
+      </div>
+    </div>
+
+    <div class="subsection">
+      <div class="subsection-title"><span style="color:var(--terracotta);font-style:italic;margin-right:6px">II.</span>Cost & Calculations — Inputs</div>
+      <div class="field-row">
+        <div class="field-label">Unit *</div>
+        <input type="text" class="field-val" id="${mid}-unit" placeholder="e.g., gram, ml, kg" oninput="recalcExistingMaterial('${mid}')">
+      </div>
+      <div class="field-row">
+        <div class="field-label">Monthly Requirement</div>
+        <input type="number" class="field-val" placeholder="0">
+      </div>
+      <div class="field-row">
+        <div class="field-label">Quantity Required Per Batch *</div>
+        <input type="number" class="field-val" id="${mid}-qtyBatch" placeholder="0" oninput="recalcExistingMaterial('${mid}')">
+      </div>
+      <div class="field-row">
+        <div class="field-label">Price Per Unit *</div>
+        <input type="number" class="field-val" id="${mid}-pricePerUnit" placeholder="0.00" step="0.01" oninput="recalcExistingMaterial('${mid}')">
+      </div>
+      <div class="field-row">
+        <div class="field-label">Batch Size *</div>
+        <input type="number" class="field-val" id="${mid}-batchSize" placeholder="0" oninput="recalcExistingMaterial('${mid}')">
+      </div>
+      <div class="field-row">
+        <div class="field-label">Delivery / Transport Cost Per Trip</div>
+        <input type="number" class="field-val" id="${mid}-transportTrip" placeholder="0.00" step="0.01" oninput="recalcExistingMaterial('${mid}')">
+      </div>
+    </div>
+
+    <div class="subsection">
+      <div class="subsection-title"><span style="color:var(--terracotta);font-style:italic;margin-right:6px">II.</span>Calculated</div>
+      <div class="calc-strip" style="grid-template-columns:repeat(2,1fr)">
+        <div class="calc-cell"><div class="calc-label">Amount Per Batch</div><div class="calc-value" id="${mid}-amtBatch">₹ 0</div></div>
+        <div class="calc-cell"><div class="calc-label">Raw Material Qty Per Unit</div><div class="calc-value" id="${mid}-qtyUnit">0</div></div>
+        <div class="calc-cell"><div class="calc-label">Raw Material Cost Per Unit</div><div class="calc-value" id="${mid}-rmCostUnit">₹ 0</div></div>
+        <div class="calc-cell"><div class="calc-label">Transport Cost Per Unit</div><div class="calc-value" id="${mid}-transportUnit">₹ 0</div></div>
+      </div>
+      <div class="calc-summary">
+        <div class="calc-summary-title">Calculation Summary</div>
+        <div id="${mid}-summary-line1">Amount/Batch = 0 × ₹0 = ₹0</div>
+        <div id="${mid}-summary-line2">RM Qty/Unit = 0/0 = 0</div>
+        <div id="${mid}-summary-line3">RM Cost/Unit = ₹0/0 = ₹0</div>
+        <div id="${mid}-summary-line4">Transport/Unit = ₹0/0 = ₹0</div>
+        <div class="total-line" id="${mid}-summary-total">TOTAL LANDED COST/UNIT = ₹0</div>
+      </div>
+    </div>
+
+    <div class="intervention-flags">
+      <div class="intervention-flags-title"><span style="color:var(--terracotta-dk);font-style:italic;margin-right:6px">III.</span>⚠ Intervention Need</div>
+      <div class="intervention-grid">
+        <div class="intervention-cell">
+          <div class="intervention-toggle-row">
+            <span class="label">Alternate procurement source needed?</span>
+            <span class="toggle" id="${mid}-srcToggle" onclick="toggleSourceFlag(this,'${mid}')"></span>
+          </div>
+          <div class="flag-note" id="${mid}-srcNote">Not flagged</div>
+          <textarea id="${mid}-srcJustify" placeholder="Justify..." oninput="syncBridge('${mid}','source')"></textarea>
+        </div>
+        <div class="intervention-cell">
+          <div class="intervention-toggle-row">
+            <span class="label">Alternate raw material needed?</span>
+            <span class="toggle" id="${mid}-matToggle" onclick="toggleMaterialFlag(this,'${mid}')"></span>
+          </div>
+          <div class="flag-note" id="${mid}-matNote">Not flagged</div>
+          <textarea id="${mid}-matJustify" placeholder="Justify..." oninput="syncBridge('${mid}','material')"></textarea>
+        </div>
+      </div>
+    </div>
+
+  </div>`;
+}
+
+// ============ INTERACTION ============
+function toggleMaterial(mid){
+  document.getElementById(mid).classList.toggle('collapsed');
+}
+
+function removeMaterial(mid){
+  if(confirm('Remove this raw material?')){
+    document.querySelectorAll(`[data-bridge-source="${mid}"]`).forEach(el => el.remove());
+    document.getElementById(mid).remove();
+    refreshEmptyMessages();
+    recalcExistingTotals();
+    refreshSummary();
+  }
+}
+
+function syncHead(mid){
+  const headProduct  = document.getElementById(`${mid}-headProduct`)?.value  || '';
+  const headMaterial = document.getElementById(`${mid}-headMaterial`)?.value || '';
+  const pf = document.getElementById(`${mid}-productName`);
+  const mf = document.getElementById(`${mid}-materialName`);
+  if(pf && pf.value !== headProduct)   pf.value = headProduct;
+  if(mf && mf.value !== headMaterial)  mf.value = headMaterial;
+  syncBridgeNames(mid);
+  refreshSummary();
+}
+
+function syncProductName(mid){
+  const v = document.getElementById(`${mid}-productName`).value;
+  const h = document.getElementById(`${mid}-headProduct`);
+  if(h && h.value !== v) h.value = v;
+  syncBridgeNames(mid);
+  refreshSummary();
+}
+
+function syncMaterialName(mid){
+  const v = document.getElementById(`${mid}-materialName`).value;
+  const h = document.getElementById(`${mid}-headMaterial`);
+  if(h && h.value !== v) h.value = v;
+  syncBridgeNames(mid);
+  refreshSummary();
+}
+
+function syncBridgeNames(mid){
+  const product  = document.getElementById(`${mid}-headProduct`)?.value  || document.getElementById(`${mid}-productName`)?.value  || '—';
+  const material = document.getElementById(`${mid}-headMaterial`)?.value || document.getElementById(`${mid}-materialName`)?.value || '—';
+  document.querySelectorAll(`[data-bridge-source="${mid}"] .bridge-product`).forEach(el  => el.textContent = product  || '—');
+  document.querySelectorAll(`[data-bridge-source="${mid}"] .bridge-material`).forEach(el => el.textContent = material || '—');
+}
+
+function updateSourceTag(mid, val){
+  const tag = document.getElementById(`${mid}-tagSource`);
+  if(val){ tag.textContent = val; tag.style.display = 'inline-block'; tag.classList.toggle('middleman', val === 'Middleman'); }
+  else   { tag.style.display = 'none'; }
+}
+
+function updateEssentialTag(mid, val){
+  const tag = document.getElementById(`${mid}-tagEssential`);
+  tag.style.display = val === 'Yes' ? 'inline-block' : 'none';
+}
+
+// ============ FLAG TOGGLES ============
+function toggleSourceFlag(el, mid){
+  el.classList.toggle('on');
+  const note = document.getElementById(`${mid}-srcNote`);
+  if(el.classList.contains('on')){ note.textContent = '↻ Flagged → Details in Required Tab'; note.classList.add('active'); bridgeToRequired(mid,'source'); }
+  else                            { note.textContent = 'Not flagged'; note.classList.remove('active'); removeBridge(mid,'source'); }
+  refreshSummary();
+}
+
+function toggleMaterialFlag(el, mid){
+  el.classList.toggle('on');
+  const note = document.getElementById(`${mid}-matNote`);
+  if(el.classList.contains('on')){ note.textContent = '⇄ Flagged → Details in Required Tab'; note.classList.add('active'); bridgeToRequired(mid,'material'); }
+  else                            { note.textContent = 'Not flagged'; note.classList.remove('active'); removeBridge(mid,'material'); }
+  refreshSummary();
+}
+
+function bridgeToRequired(mid, type){
+  if(document.querySelector(`[data-bridge-source="${mid}"][data-bridge-type="${type}"]`)) return;
+  if(type === 'source') addAltSourceRow(mid);
+  else addAltMaterialRow(mid);
+}
+
+function removeBridge(mid, type){
+  const row = document.querySelector(`[data-bridge-source="${mid}"][data-bridge-type="${type}"]`);
+  if(row) row.remove();
+  refreshEmptyMessages();
+  recalcRequiredTotals();
+}
+
+function syncBridge(mid, type){
+  const justify = document.getElementById(type === 'source' ? `${mid}-srcJustify` : `${mid}-matJustify`)?.value || '';
+  const target  = document.querySelector(`[data-bridge-source="${mid}"][data-bridge-type="${type}"] .bridge-justify`);
+  if(target && target.value !== justify) target.value = justify;
+}
+
+// ============ EXISTING CALCULATIONS ============
+function recalcExistingMaterial(mid){
+  const qtyBatch      = parseFloat(document.getElementById(`${mid}-qtyBatch`)?.value)      || 0;
+  const pricePerUnit  = parseFloat(document.getElementById(`${mid}-pricePerUnit`)?.value)  || 0;
+  const batchSize     = parseFloat(document.getElementById(`${mid}-batchSize`)?.value)     || 0;
+  const transportTrip = parseFloat(document.getElementById(`${mid}-transportTrip`)?.value) || 0;
+  const unit          = document.getElementById(`${mid}-unit`)?.value || 'unit';
+
+  const amtBatch      = qtyBatch * pricePerUnit;
+  const qtyUnit       = batchSize > 0 ? qtyBatch / batchSize       : 0;
+  const rmCostUnit    = batchSize > 0 ? amtBatch  / batchSize       : 0;
+  const transportUnit = batchSize > 0 ? transportTrip / batchSize   : 0;
+  const totalLanded   = rmCostUnit + transportUnit;
+
+  document.getElementById(`${mid}-amtBatch`).textContent     = `₹ ${amtBatch.toFixed(2)}`;
+  document.getElementById(`${mid}-qtyUnit`).textContent      = `${qtyUnit.toFixed(2)} ${unit}`;
+  document.getElementById(`${mid}-rmCostUnit`).textContent   = `₹ ${rmCostUnit.toFixed(2)}`;
+  document.getElementById(`${mid}-transportUnit`).textContent= `₹ ${transportUnit.toFixed(2)}`;
+
+  document.getElementById(`${mid}-summary-line1`).textContent = `Amount/Batch = ${qtyBatch} ${unit} × ₹${pricePerUnit} = ₹${amtBatch.toFixed(2)}`;
+  document.getElementById(`${mid}-summary-line2`).textContent = `RM Qty/Unit = ${qtyBatch}/${batchSize} = ${qtyUnit.toFixed(2)} ${unit}`;
+  document.getElementById(`${mid}-summary-line3`).textContent = `RM Cost/Unit = ₹${amtBatch.toFixed(2)}/${batchSize} = ₹${rmCostUnit.toFixed(2)}`;
+  document.getElementById(`${mid}-summary-line4`).textContent = `Transport/Unit = ₹${transportTrip}/${batchSize} = ₹${transportUnit.toFixed(2)}`;
+  document.getElementById(`${mid}-summary-total`).textContent = `TOTAL LANDED COST/UNIT = ₹${totalLanded.toFixed(2)}`;
+
+  recalcExistingTotals();
+  refreshSummary();
+}
+
+function recalcExistingTotals(){
+  const blocks = document.querySelectorAll('#existingMaterialList .machine-block');
+  let count=blocks.length, essential=0, totSpend=0, totCpu=0;
+  blocks.forEach(b => {
+    const mid = b.id;
+    if(document.getElementById(`${mid}-essential`)?.value === 'Yes') essential++;
+    totSpend += parseFloat(document.getElementById(`${mid}-amtBatch`)?.textContent.replace(/[^\d.]/g,''))      || 0;
+    totCpu   += parseFloat(document.getElementById(`${mid}-summary-total`)?.textContent.replace(/[^\d.]/g,'')) || 0;
+  });
+  document.getElementById('ex-tot-count').textContent     = count;
+  document.getElementById('ex-tot-essential').textContent = essential;
+  document.getElementById('ex-tot-spend').textContent     = `₹${totSpend.toFixed(2)}`;
+  document.getElementById('ex-tot-cpu').textContent       = `₹${totCpu.toFixed(2)}`;
+}
+
+// ============ IMPLEMENTATION STATUS BLOCK HTML ============
+function implStatusHTML(selectClass, options){
+  const opts = options.map(o => `<option>${o}</option>`).join('');
+  return `
+    <div style="margin-top:12px;background:var(--terracotta-sft);border:1px solid var(--terracotta);border-radius:8px;padding:12px">
+      <div style="font-size:11px;text-transform:uppercase;letter-spacing:1px;color:var(--terracotta-dk);font-weight:bold;margin-bottom:10px">Implementation Status</div>
+      <div class="field-row" style="margin-bottom:8px">
+        <div class="field-label">Implementation Status</div>
+        <select class="field-val ${selectClass}" onchange="recalcRequiredTotals()">
+          ${opts}
+        </select>
+      </div>
+      <div class="field-row" style="margin-bottom:0">
+        <div class="field-label">Implementation Notes</div>
+        <textarea class="field-val" placeholder="Notes on implementation..." style="min-height:40px"></textarea>
+      </div>
+    </div>`;
+}
+
+// ============ REQUIRED — ALT SOURCES ============
+function addAltSourceRow(bridgeMid){
+  const list = document.getElementById('altSourceList');
+  list.querySelector('.empty-msg')?.remove();
+
+  altSourceCounter++;
+  const aid = `altsrc${altSourceCounter}`;
+  const div = document.createElement('div');
+  div.className = 'opt-row';
+  div.id = aid;
+  if(bridgeMid){
+    div.setAttribute('data-bridge-source', bridgeMid);
+    div.setAttribute('data-bridge-type', 'source');
+  }
+
+  const product  = bridgeMid ? (document.getElementById(`${bridgeMid}-productName`)?.value  || document.getElementById(`${bridgeMid}-headProduct`)?.value  || '—') : '';
+  const material = bridgeMid ? (document.getElementById(`${bridgeMid}-materialName`)?.value || document.getElementById(`${bridgeMid}-headMaterial`)?.value || '—') : '';
+  const justify  = bridgeMid ? (document.getElementById(`${bridgeMid}-srcJustify`)?.value   || '') : '';
+
+  div.innerHTML = `
+    <div class="opt-row-head" style="grid-template-columns:1.5fr 1.5fr 2fr auto">
+      <div>
+        <div class="opt-readonly-label">Product</div>
+        <div class="opt-readonly-val bridge-product">${product || '—'}</div>
+      </div>
+      <div>
+        <div class="opt-readonly-label">Current Raw Material</div>
+        <div class="opt-readonly-val bridge-material">${material || '—'}</div>
+      </div>
+      <div>
+        <div class="opt-readonly-label">Justification (from Existing)</div>
+        <textarea class="field-val bridge-justify" placeholder="Justification" style="width:100%;min-height:36px">${justify}</textarea>
+      </div>
+      <span class="int-type int-source">↻ Alternate Source</span>
+    </div>
+    <div style="padding:14px;display:grid;grid-template-columns:repeat(3,1fr);gap:12px">
+      <div>
+        <div class="opt-readonly-label">New Source Type</div>
+        <select class="field-val">
+          <option value="">— Select —</option>
+          <option>Market</option><option>Wholesaler</option><option>Farm</option>
+          <option>Forest</option><option>Online</option>
+          <option>Cooperative / FPO</option><option>Direct Producer</option><option>Others</option>
+        </select>
+      </div>
+      <div>
+        <div class="opt-readonly-label">New Source Name</div>
+        <input type="text" class="field-val" placeholder="Source name">
+      </div>
+      <div>
+        <div class="opt-readonly-label">Location</div>
+        <input type="text" class="field-val" placeholder="Location">
+      </div>
+      <div>
+        <div class="opt-readonly-label">Contact</div>
+        <input type="text" class="field-val" placeholder="Phone / email">
+      </div>
+      <div>
+        <div class="opt-readonly-label">New Price Per Unit (₹)</div>
+        <input type="number" class="field-val new-price-input" placeholder="0.00" step="0.01" oninput="recalcAltSavings('${aid}')">
+      </div>
+      <div>
+        <div class="opt-readonly-label">Old Price Per Unit (₹)</div>
+        <input type="number" class="field-val old-price-input" placeholder="0.00" step="0.01" oninput="recalcAltSavings('${aid}')">
+      </div>
+      <div>
+        <div class="opt-readonly-label">Expected Saving / Unit</div>
+        <input type="text" class="field-val auto" id="${aid}-saving" readonly placeholder="Auto">
+      </div>
+      <div>
+        <div class="opt-readonly-label">Notes</div>
+        <input type="text" class="field-val" placeholder="Notes">
+      </div>
+    </div>
+    ${implStatusHTML('alt-src-status', ['Pending','In Progress','Completed','Not Feasible'])}
+    <div style="padding:10px 14px 14px;text-align:right">
+      <button class="btn" onclick="removeAltSourceRow('${aid}')" style="color:var(--terracotta)">Remove</button>
+    </div>`;
+  list.appendChild(div);
+  recalcRequiredTotals();
+}
+
+function recalcAltSavings(aid){
+  const row = document.getElementById(aid);
+  if(!row) return;
+  const newP = parseFloat(row.querySelector('.new-price-input')?.value) || 0;
+  const oldP = parseFloat(row.querySelector('.old-price-input')?.value) || 0;
+  const savingField = document.getElementById(`${aid}-saving`);
+  if(savingField) savingField.value = `₹${(oldP - newP).toFixed(2)} / unit`;
+  refreshPriceImpact();
+}
+
+function removeAltSourceRow(aid){
+  if(confirm('Remove this row?')){
+    const row = document.getElementById(aid);
+    const bridgeMid = row.getAttribute('data-bridge-source');
+    row.remove();
+    if(bridgeMid){
+      const toggle = document.getElementById(`${bridgeMid}-srcToggle`);
+      if(toggle?.classList.contains('on')){ toggle.classList.remove('on'); const n = document.getElementById(`${bridgeMid}-srcNote`); if(n){ n.textContent='Not flagged'; n.classList.remove('active'); } }
+    }
+    refreshEmptyMessages();
+    recalcRequiredTotals();
+    refreshSummary();
+  }
+}
+
+// ============ REQUIRED — ALT MATERIALS ============
+function addAltMaterialRow(bridgeMid){
+  const list = document.getElementById('altMaterialList');
+  list.querySelector('.empty-msg')?.remove();
+
+  altMaterialCounter++;
+  const aid = `altmat${altMaterialCounter}`;
+  const div = document.createElement('div');
+  div.className = 'opt-row';
+  div.id = aid;
+  if(bridgeMid){
+    div.setAttribute('data-bridge-source', bridgeMid);
+    div.setAttribute('data-bridge-type', 'material');
+  }
+
+  const product  = bridgeMid ? (document.getElementById(`${bridgeMid}-productName`)?.value  || document.getElementById(`${bridgeMid}-headProduct`)?.value  || '—') : '';
+  const material = bridgeMid ? (document.getElementById(`${bridgeMid}-materialName`)?.value || document.getElementById(`${bridgeMid}-headMaterial`)?.value || '—') : '';
+  const justify  = bridgeMid ? (document.getElementById(`${bridgeMid}-matJustify`)?.value   || '') : '';
+
+  div.innerHTML = `
+    <div class="opt-row-head" style="grid-template-columns:1.5fr 1.5fr 2fr auto">
+      <div>
+        <div class="opt-readonly-label">Product</div>
+        <div class="opt-readonly-val bridge-product">${product || '—'}</div>
+      </div>
+      <div>
+        <div class="opt-readonly-label">Current Raw Material</div>
+        <div class="opt-readonly-val bridge-material">${material || '—'}</div>
+      </div>
+      <div>
+        <div class="opt-readonly-label">Justification (from Existing)</div>
+        <textarea class="field-val bridge-justify" placeholder="Justification" style="width:100%;min-height:36px">${justify}</textarea>
+      </div>
+      <span class="int-type int-material">⇄ Alternate Material</span>
+    </div>
+    <div style="padding:14px;display:grid;grid-template-columns:repeat(3,1fr);gap:12px">
+      <div>
+        <div class="opt-readonly-label">Proposed Alternate Material</div>
+        <input type="text" class="field-val" placeholder="Material name">
+      </div>
+      <div>
+        <div class="opt-readonly-label">Reason for Change</div>
+        <select class="field-val">
+          <option>— Select —</option>
+          <option>Cost Reduction</option><option>Quality Improvement</option>
+          <option>Availability</option><option>Sustainability</option>
+          <option>Local Sourcing</option><option>Others</option>
+        </select>
+      </div>
+      <div>
+        <div class="opt-readonly-label">New Price Per Unit (₹)</div>
+        <input type="number" class="field-val" placeholder="0.00" step="0.01">
+      </div>
+      <div>
+        <div class="opt-readonly-label">Quality Trade-off</div>
+        <select class="field-val">
+          <option>— Select —</option>
+          <option>None</option><option>Minor</option><option>Moderate</option><option>Significant</option>
+        </select>
+      </div>
+      <div>
+        <div class="opt-readonly-label">Trial Status</div>
+        <select class="field-val">
+          <option>Pending</option><option>Sample Sourced</option>
+          <option>Trial Run</option><option>Approved</option><option>Rejected</option>
+        </select>
+      </div>
+      <div style="grid-column:span 2">
+        <div class="opt-readonly-label">Notes</div>
+        <input type="text" class="field-val" placeholder="Notes on substitution, sourcing, trials">
+      </div>
+    </div>
+    ${implStatusHTML('alt-mat-status', ['Pending','In Progress','Completed','Not Feasible'])}
+    <div style="padding:10px 14px 14px;text-align:right">
+      <button class="btn" onclick="removeAltMaterialRow('${aid}')" style="color:var(--terracotta)">Remove</button>
+    </div>`;
+  list.appendChild(div);
+  recalcRequiredTotals();
+}
+
+function removeAltMaterialRow(aid){
+  if(confirm('Remove this row?')){
+    const row = document.getElementById(aid);
+    const bridgeMid = row.getAttribute('data-bridge-source');
+    row.remove();
+    if(bridgeMid){
+      const toggle = document.getElementById(`${bridgeMid}-matToggle`);
+      if(toggle?.classList.contains('on')){ toggle.classList.remove('on'); const n = document.getElementById(`${bridgeMid}-matNote`); if(n){ n.textContent='Not flagged'; n.classList.remove('active'); } }
+    }
+    refreshEmptyMessages();
+    recalcRequiredTotals();
+    refreshSummary();
+  }
+}
+
+// ============ REQUIRED — SECTION III (New Raw Material) ============
+function addNewMaterialRow(){
+  newMaterialCounter++;
+  const nid = `newmat${newMaterialCounter}`;
+  const list = document.getElementById('newMaterialList');
+  const div = document.createElement('div');
+  div.className = 'opt-row';
+  div.id = nid;
+
+  div.innerHTML = `
+    <div class="opt-row-head" style="grid-template-columns:2fr 1fr auto">
+      <div>
+        <div class="opt-readonly-label">Product / Purpose</div>
+        <input type="text" class="opt-readonly-val" placeholder="Product name or purpose"
+          style="background:transparent;border:none;border-bottom:1px solid var(--border-dk);width:100%;font-family:Georgia,serif;font-size:12px;font-weight:bold;color:var(--teal);padding:2px 0;outline:none">
+      </div>
+      <div>
+        <div class="opt-readonly-label">SKU / Reference</div>
+        <input type="text" class="opt-readonly-val" placeholder="SKU or ref"
+          style="background:transparent;border:none;border-bottom:1px solid var(--border-dk);width:100%;font-family:Georgia,serif;font-size:12px;font-weight:bold;color:var(--teal);padding:2px 0;outline:none">
+      </div>
+      <span class="int-type int-new">+ New Material</span>
+    </div>
+    <div style="padding:14px;display:grid;grid-template-columns:repeat(3,1fr);gap:12px">
+      <div>
+        <div class="opt-readonly-label">Name of Raw Material *</div>
+        <input type="text" class="field-val" placeholder="Material name">
+      </div>
+      <div>
+        <div class="opt-readonly-label">Procurement Source</div>
+        <select class="field-val">
+          <option value="">— Select —</option>
+          <option>Market</option><option>Wholesaler</option><option>Farm</option>
+          <option>Forest</option><option>Online</option>
+          <option>Cooperative / FPO</option><option>Direct Producer</option><option>Others</option>
+        </select>
+      </div>
+      <div>
+        <div class="opt-readonly-label">Source Name</div>
+        <input type="text" class="field-val" placeholder="Source name">
+      </div>
+      <div>
+        <div class="opt-readonly-label">Source Location</div>
+        <input type="text" class="field-val" placeholder="Location">
+      </div>
+      <div>
+        <div class="opt-readonly-label">Source Contact</div>
+        <input type="text" class="field-val" placeholder="Phone / email">
+      </div>
+      <div>
+        <div class="opt-readonly-label">Availability</div>
+        <select class="field-val">
+          <option value="">— Select —</option>
+          <option>Easy</option><option>Moderate</option><option>Difficult</option>
+        </select>
+      </div>
+      <div>
+        <div class="opt-readonly-label">Unit</div>
+        <input type="text" class="field-val" placeholder="e.g., gram, ml, kg">
+      </div>
+      <div>
+        <div class="opt-readonly-label">Qty Required Per Batch</div>
+        <input type="number" class="field-val" placeholder="0">
+      </div>
+      <div>
+        <div class="opt-readonly-label">Price Per Unit (₹)</div>
+        <input type="number" class="field-val" placeholder="0.00" step="0.01">
+      </div>
+      <div>
+        <div class="opt-readonly-label">Batch Size</div>
+        <input type="number" class="field-val" placeholder="0">
+      </div>
+      <div>
+        <div class="opt-readonly-label">Transport Cost Per Trip (₹)</div>
+        <input type="number" class="field-val" placeholder="0.00" step="0.01">
+      </div>
+      <div>
+        <div class="opt-readonly-label">Is It Essential?</div>
+        <select class="field-val">
+          <option value="">— Select —</option>
+          <option>Yes</option><option>No</option>
+        </select>
+      </div>
+      <div style="grid-column:span 3">
+        <div class="opt-readonly-label">Reason for Adding</div>
+        <input type="text" class="field-val" placeholder="Why is this new raw material needed?">
+      </div>
+    </div>
+    ${implStatusHTML('new-mat-status', ['Pending','In Progress','Completed','On Hold'])}
+    <div style="padding:10px 14px 14px;text-align:right">
+      <button class="btn" onclick="removeNewMaterialRow('${nid}')" style="color:var(--terracotta)">Remove</button>
+    </div>`;
+  list.appendChild(div);
+  recalcRequiredTotals();
+  refreshSummary();
+}
+
+function removeNewMaterialRow(nid){
+  if(confirm('Remove this row?')){
+    document.getElementById(nid).remove();
+    recalcRequiredTotals();
+    refreshSummary();
+  }
+}
+
+// ============ EMPTY MESSAGES ============
+function refreshEmptyMessages(){
+  const sourceList = document.getElementById('altSourceList');
+  if(sourceList && !sourceList.children.length){
+    sourceList.innerHTML = '<div class="empty-msg" style="text-align:center;color:var(--ink-faint);font-style:italic;padding:20px;background:#fff;border:1px dashed var(--border-dk);border-radius:8px">No alternate source interventions flagged yet — toggle the flag in the Existing tab to populate this section.</div>';
+  }
+  const matList = document.getElementById('altMaterialList');
+  if(matList && !matList.children.length){
+    matList.innerHTML = '<div class="empty-msg" style="text-align:center;color:var(--ink-faint);font-style:italic;padding:20px;background:#fff;border:1px dashed var(--border-dk);border-radius:8px">No alternate material interventions flagged yet — toggle the flag in the Existing tab to populate this section.</div>';
+  }
+}
+
+// ============ REQUIRED TOTALS ============
+function recalcRequiredTotals(){
+  const srcRows  = document.querySelectorAll('#altSourceList .opt-row');
+  const matRows  = document.querySelectorAll('#altMaterialList .opt-row');
+  const newRows  = document.querySelectorAll('#newMaterialList .opt-row');
+
+  let completed = 0;
+  srcRows.forEach(r => { const s = r.querySelector('.alt-src-status'); if(s?.value === 'Completed') completed++; });
+  matRows.forEach(r => { const s = r.querySelector('.alt-mat-status'); if(s?.value === 'Completed') completed++; });
+  newRows.forEach(r => { const s = r.querySelector('.new-mat-status'); if(s?.value === 'Completed') completed++; });
+
+  document.getElementById('req-tot-source').textContent    = srcRows.length;
+  document.getElementById('req-tot-material').textContent  = matRows.length;
+  document.getElementById('req-tot-new').textContent       = newRows.length;
+  document.getElementById('req-tot-completed').textContent = completed;
+  // mirror to summary card
+  const ss = document.getElementById('sum-req-tot-source');    if(ss) ss.textContent = srcRows.length;
+  const sm = document.getElementById('sum-req-tot-material');  if(sm) sm.textContent = matRows.length;
+  const sc = document.getElementById('sum-req-tot-completed'); if(sc) sc.textContent = completed;
+}
+
+// ============ SUMMARY ============
+function refreshSummary(){
+  const tbody  = document.getElementById('summaryMaterialTable');
+  const blocks = document.querySelectorAll('#existingMaterialList .machine-block');
+  let html='', count=0, essential=0, totSpend=0, totCpu=0;
+  let flagSrc=0, flagMat=0, flagDifficult=0;
+  let implDone=0, implProgress=0, implPending=0, implNotFeasible=0;
+  let compOldSum=0, compNewSum=0, compCount=0;
+
+  // Build lookup: mid → intervention from Required tab
+  const reqLookup = {};
+  document.querySelectorAll('#altSourceList .opt-row').forEach(row => {
+    const mid      = row.getAttribute('data-bridge-source');
+    if(!mid) return;
+    const newPrice = parseFloat(row.querySelector('.new-price-input')?.value) || 0;
+    const status   = row.querySelector('.alt-src-status')?.value || 'Pending';
+    const srcName  = Array.from(row.querySelectorAll('input[type="text"]')).find(i=>i.placeholder==='Source name')?.value || '';
+    const srcType  = Array.from(row.querySelectorAll('select')).find(s=>Array.from(s.options).some(o=>o.text==='Cooperative / FPO'))?.value || '';
+    reqLookup[mid] = { type:'source', newPrice, status, detail: srcName||srcType||'' };
+  });
+  document.querySelectorAll('#altMaterialList .opt-row').forEach(row => {
+    const mid        = row.getAttribute('data-bridge-source');
+    if(!mid || reqLookup[mid]) return;
+    const newPriceEl = Array.from(row.querySelectorAll('input[type="number"]')).find(i=>i.placeholder==='0.00');
+    const newPrice   = parseFloat(newPriceEl?.value) || 0;
+    const status     = row.querySelector('.alt-mat-status')?.value || 'Pending';
+    const matName    = Array.from(row.querySelectorAll('input[type="text"]')).find(i=>i.placeholder==='Material name')?.value || '';
+    reqLookup[mid] = { type:'material', newPrice, status, detail: matName||'' };
+  });
+
+  blocks.forEach(b => {
+    const mid          = b.id;
+    count++;
+    const product      = document.getElementById(`${mid}-productName`)?.value  || document.getElementById(`${mid}-headProduct`)?.value  || '—';
+    const material     = document.getElementById(`${mid}-materialName`)?.value || document.getElementById(`${mid}-headMaterial`)?.value || '—';
+    const source       = document.getElementById(`${mid}-source`)?.value       || '—';
+    const availability = document.getElementById(`${mid}-availability`)?.value || '—';
+    const isEssential  = document.getElementById(`${mid}-essential`)?.value === 'Yes';
+    const price        = parseFloat(document.getElementById(`${mid}-pricePerUnit`)?.value) || 0;
+    const cpu          = parseFloat(document.getElementById(`${mid}-summary-total`)?.textContent.replace(/[^\d.]/g,'')) || 0;
+    const amtBatch     = parseFloat(document.getElementById(`${mid}-amtBatch`)?.textContent.replace(/[^\d.]/g,''))      || 0;
+
+    if(isEssential) essential++;
+    if(availability==='Difficult') flagDifficult++;
+    if(document.getElementById(`${mid}-srcToggle`)?.classList.contains('on')) flagSrc++;
+    if(document.getElementById(`${mid}-matToggle`)?.classList.contains('on')) flagMat++;
+    totCpu += cpu; totSpend += amtBatch;
+
+    const availCls  = availability==='Easy'?'condition-good':availability==='Moderate'?'condition-fair':availability==='Difficult'?'condition-poor':'';
+    const availCell = availability!=='—' ? `<span class="condition-badge ${availCls}">${availability}</span>` : '—';
+    const essCell   = isEssential ? '<span class="condition-badge condition-good">Yes</span>' : '—';
+    const priceCell = price > 0 ? `₹${price.toFixed(2)}` : '—';
+
+    const req = reqLookup[mid];
+
+    // Intervention Type + Status columns
+    let intTypeCell   = '<span style="color:var(--ink-faint)">—</span>';
+    let intStatusCell = '<span style="color:var(--ink-faint)">—</span>';
+    if(req){
+      const badge = req.type==='source'
+        ? `<span class="status-badge status-progress">↻ Alt. Source</span>`
+        : `<span class="status-badge" style="background:#D6E3EE;color:#2C5A82">⇄ Alt. Material</span>`;
+      const sCls = req.status==='Completed'?'status-completed':req.status==='In Progress'?'status-progress':'status-pending';
+      intTypeCell   = badge + (req.detail ? `<div style="font-size:10px;color:var(--ink-soft);margin-top:3px">${req.detail}</div>` : '');
+      intStatusCell = `<span class="status-badge ${sCls}">${req.status}</span>`;
+
+      if(req.status==='Completed')       implDone++;
+      else if(req.status==='In Progress') implProgress++;
+      else if(req.status==='Not Feasible') implNotFeasible++;
+      else implPending++;
+    }
+
+    html += `<tr>
+      <td style="font-size:11px">${product}</td>
+      <td><strong>${material}</strong></td>
+      <td style="font-size:11px">${source}</td>
+      <td>${availCell}</td>
+      <td style="text-align:center">${essCell}</td>
+      <td style="font-weight:bold;color:var(--teal)">${priceCell}</td>
+      <td>${intTypeCell}</td>
+      <td>${intStatusCell}</td>
+      <td style="background:#FDF3EE">${newPriceCell}</td>
+      <td style="background:#EDF6EA">${savingCell}</td>
+    </tr>`;
+  });
+
+  // New materials
+  const newRows  = document.querySelectorAll('#newMaterialList .opt-row');
+  const newCount = newRows.length;
+  newRows.forEach(row => {
+    const product  = row.querySelector('.opt-row-head input')?.value || '—';
+    const matInput = Array.from(row.querySelectorAll('input[type="text"]')).find(i=>i.placeholder==='Material name');
+    const sourceEl = Array.from(row.querySelectorAll('select')).find(s=>Array.from(s.options).some(o=>o.text==='Market'));
+    const availEl  = Array.from(row.querySelectorAll('select')).find(s=>Array.from(s.options).some(o=>o.text==='Easy'));
+    const material = matInput?.value||'—', source=sourceEl?.value||'—', avail=availEl?.value||'—';
+    const availCls = avail==='Easy'?'condition-good':avail==='Moderate'?'condition-fair':avail==='Difficult'?'condition-poor':'';
+    const newStatus= row.querySelector('.new-mat-status')?.value||'Pending';
+    const sCls     = newStatus==='Completed'?'status-completed':newStatus==='In Progress'?'status-progress':'status-pending';
+    html += `<tr style="background:var(--highlight)">
+      <td style="font-size:11px">${product}</td>
+      <td><strong>${material}</strong></td>
+      <td style="font-size:11px">${source||'—'}</td>
+      <td>${avail&&avail!=='—'?`<span class="condition-badge ${availCls}">${avail}</span>`:'—'}</td>
+      <td style="color:var(--ink-faint)">—</td>
+      <td style="color:var(--ink-faint)">—</td>
+      <td><span class="status-badge status-completed">+ New Material</span></td>
+      <td><span class="status-badge ${sCls}">${newStatus}</span></td>
+      <td style="background:#FDF3EE;color:var(--ink-faint)">—</td>
+      <td style="background:#EDF6EA;color:var(--ink-faint)">—</td>
+    </tr>`;
+  });
+
+  tbody.innerHTML = (count===0 && newCount===0)
+    ? '<tr><td colspan="10" style="text-align:center;color:var(--ink-faint);font-style:italic;padding:14px">Auto-populated from Existing and Required tabs</td></tr>'
+    : html + `<tr class="total-row"><td colspan="10" style="font-size:10px;font-style:italic;color:var(--ink-faint)">Unit Pricing reads each material individually — RM Cost/Unit feeds from the Existing tab calculations</td></tr>`;
+
+  // Aggregates
+  const srcRows = document.querySelectorAll('#altSourceList .opt-row');
+  const matRows = document.querySelectorAll('#altMaterialList .opt-row');
+
+  document.getElementById('agg-ex-count').textContent         = count;
+  document.getElementById('agg-ex-essential').textContent     = essential;
+  document.getElementById('agg-ex-spend').textContent         = `₹${totSpend.toFixed(2)}`;
+  document.getElementById('agg-flag-difficult').textContent   = flagDifficult;
+  document.getElementById('ps-new-count').textContent         = newCount;
+  document.getElementById('agg-flag-source').textContent      = flagSrc;
+  document.getElementById('agg-flag-material').textContent    = flagMat;
+  document.getElementById('agg-flag-new').textContent         = newCount;
+  document.getElementById('sum-req-tot-source').textContent   = srcRows.length + matRows.length + newCount;
+  document.getElementById('sum-req-tot-completed').textContent= implDone;
+  document.getElementById('agg-impl-progress').textContent    = implProgress;
+  document.getElementById('agg-impl-pending').textContent     = implPending;
+  document.getElementById('agg-impl-notfeasible').textContent = implNotFeasible;
+
+  // Cost card — Before: avg existing price across all materials with an intervention
+  // After: avg new price from Completed interventions only
+  const cpuBeforeEl = document.getElementById('agg-ex-cpu');
+  const cpuAfterEl  = document.getElementById('agg-impl-cpu');
+  const savingEl    = document.getElementById('agg-impl-saving');
+
+  // Collect prices from all intervention rows
+  let allOldPrices = [], compOldPrices = [], compNewPrices = [];
+  srcRows.forEach(row => {
+    const mid  = row.getAttribute('data-bridge-source');
+    const oldP = parseFloat(document.getElementById(`${mid}-pricePerUnit`)?.value) || 0;
+    const newP = parseFloat(row.querySelector('.new-price-input')?.value) || 0;
+    const st   = row.querySelector('.alt-src-status')?.value || 'Pending';
+    if(oldP > 0) allOldPrices.push(oldP);
+    if(oldP > 0 && newP > 0 && st === 'Completed'){ compOldPrices.push(oldP); compNewPrices.push(newP); }
+  });
+  matRows.forEach(row => {
+    const mid    = row.getAttribute('data-bridge-source');
+    const oldP   = parseFloat(document.getElementById(`${mid}-pricePerUnit`)?.value) || 0;
+    const newPEl = Array.from(row.querySelectorAll('input[type="number"]')).find(i=>i.placeholder==='0.00');
+    const newP   = parseFloat(newPEl?.value) || 0;
+    const st     = row.querySelector('.alt-mat-status')?.value || 'Pending';
+    if(oldP > 0) allOldPrices.push(oldP);
+    if(oldP > 0 && newP > 0 && st === 'Completed'){ compOldPrices.push(oldP); compNewPrices.push(newP); }
+  });
+
+  const avg = arr => arr.length ? arr.reduce((a,b)=>a+b,0)/arr.length : null;
+  const avgBefore = avg(allOldPrices);
+  const avgAfter  = avg(compNewPrices);
+  const avgOldComp= avg(compOldPrices);
+
+  cpuBeforeEl.textContent = avgBefore !== null ? `₹${avgBefore.toFixed(2)}` : '—';
+  if(avgAfter !== null && avgOldComp !== null){
+    const saving = avgOldComp - avgAfter;
+    cpuAfterEl.textContent  = `₹${avgAfter.toFixed(2)}`;
+    cpuAfterEl.style.color  = saving > 0 ? 'var(--good-ink)' : saving < 0 ? 'var(--poor-ink)' : '';
+    savingEl.textContent    = saving !== 0 ? `${saving>0?'▼':'▲'} ₹${Math.abs(saving).toFixed(2)} / unit` : '—';
+    savingEl.style.color    = saving > 0 ? 'var(--good-ink)' : saving < 0 ? 'var(--poor-ink)' : '';
+  } else {
+    cpuAfterEl.textContent = '—';
+    savingEl.textContent   = '—';
+  }
+
+  // Flags
+  document.getElementById('flag-source-count').textContent    = flagSrc;
+  document.getElementById('flag-material-count').textContent  = flagMat;
+  document.getElementById('flag-difficult-count').textContent = flagDifficult;
+  document.getElementById('flag-essential-count').textContent = essential;
+
+  // Ghost IDs
+  const g = id => document.getElementById(id);
+  if(g('sum-req-tot-material'))  g('sum-req-tot-material').textContent = matRows.length;
+  if(g('ps-mat-count'))          g('ps-mat-count').textContent         = count;
+  if(g('ps-essential'))          g('ps-essential').textContent         = essential;
+  if(g('req-tot-source'))        g('req-tot-source').textContent       = srcRows.length;
+  if(g('req-tot-material'))      g('req-tot-material').textContent     = matRows.length;
+  if(g('req-tot-new'))           g('req-tot-new').textContent          = newCount;
+  if(g('req-tot-completed'))     g('req-tot-completed').textContent    = implDone;
+  if(g('ex-tot-count'))          g('ex-tot-count').textContent         = count;
+  if(g('ex-tot-essential'))      g('ex-tot-essential').textContent     = essential;
+  if(g('ex-tot-spend'))          g('ex-tot-spend').textContent         = `₹${totSpend.toFixed(2)}`;
+  if(g('ex-tot-cpu'))            g('ex-tot-cpu').textContent           = `₹${totCpu.toFixed(2)}`;
+
+  refreshPriceImpact();
+}
+
+// ============ PRICE IMPACT ============
+function refreshPriceImpact(){
+  const tbody = document.getElementById('priceImpactBody');
+  if(!tbody) return;
+  let html = '';
+
+  // Alternate Sources — old price from existing block, new price from Required tab input
+  document.querySelectorAll('#altSourceList .opt-row').forEach(row => {
+    const bridgeMid  = row.getAttribute('data-bridge-source');
+    const material   = bridgeMid
+      ? (document.getElementById(`${bridgeMid}-materialName`)?.value || document.getElementById(`${bridgeMid}-headMaterial`)?.value || '—')
+      : '—';
+    const oldPrice   = parseFloat(bridgeMid ? document.getElementById(`${bridgeMid}-pricePerUnit`)?.value : null) || 0;
+    const newPrice   = parseFloat(row.querySelector('.new-price-input')?.value) || 0;
+    if(oldPrice === 0 && newPrice === 0) return;
+    const diff       = oldPrice - newPrice;
+    const saving     = diff >= 0;
+    const diffLabel  = diff === 0 ? '—' : `${saving ? '▼' : '▲'} ₹${Math.abs(diff).toFixed(2)}`;
+    const impactClass= diff > 0 ? 'good-ink' : diff < 0 ? 'poor-ink' : 'ink-faint';
+    const impactText = diff > 0 ? 'Saving' : diff < 0 ? 'Higher Cost' : 'No Change';
+    html += `<tr>
+      <td>${material}</td>
+      <td><span class="status-badge status-progress">↻ Alternate Source</span></td>
+      <td>₹${oldPrice.toFixed(2)}</td>
+      <td>₹${newPrice.toFixed(2)}</td>
+      <td style="font-weight:bold;color:var(--${impactClass})">${diffLabel}</td>
+      <td><span class="condition-badge ${diff > 0 ? 'condition-good' : diff < 0 ? 'condition-poor' : ''}">${impactText}</span></td>
+    </tr>`;
+  });
+
+  // Alternate Materials — new price from Required tab input
+  document.querySelectorAll('#altMaterialList .opt-row').forEach(row => {
+    const bridgeMid  = row.getAttribute('data-bridge-source');
+    const material   = bridgeMid
+      ? (document.getElementById(`${bridgeMid}-materialName`)?.value || document.getElementById(`${bridgeMid}-headMaterial`)?.value || '—')
+      : '—';
+    const oldPrice   = parseFloat(bridgeMid ? document.getElementById(`${bridgeMid}-pricePerUnit`)?.value : null) || 0;
+    const newPriceEl = Array.from(row.querySelectorAll('input[type="number"]')).find(i => i.placeholder === '0.00');
+    const newPrice   = parseFloat(newPriceEl?.value) || 0;
+    if(oldPrice === 0 && newPrice === 0) return;
+    const diff       = oldPrice - newPrice;
+    const diffLabel  = diff === 0 ? '—' : `${diff >= 0 ? '▼' : '▲'} ₹${Math.abs(diff).toFixed(2)}`;
+    const impactClass= diff > 0 ? 'good-ink' : diff < 0 ? 'poor-ink' : 'ink-faint';
+    const impactText = diff > 0 ? 'Saving' : diff < 0 ? 'Higher Cost' : 'No Change';
+    html += `<tr>
+      <td>${material}</td>
+      <td><span class="status-badge status-pending" style="background:#D6E3EE;color:#2C5A82">⇄ Alternate Material</span></td>
+      <td>₹${oldPrice.toFixed(2)}</td>
+      <td>₹${newPrice.toFixed(2)}</td>
+      <td style="font-weight:bold;color:var(--${impactClass})">${diffLabel}</td>
+      <td><span class="condition-badge ${diff > 0 ? 'condition-good' : diff < 0 ? 'condition-poor' : ''}">${impactText}</span></td>
+    </tr>`;
+  });
+
+  if(html === ''){
+    tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;color:var(--ink-faint);font-style:italic;padding:14px">Auto-populated when alternate source or material prices are entered in the Required tab</td></tr>';
+  } else {
+    tbody.innerHTML = html;
+  }
+}
+
+// ============ TASK LOG ============
+const RM_TASKS = [
+  '01 — Awareness on Importance of Raw Material Data Collection',
+  '02 — Record Raw Material Data',
+  '03 — Calculate Raw Material Cost Per Unit',
+  '04 — Identify Difficult-Availability Materials',
+  '05 — Identify Alternate Procurement Source Need',
+  '06 — Identify Alternate Raw Material Need',
+  '07 — Identify New Raw Material Need',
+  '08 — Research Alternative Procurement Sources',
+  '09 — Research Alternative Raw Materials',
+  '10 — Research New Raw Material',
+  '11 — Record Alternate Source',
+  '12 — Record Alternate Material',
+  '13 — Record New Raw Material',
+  '14 — Establish Supply Linkage',
+  '15 — Monitor Supply Linkage',
+  '16 — Review Raw Material Cost Impact on Unit Pricing',
+  'If other, specify in comments',
+];
+
+const RM_TASK_OPTIONS = RM_TASKS.map(t => `<option value="${t}">${t}</option>`).join('');
+
+let taskLogCounter = 0;
+
+function addTaskRow(){
+  taskLogCounter++;
+  const tbody = document.getElementById('taskLogBody');
+  const tr = document.createElement('tr');
+  tr.innerHTML = `
+    <td class="num-col">${String(taskLogCounter).padStart(2,'0')}</td>
+    <td><input type="date" style="width:100%"></td>
+    <td>
+      <select style="width:100%">
+        <option value="">— Select Task —</option>
+        ${RM_TASK_OPTIONS}
+      </select>
+    </td>
+    <td><input type="text" placeholder="Notes / Outcome" style="width:100%"></td>
+    <td><button class="btn" style="padding:3px 8px;font-size:10px">Upload</button></td>
+    <td><button class="row-delete" onclick="deleteTaskRow(this)">✕</button></td>
+  `;
+  tbody.appendChild(tr);
+}
+
+function deleteTaskRow(btn){
+  const tbody = btn.closest('tbody');
+  btn.closest('tr').remove();
+  // renumber
+  tbody.querySelectorAll('tr').forEach((tr, i) => {
+    tr.querySelector('.num-col').textContent = String(i+1).padStart(2,'0');
+  });
+  taskLogCounter = tbody.rows.length;
+}
+
+function seedTaskLog(){
+  // start with one blank row ready to fill
+  addTaskRow();
+}
+
+// ============ GENERIC HELPERS ============
+function addRow(tableId){
+  const tbody = document.querySelector('#'+tableId+' tbody');
+  const row = tbody.rows[0].cloneNode(true);
+  row.querySelectorAll('input').forEach(i => { if(i.type !== 'file') i.value = ''; });
+  row.querySelectorAll('select').forEach(s => s.selectedIndex = 0);
+  tbody.appendChild(row);
+}
+function deleteRow(btn){
+  const row = btn.closest('tr');
+  const tbody = row.parentElement;
+  if(tbody.rows.length > 1) row.remove();
+  else alert('At least one row is required.');
+}
+
+// Init
+window.addEventListener('DOMContentLoaded', () => {
+  addExistingMaterial(); addExistingMaterial(); addExistingMaterial();
+  setTimeout(() => {
+    document.getElementById('rm1-headProduct').value='Turmeric Soap';
+    document.getElementById('rm1-headMaterial').value='Turmeric Powder';
+    document.getElementById('rm1-productName').value='Turmeric Soap';
+    document.getElementById('rm1-materialName').value='Turmeric Powder';
+    document.getElementById('rm1-essential').value='Yes'; updateEssentialTag('rm1','Yes');
+    document.getElementById('rm1-availability').value='Difficult';
+    document.getElementById('rm1-source').value='Middleman'; updateSourceTag('rm1','Middleman');
+    document.getElementById('rm1-pricePerUnit').value='85';
+    document.getElementById('rm1-qtyBatch').value='500';
+    document.getElementById('rm1-batchSize').value='100';
+    document.getElementById('rm1-unit').value='gram';
+    recalcExistingMaterial('rm1');
+    const t1=document.getElementById('rm1-srcToggle');
+    if(t1&&!t1.classList.contains('on')) toggleSourceFlag(t1,'rm1');
+
+    document.getElementById('rm2-headProduct').value='Neem Face Wash';
+    document.getElementById('rm2-headMaterial').value='Neem Oil';
+    document.getElementById('rm2-productName').value='Neem Face Wash';
+    document.getElementById('rm2-materialName').value='Neem Oil';
+    document.getElementById('rm2-essential').value='Yes'; updateEssentialTag('rm2','Yes');
+    document.getElementById('rm2-availability').value='Easy';
+    document.getElementById('rm2-source').value='Market'; updateSourceTag('rm2','Market');
+    document.getElementById('rm2-pricePerUnit').value='220';
+    document.getElementById('rm2-qtyBatch').value='200';
+    document.getElementById('rm2-batchSize').value='50';
+    document.getElementById('rm2-unit').value='ml';
+    recalcExistingMaterial('rm2');
+    const t2=document.getElementById('rm2-matToggle');
+    if(t2&&!t2.classList.contains('on')) toggleMaterialFlag(t2,'rm2');
+
+    document.getElementById('rm3-headProduct').value='Herbal Hair Oil';
+    document.getElementById('rm3-headMaterial').value='Coconut Oil';
+    document.getElementById('rm3-productName').value='Herbal Hair Oil';
+    document.getElementById('rm3-materialName').value='Coconut Oil';
+    document.getElementById('rm3-essential').value='No';
+    document.getElementById('rm3-availability').value='Moderate';
+    document.getElementById('rm3-source').value='Wholesaler'; updateSourceTag('rm3','Wholesaler');
+    document.getElementById('rm3-pricePerUnit').value='140';
+    document.getElementById('rm3-qtyBatch').value='300';
+    document.getElementById('rm3-batchSize').value='60';
+    document.getElementById('rm3-unit').value='ml';
+    recalcExistingMaterial('rm3');
+    recalcExistingTotals();
+
+    const srcRow=document.querySelector('#altSourceList .opt-row[data-bridge-source="rm1"]');
+    if(srcRow){
+      const sn=Array.from(srcRow.querySelectorAll('input[type="text"]')).find(i=>i.placeholder==='Source name');
+      if(sn) sn.value='Spice FPO, Wayanad';
+      const np=srcRow.querySelector('.new-price-input');
+      if(np){ np.value='62'; recalcAltSavings(srcRow.id); }
+      const st=srcRow.querySelector('.alt-src-status');
+      if(st) st.value='Completed';
+    }
+    const matRow=document.querySelector('#altMaterialList .opt-row[data-bridge-source="rm2"]');
+    if(matRow){
+      const mn=Array.from(matRow.querySelectorAll('input[type="text"]')).find(i=>i.placeholder==='Material name');
+      if(mn) mn.value='Karanj Oil';
+      const np=Array.from(matRow.querySelectorAll('input[type="number"]')).find(i=>i.placeholder==='0.00');
+      if(np) np.value='180';
+      const st=matRow.querySelector('.alt-mat-status');
+      if(st) st.value='In Progress';
+    }
+    recalcRequiredTotals();
+    refreshSummary();
+    showTab('summary',document.querySelector('.tab'));
+  }, 100);
+  seedTaskLog();
+});
+</script>
+
+</body>
+</html>

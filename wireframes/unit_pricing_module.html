@@ -1,0 +1,1223 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Unit Pricing Module · PRIME Rural</title>
+<style>
+:root {
+  --teal:#0E4D4E; --sea:#1A6B6D; --terracotta:#C26849; --terracotta-dk:#A85738;
+  --cream:#FBF5E5; --cream-deep:#F4ECD3; --offwhite:#FDFAF0; --panel:#FFFFFF;
+  --ink:#2A2520; --ink-soft:#6B6359; --ink-faint:#9C9384;
+  --border:#E8DFC9; --border-dk:#D6CDB6;
+  --warn-bg:#FBE9DF; --warn-border:#E5B299; --warn-ink:#7A3B22;
+  --highlight:#FFF8E1;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:Georgia,serif;background:var(--cream);color:var(--ink);line-height:1.4}
+.page{max-width:1200px;margin:0 auto;padding:24px}
+
+.header{background:var(--teal);color:#fff;padding:16px 20px;border-radius:12px 12px 0 0;display:flex;justify-content:space-between;align-items:center}
+.header h1{font-size:18px;font-weight:normal;letter-spacing:0.5px}
+.header .crumb{font-size:11px;opacity:0.75;text-transform:uppercase;letter-spacing:1px}
+
+.card{background:var(--cream);border:1px solid var(--border-dk);border-top:none;border-radius:0 0 12px 12px}
+
+.tab-bar{display:flex;background:var(--cream-deep);border-bottom:1px solid var(--border-dk)}
+.tab{padding:12px 22px;cursor:pointer;font-size:12px;text-transform:uppercase;letter-spacing:1px;color:var(--ink-soft);border-right:1px solid var(--border)}
+.tab.active{background:var(--teal);color:#fff}
+.tab:hover:not(.active){background:#EADFC0}
+
+.content{padding:22px}
+
+/* Product collapsible */
+.product-block{background:var(--cream-deep);border:1px solid var(--border-dk);border-radius:10px;margin-bottom:16px;overflow:hidden}
+.product-head{background:var(--sea);color:#fff;padding:12px 16px;display:flex;justify-content:space-between;align-items:center;cursor:pointer;user-select:none}
+.product-head:hover{background:var(--teal)}
+.product-head-left{display:flex;align-items:center;gap:12px;flex:1}
+.product-head-left select{background:rgba(255,255,255,0.15);color:#fff;border:1px solid rgba(255,255,255,0.3);padding:5px 10px;border-radius:5px;font-family:Georgia,serif;font-size:13px;cursor:pointer}
+.product-head-left select option{color:var(--ink);background:#fff}
+.product-head-meta{font-size:11px;opacity:0.85;letter-spacing:0.5px}
+.chevron{font-size:14px;transition:transform 0.2s}
+.product-block.collapsed .chevron{transform:rotate(-90deg)}
+.product-block.collapsed .product-body{display:none}
+.product-body{padding:16px}
+.product-remove{background:transparent;border:1px solid rgba(255,255,255,0.4);color:#fff;padding:3px 10px;border-radius:14px;cursor:pointer;font-size:11px;font-family:Georgia,serif}
+.product-remove:hover{background:var(--terracotta);border-color:var(--terracotta)}
+
+/* Sections within product */
+.section{background:#fff;padding:14px;border-radius:8px;margin-bottom:12px;border:1px solid var(--border)}
+.section-title{font-size:12px;text-transform:uppercase;letter-spacing:1.5px;color:var(--teal);margin-bottom:10px;padding-bottom:6px;border-bottom:1px solid var(--border-dk);font-weight:bold;display:flex;justify-content:space-between;align-items:center}
+.section-title-roman{color:var(--terracotta);margin-right:8px;font-style:italic}
+
+.field-row{display:flex;gap:12px;margin-bottom:8px;flex-wrap:wrap;align-items:center}
+.field-label{width:280px;font-size:12px;color:var(--ink-soft)}
+.field-val{flex:1;background:var(--offwhite);border:1px solid var(--border-dk);padding:6px 10px;border-radius:5px;font-size:12px;min-width:140px;font-family:Georgia,serif}
+.field-val[readonly],.field-val.auto{background:var(--cream-deep);color:var(--ink-soft);font-style:italic}
+
+.btn{padding:5px 12px;border-radius:20px;border:1px solid var(--border-dk);background:#fff;cursor:pointer;font-size:11px;color:var(--ink);font-family:Georgia,serif}
+.btn:hover{background:var(--cream-deep)}
+.btn-primary{background:var(--teal);color:#fff;border-color:var(--teal)}
+.btn-primary:hover{background:var(--sea)}
+.btn-accent{background:var(--terracotta);color:#fff;border-color:var(--terracotta)}
+.btn-accent:hover{background:var(--terracotta-dk)}
+
+/* Tables */
+table.data-table{width:100%;border-collapse:collapse;background:var(--offwhite);border-radius:6px;overflow:hidden;border:1px solid var(--border-dk);font-size:11px}
+table.data-table th{background:var(--teal);color:#fff;padding:8px;text-align:left;font-weight:normal;text-transform:uppercase;letter-spacing:0.5px;font-size:10px;border-right:1px solid var(--sea);white-space:nowrap}
+table.data-table th:last-child{border-right:none}
+table.data-table td{padding:6px 8px;border-bottom:1px solid var(--border);border-right:1px solid var(--border);vertical-align:middle}
+table.data-table td:last-child{border-right:none}
+table.data-table tr:last-child td{border-bottom:none}
+table.data-table input[type=text],table.data-table input[type=number],table.data-table select{width:100%;border:1px solid var(--border);padding:4px 6px;border-radius:3px;font-family:Georgia,serif;font-size:11px;background:#fff}
+table.data-table input[readonly],table.data-table .auto-cell{background:var(--cream-deep);color:var(--ink-soft);font-style:italic}
+table.data-table input:focus,table.data-table select:focus{outline:none;border-color:var(--teal)}
+table.data-table .num-col{width:40px;text-align:center;color:var(--ink-soft)}
+table.data-table .amount-col{font-weight:bold;color:var(--teal);text-align:right}
+
+.table-actions{display:flex;justify-content:space-between;align-items:center;margin-top:10px}
+.subtotal-row{font-size:12px;color:var(--ink);background:var(--highlight);padding:8px 12px;border-radius:5px;border:1px solid var(--border-dk);display:flex;justify-content:space-between;align-items:center}
+.subtotal-row strong{color:var(--terracotta-dk);font-size:13px}
+
+.row-delete{background:transparent;border:none;color:var(--terracotta);cursor:pointer;font-size:14px;padding:2px 6px}
+.row-delete:hover{color:var(--terracotta-dk)}
+
+/* Final unit cost callout */
+.unit-cost-block{background:linear-gradient(135deg,var(--teal),var(--sea));color:#fff;padding:18px;border-radius:10px;margin-top:12px}
+.unit-cost-block .uc-row{display:flex;justify-content:space-between;align-items:center;padding:6px 0;border-bottom:1px solid rgba(255,255,255,0.15);font-size:13px}
+.unit-cost-block .uc-row:last-child{border-bottom:none;padding-top:12px;font-size:18px;font-weight:bold}
+.unit-cost-block .uc-row input{background:rgba(255,255,255,0.15);border:1px solid rgba(255,255,255,0.3);color:#fff;padding:5px 8px;border-radius:4px;font-family:Georgia,serif;width:140px;text-align:right}
+.unit-cost-block .uc-row input::placeholder{color:rgba(255,255,255,0.5)}
+.unit-cost-block .uc-row .uc-val{font-family:Georgia,serif;letter-spacing:0.5px}
+
+.channel-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:10px}
+.channel-card{background:#fff;border:1px solid var(--border-dk);border-radius:6px;padding:12px}
+.channel-card.online{border-top:3px solid #185FA5}
+.channel-card.offline{border-top:3px solid #BA7517}
+.channel-card-title{font-size:11px;text-transform:uppercase;letter-spacing:1px;font-weight:bold;margin-bottom:10px;display:flex;align-items:center;gap:6px}
+.channel-card.online .channel-card-title{color:#185FA5}
+.channel-card.offline .channel-card-title{color:#BA7517}
+.channel-card .field-row{margin-bottom:8px}
+.channel-card .field-label{width:auto;font-size:11px;flex-basis:100%;padding-top:0;margin-bottom:3px}
+.channel-card .field-val{min-width:auto;width:100%}
+.channel-card .formula-hint{font-size:10px;color:var(--ink-faint);font-style:italic;margin-top:6px;padding-top:6px;border-top:1px dashed var(--border-dk)}
+@media (max-width:800px){.channel-grid{grid-template-columns:1fr}.ix-channel-grid{grid-template-columns:1fr !important}}
+
+.add-product-bar{text-align:center;padding:16px;background:var(--cream-deep);border:1px dashed var(--border-dk);border-radius:10px;margin-top:8px}
+
+.placeholder-tab{padding:40px;text-align:center;color:var(--ink-faint);font-style:italic;background:var(--cream-deep);border-radius:10px;border:1px dashed var(--border-dk)}
+
+.hidden{display:none !important}
+
+/* ─── Summary tab ─── */
+.sm-section{background:var(--cream-deep);padding:16px;border-radius:10px;margin-bottom:16px;border:1px solid var(--border)}
+.sm-section-title{font-size:13px;text-transform:uppercase;letter-spacing:1.5px;color:var(--teal);margin-bottom:12px;padding-bottom:8px;border-bottom:1px solid var(--border-dk);font-weight:bold}
+.sm-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.sm-card{background:#fff;border:1px solid var(--border);border-radius:10px;padding:14px}
+.sm-card h3{font-size:11px;text-transform:uppercase;letter-spacing:1px;color:var(--teal);margin-bottom:10px;padding-bottom:6px;border-bottom:1px solid var(--border);font-weight:bold}
+.sm-row{display:flex;justify-content:space-between;padding:5px 0;font-size:12px;border-bottom:1px solid #f0e9d6}
+.sm-row:last-child{border-bottom:none}
+.sm-lbl{color:var(--ink-soft)}
+.sm-val{font-weight:bold;color:var(--ink)}
+.sm-val.green{color:#3F6B3A}
+.sm-val.amber{color:var(--terracotta-dk)}
+.sm-val.red{color:#8B2A0F}
+.sm-flags{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+.sm-flag{background:#fff;border:1px solid var(--border);border-radius:8px;padding:12px}
+.sm-flag-icon{width:30px;height:30px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:14px;margin-bottom:8px;background:var(--cream-deep);color:var(--teal)}
+.sm-flag-icon.amber{background:var(--warn-bg);color:var(--warn-ink)}
+.sm-flag-icon.green{background:#E3EFDF;color:#3F6B3A}
+.sm-flag-icon.blue{background:#D6E3EE;color:#2C5A82}
+.sm-flag-count{font-size:20px;font-weight:bold;color:var(--ink)}
+.sm-flag-label{font-size:10px;color:var(--ink-soft);text-transform:uppercase;letter-spacing:0.5px;margin-top:4px}
+table.ov-tbl{width:100%;border-collapse:collapse;background:var(--offwhite);border-radius:6px;overflow:hidden;border:1px solid var(--border-dk);font-size:11px}
+table.ov-tbl th{background:var(--teal);color:#fff;padding:9px 8px;text-align:left;font-weight:normal;text-transform:uppercase;letter-spacing:0.5px;font-size:10px;border-right:1px solid var(--sea)}
+table.ov-tbl th:last-child{border-right:none}
+table.ov-tbl th.th-price{background:var(--sea)}
+table.ov-tbl td{padding:7px 8px;border-bottom:1px solid var(--border);border-right:1px solid var(--border);vertical-align:middle}
+table.ov-tbl td:last-child{border-right:none}
+table.ov-tbl tr:last-child td{border-bottom:none}
+table.ov-tbl tr.total-row td{background:var(--highlight);font-weight:bold;color:var(--terracotta-dk);border-top:2px solid var(--border-dk)}
+
+/* Two-column field grid for Section VII */
+.others-grid{display:grid;grid-template-columns:1fr;gap:10px}
+.others-block{background:var(--offwhite);border:1px solid var(--border);border-radius:6px;padding:10px}
+.others-block-title{font-size:11px;text-transform:uppercase;letter-spacing:1px;color:var(--terracotta);margin-bottom:8px;font-weight:bold}
+
+/* Section IX — Pricing Method */
+.method-helper{background:var(--offwhite);border:1px solid var(--border);border-left:3px solid var(--terracotta);border-radius:6px;padding:12px;margin-top:10px;margin-bottom:10px}
+.method-helper-title{font-size:11px;text-transform:uppercase;letter-spacing:1px;color:var(--terracotta-dk);margin-bottom:10px;font-weight:bold}
+.method-suggest{background:var(--highlight);border:1px solid var(--border-dk);border-radius:6px;padding:10px;margin-top:8px;display:flex;justify-content:space-between;align-items:center;font-size:12px}
+.method-suggest .ms-label{color:var(--ink-soft)}
+.method-suggest .ms-value{font-weight:bold;color:var(--terracotta-dk);font-size:14px;font-family:Georgia,serif}
+.method-suggest .ms-action{background:transparent;border:1px solid var(--terracotta);color:var(--terracotta-dk);padding:3px 10px;border-radius:14px;cursor:pointer;font-size:10px;font-family:Georgia,serif}
+.method-suggest .ms-action:hover{background:var(--terracotta);color:#fff}
+</style>
+</head>
+<body>
+
+<div class="page">
+<div class="header">
+  <h1>Unit Pricing Module</h1>
+  <div class="crumb">PRIME Rural · Pricing Tools</div>
+</div>
+<div class="card">
+
+<div class="tab-bar">
+  <div class="tab" onclick="showTab('summary',this)">Summary</div>
+  <div class="tab active" onclick="showTab('existing',this)">Existing</div>
+  <div class="tab" onclick="showTab('optimized',this)">Optimized</div>
+  <div class="tab" onclick="showTab('resources',this)">Resources</div>
+  <div class="tab" onclick="showTab('tasklog',this)">Task Log</div>
+</div>
+
+<div class="content">
+
+<!-- ============ SUMMARY TAB ============ -->
+<div id="summary" class="panel hidden">
+
+  <!-- ① SKU-WISE OVERVIEW -->
+  <div class="sm-section">
+    <div class="sm-section-title">SKU-wise Overview</div>
+    <p style="font-size:11px;color:var(--ink-soft);font-style:italic;margin-bottom:10px">One row per product. Prices read from the active pricing method.</p>
+    <div style="overflow-x:auto">
+    <table class="ov-tbl">
+      <thead>
+        <tr>
+          <th>SKU</th>
+          <th>Product</th>
+          <th>Existing Cost / Unit</th>
+          <th class="th-price">Optimized Cost / Unit</th>
+          <th class="th-price">Difference</th>
+          <th>Pricing Method</th>
+          <th class="th-price">Offline Wholesale</th>
+          <th class="th-price">Offline Retail</th>
+          <th class="th-price">Online Retail</th>
+        </tr>
+      </thead>
+      <tbody id="sumOverviewBody">
+        <tr><td colspan="10" style="text-align:center;color:var(--ink-faint);font-style:italic;padding:14px">Auto-populated from Existing tab</td></tr>
+      </tbody>
+    </table>
+    </div>
+  </div>
+
+  <!-- ② AGGREGATES -->
+  <div class="sm-section">
+    <div class="sm-section-title">Aggregates</div>
+    <div class="sm-grid">
+
+      <div class="sm-card">
+        <h3>Existing</h3>
+        <div class="sm-row"><span class="sm-lbl">Total SKUs</span><span class="sm-val" id="agg-total-skus">0</span></div>
+        <div class="sm-row"><span class="sm-lbl">Total Units Produced</span><span class="sm-val" id="agg-total-units">0</span></div>
+        <div class="sm-row"><span class="sm-lbl">SKUs with Cost Calculated</span><span class="sm-val green" id="agg-cost-set">0</span></div>
+        <div class="sm-row"><span class="sm-lbl">SKUs with Price Set</span><span class="sm-val green" id="agg-price-set">0</span></div>
+        <div class="sm-row"><span class="sm-lbl">SKUs Not Yet Priced</span><span class="sm-val amber" id="agg-not-priced">0</span></div>
+      </div>
+
+      <div class="sm-card">
+        <h3>Cost</h3>
+        <div class="sm-row"><span class="sm-lbl">Avg Existing Cost / Unit</span><span class="sm-val" id="agg-avg-cpu">—</span></div>
+        <div class="sm-row"><span class="sm-lbl">Avg Optimized Cost / Unit</span><span class="sm-val green" id="agg-avg-opt-cpu">—</span></div>
+        <div class="sm-row"><span class="sm-lbl">Avg Saving / Unit</span><span class="sm-val green" id="agg-avg-saving">—</span></div>
+        <div style="font-size:10px;color:var(--ink-faint);font-style:italic;margin-top:6px">Optimized = cost from Optimized tab per matching SKU.</div>
+      </div>
+
+      <div class="sm-card">
+        <h3>Interventions</h3>
+        <div class="sm-row"><span class="sm-lbl">Cost Plus Method</span><span class="sm-val" id="agg-m-costplus">0</span></div>
+        <div class="sm-row"><span class="sm-lbl">Competitor Based</span><span class="sm-val" id="agg-m-competitor">0</span></div>
+        <div class="sm-row"><span class="sm-lbl">Value Based</span><span class="sm-val" id="agg-m-value">0</span></div>
+        <div class="sm-row"><span class="sm-lbl">Priced for Offline</span><span class="sm-val" id="agg-ch-offline">0</span></div>
+        <div class="sm-row"><span class="sm-lbl">Priced for Online</span><span class="sm-val" id="agg-ch-online">0</span></div>
+      </div>
+
+      <div class="sm-card">
+        <h3>Status</h3>
+        <div class="sm-row"><span class="sm-lbl">Highest Offline Retail (Rs.)</span><span class="sm-val green" id="agg-max-off-retail">—</span></div>
+        <div class="sm-row"><span class="sm-lbl">Lowest Offline Retail (Rs.)</span><span class="sm-val" id="agg-min-off-retail">—</span></div>
+        <div class="sm-row"><span class="sm-lbl">Highest Online Retail (Rs.)</span><span class="sm-val green" id="agg-max-on-retail">—</span></div>
+        <div class="sm-row"><span class="sm-lbl">Lowest Online Retail (Rs.)</span><span class="sm-val" id="agg-min-on-retail">—</span></div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ③ INTERVENTION FLAGS -->
+  <div class="sm-section">
+    <div class="sm-section-title">Intervention Flags</div>
+    <div class="sm-flags">
+      <div class="sm-flag"><div class="sm-flag-icon green">₹</div><div class="sm-flag-count" id="flag-priced">0</div><div class="sm-flag-label">SKUs Priced</div></div>
+      <div class="sm-flag"><div class="sm-flag-icon blue">A</div><div class="sm-flag-count" id="flag-costplus">0</div><div class="sm-flag-label">Cost Plus</div></div>
+      <div class="sm-flag"><div class="sm-flag-icon blue">B</div><div class="sm-flag-count" id="flag-competitor">0</div><div class="sm-flag-label">Competitor Based</div></div>
+      <div class="sm-flag"><div class="sm-flag-icon amber">C</div><div class="sm-flag-count" id="flag-value">0</div><div class="sm-flag-label">Value Based</div></div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ============ EXISTING TAB ============ -->
+<div id="existing" class="panel">
+  <div id="existingProductList"></div>
+  <div class="add-product-bar">
+    <button class="btn btn-primary" onclick="addProduct('existingProductList')">+ Add Product</button>
+  </div>
+</div>
+
+<!-- ============ REQUIRED TAB ============ -->
+<div id="optimized" class="panel hidden">
+  <div id="optimizedProductList"></div>
+  <div class="add-product-bar">
+    <button class="btn btn-primary" onclick="addProduct('optimizedProductList')">+ Add Product</button>
+  </div>
+</div>
+
+<!-- ============ RESOURCES TAB ============ -->
+<div id="resources" class="panel hidden">
+  <div class="placeholder-tab">Resources view — pricing benchmarks, market rate references, and BE (Business Economics) reference data.</div>
+</div>
+
+<!-- ============ TASK LOG TAB ============ -->
+<div id="tasklog" class="panel hidden">
+  <div class="placeholder-tab">Task Log view — chronological record of pricing decisions, cost revisions, and audit trail.</div>
+</div>
+
+</div>
+</div>
+</div>
+
+<!-- Reference data (would come from upstream modules in production) -->
+<script>
+// Auto-fetch reference data — in production this comes from Raw Materials, HR, Packaging, Machinery modules
+const REF_DATA = {
+  rawMaterials: {
+    "Bamboo Shoot":     { unit:"gms", rate:0.50 },
+    "Oil":              { unit:"ml",  rate:0.12 },
+    "Modi masala":      { unit:"gms", rate:0.80 },
+    "Salt":             { unit:"gms", rate:0.02 },
+    "Chilli powder":    { unit:"gms", rate:1.20 },
+    "Bamboo strips":    { unit:"pcs", rate:2.00 },
+    "Eri silk yarn":    { unit:"gms", rate:3.50 },
+    "Lakadong turmeric":{ unit:"gms", rate:0.12 }
+  },
+  labour: {
+    "Self":    { unit:"hrs", rate:80 },
+    "Artisan": { unit:"hrs", rate:180 },
+    "Weaver":  { unit:"hrs", rate:180 }
+  },
+  packaging: {
+    "Bottle":       { unit:"pcs", rate:18.00 },
+    "Label":        { unit:"pcs", rate:5.00 },
+    "Kraft pouch":  { unit:"pcs", rate:6.00 },
+    "Hang tag":     { unit:"pcs", rate:3.00 },
+    "Tissue paper": { unit:"pcs", rate:1.00 },
+    "Seal":         { unit:"pcs", rate:1.00 },
+    "Pouch":        { unit:"pcs", rate:3.00 }
+  },
+  machinery: {
+    "Grinder":             { unit:"unit", rate:0.86 },
+    "Hand carving tools":  { unit:"unit", rate:0.07 },
+    "Traditional loom":    { unit:"unit", rate:6.39 }
+  },
+  // From Business Establishment (BE) profile
+  businessEstablishment: {
+    rentPerMonth: 2000,
+    electricityPerMonth: 500
+  },
+  // Available SKUs from Product Module
+  productSKUs: [
+    { sku:"VI-BS-B",  name:"Bamboo Shoot Pickle (200g)" },
+    { sku:"HC-BE-01", name:"Bamboo Earring (1 pair)" },
+    { sku:"HL-ES-01", name:"Eri Silk Muffler (180×30 cm)" },
+    { sku:"SP-LT-100",name:"Lakadong Turmeric Powder (100g)" }
+  ]
+};
+
+let productCounter = 0;
+
+function showTab(id, el){
+  document.querySelectorAll('.panel').forEach(p => p.classList.add('hidden'));
+  document.getElementById(id).classList.remove('hidden');
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  el.classList.add('active');
+  if(id === 'summary') refreshSummary();
+}
+
+function buildOptions(items, includeBlank=true){
+  let html = includeBlank ? '<option value="">— Select —</option>' : '';
+  items.forEach(i => { html += `<option value="${i}">${i}</option>`; });
+  return html;
+}
+
+function buildSKUOptions(){
+  let html = '<option value="">— Select SKU —</option>';
+  REF_DATA.productSKUs.forEach(p => {
+    html += `<option value="${p.sku}">${p.sku} · ${p.name}</option>`;
+  });
+  return html;
+}
+
+function addProduct(listId){
+  productCounter++;
+  const pid = `prod${productCounter}`;
+  const list = document.getElementById(listId);
+  const block = document.createElement('div');
+  block.className = 'product-block';
+  block.id = pid;
+  block.innerHTML = renderProductBlock(pid);
+  list.appendChild(block);
+
+  // seed one row in each table
+  addRMRow(pid);
+  addHRRow(pid);
+  addPKGRow(pid);
+  addMachRow(pid);
+}
+
+function removeProduct(pid){
+  if(confirm('Remove this product?')){
+    document.getElementById(pid).remove();
+  }
+}
+
+function toggleProduct(pid){
+  document.getElementById(pid).classList.toggle('collapsed');
+}
+
+function renderProductBlock(pid){
+  const rmOpts   = buildOptions(Object.keys(REF_DATA.rawMaterials));
+  const hrOpts   = buildOptions(Object.keys(REF_DATA.labour));
+  const pkgOpts  = buildOptions(Object.keys(REF_DATA.packaging));
+  const machOpts = buildOptions(Object.keys(REF_DATA.machinery));
+  const skuOpts  = buildSKUOptions();
+  const be       = REF_DATA.businessEstablishment;
+
+  return `
+  <div class="product-head" onclick="toggleProduct('${pid}')">
+    <div class="product-head-left" onclick="event.stopPropagation()">
+      <span class="chevron">▾</span>
+      <select onchange="updateProductLabel('${pid}', this)">${skuOpts}</select>
+      <span class="product-head-meta" id="${pid}-meta">No SKU selected</span>
+    </div>
+    <button class="product-remove" onclick="event.stopPropagation();removeProduct('${pid}')">Remove</button>
+  </div>
+  <div class="product-body">
+
+    <!-- SECTION I: Raw Materials -->
+    <div class="section">
+      <div class="section-title"><span><span class="section-title-roman">I.</span>Raw Materials</span></div>
+      <table class="data-table" id="${pid}-rm-tbl">
+        <thead>
+          <tr>
+            <th class="num-col">No.</th>
+            <th style="width:25%">Raw Material</th>
+            <th style="width:15%">Qty</th>
+            <th style="width:12%">Unit</th>
+            <th style="width:15%">Rate (Rs.)</th>
+            <th style="width:18%" class="amount-col">Amount (Rs.)</th>
+            <th style="width:5%"></th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+      <div class="table-actions">
+        <button class="btn" onclick="addRMRow('${pid}')">+ Add Row</button>
+        <div class="subtotal-row" style="margin:0">Subtotal: <strong id="${pid}-rm-sub">Rs. 0.00</strong></div>
+      </div>
+    </div>
+
+    <!-- SECTION II: Human Resource -->
+    <div class="section">
+      <div class="section-title"><span><span class="section-title-roman">II.</span>Human Resource</span></div>
+      <table class="data-table" id="${pid}-hr-tbl">
+        <thead>
+          <tr>
+            <th class="num-col">No.</th>
+            <th style="width:25%">Labour</th>
+            <th style="width:15%">Qty</th>
+            <th style="width:12%">Unit</th>
+            <th style="width:15%">Rate (Rs.)</th>
+            <th style="width:18%" class="amount-col">Amount (Rs.)</th>
+            <th style="width:5%"></th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+      <div class="table-actions">
+        <button class="btn" onclick="addHRRow('${pid}')">+ Add Row</button>
+        <div class="subtotal-row" style="margin:0">Subtotal: <strong id="${pid}-hr-sub">Rs. 0.00</strong></div>
+      </div>
+    </div>
+
+    <!-- SECTION III: Packaging -->
+    <div class="section">
+      <div class="section-title"><span><span class="section-title-roman">III.</span>Packaging</span></div>
+      <table class="data-table" id="${pid}-pkg-tbl">
+        <thead>
+          <tr>
+            <th class="num-col">No.</th>
+            <th style="width:25%">Packaging</th>
+            <th style="width:15%">Qty</th>
+            <th style="width:12%">Unit</th>
+            <th style="width:15%">Rate (Rs.)</th>
+            <th style="width:18%" class="amount-col">Amount (Rs.)</th>
+            <th style="width:5%"></th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+      <div class="table-actions">
+        <button class="btn" onclick="addPKGRow('${pid}')">+ Add Row</button>
+        <div class="subtotal-row" style="margin:0">Subtotal: <strong id="${pid}-pkg-sub">Rs. 0.00</strong></div>
+      </div>
+    </div>
+
+    <!-- SECTION IV: Transportation -->
+    <div class="section">
+      <div class="section-title"><span><span class="section-title-roman">IV.</span>Transportation</span></div>
+      <div class="field-row">
+        <div class="field-label">Total Cost of Raw Material Transportation</div>
+        <input type="number" class="field-val" placeholder="Rs. 0.00" oninput="calcTransport('${pid}')" id="${pid}-tr-rm">
+      </div>
+      <div class="field-row">
+        <div class="field-label">Total Cost of Packaging Transportation</div>
+        <input type="number" class="field-val" placeholder="Rs. 0.00" oninput="calcTransport('${pid}')" id="${pid}-tr-pkg">
+      </div>
+      <div class="subtotal-row">Subtotal: <strong id="${pid}-tr-sub">Rs. 0.00</strong></div>
+    </div>
+
+    <!-- SECTION V: Machine Depreciation -->
+    <div class="section">
+      <div class="section-title"><span><span class="section-title-roman">V.</span>Machine Depreciation</span></div>
+      <table class="data-table" id="${pid}-mach-tbl">
+        <thead>
+          <tr>
+            <th class="num-col">No.</th>
+            <th style="width:30%">Machine</th>
+            <th style="width:15%">Qty</th>
+            <th style="width:15%">Unit</th>
+            <th style="width:17%">Rate (Rs.)</th>
+            <th style="width:18%" class="amount-col">Amount (Rs.)</th>
+            <th style="width:5%"></th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+      <div class="table-actions">
+        <button class="btn" onclick="addMachRow('${pid}')">+ Add Row</button>
+        <div class="subtotal-row" style="margin:0">Subtotal: <strong id="${pid}-mach-sub">Rs. 0.00</strong></div>
+      </div>
+    </div>
+
+    <!-- SECTION VI: Gas -->
+    <div class="section">
+      <div class="section-title"><span><span class="section-title-roman">VI.</span>Gas</span></div>
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th style="width:25%">Item</th>
+            <th style="width:18%">Qty</th>
+            <th style="width:12%">Unit</th>
+            <th style="width:20%">Rate (Rs./hr)</th>
+            <th style="width:25%" class="amount-col">Amount (Rs.)</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Gas</td>
+            <td><input type="number" id="${pid}-gas-qty" placeholder="0" oninput="calcGas('${pid}')"></td>
+            <td class="auto-cell">hrs</td>
+            <td><input type="number" id="${pid}-gas-rate" placeholder="0.00" oninput="calcGas('${pid}')"></td>
+            <td class="amount-col"><input type="text" id="${pid}-gas-amt" readonly></td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="table-actions">
+        <span></span>
+        <div class="subtotal-row" style="margin:0">Subtotal: <strong id="${pid}-gas-sub">Rs. 0.00</strong></div>
+      </div>
+    </div>
+
+    <!-- SECTION VII: Others -->
+    <div class="section">
+      <div class="section-title"><span><span class="section-title-roman">VII.</span>Others</span></div>
+
+      <div class="others-grid">
+        <div class="others-block">
+          <div class="others-block-title">Rent</div>
+          <div class="field-row">
+            <div class="field-label">Rent per month (from BE)</div>
+            <input type="text" class="field-val auto" value="Rs. ${be.rentPerMonth.toFixed(2)}" readonly>
+          </div>
+          <div class="field-row">
+            <div class="field-label">Units produced per month</div>
+            <input type="number" class="field-val" placeholder="0" oninput="calcOthers('${pid}')" id="${pid}-rent-units">
+          </div>
+          <div class="field-row">
+            <div class="field-label">Rent / Unit</div>
+            <input type="text" class="field-val auto" readonly id="${pid}-rent-per-unit">
+          </div>
+        </div>
+
+        <div class="others-block">
+          <div class="others-block-title">Electricity</div>
+          <div class="field-row">
+            <div class="field-label">Electricity per month (from BE)</div>
+            <input type="text" class="field-val auto" value="Rs. ${be.electricityPerMonth.toFixed(2)}" readonly>
+          </div>
+          <div class="field-row">
+            <div class="field-label">Units produced per month</div>
+            <input type="number" class="field-val" placeholder="0" oninput="calcOthers('${pid}')" id="${pid}-elec-units">
+          </div>
+          <div class="field-row">
+            <div class="field-label">Electricity / Unit</div>
+            <input type="text" class="field-val auto" readonly id="${pid}-elec-per-unit">
+          </div>
+        </div>
+      </div>
+
+      <div class="subtotal-row" style="margin-top:10px">Subtotal (Rent + Electricity per unit): <strong id="${pid}-others-sub">Rs. 0.00</strong></div>
+    </div>
+
+    <!-- SECTION VIII: Unit Cost -->
+    <div class="section" style="background:transparent;border:none;padding:0">
+      <div class="section-title" style="background:#fff;padding:10px 14px;border-radius:8px 8px 0 0;border:1px solid var(--border);border-bottom:none;margin:0"><span><span class="section-title-roman">VIII.</span>Unit Cost</span></div>
+      <div class="unit-cost-block" style="border-radius:0 0 10px 10px;margin-top:0">
+        <div class="uc-row">
+          <span>Total Input Cost (Sections I–VI)</span>
+          <span class="uc-val" id="${pid}-total-input">Rs. 0.00</span>
+        </div>
+        <div class="uc-row">
+          <span>Total Units Produced</span>
+          <input type="number" placeholder="0" oninput="calcUnitCost('${pid}')" id="${pid}-total-units">
+        </div>
+        <div class="uc-row">
+          <span>Per-Unit Overheads (Section VII)</span>
+          <span class="uc-val" id="${pid}-overhead-per-unit">Rs. 0.00</span>
+        </div>
+        <div class="uc-row">
+          <span>Cost per Unit</span>
+          <span class="uc-val" id="${pid}-cost-per-unit">Rs. 0.00</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- SECTION IX: Pricing Strategy -->
+    <div class="section" style="margin-top:12px">
+      <div class="section-title"><span><span class="section-title-roman">IX.</span>Pricing Strategy</span></div>
+
+      <div class="field-row">
+        <div class="field-label">Pricing Method</div>
+        <select class="field-val" id="${pid}-pricing-method" onchange="onPricingMethodChange('${pid}')">
+          <option value="">— Select —</option>
+          <option value="cost-plus">A. Cost Plus Method</option>
+          <option value="competitor">B. Competitor Based Method</option>
+          <option value="value">C. Value Based Method</option>
+        </select>
+      </div>
+
+      <!-- Two parallel channel cards — Offline + Online -->
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:14px" class="ix-channel-grid">
+        ${renderPricingChannelCard(pid, 'off', 'Offline')}
+        ${renderPricingChannelCard(pid, 'on', 'Online')}
+      </div>
+    </div>
+
+  </div>`;
+}
+
+// Renders one Offline / Online card with A/B/C method blocks + appropriate summary
+function renderPricingChannelCard(pid, ch, label){
+  const showWholesale = (ch === 'off');
+  const summaryCols = showWholesale ? '1fr 1fr' : '1fr';
+  const accentColor = (ch === 'off') ? 'var(--teal)' : 'var(--terracotta)';
+  return `
+    <div class="ix-channel-card" style="background:#fff;border:1px solid var(--border-dk);border-top:3px solid ${accentColor};border-radius:8px;padding:14px;display:flex;flex-direction:column;gap:8px">
+      <div style="font-size:13px;font-weight:bold;color:var(--teal);text-transform:uppercase;letter-spacing:1px;padding-bottom:8px;border-bottom:1px solid var(--border-dk)">${label}</div>
+
+      <!-- A. Cost Plus -->
+      <div class="pricing-method-block" id="${pid}-${ch}-method-cost-plus" style="display:none;background:var(--cream-deep);border:1px solid var(--border-dk);border-left:3px solid var(--teal);border-radius:6px;padding:12px">
+        <div style="font-size:11px;text-transform:uppercase;letter-spacing:1px;color:var(--teal);font-weight:bold;margin-bottom:10px">A. Cost Plus</div>
+        <div class="field-row">
+          <div class="field-label" style="width:170px">Unit Cost (auto-fetched)</div>
+          <input type="text" class="field-val auto" id="${pid}-${ch}-cp-unit-cost" readonly placeholder="Rs. 0.00">
+        </div>
+        <div class="field-row">
+          <div class="field-label" style="width:170px">Markup (%)</div>
+          <input type="number" class="field-val" id="${pid}-${ch}-cp-markup" placeholder="0" step="0.01" oninput="calcPricing('${pid}')">
+        </div>
+        <div class="field-row">
+          <div class="field-label" style="width:170px">Selling Price (auto-calc)</div>
+          <input type="text" class="field-val auto" id="${pid}-${ch}-cp-selling" readonly placeholder="Rs. 0.00">
+        </div>
+        <div class="field-row">
+          <div class="field-label" style="width:170px">Retailer Margin (%)</div>
+          <input type="number" class="field-val" id="${pid}-${ch}-cp-retailer-margin" placeholder="0" step="0.01" oninput="calcPricing('${pid}')">
+        </div>
+        <div class="field-row">
+          <div class="field-label" style="width:170px">Retail Price (auto-calc)</div>
+          <input type="text" class="field-val auto" id="${pid}-${ch}-cp-retail" readonly placeholder="Rs. 0.00">
+        </div>
+        <div style="font-size:10px;color:var(--ink-faint);font-style:italic;margin-top:6px">Selling = Unit Cost × (1 + Markup %) &nbsp;·&nbsp; Retail = Selling × (1 + Retailer Margin %)</div>
+      </div>
+
+      <!-- B. Competitor Based -->
+      <div class="pricing-method-block" id="${pid}-${ch}-method-competitor" style="display:none;background:var(--cream-deep);border:1px solid var(--border-dk);border-left:3px solid var(--sea);border-radius:6px;padding:12px">
+        <div style="font-size:11px;text-transform:uppercase;letter-spacing:1px;color:var(--teal);font-weight:bold;margin-bottom:10px">B. Competitor Based</div>
+        <div class="field-row">
+          <div class="field-label" style="width:170px">Competitor Scope</div>
+          <select class="field-val" id="${pid}-${ch}-cb-scope" onchange="onCompetitorScopeChange('${pid}','${ch}')">
+            <option value="">— Select —</option>
+            <option value="local">Local Market</option>
+            <option value="state">State Market</option>
+            <option value="national">National Market</option>
+          </select>
+        </div>
+        <div class="field-row">
+          <div class="field-label" style="width:170px">Competitor Avg Price (Rs.)</div>
+          <input type="number" class="field-val" id="${pid}-${ch}-cb-competitor-avg" placeholder="Pick a scope to auto-fetch, or enter manually" step="0.01" oninput="calcPricing('${pid}')">
+        </div>
+        <div class="field-row">
+          <div class="field-label" style="width:170px">Positioning</div>
+          <select class="field-val" id="${pid}-${ch}-cb-position" onchange="calcPricing('${pid}')">
+            <option value="">— Select —</option>
+            <option value="-0.20">Below Market (−20%)</option>
+            <option value="-0.10">Below Market (−10%)</option>
+            <option value="0">Match Market (1.0×)</option>
+            <option value="0.10">Above Market (+10%)</option>
+            <option value="0.20">Premium (+20%)</option>
+            <option value="0.30">Premium (+30%)</option>
+            <option value="0.40">Premium (+40%)</option>
+            <option value="0.50">Premium (+50%)</option>
+          </select>
+        </div>
+        <div class="field-row">
+          <div class="field-label" style="width:170px">Selling Price (auto-calc)</div>
+          <input type="text" class="field-val auto" id="${pid}-${ch}-cb-selling" readonly placeholder="Rs. 0.00">
+        </div>
+        <div class="field-row">
+          <div class="field-label" style="width:170px">Retailer Margin (%)</div>
+          <input type="number" class="field-val" id="${pid}-${ch}-cb-retailer-margin" placeholder="0" step="0.01" oninput="calcPricing('${pid}')">
+        </div>
+        <div class="field-row">
+          <div class="field-label" style="width:170px">Retail Price (auto-calc)</div>
+          <input type="text" class="field-val auto" id="${pid}-${ch}-cb-retail" readonly placeholder="Rs. 0.00">
+        </div>
+        <div style="font-size:10px;color:var(--ink-faint);font-style:italic;margin-top:6px">Selling = Competitor Avg × Position Multiplier &nbsp;·&nbsp; Retail = Selling × (1 + Retailer Margin %)</div>
+      </div>
+
+      <!-- C. Value Based -->
+      <div class="pricing-method-block" id="${pid}-${ch}-method-value" style="display:none;background:var(--cream-deep);border:1px solid var(--border-dk);border-left:3px solid var(--terracotta);border-radius:6px;padding:12px">
+        <div style="font-size:11px;text-transform:uppercase;letter-spacing:1px;color:var(--teal);font-weight:bold;margin-bottom:10px">C. Value Based</div>
+        <div class="field-row">
+          <div class="field-label" style="width:170px">Target Retail Price (Rs.)</div>
+          <input type="number" class="field-val" id="${pid}-${ch}-vb-target-retail" placeholder="0.00" step="0.01" oninput="calcPricing('${pid}')">
+        </div>
+        <div class="field-row">
+          <div class="field-label" style="width:170px">Retailer Margin (%)</div>
+          <input type="number" class="field-val" id="${pid}-${ch}-vb-retailer-margin" placeholder="0" step="0.01" oninput="calcPricing('${pid}')">
+        </div>
+        <div class="field-row">
+          <div class="field-label" style="width:170px">Selling Price (auto-calc)</div>
+          <input type="text" class="field-val auto" id="${pid}-${ch}-vb-selling" readonly placeholder="Rs. 0.00">
+        </div>
+        <div class="field-row" style="align-items:flex-start">
+          <div class="field-label" style="width:170px;padding-top:6px">Value Justification</div>
+          <textarea class="field-val" id="${pid}-${ch}-vb-justification" placeholder="Why does this price reflect the perceived value?" style="min-height:50px"></textarea>
+        </div>
+        <div style="font-size:10px;color:var(--ink-faint);font-style:italic;margin-top:6px">Selling = Target Retail ÷ (1 + Retailer Margin %)</div>
+      </div>
+
+      <!-- Summary strip per card — Offline shows Wholesale + Retail, Online shows Retail only -->
+      <div style="background:linear-gradient(135deg,var(--teal),var(--sea));color:#fff;padding:12px 14px;border-radius:8px;margin-top:auto;display:grid;grid-template-columns:${summaryCols};gap:14px">
+        ${showWholesale ? `
+        <div>
+          <div style="font-size:10px;opacity:0.8;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:4px">Wholesale Price</div>
+          <div style="font-size:16px;font-weight:bold;font-family:Georgia,serif" id="${pid}-${ch}-final-wholesale">Rs. 0.00</div>
+        </div>` : ''}
+        <div>
+          <div style="font-size:10px;opacity:0.8;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:4px">Retail Price</div>
+          <div style="font-size:16px;font-weight:bold;font-family:Georgia,serif" id="${pid}-${ch}-final-retail">Rs. 0.00</div>
+        </div>
+      </div>
+    </div>
+  `;
+}
+
+function updateProductLabel(pid, sel){
+  const meta = document.getElementById(`${pid}-meta`);
+  if(sel.value){
+    const p = REF_DATA.productSKUs.find(x => x.sku === sel.value);
+    meta.textContent = p ? p.name : sel.value;
+  } else {
+    meta.textContent = 'No SKU selected';
+  }
+}
+
+// ============ ROW BUILDERS ============
+
+function addRMRow(pid){
+  const tbody = document.querySelector(`#${pid}-rm-tbl tbody`);
+  const opts = buildOptions(Object.keys(REF_DATA.rawMaterials));
+  const idx = tbody.rows.length + 1;
+  const tr = document.createElement('tr');
+  tr.innerHTML = `
+    <td class="num-col">${idx}</td>
+    <td><select onchange="rmAutoFill(this,'${pid}')">${opts}</select></td>
+    <td><input type="number" class="qty" placeholder="0" oninput="rmCalc(this,'${pid}')"></td>
+    <td><input type="text" class="unit auto-cell" readonly></td>
+    <td><input type="text" class="rate auto-cell" readonly></td>
+    <td class="amount-col"><input type="text" class="amt" readonly></td>
+    <td><button class="row-delete" onclick="deleteRowAndRecalc(this,'${pid}','rm')">✕</button></td>`;
+  tbody.appendChild(tr);
+}
+
+function addHRRow(pid){
+  const tbody = document.querySelector(`#${pid}-hr-tbl tbody`);
+  const opts = buildOptions(Object.keys(REF_DATA.labour));
+  const idx = tbody.rows.length + 1;
+  const tr = document.createElement('tr');
+  tr.innerHTML = `
+    <td class="num-col">${idx}</td>
+    <td><select onchange="hrAutoFill(this,'${pid}')">${opts}</select></td>
+    <td><input type="number" class="qty" placeholder="0" oninput="hrCalc(this,'${pid}')"></td>
+    <td><input type="text" class="unit auto-cell" readonly></td>
+    <td><input type="text" class="rate auto-cell" readonly></td>
+    <td class="amount-col"><input type="text" class="amt" readonly></td>
+    <td><button class="row-delete" onclick="deleteRowAndRecalc(this,'${pid}','hr')">✕</button></td>`;
+  tbody.appendChild(tr);
+}
+
+function addPKGRow(pid){
+  const tbody = document.querySelector(`#${pid}-pkg-tbl tbody`);
+  const opts = buildOptions(Object.keys(REF_DATA.packaging));
+  const idx = tbody.rows.length + 1;
+  const tr = document.createElement('tr');
+  tr.innerHTML = `
+    <td class="num-col">${idx}</td>
+    <td><select onchange="pkgAutoFill(this,'${pid}')">${opts}</select></td>
+    <td><input type="number" class="qty" placeholder="0" oninput="pkgCalc(this,'${pid}')"></td>
+    <td><input type="text" class="unit auto-cell" readonly></td>
+    <td><input type="text" class="rate auto-cell" readonly></td>
+    <td class="amount-col"><input type="text" class="amt" readonly></td>
+    <td><button class="row-delete" onclick="deleteRowAndRecalc(this,'${pid}','pkg')">✕</button></td>`;
+  tbody.appendChild(tr);
+}
+
+function addMachRow(pid){
+  const tbody = document.querySelector(`#${pid}-mach-tbl tbody`);
+  const opts = buildOptions(Object.keys(REF_DATA.machinery));
+  const idx = tbody.rows.length + 1;
+  const tr = document.createElement('tr');
+  tr.innerHTML = `
+    <td class="num-col">${idx}</td>
+    <td><select onchange="machAutoFill(this,'${pid}')">${opts}</select></td>
+    <td><input type="number" class="qty" placeholder="1" value="1" oninput="machCalc(this,'${pid}')"></td>
+    <td><input type="text" class="unit auto-cell" readonly></td>
+    <td><input type="text" class="rate auto-cell" readonly></td>
+    <td class="amount-col"><input type="text" class="amt" readonly></td>
+    <td><button class="row-delete" onclick="deleteRowAndRecalc(this,'${pid}','mach')">✕</button></td>`;
+  tbody.appendChild(tr);
+}
+
+// ============ AUTO-FILL ============
+
+function autoFill(row, refTable, key){
+  const ref = refTable[key];
+  if(!ref){ return; }
+  row.querySelector('.unit').value = ref.unit;
+  row.querySelector('.rate').value = ref.rate.toFixed(2);
+}
+
+function rmAutoFill(sel, pid){
+  const row = sel.closest('tr');
+  if(sel.value){ autoFill(row, REF_DATA.rawMaterials, sel.value); }
+  else { row.querySelector('.unit').value = ''; row.querySelector('.rate').value = ''; }
+  rmCalc(sel, pid);
+}
+function hrAutoFill(sel, pid){
+  const row = sel.closest('tr');
+  if(sel.value){ autoFill(row, REF_DATA.labour, sel.value); }
+  else { row.querySelector('.unit').value = ''; row.querySelector('.rate').value = ''; }
+  hrCalc(sel, pid);
+}
+function pkgAutoFill(sel, pid){
+  const row = sel.closest('tr');
+  if(sel.value){ autoFill(row, REF_DATA.packaging, sel.value); }
+  else { row.querySelector('.unit').value = ''; row.querySelector('.rate').value = ''; }
+  pkgCalc(sel, pid);
+}
+function machAutoFill(sel, pid){
+  const row = sel.closest('tr');
+  if(sel.value){ autoFill(row, REF_DATA.machinery, sel.value); }
+  else { row.querySelector('.unit').value = ''; row.querySelector('.rate').value = ''; }
+  machCalc(sel, pid);
+}
+
+// ============ ROW CALC + SUBTOTAL ============
+
+function rowAmount(row){
+  const qty = parseFloat(row.querySelector('.qty').value) || 0;
+  const rate = parseFloat(row.querySelector('.rate').value) || 0;
+  return qty * rate;
+}
+
+function recalcSection(pid, prefix){
+  const tbody = document.querySelector(`#${pid}-${prefix}-tbl tbody`);
+  let sub = 0;
+  Array.from(tbody.rows).forEach(r => {
+    const amt = rowAmount(r);
+    r.querySelector('.amt').value = amt.toFixed(2);
+    sub += amt;
+  });
+  document.getElementById(`${pid}-${prefix}-sub`).textContent = `Rs. ${sub.toFixed(2)}`;
+  recalcUnitCost(pid);
+}
+
+function rmCalc(el, pid){ recalcSection(pid, 'rm'); }
+function hrCalc(el, pid){ recalcSection(pid, 'hr'); }
+function pkgCalc(el, pid){ recalcSection(pid, 'pkg'); }
+function machCalc(el, pid){ recalcSection(pid, 'mach'); }
+
+function deleteRowAndRecalc(btn, pid, prefix){
+  const row = btn.closest('tr');
+  const tbody = row.parentElement;
+  if(tbody.rows.length > 1){
+    row.remove();
+    // renumber
+    Array.from(tbody.rows).forEach((r,i) => { r.querySelector('.num-col').textContent = i+1; });
+    recalcSection(pid, prefix);
+  } else {
+    alert('At least one row is required.');
+  }
+}
+
+// ============ TRANSPORTATION ============
+
+function calcTransport(pid){
+  const rm = parseFloat(document.getElementById(`${pid}-tr-rm`).value) || 0;
+  const pkg = parseFloat(document.getElementById(`${pid}-tr-pkg`).value) || 0;
+  const sub = rm + pkg;
+  document.getElementById(`${pid}-tr-sub`).textContent = `Rs. ${sub.toFixed(2)}`;
+  recalcUnitCost(pid);
+}
+
+// ============ GAS ============
+
+function calcGas(pid){
+  const qty = parseFloat(document.getElementById(`${pid}-gas-qty`).value) || 0;
+  const rate = parseFloat(document.getElementById(`${pid}-gas-rate`).value) || 0;
+  const amt = qty * rate;
+  document.getElementById(`${pid}-gas-amt`).value = amt.toFixed(2);
+  document.getElementById(`${pid}-gas-sub`).textContent = `Rs. ${amt.toFixed(2)}`;
+  recalcUnitCost(pid);
+}
+
+// ============ OTHERS (Rent / Electricity per unit) ============
+
+function calcOthers(pid){
+  const be = REF_DATA.businessEstablishment;
+  const rentUnits = parseFloat(document.getElementById(`${pid}-rent-units`).value) || 0;
+  const elecUnits = parseFloat(document.getElementById(`${pid}-elec-units`).value) || 0;
+  const rentPerUnit = rentUnits > 0 ? be.rentPerMonth / rentUnits : 0;
+  const elecPerUnit = elecUnits > 0 ? be.electricityPerMonth / elecUnits : 0;
+  document.getElementById(`${pid}-rent-per-unit`).value = `Rs. ${rentPerUnit.toFixed(2)}`;
+  document.getElementById(`${pid}-elec-per-unit`).value = `Rs. ${elecPerUnit.toFixed(2)}`;
+  const sub = rentPerUnit + elecPerUnit;
+  document.getElementById(`${pid}-others-sub`).textContent = `Rs. ${sub.toFixed(2)}`;
+  recalcUnitCost(pid);
+}
+
+// ============ FINAL UNIT COST ============
+
+function readSubtotal(id){
+  const el = document.getElementById(id);
+  if(!el) return 0;
+  return parseFloat(el.textContent.replace(/[^0-9.]/g,'')) || 0;
+}
+
+function recalcUnitCost(pid){
+  const totalInput =
+    readSubtotal(`${pid}-rm-sub`) +
+    readSubtotal(`${pid}-hr-sub`) +
+    readSubtotal(`${pid}-pkg-sub`) +
+    readSubtotal(`${pid}-tr-sub`) +
+    readSubtotal(`${pid}-mach-sub`) +
+    readSubtotal(`${pid}-gas-sub`);
+  document.getElementById(`${pid}-total-input`).textContent = `Rs. ${totalInput.toFixed(2)}`;
+
+  const overheadPerUnit = readSubtotal(`${pid}-others-sub`);
+  document.getElementById(`${pid}-overhead-per-unit`).textContent = `Rs. ${overheadPerUnit.toFixed(2)}`;
+
+  const totalUnits = parseFloat(document.getElementById(`${pid}-total-units`).value) || 0;
+  const costPerUnit = totalUnits > 0 ? (totalInput / totalUnits) + overheadPerUnit : 0;
+  document.getElementById(`${pid}-cost-per-unit`).textContent = `Rs. ${costPerUnit.toFixed(2)}`;
+
+  // Cascade: keep Section IX in sync with Unit Cost changes
+  calcPricing(pid);
+}
+
+function calcUnitCost(pid){ recalcUnitCost(pid); }
+
+// ============ SECTION IX — PRICING STRATEGY ============
+
+function onPricingMethodChange(pid){
+  const method = document.getElementById(`${pid}-pricing-method`).value;
+  ['off','on'].forEach(ch => {
+    ['cost-plus','competitor','value'].forEach(m => {
+      const el = document.getElementById(`${pid}-${ch}-method-${m}`);
+      if(el) el.style.display = (m === method) ? 'block' : 'none';
+    });
+  });
+  calcPricing(pid);
+}
+
+// Placeholder competitor average prices by scope and channel.
+// To be replaced with a live fetch from the Market Research module's Competitor Pricing data.
+const COMPETITOR_AVG_PLACEHOLDER = {
+  off: { local: 80, state: 110, national: 140 },
+  on:  { local: 95, state: 125, national: 165 }
+};
+
+function onCompetitorScopeChange(pid, ch){
+  const scope = document.getElementById(`${pid}-${ch}-cb-scope`)?.value;
+  const priceEl = document.getElementById(`${pid}-${ch}-cb-competitor-avg`);
+  if(!priceEl) return;
+  if(scope){
+    const fetchedPrice = COMPETITOR_AVG_PLACEHOLDER[ch]?.[scope] ?? '';
+    priceEl.value = fetchedPrice;
+    priceEl.readOnly = true;
+    priceEl.classList.add('auto');
+    priceEl.title = 'Auto-fetched from Market Research · clear scope to override manually';
+  } else {
+    // Scope cleared — restore manual entry mode but keep whatever value is there
+    priceEl.readOnly = false;
+    priceEl.classList.remove('auto');
+    priceEl.title = '';
+  }
+  calcPricing(pid);
+}
+
+function getCostPerUnit(pid){
+  const txt = document.getElementById(`${pid}-cost-per-unit`)?.textContent || '';
+  return parseFloat(txt.replace(/[^\d.]/g,'')) || 0;
+}
+
+function calcPricing(pid){
+  const method = document.getElementById(`${pid}-pricing-method`)?.value;
+  ['off','on'].forEach(ch => calcPricingForChannel(pid, ch, method));
+}
+
+function calcPricingForChannel(pid, ch, method){
+  let wholesale = 0, retail = 0;
+  const cost = getCostPerUnit(pid);
+
+  if(method === 'cost-plus'){
+    const ucEl = document.getElementById(`${pid}-${ch}-cp-unit-cost`);
+    if(ucEl) ucEl.value = `Rs. ${cost.toFixed(2)}`;
+    const markup = (parseFloat(document.getElementById(`${pid}-${ch}-cp-markup`)?.value) || 0) / 100;
+    const retMargin = (parseFloat(document.getElementById(`${pid}-${ch}-cp-retailer-margin`)?.value) || 0) / 100;
+    wholesale = cost * (1 + markup);
+    retail = wholesale * (1 + retMargin);
+    const sellEl = document.getElementById(`${pid}-${ch}-cp-selling`);
+    const retEl = document.getElementById(`${pid}-${ch}-cp-retail`);
+    if(sellEl) sellEl.value = `Rs. ${wholesale.toFixed(2)}`;
+    if(retEl) retEl.value = `Rs. ${retail.toFixed(2)}`;
+  } else if(method === 'competitor'){
+    const compAvg = parseFloat(document.getElementById(`${pid}-${ch}-cb-competitor-avg`)?.value) || 0;
+    const posStr = document.getElementById(`${pid}-${ch}-cb-position`)?.value;
+    const retMargin = (parseFloat(document.getElementById(`${pid}-${ch}-cb-retailer-margin`)?.value) || 0) / 100;
+    if(posStr !== '' && posStr !== undefined){
+      const positionDelta = parseFloat(posStr) || 0;
+      wholesale = compAvg * (1 + positionDelta);
+    }
+    retail = wholesale * (1 + retMargin);
+    const sellEl = document.getElementById(`${pid}-${ch}-cb-selling`);
+    const retEl = document.getElementById(`${pid}-${ch}-cb-retail`);
+    if(sellEl) sellEl.value = wholesale > 0 ? `Rs. ${wholesale.toFixed(2)}` : '';
+    if(retEl) retEl.value = retail > 0 ? `Rs. ${retail.toFixed(2)}` : '';
+  } else if(method === 'value'){
+    const targetRetail = parseFloat(document.getElementById(`${pid}-${ch}-vb-target-retail`)?.value) || 0;
+    const retMargin = (parseFloat(document.getElementById(`${pid}-${ch}-vb-retailer-margin`)?.value) || 0) / 100;
+    retail = targetRetail;
+    wholesale = (1 + retMargin) > 0 ? targetRetail / (1 + retMargin) : 0;
+    const sellEl = document.getElementById(`${pid}-${ch}-vb-selling`);
+    if(sellEl) sellEl.value = wholesale > 0 ? `Rs. ${wholesale.toFixed(2)}` : '';
+  }
+
+  // Summary cells per card
+  const wsEl = document.getElementById(`${pid}-${ch}-final-wholesale`); // Only present on Offline card
+  const rtEl = document.getElementById(`${pid}-${ch}-final-retail`);
+  if(wsEl) wsEl.textContent = `Rs. ${wholesale.toFixed(2)}`;
+  if(rtEl) rtEl.textContent = `Rs. ${retail.toFixed(2)}`;
+}
+
+// ============ SUMMARY ============
+function refreshSummary(){
+  const s = (id,v) => { const el=document.getElementById(id); if(el) el.textContent=v; };
+  const readCPU   = pid => parseFloat(document.getElementById(`${pid}-cost-per-unit`)?.textContent?.replace(/[^0-9.]/g,'')) || 0;
+  const readPrice = id  => parseFloat(document.getElementById(id)?.textContent?.replace(/[^0-9.]/g,'')) || 0;
+
+  // Build a map: sku → optimized cost-per-unit (from Optimized tab)
+  const optMap = {};
+  document.querySelectorAll('#optimizedProductList .product-block').forEach(b => {
+    const sku = b.querySelector('.product-head-left select')?.value;
+    if(sku) optMap[sku] = readCPU(b.id);
+  });
+
+  const blocks = document.querySelectorAll('#existingProductList .product-block');
+  let totalSKUs=0, totalUnits=0, costSet=0, priceSet=0;
+  let mCostPlus=0, mCompetitor=0, mValue=0;
+  let chOffline=0, chOnline=0;
+  let cpuSum=0, cpuCount=0, optCpuSum=0, optCpuCount=0, savingSum=0, savingCount=0;
+  let offRetails=[], onRetails=[];
+  let html='';
+
+  blocks.forEach(b => {
+    const pid    = b.id;
+    const skuSel = b.querySelector('.product-head-left select');
+    const sku    = skuSel?.value || '';
+    const meta   = document.getElementById(`${pid}-meta`)?.textContent || '—';
+    if(!sku) return;
+    totalSKUs++;
+
+    const cpu    = readCPU(pid);
+    const optCpu = optMap[sku] || 0;
+    const diff   = (cpu > 0 && optCpu > 0) ? optCpu - cpu : null;
+    const units  = parseFloat(document.getElementById(`${pid}-total-units`)?.value) || 0;
+    const method = document.getElementById(`${pid}-pricing-method`)?.value || '';
+
+    totalUnits += units;
+    if(cpu > 0){ costSet++; cpuSum += cpu; cpuCount++; }
+    if(optCpu > 0){ optCpuSum += optCpu; optCpuCount++; }
+    if(diff !== null){ savingSum += diff; savingCount++; }
+
+    if(method==='cost-plus') mCostPlus++;
+    else if(method==='competitor') mCompetitor++;
+    else if(method==='value') mValue++;
+
+    const offWholesale = readPrice(`${pid}-off-final-wholesale`);
+    const offRetail    = readPrice(`${pid}-off-final-retail`);
+    const onRetail     = readPrice(`${pid}-on-final-retail`);
+    if(offRetail > 0){ chOffline++; offRetails.push(offRetail); }
+    if(onRetail  > 0){ chOnline++;  onRetails.push(onRetail); }
+    if(offRetail > 0 || onRetail > 0) priceSet++;
+
+    const mBadge = {
+      'cost-plus':  '<span style="display:inline-block;padding:2px 8px;border-radius:10px;font-size:10px;font-weight:bold;background:#D6E3EE;color:#2C5A82">Cost Plus</span>',
+      'competitor': '<span style="display:inline-block;padding:2px 8px;border-radius:10px;font-size:10px;font-weight:bold;background:var(--cream-deep);color:var(--teal)">Competitor</span>',
+      'value':      '<span style="display:inline-block;padding:2px 8px;border-radius:10px;font-size:10px;font-weight:bold;background:var(--warn-bg);color:var(--warn-ink)">Value Based</span>',
+    }[method] || '<span style="color:var(--ink-faint);font-style:italic">—</span>';
+
+    // Difference cell — negative = saving (green), positive = cost increase (red)
+    let diffCell = '<span style="color:var(--ink-faint)">—</span>';
+    if(diff !== null){
+      const diffColor = diff <= 0 ? '#3F6B3A' : '#8B2A0F';
+      const diffSign  = diff <= 0 ? '▼ ' : '▲ ';
+      diffCell = `<span style="font-weight:bold;color:${diffColor}">${diffSign}Rs. ${Math.abs(diff).toFixed(2)}</span>`;
+    }
+
+    html += `<tr>
+      <td style="font-size:10px;color:var(--ink-soft)">${sku}</td>
+      <td><strong>${meta}</strong></td>
+      <td style="text-align:right;font-weight:bold;color:var(--teal)">${cpu>0?'Rs. '+cpu.toFixed(2):'—'}</td>
+      <td style="text-align:right;background:#EDF6EA;font-weight:bold;color:#3F6B3A">${optCpu>0?'Rs. '+optCpu.toFixed(2):'—'}</td>
+      <td style="text-align:right;background:#EDF6EA">${diffCell}</td>
+      <td>${mBadge}</td>
+      <td style="text-align:right;background:#EDF6EA;font-weight:bold">${offWholesale>0?'Rs. '+offWholesale.toFixed(2):'—'}</td>
+      <td style="text-align:right;background:#EDF6EA;font-weight:bold">${offRetail>0?'Rs. '+offRetail.toFixed(2):'—'}</td>
+      <td style="text-align:right;background:#EDF6EA;font-weight:bold">${onRetail>0?'Rs. '+onRetail.toFixed(2):'—'}</td>
+    </tr>`;
+  });
+
+  document.getElementById('sumOverviewBody').innerHTML = html ||
+    '<tr><td colspan="9" style="text-align:center;color:var(--ink-faint);font-style:italic;padding:14px">Auto-populated from Existing tab</td></tr>';
+
+  s('agg-total-skus',    totalSKUs);
+  s('agg-total-units',   totalUnits);
+  s('agg-cost-set',      costSet);
+  s('agg-price-set',     priceSet);
+  s('agg-not-priced',    totalSKUs - priceSet);
+  s('agg-avg-cpu',       cpuCount > 0    ? 'Rs. '+(cpuSum/cpuCount).toFixed(2)       : '—');
+  s('agg-avg-opt-cpu',   optCpuCount > 0 ? 'Rs. '+(optCpuSum/optCpuCount).toFixed(2) : '—');
+  const avgSaving = savingCount > 0 ? savingSum / savingCount : null;
+  s('agg-avg-saving', avgSaving !== null
+    ? (avgSaving <= 0 ? '▼ Rs. '+Math.abs(avgSaving).toFixed(2) : '▲ Rs. '+avgSaving.toFixed(2))
+    : '—');
+  s('agg-m-costplus',   mCostPlus);
+  s('agg-m-competitor', mCompetitor);
+  s('agg-m-value',      mValue);
+  s('agg-ch-offline',   chOffline);
+  s('agg-ch-online',    chOnline);
+
+  const maxOff=offRetails.length?Math.max(...offRetails):null;
+  const minOff=offRetails.length?Math.min(...offRetails):null;
+  const maxOn =onRetails.length ?Math.max(...onRetails) :null;
+  const minOn =onRetails.length ?Math.min(...onRetails) :null;
+  s('agg-max-off-retail',maxOff?'Rs. '+maxOff.toFixed(2):'—');
+  s('agg-min-off-retail',minOff?'Rs. '+minOff.toFixed(2):'—');
+  s('agg-max-on-retail', maxOn ?'Rs. '+maxOn.toFixed(2) :'—');
+  s('agg-min-on-retail', minOn ?'Rs. '+minOn.toFixed(2) :'—');
+
+  s('flag-priced',     priceSet);
+  s('flag-costplus',   mCostPlus);
+  s('flag-competitor', mCompetitor);
+  s('flag-value',      mValue);
+}
+
+// ============ INIT ============
+window.addEventListener('DOMContentLoaded', () => {
+  addProduct('existingProductList');
+
+  setTimeout(() => {
+    const pid = 'prod1';
+    const skuSel = document.querySelector(`#${pid} .product-head-left select`);
+    if(skuSel){ skuSel.value='VI-BS-B'; updateProductLabel(pid, skuSel); }
+
+    // RM
+    const rmR = document.querySelectorAll(`#${pid}-rm-tbl tbody tr`);
+    if(rmR[0]){ rmR[0].querySelector('select').value='Bamboo Shoot'; rmAutoFill(rmR[0].querySelector('select'),pid); rmR[0].querySelector('.qty').value=200; rmCalc(null,pid); }
+    addRMRow(pid); const rmR2=document.querySelectorAll(`#${pid}-rm-tbl tbody tr`);
+    if(rmR2[1]){ rmR2[1].querySelector('select').value='Oil'; rmAutoFill(rmR2[1].querySelector('select'),pid); rmR2[1].querySelector('.qty').value=5; rmCalc(null,pid); }
+    addRMRow(pid); const rmR3=document.querySelectorAll(`#${pid}-rm-tbl tbody tr`);
+    if(rmR3[2]){ rmR3[2].querySelector('select').value='Salt'; rmAutoFill(rmR3[2].querySelector('select'),pid); rmR3[2].querySelector('.qty').value=3; rmCalc(null,pid); }
+
+    // HR
+    const hrR=document.querySelectorAll(`#${pid}-hr-tbl tbody tr`);
+    if(hrR[0]){ hrR[0].querySelector('select').value='Self'; hrAutoFill(hrR[0].querySelector('select'),pid); hrR[0].querySelector('.qty').value=1.5; hrCalc(null,pid); }
+
+    // Packaging
+    const pkR=document.querySelectorAll(`#${pid}-pkg-tbl tbody tr`);
+    if(pkR[0]){ pkR[0].querySelector('select').value='Bottle'; pkgAutoFill(pkR[0].querySelector('select'),pid); pkR[0].querySelector('.qty').value=1; pkgCalc(null,pid); }
+    addPKGRow(pid); const pkR2=document.querySelectorAll(`#${pid}-pkg-tbl tbody tr`);
+    if(pkR2[1]){ pkR2[1].querySelector('select').value='Label'; pkgAutoFill(pkR2[1].querySelector('select'),pid); pkR2[1].querySelector('.qty').value=1; pkgCalc(null,pid); }
+
+    // Machinery
+    const mR=document.querySelectorAll(`#${pid}-mach-tbl tbody tr`);
+    if(mR[0]){ mR[0].querySelector('select').value='Grinder'; machAutoFill(mR[0].querySelector('select'),pid); machCalc(null,pid); }
+
+    // Others
+    const ru=document.getElementById(`${pid}-rent-units`); if(ru) ru.value=200;
+    const eu=document.getElementById(`${pid}-elec-units`); if(eu) eu.value=200;
+    calcOthers(pid);
+
+    // Unit cost
+    const tu=document.getElementById(`${pid}-total-units`); if(tu) tu.value=200;
+    calcUnitCost(pid);
+
+    // Pricing: Cost Plus
+    const pm=document.getElementById(`${pid}-pricing-method`); if(pm){ pm.value='cost-plus'; onPricingMethodChange(pid); }
+    const om=document.getElementById(`${pid}-off-cp-markup`); if(om) om.value=30;
+    const or=document.getElementById(`${pid}-off-cp-retailer-margin`); if(or) or.value=20;
+    const nm=document.getElementById(`${pid}-on-cp-markup`); if(nm) nm.value=20;
+    const nr=document.getElementById(`${pid}-on-cp-retailer-margin`); if(nr) nr.value=15;
+    calcPricing(pid);
+
+    showTab('summary', document.querySelector('.tab'));
+  }, 50);
+});
+</script>
+
+</body>
+</html>

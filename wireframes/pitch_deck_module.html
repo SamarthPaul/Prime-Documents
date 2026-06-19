@@ -1,0 +1,944 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Pitch Deck · PRIME Rural</title>
+<style>
+:root {
+  --teal:#0E4D4E; --sea:#1A6B6D; --terracotta:#C26849; --terracotta-dk:#A85738;
+  --terracotta-sft:#F5E2D6;
+  --cream:#FBF5E5; --cream-deep:#F4ECD3; --offwhite:#FDFAF0; --panel:#FFFFFF;
+  --ink:#2A2520; --ink-soft:#6B6359; --ink-faint:#9C9384;
+  --border:#E8DFC9; --border-dk:#D6CDB6;
+  --good-bg:#E3EFDF; --good-ink:#3F6B3A;
+  --fair-bg:#FBE9DF; --fair-ink:#7A3B22;
+  --poor-bg:#F5D6CC; --poor-ink:#8B2A0F;
+  --highlight:#FFF8E1;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:Georgia,serif;background:var(--cream);color:var(--ink);line-height:1.4}
+.page{max-width:1200px;margin:0 auto;padding:24px}
+
+/* ── Header & shell ── */
+.header{background:var(--teal);color:#fff;padding:16px 20px;border-radius:12px 12px 0 0;display:flex;justify-content:space-between;align-items:center}
+.header h1{font-size:18px;font-weight:normal;letter-spacing:0.5px}
+.header .crumb{font-size:11px;opacity:0.75;text-transform:uppercase;letter-spacing:1px}
+.card{background:var(--cream);border:1px solid var(--border-dk);border-top:none;border-radius:0 0 12px 12px}
+
+/* ── Tab bar ── */
+.tab-bar{display:flex;background:var(--cream-deep);border-bottom:1px solid var(--border-dk);overflow-x:auto}
+.tab{padding:12px 22px;cursor:pointer;font-size:12px;text-transform:uppercase;letter-spacing:1px;color:var(--ink-soft);border-right:1px solid var(--border);white-space:nowrap}
+.tab.active{background:var(--teal);color:#fff}
+.tab:hover:not(.active){background:#EADFC0}
+.content{padding:22px}
+
+/* ── Entrepreneur chip ── */
+.entrepreneur-chip{display:inline-flex;align-items:center;gap:10px;background:#fff;border:1px solid var(--border-dk);padding:6px 14px;border-radius:20px;font-size:12px;margin-bottom:18px}
+.ent-avatar{width:24px;height:24px;background:var(--teal);color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:bold}
+
+/* ── Section card — standard (cream-deep) ── */
+.section{background:var(--cream-deep);padding:16px;border-radius:10px;margin-bottom:16px;border:1px solid var(--border)}
+.section-title{font-size:13px;text-transform:uppercase;letter-spacing:1.5px;color:var(--teal);margin-bottom:12px;padding-bottom:8px;border-bottom:1px solid var(--border-dk);font-weight:bold;display:flex;justify-content:space-between;align-items:center}
+.section-title-roman{color:var(--terracotta);margin-right:8px;font-style:italic}
+
+/* ── Section card — terracotta (Intervention Need + Implementation Status) ── */
+.section.tc{background:var(--terracotta-sft);border-color:var(--terracotta)}
+.section.tc .section-title{color:var(--terracotta-dk);border-bottom-color:rgba(168,87,56,0.22)}
+.section.tc .field-label{color:var(--terracotta-dk)}
+
+/* ── Section card — green (Assessment) ── */
+.section.gn{background:#fff;border-color:#7DB5AC}
+.section.gn .section-title{background:#0E4D4E;color:#fff;border-bottom-color:transparent;margin:-16px -16px 14px -16px;padding:10px 16px;border-radius:10px 10px 0 0}
+.section.gn .section-title-roman{color:#FFD580}
+
+/* ── Field rows ── */
+.field-row{display:flex;gap:12px;margin-bottom:10px;flex-wrap:wrap;align-items:center}
+.field-row:last-child{margin-bottom:0}
+.field-label{width:260px;font-size:12px;color:var(--ink-soft);flex-shrink:0}
+.field-val{flex:1;background:var(--offwhite);border:1px solid var(--border-dk);padding:6px 10px;border-radius:5px;font-size:12px;min-width:140px;font-family:Georgia,serif;color:var(--ink)}
+.field-val:focus{outline:none;border-color:var(--teal);background:#fff}
+.field-val::placeholder{color:var(--ink-faint);font-style:italic}
+textarea.field-val{resize:vertical;min-height:64px;line-height:1.5}
+select.field-val{cursor:pointer}
+
+/* ── Upload group ── */
+.upload-group{display:flex;align-items:center;gap:8px;flex-wrap:wrap;flex:1}
+.upload-group input[type="file"]{display:none}
+.file-name{font-size:11px;color:var(--ink-soft);font-style:italic;flex:1;min-width:100px}
+
+/* ── Buttons ── */
+.btn{padding:5px 12px;border-radius:20px;border:1px solid var(--border-dk);background:#fff;cursor:pointer;font-size:11px;color:var(--ink);font-family:Georgia,serif;text-decoration:none;display:inline-flex;align-items:center}
+.btn:hover{background:var(--cream-deep)}
+.btn-primary{background:var(--teal);color:#fff;border-color:var(--teal)}
+.btn-primary:hover{background:var(--sea)}
+.btn-accent{background:var(--terracotta);color:#fff;border-color:var(--terracotta)}
+.btn-accent:hover{background:var(--terracotta-dk)}
+.btn-sm{padding:3px 10px;font-size:10px}
+
+/* ── Toggle (machinery pattern) ── */
+.toggle{width:36px;height:18px;border-radius:20px;background:#ccc;display:inline-block;cursor:pointer;position:relative;flex-shrink:0;vertical-align:middle;transition:background 0.2s}
+.toggle::after{content:'';width:14px;height:14px;background:#fff;border-radius:50%;position:absolute;top:2px;left:2px;transition:left 0.2s}
+.toggle.on{background:var(--teal)}
+.toggle.on::after{left:20px}
+.toggle-wrap{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px}
+.toggle-wrap .t-label{font-size:12px;color:var(--ink);font-weight:bold}
+.t-state{font-size:11px;font-weight:bold;text-transform:uppercase;letter-spacing:0.5px;color:var(--ink-faint)}
+.t-state.on{color:var(--teal)}
+.flag-note{font-size:10px;color:var(--ink-faint);font-style:italic;margin-top:6px}
+.flag-note.active{color:var(--terracotta-dk);font-weight:bold;font-style:normal}
+
+/* ── Summary cards ── */
+.summary-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@media(max-width:760px){.summary-grid{grid-template-columns:1fr}}
+.summary-card{background:#fff;border:1px solid var(--border);border-radius:10px;padding:14px}
+.summary-card.full{grid-column:1/-1}
+.summary-card h3{font-size:11px;text-transform:uppercase;letter-spacing:1px;color:var(--teal);margin-bottom:10px;padding-bottom:6px;border-bottom:1px solid var(--border)}
+.metric-row{display:flex;justify-content:space-between;padding:5px 0;font-size:12px;border-bottom:1px solid var(--border)}
+.metric-row:last-child{border-bottom:none}
+.metric-label{color:var(--ink-soft)}
+.metric-value{font-weight:bold;color:var(--ink)}
+.metric-value.green{color:var(--good-ink)}
+.metric-value.amber{color:var(--terracotta-dk)}
+.metric-value.red{color:var(--poor-ink)}
+
+/* ── Progress strip ── */
+.progress-strip{background:linear-gradient(135deg,var(--teal),var(--sea));color:#fff;padding:14px 18px;border-radius:10px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:14px;margin-bottom:14px}
+.ps-label{font-size:10px;opacity:0.8;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:3px}
+.ps-val{font-size:22px;font-weight:bold}
+.ps-bar-wrap{flex:1;min-width:160px;background:rgba(255,255,255,0.15);height:9px;border-radius:5px;overflow:hidden}
+.ps-bar{height:100%;background:#FFE3A8;border-radius:5px;transition:width 0.3s}
+
+/* ── Snippet rows ── */
+.snippet-list{display:grid;gap:8px}
+.snippet-row{background:var(--offwhite);border:1px solid var(--border-dk);border-left:3px solid var(--teal);border-radius:6px;padding:10px 14px}
+.snippet-row .snippet-title{font-size:10px;text-transform:uppercase;letter-spacing:1px;color:var(--ink-soft);font-weight:bold;margin-bottom:3px}
+.snippet-row .snippet-text{font-size:12px;color:var(--ink);line-height:1.5}
+.snippet-row .snippet-text.empty{color:var(--ink-faint);font-style:italic}
+.sn-vision{border-left-color:#1A6B6D}
+.sn-problem{border-left-color:#993556}
+.sn-solution{border-left-color:#C26849}
+.sn-business{border-left-color:#7A4F1B}
+.sn-financial{border-left-color:#3F6B3A}
+.sn-milestones{border-left-color:#1F4A78}
+.sn-competition{border-left-color:#6B6359}
+.sn-marketing{border-left-color:#1A6B6D}
+.sn-team{border-left-color:#1F4A78}
+.sn-expectations{border-left-color:#7A4F1B}
+.sn-ask{border-left-color:#C26849}
+
+/* ── Slide block grid (canvas pattern) ── */
+.slide-grid{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:10px;
+}
+@media(max-width:860px){.slide-grid{grid-template-columns:1fr}}
+
+.block{
+  background:var(--cream-deep);
+  border:1px solid var(--border-dk);
+  border-top:4px solid var(--teal);
+  border-radius:8px;
+  padding:14px;
+  display:flex;
+  flex-direction:column;
+  gap:8px;
+  min-height:190px;
+}
+/* per-slide accent top borders */
+.b-vision{      border-top-color:#1A6B6D}
+.b-problem{     border-top-color:#993556}
+.b-solution{    border-top-color:#C26849}
+.b-business{    border-top-color:#7A4F1B}
+.b-financial{   border-top-color:#3F6B3A}
+.b-milestones{  border-top-color:#1F4A78}
+.b-competition{ border-top-color:#6B6359}
+.b-marketing{   border-top-color:#1A6B6D}
+.b-team{        border-top-color:#1F4A78}
+.b-expectations{border-top-color:#7A4F1B}
+.b-ask{         border-top-color:#C26849}
+
+.block .block-num{font-size:9px;text-transform:uppercase;letter-spacing:1.2px;color:var(--ink-faint);font-weight:bold}
+.block h3{font-size:13px;text-transform:uppercase;letter-spacing:1.2px;color:var(--teal);font-weight:bold}
+.block .block-desc{font-size:10.5px;color:var(--ink-faint);font-style:italic;line-height:1.4}
+.block textarea{
+  flex:1;
+  background:#fff;
+  border:1px solid var(--border-dk);
+  border-radius:5px;
+  padding:8px 10px;
+  font-family:Georgia,serif;
+  font-size:12px;
+  color:var(--ink);
+  resize:vertical;
+  min-height:90px;
+  line-height:1.5;
+}
+.block textarea:focus{outline:none;border-color:var(--teal);background:#fff}
+.block textarea::placeholder{color:var(--ink-faint);font-style:italic}
+
+/* ── Status badges ── */
+.status-badge{display:inline-flex;align-items:center;gap:5px;padding:2px 9px;border-radius:14px;font-size:10px;font-weight:bold}
+.s-pending{background:var(--cream-deep);color:var(--ink-soft)}
+.s-progress{background:var(--fair-bg);color:var(--fair-ink)}
+.s-done{background:var(--good-bg);color:var(--good-ink)}
+.s-nofeasible{background:var(--poor-bg);color:var(--poor-ink)}
+
+/* ── Tables ── */
+table.data-table{width:100%;border-collapse:collapse;background:var(--offwhite);border-radius:6px;overflow:hidden;border:1px solid var(--border-dk);font-size:11px}
+table.data-table th{background:var(--teal);color:#fff;padding:9px 8px;text-align:left;font-weight:normal;text-transform:uppercase;letter-spacing:0.5px;font-size:10px;border-right:1px solid var(--sea);white-space:nowrap}
+table.data-table th:last-child{border-right:none}
+table.data-table td{padding:7px 8px;border-bottom:1px solid var(--border);border-right:1px solid var(--border);vertical-align:middle}
+table.data-table td:last-child{border-right:none}
+table.data-table tr:last-child td{border-bottom:none}
+table.data-table input,table.data-table select,table.data-table textarea{width:100%;border:1px solid var(--border);padding:5px 6px;border-radius:3px;font-family:Georgia,serif;font-size:11px;background:#fff}
+table.data-table input:focus,table.data-table select:focus,table.data-table textarea:focus{outline:none;border-color:var(--teal)}
+.num-col{width:40px;text-align:center;color:var(--ink-soft);font-size:10px}
+.table-actions{display:flex;justify-content:space-between;align-items:center;margin-top:10px}
+.row-delete{background:transparent;border:none;color:var(--terracotta);cursor:pointer;font-size:14px;padding:2px 6px}
+.row-delete:hover{color:var(--terracotta-dk)}
+
+/* ── Resources ── */
+.resource-row{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid var(--border);flex-wrap:wrap}
+.resource-row:last-child{border-bottom:none}
+.res-tag{font-size:9px;text-transform:uppercase;letter-spacing:1px;color:var(--terracotta);font-weight:bold;margin-bottom:3px}
+.res-title{font-size:12px;font-weight:bold;color:var(--ink);margin-bottom:3px}
+.res-desc{font-size:11px;color:var(--ink-soft);font-style:italic;line-height:1.4}
+
+.hidden{display:none!important}
+
+/* ─── RM-style summary additions ─── */
+.sm-section{background:var(--cream-deep);padding:16px;border-radius:10px;margin-bottom:16px;border:1px solid var(--border)}
+.sm-section-title{font-size:13px;text-transform:uppercase;letter-spacing:1.5px;color:var(--teal);margin-bottom:12px;padding-bottom:8px;border-bottom:1px solid var(--border-dk);font-weight:bold}
+.sm-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.sm-card{background:#fff;border:1px solid var(--border);border-radius:10px;padding:14px}
+.sm-card h3{font-size:11px;text-transform:uppercase;letter-spacing:1px;color:var(--teal);margin-bottom:10px;padding-bottom:6px;border-bottom:1px solid var(--border);font-weight:bold}
+.sm-row{display:flex;justify-content:space-between;padding:5px 0;font-size:12px;border-bottom:1px solid #f0e9d6}
+.sm-row:last-child{border-bottom:none}
+.sm-lbl{color:var(--ink-soft)}
+.sm-val{font-weight:bold;color:var(--ink)}
+.sm-val.green{color:var(--good-ink)}
+.sm-val.amber{color:var(--fair-ink)}
+.sm-val.red{color:var(--poor-ink)}
+.sm-val.blue{color:var(--info-ink)}
+.sm-flags{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+.sm-flag{background:#fff;border:1px solid var(--border);border-radius:8px;padding:12px}
+.sm-flag-icon{width:30px;height:30px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:14px;margin-bottom:8px}
+.sm-flag-count{font-size:20px;font-weight:bold;color:var(--ink)}
+.sm-flag-label{font-size:10px;color:var(--ink-soft);text-transform:uppercase;letter-spacing:0.5px;margin-top:4px}
+table.ov-tbl{width:100%;border-collapse:collapse;background:var(--offwhite);border-radius:6px;overflow:hidden;border:1px solid var(--border-dk);font-size:11px}
+table.ov-tbl th{background:var(--teal);color:#fff;padding:9px 8px;text-align:left;font-weight:normal;text-transform:uppercase;letter-spacing:0.5px;font-size:10px;border-right:1px solid var(--sea)}
+table.ov-tbl th:last-child{border-right:none}
+table.ov-tbl th.th-req{background:var(--sea)}
+table.ov-tbl td{padding:7px 8px;border-bottom:1px solid var(--border);border-right:1px solid var(--border);vertical-align:top}
+table.ov-tbl td:last-child{border-right:none}
+table.ov-tbl tr:last-child td{border-bottom:none}
+table.ov-tbl tr.row-filled td{background:#EDF6EA}
+table.ov-tbl tr.row-empty td{background:#FFF8E1}
+.prog-bar-wrap{background:rgba(255,255,255,0.2);height:9px;border-radius:5px;overflow:hidden;flex:1;min-width:80px}
+.prog-bar{height:100%;background:#FFE3A8;border-radius:5px;transition:width 0.3s}
+</style>
+</head>
+<body>
+
+<div class="page">
+<div class="header">
+  <h1>Pitch Deck</h1>
+  <div class="crumb">PRIME Rural · Investment Readiness</div>
+</div>
+<div class="card">
+
+<div class="tab-bar">
+  <div class="tab active" onclick="showTab('summary',this)">Summary</div>
+  <div class="tab" onclick="showTab('existing',this)">Existing</div>
+  <div class="tab" onclick="showTab('required',this)">Required</div>
+  <div class="tab" onclick="showTab('resources',this)">Resources</div>
+  <div class="tab" onclick="showTab('tasklog',this)">Task Log</div>
+  <div class="tab" onclick="showTab('logbook',this)">Log Book</div>
+</div>
+
+<div class="content">
+
+<div class="entrepreneur-chip">
+  <div class="ent-avatar">EN</div>
+  <span style="color:var(--ink-soft);font-style:italic">Auto-fetched from profile</span>
+</div>
+
+
+<!-- ══════════════════════════════════════════
+     SUMMARY
+══════════════════════════════════════════ -->
+<div id="summary" class="panel">
+
+  <!-- ① Slide-wise Overview -->
+  <div class="sm-section">
+    <div class="sm-section-title" style="display:flex;justify-content:space-between;align-items:center">
+      <span>Slide-wise Overview</span>
+      <span style="font-size:11px;color:var(--ink-faint);font-weight:normal;text-transform:none;letter-spacing:normal;font-style:italic"><span id="sum-completion">0</span> / 11 slides filled · <span id="sum-pct">0%</span> complete</span>
+    </div>
+    <!-- Progress bar -->
+    <div style="background:var(--teal);border-radius:8px;padding:10px 14px;display:flex;align-items:center;gap:14px;margin-bottom:12px">
+      <div style="font-size:10px;color:rgba(255,255,255,0.8);text-transform:uppercase;letter-spacing:0.5px;white-space:nowrap">Completion</div>
+      <div class="prog-bar-wrap"><div class="prog-bar" id="sum-bar" style="width:0%"></div></div>
+      <div style="font-size:18px;font-weight:bold;color:#FFE3A8;white-space:nowrap" id="sum-pct-strip">0%</div>
+    </div>
+    <div style="overflow-x:auto">
+    <table class="ov-tbl">
+      <thead>
+        <tr>
+          <th style="width:32px">#</th>
+          <th>Slide</th>
+          <th style="width:80px;text-align:center">Status</th>
+          <th>Content Preview</th>
+        </tr>
+      </thead>
+      <tbody id="slideOverviewBody">
+        <tr><td colspan="4" style="text-align:center;color:var(--ink-faint);font-style:italic;padding:14px">Fill slides in the Required tab to populate this table</td></tr>
+      </tbody>
+    </table>
+    </div>
+  </div>
+
+  <!-- ② Aggregates — 4-card 2×2 grid -->
+  <div class="sm-section">
+    <div class="sm-section-title">Aggregates</div>
+    <div class="sm-grid">
+
+      <div class="sm-card">
+        <h3>Existing Assets</h3>
+        <div class="sm-row"><span class="sm-lbl">Existing Pitch Deck</span><span class="sm-val" id="sum-deck">Not uploaded</span></div>
+        <div class="sm-row"><span class="sm-lbl">Existing Pitch Video</span><span class="sm-val" id="sum-video">Not provided</span></div>
+        <div class="sm-row"><span class="sm-lbl">Intervention Needed</span><span class="sm-val" id="sum-need">—</span></div>
+        <div class="sm-row"><span class="sm-lbl">Last Updated</span><span class="sm-val" id="sum-updated" style="font-size:11px">—</span></div>
+      </div>
+
+      <div class="sm-card">
+        <h3>Slide Progress</h3>
+        <div class="sm-row"><span class="sm-lbl">Slides Filled</span><span class="sm-val green" id="sum-filled">0</span></div>
+        <div class="sm-row"><span class="sm-lbl">Slides Empty</span><span class="sm-val amber" id="sum-empty">11</span></div>
+        <div class="sm-row"><span class="sm-lbl">Overall Completion</span><span class="sm-val" id="sum-pct2">0%</span></div>
+        <div class="sm-row"><span class="sm-lbl">Required Deck Uploaded</span><span class="sm-val" id="sum-req-deck">No</span></div>
+        <div class="sm-row"><span class="sm-lbl">Required Video Linked</span><span class="sm-val" id="sum-req-video">No</span></div>
+      </div>
+
+      <div class="sm-card">
+        <h3>Interventions</h3>
+        <div class="sm-row"><span class="sm-lbl">Implementation Status</span><span class="sm-val" id="sum-impl">—</span></div>
+        <div class="sm-row"><span class="sm-lbl">Task Log Entries</span><span class="sm-val" id="sum-tasks">0</span></div>
+        <div class="sm-row"><span class="sm-lbl">Log Book Entries</span><span class="sm-val" id="sum-logs">0</span></div>
+      </div>
+
+      <div class="sm-card">
+        <h3>Slide Breakdown</h3>
+        <div id="slide-breakdown-body">
+          <div style="color:var(--ink-faint);font-style:italic;font-size:11px;padding:6px 0">Fill slides in the Required tab to see breakdown.</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ③ Intervention Flags -->
+  <div class="sm-section">
+    <div class="sm-section-title">Intervention Flags</div>
+    <div class="sm-flags">
+      <div class="sm-flag"><div class="sm-flag-icon" style="background:var(--good-bg);color:var(--good-ink)">📊</div><div class="sm-flag-count" id="flag-filled">0</div><div class="sm-flag-label">Slides Filled</div></div>
+      <div class="sm-flag"><div class="sm-flag-icon" style="background:var(--fair-bg);color:var(--fair-ink)">↻</div><div class="sm-flag-count" id="flag-need">No</div><div class="sm-flag-label">Intervention Needed</div></div>
+      <div class="sm-flag"><div class="sm-flag-icon" style="background:#D6E3EE;color:#1F4A78">📁</div><div class="sm-flag-count" id="flag-deck">No</div><div class="sm-flag-label">Required Deck Uploaded</div></div>
+      <div class="sm-flag"><div class="sm-flag-icon" style="background:var(--good-bg);color:var(--good-ink)">✓</div><div class="sm-flag-count" id="flag-tasks">0</div><div class="sm-flag-label">Tasks Completed</div></div>
+    </div>
+  </div>
+
+</div>
+
+
+<!-- ══════════════════════════════════════════
+     EXISTING
+══════════════════════════════════════════ -->
+<div id="existing" class="panel hidden">
+
+  <!-- I — Pitch Deck (standard card) -->
+  <div class="section">
+    <div class="section-title">
+      <span><span class="section-title-roman">I.</span>Pitch Deck</span>
+    </div>
+
+    <div class="field-row">
+      <span class="field-label">Upload Pitch Deck (if available)</span>
+      <div class="upload-group">
+        <label class="btn btn-primary btn-sm" for="exDeckFile">⬆ Upload</label>
+        <input type="file" id="exDeckFile" accept=".pdf,.ppt,.pptx" onchange="onExDeckUpload(this)">
+        <span class="file-name" id="exDeckName">No file selected</span>
+        <button class="btn btn-sm" id="exDeckView" onclick="viewFile('exDeckView')" disabled>View</button>
+      </div>
+    </div>
+
+    <div class="field-row">
+      <span class="field-label">Pitch Video Link (if available)</span>
+      <input type="url" class="field-val" id="exVideoLink" placeholder="https://youtube.com/…" oninput="syncLink('exVideoLink','exVideoOpen');trackEdit()">
+      <a class="btn btn-accent btn-sm hidden" id="exVideoOpen" href="#" target="_blank" rel="noopener">Open ↗</a>
+    </div>
+
+    <div class="field-row">
+      <span class="field-label">Last Updated</span>
+      <input type="date" class="field-val" id="exLastUpdated" style="max-width:200px" oninput="trackEdit()">
+    </div>
+  </div>
+
+  <!-- II — Intervention Need (terracotta card) -->
+  <div class="section tc">
+    <div class="section-title">
+      <span><span class="section-title-roman">II.</span>Intervention Need</span>
+    </div>
+
+    <div class="field-row" style="align-items:flex-start">
+      <span class="field-label" style="padding-top:2px">Does Entrepreneur need a Pitch Deck?</span>
+      <div style="flex:1;min-width:200px">
+        <div class="toggle-wrap">
+          <span class="t-state" id="needsDeckState">No</span>
+          <div class="toggle" id="needsDeckToggle" onclick="toggleIntervention()"></div>
+        </div>
+        <div class="flag-note" id="needsDeckNote">No intervention flagged.</div>
+      </div>
+    </div>
+
+    <div class="field-row" style="align-items:flex-start">
+      <span class="field-label" style="padding-top:2px">Justify</span>
+      <textarea class="field-val" id="needsJustify"
+        placeholder="Why is (or isn't) an intervention required? — investor outreach, grant application, incubator entry…"
+        oninput="trackEdit()"></textarea>
+    </div>
+  </div>
+
+</div>
+
+
+<!-- ══════════════════════════════════════════
+     REQUIRED
+══════════════════════════════════════════ -->
+<div id="required" class="panel hidden">
+
+  <!-- I — Assessment (green card) -->
+  <div class="section gn">
+    <div class="section-title">
+      <span><span class="section-title-roman">I.</span>Assessment</span>
+    </div>
+    <p style="font-size:11.5px;color:var(--ink-soft);font-style:italic;margin-bottom:16px;line-height:1.5;background:#fff;border:1px solid var(--border-dk);border-radius:8px;padding:10px 14px">
+      A high-level data entry and summary table for the primary slides of a business pitch.
+    </p>
+
+    <div id="slideGrid">
+      <!-- Injected by JS -->
+    </div>
+  </div>
+
+  <!-- II — Implementation Status (terracotta card) -->
+  <div class="section tc">
+    <div class="section-title">
+      <span><span class="section-title-roman">II.</span>Implementation Status</span>
+    </div>
+
+    <div class="field-row">
+      <span class="field-label">Implementation Status</span>
+      <select class="field-val" id="implStatus" style="max-width:230px" onchange="onImplChange()">
+        <option value="">— Select —</option>
+        <option>Pending</option>
+        <option>In Progress</option>
+        <option>Implemented</option>
+        <option>Not Feasible</option>
+      </select>
+      <span class="status-badge hidden" id="implBadge"></span>
+    </div>
+
+    <div class="field-row">
+      <span class="field-label">Upload Pitch Deck</span>
+      <div class="upload-group">
+        <label class="btn btn-primary btn-sm" for="reqDeckFile">⬆ Upload</label>
+        <input type="file" id="reqDeckFile" accept=".pdf,.ppt,.pptx" onchange="onReqDeckUpload(this)">
+        <span class="file-name" id="reqDeckName">No file selected</span>
+        <button class="btn btn-sm" id="reqDeckView" onclick="viewFile('reqDeckView')" disabled>View</button>
+      </div>
+    </div>
+
+    <div class="field-row">
+      <span class="field-label">Pitch Video Link</span>
+      <input type="url" class="field-val" id="reqVideoLink" placeholder="https://…"
+        oninput="syncLink('reqVideoLink','reqVideoOpen');trackEdit()">
+      <a class="btn btn-accent btn-sm hidden" id="reqVideoOpen" href="#" target="_blank" rel="noopener">Open ↗</a>
+    </div>
+
+    <div class="field-row">
+      <span class="field-label">Last Updated</span>
+      <input type="date" class="field-val" id="reqLastUpdated" style="max-width:200px" oninput="trackEdit()">
+    </div>
+  </div>
+
+</div>
+
+
+<!-- ══════════════════════════════════════════
+     RESOURCES
+══════════════════════════════════════════ -->
+<div id="resources" class="panel hidden">
+  <div class="section">
+    <div class="section-title">Reference Materials</div>
+    <div>
+      <div class="resource-row">
+        <div><div class="res-tag">Template</div><div class="res-title">Pitch Deck Skeleton (PRIME Rural)</div><div class="res-desc">11-slide template aligned to the Required tab — vision, problem, solution, business model, financials, milestones, competition, marketing, team, expectations, ask.</div></div>
+        <a class="btn btn-accent btn-sm" href="#" target="_blank">Download ↗</a>
+      </div>
+      <div class="resource-row">
+        <div><div class="res-tag">Reading</div><div class="res-title">Sequoia's Writing a Business Plan</div><div class="res-desc">Classic 10-slide framework that informs most modern pitch deck structures.</div></div>
+        <a class="btn btn-accent btn-sm" href="#" target="_blank">Open ↗</a>
+      </div>
+      <div class="resource-row">
+        <div><div class="res-tag">Reference</div><div class="res-title">Sample Decks · Rural Enterprises</div><div class="res-desc">Curated decks from past PRIME Rural cohorts — food processing, handicrafts, agri-tech.</div></div>
+        <a class="btn btn-accent btn-sm" href="#" target="_blank">Browse ↗</a>
+      </div>
+      <div class="resource-row">
+        <div><div class="res-tag">Tool</div><div class="res-title">Financial Projection Worksheet</div><div class="res-desc">Pre-built spreadsheet for 3-year P&amp;L, cash-flow, and unit economics — feeds the Financial Projections slide.</div></div>
+        <a class="btn btn-accent btn-sm" href="#" target="_blank">Open ↗</a>
+      </div>
+      <div class="resource-row">
+        <div><div class="res-tag">Video</div><div class="res-title">Delivering a 5-Minute Pitch</div><div class="res-desc">Short coaching video on pacing, storytelling, and handling the "ask" with confidence.</div></div>
+        <a class="btn btn-accent btn-sm" href="#" target="_blank">Watch ↗</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ══════════════════════════════════════════
+     TASK LOG
+══════════════════════════════════════════ -->
+<div id="tasklog" class="panel hidden">
+  <div class="section">
+    <div class="section-title">Task Log — 18 Tasks Across Three Phases</div>
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th style="width:5%">No.</th>
+          <th style="width:36%">Task Name</th>
+          <th style="width:12%">Phase</th>
+          <th style="width:12%">Status</th>
+          <th style="width:14%">Owner</th>
+          <th style="width:11%">Due Date</th>
+          <th style="width:10%">Notes</th>
+        </tr>
+      </thead>
+      <tbody id="taskLogBody"></tbody>
+    </table>
+    <div class="table-actions">
+      <span></span>
+      <button class="btn btn-primary" onclick="addTaskRow()">+ Add Task</button>
+    </div>
+  </div>
+</div>
+
+
+<!-- ══════════════════════════════════════════
+     LOG BOOK
+══════════════════════════════════════════ -->
+<div id="logbook" class="panel hidden">
+  <div class="section">
+    <div class="section-title">Log Book</div>
+    <table class="data-table" id="logBookTable">
+      <thead>
+        <tr>
+          <th style="width:11%">Date</th>
+          <th style="width:17%">Activity</th>
+          <th style="width:14%">Visit Type</th>
+          <th style="width:32%">Discussion / Observations</th>
+          <th style="width:13%">Person Met</th>
+          <th style="width:7%">Evidence</th>
+          <th style="width:6%"></th>
+        </tr>
+      </thead>
+      <tbody id="logBookBody">
+        <tr>
+          <td><input type="date"></td>
+          <td><input type="text" placeholder="Activity or slide worked on"></td>
+          <td>
+            <select>
+              <option value="">— Select —</option>
+              <option>Site Visit</option>
+              <option>Phone Call</option>
+              <option>Pitch Rehearsal</option>
+              <option>Investor Meeting</option>
+              <option>Mentoring</option>
+              <option>Workshop</option>
+              <option>Other</option>
+            </select>
+          </td>
+          <td><input type="text" placeholder="Notes / observations"></td>
+          <td><input type="text" placeholder="Name"></td>
+          <td><button class="btn btn-sm">Upload</button></td>
+          <td><button class="row-delete" onclick="deleteRow(this)">✕</button></td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="table-actions">
+      <span></span>
+      <button class="btn btn-primary" onclick="addLogRow()">+ Add Entry</button>
+    </div>
+  </div>
+</div>
+
+</div><!-- /content -->
+</div><!-- /card -->
+</div><!-- /page -->
+
+<script>
+// ══════════════ SLIDE META ══════════════
+const SLIDES = [
+  { id:'vision_and_impact',           title:'Vision & Impact',              cls:'sn-vision',       bcls:'b-vision',
+    desc:'The long-term vision and the impact this business aims to create — environmental, social, economic.',
+    ph:'Describe the founder\'s vision and expected impact on community, ecology, or industry…' },
+  { id:'problem_statement',           title:'Problem Statement',            cls:'sn-problem',      bcls:'b-problem',
+    desc:'The specific, painful problem the customer faces today.',
+    ph:'What is the gap or pain point in the market? Quantify it where possible…' },
+  { id:'solution_usp',                title:'Solution (USP)',               cls:'sn-solution',     bcls:'b-solution',
+    desc:'The product/service and the unique selling proposition that differentiates it.',
+    ph:'How does this business solve the problem? What makes it unique — origin, craft, ingredient, certification…' },
+  { id:'business_model',              title:'Business Model',               cls:'sn-business',     bcls:'b-business',
+    desc:'How the business creates, delivers, and captures value.',
+    ph:'Revenue model, pricing approach, channels, key partners — how the business actually makes money…' },
+  { id:'financial_projections',       title:'Financial Projections',        cls:'sn-financial',    bcls:'b-financial',
+    desc:'3-year revenue, cost, and profitability outlook.',
+    ph:'Year-on-year revenue, gross margin, break-even point, key assumptions…' },
+  { id:'milestones',                  title:'Milestones',                   cls:'sn-milestones',   bcls:'b-milestones',
+    desc:'Past achievements and a forward-looking 6/12/18-month roadmap.',
+    ph:'Key milestones to date, and what the next 6, 12, 18 months will deliver…' },
+  { id:'competition',                 title:'Competition',                  cls:'sn-competition',  bcls:'b-competition',
+    desc:'Direct and indirect competitors, and your differentiation.',
+    ph:'Who else serves this customer? How are you different on quality, price, story, or distribution…' },
+  { id:'marketing_strategy',          title:'Marketing Strategy',           cls:'sn-marketing',    bcls:'b-marketing',
+    desc:'Customer acquisition channels and brand-building approach.',
+    ph:'Online vs offline mix, exhibitions, partnerships, content, influencers, retail tie-ups…' },
+  { id:'team_overview',               title:'Team Overview',                cls:'sn-team',         bcls:'b-team',
+    desc:'Founders, key team members, and their relevant experience.',
+    ph:'Founder background, key hires, advisors, and the gaps still to be filled…' },
+  { id:'expectations_from_incubation',title:'Expectations from Incubation', cls:'sn-expectations', bcls:'b-expectations',
+    desc:'What the entrepreneur expects from the incubator/programme.',
+    ph:'Mentorship areas, market linkages, infrastructure, specific introductions sought…' },
+  { id:'ask',                         title:'Ask (Funding)',                cls:'sn-ask',          bcls:'b-ask',
+    desc:'The funding ask — quantum, instrument, and intended deployment.',
+    ph:'Amount sought, equity vs grant vs debt, and how the funds will be deployed line-by-line…' }
+];
+
+// ══════════════ STATE ══════════════
+let lastEdit = null;
+
+// ══════════════ TAB SWITCH ══════════════
+function showTab(id, el){
+  document.querySelectorAll('.panel').forEach(p => p.classList.add('hidden'));
+  document.getElementById(id).classList.remove('hidden');
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  el.classList.add('active');
+  if(id === 'summary') refreshSummary();
+}
+
+// ══════════════ BUILD SLIDE BLOCK GRID ══════════════
+function buildSlides(){
+  const grid = document.getElementById('slideGrid');
+  grid.className = 'slide-grid';
+  grid.innerHTML = SLIDES.map((s, i) => `
+    <div class="block ${s.bcls}">
+      <div class="block-num">Slide ${String(i+1).padStart(2,'0')}</div>
+      <h3>${s.title}</h3>
+      <p class="block-desc">${s.desc}</p>
+      <textarea id="${s.id}" placeholder="${s.ph}" oninput="trackEdit()"></textarea>
+    </div>
+  `).join('');
+}
+
+// ══════════════ TOGGLE ══════════════
+function toggleIntervention(){
+  const tog = document.getElementById('needsDeckToggle');
+  const state = document.getElementById('needsDeckState');
+  const note  = document.getElementById('needsDeckNote');
+  const isOn  = tog.classList.toggle('on');
+  state.textContent = isOn ? 'Yes' : 'No';
+  state.classList.toggle('on', isOn);
+  note.textContent  = isOn ? 'Intervention flagged — pitch deck required.' : 'No intervention flagged.';
+  note.classList.toggle('active', isOn);
+  trackEdit();
+}
+
+// ══════════════ FILE UPLOAD / VIEW ══════════════
+function onExDeckUpload(input){
+  const f = input.files && input.files[0];
+  document.getElementById('exDeckName').textContent = f ? f.name : 'No file selected';
+  const btn = document.getElementById('exDeckView');
+  btn.disabled = !f;
+  if(f) btn.dataset.url = URL.createObjectURL(f);
+  trackEdit();
+}
+function onReqDeckUpload(input){
+  const f = input.files && input.files[0];
+  document.getElementById('reqDeckName').textContent = f ? f.name : 'No file selected';
+  const btn = document.getElementById('reqDeckView');
+  btn.disabled = !f;
+  if(f) btn.dataset.url = URL.createObjectURL(f);
+  trackEdit();
+}
+function viewFile(btnId){
+  const btn = document.getElementById(btnId);
+  if(btn && btn.dataset.url) window.open(btn.dataset.url, '_blank');
+}
+
+// ══════════════ VIDEO LINK OPEN ══════════════
+function syncLink(inputId, openId){
+  const val  = document.getElementById(inputId).value.trim();
+  const open = document.getElementById(openId);
+  if(val){ open.href = val; open.classList.remove('hidden'); }
+  else   { open.classList.add('hidden'); }
+}
+
+// ══════════════ IMPL STATUS BADGE ══════════════
+function onImplChange(){
+  const val   = document.getElementById('implStatus').value;
+  const badge = document.getElementById('implBadge');
+  const map   = {
+    'Pending':     ['s-pending',    '● Pending'],
+    'In Progress': ['s-progress',   '● In Progress'],
+    'Implemented': ['s-done',       '● Implemented'],
+    'Not Feasible':['s-nofeasible', '● Not Feasible']
+  };
+  if(val && map[val]){
+    badge.className   = `status-badge ${map[val][0]}`;
+    badge.textContent = map[val][1];
+    badge.classList.remove('hidden');
+  } else {
+    badge.classList.add('hidden');
+  }
+  trackEdit();
+}
+
+// ══════════════ EDIT TRACKING ══════════════
+function trackEdit(){ lastEdit = new Date(); refreshSummary(); }
+
+// ══════════════ SUMMARY ══════════════
+function refreshSummary(){
+  const s = (id,v) => { const el=document.getElementById(id); if(el) el.textContent=v; };
+
+  // ── Slide fill status ────────────────────────────────────
+  let filled = 0;
+  SLIDES.forEach(sl => { if((document.getElementById(sl.id)?.value||'').trim()) filled++; });
+  const total = SLIDES.length;
+  const pct   = Math.round((filled / total) * 100);
+
+  s('sum-completion', filled);
+  s('sum-pct',        pct + '%');
+  s('sum-pct2',       pct + '%');
+  s('sum-pct-strip',  pct + '%');
+  s('sum-filled',     filled);
+  s('sum-empty',      total - filled);
+  const bar = document.getElementById('sum-bar');
+  if(bar) bar.style.width = pct + '%';
+
+  // ── Slide-wise overview table ────────────────────────────
+  const tbodyHTML = SLIDES.map((sl, i) => {
+    const val       = (document.getElementById(sl.id)?.value||'').trim();
+    const isFilled  = !!val;
+    const preview   = val ? (val.length > 100 ? val.slice(0,100)+'…' : val) : '';
+    const rowCls    = isFilled ? 'row-filled' : 'row-empty';
+    const statusBadge = isFilled
+      ? '<span style="display:inline-block;padding:2px 8px;border-radius:10px;font-size:10px;font-weight:bold;background:var(--good-bg);color:var(--good-ink)">✓ Filled</span>'
+      : '<span style="display:inline-block;padding:2px 8px;border-radius:10px;font-size:10px;font-weight:bold;background:var(--fair-bg);color:var(--fair-ink)">Empty</span>';
+    const accent = {
+      sn_vision:'#1A6B6D', sn_problem:'#993556', sn_solution:'#C26849',
+      sn_business:'#7A4F1B', sn_financial:'#3F6B3A', sn_milestones:'#1F4A78',
+      sn_competition:'#6B6359', sn_marketing:'#1A6B6D', sn_team:'#1F4A78',
+      sn_expectations:'#7A4F1B', sn_ask:'#C26849'
+    }[sl.cls.replace('-','_')] || 'var(--teal)';
+
+    return `<tr class="${rowCls}">
+      <td style="text-align:center;color:var(--ink-faint);font-size:10px">${String(i+1).padStart(2,'0')}</td>
+      <td>
+        <div style="display:flex;align-items:center;gap:8px">
+          <span style="width:4px;height:28px;border-radius:2px;background:${accent};flex-shrink:0;display:inline-block"></span>
+          <strong style="font-size:12px">${sl.title}</strong>
+        </div>
+        <div style="font-size:10px;color:var(--ink-faint);margin-top:3px;padding-left:12px">${sl.desc}</div>
+      </td>
+      <td style="text-align:center">${statusBadge}</td>
+      <td style="font-size:11px;color:${isFilled ? 'var(--ink)' : 'var(--ink-faint)'};font-style:${isFilled ? 'normal' : 'italic'};line-height:1.4">${preview || 'Not yet filled'}</td>
+    </tr>`;
+  }).join('');
+  const tbody = document.getElementById('slideOverviewBody');
+  if(tbody) tbody.innerHTML = tbodyHTML;
+
+  // ── Slide breakdown mini-card ────────────────────────────
+  const GROUPS = [
+    { label: 'Story',    ids: ['vision_and_impact','problem_statement','solution_usp'] },
+    { label: 'Business', ids: ['business_model','financial_projections','milestones'] },
+    { label: 'Market',   ids: ['competition','marketing_strategy'] },
+    { label: 'Team/Ask', ids: ['team_overview','expectations_from_incubation','ask'] },
+  ];
+  const breakdownEl = document.getElementById('slide-breakdown-body');
+  if(breakdownEl){
+    breakdownEl.innerHTML = GROUPS.map(g => {
+      const done = g.ids.filter(id => (document.getElementById(id)?.value||'').trim()).length;
+      const tot  = g.ids.length;
+      const pctG = Math.round(done/tot*100);
+      const color= done===tot ? 'var(--good-ink)' : done > 0 ? 'var(--fair-ink)' : 'var(--ink-faint)';
+      return `<div class="sm-row">
+        <span class="sm-lbl">${g.label}</span>
+        <span style="font-weight:bold;color:${color}">${done}/${tot}</span>
+      </div>`;
+    }).join('');
+  }
+
+  // ── Existing assets ──────────────────────────────────────
+  const deckName = document.getElementById('exDeckName')?.textContent || '';
+  s('sum-deck',  deckName === 'No file selected' ? 'Not uploaded' : deckName);
+  const vid = document.getElementById('exVideoLink')?.value?.trim();
+  s('sum-video', vid ? 'Provided' : 'Not provided');
+
+  const isOn   = document.getElementById('needsDeckToggle')?.classList.contains('on');
+  const needEl = document.getElementById('sum-need');
+  if(needEl){
+    needEl.textContent = isOn ? 'Yes — Flagged' : 'No';
+    needEl.className   = 'sm-val ' + (isOn ? 'amber' : 'green');
+  }
+
+  s('sum-updated', lastEdit ? lastEdit.toLocaleDateString() : '—');
+
+  // ── Required assets ──────────────────────────────────────
+  const reqDeckName = document.getElementById('reqDeckName')?.textContent || '';
+  s('sum-req-deck',  reqDeckName !== 'No file selected' ? 'Yes 📎' : 'No');
+  const reqVid = document.getElementById('reqVideoLink')?.value?.trim();
+  s('sum-req-video', reqVid ? 'Yes ↗' : 'No');
+
+  // ── Implementation status ────────────────────────────────
+  const impl   = document.getElementById('implStatus')?.value || '';
+  const implEl = document.getElementById('sum-impl');
+  if(implEl){
+    implEl.textContent = impl || '—';
+    implEl.className   = 'sm-val'
+      + (impl === 'Implemented' ? ' green'
+         : impl === 'Not Feasible' ? ' red'
+         : impl ? ' amber' : '');
+  }
+
+  // ── Task log ─────────────────────────────────────────────
+  const taskRows = document.getElementById('taskLogBody')?.children || [];
+  s('sum-tasks', taskRows.length);
+  let tasksCompleted = 0;
+  [...taskRows].forEach(tr => {
+    const sel = tr.querySelector('select');
+    if(sel?.value === 'Completed') tasksCompleted++;
+  });
+
+  s('sum-logs', document.getElementById('logBookBody')?.children?.length || 0);
+
+  // ── Flags ─────────────────────────────────────────────────
+  s('flag-filled', filled);
+  s('flag-need',   isOn ? 'Yes' : 'No');
+  s('flag-deck',   reqDeckName !== 'No file selected' ? 'Yes' : 'No');
+  s('flag-tasks',  tasksCompleted);
+}
+
+// ══════════════ TASK LOG SEED ══════════════
+const TASK_SEED = [
+  ['Existing Pitch Deck Collected',               'Existing'],
+  ['Existing Pitch Video Reviewed',               'Existing'],
+  ['Intervention Need Assessed',                  'Existing'],
+  ['Vision & Impact Slide Drafted',               'Assessment'],
+  ['Problem Statement Slide Drafted',             'Assessment'],
+  ['Solution / USP Slide Drafted',                'Assessment'],
+  ['Business Model Slide Drafted',                'Assessment'],
+  ['Financial Projections Slide Drafted',         'Assessment'],
+  ['Milestones Slide Drafted',                    'Assessment'],
+  ['Competition Slide Drafted',                   'Assessment'],
+  ['Marketing Strategy Slide Drafted',            'Assessment'],
+  ['Team Overview Slide Drafted',                 'Assessment'],
+  ['Expectations Slide Drafted',                  'Assessment'],
+  ['Ask / Funding Slide Drafted',                 'Assessment'],
+  ['Pitch Deck Design Finalised',                 'Implementation'],
+  ['Final Deck Uploaded',                         'Implementation'],
+  ['Pitch Video Recorded & Linked',               'Implementation'],
+  ['Implementation Status Marked',                'Implementation']
+];
+
+function seedTaskLog(){
+  const tbody = document.getElementById('taskLogBody');
+  tbody.innerHTML = TASK_SEED.map((t, i) => {
+    const cls = t[1]==='Existing' ? 's-pending'
+              : t[1]==='Assessment' ? 's-progress'
+              : 's-done';
+    return `<tr>
+      <td class="num-col">${String(i+1).padStart(2,'0')}</td>
+      <td>${t[0]}</td>
+      <td><span class="status-badge ${cls}">${t[1]}</span></td>
+      <td><select><option>Pending</option><option>In Progress</option><option>Completed</option><option>Blocked</option></select></td>
+      <td><input type="text" placeholder="Owner"></td>
+      <td><input type="date"></td>
+      <td><input type="text" placeholder="Notes"></td>
+    </tr>`;
+  }).join('');
+}
+
+function addTaskRow(){
+  const tbody = document.getElementById('taskLogBody');
+  const num   = String(tbody.children.length + 1).padStart(2,'0');
+  const tr    = document.createElement('tr');
+  tr.innerHTML = `
+    <td class="num-col">${num}</td>
+    <td><input type="text" placeholder="Task description"></td>
+    <td><input type="text" placeholder="Phase"></td>
+    <td><select><option>Pending</option><option>In Progress</option><option>Completed</option><option>Blocked</option></select></td>
+    <td><input type="text" placeholder="Owner"></td>
+    <td><input type="date"></td>
+    <td><input type="text" placeholder="Notes"></td>
+  `;
+  tbody.appendChild(tr);
+}
+
+// ══════════════ LOG BOOK ══════════════
+function addLogRow(){
+  const tbody = document.getElementById('logBookBody');
+  const today = new Date().toISOString().split('T')[0];
+  const tr    = document.createElement('tr');
+  tr.innerHTML = `
+    <td><input type="date" value="${today}"></td>
+    <td><input type="text" placeholder="Activity or slide worked on"></td>
+    <td>
+      <select>
+        <option value="">— Select —</option>
+        <option>Site Visit</option>
+        <option>Phone Call</option>
+        <option>Pitch Rehearsal</option>
+        <option>Investor Meeting</option>
+        <option>Mentoring</option>
+        <option>Workshop</option>
+        <option>Other</option>
+      </select>
+    </td>
+    <td><input type="text" placeholder="Notes / observations"></td>
+    <td><input type="text" placeholder="Name"></td>
+    <td><button class="btn btn-sm">Upload</button></td>
+    <td><button class="row-delete" onclick="deleteRow(this)">✕</button></td>
+  `;
+  tbody.appendChild(tr);
+}
+
+function deleteRow(btn){
+  const row   = btn.closest('tr');
+  const tbody = row.parentElement;
+  if(tbody.rows.length > 1) row.remove();
+  else alert('At least one row is required.');
+}
+
+// ══════════════ INIT ══════════════
+window.addEventListener('DOMContentLoaded', () => {
+  buildSlides();
+  seedTaskLog();
+  refreshSummary();
+});
+</script>
+
+</body>
+</html>

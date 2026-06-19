@@ -1,0 +1,1279 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Logistics Service Module · PRIME Rural</title>
+<style>
+:root {
+  --teal:#0E4D4E; --sea:#1A6B6D; --terracotta:#C26849; --terracotta-dk:#A85738;
+  --terracotta-sft:#F5E2D6;
+  --cream:#FBF5E5; --cream-deep:#F4ECD3; --offwhite:#FDFAF0;
+  --ink:#2A2520; --ink-soft:#6B6359; --ink-faint:#9C9384;
+  --border:#E8DFC9; --border-dk:#D6CDB6;
+  --good-bg:#E3EFDF; --good-ink:#3F6B3A;
+  --fair-bg:#FBE9DF; --fair-ink:#7A3B22;
+  --poor-bg:#F5D6CC; --poor-ink:#8B2A0F;
+  --highlight:#FFF8E1;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:Georgia,serif;background:var(--cream);color:var(--ink);line-height:1.4}
+.page{max-width:1200px;margin:0 auto;padding:24px}
+
+.header{background:var(--teal);color:#fff;padding:16px 20px;border-radius:12px 12px 0 0;display:flex;justify-content:space-between;align-items:center}
+.header h1{font-size:18px;font-weight:normal;letter-spacing:0.5px}
+.header .crumb{font-size:11px;opacity:0.75;text-transform:uppercase;letter-spacing:1px}
+.card{background:var(--cream);border:1px solid var(--border-dk);border-top:none;border-radius:0 0 12px 12px}
+
+.tab-bar{display:flex;background:var(--cream-deep);border-bottom:1px solid var(--border-dk);overflow-x:auto}
+.tab{padding:12px 22px;cursor:pointer;font-size:12px;text-transform:uppercase;letter-spacing:1px;color:var(--ink-soft);border-right:1px solid var(--border);white-space:nowrap}
+.tab.active{background:var(--teal);color:#fff}
+.tab:hover:not(.active){background:#EADFC0}
+.content{padding:22px}
+.hidden{display:none !important}
+
+.entrepreneur-chip{display:inline-flex;align-items:center;gap:10px;background:#fff;border:1px solid var(--border-dk);padding:6px 14px;border-radius:20px;font-size:12px;margin-bottom:18px}
+.ent-avatar{width:24px;height:24px;background:var(--teal);color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:bold}
+
+.section{background:var(--cream-deep);padding:16px;border-radius:10px;margin-bottom:16px;border:1px solid var(--border)}
+.section-title{font-size:13px;text-transform:uppercase;letter-spacing:1.5px;color:var(--teal);margin-bottom:12px;padding-bottom:8px;border-bottom:1px solid var(--border-dk);font-weight:bold;display:flex;justify-content:space-between;align-items:center}
+.section-title-roman{color:var(--terracotta);margin-right:8px;font-style:italic}
+
+.field-row{display:flex;gap:12px;margin-bottom:10px;flex-wrap:wrap;align-items:center}
+.field-label{width:240px;font-size:12px;color:var(--ink-soft)}
+.field-val{flex:1;background:var(--offwhite);border:1px solid var(--border-dk);padding:6px 10px;border-radius:5px;font-size:12px;min-width:140px;font-family:Georgia,serif}
+.field-val[readonly],.field-val.auto{background:var(--cream-deep);color:var(--ink-soft);font-style:italic}
+textarea.field-val{font-family:Georgia,serif;resize:vertical;min-height:50px}
+select.field-val{cursor:pointer}
+
+.btn{padding:5px 12px;border-radius:20px;border:1px solid var(--border-dk);background:#fff;cursor:pointer;font-size:11px;color:var(--ink);font-family:Georgia,serif}
+.btn:hover{background:var(--cream-deep)}
+.btn-primary{background:var(--teal);color:#fff;border-color:var(--teal)}
+.btn-primary:hover{background:var(--sea)}
+
+/* Route table */
+table.rt{width:100%;border-collapse:collapse;font-size:11px;background:#fff;border:1px solid var(--border-dk);border-radius:6px;overflow:hidden}
+table.rt th{background:var(--teal);color:#fff;padding:8px 8px;text-align:left;font-weight:normal;font-size:10px;text-transform:uppercase;letter-spacing:0.5px;border-right:1px solid var(--sea);white-space:nowrap}
+table.rt th:last-child{border-right:none}
+table.rt td{padding:5px 6px;border-bottom:1px solid var(--border);border-right:1px solid var(--border);vertical-align:middle}
+table.rt td:last-child{border-right:none}
+table.rt tr:last-child td{border-bottom:none}
+table.rt td input,table.rt td select{width:100%;border:1px solid var(--border-dk);padding:4px 7px;border-radius:3px;font-family:Georgia,serif;font-size:11px;background:var(--offwhite)}
+table.rt td input:focus,table.rt td select:focus{outline:none;border-color:var(--teal);background:#fff}
+table.rt .total-row td{background:var(--highlight);font-weight:bold;color:var(--terracotta-dk);font-size:12px;border-top:2px solid var(--border-dk)}
+
+/* Data table (resources, tasklog etc) */
+table.data-table{width:100%;border-collapse:collapse;background:var(--offwhite);border-radius:6px;overflow:hidden;border:1px solid var(--border-dk);font-size:11px}
+table.data-table th{background:var(--teal);color:#fff;padding:9px 8px;text-align:left;font-weight:normal;text-transform:uppercase;letter-spacing:0.5px;font-size:10px;border-right:1px solid var(--sea);white-space:nowrap}
+table.data-table th:last-child{border-right:none}
+table.data-table td{padding:7px 8px;border-bottom:1px solid var(--border);border-right:1px solid var(--border);vertical-align:middle}
+table.data-table td:last-child{border-right:none}
+table.data-table tr:last-child td{border-bottom:none}
+table.data-table input,table.data-table select,table.data-table textarea{width:100%;border:1px solid var(--border);padding:5px 6px;border-radius:3px;font-family:Georgia,serif;font-size:11px;background:#fff}
+table.data-table input:focus,table.data-table select:focus{outline:none;border-color:var(--teal)}
+table.data-table .num-col{width:40px;text-align:center;color:var(--ink-soft)}
+table.data-table tr.total-row td{background:var(--highlight);font-weight:bold;color:var(--terracotta-dk);border-top:2px solid var(--border-dk)}
+.table-actions{display:flex;justify-content:space-between;align-items:center;margin-top:10px}
+.row-delete{background:transparent;border:none;color:var(--terracotta);cursor:pointer;font-size:14px;padding:2px 6px}
+.row-delete:hover{color:var(--terracotta-dk)}
+
+/* Summary */
+.summary-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px}
+.summary-card{background:#fff;border:1px solid var(--border);border-radius:10px;padding:14px}
+.summary-card.full{grid-column:1/-1}
+.summary-card h3{font-size:11px;text-transform:uppercase;letter-spacing:1px;color:var(--teal);margin-bottom:10px;padding-bottom:6px;border-bottom:1px solid var(--border)}
+.metric-row{display:flex;justify-content:space-between;padding:5px 0;font-size:12px;border-bottom:1px solid #f0e9d6}
+.metric-row:last-child{border-bottom:none}
+.metric-label{color:var(--ink-soft)}
+.metric-value{font-weight:bold;color:var(--ink)}
+.metric-value.green{color:var(--good-ink)}
+.metric-value.amber{color:var(--terracotta-dk)}
+.picture-strip{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;background:var(--teal);padding:14px;border-radius:10px;color:#fff;margin-top:10px}
+.picture-strip .ps-cell{padding:6px 4px}
+.picture-strip .ps-label{font-size:10px;text-transform:uppercase;letter-spacing:0.8px;opacity:0.7;margin-bottom:4px}
+.picture-strip .ps-val{font-size:18px;font-weight:bold}
+.picture-strip .ps-val.amber{color:#FFD580}
+.flags-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+.flag-card{background:#fff;border:1px solid var(--border);border-radius:8px;padding:12px}
+.flag-icon{width:30px;height:30px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:14px;margin-bottom:8px}
+.flag-icon.amber{background:var(--terracotta-sft);color:var(--terracotta-dk)}
+.flag-icon.red{background:#F5D6CC;color:#8B2A0F}
+.flag-icon.blue{background:#D6E3EE;color:#2C5A82}
+.flag-icon.green{background:var(--good-bg);color:var(--good-ink)}
+.flag-count{font-size:20px;font-weight:bold;color:var(--ink)}
+.flag-label{font-size:10px;color:var(--ink-soft);text-transform:uppercase;letter-spacing:0.5px;margin-top:4px}
+
+/* Status badges */
+.status-badge{display:inline-flex;align-items:center;gap:5px;padding:2px 9px;border-radius:14px;font-size:10px;font-weight:bold}
+.status-completed{background:var(--good-bg);color:var(--good-ink)}
+.status-progress{background:var(--fair-bg);color:var(--fair-ink)}
+.status-pending{background:var(--cream-deep);color:var(--ink-soft)}
+
+/* Toggle */
+.toggle{width:36px;height:18px;border-radius:20px;background:#ccc;display:inline-block;cursor:pointer;position:relative;flex-shrink:0;vertical-align:middle}
+.toggle::after{content:'';width:14px;height:14px;background:#fff;border-radius:50%;position:absolute;top:2px;left:2px;transition:left 0.2s}
+.toggle.on{background:var(--teal)}
+.toggle.on::after{left:20px}
+
+/* Machine block */
+.machine-block{background:#fff;border:1px solid var(--border-dk);border-radius:10px;margin-bottom:14px;overflow:hidden}
+.machine-block-head{background:var(--sea);color:#fff;padding:10px 14px;display:flex;justify-content:space-between;align-items:center;cursor:pointer;user-select:none;font-size:13px;flex-wrap:wrap;gap:8px}
+.machine-block-head:hover{background:var(--teal)}
+.machine-block-head .mb-name{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.chevron{font-size:12px;transition:transform 0.2s}
+.machine-block.collapsed .chevron{transform:rotate(-90deg)}
+.machine-block.collapsed .mb-body{display:none}
+.mb-body{padding:14px}
+.mb-remove{background:transparent;border:1px solid rgba(255,255,255,0.4);color:#fff;padding:3px 10px;border-radius:14px;cursor:pointer;font-size:11px;font-family:Georgia,serif}
+.mb-remove:hover{background:var(--terracotta);border-color:var(--terracotta)}
+
+/* Direction tag */
+.dir-tag{padding:2px 10px;border-radius:10px;font-size:10px;font-weight:bold;text-transform:uppercase}
+.dir-inbound{background:#D6E3EE;color:#2C5A82}
+.dir-outbound{background:var(--terracotta-sft);color:var(--terracotta-dk)}
+.dir-both{background:var(--good-bg);color:var(--good-ink)}
+
+/* Subsection */
+.subsection{background:var(--cream-deep);padding:12px;border-radius:8px;margin-bottom:10px;border:1px solid var(--border)}
+.subsection-title{font-size:11px;text-transform:uppercase;letter-spacing:1px;color:var(--teal);margin-bottom:10px;font-weight:bold;display:flex;justify-content:space-between;align-items:center}
+.subsection-title .sst-roman{color:var(--terracotta);font-style:italic;margin-right:6px}
+
+/* Calc box */
+.calc-box{display:grid;grid-template-columns:repeat(3,1fr);gap:0;background:var(--teal);border-radius:8px;overflow:hidden;margin-top:12px}
+.calc-box-cell{padding:12px 14px;border-right:1px solid rgba(255,255,255,0.15);color:#fff}
+.calc-box-cell:last-child{border-right:none}
+.calc-box-label{font-size:10px;text-transform:uppercase;letter-spacing:0.8px;opacity:0.7;margin-bottom:4px}
+.calc-box-val{font-size:16px;font-weight:bold}
+
+/* Pain pills */
+.pill-group{display:flex;flex-wrap:wrap;gap:6px;margin-top:4px}
+.pill{padding:4px 12px;border-radius:14px;font-size:10px;font-weight:bold;cursor:pointer;border:1px solid var(--border-dk);background:var(--offwhite);color:var(--ink-soft);user-select:none;transition:all 0.15s}
+.pill:hover{border-color:var(--teal);color:var(--teal)}
+.pill.on{background:var(--teal);color:#fff;border-color:var(--teal)}
+.pill.pain-on{background:var(--poor-bg);color:var(--poor-ink);border-color:var(--poor-ink)}
+
+/* Intervention / Implementation block */
+.impl-block{background:var(--terracotta-sft);border:1px solid var(--terracotta);border-radius:8px;padding:12px;margin-top:10px}
+.impl-block-title{font-size:11px;text-transform:uppercase;letter-spacing:1px;color:var(--terracotta-dk);margin-bottom:10px;font-weight:bold}
+.impl-item{background:#fff;border:1px solid var(--border);border-radius:6px;padding:10px}
+.impl-row{display:flex;align-items:center;gap:12px;margin-bottom:8px;flex-wrap:wrap}
+.impl-row:last-child{margin-bottom:0}
+.impl-label{font-size:11px;color:var(--ink-soft);min-width:200px}
+.impl-input{flex:1;border:1px solid var(--border);padding:6px 8px;border-radius:4px;font-family:Georgia,serif;font-size:11px;background:var(--offwhite);min-width:200px}
+.impl-input:focus{outline:none;border-color:var(--teal);background:#fff}
+.flag-note{font-size:10px;color:var(--ink-faint);font-style:italic;margin-top:4px}
+.flag-note.active{color:var(--terracotta-dk);font-weight:bold;font-style:normal}
+
+/* Total bar */
+.total-bar{background:var(--teal);color:#fff;padding:14px 18px;border-radius:10px;margin-top:14px}
+.total-bar-title{font-size:11px;text-transform:uppercase;letter-spacing:1px;opacity:0.7;margin-bottom:10px}
+.total-grid{display:grid;gap:14px}
+.total-cell .total-label{font-size:10px;opacity:0.6;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:3px}
+.total-cell .total-value{font-weight:bold;font-size:14px}
+.total-cell .total-value.amber{color:#FFD580;font-size:11px}
+
+/* Required rows */
+.opt-row{background:#fff;border:1px solid var(--border-dk);border-radius:10px;margin-bottom:12px;overflow:hidden}
+.opt-row-head{background:var(--cream-deep);padding:12px 16px;display:grid;gap:12px;align-items:center;border-bottom:1px solid var(--border-dk)}
+.opt-readonly-label{font-size:10px;color:var(--ink-soft);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:3px}
+.opt-readonly-val{font-size:12px;font-weight:bold;color:var(--teal)}
+.int-type{display:inline-flex;align-items:center;gap:5px;padding:3px 10px;border-radius:14px;font-size:10px;font-weight:bold}
+.int-upgrade{background:var(--terracotta-sft);color:var(--terracotta-dk)}
+.int-new{background:var(--good-bg);color:var(--good-ink)}
+
+.add-row-bar{text-align:center;padding:14px;background:var(--cream-deep);border:1px dashed var(--border-dk);border-radius:10px;margin-top:10px}
+
+/* Inline select style for banner */
+.head-select{background:rgba(255,255,255,0.15);border:1px solid rgba(255,255,255,0.3);color:#fff;padding:3px 8px;border-radius:4px;font-family:Georgia,serif;font-size:12px;cursor:pointer}
+.head-select option{color:var(--ink);background:#fff}
+.head-input{background:rgba(255,255,255,0.15);border:1px solid rgba(255,255,255,0.3);color:#fff;padding:3px 8px;border-radius:4px;font-family:Georgia,serif;font-size:13px}
+.head-input::placeholder{color:rgba(255,255,255,0.6)}
+
+/* ===== SUMMARY TAB (standard pattern) ===== */
+.me-snapshot{width:100%;border-collapse:collapse;font-size:12px;background:var(--offwhite);border-radius:6px;overflow:hidden;border:1px solid var(--border-dk)}
+.me-snapshot th{background:var(--teal);color:#fff;padding:8px 10px;text-align:left;font-weight:normal;text-transform:uppercase;letter-spacing:0.5px;font-size:10px}
+.me-snapshot th.delta-col{background:var(--terracotta)}
+.me-snapshot td{padding:9px 10px;border-bottom:1px solid var(--border)}
+.me-snapshot tr:last-child td{border-bottom:none}
+.me-snapshot td.me-item{font-weight:bold;color:var(--teal);width:30%}
+.me-snapshot td.me-pre,.me-snapshot td.me-post{width:23%;color:var(--ink)}
+.me-snapshot td.me-impl{width:24%;color:var(--terracotta-dk);font-weight:bold}
+.sum-agg-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.sum-agg-card{background:#fff;border:1px solid var(--border);border-radius:10px;padding:14px}
+.sum-agg-card h3{font-size:11px;text-transform:uppercase;letter-spacing:1px;color:var(--teal);margin-bottom:10px;padding-bottom:6px;border-bottom:1px solid var(--border);font-weight:bold}
+.sum-agg-row{display:flex;justify-content:space-between;padding:5px 0;font-size:12px;border-bottom:1px solid #f0e9d6}
+.sum-agg-row:last-child{border-bottom:none}
+.sum-agg-label{color:var(--ink-soft)}
+.sum-agg-value{font-weight:bold;color:var(--ink)}
+.sum-agg-value.green{color:var(--good-ink)}
+.sum-agg-value.fair{color:var(--fair-ink)}
+.sum-agg-value.poor{color:var(--poor-ink)}
+.sum-agg-row{display:flex;justify-content:space-between;padding:5px 0;font-size:12px;border-bottom:1px dashed var(--border)}
+.sum-agg-row:last-child{border-bottom:none}
+.sum-agg-row .sum-agg-label{color:var(--ink-soft)}
+.sum-agg-row .sum-agg-value{font-weight:bold;color:var(--ink)}
+.sum-agg-row .sum-agg-value.green{color:var(--good-ink, #3F6B3A)}
+.sum-agg-row .sum-agg-value.fair{color:var(--fair-ink, #7A3B22)}
+.sum-agg-row .sum-agg-value.poor{color:var(--poor-ink, #8B2A0F)}
+.sum-flags-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+.sum-flag-card{background:#fff;border:1px solid var(--border);border-radius:8px;padding:12px;text-align:left}
+.sum-flag-icon{width:30px;height:30px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:14px;margin-bottom:8px;background:var(--terracotta-sft);color:var(--terracotta-dk)}
+.sum-flag-icon.amber{background:var(--fair-bg, #FBE9DF);color:var(--fair-ink, #7A3B22)}
+.sum-flag-icon.blue{background:var(--info-bg, #E1ECF7);color:var(--info-ink, #1F4A78)}
+.sum-flag-icon.green{background:var(--good-bg, #E3EFDF);color:var(--good-ink, #3F6B3A)}
+.sum-flag-count{font-size:20px;font-weight:bold;color:var(--ink)}
+.sum-flag-label{font-size:10px;color:var(--ink-soft);text-transform:uppercase;letter-spacing:0.5px;margin-top:4px}
+/* ===== /SUMMARY TAB ===== */
+
+</style>
+</head>
+<body>
+<div class="page">
+<div class="header">
+  <h1>Logistics Service Module</h1>
+  <div class="crumb">PRIME Rural · DF Logistics</div>
+</div>
+<div class="card">
+
+<div class="tab-bar">
+  <div class="tab active" onclick="showTab('summary',this)">Summary</div>
+  <div class="tab" onclick="showTab('infrastructure',this)">Assessment</div>
+  <div class="tab" onclick="showTab('existing',this)">Existing</div>
+  <div class="tab" onclick="showTab('required',this)">Required</div>
+  <div class="tab" onclick="showTab('resources',this)">Resources</div>
+  <div class="tab" onclick="showTab('tasklog',this)">Task Log</div>
+  <div class="tab" onclick="showTab('logbook',this)">Log Book</div>
+</div>
+
+<div class="content">
+<div class="entrepreneur-chip">
+  <div class="ent-avatar">EN</div>
+  <span style="color:var(--ink-soft);font-style:italic">Auto-fetched from profile</span>
+</div>
+
+<!-- ============ SUMMARY ============ -->
+<div id="summary" class="panel">
+
+  <!-- ① SERVICE-WISE OVERVIEW -->
+  <div class="section">
+    <div class="section-title"><span><span class="section-title-roman">I.</span>Service-wise Overview</span></div>
+    <p style="font-size:11px;color:var(--ink-soft);font-style:italic;margin-bottom:10px">One row per route — service provider shows which mode is used on that route. New Monthly Cost and Saving populate when an upgrade or new service is in progress.</p>
+    <div style="overflow-x:auto">
+    <table class="data-table" style="min-width:860px">
+      <thead>
+        <tr>
+          <th>Route</th>
+          <th>Service Provider / Mode</th>
+          <th>Direction</th>
+          <th>Monthly Cost (₹)</th>
+          <th>Pain Points</th>
+          <th>Intervention Type</th>
+          <th>Implementation Status</th>
+          <th style="background:#7A3B22">New Monthly Cost (₹)</th>
+          <th style="background:#3F6B3A">Saving / Month</th>
+        </tr>
+      </thead>
+      <tbody id="summaryRouteTable">
+        <tr><td colspan="9" style="text-align:center;color:var(--ink-faint);font-style:italic;padding:14px">Auto-populated from Existing and Required tabs</td></tr>
+      </tbody>
+    </table>
+    </div>
+  </div>
+
+  <!-- ② AGGREGATES -->
+  <div class="section">
+    <div class="section-title"><span><span class="section-title-roman">II.</span>Aggregates</span></div>
+    <div class="sum-agg-grid">
+
+      <div class="sum-agg-card">
+        <h3>Existing</h3>
+        <div class="sum-agg-row"><span class="sum-agg-label">Total routes</span><span class="sum-agg-value" id="agg-ex-total">0</span></div>
+        <div class="sum-agg-row"><span class="sum-agg-label">Inbound</span><span class="sum-agg-value" id="agg-ex-inbound">0</span></div>
+        <div class="sum-agg-row"><span class="sum-agg-label">Outbound</span><span class="sum-agg-value" id="agg-ex-outbound">0</span></div>
+        <div class="sum-agg-row"><span class="sum-agg-label">Pain points flagged</span><span class="sum-agg-value" id="agg-ex-pain">0</span></div>
+      </div>
+
+      <div class="sum-agg-card">
+        <h3>Cost</h3>
+        <div class="sum-agg-row"><span class="sum-agg-label">Monthly cost — Before (₹)</span><span class="sum-agg-value" id="agg-ex-cost">₹ 0</span></div>
+        <div class="sum-agg-row"><span class="sum-agg-label">Monthly cost — After (₹)</span><span class="sum-agg-value green" id="agg-impl-cost">—</span></div>
+        <div class="sum-agg-row"><span class="sum-agg-label">Saving / month (₹)</span><span class="sum-agg-value green" id="agg-impl-saving">—</span></div>
+        <div style="font-size:10px;color:var(--ink-faint);font-style:italic;margin-top:6px">After = Implemented interventions only.</div>
+      </div>
+
+      <div class="sum-agg-card">
+        <h3>Interventions</h3>
+        <div class="sum-agg-row"><span class="sum-agg-label">Upgrades needed</span><span class="sum-agg-value" id="agg-rq-upgrades">0</span></div>
+        <div class="sum-agg-row"><span class="sum-agg-label">New services</span><span class="sum-agg-value" id="agg-rq-new">0</span></div>
+        <div class="sum-agg-row"><span class="sum-agg-label">Total</span><span class="sum-agg-value" id="agg-rq-total">0</span></div>
+      </div>
+
+      <div class="sum-agg-card">
+        <h3>Status</h3>
+        <div class="sum-agg-row"><span class="sum-agg-label">Implemented</span><span class="sum-agg-value green" id="impl-done">0</span></div>
+        <div class="sum-agg-row"><span class="sum-agg-label">In Progress</span><span class="sum-agg-value fair" id="impl-progress">0</span></div>
+        <div class="sum-agg-row"><span class="sum-agg-label">Pending</span><span class="sum-agg-value" id="impl-pending">0</span></div>
+        <div class="sum-agg-row"><span class="sum-agg-label">Not Feasible</span><span class="sum-agg-value poor" id="impl-notfeasible">0</span></div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ③ FLAGS -->
+  <div class="section">
+    <div class="section-title"><span><span class="section-title-roman">III.</span>Intervention Flags</span></div>
+    <div class="sum-flags-grid">
+      <div class="sum-flag-card">
+        <div class="sum-flag-icon">↑</div>
+        <div class="sum-flag-count" id="flag-upgrade">0</div>
+        <div class="sum-flag-label">Upgrade Needed</div>
+      </div>
+      <div class="sum-flag-card">
+        <div class="sum-flag-icon blue">✓</div>
+        <div class="sum-flag-count" id="flag-upg-done">0</div>
+        <div class="sum-flag-label">Upgrades Implemented</div>
+      </div>
+      <div class="sum-flag-card">
+        <div class="sum-flag-icon amber">!</div>
+        <div class="sum-flag-count" id="flag-pain">0</div>
+        <div class="sum-flag-label">Pain Points Flagged</div>
+      </div>
+      <div class="sum-flag-card">
+        <div class="sum-flag-icon blue">◇</div>
+        <div class="sum-flag-count" id="flag-notrack">0</div>
+        <div class="sum-flag-label">No Tracking</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ghost IDs for existing JS -->
+  <span id="agg-rq-cost"  style="display:none"></span>
+  <span id="me-routes-pre"  style="display:none"></span>
+  <span id="me-routes-post" style="display:none"></span>
+  <span id="me-routes-impl" style="display:none"></span>
+  <span id="me-cost-pre"    style="display:none"></span>
+  <span id="me-cost-post"   style="display:none"></span>
+  <span id="me-cost-impl"   style="display:none"></span>
+  <span id="me-flag-pre"    style="display:none"></span>
+  <span id="me-flag-post"   style="display:none"></span>
+  <span id="me-flag-impl"   style="display:none"></span>
+  <span id="me-pain-pre"    style="display:none"></span>
+  <span id="me-pain-post"   style="display:none"></span>
+  <span id="me-pain-impl"   style="display:none"></span>
+
+</div>
+
+<!-- ============ INFRASTRUCTURE ============ -->
+<div id="infrastructure" class="panel hidden">
+  <div class="section">
+    <div class="section-title">Road & Access Conditions</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
+      <div>
+        <div class="field-row"><div class="field-label">Road Connectivity</div><select class="field-val"><option value="">— Select —</option><option>Pucca Road (Tarred)</option><option>Kutcha Road (Gravel / Dirt)</option><option>Mixed</option><option>No Road Access</option></select></div>
+        <div class="field-row"><div class="field-label">Nearest Highway / Main Road</div><input type="text" class="field-val" placeholder="Name · distance (km)"></div>
+        <div class="field-row"><div class="field-label">Nearest Rail Station</div><input type="text" class="field-val" placeholder="Name · distance (km)"></div>
+        <div class="field-row"><div class="field-label">Nearest Courier Hub / Post Office</div><input type="text" class="field-val" placeholder="Name · distance (km)"></div>
+        <div class="field-row"><div class="field-label">Last Mile Access</div><select class="field-val"><option value="">— Select —</option><option>Any vehicle</option><option>Small vehicle only</option><option>Two-wheeler / foot only</option><option>Seasonal only</option></select></div>
+      </div>
+      <div>
+        <div class="field-row"><div class="field-label">Main Logistics Issue</div><textarea class="field-val" placeholder="Key bottleneck in the supply chain" style="min-height:70px"></textarea></div>
+        <div class="field-row"><div class="field-label">Seasonal Disruption</div><textarea class="field-val" placeholder="Months / weather when logistics fail" style="min-height:55px"></textarea></div>
+        <div class="field-row"><div class="field-label">General Notes</div><textarea class="field-val" placeholder="Other infrastructure observations" style="min-height:55px"></textarea></div>
+      </div>
+    </div>
+  </div>
+  <div class="section">
+    <div class="section-title">Services Available Nearby</div>
+    <p style="font-size:12px;color:var(--ink-soft);margin-bottom:14px;font-style:italic">Tick what is physically accessible near the entrepreneur — informs realistic recommendations in the Required tab.</p>
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px">
+      <div style="background:#fff;border:1px solid var(--border-dk);border-radius:8px;padding:14px">
+        <div style="font-size:10px;text-transform:uppercase;letter-spacing:1px;color:var(--teal);margin-bottom:10px;font-weight:bold">Courier Services</div>
+        <label style="display:flex;align-items:center;gap:8px;font-size:12px;margin-bottom:8px;cursor:pointer"><input type="checkbox" style="accent-color:var(--teal)"> India Post / SpeedPost</label>
+        <label style="display:flex;align-items:center;gap:8px;font-size:12px;margin-bottom:8px;cursor:pointer"><input type="checkbox" style="accent-color:var(--teal)"> Blue Dart</label>
+        <label style="display:flex;align-items:center;gap:8px;font-size:12px;margin-bottom:8px;cursor:pointer"><input type="checkbox" style="accent-color:var(--teal)"> DTDC</label>
+        <label style="display:flex;align-items:center;gap:8px;font-size:12px;margin-bottom:8px;cursor:pointer"><input type="checkbox" style="accent-color:var(--teal)"> Delhivery</label>
+        <label style="display:flex;align-items:center;gap:8px;font-size:12px;cursor:pointer"><input type="checkbox" style="accent-color:var(--teal)"> Shiprocket</label>
+      </div>
+      <div style="background:#fff;border:1px solid var(--border-dk);border-radius:8px;padding:14px">
+        <div style="font-size:10px;text-transform:uppercase;letter-spacing:1px;color:var(--teal);margin-bottom:10px;font-weight:bold">Local Transport</div>
+        <label style="display:flex;align-items:center;gap:8px;font-size:12px;margin-bottom:8px;cursor:pointer"><input type="checkbox" style="accent-color:var(--teal)"> Own Vehicle</label>
+        <label style="display:flex;align-items:center;gap:8px;font-size:12px;margin-bottom:8px;cursor:pointer"><input type="checkbox" style="accent-color:var(--teal)"> Hired Cab / Taxi</label>
+        <label style="display:flex;align-items:center;gap:8px;font-size:12px;margin-bottom:8px;cursor:pointer"><input type="checkbox" style="accent-color:var(--teal)"> Auto / Tempo</label>
+        <label style="display:flex;align-items:center;gap:8px;font-size:12px;margin-bottom:8px;cursor:pointer"><input type="checkbox" style="accent-color:var(--teal)"> Mini Truck / Bolero</label>
+        <label style="display:flex;align-items:center;gap:8px;font-size:12px;margin-bottom:8px;cursor:pointer"><input type="checkbox" style="accent-color:var(--teal)"> Bus Parcel</label>
+        <label style="display:flex;align-items:center;gap:8px;font-size:12px;cursor:pointer"><input type="checkbox" style="accent-color:var(--teal)"> Train Parcel</label>
+      </div>
+      <div style="background:#fff;border:1px solid var(--border-dk);border-radius:8px;padding:14px">
+        <div style="font-size:10px;text-transform:uppercase;letter-spacing:1px;color:var(--teal);margin-bottom:10px;font-weight:bold">E-Commerce</div>
+        <label style="display:flex;align-items:center;gap:8px;font-size:12px;margin-bottom:8px;cursor:pointer"><input type="checkbox" style="accent-color:var(--teal)"> Amazon Shipping</label>
+        <label style="display:flex;align-items:center;gap:8px;font-size:12px;margin-bottom:8px;cursor:pointer"><input type="checkbox" style="accent-color:var(--teal)"> Flipkart Logistics</label>
+        <label style="display:flex;align-items:center;gap:8px;font-size:12px;margin-bottom:8px;cursor:pointer"><input type="checkbox" style="accent-color:var(--teal)"> Meesho Logistics</label>
+        <label style="display:flex;align-items:center;gap:8px;font-size:12px;margin-bottom:8px;cursor:pointer"><input type="checkbox" style="accent-color:var(--teal)"> Ecomm Express</label>
+        <label style="display:flex;align-items:center;gap:8px;font-size:12px;cursor:pointer"><input type="checkbox" style="accent-color:var(--teal)"> Xpressbees</label>
+      </div>
+      <div style="background:#fff;border:1px solid var(--border-dk);border-radius:8px;padding:14px">
+        <div style="font-size:10px;text-transform:uppercase;letter-spacing:1px;color:var(--teal);margin-bottom:10px;font-weight:bold">Collective / Specialised</div>
+        <label style="display:flex;align-items:center;gap:8px;font-size:12px;margin-bottom:8px;cursor:pointer"><input type="checkbox" style="accent-color:var(--teal)"> FPO / Cooperative Van</label>
+        <label style="display:flex;align-items:center;gap:8px;font-size:12px;margin-bottom:8px;cursor:pointer"><input type="checkbox" style="accent-color:var(--teal)"> SHG Network</label>
+        <label style="display:flex;align-items:center;gap:8px;font-size:12px;margin-bottom:8px;cursor:pointer"><input type="checkbox" style="accent-color:var(--teal)"> Cold Chain Truck</label>
+        <label style="display:flex;align-items:center;gap:8px;font-size:12px;margin-bottom:8px;cursor:pointer"><input type="checkbox" style="accent-color:var(--teal)"> NGO / Partner Network</label>
+        <label style="display:flex;align-items:center;gap:8px;font-size:12px;cursor:pointer"><input type="checkbox" style="accent-color:var(--teal)"> Government Scheme</label>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============ EXISTING ============ -->
+<div id="existing" class="panel hidden">
+  <div id="routeList"></div>
+  <div class="add-row-bar">
+    <button class="btn btn-primary" onclick="addRouteBlock()">+ Add Logistics Route</button>
+  </div>
+  <div class="total-bar">
+    <div class="total-bar-title">⚙ All Existing Routes — Total</div>
+    <div class="total-grid" style="grid-template-columns:repeat(5,1fr)">
+      <div class="total-cell"><div class="total-label">Total Routes</div><div class="total-value" id="ex-tot-routes">0</div></div>
+      <div class="total-cell"><div class="total-label">Inbound</div><div class="total-value" id="ex-tot-inbound">0</div></div>
+      <div class="total-cell"><div class="total-label">Outbound</div><div class="total-value" id="ex-tot-outbound">0</div></div>
+      <div class="total-cell"><div class="total-label">Monthly Cost</div><div class="total-value" id="ex-tot-cost">₹ 0</div></div>
+      <div class="total-cell"><div class="total-label">Annual Cost</div><div class="total-value" id="ex-tot-annual">₹ 0</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ============ REQUIRED ============ -->
+<div id="required" class="panel hidden">
+  <div class="section">
+    <div class="section-title"><span><span class="section-title-roman">I.</span>Service Upgrades</span></div>
+    <p style="font-size:12px;color:var(--ink-soft);margin-bottom:12px;font-style:italic">Auto-populated when "Upgrade Needed?" is flagged in Existing.</p>
+    <div id="upgradeList"><div class="empty-msg" style="text-align:center;color:var(--ink-faint);font-style:italic;padding:20px;background:#fff;border:1px dashed var(--border-dk);border-radius:8px">No upgrades flagged yet — toggle "Upgrade Needed?" on any route in Existing.</div></div>
+    <div class="add-row-bar"><button class="btn" onclick="addRequiredBlock('upgrade',null)">+ Add Upgrade Manually</button></div>
+  </div>
+  <div class="section">
+    <div class="section-title"><span><span class="section-title-roman">II.</span>New Logistics Services</span></div>
+    <p style="font-size:12px;color:var(--ink-soft);margin-bottom:12px;font-style:italic">Net-new services not replacing anything existing — add Blue Dart, India Post, cold chain, FPO van, etc.</p>
+    <div id="newServiceList"></div>
+    <div class="add-row-bar"><button class="btn btn-primary" onclick="addRequiredBlock('new',null)">+ Add New Service</button></div>
+  </div>
+  <div class="total-bar">
+    <div class="total-bar-title">⚙ Required Services — Status Overview</div>
+    <div class="total-grid" style="grid-template-columns:repeat(5,1fr)">
+      <div class="total-cell"><div class="total-label">Upgrades</div><div class="total-value" id="req-tot-upgrade">0</div></div>
+      <div class="total-cell"><div class="total-label">New Services</div><div class="total-value" id="req-tot-new">0</div></div>
+      <div class="total-cell"><div class="total-label">Pending</div><div class="total-value" id="req-tot-pending">0</div></div>
+      <div class="total-cell"><div class="total-label">In Progress</div><div class="total-value" id="req-tot-progress">0</div></div>
+      <div class="total-cell"><div class="total-label">Implemented</div><div class="total-value" id="req-tot-implemented">0</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ============ RESOURCES ============ -->
+<div id="resources" class="panel hidden">
+  <div class="section">
+    <div class="section-title">Reference Materials</div>
+    <table class="data-table" id="resourcesTable">
+      <thead><tr><th style="width:25%">Title</th><th style="width:20%">Category</th><th style="width:12%">Type</th><th style="width:30%">Notes</th><th style="width:8%">File</th><th style="width:5%"></th></tr></thead>
+      <tbody>
+        <tr>
+          <td><input type="text" placeholder="Resource title"></td>
+          <td><select><option>— Select —</option><option>Courier Rate Card</option><option>Transporter Contact</option><option>Government Scheme</option><option>Route Map</option><option>Insurance</option><option>FPO / Cooperative</option></select></td>
+          <td><select><option>— Select —</option><option>Contact</option><option>Rate Card</option><option>Reference</option><option>Map</option></select></td>
+          <td><input type="text" placeholder="Notes"></td>
+          <td><button class="btn" style="padding:3px 8px;font-size:10px">Upload</button></td>
+          <td><button class="row-delete" onclick="deleteRow(this)">✕</button></td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="table-actions"><span></span><button class="btn btn-primary" onclick="addRow('resourcesTable')">+ Add Resource</button></div>
+  </div>
+</div>
+
+<!-- ============ TASK LOG ============ -->
+<div id="tasklog" class="panel hidden">
+  <div class="section">
+    <div class="section-title">Task Log</div>
+    <table class="data-table"><thead><tr><th style="width:5%">No.</th><th style="width:35%">Task</th><th style="width:12%">Phase</th><th style="width:12%">Status</th><th style="width:15%">Owner</th><th style="width:11%">Due Date</th><th style="width:10%">Notes</th></tr></thead><tbody id="taskLogBody"></tbody></table>
+  </div>
+</div>
+
+<!-- ============ LOG BOOK ============ -->
+<div id="logbook" class="panel hidden">
+  <div class="section">
+    <div class="section-title">Log Book</div>
+    <table class="data-table" id="logBookTable">
+      <thead><tr><th style="width:12%">Date</th><th style="width:16%">Route / Service</th><th style="width:14%">Activity</th><th style="width:30%">Notes</th><th style="width:13%">Logged By</th><th style="width:10%">Evidence</th><th style="width:5%"></th></tr></thead>
+      <tbody>
+        <tr>
+          <td><input type="date"></td>
+          <td><input type="text" placeholder="Route or service name"></td>
+          <td><select><option>— Select —</option><option>Site Visit</option><option>Provider Meeting</option><option>Trial Shipment</option><option>Rate Negotiation</option><option>Delay / Loss Incident</option><option>Service Onboarding</option></select></td>
+          <td><input type="text" placeholder="Notes"></td>
+          <td><input type="text" placeholder="Name"></td>
+          <td><button class="btn" style="padding:3px 8px;font-size:10px">Upload</button></td>
+          <td><button class="row-delete" onclick="deleteRow(this)">✕</button></td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="table-actions"><span></span><button class="btn btn-primary" onclick="addRow('logBookTable')">+ Add Entry</button></div>
+  </div>
+</div>
+
+</div></div></div>
+
+<script>
+// ============ CONSTANTS ============
+const TRANSPORT_MODES = ['Own Vehicle','Two-Wheeler','Hired Cab / Taxi','Auto / Tempo','Mini Truck / Bolero','Bus Parcel','Train Parcel','India Post / SpeedPost','Blue Dart','DTDC','Delhivery','Shiprocket','FPO / Cooperative Van','Cold Chain Truck','On Foot / Headload','Other'];
+const PAIN_POINTS     = ['Delays','High Cost','Damage / Loss','Unreliable','No Tracking','Limited Capacity','Seasonal Cut-off'];
+
+let routeCounter=0, upgradeCounter=0, newSvcCounter=0;
+
+// ============ TAB SWITCHING ============
+function showTab(id,el){
+  document.querySelectorAll('.panel').forEach(p=>p.classList.add('hidden'));
+  document.getElementById(id).classList.remove('hidden');
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  el.classList.add('active');
+  if(id==='summary') refreshSummary();
+}
+
+// ============ ROUTE BLOCK HTML ============
+function routeTableHTML(rid){
+  const modeOpts = TRANSPORT_MODES.map(m=>`<option>${m}</option>`).join('');
+  return `
+    <table class="rt" id="${rid}-rt">
+      <thead>
+        <tr>
+          <th>From</th>
+          <th>To</th>
+          <th>Mode of Transport</th>
+          <th>Time of Travel</th>
+          <th style="width:100px">Cost (₹)</th>
+          <th>Contact</th>
+          <th style="width:28px"></th>
+        </tr>
+      </thead>
+      <tbody id="${rid}-rtbody"></tbody>
+      <tfoot>
+        <tr class="total-row">
+          <td colspan="4" style="padding:7px 10px;font-size:11px">Total Cost Per Trip</td>
+          <td style="padding:7px 10px;font-size:13px" id="${rid}-tripTotal">₹ 0.00</td>
+          <td></td>
+          <td></td>
+        </tr>
+      </tfoot>
+    </table>
+    <button class="btn" style="margin-top:8px;font-size:10px" onclick="addRouteRow('${rid}')">+ Add Row</button>`;
+}
+
+function calcBoxHTML(rid){
+  return `
+    <div class="calc-box" id="${rid}-calcbox" style="margin-top:12px">
+      <div class="calc-box-cell">
+        <div class="calc-box-label">Frequency</div>
+        <select id="${rid}-freq" onchange="recalcRoute('${rid}')"
+          style="background:rgba(255,255,255,0.15);border:1px solid rgba(255,255,255,0.3);color:#fff;padding:3px 6px;border-radius:4px;font-family:Georgia,serif;font-size:11px;width:100%;cursor:pointer">
+          <option value="">— Select —</option>
+          <option value="30">Daily (×30)</option>
+          <option value="12">Twice a week (×12)</option>
+          <option value="4">Weekly (×4)</option>
+          <option value="2">Twice a month</option>
+          <option value="1">Monthly</option>
+          <option value="0.5">Every 2 months</option>
+        </select>
+      </div>
+      <div class="calc-box-cell">
+        <div class="calc-box-label">Monthly Cost</div>
+        <div class="calc-box-val" id="${rid}-monthly">₹ 0</div>
+      </div>
+      <div class="calc-box-cell">
+        <div class="calc-box-label">Annual Cost</div>
+        <div class="calc-box-val" id="${rid}-annual">₹ 0</div>
+      </div>
+    </div>`;
+}
+
+function painSectionHTML(rid){
+  const painPills = PAIN_POINTS.map(p=>`<span class="pill" onclick="this.classList.toggle('pain-on');refreshSummary()">${p}</span>`).join('');
+  return `
+    <div class="subsection">
+      <div class="subsection-title"><span class="sst-roman">II.</span>Pain Points</div>
+      <div style="margin-bottom:10px">
+        <div style="font-size:10px;color:var(--ink-soft);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:6px">Issues Experienced — select all that apply</div>
+        <div class="pill-group" id="${rid}-pains">${painPills}</div>
+      </div>
+      <div class="field-row">
+        <div class="field-label">Delay Frequency</div>
+        <select class="field-val" id="${rid}-delayfreq" onchange="refreshSummary()">
+          <option value="">— Select —</option>
+          <option>Never</option><option>Sometimes</option><option>Often</option><option>Always</option>
+        </select>
+      </div>
+      <div class="field-row">
+        <div class="field-label">Notes</div>
+        <textarea class="field-val" placeholder="Any observations about this route..."></textarea>
+      </div>
+    </div>`;
+}
+
+function interventionHTML(rid){
+  return `
+    <div class="impl-block">
+      <div class="impl-block-title">⚠ Intervention Need</div>
+      <div class="impl-item">
+        <div class="impl-row">
+          <div class="impl-label" style="font-weight:bold">Service Upgrade Needed?</div>
+          <span class="toggle svc-toggle" onclick="toggleUpgradeFlag(this,'${rid}')"></span>
+        </div>
+        <div class="flag-note" id="${rid}-upgNote">Not flagged</div>
+        <div class="impl-row" style="margin-top:8px">
+          <div class="impl-label">Justification</div>
+          <input type="text" class="impl-input svc-justify" placeholder="Why does this need an upgrade?" oninput="syncJustify('${rid}',this.value)">
+        </div>
+      </div>
+    </div>`;
+}
+
+function implStatusHTML(cls){
+  return `
+    <div class="impl-block">
+      <div class="impl-block-title">Implementation Status</div>
+      <div class="impl-item">
+        <div class="impl-row">
+          <div class="impl-label" style="font-weight:bold">Implementation Status</div>
+          <select class="field-val ${cls}" style="max-width:260px" onchange="recalcRequiredTotals();refreshSummary()">
+            <option>Pending</option><option>In Progress</option><option>Implemented</option><option>Not Feasible</option>
+          </select>
+        </div>
+        <div class="impl-row">
+          <div class="impl-label">Implementation Notes</div>
+          <textarea class="impl-input" placeholder="Notes on implementation..." style="min-height:40px"></textarea>
+        </div>
+      </div>
+    </div>`;
+}
+
+// ============ ADD EXISTING ROUTE BLOCK ============
+function addRouteBlock(){
+  routeCounter++;
+  const rid = `rt${routeCounter}`;
+  const modeOpts = TRANSPORT_MODES.map(m=>`<option>${m}</option>`).join('');
+  const block = document.createElement('div');
+  block.className = 'machine-block';
+  block.id = rid;
+  block.innerHTML = `
+    <div class="machine-block-head" onclick="toggleRoute('${rid}')">
+      <div class="mb-name">
+        <span class="chevron">▾</span>
+        <span style="opacity:0.85">Route ${routeCounter} ·</span>
+        <input type="text" placeholder="Route name / purpose" id="${rid}-name" class="head-input" style="width:200px"
+          oninput="refreshSummary()" onclick="event.stopPropagation()">
+        <select class="head-select" id="${rid}-routetype" onclick="event.stopPropagation()" onchange="refreshSummary()">
+          <option value="">Route Type</option>
+          <option>Direct</option>
+          <option>Via Hub / Market</option>
+          <option>Multi-stop</option>
+        </select>
+        <select class="head-select" id="${rid}-dir" onclick="event.stopPropagation()" onchange="updateDirTag('${rid}');recalcTotals();refreshSummary()">
+          <option value="">Direction</option>
+          <option value="Inbound">Inbound</option>
+          <option value="Outbound">Outbound</option>
+          <option value="Both">Both</option>
+        </select>
+        <span class="dir-tag" id="${rid}-dirtag" style="display:none"></span>
+      </div>
+      <button class="mb-remove" onclick="event.stopPropagation();removeRoute('${rid}')">Remove</button>
+    </div>
+    <div class="mb-body">
+      <div class="subsection">
+        <div class="subsection-title"><span class="sst-roman">I.</span>Route Details</div>
+        ${routeTableHTML(rid)}
+        ${calcBoxHTML(rid)}
+      </div>
+      ${painSectionHTML(rid)}
+      ${interventionHTML(rid)}
+    </div>`;
+  document.getElementById('routeList').appendChild(block);
+  addRouteRow(rid);
+  recalcTotals();
+}
+
+function toggleRoute(rid){ document.getElementById(rid).classList.toggle('collapsed'); }
+
+function removeRoute(rid){
+  if(!confirm('Remove this route?')) return;
+  document.querySelectorAll(`[data-bridge="${rid}"]`).forEach(el=>el.remove());
+  document.getElementById(rid).remove();
+  refreshEmptyUpgrade(); recalcTotals(); recalcRequiredTotals(); refreshSummary();
+}
+
+function updateDirTag(rid){
+  const val = document.getElementById(`${rid}-dir`)?.value;
+  const tag = document.getElementById(`${rid}-dirtag`);
+  if(!val||!tag){ if(tag) tag.style.display='none'; return; }
+  tag.style.display='inline-block';
+  tag.textContent=val;
+  tag.className=`dir-tag dir-${val.toLowerCase()}`;
+}
+
+// ============ ROUTE TABLE ROW ============
+function addRouteRow(rid){
+  const tbody = document.getElementById(`${rid}-rtbody`);
+  const modeOpts = TRANSPORT_MODES.map(m=>`<option>${m}</option>`).join('');
+  const tr = document.createElement('tr');
+  tr.innerHTML = `
+    <td><input type="text" placeholder="From"></td>
+    <td><input type="text" placeholder="To"></td>
+    <td><select><option value="">— Select —</option>${modeOpts}</select></td>
+    <td><input type="text" placeholder="e.g., 2 hrs"></td>
+    <td><input type="number" class="leg-cost" placeholder="0.00" step="0.01" oninput="recalcRoute('${rid}')"></td>
+    <td><input type="text" placeholder="Contact / agent"></td>
+    <td style="text-align:center"><button style="background:transparent;border:none;color:var(--terracotta);cursor:pointer;font-size:13px" onclick="deleteRouteRow(this,'${rid}')">✕</button></td>`;
+  tbody.appendChild(tr);
+}
+
+function deleteRouteRow(btn,rid){
+  const tbody = document.getElementById(`${rid}-rtbody`);
+  if(tbody.rows.length > 1){ btn.closest('tr').remove(); recalcRoute(rid); }
+  else alert('At least one row is required.');
+}
+
+// ============ COST CALCS ============
+function recalcRoute(rid){
+  const tbody = document.getElementById(`${rid}-rtbody`);
+  let tripTotal = 0;
+  tbody?.querySelectorAll('.leg-cost').forEach(i=>{ tripTotal += parseFloat(i.value)||0; });
+
+  const tripTotalCell = document.getElementById(`${rid}-tripTotal`);
+  if(tripTotalCell) tripTotalCell.textContent = `₹ ${tripTotal.toFixed(2)}`;
+
+  const trips = parseFloat(document.getElementById(`${rid}-freq`)?.value)||0;
+  const monthly = trips * tripTotal;
+  const annual  = monthly * 12;
+
+  const mEl = document.getElementById(`${rid}-monthly`);
+  const aEl = document.getElementById(`${rid}-annual`);
+  if(mEl) mEl.textContent = `₹ ${monthly.toFixed(0)}`;
+  if(aEl) aEl.textContent = `₹ ${annual.toFixed(0)}`;
+
+  recalcTotals(); refreshSummary();
+}
+
+function recalcTotals(){
+  const blocks = document.querySelectorAll('#routeList .machine-block');
+  let monthly=0, inb=0, outb=0;
+  blocks.forEach(b=>{
+    const rid=b.id;
+    const dir=document.getElementById(`${rid}-dir`)?.value||'';
+    if(dir==='Inbound')inb++;
+    if(dir==='Outbound')outb++;
+    if(dir==='Both'){inb++;outb++;}
+    monthly+=parseFloat(document.getElementById(`${rid}-monthly`)?.textContent.replace(/[^\d.]/g,''))||0;
+  });
+  document.getElementById('ex-tot-routes').textContent = blocks.length;
+  document.getElementById('ex-tot-inbound').textContent = inb;
+  document.getElementById('ex-tot-outbound').textContent = outb;
+  document.getElementById('ex-tot-cost').textContent = `₹ ${monthly.toFixed(0)}`;
+  document.getElementById('ex-tot-annual').textContent = `₹ ${(monthly*12).toFixed(0)}`;
+}
+
+// ============ UPGRADE FLAG ============
+function toggleUpgradeFlag(el, rid){
+  el.classList.toggle('on');
+  const note = document.getElementById(`${rid}-upgNote`);
+  if(el.classList.contains('on')){
+    note.textContent='↑ Flagged → Details in Required Tab'; note.classList.add('active');
+    bridgeToRequired(rid);
+  } else {
+    note.textContent='Not flagged'; note.classList.remove('active');
+    removeBridge(rid);
+  }
+  refreshSummary();
+}
+
+function syncJustify(rid,val){
+  const t=document.querySelector(`[data-bridge="${rid}"] .bridge-justify`);
+  if(t&&t.value!==val) t.value=val;
+}
+
+function bridgeToRequired(rid){
+  if(document.querySelector(`[data-bridge="${rid}"]`)) return;
+  addRequiredBlock('upgrade', rid);
+}
+
+function removeBridge(rid){
+  const row=document.querySelector(`[data-bridge="${rid}"]`);
+  if(row) row.remove();
+  refreshEmptyUpgrade(); recalcRequiredTotals();
+}
+
+// ============ REQUIRED BLOCK (shared for upgrades + new services) ============
+function addRequiredBlock(kind, bridgeRid){
+  const listId = kind==='upgrade' ? 'upgradeList' : 'newServiceList';
+  const list   = document.getElementById(listId);
+  list.querySelector('.empty-msg')?.remove();
+
+  if(kind==='upgrade') upgradeCounter++;
+  else newSvcCounter++;
+  const bid = kind==='upgrade' ? `upg${upgradeCounter}` : `ns${newSvcCounter}`;
+  const modeOpts = TRANSPORT_MODES.map(m=>`<option>${m}</option>`).join('');
+
+  const div = document.createElement('div');
+  div.className='opt-row'; div.id=bid;
+  if(bridgeRid) div.setAttribute('data-bridge', bridgeRid);
+
+  const routeName  = bridgeRid ? (document.getElementById(`${bridgeRid}-name`)?.value||'—') : '';
+  const direction  = bridgeRid ? (document.getElementById(`${bridgeRid}-dir`)?.value||'—') : '—';
+  const routeType  = bridgeRid ? (document.getElementById(`${bridgeRid}-routetype`)?.value||'—') : '—';
+  const monthlyCost= bridgeRid ? (document.getElementById(`${bridgeRid}-monthly`)?.textContent||'₹ 0') : '₹ 0';
+  const justify    = bridgeRid ? (document.querySelector(`#${bridgeRid} .svc-justify`)?.value||'') : '';
+
+  const badge = kind==='upgrade'
+    ? `<span class="int-type int-upgrade">↑ Upgrade</span>`
+    : `<span class="int-type int-new">+ New Service</span>`;
+
+  const headGrid = bridgeRid
+    ? `<div class="opt-row-head" style="grid-template-columns:1.5fr 0.8fr 0.8fr 1.5fr auto">
+        <div><div class="opt-readonly-label">Current Route</div><div class="opt-readonly-val">${routeName||'—'}</div></div>
+        <div><div class="opt-readonly-label">Direction</div><div class="opt-readonly-val">${direction}</div></div>
+        <div><div class="opt-readonly-label">Current Monthly Cost</div><div class="opt-readonly-val">${monthlyCost}</div></div>
+        <div><div class="opt-readonly-label">Justification</div><textarea class="field-val bridge-justify" style="width:100%;min-height:34px" placeholder="Justification">${justify}</textarea></div>
+        ${badge}
+      </div>`
+    : `<div class="opt-row-head" style="grid-template-columns:2fr 1fr 1fr auto">
+        <div>
+          <div class="opt-readonly-label">Route Name / Purpose</div>
+          <input type="text" class="opt-readonly-val" placeholder="Route name"
+            style="background:transparent;border:none;border-bottom:1px solid var(--border-dk);width:100%;font-family:Georgia,serif;font-size:12px;font-weight:bold;color:var(--teal);padding:2px 0;outline:none">
+        </div>
+        <div>
+          <div class="opt-readonly-label">Route Type</div>
+          <select class="opt-readonly-val" style="background:transparent;border:none;border-bottom:1px solid var(--border-dk);width:100%;font-family:Georgia,serif;font-size:12px;font-weight:bold;color:var(--teal);padding:2px 0;outline:none;cursor:pointer">
+            <option value="">— Select —</option><option>Direct</option><option>Via Hub / Market</option><option>Multi-stop</option>
+          </select>
+        </div>
+        <div>
+          <div class="opt-readonly-label">Direction</div>
+          <select class="opt-readonly-val" style="background:transparent;border:none;border-bottom:1px solid var(--border-dk);width:100%;font-family:Georgia,serif;font-size:12px;font-weight:bold;color:var(--teal);padding:2px 0;outline:none;cursor:pointer">
+            <option value="">— Select —</option><option>Inbound</option><option>Outbound</option><option>Both</option>
+          </select>
+        </div>
+        ${badge}
+      </div>`;
+
+  const painPills = PAIN_POINTS.map(p=>`<span class="pill" onclick="this.classList.toggle('pain-on');recalcRequiredTotals();refreshSummary()">${p}</span>`).join('');
+
+  div.innerHTML = `
+    ${headGrid}
+    <div style="padding:14px">
+      <div class="subsection">
+        <div class="subsection-title"><span class="sst-roman">I.</span>Route Details</div>
+        <table class="rt" id="${bid}-rt">
+          <thead>
+            <tr>
+              <th>From</th><th>To</th><th>Mode of Transport</th><th>Time of Travel</th>
+              <th style="width:100px">Cost (₹)</th><th>Contact</th><th style="width:28px"></th>
+            </tr>
+          </thead>
+          <tbody id="${bid}-rtbody"></tbody>
+          <tfoot>
+            <tr class="total-row">
+              <td colspan="4" style="padding:7px 10px;font-size:11px">Total Cost Per Trip</td>
+              <td style="padding:7px 10px;font-size:13px" id="${bid}-tripTotal">₹ 0.00</td>
+              <td></td>
+              <td></td>
+            </tr>
+          </tfoot>
+        </table>
+        <button class="btn" style="margin-top:8px;font-size:10px" onclick="addRouteRow('${bid}')">+ Add Row</button>
+        <div class="calc-box" style="margin-top:12px">
+          <div class="calc-box-cell">
+            <div class="calc-box-label">Frequency</div>
+            <select id="${bid}-freq" onchange="recalcRoute('${bid}')"
+              style="background:rgba(255,255,255,0.15);border:1px solid rgba(255,255,255,0.3);color:#fff;padding:3px 6px;border-radius:4px;font-family:Georgia,serif;font-size:11px;width:100%;cursor:pointer">
+              <option value="">— Select —</option>
+              <option value="30">Daily (×30)</option><option value="12">Twice a week</option>
+              <option value="4">Weekly</option><option value="2">Twice a month</option>
+              <option value="1">Monthly</option><option value="0.5">Every 2 months</option>
+            </select>
+          </div>
+          <div class="calc-box-cell"><div class="calc-box-label">Monthly Cost</div><div class="calc-box-val" id="${bid}-monthly">₹ 0</div></div>
+          <div class="calc-box-cell"><div class="calc-box-label">Annual Cost</div><div class="calc-box-val" id="${bid}-annual">₹ 0</div></div>
+        </div>
+      </div>
+      <div class="subsection">
+        <div class="subsection-title"><span class="sst-roman">II.</span>Pain Points</div>
+        <div style="margin-bottom:10px">
+          <div style="font-size:10px;color:var(--ink-soft);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:6px">Issues Experienced — select all that apply</div>
+          <div class="pill-group">${painPills}</div>
+        </div>
+        <div class="field-row">
+          <div class="field-label">Delay Frequency</div>
+          <select class="field-val"><option value="">— Select —</option><option>Never</option><option>Sometimes</option><option>Often</option><option>Always</option></select>
+        </div>
+        <div class="field-row"><div class="field-label">Notes</div><textarea class="field-val" placeholder="Notes..."></textarea></div>
+      </div>
+      ${implStatusHTML(kind==='upgrade'?'upg-status':'new-svc-status')}
+    </div>
+    <div style="padding:0 14px 14px;text-align:right">
+      <button class="btn" onclick="removeRequiredBlock('${bid}','${kind}','${bridgeRid||''}')" style="color:var(--terracotta)">Remove</button>
+    </div>`;
+
+  list.appendChild(div);
+  addRouteRow(bid);
+  recalcRequiredTotals();
+}
+
+function removeRequiredBlock(bid, kind, bridgeRid){
+  if(!confirm('Remove this row?')) return;
+  document.getElementById(bid).remove();
+  if(bridgeRid && bridgeRid !== 'null' && bridgeRid !== ''){
+    const t=document.querySelector(`#${bridgeRid} .svc-toggle`);
+    if(t?.classList.contains('on')){ t.classList.remove('on'); const n=document.getElementById(`${bridgeRid}-upgNote`); if(n){n.textContent='Not flagged';n.classList.remove('active');} }
+  }
+  if(kind==='upgrade') refreshEmptyUpgrade();
+  recalcRequiredTotals(); refreshSummary();
+}
+
+function refreshEmptyUpgrade(){
+  const list=document.getElementById('upgradeList');
+  if(list&&!list.children.length) list.innerHTML='<div class="empty-msg" style="text-align:center;color:var(--ink-faint);font-style:italic;padding:20px;background:#fff;border:1px dashed var(--border-dk);border-radius:8px">No upgrades flagged yet — toggle "Upgrade Needed?" on any route in Existing.</div>';
+}
+
+function recalcRequiredTotals(){
+  const upgRows=document.querySelectorAll('#upgradeList .opt-row');
+  const newRows=document.querySelectorAll('#newServiceList .opt-row');
+  let pending=0,progress=0,implemented=0;
+  [...upgRows].forEach(r=>{ const s=r.querySelector('.upg-status'); if(!s)return; if(s.value==='Implemented')implemented++; else if(s.value==='In Progress')progress++; else if(s.value==='Pending')pending++; });
+  [...newRows].forEach(r=>{ const s=r.querySelector('.new-svc-status'); if(!s)return; if(s.value==='Implemented')implemented++; else if(s.value==='In Progress')progress++; else if(s.value==='Pending')pending++; });
+  document.getElementById('req-tot-upgrade').textContent=upgRows.length;
+  document.getElementById('req-tot-new').textContent=newRows.length;
+  document.getElementById('req-tot-pending').textContent=pending;
+  document.getElementById('req-tot-progress').textContent=progress;
+  document.getElementById('req-tot-implemented').textContent=implemented;
+}
+
+// ============ SUMMARY ============
+function refreshSummary(){
+  const setText = (id, v) => { const e=document.getElementById(id); if(e) e.textContent=v; };
+  const parseMoney = s => { if(!s) return 0; const n=parseFloat(String(s).replace(/[^0-9.-]/g,'')); return isNaN(n)?0:n; };
+  const fmtMoney = n => '₹ ' + Math.round(n).toLocaleString('en-IN');
+
+  const exBlocks = [...document.querySelectorAll('#routeList .machine-block')];
+  const upgRows  = [...document.querySelectorAll('#upgradeList .opt-row')];
+  const newRows  = [...document.querySelectorAll('#newServiceList .opt-row')];
+
+  const statusOf = (r, cls) => r.querySelector(cls)?.value || 'Pending';
+
+  // ── Build upgrade lookup: rid → { newMonthly, status } ───────
+  const upgLookup = {};
+  upgRows.forEach(r => {
+    const rid = r.getAttribute('data-bridge');
+    if(!rid) return;
+    upgLookup[rid] = {
+      newMonthly: parseMoney(document.getElementById(`${r.id}-monthly`)?.textContent),
+      status:     statusOf(r, '.upg-status'),
+      bid:        r.id
+    };
+  });
+
+  // ── Status counts ─────────────────────────────────────────────
+  let pending=0, progress=0, implemented=0, notFeasible=0;
+  [...upgRows, ...newRows].forEach(r => {
+    const cls = upgRows.includes(r) ? '.upg-status' : '.new-svc-status';
+    switch(statusOf(r, cls)){
+      case 'Pending':      pending++;      break;
+      case 'In Progress':  progress++;     break;
+      case 'Implemented':  implemented++;  break;
+      case 'Not Feasible': notFeasible++;  break;
+      default: pending++; break;
+    }
+  });
+
+  // ── Saving calc — Implemented upgrades only ───────────────────
+  let implOldSum=0, implNewSum=0, implCount=0, implDoneCount=0;
+  upgRows.forEach(r => {
+    const rid    = r.getAttribute('data-bridge');
+    const status = statusOf(r, '.upg-status');
+    if(status === 'Implemented' && rid){
+      const oldCost = parseMoney(document.getElementById(`${rid}-monthly`)?.textContent);
+      const newCost = parseMoney(document.getElementById(`${r.id}-monthly`)?.textContent);
+      if(oldCost > 0 && newCost > 0){ implOldSum+=oldCost; implNewSum+=newCost; implCount++; }
+      implDoneCount++;
+    }
+  });
+
+  // ── Existing totals ───────────────────────────────────────────
+  let exTotal=0, exInbound=0, exOutbound=0, exMonthly=0, exPain=0, exNoTrack=0, exFlagged=0;
+  exBlocks.forEach(b => {
+    const rid = b.id;
+    exTotal++;
+    const dir = document.getElementById(`${rid}-dir`)?.value || '';
+    if(dir==='Inbound')  exInbound++;
+    else if(dir==='Outbound') exOutbound++;
+    else if(dir==='Both'){ exInbound++; exOutbound++; }
+    exMonthly += parseMoney(document.getElementById(`${rid}-monthly`)?.textContent);
+    const pains = [...b.querySelectorAll(`#${rid}-pains .pain-on`)];
+    if(pains.length > 0) exPain++;
+    if(pains.some(p => p.textContent.trim() === 'No Tracking')) exNoTrack++;
+    if(b.querySelector('.svc-toggle')?.classList.contains('on')) exFlagged++;
+  });
+
+  // ── ① ROUTE-WISE TABLE ────────────────────────────────────────
+  const tbody = document.getElementById('summaryRouteTable');
+  let html = '';
+
+  exBlocks.forEach(b => {
+    const rid      = b.id;
+    const name     = document.getElementById(`${rid}-name`)?.value || '—';
+    const dir      = document.getElementById(`${rid}-dir`)?.value  || '—';
+    const rtype    = document.getElementById(`${rid}-routetype`)?.value || '—';
+    const monthly  = parseMoney(document.getElementById(`${rid}-monthly`)?.textContent);
+    const pains    = [...b.querySelectorAll(`#${rid}-pains .pain-on`)].map(p => p.textContent.trim());
+
+    // Service providers — read Mode of Transport from each leg row
+    const legRows = [...document.querySelectorAll(`#${rid}-rtbody tr`)];
+    const modes   = [];
+    legRows.forEach(row => {
+      const sel = row.querySelector('select');
+      if(sel && sel.value) modes.push(sel.value);
+    });
+    const modesCell = modes.length > 0
+      ? modes.map(m => `<span class="status-badge status-pending" style="margin:1px 2px;display:inline-block">${m}</span>`).join(' ')
+      : '<span style="color:var(--ink-faint)">—</span>';
+
+    const dirCls  = dir==='Inbound'?'dir-inbound':dir==='Outbound'?'dir-outbound':dir==='Both'?'dir-both':'';
+    const dirCell = dir!=='—' ? `<span class="dir-tag ${dirCls}">${dir}</span>` : '—';
+    const painCell = pains.length > 0
+      ? `<span class="condition-badge condition-poor">! ${pains.length} issue${pains.length>1?'s':''}</span>`
+      : '<span style="color:var(--ink-faint)">—</span>';
+
+    const upg = upgLookup[rid];
+
+    // Intervention Type + Status
+    let intTypeCell   = '<span style="color:var(--ink-faint)">—</span>';
+    let intStatusCell = '<span style="color:var(--ink-faint)">—</span>';
+    if(upg){
+      const sCls = upg.status==='Implemented'?'status-completed':upg.status==='In Progress'?'status-progress':'status-pending';
+      intTypeCell   = `<span class="int-type int-upgrade">↑ Upgrade</span>`;
+      intStatusCell = `<span class="status-badge ${sCls}">${upg.status}</span>`;
+    }
+
+    html += `<tr>
+      <td><strong>${name}</strong></td>
+      <td>${modesCell}</td>
+      <td>${dirCell}</td>
+      <td style="font-weight:bold;color:var(--teal)">${fmtMoney(monthly)}</td>
+      <td>${painCell}</td>
+      <td>${intTypeCell}</td>
+      <td>${intStatusCell}</td>
+      <td style="background:#FDF3EE">${newCostCell}</td>
+      <td style="background:#EDF6EA">${savingCell}</td>
+    </tr>`;
+  });
+
+  // New services
+  newRows.forEach(r => {
+    const nameInput = r.querySelector('.opt-row-head input[type="text"]');
+    const name      = nameInput?.value || '—';
+    const dirSel    = Array.from(r.querySelectorAll('select')).find(s => Array.from(s.options).some(o=>['Inbound','Outbound','Both'].includes(o.value)));
+    const dir       = dirSel?.value || '—';
+    const monthly   = parseMoney(document.getElementById(`${r.id}-monthly`)?.textContent);
+    const status    = statusOf(r, '.new-svc-status');
+    const sCls      = status==='Implemented'?'status-completed':status==='In Progress'?'status-progress':'status-pending';
+    const dirCls    = dir==='Inbound'?'dir-inbound':dir==='Outbound'?'dir-outbound':dir==='Both'?'dir-both':'';
+    // Read modes from new service leg rows
+    const newLegRows = [...r.querySelectorAll('tbody tr')];
+    const newModes   = [];
+    newLegRows.forEach(row => { const sel=row.querySelector('select'); if(sel&&sel.value) newModes.push(sel.value); });
+    const newModesCell = newModes.length > 0
+      ? newModes.map(m=>`<span class="status-badge status-pending" style="margin:1px 2px;display:inline-block">${m}</span>`).join(' ')
+      : '<span style="color:var(--ink-faint)">—</span>';
+    html += `<tr style="background:var(--highlight)">
+      <td><strong>${name||'New Service'}</strong></td>
+      <td>${newModesCell}</td>
+      <td>${dir!=='—'?`<span class="dir-tag ${dirCls}">${dir}</span>`:'—'}</td>
+      <td style="color:var(--ink-faint)">${monthly>0?fmtMoney(monthly):'—'}</td>
+      <td style="color:var(--ink-faint)">—</td>
+      <td><span class="int-type int-new">+ New Service</span></td>
+      <td><span class="status-badge ${sCls}">${status}</span></td>
+      <td style="background:#FDF3EE;color:var(--ink-faint)">—</td>
+      <td style="background:#EDF6EA;color:var(--ink-faint)">—</td>
+    </tr>`;
+  });
+
+  tbody.innerHTML = (exBlocks.length===0 && newRows.length===0)
+    ? '<tr><td colspan="9" style="text-align:center;color:var(--ink-faint);font-style:italic;padding:14px">Auto-populated from Existing and Required tabs</td></tr>'
+    : html + `<tr class="total-row"><td colspan="3">TOTAL</td><td>${fmtMoney(exMonthly)}</td><td colspan="5" style="font-size:10px;font-style:italic;color:var(--ink-faint)">Monthly cost across all existing routes</td></tr>`;
+
+  // ── ② AGGREGATES ─────────────────────────────────────────────
+  setText('agg-ex-total',    exTotal);
+  setText('agg-ex-inbound',  exInbound);
+  setText('agg-ex-outbound', exOutbound);
+  setText('agg-ex-pain',     exPain);
+  setText('agg-ex-cost',     fmtMoney(exMonthly));
+  setText('agg-rq-upgrades', upgRows.length);
+  setText('agg-rq-new',      newRows.length);
+  setText('agg-rq-total',    upgRows.length + newRows.length);
+  setText('impl-done',       implemented);
+  setText('impl-progress',   progress);
+  setText('impl-pending',    pending);
+  setText('impl-notfeasible',notFeasible);
+
+  // Cost card — After: Implemented upgrades only
+  const implCostEl  = document.getElementById('agg-impl-cost');
+  const implSavEl   = document.getElementById('agg-impl-saving');
+  if(implCount > 0){
+    const saving = implOldSum - implNewSum;
+    if(implCostEl){ implCostEl.textContent=fmtMoney(implNewSum); implCostEl.style.color=saving>0?'var(--good-ink)':saving<0?'var(--poor-ink)':''; }
+    if(implSavEl){  implSavEl.textContent=saving!==0?`${saving>0?'▼':'▲'} ${fmtMoney(Math.abs(saving))} / month`:'—'; implSavEl.style.color=saving>0?'var(--good-ink)':saving<0?'var(--poor-ink)':''; }
+  } else {
+    if(implCostEl) implCostEl.textContent='—';
+    if(implSavEl)  implSavEl.textContent='—';
+  }
+
+  // ── ③ FLAGS ──────────────────────────────────────────────────
+  setText('flag-upgrade',  exFlagged - implDoneCount > 0 ? exFlagged - implDoneCount : 0);
+  setText('flag-upg-done', implDoneCount);
+  setText('flag-pain',     exPain);
+  setText('flag-notrack',  exNoTrack);
+
+  // Ghost IDs
+  setText('agg-rq-cost', fmtMoney([...upgRows,...newRows].reduce((s,r)=>s+parseMoney(document.getElementById(`${r.id}-monthly`)?.textContent),0)));
+}
+
+// ============ TASK LOG ============
+const TASKS=[
+  ['Infrastructure & Road Access Documented','Existing'],
+  ['Available Services Near Entrepreneur Mapped','Existing'],
+  ['Existing Routes Recorded','Existing'],
+  ['Costs & Frequency Logged','Existing'],
+  ['Pain Points & Delays Flagged','Existing'],
+  ['Service Upgrade Need Identified','Intervention'],
+  ['Provider Research Completed','Required'],
+  ['Rate Cards / Quotations Collected','Required'],
+  ['Trial Shipment Done','Required'],
+  ['Cost Comparison Completed','Required'],
+  ['New Provider Onboarded','Required'],
+  ['Service Implemented & Verified','Required'],
+];
+function seedTaskLog(){
+  document.getElementById('taskLogBody').innerHTML=TASKS.map((t,i)=>{
+    const num=String(i+1).padStart(2,'0');
+    const cls=t[1]==='Existing'?'status-pending':t[1]==='Intervention'?'status-progress':'status-completed';
+    return `<tr><td class="num-col">${num}</td><td>${t[0]}</td><td><span class="status-badge ${cls}">${t[1]}</span></td><td><select><option>Pending</option><option>In Progress</option><option>Completed</option><option>Blocked</option></select></td><td><input type="text" placeholder="Owner"></td><td><input type="date"></td><td><input type="text" placeholder="Notes"></td></tr>`;
+  }).join('');
+}
+
+// ============ GENERIC HELPERS ============
+function addRow(tableId){
+  const tbody=document.querySelector('#'+tableId+' tbody');
+  const row=tbody.rows[0].cloneNode(true);
+  row.querySelectorAll('input').forEach(i=>{if(i.type!=='file')i.value='';});
+  row.querySelectorAll('select').forEach(s=>s.selectedIndex=0);
+  tbody.appendChild(row);
+}
+function deleteRow(btn){
+  const row=btn.closest('tr'),tbody=row.parentElement;
+  if(tbody.rows.length>1)row.remove();
+  else alert('At least one row is required.');
+}
+
+window.addEventListener('DOMContentLoaded', () => {
+  seedTaskLog();
+
+  // Add 3 routes
+  addRouteBlock(); addRouteBlock(); addRouteBlock();
+
+  setTimeout(() => {
+    // ── Route 1: Village → Market, Own Vehicle, upgrade flagged → Implemented
+    document.getElementById('rt1-name').value      = 'Village → Mandal Market';
+    document.getElementById('rt1-routetype').value = 'Via Hub / Market';
+    document.getElementById('rt1-dir').value       = 'Outbound'; updateDirTag('rt1');
+    document.getElementById('rt1-freq').value      = '4';
+    const rt1row = document.querySelector('#rt1-rtbody tr');
+    if(rt1row){
+      const rt1mode = rt1row.querySelector('select');
+      if(rt1mode) rt1mode.value = 'Own Vehicle';
+      const rt1leg  = rt1row.querySelector('.leg-cost');
+      if(rt1leg){ rt1leg.value='300'; recalcRoute('rt1'); }
+    }
+    const rt1pills = document.querySelectorAll('#rt1-pains .pill');
+    rt1pills.forEach(p => { if(p.textContent.trim()==='High Cost') p.classList.add('pain-on'); });
+    const rt1toggle = document.querySelector('#rt1 .svc-toggle');
+    if(rt1toggle && !rt1toggle.classList.contains('on')) toggleUpgradeFlag(rt1toggle, 'rt1');
+
+    // ── Route 2: Supplier → Unit, Hired Cab, no flag
+    document.getElementById('rt2-name').value      = 'Supplier → Production Unit';
+    document.getElementById('rt2-routetype').value = 'Direct';
+    document.getElementById('rt2-dir').value       = 'Inbound'; updateDirTag('rt2');
+    document.getElementById('rt2-freq').value      = '2';
+    const rt2row = document.querySelector('#rt2-rtbody tr');
+    if(rt2row){
+      const rt2mode = rt2row.querySelector('select');
+      if(rt2mode) rt2mode.value = 'Hired Cab / Taxi';
+      const rt2leg  = rt2row.querySelector('.leg-cost');
+      if(rt2leg){ rt2leg.value='500'; recalcRoute('rt2'); }
+    }
+
+    // ── Route 3: Unit → City, DTDC, delays pain
+    document.getElementById('rt3-name').value      = 'Unit → City Distributor';
+    document.getElementById('rt3-routetype').value = 'Multi-stop';
+    document.getElementById('rt3-dir').value       = 'Outbound'; updateDirTag('rt3');
+    document.getElementById('rt3-freq').value      = '4';
+    const rt3row = document.querySelector('#rt3-rtbody tr');
+    if(rt3row){
+      const rt3mode = rt3row.querySelector('select');
+      if(rt3mode) rt3mode.value = 'DTDC';
+      const rt3leg  = rt3row.querySelector('.leg-cost');
+      if(rt3leg){ rt3leg.value='600'; recalcRoute('rt3'); }
+    }
+    const rt3pills = document.querySelectorAll('#rt3-pains .pill');
+    rt3pills.forEach(p => { if(p.textContent.trim()==='Delays') p.classList.add('pain-on'); });
+
+    recalcTotals();
+
+    // ── Required: Upgrade rt1 → India Post at ₹225/trip × 4 = ₹900/month, Implemented
+    const upg1 = document.querySelector('#upgradeList .opt-row[data-bridge="rt1"]');
+    if(upg1){
+      const upg1row = document.querySelector(`#${upg1.id}-rtbody tr`);
+      if(upg1row){
+        const upg1mode = upg1row.querySelector('select');
+        if(upg1mode) upg1mode.value = 'India Post / SpeedPost';
+        const upg1leg = upg1row.querySelector('.leg-cost');
+        if(upg1leg){ upg1leg.value='225'; }
+      }
+      const freqSel = document.getElementById(`${upg1.id}-freq`);
+      if(freqSel) freqSel.value='4';
+      recalcRoute(upg1.id);
+      const stSel = upg1.querySelector('.upg-status');
+      if(stSel) stSel.value='Implemented';
+    }
+
+    // ── New Service: India Post for e-commerce, Outbound, In Progress
+    addRequiredBlock('new', null);
+    const ns1 = document.querySelector('#newServiceList .opt-row');
+    if(ns1){
+      const nameInput = ns1.querySelector('.opt-row-head input[type="text"]');
+      if(nameInput) nameInput.value = 'India Post — e-Commerce';
+      const ns1row = document.querySelector(`#${ns1.id}-rtbody tr`);
+      if(ns1row){
+        const ns1mode = ns1row.querySelector('select');
+        if(ns1mode) ns1mode.value = 'India Post / SpeedPost';
+        const ns1leg  = ns1row.querySelector('.leg-cost');
+        if(ns1leg){ ns1leg.value='350'; }
+      }
+      const freqSel = document.getElementById(`${ns1.id}-freq`);
+      if(freqSel) freqSel.value='4';
+      recalcRoute(ns1.id);
+      const stSel = ns1.querySelector('.new-svc-status');
+      if(stSel) stSel.value='In Progress';
+    }
+
+    recalcRequiredTotals();
+    refreshSummary();
+    showTab('summary', document.querySelector('.tab'));
+  }, 150);
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,796 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Business Plan Canvas · PRIME Rural</title>
+<style>
+:root {
+  --teal:#0E4D4E; --sea:#1A6B6D; --terracotta:#C26849; --terracotta-dk:#A85738;
+  --terracotta-sft:#F5E2D6;
+  --cream:#FBF5E5; --cream-deep:#F4ECD3; --offwhite:#FDFAF0; --panel:#FFFFFF;
+  --ink:#2A2520; --ink-soft:#6B6359; --ink-faint:#9C9384;
+  --border:#E8DFC9; --border-dk:#D6CDB6;
+  /* Block accent colours — gentle differentiation following the Monsoon Court palette */
+  --c-partners:    #6B6359;
+  --c-activities:  #1A6B6D;
+  --c-resources:   #1A6B6D;
+  --c-value:       #C26849;
+  --c-relationships:#1F4A78;
+  --c-channels:    #1F4A78;
+  --c-segments:    #7A4F1B;
+  --c-cost:        #993556;
+  --c-revenue:     #3F6B3A;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:Georgia,serif;background:var(--cream);color:var(--ink);line-height:1.4}
+.page{max-width:1280px;margin:0 auto;padding:24px}
+
+.header{background:var(--teal);color:#fff;padding:16px 20px;border-radius:12px 12px 0 0;display:flex;justify-content:space-between;align-items:center}
+.header h1{font-size:18px;font-weight:normal;letter-spacing:0.5px}
+.header .crumb{font-size:11px;opacity:0.75;text-transform:uppercase;letter-spacing:1px}
+
+.card{background:var(--cream);border:1px solid var(--border-dk);border-top:none;border-radius:0 0 12px 12px}
+
+.tab-bar{display:flex;background:var(--cream-deep);border-bottom:1px solid var(--border-dk);overflow-x:auto}
+.tab{padding:12px 22px;cursor:pointer;font-size:12px;text-transform:uppercase;letter-spacing:1px;color:var(--ink-soft);border-right:1px solid var(--border);white-space:nowrap}
+.tab.active{background:var(--teal);color:#fff}
+.tab:hover:not(.active){background:#EADFC0}
+
+.content{padding:22px}
+
+.section-caption{background:var(--cream-deep);border-left:3px solid var(--terracotta);padding:8px 12px;border-radius:0 6px 6px 0;font-size:12px;color:var(--ink-soft);font-style:italic;margin-bottom:18px}
+
+.btn{padding:5px 12px;border-radius:20px;border:1px solid var(--border-dk);background:#fff;cursor:pointer;font-size:11px;color:var(--ink);font-family:Georgia,serif}
+.btn:hover{background:var(--cream-deep)}
+.btn-primary{background:var(--teal);color:#fff;border-color:var(--teal)}
+.btn-primary:hover{background:var(--sea)}
+
+/* Summary cards */
+.summary-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;margin-bottom:14px}
+@media (max-width:800px){.summary-grid{grid-template-columns:1fr}}
+.summary-card{background:#fff;border:1px solid var(--border-dk);border-radius:10px;padding:16px}
+.summary-card h3{font-size:11px;text-transform:uppercase;letter-spacing:1px;color:var(--teal);margin-bottom:10px;font-weight:bold;padding-bottom:6px;border-bottom:1px solid var(--border-dk)}
+.summary-stat{display:flex;justify-content:space-between;align-items:center;padding:6px 0;font-size:13px;border-bottom:1px solid #F0E9D6}
+.summary-stat:last-child{border-bottom:none}
+.summary-stat .stat-label{color:var(--ink-soft)}
+.summary-stat .stat-val{font-weight:bold;color:var(--ink)}
+.summary-stat .stat-val.good{color:#3F6B3A}
+.summary-stat .stat-val.fair{color:#7A3B22}
+.summary-stat .stat-val.poor{color:#8B2A0F}
+
+.completion-strip{background:linear-gradient(135deg,var(--teal),var(--sea));color:#fff;padding:16px;border-radius:10px;margin-bottom:14px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:14px}
+.completion-strip .cs-label{font-size:10px;opacity:0.85;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:4px}
+.completion-strip .cs-val{font-size:24px;font-weight:bold;font-family:Georgia,serif}
+.completion-strip .cs-bar-wrap{flex:1;min-width:200px;background:rgba(255,255,255,0.15);height:10px;border-radius:5px;overflow:hidden}
+.completion-strip .cs-bar{height:100%;background:#FFE3A8;border-radius:5px;transition:width 0.3s}
+
+.snippet-list{display:grid;grid-template-columns:1fr;gap:8px}
+.snippet-row{background:var(--offwhite);border:1px solid var(--border-dk);border-left:3px solid var(--c-partners);border-radius:6px;padding:10px 14px}
+.snippet-row.s-partners{      border-left-color:var(--c-partners)}
+.snippet-row.s-activities{    border-left-color:var(--c-activities)}
+.snippet-row.s-resources{     border-left-color:var(--c-resources)}
+.snippet-row.s-value{         border-left-color:var(--c-value)}
+.snippet-row.s-relationships{ border-left-color:var(--c-relationships)}
+.snippet-row.s-channels{      border-left-color:var(--c-channels)}
+.snippet-row.s-segments{      border-left-color:var(--c-segments)}
+.snippet-row.s-cost{          border-left-color:var(--c-cost)}
+.snippet-row.s-revenue{       border-left-color:var(--c-revenue)}
+.snippet-row .snippet-title{font-size:10px;text-transform:uppercase;letter-spacing:1px;color:var(--ink-soft);font-weight:bold;margin-bottom:4px}
+.snippet-row .snippet-text{font-size:12px;color:var(--ink);line-height:1.5}
+.snippet-row .snippet-text.empty{color:var(--ink-faint);font-style:italic}
+
+/* Task log / Log book tables */
+.log-table{background:#fff;border:1px solid var(--border-dk);border-radius:8px;overflow:hidden}
+.log-table table{width:100%;border-collapse:collapse;font-size:12px}
+.log-table th{background:var(--teal);color:#fff;padding:8px;text-align:left;font-weight:normal;text-transform:uppercase;letter-spacing:0.5px;font-size:10px;border-right:1px solid var(--sea)}
+.log-table th:last-child{border-right:none}
+.log-table td{padding:8px;border-bottom:1px solid var(--border);border-right:1px solid var(--border)}
+.log-table td:last-child{border-right:none}
+.log-table tr:last-child td{border-bottom:none}
+.log-table input,.log-table select,.log-table textarea{width:100%;border:1px solid var(--border);padding:5px 8px;border-radius:3px;font-family:Georgia,serif;font-size:11px;background:#fff}
+.log-table textarea{resize:vertical;min-height:30px}
+.log-table input:focus,.log-table select:focus,.log-table textarea:focus{outline:none;border-color:var(--teal)}
+.row-delete{background:transparent;border:none;color:var(--terracotta);cursor:pointer;font-size:14px;padding:2px 6px}
+.row-delete:hover{color:var(--terracotta-dk)}
+.table-actions{display:flex;justify-content:space-between;align-items:center;margin-top:10px}
+
+/* ── Raw-material-style data table ── */
+table.data-table{width:100%;border-collapse:collapse;background:var(--offwhite);border-radius:6px;overflow:hidden;border:1px solid var(--border-dk);font-size:11px}
+table.data-table th{background:var(--teal);color:#fff;padding:9px 8px;text-align:left;font-weight:normal;text-transform:uppercase;letter-spacing:0.5px;font-size:10px;border-right:1px solid var(--sea)}
+table.data-table th:last-child{border-right:none}
+table.data-table td{padding:7px 8px;border-bottom:1px solid var(--border);border-right:1px solid var(--border);vertical-align:middle}
+table.data-table td:last-child{border-right:none}
+table.data-table tr:last-child td{border-bottom:none}
+table.data-table input,table.data-table select{width:100%;border:1px solid var(--border);padding:5px 7px;border-radius:4px;font-family:Georgia,serif;font-size:11px;background:#fff}
+table.data-table input:focus,table.data-table select:focus{outline:none;border-color:var(--teal)}
+.num-col{width:40px;text-align:center;color:var(--ink-soft);font-size:10px}
+.section{background:var(--cream-deep);padding:16px;border-radius:10px;margin-bottom:16px;border:1px solid var(--border)}
+.section-title{font-size:13px;text-transform:uppercase;letter-spacing:1.5px;color:var(--teal);margin-bottom:12px;padding-bottom:8px;border-bottom:1px solid var(--border-dk);font-weight:bold;display:flex;justify-content:space-between;align-items:center}
+.tbl-upload{display:inline-flex;align-items:center;gap:4px;padding:4px 8px;background:#fff;border:1px solid var(--border-dk);border-radius:4px;cursor:pointer;font-size:10px;color:var(--ink-soft);font-family:Georgia,serif}
+.tbl-upload:hover{border-color:var(--teal);color:var(--teal)}
+
+.empty-msg{text-align:center;color:var(--ink-faint);font-style:italic;padding:24px;background:var(--cream-deep);border:1px dashed var(--border-dk);border-radius:10px;margin-bottom:14px}
+
+.entrepreneur-chip{display:inline-flex;align-items:center;gap:10px;background:#fff;border:1px solid var(--border-dk);padding:6px 14px;border-radius:20px;font-size:12px;margin-bottom:18px}
+.ent-avatar{width:24px;height:24px;background:var(--teal);color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:bold}
+
+.hidden{display:none !important}
+
+/* ─── RM-style summary additions ─── */
+.sm-section{background:var(--cream-deep);padding:16px;border-radius:10px;margin-bottom:16px;border:1px solid var(--border)}
+.sm-section-title{font-size:13px;text-transform:uppercase;letter-spacing:1.5px;color:var(--teal);margin-bottom:12px;padding-bottom:8px;border-bottom:1px solid var(--border-dk);font-weight:bold}
+.sm-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.sm-card{background:#fff;border:1px solid var(--border);border-radius:10px;padding:14px}
+.sm-card h3{font-size:11px;text-transform:uppercase;letter-spacing:1px;color:var(--teal);margin-bottom:10px;padding-bottom:6px;border-bottom:1px solid var(--border);font-weight:bold}
+.sm-row{display:flex;justify-content:space-between;padding:5px 0;font-size:12px;border-bottom:1px solid #f0e9d6}
+.sm-row:last-child{border-bottom:none}
+.sm-lbl{color:var(--ink-soft)}
+.sm-val{font-weight:bold;color:var(--ink)}
+.sm-val.green{color:#3F6B3A}
+.sm-val.amber{color:#7A3B22}
+.sm-val.red{color:#8B2A0F}
+.sm-val.blue{color:#1F4A78}
+.sm-flags{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+.sm-flag{background:#fff;border:1px solid var(--border);border-radius:8px;padding:12px}
+.sm-flag-icon{width:30px;height:30px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:14px;margin-bottom:8px}
+.sm-flag-count{font-size:20px;font-weight:bold;color:var(--ink)}
+.sm-flag-label{font-size:10px;color:var(--ink-soft);text-transform:uppercase;letter-spacing:0.5px;margin-top:4px}
+table.ov-tbl{width:100%;border-collapse:collapse;background:var(--offwhite);border-radius:6px;overflow:hidden;border:1px solid var(--border-dk);font-size:11px}
+table.ov-tbl th{background:var(--teal);color:#fff;padding:9px 8px;text-align:left;font-weight:normal;text-transform:uppercase;letter-spacing:0.5px;font-size:10px;border-right:1px solid var(--sea)}
+table.ov-tbl th:last-child{border-right:none}
+table.ov-tbl td{padding:8px;border-bottom:1px solid var(--border);border-right:1px solid var(--border);vertical-align:top}
+table.ov-tbl td:last-child{border-right:none}
+table.ov-tbl tr:last-child td{border-bottom:none}
+table.ov-tbl tr.row-filled td{background:#EDF6EA}
+table.ov-tbl tr.row-empty td{background:#FFF8E1}
+.prog-bar-wrap{background:rgba(255,255,255,0.2);height:9px;border-radius:5px;overflow:hidden;flex:1;min-width:80px}
+.prog-bar{height:100%;background:#FFE3A8;border-radius:5px;transition:width 0.3s}
+
+/* Canvas grid */
+.canvas-grid{
+  display:grid;
+  grid-template-columns:repeat(5, 1fr);
+  grid-template-rows:auto auto auto;
+  gap:10px;
+}
+/* Top row areas */
+.block-partners{      grid-column:1; grid-row:1 / span 2 }
+.block-activities{    grid-column:2; grid-row:1 }
+.block-resources{     grid-column:2; grid-row:2 }
+.block-value{         grid-column:3; grid-row:1 / span 2 }
+.block-relationships{ grid-column:4; grid-row:1 }
+.block-channels{      grid-column:4; grid-row:2 }
+.block-segments{      grid-column:5; grid-row:1 / span 2 }
+/* Bottom row areas */
+.block-cost{          grid-column:1 / span 2; grid-row:3 }
+.block-revenue{       grid-column:3 / span 3; grid-row:3 }
+
+@media (max-width:1100px){
+  .canvas-grid{grid-template-columns:repeat(2, 1fr);grid-template-rows:none}
+  .block-partners,.block-activities,.block-resources,.block-value,
+  .block-relationships,.block-channels,.block-segments,
+  .block-cost,.block-revenue{grid-column:auto;grid-row:auto}
+}
+@media (max-width:700px){
+  .canvas-grid{grid-template-columns:1fr}
+}
+
+/* Block card */
+.block{
+  background:#fff;
+  border:1px solid var(--border-dk);
+  border-top:4px solid var(--c-partners);
+  border-radius:8px;
+  padding:14px;
+  display:flex;
+  flex-direction:column;
+  gap:8px;
+  min-height:200px;
+}
+.block.b-partners{      border-top-color:var(--c-partners)}
+.block.b-activities{    border-top-color:var(--c-activities)}
+.block.b-resources{     border-top-color:var(--c-resources)}
+.block.b-value{         border-top-color:var(--c-value)}
+.block.b-relationships{ border-top-color:var(--c-relationships)}
+.block.b-channels{      border-top-color:var(--c-channels)}
+.block.b-segments{      border-top-color:var(--c-segments)}
+.block.b-cost{          border-top-color:var(--c-cost)}
+.block.b-revenue{       border-top-color:var(--c-revenue)}
+
+.block h3{
+  font-size:13px;
+  text-transform:uppercase;
+  letter-spacing:1.2px;
+  color:var(--teal);
+  font-weight:bold;
+}
+.block .block-desc{
+  font-size:10.5px;
+  color:var(--ink-faint);
+  font-style:italic;
+  line-height:1.4;
+}
+
+.ref-strip{
+  display:flex;
+  flex-direction:column;
+  gap:4px;
+  margin:2px 0 4px;
+}
+.ref-link{
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+  padding:4px 10px;
+  background:var(--terracotta);
+  border:1px solid var(--terracotta);
+  border-radius:14px;
+  font-size:10.5px;
+  color:var(--cream);
+  text-decoration:none;
+  font-weight:bold;
+  letter-spacing:0.3px;
+  align-self:flex-start;
+  max-width:100%;
+}
+.ref-link:hover{
+  background:var(--terracotta-dk);
+  border-color:var(--terracotta-dk);
+  color:#fff;
+}
+.ref-link .ref-arrow{font-size:9px;opacity:0.85}
+
+.block textarea{
+  flex:1;
+  background:var(--offwhite);
+  border:1px solid var(--border-dk);
+  border-radius:5px;
+  padding:8px 10px;
+  font-family:Georgia,serif;
+  font-size:12px;
+  color:var(--ink);
+  resize:vertical;
+  min-height:90px;
+  line-height:1.5;
+}
+.block textarea:focus{
+  outline:none;
+  border-color:var(--teal);
+  background:#fff;
+}
+.block textarea::placeholder{
+  color:var(--ink-faint);
+  font-style:italic;
+}
+</style>
+</head>
+<body>
+
+<div class="page">
+<div class="header">
+  <h1>Business Plan Canvas</h1>
+  <div class="crumb">PRIME Rural · Strategic Framework</div>
+</div>
+<div class="card">
+
+<div class="tab-bar">
+  <div class="tab active" onclick="showTab('summary',this)">Summary</div>
+  <div class="tab" onclick="showTab('canvas',this)">Business Plan Canvas</div>
+  <div class="tab" onclick="showTab('resources',this)">Resources</div>
+  <div class="tab" onclick="showTab('tasklog',this)">Task Log</div>
+</div>
+
+<div class="content">
+
+<div class="entrepreneur-chip">
+  <div class="ent-avatar">EN</div>
+  <span style="color:var(--ink-soft);font-style:italic">Auto-fetched from profile</span>
+</div>
+
+<!-- ============ SUMMARY ============ -->
+<div id="summary" class="panel">
+
+  <!-- ① Block-wise Overview -->
+  <div class="sm-section">
+    <div class="sm-section-title" style="display:flex;justify-content:space-between;align-items:center">
+      <span>Block-wise Overview</span>
+      <span style="font-size:11px;color:var(--ink-faint);font-weight:normal;text-transform:none;letter-spacing:normal;font-style:italic"><span id="sum-completion">0</span> / 9 blocks filled · <span id="sum-pct">0%</span></span>
+    </div>
+    <!-- Progress bar -->
+    <div style="background:var(--teal);border-radius:8px;padding:10px 14px;display:flex;align-items:center;gap:14px;margin-bottom:12px">
+      <div style="font-size:10px;color:rgba(255,255,255,0.8);text-transform:uppercase;letter-spacing:0.5px;white-space:nowrap">Canvas Completion</div>
+      <div class="prog-bar-wrap"><div class="prog-bar" id="sum-bar" style="width:0%"></div></div>
+      <div style="font-size:18px;font-weight:bold;color:#FFE3A8;white-space:nowrap" id="sum-pct-strip">0%</div>
+    </div>
+    <div style="overflow-x:auto">
+    <table class="ov-tbl">
+      <thead>
+        <tr>
+          <th style="width:130px">Block</th>
+          <th style="width:110px">Quadrant</th>
+          <th style="width:160px">Module Reference</th>
+          <th style="width:80px;text-align:center">Status</th>
+          <th>Content Preview</th>
+        </tr>
+      </thead>
+      <tbody id="blockOverviewBody">
+        <tr><td colspan="5" style="text-align:center;color:var(--ink-faint);font-style:italic;padding:14px">Fill blocks in the Business Plan Canvas tab to populate this table</td></tr>
+      </tbody>
+    </table>
+    </div>
+  </div>
+
+  <!-- ② Aggregates — 4-card 2×2 -->
+  <div class="sm-section">
+    <div class="sm-section-title">Aggregates</div>
+    <div class="sm-grid">
+
+      <div class="sm-card">
+        <h3>Canvas Status</h3>
+        <div class="sm-row"><span class="sm-lbl">Blocks Filled</span><span class="sm-val green" id="sum-filled">0</span></div>
+        <div class="sm-row"><span class="sm-lbl">Blocks Empty</span><span class="sm-val amber" id="sum-empty">9</span></div>
+        <div class="sm-row"><span class="sm-lbl">Last Updated</span><span class="sm-val" id="sum-updated" style="font-size:11px">—</span></div>
+        <div class="sm-row"><span class="sm-lbl">Task Log Entries</span><span class="sm-val" id="sum-tasks">0</span></div>
+      </div>
+
+      <div class="sm-card">
+        <h3>Quadrant Completion</h3>
+        <div class="sm-row"><span class="sm-lbl">Infrastructure (3 blocks)</span><span class="sm-val" id="agg-q-infra">0 / 3</span></div>
+        <div class="sm-row"><span class="sm-lbl">Offering (1 block)</span><span class="sm-val" id="agg-q-offer">0 / 1</span></div>
+        <div class="sm-row"><span class="sm-lbl">Customer (3 blocks)</span><span class="sm-val" id="agg-q-cust">0 / 3</span></div>
+        <div class="sm-row"><span class="sm-lbl">Financial (2 blocks)</span><span class="sm-val" id="agg-q-fin">0 / 2</span></div>
+      </div>
+
+      <div class="sm-card">
+        <h3>Financial Picture</h3>
+        <div class="sm-row"><span class="sm-lbl">Cost Structure</span><span class="sm-val" id="agg-cost">Empty</span></div>
+        <div class="sm-row"><span class="sm-lbl">Revenue Streams</span><span class="sm-val" id="agg-revenue">Empty</span></div>
+        <div class="sm-row"><span class="sm-lbl">Value Proposition</span><span class="sm-val" id="agg-value">Empty</span></div>
+        <div style="font-size:10px;color:var(--ink-faint);font-style:italic;margin-top:6px">These 3 blocks are the financial and strategic heart of the canvas.</div>
+      </div>
+
+      <div class="sm-card">
+        <h3>Customer Picture</h3>
+        <div class="sm-row"><span class="sm-lbl">Customer Segments</span><span class="sm-val" id="agg-segments">Empty</span></div>
+        <div class="sm-row"><span class="sm-lbl">Channels</span><span class="sm-val" id="agg-channels">Empty</span></div>
+        <div class="sm-row"><span class="sm-lbl">Customer Relationships</span><span class="sm-val" id="agg-relationships">Empty</span></div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ③ Intervention Flags -->
+  <div class="sm-section">
+    <div class="sm-section-title">Intervention Flags</div>
+    <div class="sm-flags">
+      <div class="sm-flag"><div class="sm-flag-icon" style="background:#E3EFDF;color:#3F6B3A">◼</div><div class="sm-flag-count" id="flag-filled">0</div><div class="sm-flag-label">Blocks Filled</div></div>
+      <div class="sm-flag"><div class="sm-flag-icon" style="background:#FBE9DF;color:#C26849">◆</div><div class="sm-flag-count" id="flag-value">No</div><div class="sm-flag-label">Value Prop Set</div></div>
+      <div class="sm-flag"><div class="sm-flag-icon" style="background:#E3EFDF;color:#3F6B3A">₹</div><div class="sm-flag-count" id="flag-financial">0 / 2</div><div class="sm-flag-label">Financial Blocks</div></div>
+      <div class="sm-flag"><div class="sm-flag-icon" style="background:#E1ECF7;color:#1F4A78">👥</div><div class="sm-flag-count" id="flag-customer">0 / 3</div><div class="sm-flag-label">Customer Blocks</div></div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ============ BUSINESS PLAN CANVAS ============ -->
+<div id="canvas" class="panel hidden">
+  <div class="section-caption">A one-page snapshot of the entrepreneur's business model. Each block links to the operational module that informs it — click the reference pill to jump to that module, then return here to write the synthesised view.</div>
+
+  <div class="canvas-grid">
+
+  <!-- KEY PARTNERS -->
+  <div class="block b-partners block-partners">
+    <h3>Key Partners</h3>
+    <div class="ref-strip">
+      <a class="ref-link" href="market_linkage_module.html">Ref: Market Linkage <span class="ref-arrow">↗</span></a>
+    </div>
+    <p class="block-desc">Suppliers, Govt bodies, or critical distributors.</p>
+    <textarea id="key_partners" placeholder="Who are the partners that make the business work? — raw material suppliers, distribution partners, certifying bodies, govt schemes, cooperatives..."></textarea>
+  </div>
+
+  <!-- KEY ACTIVITIES -->
+  <div class="block b-activities block-activities">
+    <h3>Key Activities</h3>
+    <div class="ref-strip">
+      <a class="ref-link" href="product_standardization_module.html">Ref: Standardisation <span class="ref-arrow">↗</span></a>
+    </div>
+    <p class="block-desc">Production, Marketing, Logistics, and Quality Control.</p>
+    <textarea id="key_activities" placeholder="What does the business do day-to-day? — sourcing, production, packaging, marketing, distribution, QC..."></textarea>
+  </div>
+
+  <!-- KEY RESOURCES -->
+  <div class="block b-resources block-resources">
+    <h3>Key Resources</h3>
+    <div class="ref-strip">
+      <a class="ref-link" href="human_resource_module.html">Ref: HR <span class="ref-arrow">↗</span></a>
+      <a class="ref-link" href="machinery_module.html">Ref: Infrastructure <span class="ref-arrow">↗</span></a>
+    </div>
+    <p class="block-desc">Physical assets, human capital, and raw materials.</p>
+    <textarea id="key_resources" placeholder="What does the business need to operate? — workshop space, machinery, key personnel, raw materials, IP..."></textarea>
+  </div>
+
+  <!-- VALUE PROPOSITIONS -->
+  <div class="block b-value block-value">
+    <h3>Value Propositions</h3>
+    <p class="block-desc">The unique problem the business solves for customers.</p>
+    <textarea id="value_propositions" placeholder="What unique problem does this product solve? — origin story, GI tag, hand-craft, ingredient quality, traditional recipe, sustainability..."></textarea>
+  </div>
+
+  <!-- CUSTOMER RELATIONSHIPS -->
+  <div class="block b-relationships block-relationships">
+    <h3>Customer Relationships</h3>
+    <p class="block-desc">How you get, keep, and grow customers.</p>
+    <textarea id="customer_relationships" placeholder="How does the business engage customers? — direct relationships, repeat orders, referrals, social media engagement, loyalty schemes..."></textarea>
+  </div>
+
+  <!-- CHANNELS -->
+  <div class="block b-channels block-channels">
+    <h3>Channels</h3>
+    <div class="ref-strip">
+      <a class="ref-link" href="promotions_module.html">Ref: Promotional Marketing <span class="ref-arrow">↗</span></a>
+    </div>
+    <p class="block-desc">How the product reaches the customer.</p>
+    <textarea id="channels" placeholder="Through which channels does the product reach customers? — local markets, exhibitions, online platforms, retail partners, direct WhatsApp..."></textarea>
+  </div>
+
+  <!-- CUSTOMER SEGMENTS -->
+  <div class="block b-segments block-segments">
+    <h3>Customer Segments</h3>
+    <div class="ref-strip">
+      <a class="ref-link" href="customer_analysis_module.html">Ref: Customer Analysis <span class="ref-arrow">↗</span></a>
+    </div>
+    <p class="block-desc">The specific personas the business targets.</p>
+    <textarea id="customer_segments" placeholder="Who are the target customers? — demographics, geographic focus, psychographics, key buyer personas..."></textarea>
+  </div>
+
+  <!-- COST STRUCTURE -->
+  <div class="block b-cost block-cost">
+    <h3>Cost Structure</h3>
+    <div class="ref-strip">
+      <a class="ref-link" href="unit_pricing_module.html">Ref: Unit Pricing <span class="ref-arrow">↗</span></a>
+    </div>
+    <p class="block-desc">Summary of the largest cost drivers.</p>
+    <textarea id="cost_structure" placeholder="What are the biggest costs? — raw materials, labour, packaging, transport, marketing spend, rent, overheads..."></textarea>
+  </div>
+
+  <!-- REVENUE STREAMS -->
+  <div class="block b-revenue block-revenue">
+    <h3>Revenue Streams</h3>
+    <div class="ref-strip">
+      <a class="ref-link" href="financial_bookkeeping_module.html">Ref: Financial Bookkeeping <span class="ref-arrow">↗</span></a>
+    </div>
+    <p class="block-desc">Summary of how the business makes money.</p>
+    <textarea id="revenue_streams" placeholder="How does the business earn revenue? — direct retail sales, wholesale, online platform sales, custom orders, festival/seasonal spikes..."></textarea>
+  </div>
+
+  </div>
+</div>
+
+<!-- ============ RESOURCES ============ -->
+<div id="resources" class="panel hidden">
+  <div class="section">
+    <div class="section-title">Reference Materials</div>
+    <table class="data-table" id="resourcesTable">
+      <thead>
+        <tr>
+          <th style="width:25%">Resource Title</th>
+          <th style="width:18%">Category</th>
+          <th style="width:12%">Type</th>
+          <th style="width:30%">Description / Notes</th>
+          <th style="width:10%">File</th>
+          <th style="width:5%"></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><input type="text" placeholder="Resource title"></td>
+          <td>
+            <select>
+              <option>— Select —</option>
+              <option>Business Plan Template</option>
+              <option>BMC Worksheet</option>
+              <option>Financial Projection</option>
+              <option>Market Research</option>
+              <option>Competitor Analysis</option>
+              <option>Govt. Scheme Reference</option>
+              <option>Investor Deck Reference</option>
+              <option>Mentor / Expert Contact</option>
+              <option>Legal / Registration</option>
+              <option>Other</option>
+            </select>
+          </td>
+          <td>
+            <select>
+              <option>— Select —</option>
+              <option>Template</option>
+              <option>Reference</option>
+              <option>Contact</option>
+              <option>Quotation</option>
+              <option>Report</option>
+              <option>Specification</option>
+            </select>
+          </td>
+          <td><input type="text" placeholder="Notes"></td>
+          <td>
+            <label class="tbl-upload">⬆ Upload<input type="file" style="display:none"></label>
+          </td>
+          <td><button class="row-delete" onclick="deleteRow(this)">✕</button></td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="table-actions">
+      <span></span>
+      <button class="btn btn-primary" onclick="addRow('resourcesTable')">+ Add Resource</button>
+    </div>
+  </div>
+</div>
+
+<!-- ============ TASK LOG ============ -->
+<div id="tasklog" class="panel hidden">
+  <div class="section">
+    <div class="section-title">Task Log — Business Plan Canvas Activities
+      <span id="task-count" style="font-size:11px;color:var(--ink-faint);font-weight:normal;text-transform:none;letter-spacing:normal;font-style:italic">0 entries</span>
+    </div>
+    <table class="data-table" id="taskLogTable">
+      <thead>
+        <tr>
+          <th style="width:5%">No.</th>
+          <th style="width:13%">Date</th>
+          <th style="width:42%">Task Name</th>
+          <th style="width:30%">Notes / Outcome</th>
+          <th style="width:7%">Attachment</th>
+          <th style="width:3%"></th>
+        </tr>
+      </thead>
+      <tbody id="taskLogBody"></tbody>
+    </table>
+    <div class="table-actions">
+      <span></span>
+      <button class="btn btn-primary" onclick="addTaskRow()">+ Add Entry</button>
+    </div>
+  </div>
+</div>
+
+</div>
+</div>
+</div>
+
+<script>
+
+const BLOCK_META = [
+  { id:'key_partners',          title:'Key Partners',          cls:'s-partners',     quadrant:'Infrastructure', color:'#6B6359', ref:'Market Linkage' },
+  { id:'key_activities',        title:'Key Activities',        cls:'s-activities',   quadrant:'Infrastructure', color:'#1A6B6D', ref:'Standardisation' },
+  { id:'key_resources',         title:'Key Resources',         cls:'s-resources',    quadrant:'Infrastructure', color:'#1A6B6D', ref:'HR · Infrastructure' },
+  { id:'value_propositions',    title:'Value Propositions',    cls:'s-value',        quadrant:'Offering',       color:'#C26849', ref:'—' },
+  { id:'customer_relationships',title:'Customer Relationships',cls:'s-relationships',quadrant:'Customer',       color:'#1F4A78', ref:'—' },
+  { id:'channels',              title:'Channels',              cls:'s-channels',     quadrant:'Customer',       color:'#1F4A78', ref:'Promotions' },
+  { id:'customer_segments',     title:'Customer Segments',     cls:'s-segments',     quadrant:'Customer',       color:'#7A4F1B', ref:'Customer Analysis' },
+  { id:'cost_structure',        title:'Cost Structure',        cls:'s-cost',         quadrant:'Financial',      color:'#993556', ref:'Unit Pricing' },
+  { id:'revenue_streams',       title:'Revenue Streams',       cls:'s-revenue',      quadrant:'Financial',      color:'#3F6B3A', ref:'Financial Bookkeeping' },
+];
+
+const QUADRANT_STYLE = {
+  'Infrastructure': { bg:'#EDF6EA', color:'#3F6B3A' },
+  'Offering':       { bg:'#FBE9DF', color:'#C26849' },
+  'Customer':       { bg:'#E1ECF7', color:'#1F4A78' },
+  'Financial':      { bg:'#F5E2D6', color:'#993556' },
+};
+// ============ BLOCK META (extended with quadrant + module reference) ============
+
+let lastUpdated = null;
+
+// ============ TAB SWITCHING ============
+function showTab(id, el){
+  document.querySelectorAll('.panel').forEach(p => p.classList.add('hidden'));
+  document.getElementById(id).classList.remove('hidden');
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  el.classList.add('active');
+  if(id === 'summary') refreshSummary();
+}
+
+// ============ CANVAS — track edits ============
+function onBlockChange(){
+  lastUpdated = new Date();
+  refreshSummary();
+}
+
+// Wire up canvas inputs and init
+window.addEventListener('DOMContentLoaded', () => {
+  BLOCK_META.forEach(b => {
+    const el = document.getElementById(b.id);
+    if(el) el.addEventListener('input', onBlockChange);
+  });
+  refreshSummary();
+});
+
+
+
+// ============ SUMMARY ============
+function refreshSummary(){
+  const s = (id,v) => { const el=document.getElementById(id); if(el) el.textContent=v; };
+
+  // ── Fill counts ──────────────────────────────────────────
+  let filled = 0;
+  const vals = {};
+  BLOCK_META.forEach(b => {
+    const v = document.getElementById(b.id)?.value?.trim() || '';
+    vals[b.id] = v;
+    if(v) filled++;
+  });
+  const total = BLOCK_META.length;
+  const pct   = Math.round((filled / total) * 100);
+
+  s('sum-completion', filled);
+  s('sum-pct',        pct + '%');
+  s('sum-pct-strip',  pct + '%');
+  s('sum-filled',     filled);
+  s('sum-empty',      total - filled);
+  const bar = document.getElementById('sum-bar');
+  if(bar) bar.style.width = pct + '%';
+
+  s('sum-updated', lastUpdated ? lastUpdated.toLocaleDateString() : '—');
+  s('sum-tasks', document.getElementById('taskLogBody')?.children.length || 0);
+
+  // ── Block-wise overview table ────────────────────────────
+  const tbodyHTML = BLOCK_META.map((b, i) => {
+    const v        = vals[b.id];
+    const isFilled = !!v;
+    const preview  = v ? (v.length > 120 ? v.slice(0,120)+'…' : v) : '';
+    const rowCls   = isFilled ? 'row-filled' : 'row-empty';
+    const qst      = QUADRANT_STYLE[b.quadrant] || {};
+
+    const statusBadge = isFilled
+      ? '<span style="display:inline-block;padding:2px 8px;border-radius:10px;font-size:10px;font-weight:bold;background:#E3EFDF;color:#3F6B3A">✓ Filled</span>'
+      : '<span style="display:inline-block;padding:2px 8px;border-radius:10px;font-size:10px;font-weight:bold;background:#FFF8E1;color:#7A3B22">Empty</span>';
+
+    const quadBadge = `<span style="display:inline-block;padding:2px 8px;border-radius:10px;font-size:10px;font-weight:bold;background:${qst.bg||'var(--cream-deep)'};color:${qst.color||'var(--ink-soft)'}">${b.quadrant}</span>`;
+
+    return `<tr class="${rowCls}">
+      <td>
+        <div style="display:flex;align-items:center;gap:7px">
+          <span style="width:4px;height:28px;border-radius:2px;background:${b.color};flex-shrink:0;display:inline-block"></span>
+          <strong style="font-size:12px">${b.title}</strong>
+        </div>
+      </td>
+      <td>${quadBadge}</td>
+      <td style="font-size:10px;color:var(--ink-soft)">${b.ref !== '—' ? '↗ ' + b.ref : '<span style="color:var(--ink-faint)">—</span>'}</td>
+      <td style="text-align:center">${statusBadge}</td>
+      <td style="font-size:11px;color:${isFilled?'var(--ink)':'var(--ink-faint)'};font-style:${isFilled?'normal':'italic'};line-height:1.4">${preview || 'Not yet filled'}</td>
+    </tr>`;
+  }).join('');
+  const tbody = document.getElementById('blockOverviewBody');
+  if(tbody) tbody.innerHTML = tbodyHTML;
+
+  // ── Quadrant counts ──────────────────────────────────────
+  const infraIds  = ['key_partners','key_activities','key_resources'];
+  const offerIds  = ['value_propositions'];
+  const custIds   = ['customer_relationships','channels','customer_segments'];
+  const finIds    = ['cost_structure','revenue_streams'];
+
+  const qCount = ids => ids.filter(id => vals[id]).length;
+  const infraFilled = qCount(infraIds);
+  const offerFilled = qCount(offerIds);
+  const custFilled  = qCount(custIds);
+  const finFilled   = qCount(finIds);
+
+  s('agg-q-infra', `${infraFilled} / ${infraIds.length}`);
+  s('agg-q-offer', `${offerFilled} / ${offerIds.length}`);
+  s('agg-q-cust',  `${custFilled} / ${custIds.length}`);
+  s('agg-q-fin',   `${finFilled} / ${finIds.length}`);
+
+  // colour quadrant rows by completeness
+  const colourQ = (elId, done, tot) => {
+    const el = document.getElementById(elId);
+    if(!el) return;
+    el.className = 'sm-val' + (done === tot ? ' green' : done > 0 ? ' amber' : ' red');
+  };
+  colourQ('agg-q-infra', infraFilled, infraIds.length);
+  colourQ('agg-q-offer', offerFilled, offerIds.length);
+  colourQ('agg-q-cust',  custFilled,  custIds.length);
+  colourQ('agg-q-fin',   finFilled,   finIds.length);
+
+  // ── Key block status badges ──────────────────────────────
+  const filledBadge = id => vals[id]
+    ? '<span style="font-weight:bold;color:#3F6B3A">✓ Filled</span>'
+    : '<span style="color:#9C9384;font-style:italic">Empty</span>';
+
+  const costEl = document.getElementById('agg-cost');
+  if(costEl) costEl.innerHTML = filledBadge('cost_structure');
+  const revEl = document.getElementById('agg-revenue');
+  if(revEl)  revEl.innerHTML = filledBadge('revenue_streams');
+  const valEl = document.getElementById('agg-value');
+  if(valEl)  valEl.innerHTML = filledBadge('value_propositions');
+  const segEl = document.getElementById('agg-segments');
+  if(segEl)  segEl.innerHTML = filledBadge('customer_segments');
+  const chanEl = document.getElementById('agg-channels');
+  if(chanEl) chanEl.innerHTML = filledBadge('channels');
+  const relEl = document.getElementById('agg-relationships');
+  if(relEl)  relEl.innerHTML = filledBadge('customer_relationships');
+
+  // ── Flags ─────────────────────────────────────────────────
+  s('flag-filled',    filled);
+  s('flag-value',     vals['value_propositions'] ? 'Yes' : 'No');
+  s('flag-financial', `${finFilled} / 2`);
+  s('flag-customer',  `${custFilled} / 3`);
+}
+
+// ============ RESOURCES ============
+function addRow(tableId){
+  const tbody = document.querySelector('#' + tableId + ' tbody');
+  const row = tbody.rows[0].cloneNode(true);
+  row.querySelectorAll('input[type=text]').forEach(i => i.value = '');
+  row.querySelectorAll('select').forEach(s => s.selectedIndex = 0);
+  tbody.appendChild(row);
+}
+function deleteRow(btn){
+  const row = btn.closest('tr');
+  const tbody = row.parentElement;
+  if(tbody.rows.length > 1) row.remove();
+  else alert('At least one row is required.');
+}
+
+// ============ TASK LOG ============
+const BPC_TASKS = [
+  '01 — Awareness on Business Plan Canvas',
+  '02 — Introduce BMC Framework to Entrepreneur',
+  '03 — Fill Key Partners Block',
+  '04 — Fill Key Activities Block',
+  '05 — Fill Key Resources Block',
+  '06 — Fill Value Propositions Block',
+  '07 — Fill Customer Relationships Block',
+  '08 — Fill Channels Block',
+  '09 — Fill Customer Segments Block',
+  '10 — Fill Cost Structure Block',
+  '11 — Fill Revenue Streams Block',
+  '12 — Review Canvas with Entrepreneur',
+  '13 — Validate Canvas with Mentor / Expert',
+  '14 — Align Canvas with Pitch Deck',
+  '15 — Update Canvas after Business Model Change',
+  '16 — Final Canvas Sign-off',
+  'If other, specify in comments',
+];
+const BPC_TASK_OPTS = BPC_TASKS.map(t => `<option value="${t}">${t}</option>`).join('');
+
+let taskLogCounter = 0;
+
+function addTaskRow(){
+  taskLogCounter++;
+  const tbody = document.getElementById('taskLogBody');
+  const tr = document.createElement('tr');
+  tr.innerHTML = `
+    <td class="num-col">${String(taskLogCounter).padStart(2,'0')}</td>
+    <td><input type="date" style="width:100%"></td>
+    <td>
+      <select style="width:100%">
+        <option value="">— Select Task —</option>
+        ${BPC_TASK_OPTS}
+      </select>
+    </td>
+    <td><input type="text" placeholder="Notes / Outcome" style="width:100%"></td>
+    <td><label class="tbl-upload">⬆ Upload<input type="file" style="display:none"></label></td>
+    <td><button class="row-delete" onclick="deleteTaskRow(this)">✕</button></td>
+  `;
+  tbody.appendChild(tr);
+  updateTaskCount();
+}
+function deleteTaskRow(btn){
+  const tbody = btn.closest('tbody');
+  btn.closest('tr').remove();
+  tbody.querySelectorAll('tr').forEach((tr, i) => {
+    const nc = tr.querySelector('.num-col');
+    if(nc) nc.textContent = String(i+1).padStart(2,'0');
+  });
+  taskLogCounter = tbody.rows.length;
+  updateTaskCount();
+}
+function updateTaskCount(){
+  const n = document.getElementById('taskLogBody')?.rows.length || 0;
+  const el = document.getElementById('task-count');
+  if(el) el.textContent = n + ' ' + (n === 1 ? 'entry' : 'entries');
+}
+
+</script>
+
+</body>
+</html>

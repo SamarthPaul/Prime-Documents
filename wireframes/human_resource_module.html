@@ -1,0 +1,1543 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Human Resource Module · PRIME Rural</title>
+<style>
+:root {
+  --teal:#0E4D4E; --sea:#1A6B6D; --terracotta:#C26849; --terracotta-dk:#A85738;
+  --terracotta-sft:#F5E2D6;
+  --cream:#FBF5E5; --cream-deep:#F4ECD3; --offwhite:#FDFAF0; --panel:#FFFFFF;
+  --ink:#2A2520; --ink-soft:#6B6359; --ink-faint:#9C9384;
+  --border:#E8DFC9; --border-dk:#D6CDB6;
+  --good-bg:#E3EFDF; --good-ink:#3F6B3A;
+  --fair-bg:#FBE9DF; --fair-ink:#7A3B22;
+  --poor-bg:#F5D6CC; --poor-ink:#8B2A0F;
+  --highlight:#FFF8E1;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:Georgia,serif;background:var(--cream);color:var(--ink);line-height:1.4}
+.page{max-width:1200px;margin:0 auto;padding:24px}
+
+.header{background:var(--teal);color:#fff;padding:16px 20px;border-radius:12px 12px 0 0;display:flex;justify-content:space-between;align-items:center}
+.header h1{font-size:18px;font-weight:normal;letter-spacing:0.5px}
+.header .crumb{font-size:11px;opacity:0.75;text-transform:uppercase;letter-spacing:1px}
+
+.card{background:var(--cream);border:1px solid var(--border-dk);border-top:none;border-radius:0 0 12px 12px}
+
+.tab-bar{display:flex;background:var(--cream-deep);border-bottom:1px solid var(--border-dk);overflow-x:auto}
+.tab{padding:12px 22px;cursor:pointer;font-size:12px;text-transform:uppercase;letter-spacing:1px;color:var(--ink-soft);border-right:1px solid var(--border);white-space:nowrap}
+.tab.active{background:var(--teal);color:#fff}
+.tab:hover:not(.active){background:#EADFC0}
+
+.content{padding:22px}
+
+.entrepreneur-chip{display:inline-flex;align-items:center;gap:10px;background:#fff;border:1px solid var(--border-dk);padding:6px 14px;border-radius:20px;font-size:12px;margin-bottom:18px}
+.ent-avatar{width:24px;height:24px;background:var(--teal);color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:bold}
+
+.section{background:var(--cream-deep);padding:16px;border-radius:10px;margin-bottom:16px;border:1px solid var(--border)}
+.section-title{font-size:13px;text-transform:uppercase;letter-spacing:1.5px;color:var(--teal);margin-bottom:12px;padding-bottom:8px;border-bottom:1px solid var(--border-dk);font-weight:bold;display:flex;justify-content:space-between;align-items:center}
+.section-title-roman{color:var(--terracotta);margin-right:8px;font-style:italic}
+.eyebrow{font-size:10px;text-transform:uppercase;color:var(--ink-soft);margin-bottom:8px;letter-spacing:1px}
+
+.field-row{display:flex;gap:12px;margin-bottom:10px;flex-wrap:wrap;align-items:center}
+.field-label{width:280px;font-size:12px;color:var(--ink-soft)}
+.field-val{flex:1;background:var(--offwhite);border:1px solid var(--border-dk);padding:6px 10px;border-radius:5px;font-size:12px;min-width:140px;font-family:Georgia,serif}
+.field-val[readonly],.field-val.auto{background:var(--cream-deep);color:var(--ink-soft);font-style:italic}
+textarea.field-val{font-family:Georgia,serif;resize:vertical;min-height:50px}
+select.field-val{cursor:pointer}
+
+.btn{padding:5px 12px;border-radius:20px;border:1px solid var(--border-dk);background:#fff;cursor:pointer;font-size:11px;color:var(--ink);font-family:Georgia,serif}
+.btn:hover{background:var(--cream-deep)}
+.btn-primary{background:var(--teal);color:#fff;border-color:var(--teal)}
+.btn-primary:hover{background:var(--sea)}
+.btn-accent{background:var(--terracotta);color:#fff;border-color:var(--terracotta)}
+.btn-accent:hover{background:var(--terracotta-dk)}
+
+table.data-table{width:100%;border-collapse:collapse;background:var(--offwhite);border-radius:6px;overflow:hidden;border:1px solid var(--border-dk);font-size:11px}
+table.data-table th{background:var(--teal);color:#fff;padding:9px 8px;text-align:left;font-weight:normal;text-transform:uppercase;letter-spacing:0.5px;font-size:10px;border-right:1px solid var(--sea);white-space:nowrap}
+table.data-table th:last-child{border-right:none}
+table.data-table td{padding:7px 8px;border-bottom:1px solid var(--border);border-right:1px solid var(--border);vertical-align:middle}
+table.data-table td:last-child{border-right:none}
+table.data-table tr:last-child td{border-bottom:none}
+table.data-table input,table.data-table select,table.data-table textarea{width:100%;border:1px solid var(--border);padding:5px 6px;border-radius:3px;font-family:Georgia,serif;font-size:11px;background:#fff}
+table.data-table input:focus,table.data-table select:focus{outline:none;border-color:var(--teal)}
+table.data-table .num-col{width:40px;text-align:center;color:var(--ink-soft)}
+table.data-table .amount-col{font-weight:bold;color:var(--teal);text-align:right}
+table.data-table tr.total-row td{background:var(--highlight);font-weight:bold;color:var(--terracotta-dk);border-top:2px solid var(--border-dk)}
+
+.table-actions{display:flex;justify-content:space-between;align-items:center;margin-top:10px}
+.row-delete{background:transparent;border:none;color:var(--terracotta);cursor:pointer;font-size:14px;padding:2px 6px}
+.row-delete:hover{color:var(--terracotta-dk)}
+
+/* Comparison table */
+.compare-table{width:100%;border-collapse:collapse;background:#fff;border-radius:8px;overflow:hidden;border:1px solid var(--border-dk);font-size:13px}
+.compare-table th{background:var(--teal);color:#fff;padding:11px 12px;text-align:left;font-weight:normal;text-transform:uppercase;letter-spacing:0.5px;font-size:10px}
+.compare-table td{padding:11px 12px;border-bottom:1px solid var(--border);font-family:Georgia,serif}
+.compare-table tr:last-child td{border-bottom:none}
+.compare-table .change-pos{color:var(--terracotta-dk);font-weight:bold}
+.compare-table .change-neg{color:var(--good-ink);font-weight:bold}
+.compare-table .change-neutral{color:var(--ink-faint)}
+
+.compare-note{background:var(--terracotta-sft);border:1px solid var(--terracotta);border-radius:8px;padding:12px;margin-top:12px;color:var(--terracotta-dk);font-size:12px;display:flex;align-items:center;gap:10px}
+.compare-note .note-icon{font-size:16px}
+
+/* Summary cards */
+.summary-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px}
+.summary-card{background:#fff;border:1px solid var(--border);border-radius:10px;padding:14px}
+.summary-card.full{grid-column:1 / -1}
+.summary-card h3{font-size:11px;text-transform:uppercase;letter-spacing:1px;color:var(--teal);margin-bottom:10px;padding-bottom:6px;border-bottom:1px solid var(--border)}
+.metric-row{display:flex;justify-content:space-between;padding:5px 0;font-size:12px;border-bottom:1px solid #f0e9d6}
+.metric-row:last-child{border-bottom:none}
+.metric-label{color:var(--ink-soft)}
+.metric-value{font-weight:bold;color:var(--ink)}
+.metric-value.green{color:var(--good-ink)}
+.metric-value.amber{color:var(--terracotta-dk)}
+
+.picture-strip{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;background:var(--teal);padding:14px;border-radius:10px;color:#fff;margin-top:10px}
+.picture-strip .ps-cell{padding:6px 4px}
+.picture-strip .ps-label{font-size:10px;text-transform:uppercase;letter-spacing:0.8px;opacity:0.7;margin-bottom:4px}
+.picture-strip .ps-val{font-size:18px;font-weight:bold}
+.picture-strip .ps-val.amber{color:#FFD580}
+
+.flags-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+.flag-card{background:#fff;border:1px solid var(--border);border-radius:8px;padding:12px;text-align:left}
+.flag-icon{width:30px;height:30px;border-radius:6px;background:var(--terracotta-sft);display:flex;align-items:center;justify-content:center;font-size:14px;margin-bottom:8px}
+.flag-icon.amber{background:var(--terracotta-sft);color:var(--terracotta-dk)}
+.flag-icon.red{background:#F5D6CC;color:#8B2A0F}
+.flag-icon.blue{background:#D6E3EE;color:#2C5A82}
+.flag-icon.green{background:var(--good-bg);color:var(--good-ink)}
+.flag-count{font-size:20px;font-weight:bold;color:var(--ink)}
+.flag-label{font-size:10px;color:var(--ink-soft);text-transform:uppercase;letter-spacing:0.5px;margin-top:4px}
+
+.condition-badge{display:inline-flex;align-items:center;gap:5px;padding:2px 9px;border-radius:14px;font-size:10px;font-weight:bold}
+.condition-good{background:var(--good-bg);color:var(--good-ink)}
+.condition-fair{background:var(--fair-bg);color:var(--fair-ink)}
+.condition-poor{background:var(--poor-bg);color:var(--poor-ink)}
+.condition-badge::before{content:'●'}
+
+.status-badge{display:inline-flex;align-items:center;gap:5px;padding:2px 9px;border-radius:14px;font-size:10px;font-weight:bold}
+.status-completed{background:var(--good-bg);color:var(--good-ink)}
+.status-progress{background:var(--fair-bg);color:var(--fair-ink)}
+.status-pending{background:var(--cream-deep);color:var(--ink-soft)}
+
+.toggle{width:36px;height:18px;border-radius:20px;background:#ccc;display:inline-block;cursor:pointer;position:relative;flex-shrink:0;vertical-align:middle}
+.toggle::after{content:'';width:14px;height:14px;background:#fff;border-radius:50%;position:absolute;top:2px;left:2px;transition:left 0.2s}
+.toggle.on{background:var(--teal)}
+.toggle.on::after{left:20px}
+
+/* Worker block */
+.machine-block{background:#fff;border:1px solid var(--border-dk);border-radius:10px;margin-bottom:14px;overflow:hidden}
+.machine-block-head{background:var(--sea);color:#fff;padding:10px 14px;display:flex;justify-content:space-between;align-items:center;cursor:pointer;user-select:none;font-size:13px;flex-wrap:wrap;gap:8px}
+.machine-block-head:hover{background:var(--teal)}
+.machine-block-head .mb-name{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.chevron{font-size:12px;transition:transform 0.2s}
+.machine-block.collapsed .chevron{transform:rotate(-90deg)}
+.machine-block.collapsed .mb-body{display:none}
+.mb-body{padding:14px}
+.mb-remove{background:transparent;border:1px solid rgba(255,255,255,0.4);color:#fff;padding:3px 10px;border-radius:14px;cursor:pointer;font-size:11px;font-family:Georgia,serif}
+.mb-remove:hover{background:var(--terracotta);border-color:var(--terracotta)}
+.mb-tag{background:var(--terracotta);color:#fff;padding:2px 8px;border-radius:10px;font-size:10px;letter-spacing:0.5px;text-transform:uppercase}
+.mb-tag.skill{background:#5A7A82}
+.mb-tag.gom-yes{background:var(--good-ink)}
+.mb-tag.gom-no{background:#8B2A0F}
+
+.subsection{background:var(--cream-deep);padding:12px;border-radius:8px;margin-bottom:10px;border:1px solid var(--border)}
+.subsection-title{font-size:11px;text-transform:uppercase;letter-spacing:1px;color:var(--teal);margin-bottom:10px;font-weight:bold}
+
+.calc-strip{background:var(--highlight);border:1px solid var(--border-dk);border-radius:6px;padding:10px;margin-top:10px;display:grid;gap:10px}
+.calc-cell{font-size:11px}
+.calc-label{color:var(--ink-soft);margin-bottom:3px;font-size:10px;text-transform:uppercase;letter-spacing:0.5px}
+.calc-value{font-weight:bold;color:var(--terracotta-dk);font-size:13px}
+
+.calc-summary{background:var(--teal);color:#fff;border-radius:8px;padding:14px;margin-top:12px;font-family:'Courier New',monospace;font-size:12px;line-height:1.7}
+.calc-summary-title{font-size:10px;text-transform:uppercase;letter-spacing:1px;opacity:0.7;margin-bottom:8px;font-family:Georgia,serif}
+.calc-summary .total-line{margin-top:8px;padding-top:8px;border-top:1px solid rgba(255,255,255,0.2);color:#FFD580;font-weight:bold;font-size:14px}
+
+.intervention-flags{background:var(--terracotta-sft);border:1px solid var(--terracotta);border-radius:8px;padding:12px;margin-top:10px}
+.intervention-flags-title{font-size:11px;text-transform:uppercase;letter-spacing:1px;color:var(--terracotta-dk);margin-bottom:10px;font-weight:bold}
+.intervention-cell{background:#fff;border:1px solid var(--border);border-radius:6px;padding:10px}
+.intervention-toggle-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+.intervention-toggle-row .label{font-size:11px;font-weight:bold;color:var(--ink)}
+.flag-note{font-size:10px;color:var(--ink-faint);font-style:italic;margin-bottom:6px}
+.flag-note.active{color:var(--terracotta-dk);font-weight:bold;font-style:normal}
+.intervention-cell textarea{width:100%;border:1px solid var(--border);padding:5px 6px;border-radius:3px;font-family:Georgia,serif;font-size:11px;background:var(--offwhite);resize:vertical;min-height:40px}
+
+.gom-warn{background:var(--poor-bg);border:1px solid #8B2A0F;color:#8B2A0F;padding:10px;border-radius:6px;font-size:11px;margin-top:8px;display:flex;align-items:center;gap:8px}
+
+.total-bar{background:var(--teal);color:#fff;padding:14px 18px;border-radius:10px;margin-top:14px}
+.total-bar-title{font-size:11px;text-transform:uppercase;letter-spacing:1px;opacity:0.7;margin-bottom:10px}
+.total-grid{display:grid;gap:14px}
+.total-cell .total-label{font-size:10px;opacity:0.6;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:3px}
+.total-cell .total-value{font-weight:bold;font-size:14px}
+.total-cell .total-value.amber{color:#FFD580;font-size:11px}
+
+/* Required rows */
+.opt-row{background:#fff;border:1px solid var(--border-dk);border-radius:10px;margin-bottom:12px;overflow:hidden}
+.opt-row-head{background:var(--cream-deep);padding:12px 16px;display:grid;gap:12px;align-items:center;border-bottom:1px solid var(--border-dk)}
+.opt-readonly-label{font-size:10px;color:var(--ink-soft);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:3px}
+.opt-readonly-val{font-size:12px;font-weight:bold;color:var(--teal)}
+.int-type{display:inline-flex;align-items:center;gap:5px;padding:3px 10px;border-radius:14px;font-size:10px;font-weight:bold}
+.int-labour{background:var(--terracotta-sft);color:var(--terracotta-dk)}
+
+.add-row-bar{text-align:center;padding:14px;background:var(--cream-deep);border:1px dashed var(--border-dk);border-radius:10px;margin-top:10px}
+
+.placeholder-tab{padding:40px;text-align:center;color:var(--ink-faint);font-style:italic;background:var(--cream-deep);border-radius:10px;border:1px dashed var(--border-dk)}
+
+.hidden{display:none !important}
+</style>
+</head>
+<body>
+
+<div class="page">
+<div class="header">
+  <h1>Human Resource Module</h1>
+  <div class="crumb">PRIME Rural · DF Human Resource</div>
+</div>
+<div class="card">
+
+<div class="tab-bar">
+  <div class="tab active" onclick="showTab('summary',this)">Summary</div>
+  <div class="tab" onclick="showTab('existing',this)">Existing</div>
+  <div class="tab" onclick="showTab('required',this)">Required</div>
+  <div class="tab" onclick="showTab('resources',this)">Resources</div>
+  <div class="tab" onclick="showTab('tasklog',this)">Task Log</div>
+</div>
+
+<div class="content">
+
+<div class="entrepreneur-chip">
+  <div class="ent-avatar">EN</div>
+  <span style="color:var(--ink-soft);font-style:italic">Auto-fetched from profile</span>
+</div>
+
+<!-- ============ SUMMARY ============ -->
+<div id="summary" class="panel">
+
+  <!-- ① WORKER-WISE OVERVIEW -->
+  <div class="section">
+    <div class="section-title">Worker-wise Overview</div>
+    <p style="font-size:11px;color:var(--ink-soft);font-style:italic;margin-bottom:10px">Each worker category's labour cost/unit feeds Unit Pricing individually. Intervention Type and Status columns populate when a flag is raised.</p>
+    <div style="overflow-x:auto">
+    <table class="data-table" style="min-width:960px">
+      <thead>
+        <tr>
+          <th>Category</th>
+          <th>Skill Level</th>
+          <th>Employment</th>
+          <th>Male</th>
+          <th>Female</th>
+          <th>Total Workers</th>
+          <th>Monthly Cost (₹)</th>
+          <th>GoM</th>
+          <th>Intervention Type</th>
+          <th>Implementation Status</th>
+          <th style="background:#7A3B22">New Workers</th>
+          <th style="background:#3F6B3A">New Monthly Cost (₹)</th>
+        </tr>
+      </thead>
+      <tbody id="summaryWorkerTable">
+        <tr><td colspan="12" style="text-align:center;color:var(--ink-faint);font-style:italic;padding:14px">Auto-populated from Existing and Required tabs</td></tr>
+      </tbody>
+    </table>
+    </div>
+  </div>
+
+  <!-- ② AGGREGATES -->
+  <div class="section">
+    <div class="section-title">Aggregates</div>
+    <div class="summary-grid">
+
+      <div class="summary-card">
+        <h3>Existing</h3>
+        <div class="metric-row"><span class="metric-label">Worker Categories</span><span class="metric-value" id="agg-ex-cats">0</span></div>
+        <div class="metric-row"><span class="metric-label">Total Workers</span><span class="metric-value" id="agg-ex-workers">0</span></div>
+        <div class="metric-row"><span class="metric-label">Male Workers</span><span class="metric-value" id="agg-ex-male">0</span></div>
+        <div class="metric-row"><span class="metric-label">Female Workers</span><span class="metric-value" id="agg-ex-female">0</span></div>
+        <div class="metric-row"><span class="metric-label">Monthly Labour Cost (₹)</span><span class="metric-value" id="agg-ex-cost">₹ 0.00</span></div>
+        <div class="metric-row"><span class="metric-label">GoM Compliant</span><span class="metric-value green" id="agg-ex-comp">0</span></div>
+        <div class="metric-row"><span class="metric-label">GoM Non-Compliant</span><span class="metric-value amber" id="ps-noncomp">0</span></div>
+      </div>
+
+      <div class="summary-card">
+        <h3>Cost</h3>
+        <div class="metric-row"><span class="metric-label">Monthly Cost — Before (₹)</span><span class="metric-value" id="agg-cost-before">₹ 0.00</span></div>
+        <div class="metric-row"><span class="metric-label">Monthly Cost — After (₹)</span><span class="metric-value green" id="agg-impl-cost">—</span></div>
+        <div class="metric-row"><span class="metric-label">Cost Change (₹)</span><span class="metric-value green" id="agg-impl-cost-change">—</span></div>
+        <div class="metric-row"><span class="metric-label">Workers Before</span><span class="metric-value" id="ps-workers-before">0</span></div>
+        <div class="metric-row"><span class="metric-label">Workers After</span><span class="metric-value green" id="ps-workers-after">0</span></div>
+        <div class="metric-row"><span class="metric-label">Jobs Created / Changed</span><span class="metric-value green" id="ps-jobs-created">—</span></div>
+        <div style="font-size:10px;color:var(--ink-faint);font-style:italic;margin-top:6px">After = Completed interventions only.</div>
+      </div>
+
+      <div class="summary-card">
+        <h3>Interventions</h3>
+        <div class="metric-row"><span class="metric-label">Labour Interventions Flagged</span><span class="metric-value amber" id="agg-flag-labour">0</span></div>
+        <div class="metric-row"><span class="metric-label">Skilled / Highly Skilled</span><span class="metric-value" id="ps-skilled">0</span></div>
+        <div class="metric-row"><span class="metric-label">Avg Labour Rate / hr (₹)</span><span class="metric-value" id="ps-rate">₹ 0.00</span></div>
+      </div>
+
+      <div class="summary-card">
+        <h3>Status</h3>
+        <div class="metric-row"><span class="metric-label">Completed</span><span class="metric-value green" id="agg-flag-completed">0</span></div>
+        <div class="metric-row"><span class="metric-label">In Progress</span><span class="metric-value amber" id="agg-flag-progress">0</span></div>
+        <div class="metric-row"><span class="metric-label">Pending</span><span class="metric-value" id="agg-impl-pending">0</span></div>
+        <div class="metric-row"><span class="metric-label">Not Feasible</span><span class="metric-value" id="agg-impl-notfeasible">0</span></div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ③ FLAGS -->
+  <div class="section">
+    <div class="section-title">Intervention Flags</div>
+    <div class="flags-grid">
+      <div class="flag-card"><div class="flag-icon amber">↻</div><div class="flag-count" id="flag-labour-count">0</div><div class="flag-label">Labour Intervention Needed</div></div>
+      <div class="flag-card"><div class="flag-icon red">!</div><div class="flag-count" id="flag-noncomp-count">0</div><div class="flag-label">GoM Non-Compliant</div></div>
+      <div class="flag-card"><div class="flag-icon green">✓</div><div class="flag-count" id="flag-comp-count">0</div><div class="flag-label">GoM Compliant</div></div>
+      <div class="flag-card"><div class="flag-icon blue">★</div><div class="flag-count" id="flag-skilled-count">0</div><div class="flag-label">Skilled / Highly Skilled</div></div>
+    </div>
+  </div>
+
+  <!-- ghost IDs -->
+  <span id="cmp-ex-workers"    style="display:none"></span>
+  <span id="cmp-req-workers"   style="display:none"></span>
+  <span id="cmp-change-workers"style="display:none"></span>
+  <span id="cmp-ex-cost"       style="display:none"></span>
+  <span id="cmp-req-cost"      style="display:none"></span>
+  <span id="cmp-change-cost"   style="display:none"></span>
+  <span id="cmp-ex-noncomp"    style="display:none"></span>
+  <span id="cmp-req-noncomp"   style="display:none"></span>
+  <span id="cmp-change-noncomp"style="display:none"></span>
+  <span id="ps-comp"           style="display:none"></span>
+  <div id="gomNote" class="hidden"><span class="note-icon"></span><span id="gomNoteText"></span></div>
+
+</div>
+
+<!-- ============ EXISTING ============ -->
+<div id="existing" class="panel hidden">
+
+  <div id="existingWorkerList"></div>
+
+  <div class="add-row-bar">
+    <button class="btn btn-primary" onclick="addExistingWorker()">+ Add Worker Category</button>
+  </div>
+
+  <div class="total-bar">
+    <div class="total-bar-title">⚙ All Existing Workers — Total</div>
+    <div class="total-grid" style="grid-template-columns:repeat(5,1fr)">
+      <div class="total-cell"><div class="total-label">Worker Categories</div><div class="total-value" id="ex-tot-cats">0</div></div>
+      <div class="total-cell"><div class="total-label">Total Workers</div><div class="total-value" id="ex-tot-workers">0</div></div>
+      <div class="total-cell"><div class="total-label">Monthly Labour Cost</div><div class="total-value" id="ex-tot-cost">₹ 0.00</div></div>
+      <div class="total-cell"><div class="total-label">GoM Compliant</div><div class="total-value" id="ex-tot-comp">0 / 0</div></div>
+      <div class="total-cell"><div class="total-label">Auto-fetches to</div><div class="total-value amber">Existing Unit Pricing → Human Resource</div></div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ============ REQUIRED ============ -->
+<div id="required" class="panel hidden">
+
+  <div class="section">
+    <div class="section-title"><span><span class="section-title-roman">I.</span>Labour Interventions</span></div>
+    <p style="font-size:12px;color:var(--ink-soft);margin-bottom:12px;font-style:italic">Auto-populated from Existing tab when "Labour intervention needed?" is flagged.</p>
+    <div id="labourInterventionList">
+      <div class="empty-msg" style="text-align:center;color:var(--ink-faint);font-style:italic;padding:20px;background:#fff;border:1px dashed var(--border-dk);border-radius:8px">No labour interventions flagged yet — toggle the flag in the Existing tab to populate this section.</div>
+    </div>
+    <div class="add-row-bar">
+      <button class="btn" onclick="addLabourInterventionRow()">+ Add Labour Intervention</button>
+    </div>
+  </div>
+
+  <!-- ── Section II: New Labour ── -->
+  <div class="section">
+    <div class="section-title"><span><span class="section-title-roman">II.</span>New Labour</span></div>
+    <p style="font-size:12px;color:var(--ink-soft);margin-bottom:12px;font-style:italic">Add new worker categories not currently in the enterprise — standalone, not linked to Existing tab.</p>
+    <div id="newLabourList">
+      <div class="empty-msg" style="text-align:center;color:var(--ink-faint);font-style:italic;padding:20px;background:#fff;border:1px dashed var(--border-dk);border-radius:8px">No new labour categories added yet.</div>
+    </div>
+    <div class="add-row-bar">
+      <button class="btn btn-primary" onclick="addNewLabourRow()">+ Add New Labour Category</button>
+    </div>
+  </div>
+
+  <div class="total-bar">
+    <div class="total-bar-title">⚙ Required Workforce — Optimised View</div>
+    <div class="total-grid" style="grid-template-columns:repeat(5,1fr)">
+      <div class="total-cell"><div class="total-label">Interventions</div><div class="total-value" id="req-tot-int">0</div></div>
+      <div class="total-cell"><div class="total-label">Required Workers</div><div class="total-value" id="req-tot-workers">0</div></div>
+      <div class="total-cell"><div class="total-label">Required Monthly Cost</div><div class="total-value" id="req-tot-cost">₹ 0.00</div></div>
+      <div class="total-cell"><div class="total-label">Status: Completed</div><div class="total-value" id="req-tot-completed">0</div></div>
+      <div class="total-cell"><div class="total-label">Auto-fetches to</div><div class="total-value amber">Optimised Unit Pricing → Human Resource</div></div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ============ RESOURCES ============ -->
+<div id="resources" class="panel hidden">
+  <div class="section">
+    <div class="section-title">Reference Materials</div>
+    <table class="data-table" id="resourcesTable">
+      <thead>
+        <tr>
+          <th style="width:25%">Resource Title</th>
+          <th style="width:18%">Category</th>
+          <th style="width:12%">Type</th>
+          <th style="width:30%">Description / Notes</th>
+          <th style="width:10%">File</th>
+          <th style="width:5%"></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><input type="text" placeholder="Resource title"></td>
+          <td>
+            <select>
+              <option>— Select —</option>
+              <option>GoM Wage Notification</option>
+              <option>Skilling / Training</option>
+              <option>Labour Contractor</option>
+              <option>SHG / Cooperative</option>
+              <option>Compliance Reference</option>
+            </select>
+          </td>
+          <td>
+            <select>
+              <option>— Select —</option>
+              <option>Notification</option>
+              <option>Reference</option>
+              <option>Contact</option>
+              <option>Training Material</option>
+              <option>Specification</option>
+            </select>
+          </td>
+          <td><input type="text" placeholder="Notes"></td>
+          <td>
+            <button class="btn" style="padding:3px 8px;font-size:10px">Upload</button>
+            <button class="btn" style="padding:3px 8px;font-size:10px">View ▷</button>
+          </td>
+          <td><button class="row-delete" onclick="deleteRow(this)">✕</button></td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="table-actions">
+      <span></span>
+      <button class="btn btn-primary" onclick="addRow('resourcesTable')">+ Add Resource</button>
+    </div>
+  </div>
+</div>
+
+<!-- ============ TASK LOG ============ -->
+<div id="tasklog" class="panel hidden">
+  <div class="section">
+    <div class="section-title">Task Log — Human Resource Activities</div>
+    <table class="data-table" id="taskLogTable">
+      <thead>
+        <tr>
+          <th style="width:5%">No.</th>
+          <th style="width:13%">Date</th>
+          <th style="width:42%">Task Name</th>
+          <th style="width:30%">Notes / Outcome</th>
+          <th style="width:7%">Attachment</th>
+          <th style="width:3%"></th>
+        </tr>
+      </thead>
+      <tbody id="taskLogBody"></tbody>
+    </table>
+    <div class="table-actions">
+      <span></span>
+      <button class="btn btn-primary" onclick="addTaskRow()">+ Add Entry</button>
+    </div>
+  </div>
+</div>
+
+</div>
+</div>
+</div>
+
+<script>
+// ============ TAB SWITCHING ============
+function showTab(id, el){
+  document.querySelectorAll('.panel').forEach(p => p.classList.add('hidden'));
+  document.getElementById(id).classList.remove('hidden');
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  el.classList.add('active');
+  if(id === 'summary') refreshSummary();
+}
+
+// ============ STATE ============
+let workerCounter = 0;
+let labourIntCounter = 0;
+
+// ============ GoM MINIMUM WAGES (REFERENCE) ============
+// Approximate Meghalaya minimum wage thresholds (per day) — used only for compliance check.
+// In production, these should be fetched from a configurable settings module.
+const GOM_MIN_WAGE_PER_DAY = {
+  'Unskilled': 360,
+  'Semi-skilled': 410,
+  'Skilled': 480,
+  'Highly Skilled': 550
+};
+
+// ============ EXISTING WORKER BLOCK ============
+function addExistingWorker(){
+  workerCounter++;
+  const wid = `hr${workerCounter}`;
+  const list = document.getElementById('existingWorkerList');
+  const block = document.createElement('div');
+  block.className = 'machine-block';
+  block.id = wid;
+  block.innerHTML = renderExistingWorker(wid, workerCounter);
+  list.appendChild(block);
+  recalcWorker(wid);
+}
+
+function renderExistingWorker(wid, idx){
+  return `
+  <div class="machine-block-head" onclick="toggleWorker('${wid}')">
+    <div class="mb-name">
+      <span class="chevron">▾</span>
+      <span style="opacity:0.85">Row ${idx} ·</span>
+      <span id="${wid}-headLabel" style="font-style:italic;opacity:0.7">New Worker Category</span>
+      <span class="mb-tag" id="${wid}-tagSkill" style="display:none">Skill</span>
+      <span class="mb-tag" id="${wid}-tagGom" style="display:none">GoM</span>
+    </div>
+    <button class="mb-remove" onclick="event.stopPropagation();removeWorker('${wid}')">Remove</button>
+  </div>
+  <div class="mb-body">
+
+    <!-- Worker Classification -->
+    <div class="subsection">
+      <div class="subsection-title"><span style="color:var(--terracotta);font-style:italic;margin-right:6px">I.</span>Worker Classification</div>
+      <div class="field-row">
+        <div class="field-label">Worker Category *</div>
+        <select class="field-val" id="${wid}-category" onchange="updateHeadLabel('${wid}');refreshSummary()">
+          <option value="">— Select —</option>
+          <option>Self</option>
+          <option>Unpaid Family</option>
+          <option>Paid Family</option>
+          <option>Hired Worker</option>
+        </select>
+      </div>
+      <div class="field-row">
+        <div class="field-label">Skill Level *</div>
+        <select class="field-val" id="${wid}-skill" onchange="updateSkillTag('${wid}');recalcWorker('${wid}');refreshSummary()">
+          <option value="">— Select —</option>
+          <option>Unskilled</option>
+          <option>Semi-skilled</option>
+          <option>Skilled</option>
+          <option>Highly Skilled</option>
+        </select>
+      </div>
+      <div class="field-row">
+        <div class="field-label">Employment Nature *</div>
+        <select class="field-val" id="${wid}-nature" onchange="updateHeadLabel('${wid}')">
+          <option value="">— Select —</option>
+          <option>Permanent</option>
+          <option>Contract</option>
+          <option>Casual / Daily</option>
+          <option>Seasonal</option>
+          <option>Part-time</option>
+        </select>
+      </div>
+      <div class="field-row">
+        <div class="field-label">No. of Male Workers</div>
+        <input type="number" class="field-val" id="${wid}-male" placeholder="0" min="0" oninput="recalcWorkerCount('${wid}')">
+      </div>
+      <div class="field-row">
+        <div class="field-label">No. of Female Workers</div>
+        <input type="number" class="field-val" id="${wid}-female" placeholder="0" min="0" oninput="recalcWorkerCount('${wid}')">
+      </div>
+      <div class="field-row">
+        <div class="field-label">Total Workers (auto)</div>
+        <input type="text" class="field-val auto" id="${wid}-count" readonly placeholder="0">
+      </div>
+    </div>
+
+    <!-- Wage Structure -->
+    <div class="subsection">
+      <div class="subsection-title"><span style="color:var(--terracotta);font-style:italic;margin-right:6px">II.</span>Wage Structure</div>
+      <div class="field-row">
+        <div class="field-label">Wage Type *</div>
+        <select class="field-val" id="${wid}-wageType" onchange="recalcWorker('${wid}')">
+          <option value="">— Select —</option>
+          <option value="Per Day">Per Day</option>
+          <option value="Per Month">Per Month</option>
+          <option value="Per Hour">Per Hour</option>
+        </select>
+      </div>
+      <div class="field-row">
+        <div class="field-label">Wage Rate *</div>
+        <input type="number" class="field-val" id="${wid}-wageRate" placeholder="0.00" step="0.01" oninput="recalcWorker('${wid}')">
+      </div>
+      <div class="field-row">
+        <div class="field-label">Avg Working Days / Month</div>
+        <input type="number" class="field-val" id="${wid}-days" placeholder="0" oninput="recalcWorker('${wid}')">
+      </div>
+      <div class="field-row">
+        <div class="field-label">Avg Hours / Day</div>
+        <input type="number" class="field-val" id="${wid}-hours" placeholder="0" oninput="recalcWorker('${wid}')">
+      </div>
+    </div>
+
+    <!-- Cost & Compliance -->
+    <div class="subsection">
+      <div class="subsection-title"><span style="color:var(--terracotta);font-style:italic;margin-right:6px">III.</span>Cost & Compliance</div>
+      <div class="calc-strip" style="grid-template-columns:repeat(3,1fr)">
+        <div class="calc-cell"><div class="calc-label">Monthly Labour Cost</div><div class="calc-value" id="${wid}-monthlyCost">₹ 0.00</div></div>
+        <div class="calc-cell"><div class="calc-label">Labour Rate / hr</div><div class="calc-value" id="${wid}-ratePerHr">₹ 0.00</div></div>
+        <div class="calc-cell"><div class="calc-label">GoM Compliant?</div><div class="calc-value" id="${wid}-gomDisplay">—</div></div>
+      </div>
+
+      <div class="calc-summary">
+        <div class="calc-summary-title">Cost Formula Applied</div>
+        <div id="${wid}-formula1">No wage type selected yet.</div>
+        <div class="total-line" id="${wid}-formulaTotal">TOTAL MONTHLY COST = ₹ 0.00</div>
+      </div>
+
+      <div class="gom-warn hidden" id="${wid}-gomWarn">
+        <span>⚠</span>
+        <span id="${wid}-gomWarnText">Wage rate below Government of Meghalaya minimum for this skill level.</span>
+      </div>
+    </div>
+
+    <!-- Intervention Need -->
+    <div class="intervention-flags">
+      <div class="intervention-flags-title">⚠ Intervention Need</div>
+      <div class="intervention-cell">
+        <div class="intervention-toggle-row"><span class="label">Labour intervention needed?</span><span class="toggle" id="${wid}-labToggle" onclick="toggleLabourFlag(this,'${wid}')"></span></div>
+        <div class="flag-note" id="${wid}-labNote">Not flagged</div>
+        <textarea id="${wid}-labJustify" placeholder="Justify..." oninput="syncBridge('${wid}')"></textarea>
+      </div>
+    </div>
+
+  </div>`;
+}
+
+function toggleWorker(wid){
+  document.getElementById(wid).classList.toggle('collapsed');
+}
+
+function removeWorker(wid){
+  if(confirm('Remove this worker category?')){
+    document.querySelectorAll(`[data-bridge-source="${wid}"]`).forEach(el => el.remove());
+    document.getElementById(wid).remove();
+    refreshEmptyMessages();
+    recalcExistingTotals();
+    refreshSummary();
+  }
+}
+
+function updateHeadLabel(wid){
+  const cat = document.getElementById(`${wid}-category`)?.value || '';
+  const nature = document.getElementById(`${wid}-nature`)?.value || '';
+  const head = document.getElementById(`${wid}-headLabel`);
+  if(head){
+    if(cat || nature){
+      head.textContent = `${cat || '—'}${nature ? ' · ' + nature : ''}`;
+      head.style.fontStyle = 'normal';
+      head.style.opacity = '1';
+    } else {
+      head.textContent = 'New Worker Category';
+      head.style.fontStyle = 'italic';
+      head.style.opacity = '0.7';
+    }
+  }
+  syncBridgeNames(wid);
+  refreshSummary();
+}
+
+function updateSkillTag(wid){
+  const skill = document.getElementById(`${wid}-skill`)?.value;
+  const tag = document.getElementById(`${wid}-tagSkill`);
+  if(skill){
+    tag.textContent = skill;
+    tag.style.display = 'inline-block';
+  } else {
+    tag.style.display = 'none';
+  }
+}
+
+function updateGomTag(wid, compliant){
+  const tag = document.getElementById(`${wid}-tagGom`);
+  if(compliant === true){
+    tag.textContent = 'GoM ✓';
+    tag.classList.add('gom-yes');
+    tag.classList.remove('gom-no');
+    tag.style.display = 'inline-block';
+  } else if(compliant === false){
+    tag.textContent = 'GoM ✕';
+    tag.classList.add('gom-no');
+    tag.classList.remove('gom-yes');
+    tag.style.display = 'inline-block';
+  } else {
+    tag.style.display = 'none';
+  }
+}
+
+function syncBridgeNames(wid){
+  const cat = document.getElementById(`${wid}-category`)?.value || '—';
+  const skill = document.getElementById(`${wid}-skill`)?.value || '—';
+  const nature = document.getElementById(`${wid}-nature`)?.value || '—';
+  document.querySelectorAll(`[data-bridge-source="${wid}"] .bridge-category`).forEach(el => el.textContent = cat);
+  document.querySelectorAll(`[data-bridge-source="${wid}"] .bridge-skill`).forEach(el => el.textContent = skill);
+  document.querySelectorAll(`[data-bridge-source="${wid}"] .bridge-nature`).forEach(el => el.textContent = nature);
+}
+
+// ============ FLAG TOGGLE — bridge to Required ============
+function toggleLabourFlag(el, wid){
+  el.classList.toggle('on');
+  const note = document.getElementById(`${wid}-labNote`);
+  if(el.classList.contains('on')){
+    note.textContent = '↻ Flagged → Details in Required Tab';
+    note.classList.add('active');
+    bridgeToRequired(wid);
+  } else {
+    note.textContent = 'Not flagged';
+    note.classList.remove('active');
+    removeBridge(wid);
+  }
+  refreshSummary();
+}
+
+function bridgeToRequired(wid){
+  const existing = document.querySelector(`[data-bridge-source="${wid}"]`);
+  if(existing) return;
+  addLabourInterventionRow(wid);
+}
+
+function removeBridge(wid){
+  const row = document.querySelector(`[data-bridge-source="${wid}"]`);
+  if(row) row.remove();
+  refreshEmptyMessages();
+  recalcRequiredTotals();
+}
+
+function syncBridge(wid){
+  const justify = document.getElementById(`${wid}-labJustify`)?.value || '';
+  const target = document.querySelector(`[data-bridge-source="${wid}"] .bridge-justify`);
+  if(target && target.value !== justify) target.value = justify;
+}
+
+// ============ CALCULATIONS ============
+function recalcWorkerCount(wid){
+  const male   = parseFloat(document.getElementById(`${wid}-male`)?.value)   || 0;
+  const female = parseFloat(document.getElementById(`${wid}-female`)?.value) || 0;
+  const total  = male + female;
+  const countEl = document.getElementById(`${wid}-count`);
+  if(countEl) countEl.value = total > 0 ? total : '';
+  recalcWorker(wid);
+}
+
+function recalcWorker(wid){
+  const count = parseFloat(document.getElementById(`${wid}-count`)?.value) || 0;
+  const wageType = document.getElementById(`${wid}-wageType`)?.value;
+  const wageRate = parseFloat(document.getElementById(`${wid}-wageRate`)?.value) || 0;
+  const days = parseFloat(document.getElementById(`${wid}-days`)?.value) || 0;
+  const hours = parseFloat(document.getElementById(`${wid}-hours`)?.value) || 0;
+  const skill = document.getElementById(`${wid}-skill`)?.value;
+
+  let monthlyPerWorker = 0;
+  let formula = 'No wage type selected yet.';
+
+  if(wageType === 'Per Day' && wageRate > 0 && days > 0){
+    monthlyPerWorker = wageRate * days;
+    formula = `Monthly = Wage Rate × Days = ₹${wageRate} × ${days} = ₹${monthlyPerWorker.toFixed(2)} per worker`;
+  } else if(wageType === 'Per Month' && wageRate > 0){
+    monthlyPerWorker = wageRate;
+    formula = `Monthly = Wage Rate = ₹${wageRate} per worker`;
+  } else if(wageType === 'Per Hour' && wageRate > 0 && days > 0 && hours > 0){
+    monthlyPerWorker = wageRate * days * hours;
+    formula = `Monthly = Wage Rate × Days × Hours/Day = ₹${wageRate} × ${days} × ${hours} = ₹${monthlyPerWorker.toFixed(2)} per worker`;
+  }
+
+  const totalMonthly = monthlyPerWorker * count;
+
+  // Labour rate per hour — derived from monthly cost, days, hours
+  let ratePerHour = 0;
+  if(wageType === 'Per Hour' && wageRate > 0){
+    ratePerHour = wageRate;
+  } else if(monthlyPerWorker > 0 && days > 0 && hours > 0){
+    ratePerHour = monthlyPerWorker / (days * hours);
+  } else if(wageType === 'Per Day' && wageRate > 0 && hours > 0){
+    ratePerHour = wageRate / hours;
+  }
+
+  // GoM compliance check — comparing implied daily wage to GoM minimum for skill level
+  let compliant = null;
+  if(skill && GOM_MIN_WAGE_PER_DAY[skill] && wageRate > 0 && wageType){
+    let dailyEquivalent = 0;
+    if(wageType === 'Per Day') dailyEquivalent = wageRate;
+    else if(wageType === 'Per Month' && days > 0) dailyEquivalent = wageRate / days;
+    else if(wageType === 'Per Hour' && hours > 0) dailyEquivalent = wageRate * hours;
+    if(dailyEquivalent > 0){
+      compliant = dailyEquivalent >= GOM_MIN_WAGE_PER_DAY[skill];
+    }
+  }
+
+  document.getElementById(`${wid}-monthlyCost`).textContent = `₹ ${totalMonthly.toFixed(2)}`;
+  document.getElementById(`${wid}-ratePerHr`).textContent = `₹ ${ratePerHour.toFixed(2)}`;
+  const gomDisplay = document.getElementById(`${wid}-gomDisplay`);
+  if(compliant === true){
+    gomDisplay.innerHTML = '<span class="condition-badge condition-good">Yes</span>';
+  } else if(compliant === false){
+    gomDisplay.innerHTML = '<span class="condition-badge condition-poor">No</span>';
+  } else {
+    gomDisplay.textContent = '—';
+  }
+
+  document.getElementById(`${wid}-formula1`).textContent = formula;
+  document.getElementById(`${wid}-formulaTotal`).textContent = `TOTAL MONTHLY COST = ₹${totalMonthly.toFixed(2)} (${count} worker${count !== 1 ? 's' : ''})`;
+
+  const warn = document.getElementById(`${wid}-gomWarn`);
+  if(compliant === false && skill){
+    warn.classList.remove('hidden');
+    document.getElementById(`${wid}-gomWarnText`).textContent = `Implied daily wage is below GoM minimum (₹${GOM_MIN_WAGE_PER_DAY[skill]} / day) for ${skill} workers.`;
+  } else {
+    warn.classList.add('hidden');
+  }
+
+  updateGomTag(wid, compliant);
+  recalcExistingTotals();
+  refreshSummary();
+}
+
+function recalcExistingTotals(){
+  const blocks = document.querySelectorAll('#existingWorkerList .machine-block');
+  let cats = blocks.length, totalWorkers = 0, totalCost = 0, compliant = 0, evaluated = 0;
+  blocks.forEach(b => {
+    const wid = b.id;
+    const c = parseFloat(document.getElementById(`${wid}-count`)?.value) || 0;
+    totalWorkers += c;
+    const costTxt = document.getElementById(`${wid}-monthlyCost`)?.textContent || '';
+    const cost = parseFloat(costTxt.replace(/[^\d.]/g,'')) || 0;
+    totalCost += cost;
+    const display = document.getElementById(`${wid}-gomDisplay`)?.textContent;
+    if(display === 'Yes' || display === 'No'){
+      evaluated++;
+      if(display === 'Yes') compliant++;
+    }
+  });
+  document.getElementById('ex-tot-cats').textContent = cats;
+  document.getElementById('ex-tot-workers').textContent = totalWorkers;
+  document.getElementById('ex-tot-cost').textContent = `₹ ${totalCost.toFixed(2)}`;
+  document.getElementById('ex-tot-comp').textContent = `${compliant} / ${evaluated || cats}`;
+}
+
+// ============ REQUIRED — LABOUR INTERVENTIONS ============
+function addLabourInterventionRow(bridgeWid){
+  const list = document.getElementById('labourInterventionList');
+  const empty = list.querySelector('.empty-msg');
+  if(empty) empty.remove();
+
+  labourIntCounter++;
+  const lid = `lab${labourIntCounter}`;
+  const div = document.createElement('div');
+  div.className = 'opt-row';
+  div.id = lid;
+  if(bridgeWid){
+    div.setAttribute('data-bridge-source', bridgeWid);
+  }
+
+  const cat = bridgeWid ? (document.getElementById(`${bridgeWid}-category`)?.value || '—') : '—';
+  const skill = bridgeWid ? (document.getElementById(`${bridgeWid}-skill`)?.value || '—') : '—';
+  const nature = bridgeWid ? (document.getElementById(`${bridgeWid}-nature`)?.value || '—') : '—';
+  const justify = bridgeWid ? (document.getElementById(`${bridgeWid}-labJustify`)?.value || '') : '';
+  const currentCount = bridgeWid ? (document.getElementById(`${bridgeWid}-count`)?.value || '0') : '0';
+
+  div.innerHTML = `
+    <div class="opt-row-head" style="grid-template-columns:1fr 1fr 1fr 1.5fr auto">
+      <div>
+        <div class="opt-readonly-label">Worker Category</div>
+        <div class="opt-readonly-val bridge-category">${cat}</div>
+      </div>
+      <div>
+        <div class="opt-readonly-label">Skill Level</div>
+        <div class="opt-readonly-val bridge-skill">${skill}</div>
+      </div>
+      <div>
+        <div class="opt-readonly-label">Employment Nature</div>
+        <div class="opt-readonly-val bridge-nature">${nature}</div>
+      </div>
+      <div>
+        <div class="opt-readonly-label">Justification (from Existing)</div>
+        <textarea class="field-val bridge-justify" placeholder="Justification" style="width:100%;min-height:36px">${justify}</textarea>
+      </div>
+      <span class="int-type int-labour">↻ Labour Intervention</span>
+    </div>
+    <div style="padding:14px;display:grid;grid-template-columns:repeat(3,1fr);gap:12px">
+      <div>
+        <div class="opt-readonly-label">Intervention Type</div>
+        <select class="field-val">
+          <option value="">— Select —</option>
+          <option>Hire Additional Workers</option>
+          <option>Wage Revision</option>
+          <option>Skill Upgrade / Training</option>
+          <option>Replace with Skilled Worker</option>
+          <option>Convert Family → Hired</option>
+          <option>Convert Casual → Permanent</option>
+          <option>Reduce Workforce</option>
+          <option>Compliance Correction (GoM)</option>
+        </select>
+      </div>
+      <div>
+        <div class="opt-readonly-label">Current No. of Workers</div>
+        <input type="text" class="field-val auto" readonly value="${currentCount}">
+      </div>
+      <div>
+        <div class="opt-readonly-label">Required No. of Workers</div>
+        <input type="number" class="field-val" placeholder="0" oninput="recalcRequiredTotals()" data-required-count>
+      </div>
+      <div>
+        <div class="opt-readonly-label">Required Wage Type</div>
+        <select class="field-val" onchange="recalcRequiredRow('${lid}')" data-required-wagetype>
+          <option value="">— Select —</option>
+          <option value="Per Day">Per Day</option>
+          <option value="Per Month">Per Month</option>
+          <option value="Per Hour">Per Hour</option>
+        </select>
+      </div>
+      <div>
+        <div class="opt-readonly-label">Required Wage Rate (₹)</div>
+        <input type="number" class="field-val" placeholder="0.00" step="0.01" oninput="recalcRequiredRow('${lid}')" data-required-rate>
+      </div>
+      <div>
+        <div class="opt-readonly-label">Working Days / Month</div>
+        <input type="number" class="field-val" placeholder="0" oninput="recalcRequiredRow('${lid}')" data-required-days>
+      </div>
+      <div>
+        <div class="opt-readonly-label">Hours / Day</div>
+        <input type="number" class="field-val" placeholder="0" oninput="recalcRequiredRow('${lid}')" data-required-hours>
+      </div>
+      <div>
+        <div class="opt-readonly-label">Required Monthly Cost</div>
+        <input type="text" class="field-val auto" readonly id="${lid}-cost" placeholder="Auto">
+      </div>
+      <div>
+        <div class="opt-readonly-label">Status</div>
+        <select class="field-val" onchange="recalcRequiredTotals();refreshSummary()">
+          <option>Pending</option>
+          <option>In Progress</option>
+          <option>Completed</option>
+          <option>Not Feasible</option>
+        </select>
+      </div>
+    </div>
+    <div style="padding:0 14px 14px;text-align:right">
+      <button class="btn" onclick="removeLabourIntervention('${lid}')" style="color:var(--terracotta)">Remove</button>
+    </div>`;
+  list.appendChild(div);
+  recalcRequiredTotals();
+}
+
+function recalcRequiredRow(lid){
+  const row = document.getElementById(lid);
+  if(!row) return;
+  const count = parseFloat(row.querySelector('[data-required-count]')?.value) || 0;
+  const wageType = row.querySelector('[data-required-wagetype]')?.value;
+  const wageRate = parseFloat(row.querySelector('[data-required-rate]')?.value) || 0;
+  const days = parseFloat(row.querySelector('[data-required-days]')?.value) || 0;
+  const hours = parseFloat(row.querySelector('[data-required-hours]')?.value) || 0;
+
+  let perWorker = 0;
+  if(wageType === 'Per Day' && wageRate > 0 && days > 0) perWorker = wageRate * days;
+  else if(wageType === 'Per Month' && wageRate > 0) perWorker = wageRate;
+  else if(wageType === 'Per Hour' && wageRate > 0 && days > 0 && hours > 0) perWorker = wageRate * days * hours;
+
+  const total = perWorker * count;
+  const out = document.getElementById(`${lid}-cost`);
+  if(out) out.value = `₹ ${total.toFixed(2)}`;
+  recalcRequiredTotals();
+}
+
+function removeLabourIntervention(lid){
+  if(confirm('Remove this row?')){
+    const row = document.getElementById(lid);
+    const bridgeWid = row.getAttribute('data-bridge-source');
+    row.remove();
+    if(bridgeWid){
+      const toggle = document.getElementById(`${bridgeWid}-labToggle`);
+      if(toggle && toggle.classList.contains('on')){
+        toggle.classList.remove('on');
+        const note = document.getElementById(`${bridgeWid}-labNote`);
+        if(note){ note.textContent = 'Not flagged'; note.classList.remove('active'); }
+      }
+    }
+    refreshEmptyMessages();
+    recalcRequiredTotals();
+    refreshSummary();
+  }
+}
+
+function refreshEmptyMessages(){
+  const list = document.getElementById('labourInterventionList');
+  if(list && list.children.length === 0){
+    list.innerHTML = '<div class="empty-msg" style="text-align:center;color:var(--ink-faint);font-style:italic;padding:20px;background:#fff;border:1px dashed var(--border-dk);border-radius:8px">No labour interventions flagged yet — toggle the flag in the Existing tab to populate this section.</div>';
+  }
+}
+
+function recalcRequiredTotals(){
+  const rows = document.querySelectorAll('#labourInterventionList .opt-row');
+  let count = rows.length, totalWorkers = 0, totalCost = 0, completed = 0;
+  rows.forEach(r => {
+    const w = parseFloat(r.querySelector('[data-required-count]')?.value) || 0;
+    totalWorkers += w;
+    const costTxt = r.querySelector('[id$="-cost"]')?.value || '';
+    totalCost += parseFloat(costTxt.replace(/[^\d.]/g,'')) || 0;
+    r.querySelectorAll('select').forEach(s => { if(s.value === 'Completed') completed++; });
+  });
+  document.getElementById('req-tot-int').textContent = count;
+  document.getElementById('req-tot-workers').textContent = totalWorkers;
+  document.getElementById('req-tot-cost').textContent = `₹ ${totalCost.toFixed(2)}`;
+  document.getElementById('req-tot-completed').textContent = completed;
+}
+
+// ============ REQUIRED — II. NEW LABOUR ============
+let newLabourCounter = 0;
+
+function addNewLabourRow(){
+  newLabourCounter++;
+  const nid  = `nl${newLabourCounter}`;
+  const list = document.getElementById('newLabourList');
+  const empty = list.querySelector('.empty-msg');
+  if(empty) empty.remove();
+
+  const block = document.createElement('div');
+  block.className = 'machine-block';
+  block.id = nid;
+  block.innerHTML = `
+    <div class="machine-block-head" onclick="toggleWorker('${nid}')">
+      <div class="mb-name">
+        <span class="chevron">▾</span>
+        <span style="opacity:0.85">New Labour ${newLabourCounter} ·</span>
+        <span class="mb-tag" id="${nid}-headLabel" style="font-style:italic;opacity:0.7">New Worker Category</span>
+      </div>
+      <button class="mb-remove" onclick="event.stopPropagation();removeNewLabour('${nid}')">Remove</button>
+    </div>
+    <div class="mb-body">
+
+      <div class="subsection">
+        <div class="subsection-title"><span style="color:var(--terracotta);font-style:italic;margin-right:6px">I.</span>Worker Classification</div>
+        <div class="field-row">
+          <div class="field-label">Worker Category *</div>
+          <select class="field-val" id="${nid}-category" onchange="updateNewLabourHead('${nid}');refreshSummary()">
+            <option value="">— Select —</option>
+            <option>Self</option><option>Unpaid Family</option><option>Paid Family</option><option>Hired Worker</option>
+          </select>
+        </div>
+        <div class="field-row">
+          <div class="field-label">Skill Level *</div>
+          <select class="field-val" id="${nid}-skill" onchange="recalcNewLabour('${nid}');refreshSummary()">
+            <option value="">— Select —</option>
+            <option>Unskilled</option><option>Semi-skilled</option><option>Skilled</option><option>Highly Skilled</option>
+          </select>
+        </div>
+        <div class="field-row">
+          <div class="field-label">Employment Nature *</div>
+          <select class="field-val" id="${nid}-nature" onchange="updateNewLabourHead('${nid}')">
+            <option value="">— Select —</option>
+            <option>Permanent</option><option>Contract</option><option>Casual / Daily</option><option>Seasonal</option><option>Part-time</option>
+          </select>
+        </div>
+        <div class="field-row">
+          <div class="field-label">No. of Male Workers</div>
+          <input type="number" class="field-val" id="${nid}-male" placeholder="0" min="0" oninput="recalcNewLabourCount('${nid}')">
+        </div>
+        <div class="field-row">
+          <div class="field-label">No. of Female Workers</div>
+          <input type="number" class="field-val" id="${nid}-female" placeholder="0" min="0" oninput="recalcNewLabourCount('${nid}')">
+        </div>
+        <div class="field-row">
+          <div class="field-label">Total Workers (auto)</div>
+          <input type="text" class="field-val auto" id="${nid}-count" readonly placeholder="0">
+        </div>
+      </div>
+
+      <div class="subsection">
+        <div class="subsection-title"><span style="color:var(--terracotta);font-style:italic;margin-right:6px">II.</span>Wage Structure</div>
+        <div class="field-row">
+          <div class="field-label">Wage Type *</div>
+          <select class="field-val" id="${nid}-wageType" onchange="recalcNewLabour('${nid}')">
+            <option value="">— Select —</option>
+            <option value="Per Day">Per Day</option><option value="Per Month">Per Month</option><option value="Per Hour">Per Hour</option>
+          </select>
+        </div>
+        <div class="field-row">
+          <div class="field-label">Wage Rate *</div>
+          <input type="number" class="field-val" id="${nid}-wageRate" placeholder="0.00" step="0.01" oninput="recalcNewLabour('${nid}')">
+        </div>
+        <div class="field-row">
+          <div class="field-label">Avg Working Days / Month</div>
+          <input type="number" class="field-val" id="${nid}-days" placeholder="0" oninput="recalcNewLabour('${nid}')">
+        </div>
+        <div class="field-row">
+          <div class="field-label">Avg Hours / Day</div>
+          <input type="number" class="field-val" id="${nid}-hours" placeholder="0" oninput="recalcNewLabour('${nid}')">
+        </div>
+      </div>
+
+      <div class="subsection">
+        <div class="subsection-title"><span style="color:var(--terracotta);font-style:italic;margin-right:6px">III.</span>Cost &amp; Compliance</div>
+        <div class="calc-strip" style="grid-template-columns:repeat(3,1fr)">
+          <div class="calc-cell"><div class="calc-label">Monthly Labour Cost</div><div class="calc-value" id="${nid}-monthlyCost">₹ 0.00</div></div>
+          <div class="calc-cell"><div class="calc-label">Labour Rate / hr</div><div class="calc-value" id="${nid}-ratePerHr">₹ 0.00</div></div>
+          <div class="calc-cell"><div class="calc-label">GoM Compliant?</div><div class="calc-value" id="${nid}-gomDisplay">—</div></div>
+        </div>
+        <div class="calc-summary">
+          <div class="calc-summary-title">Cost Formula Applied</div>
+          <div id="${nid}-formula1">No wage type selected yet.</div>
+          <div class="total-line" id="${nid}-formulaTotal">TOTAL MONTHLY COST = ₹ 0.00</div>
+        </div>
+        <div class="gom-warn hidden" id="${nid}-gomWarn">
+          <span>⚠</span>
+          <span id="${nid}-gomWarnText"></span>
+        </div>
+      </div>
+
+      <div style="padding:10px 0 0">
+        <div class="field-label" style="margin-bottom:6px;font-weight:bold;font-size:11px;text-transform:uppercase;letter-spacing:.5px;color:var(--teal)">Implementation Status</div>
+        <div class="field-row" style="margin-bottom:0">
+          <div class="field-label">Status</div>
+          <select class="field-val nl-status" onchange="refreshSummary()">
+            <option>Pending</option><option>In Progress</option><option>Completed</option><option>Not Feasible</option>
+          </select>
+        </div>
+      </div>
+
+    </div>`;
+  list.appendChild(block);
+  refreshSummary();
+}
+
+function removeNewLabour(nid){
+  if(confirm('Remove this new labour category?')){
+    document.getElementById(nid).remove();
+    const list = document.getElementById('newLabourList');
+    if(list.children.length === 0)
+      list.innerHTML = '<div class="empty-msg" style="text-align:center;color:var(--ink-faint);font-style:italic;padding:20px;background:#fff;border:1px dashed var(--border-dk);border-radius:8px">No new labour categories added yet.</div>';
+    refreshSummary();
+  }
+}
+
+function updateNewLabourHead(nid){
+  const cat    = document.getElementById(`${nid}-category`)?.value || '';
+  const nature = document.getElementById(`${nid}-nature`)?.value   || '';
+  const head   = document.getElementById(`${nid}-headLabel`);
+  if(head){
+    head.textContent  = cat || nature ? `${cat||'—'}${nature?' · '+nature:''}` : 'New Worker Category';
+    head.style.fontStyle = cat || nature ? 'normal' : 'italic';
+    head.style.opacity   = cat || nature ? '1' : '0.7';
+  }
+  refreshSummary();
+}
+
+function recalcNewLabourCount(nid){
+  const male   = parseFloat(document.getElementById(`${nid}-male`)?.value)   || 0;
+  const female = parseFloat(document.getElementById(`${nid}-female`)?.value) || 0;
+  const countEl = document.getElementById(`${nid}-count`);
+  if(countEl) countEl.value = (male + female) > 0 ? male + female : '';
+  recalcNewLabour(nid);
+}
+
+function recalcNewLabour(nid){
+  const count    = parseFloat(document.getElementById(`${nid}-count`)?.value)    || 0;
+  const wageType = document.getElementById(`${nid}-wageType`)?.value;
+  const wageRate = parseFloat(document.getElementById(`${nid}-wageRate`)?.value) || 0;
+  const days     = parseFloat(document.getElementById(`${nid}-days`)?.value)     || 0;
+  const hours    = parseFloat(document.getElementById(`${nid}-hours`)?.value)    || 0;
+  const skill    = document.getElementById(`${nid}-skill`)?.value;
+
+  let perWorker = 0, formula = 'No wage type selected yet.';
+  if(wageType==='Per Day' && wageRate>0 && days>0){
+    perWorker = wageRate * days;
+    formula = `Monthly = ₹${wageRate} × ${days} days = ₹${perWorker.toFixed(2)} per worker`;
+  } else if(wageType==='Per Month' && wageRate>0){
+    perWorker = wageRate;
+    formula = `Monthly = ₹${wageRate} per worker`;
+  } else if(wageType==='Per Hour' && wageRate>0 && days>0 && hours>0){
+    perWorker = wageRate * days * hours;
+    formula = `Monthly = ₹${wageRate} × ${days} × ${hours} hrs = ₹${perWorker.toFixed(2)} per worker`;
+  }
+
+  const total = perWorker * count;
+  let ratePerHour = wageType==='Per Hour' ? wageRate : (days>0&&hours>0&&perWorker>0 ? perWorker/(days*hours) : 0);
+
+  let compliant = null;
+  if(skill && GOM_MIN_WAGE_PER_DAY[skill] && wageRate>0 && wageType){
+    let daily = wageType==='Per Day' ? wageRate : wageType==='Per Month'&&days>0 ? wageRate/days : wageType==='Per Hour'&&hours>0 ? wageRate*hours : 0;
+    if(daily>0) compliant = daily >= GOM_MIN_WAGE_PER_DAY[skill];
+  }
+
+  const mc = document.getElementById(`${nid}-monthlyCost`);
+  const rh = document.getElementById(`${nid}-ratePerHr`);
+  const gd = document.getElementById(`${nid}-gomDisplay`);
+  const f1 = document.getElementById(`${nid}-formula1`);
+  const ft = document.getElementById(`${nid}-formulaTotal`);
+  const gw = document.getElementById(`${nid}-gomWarn`);
+
+  if(mc) mc.textContent = `₹ ${total.toFixed(2)}`;
+  if(rh) rh.textContent = `₹ ${ratePerHour.toFixed(2)}`;
+  if(gd){
+    if(compliant===true)       gd.innerHTML = '<span class="condition-badge condition-good">Yes</span>';
+    else if(compliant===false) gd.innerHTML = '<span class="condition-badge condition-poor">No</span>';
+    else                       gd.textContent = '—';
+  }
+  if(f1) f1.textContent = formula;
+  if(ft) ft.textContent = `TOTAL MONTHLY COST = ₹${total.toFixed(2)} (${count} worker${count!==1?'s':''})`;
+  if(gw){
+    if(compliant===false && skill){
+      gw.classList.remove('hidden');
+      const gwt = document.getElementById(`${nid}-gomWarnText`);
+      if(gwt) gwt.textContent = `Implied daily wage is below GoM minimum (₹${GOM_MIN_WAGE_PER_DAY[skill]} / day) for ${skill} workers.`;
+    } else { gw.classList.add('hidden'); }
+  }
+  refreshSummary();
+}
+
+
+function refreshSummary(){
+  const blocks = document.querySelectorAll('#existingWorkerList .machine-block');
+  let cats=blocks.length, exWorkers=0, exMale=0, exFemale=0, exCost=0, exComp=0, exNonComp=0, skilled=0, totalHours=0;
+  let flagLabour=0, flagCompleted=0, flagProgress=0, flagPending=0, flagNotFeasible=0;
+  let compWorkersBefore=0, compWorkersAfter=0, compCostBefore=0, compCostAfter=0, compCount=0;
+
+  const reqLookup = {};
+  document.querySelectorAll('#labourInterventionList .opt-row').forEach(row => {
+    const wid        = row.getAttribute('data-bridge-source');
+    if(!wid) return;
+    const reqWorkers = parseFloat(row.querySelector('[data-required-count]')?.value) || 0;
+    const costTxt    = row.querySelector('[id$="-cost"]')?.value || '';
+    const reqCost    = parseFloat(costTxt.replace(/[^\d.]/g,'')) || 0;
+    const intTypeSel = Array.from(row.querySelectorAll('select')).find(s =>
+      Array.from(s.options).some(o => o.text === 'Hire Additional Workers'));
+    const intType   = intTypeSel?.value || '';
+    const statusSel = Array.from(row.querySelectorAll('select')).find(s =>
+      Array.from(s.options).some(o => o.text === 'Completed') &&
+      Array.from(s.options).some(o => o.text === 'Not Feasible'));
+    const status = statusSel?.value || 'Pending';
+    reqLookup[wid] = { reqWorkers, reqCost, intType, status };
+  });
+
+  const tbody = document.getElementById('summaryWorkerTable');
+  let html = '';
+
+  blocks.forEach(b => {
+    const wid      = b.id;
+    const category = document.getElementById(`${wid}-category`)?.value || '—';
+    const skill    = document.getElementById(`${wid}-skill`)?.value    || '—';
+    const nature   = document.getElementById(`${wid}-nature`)?.value   || '—';
+    const male     = parseFloat(document.getElementById(`${wid}-male`)?.value)   || 0;
+    const female   = parseFloat(document.getElementById(`${wid}-female`)?.value) || 0;
+    const count    = parseFloat(document.getElementById(`${wid}-count`)?.value)  || (male + female);
+    const costTxt  = document.getElementById(`${wid}-monthlyCost`)?.textContent || '₹ 0.00';
+    const cost     = parseFloat(costTxt.replace(/[^\d.]/g,'')) || 0;
+    const gomEl    = document.getElementById(`${wid}-gomDisplay`);
+    const gomTxt   = gomEl?.querySelector('.condition-badge')?.textContent || gomEl?.textContent || '—';
+    const days     = parseFloat(document.getElementById(`${wid}-days`)?.value)  || 0;
+    const hours    = parseFloat(document.getElementById(`${wid}-hours`)?.value) || 0;
+    const flagged  = document.getElementById(`${wid}-labToggle`)?.classList.contains('on');
+
+    exWorkers  += count; exMale += male; exFemale += female;
+    totalHours += count * days * hours; exCost += cost;
+    if(gomTxt==='Yes') exComp++; if(gomTxt==='No') exNonComp++;
+    if(skill==='Skilled'||skill==='Highly Skilled') skilled += count;
+    if(flagged) flagLabour++;
+
+    const gomCls  = gomTxt==='Yes'?'condition-good':gomTxt==='No'?'condition-poor':'';
+    const gomCell = gomTxt!=='—' ? `<span class="condition-badge ${gomCls}">${gomTxt}</span>` : '—';
+    const req     = reqLookup[wid];
+
+    let intTypeCell='<span style="color:var(--ink-faint)">—</span>', intStatusCell='<span style="color:var(--ink-faint)">—</span>';
+    if(req){
+      const sCls = req.status==='Completed'?'status-completed':req.status==='In Progress'?'status-progress':'status-pending';
+      intTypeCell   = `<span class="status-badge status-progress">↻ Labour</span>${req.intType?`<div style="font-size:10px;color:var(--ink-soft);margin-top:3px">${req.intType}</div>`:''}`;
+      intStatusCell = `<span class="status-badge ${sCls}">${req.status}</span>`;
+      if(req.status==='Completed'){ flagCompleted++; compWorkersBefore+=count; compWorkersAfter+=req.reqWorkers; compCostBefore+=cost; compCostAfter+=req.reqCost; compCount++; }
+      else if(req.status==='In Progress')  flagProgress++;
+      else if(req.status==='Not Feasible') flagNotFeasible++;
+      else flagPending++;
+    }
+
+    let newWorkersCell = '<span style="color:var(--ink-faint)">—</span>';
+    if(req && req.reqWorkers > 0){
+      const wDiff=req.reqWorkers-count, wSign=wDiff>0?'+':'', wCls=wDiff>0?'condition-good':wDiff<0?'condition-poor':'';
+      newWorkersCell = `<strong style="color:var(--terracotta-dk)">${req.reqWorkers}</strong>${count>0?`<div style="margin-top:3px"><span class="condition-badge ${wCls}">${wSign}${wDiff} workers</span></div>`:''}`;
+    } else if(req) { newWorkersCell='<span style="font-size:10px;color:var(--ink-faint);font-style:italic">Pending</span>'; }
+
+    let newCostCell = '<span style="color:var(--ink-faint)">—</span>';
+    if(req && req.reqCost > 0){
+      const cDiff=req.reqCost-cost, cSign=cDiff>0?'▲':cDiff<0?'▼':'=', cCls=cDiff<0?'condition-good':cDiff>0?'condition-poor':'', cTxt=cDiff<0?'Cost down':cDiff>0?'Cost up':'No change';
+      newCostCell = `<strong style="color:var(--good-ink)">₹ ${req.reqCost.toFixed(2)}</strong>${cost>0?`<div style="margin-top:3px"><span class="condition-badge ${cCls}">${cSign} ₹${Math.abs(cDiff).toFixed(2)} ${cTxt}</span></div>`:''}`;
+    } else if(req) { newCostCell='<span style="font-size:10px;color:var(--ink-faint);font-style:italic">Pending</span>'; }
+
+    html += `<tr>
+      <td><strong>${category}</strong></td><td style="font-size:11px">${skill}</td><td style="font-size:11px">${nature}</td>
+      <td style="text-align:center">${male||'—'}</td><td style="text-align:center">${female||'—'}</td>
+      <td style="font-weight:bold;text-align:center">${count||'—'}</td>
+      <td style="font-weight:bold;color:var(--teal)">${costTxt}</td>
+      <td style="text-align:center">${gomCell}</td>
+      <td>${intTypeCell}</td><td>${intStatusCell}</td>
+      <td style="background:#FDF3EE;text-align:center">${newWorkersCell}</td>
+      <td style="background:#EDF6EA">${newCostCell}</td>
+    </tr>`;
+  });
+
+  // ── New Labour rows (Section II of Required tab) ─────────────
+  const newLabourBlocks = document.querySelectorAll('#newLabourList .machine-block');
+  newLabourBlocks.forEach(b => {
+    const nid      = b.id;
+    const category = document.getElementById(`${nid}-category`)?.value || '—';
+    const skill    = document.getElementById(`${nid}-skill`)?.value    || '—';
+    const nature   = document.getElementById(`${nid}-nature`)?.value   || '—';
+    const male     = parseFloat(document.getElementById(`${nid}-male`)?.value)   || 0;
+    const female   = parseFloat(document.getElementById(`${nid}-female`)?.value) || 0;
+    const count    = parseFloat(document.getElementById(`${nid}-count`)?.value)  || (male + female);
+    const costTxt  = document.getElementById(`${nid}-monthlyCost`)?.textContent || '₹ 0.00';
+    const gomEl    = document.getElementById(`${nid}-gomDisplay`);
+    const gomTxt   = gomEl?.querySelector('.condition-badge')?.textContent || gomEl?.textContent || '—';
+    const status   = b.querySelector('.nl-status')?.value || 'Pending';
+    const sCls     = status==='Completed'?'status-completed':status==='In Progress'?'status-progress':'status-pending';
+    const gomCls   = gomTxt==='Yes'?'condition-good':gomTxt==='No'?'condition-poor':'';
+    const gomCell  = gomTxt!=='—' ? `<span class="condition-badge ${gomCls}">${gomTxt}</span>` : '—';
+    html += `<tr style="background:var(--highlight)">
+      <td><strong>${category}</strong></td>
+      <td style="font-size:11px">${skill}</td>
+      <td style="font-size:11px">${nature}</td>
+      <td style="text-align:center">${male||'—'}</td>
+      <td style="text-align:center">${female||'—'}</td>
+      <td style="font-weight:bold;text-align:center">${count||'—'}</td>
+      <td style="font-weight:bold;color:var(--teal)">${costTxt}</td>
+      <td style="text-align:center">${gomCell}</td>
+      <td><span class="status-badge status-completed">+ New Labour</span></td>
+      <td><span class="status-badge ${sCls}">${status}</span></td>
+      <td style="background:#FDF3EE;color:var(--ink-faint)">—</td>
+      <td style="background:#EDF6EA;color:var(--ink-faint)">—</td>
+    </tr>`;
+  });
+
+  tbody.innerHTML = (blocks.length===0 && newLabourBlocks.length===0)
+    ? '<tr><td colspan="12" style="text-align:center;color:var(--ink-faint);font-style:italic;padding:14px">Auto-populated from Existing and Required tabs</td></tr>'
+    : html + `<tr class="total-row"><td colspan="12" style="font-size:10px;font-style:italic;color:var(--ink-faint)">Unit Pricing reads each worker category individually</td></tr>`;
+
+  const avgRate=totalHours>0?exCost/totalHours:0;
+  const totalWorkersAfter=(exWorkers-compWorkersBefore)+compWorkersAfter;
+  const jobsCreated=totalWorkersAfter-exWorkers;
+
+  const g=id=>document.getElementById(id), s=(id,v)=>{const el=g(id);if(el)el.textContent=v;};
+  s('agg-ex-cats',cats); s('agg-ex-workers',exWorkers); s('agg-ex-male',exMale); s('agg-ex-female',exFemale);
+  s('agg-ex-cost',`₹ ${exCost.toFixed(2)}`); s('agg-ex-comp',exComp); s('ps-noncomp',exNonComp);
+  s('agg-cost-before',`₹ ${exCost.toFixed(2)}`); s('ps-workers-before',exWorkers); s('ps-workers-after',totalWorkersAfter);
+  s('ps-jobs-created',compCount>0?(jobsCreated>0?`+${jobsCreated}`:`${jobsCreated}`):'—');
+
+  const implCostEl=g('agg-impl-cost'), implCostChgEl=g('agg-impl-cost-change');
+  if(compCount>0){
+    const cc=compCostAfter-compCostBefore;
+    if(implCostEl) implCostEl.textContent=`₹ ${compCostAfter.toFixed(2)}`;
+    if(implCostChgEl){ implCostChgEl.textContent=cc!==0?`${cc>0?'▲':'▼'} ₹${Math.abs(cc).toFixed(2)}`:'—'; implCostChgEl.style.color=cc<0?'var(--good-ink)':cc>0?'var(--poor-ink)':''; }
+  } else { if(implCostEl) implCostEl.textContent='—'; if(implCostChgEl) implCostChgEl.textContent='—'; }
+
+  s('agg-flag-labour',flagLabour); s('ps-skilled',skilled); s('ps-rate',`₹ ${avgRate.toFixed(2)}`);
+  s('agg-flag-completed',flagCompleted); s('agg-flag-progress',flagProgress);
+  s('agg-impl-pending',flagPending); s('agg-impl-notfeasible',flagNotFeasible);
+  s('flag-labour-count',flagLabour); s('flag-noncomp-count',exNonComp); s('flag-comp-count',exComp); s('flag-skilled-count',skilled);
+
+  if(g('ps-comp'))           g('ps-comp').textContent=exComp;
+  if(g('cmp-ex-workers'))    g('cmp-ex-workers').textContent=exWorkers;
+  if(g('cmp-req-workers'))   g('cmp-req-workers').textContent=totalWorkersAfter;
+  if(g('cmp-ex-cost'))       g('cmp-ex-cost').textContent=`₹ ${exCost.toFixed(2)}`;
+  if(g('req-tot-int'))       g('req-tot-int').textContent=document.querySelectorAll('#labourInterventionList .opt-row').length;
+  if(g('req-tot-workers'))   g('req-tot-workers').textContent=compWorkersAfter;
+  if(g('req-tot-cost'))      g('req-tot-cost').textContent=`₹ ${compCostAfter.toFixed(2)}`;
+  if(g('req-tot-completed')) g('req-tot-completed').textContent=flagCompleted;
+  if(g('ex-tot-cats'))       g('ex-tot-cats').textContent=cats;
+  if(g('ex-tot-workers'))    g('ex-tot-workers').textContent=exWorkers;
+  if(g('ex-tot-cost'))       g('ex-tot-cost').textContent=`₹ ${exCost.toFixed(2)}`;
+}
+
+function setChange(elId, diff, prefix){
+  const el = document.getElementById(elId);
+  if(!el) return;
+  el.classList.remove('change-pos','change-neg','change-neutral');
+  if(diff === 0 || isNaN(diff)){
+    el.textContent = '—';
+    el.classList.add('change-neutral');
+  } else if(diff > 0){
+    el.textContent = `+${prefix}${diff.toFixed(2).replace(/\.00$/,'')}`;
+    el.classList.add('change-pos');
+  } else {
+    el.textContent = `−${prefix}${Math.abs(diff).toFixed(2).replace(/\.00$/,'')}`;
+    el.classList.add('change-neg');
+  }
+}
+
+// ============ TASK LOG ============
+const HR_TASKS = [
+  '01 — Awareness on Importance of Fair Labour Practices',
+  '02 — Record Existing Workforce Data',
+  '03 — Assess Labour Cost & GoM Compliance',
+  '04 — Identify Labour Intervention Need',
+  '05 — Identify Workforce Gap & Job Creation Potential',
+  '06 — Support Hiring of Additional Workers',
+  '07 — Record New Workforce Data After Intervention',
+  '08 — Conduct HR Practice Follow Up',
+  'If other, specify in comments',
+];
+
+const HR_TASK_OPTIONS = HR_TASKS.map(t => `<option value="${t}">${t}</option>`).join('');
+
+let taskLogCounter = 0;
+
+function addTaskRow(){
+  taskLogCounter++;
+  const tbody = document.getElementById('taskLogBody');
+  const tr = document.createElement('tr');
+  tr.innerHTML = `
+    <td class="num-col">${String(taskLogCounter).padStart(2,'0')}</td>
+    <td><input type="date" style="width:100%"></td>
+    <td>
+      <select style="width:100%">
+        <option value="">— Select Task —</option>
+        ${HR_TASK_OPTIONS}
+      </select>
+    </td>
+    <td><input type="text" placeholder="Notes / Outcome" style="width:100%"></td>
+    <td><button class="btn" style="padding:3px 8px;font-size:10px">Upload</button></td>
+    <td><button class="row-delete" onclick="deleteTaskRow(this)">✕</button></td>
+  `;
+  tbody.appendChild(tr);
+}
+
+function deleteTaskRow(btn){
+  const tbody = btn.closest('tbody');
+  btn.closest('tr').remove();
+  tbody.querySelectorAll('tr').forEach((tr, i) => {
+    tr.querySelector('.num-col').textContent = String(i+1).padStart(2,'0');
+  });
+  taskLogCounter = tbody.rows.length;
+}
+
+function seedTaskLog(){
+  addTaskRow();
+}
+
+// ============ GENERIC HELPERS ============
+function addRow(tableId){
+  const tbody = document.querySelector('#'+tableId+' tbody');
+  const row = tbody.rows[0].cloneNode(true);
+  row.querySelectorAll('input').forEach(i => { if(i.type !== 'file') i.value = ''; });
+  row.querySelectorAll('select').forEach(s => s.selectedIndex = 0);
+  tbody.appendChild(row);
+}
+function deleteRow(btn){
+  const row = btn.closest('tr');
+  const tbody = row.parentElement;
+  if(tbody.rows.length > 1){ row.remove(); }
+  else { alert('At least one row is required.'); }
+}
+
+// Init
+window.addEventListener('DOMContentLoaded', () => {
+  addExistingWorker(); addExistingWorker(); addExistingWorker();
+  seedTaskLog();
+  setTimeout(() => {
+
+    // w1 — Self, Unskilled, Permanent, 1 female — Wage Revision → Completed
+    document.getElementById('w1-category').value = 'Self'; updateHeadLabel('w1');
+    document.getElementById('w1-skill').value    = 'Unskilled'; updateSkillTag('w1');
+    document.getElementById('w1-nature').value   = 'Permanent'; updateHeadLabel('w1');
+    document.getElementById('w1-male').value     = '0';
+    document.getElementById('w1-female').value   = '1';
+    recalcWorkerCount('w1');
+    document.getElementById('w1-wageType').value = 'Per Day';
+    document.getElementById('w1-wageRate').value = '180';
+    document.getElementById('w1-days').value     = '22';
+    document.getElementById('w1-hours').value    = '8';
+    recalcWorker('w1');
+    const t1 = document.getElementById('w1-labToggle');
+    if(t1 && !t1.classList.contains('on')) toggleLabourFlag(t1, 'w1');
+
+    // w2 — Hired Worker, Semi-skilled, Casual, 2 male — Hire Additional → In Progress
+    document.getElementById('w2-category').value = 'Hired Worker'; updateHeadLabel('w2');
+    document.getElementById('w2-skill').value    = 'Semi-skilled'; updateSkillTag('w2');
+    document.getElementById('w2-nature').value   = 'Casual / Daily'; updateHeadLabel('w2');
+    document.getElementById('w2-male').value     = '2';
+    document.getElementById('w2-female').value   = '0';
+    recalcWorkerCount('w2');
+    document.getElementById('w2-wageType').value = 'Per Day';
+    document.getElementById('w2-wageRate').value = '280';
+    document.getElementById('w2-days').value     = '20';
+    document.getElementById('w2-hours').value    = '8';
+    recalcWorker('w2');
+    const t2 = document.getElementById('w2-labToggle');
+    if(t2 && !t2.classList.contains('on')) toggleLabourFlag(t2, 'w2');
+
+    // w3 — Unpaid Family, Unskilled, Permanent, 1 female — no flag
+    document.getElementById('w3-category').value = 'Unpaid Family'; updateHeadLabel('w3');
+    document.getElementById('w3-skill').value    = 'Unskilled'; updateSkillTag('w3');
+    document.getElementById('w3-nature').value   = 'Permanent'; updateHeadLabel('w3');
+    document.getElementById('w3-male').value     = '0';
+    document.getElementById('w3-female').value   = '1';
+    recalcWorkerCount('w3');
+    document.getElementById('w3-wageType').value = 'Per Month';
+    document.getElementById('w3-wageRate').value = '0';
+    document.getElementById('w3-days').value     = '25';
+    document.getElementById('w3-hours').value    = '6';
+    recalcWorker('w3');
+    recalcExistingTotals();
+
+    // Required — Wage Revision for w1 → Completed
+    const row1 = document.querySelector('#labourInterventionList .opt-row[data-bridge-source="w1"]');
+    if(row1){
+      const intSel = Array.from(row1.querySelectorAll('select')).find(s =>
+        Array.from(s.options).some(o => o.text === 'Hire Additional Workers'));
+      if(intSel) intSel.value = 'Wage Revision';
+      const reqCount = row1.querySelector('[data-required-count]');
+      if(reqCount) reqCount.value = '1';
+      const wageSel = row1.querySelector('[data-required-wagetype]');
+      if(wageSel) wageSel.value = 'Per Day';
+      const rateEl = row1.querySelector('[data-required-rate]');
+      if(rateEl) rateEl.value = '250';
+      const daysEl = row1.querySelector('[data-required-days]');
+      if(daysEl) daysEl.value = '22';
+      const hrsEl = row1.querySelector('[data-required-hours]');
+      if(hrsEl) hrsEl.value = '8';
+      recalcRequiredRow(row1.id);
+      const statusSel = Array.from(row1.querySelectorAll('select')).find(s =>
+        Array.from(s.options).some(o => o.text === 'Completed') &&
+        Array.from(s.options).some(o => o.text === 'Not Feasible'));
+      if(statusSel) statusSel.value = 'Completed';
+    }
+
+    // Required — Hire Additional for w2 → In Progress
+    const row2 = document.querySelector('#labourInterventionList .opt-row[data-bridge-source="w2"]');
+    if(row2){
+      const intSel = Array.from(row2.querySelectorAll('select')).find(s =>
+        Array.from(s.options).some(o => o.text === 'Hire Additional Workers'));
+      if(intSel) intSel.value = 'Hire Additional Workers';
+      const reqCount = row2.querySelector('[data-required-count]');
+      if(reqCount) reqCount.value = '4';
+      const wageSel = row2.querySelector('[data-required-wagetype]');
+      if(wageSel) wageSel.value = 'Per Day';
+      const rateEl = row2.querySelector('[data-required-rate]');
+      if(rateEl) rateEl.value = '280';
+      const daysEl = row2.querySelector('[data-required-days]');
+      if(daysEl) daysEl.value = '20';
+      recalcRequiredRow(row2.id);
+      const statusSel = Array.from(row2.querySelectorAll('select')).find(s =>
+        Array.from(s.options).some(o => o.text === 'Completed') &&
+        Array.from(s.options).some(o => o.text === 'Not Feasible'));
+      if(statusSel) statusSel.value = 'In Progress';
+    }
+
+    recalcRequiredTotals();
+    refreshSummary();
+    showTab('summary', document.querySelector('.tab'));
+  }, 100);
+});
+</script>
+
+</body>
+</html>

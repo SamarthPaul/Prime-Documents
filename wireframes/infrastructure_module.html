@@ -1,0 +1,2760 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Infrastructure · PRIME Rural</title>
+<style>
+:root{
+  --teal:#0E4D4E;--sea:#1A6B6D;--terracotta:#C26849;--terracotta-dk:#A85738;
+  --terracotta-sft:#F5E2D6;--cream:#FBF5E5;--cream-deep:#F4ECD3;
+  --offwhite:#FDFAF0;--panel:#FFFFFF;
+  --ink:#2A2520;--ink-soft:#6B6359;--ink-faint:#9C9384;--ink-disabled:#BFB6A4;
+  --border:#E8DFC9;--border-dk:#D6CDB6;
+  --good-bg:#E3EFDF;--good-ink:#3F6B3A;
+  --info-bg:#E1ECF7;--info-ink:#1F4A78;
+  --highlight:#FFF8E1;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:Georgia,serif;background:var(--cream);color:var(--ink);line-height:1.5}
+.page{max-width:1280px;margin:0 auto;padding:24px}
+
+/* ── Header ── */
+.header{background:var(--teal);color:#fff;padding:16px 20px;border-radius:12px 12px 0 0;display:flex;justify-content:space-between;align-items:center}
+.header h1{font-size:18px;font-weight:normal;letter-spacing:.5px}
+.header .crumb{font-size:11px;opacity:.75;text-transform:uppercase;letter-spacing:1px}
+
+.card{background:var(--cream);border:1px solid var(--border-dk);border-top:none;border-radius:0 0 12px 12px}
+
+/* ── Tabs ── */
+.tab-bar{display:flex;background:var(--cream-deep);border-bottom:1px solid var(--border-dk);overflow-x:auto}
+.tab{padding:12px 20px;cursor:pointer;font-size:11px;text-transform:uppercase;letter-spacing:1px;color:var(--ink-soft);border-right:1px solid var(--border);white-space:nowrap;user-select:none}
+.tab.active{background:var(--teal);color:#fff}
+.tab:hover:not(.active){background:#EADFC0}
+
+.content{padding:22px}
+
+/* ── Entrepreneur chip ── */
+.ent-chip{display:inline-flex;align-items:center;gap:10px;background:#fff;border:1px solid var(--border-dk);padding:6px 14px;border-radius:20px;font-size:12px;margin-bottom:18px}
+.ent-avatar{width:24px;height:24px;background:var(--teal);color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:bold}
+
+/* ── Section caption ── */
+.section-caption{background:var(--cream-deep);border-left:3px solid var(--terracotta);padding:8px 12px;border-radius:0 6px 6px 0;font-size:12px;color:var(--ink-soft);font-style:italic;margin-bottom:14px}
+
+/* ── Section block ── */
+.section-block{margin-bottom:22px}
+.section-head{font-size:12px;text-transform:uppercase;letter-spacing:1.5px;color:var(--teal);font-weight:bold;padding:8px 0;border-bottom:2px solid var(--border-dk);margin-bottom:14px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px}
+.section-head .sh-label{display:flex;align-items:center;gap:6px}
+.section-head .sh-roman{color:var(--terracotta);font-style:italic;font-weight:normal;font-size:14px;margin-right:4px}
+
+/* ── Subsection ── */
+.subsection{background:var(--cream-deep);padding:14px;border-radius:8px;margin-bottom:12px;border:1px solid var(--border)}
+.subsection-title{font-size:11px;text-transform:uppercase;letter-spacing:1.2px;color:var(--teal);margin-bottom:10px;padding-bottom:6px;border-bottom:1px solid var(--border-dk);font-weight:bold;display:flex;justify-content:space-between;align-items:center;gap:8px}
+
+/* ── Field rows ── */
+.field-row{display:flex;gap:12px;margin-bottom:10px;flex-wrap:wrap;align-items:flex-start}
+.field-label{width:220px;font-size:12px;color:var(--ink-soft);padding-top:8px;flex-shrink:0}
+.field-label .req{color:var(--terracotta);font-weight:bold}
+.field-val{flex:1;background:var(--offwhite);border:1px solid var(--border-dk);padding:6px 10px;border-radius:5px;font-size:12px;min-width:180px;font-family:Georgia,serif;color:var(--ink)}
+.field-val[readonly]{background:var(--cream-deep);color:var(--ink-soft);font-style:italic}
+textarea.field-val{resize:vertical;min-height:52px;font-family:Georgia,serif}
+select.field-val{cursor:pointer}
+.field-val:focus{outline:none;border-color:var(--terracotta)}
+.field-val.derived{background:var(--info-bg);border-color:#9CB7D5;color:var(--info-ink);font-style:italic;font-weight:bold}
+.two-up{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+@media(max-width:760px){.two-up{grid-template-columns:1fr}}
+
+/* ── Integration note ── */
+.int-note{display:inline-flex;align-items:center;gap:4px;font-size:10px;color:var(--info-ink);background:var(--info-bg);padding:3px 8px;border-radius:10px;border:1px solid #9CB7D5;font-style:italic;margin-top:4px}
+
+/* ── Buttons ── */
+.btn{padding:5px 13px;border-radius:20px;border:1px solid var(--border-dk);background:#fff;cursor:pointer;font-size:11px;color:var(--ink);font-family:Georgia,serif}
+.btn:hover{background:var(--cream-deep)}
+.btn-primary{background:var(--teal);color:#fff;border-color:var(--teal)}
+.btn-primary:hover{background:var(--sea)}
+.btn-sm{padding:3px 10px;font-size:10px}
+
+/* ── Yes/No segmented ── */
+.yn-row{display:flex;background:var(--offwhite);border:1px solid var(--border-dk);border-radius:5px;overflow:hidden;max-width:200px;flex-shrink:0}
+.yn-row label{flex:1;text-align:center;padding:6px 14px;font-size:12px;cursor:pointer;color:var(--ink-soft);border-right:1px solid var(--border-dk)}
+.yn-row label:last-child{border-right:none}
+.yn-row label.sel{background:var(--teal);color:#fff;font-weight:bold}
+.yn-row input{display:none}
+
+/* ── Toggle ── */
+.toggle-wrap{display:flex;align-items:center;gap:8px}
+.toggle{position:relative;display:inline-block;width:36px;height:18px;flex-shrink:0}
+.toggle input{display:none}
+.toggle .sl{position:absolute;cursor:pointer;inset:0;background:var(--border-dk);border-radius:18px;transition:.2s}
+.toggle .sl::before{content:'';position:absolute;height:14px;width:14px;left:2px;bottom:2px;background:#fff;border-radius:50%;transition:.2s}
+.toggle input:checked+.sl{background:var(--teal)}
+.toggle input:checked+.sl::before{transform:translateX(18px)}
+.toggle-label{font-size:12px;color:var(--ink)}
+
+/* ── Upload ── */
+.upload-wrap{display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+.ul-btn{display:inline-flex;align-items:center;gap:4px;padding:6px 12px;background:#fff;border:1px solid var(--border-dk);border-radius:5px;cursor:pointer;font-size:11px;color:var(--ink-soft);font-family:Georgia,serif}
+.ul-btn:hover{border-color:var(--teal);color:var(--teal)}
+.ul-btn input{display:none}
+.view-btn{padding:6px 12px;background:transparent;border:1px solid var(--border-dk);border-radius:5px;cursor:pointer;font-size:11px;font-family:Georgia,serif}
+.view-btn:not([disabled]){color:var(--teal);border-color:var(--teal)}
+.view-btn[disabled]{color:var(--ink-disabled);cursor:not-allowed}
+.file-pill{display:inline-flex;align-items:center;gap:5px;padding:3px 9px;background:var(--cream-deep);border:1px solid var(--border-dk);border-radius:12px;font-size:11px;max-width:220px}
+.file-pill .fn{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;flex:1}
+.file-pill .fx{cursor:pointer;color:var(--terracotta);font-weight:bold}
+
+/* ── Intervention block ── */
+.int-block{background:var(--terracotta-sft);border:1px solid var(--terracotta);border-radius:8px;padding:14px;margin-bottom:14px}
+.int-block-title{font-size:11px;text-transform:uppercase;letter-spacing:1px;color:var(--terracotta-dk);margin-bottom:10px;font-weight:bold}
+
+/* ── Highlight cost callout ── */
+.cost-callout{background:linear-gradient(135deg,var(--teal),var(--sea));color:#fff;padding:12px 16px;border-radius:8px;margin-top:10px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px}
+.cost-callout .cc-label{font-size:11px;opacity:.85;text-transform:uppercase;letter-spacing:.5px}
+.cost-callout .cc-val{font-size:20px;font-weight:bold;font-family:Georgia,serif}
+
+/* ── Implementation Status section — terracotta themed ── */
+.impl-section .section-head{color:var(--terracotta-dk);border-bottom-color:var(--terracotta)}
+.impl-section .section-head .sh-roman{color:var(--terracotta-dk)}
+.impl-section .data-table-wrap{border-color:var(--terracotta)}
+.impl-section .data-table-wrap th{background:var(--terracotta);color:#fff}
+.impl-section .data-table-wrap table{border-top:2px solid var(--terracotta)}
+.impl-section .tbl-act .btn-primary{background:var(--terracotta);border-color:var(--terracotta)}
+.impl-section .tbl-act .btn-primary:hover{background:var(--terracotta-dk)}
+.impl-section .subsection{background:var(--terracotta-sft);border-color:var(--terracotta)}
+.impl-section .subsection-title{color:var(--terracotta-dk);border-bottom-color:var(--terracotta)}
+
+/* ── Loan/Financial — slab, funding, emi cards ── */
+.slab-strip{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:14px}
+@media(max-width:800px){.slab-strip{grid-template-columns:1fr}}
+.slab-card{background:#fff;border:1px solid var(--border-dk);border-radius:8px;padding:12px;font-size:11px;color:var(--ink-soft)}
+.slab-card.active{border-color:var(--teal);background:var(--cream-deep);box-shadow:0 0 0 2px rgba(14,77,78,0.1)}
+.slab-card .slab-name{font-size:12px;font-weight:bold;color:var(--teal);text-transform:uppercase;letter-spacing:.8px;margin-bottom:6px}
+.slab-card .slab-range{font-size:10px;color:var(--ink-faint);margin-bottom:8px}
+.slab-card .slab-pcts{display:grid;grid-template-columns:1fr 1fr;gap:4px 12px;font-size:11px}
+.funding-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-top:14px}
+@media(max-width:800px){.funding-grid{grid-template-columns:1fr}}
+.funding-card{background:#fff;border:1px solid var(--border-dk);border-left:4px solid var(--teal);border-radius:8px;padding:14px}
+.funding-card.f-mbma{border-left-color:#1A6B6D}
+.funding-card.f-selco{border-left-color:#7A4F1B}
+.funding-card.f-lifcom{border-left-color:#C26849}
+.funding-card.f-user{border-left-color:#3F6B3A}
+.funding-card .fc-name{font-size:12px;font-weight:bold;color:var(--ink);margin-bottom:8px;display:flex;justify-content:space-between;align-items:center}
+.funding-card .fc-pct{font-size:11px;color:var(--ink-soft);font-weight:bold}
+.funding-card .fc-amount{font-size:18px;font-weight:bold;color:var(--teal);font-family:Georgia,serif}
+.emi-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-top:14px}
+@media(max-width:800px){.emi-grid{grid-template-columns:1fr}}
+.emi-card{background:linear-gradient(135deg,var(--terracotta-sft),#F0DECF);border:1px solid var(--terracotta);border-radius:8px;padding:16px;text-align:center}
+.emi-card .emi-tenure{font-size:11px;color:var(--terracotta-dk);text-transform:uppercase;letter-spacing:1px;font-weight:bold;margin-bottom:6px}
+.emi-card .emi-amount{font-size:22px;font-weight:bold;color:var(--ink);font-family:Georgia,serif;margin-bottom:4px}
+.funding-card .fc-pct-input{width:72px;border:1px solid var(--border-dk);border-radius:5px;padding:4px 8px;font-size:13px;font-family:Georgia,serif;font-weight:bold;color:var(--teal);background:var(--offwhite);text-align:right}
+.funding-card .fc-pct-input:focus{outline:none;border-color:var(--terracotta)}
+.funding-card .fc-name-input{flex:1;border:1px solid var(--border-dk);border-radius:5px;padding:4px 8px;font-size:12px;font-family:Georgia,serif;color:var(--ink);background:var(--offwhite)}
+.funding-card .fc-name-input:focus{outline:none;border-color:var(--terracotta)}
+.funding-card .fc-pct-label{font-size:11px;color:var(--ink-soft);font-weight:bold}
+.pct-validation{display:flex;align-items:center;gap:10px;padding:8px 12px;border-radius:8px;font-size:12px;margin-top:10px;border:1px solid var(--border)}
+.pct-validation.ok{background:var(--good-bg);border-color:#9CCC9A;color:var(--good-ink)}
+.pct-validation.warn{background:var(--terracotta-sft);border-color:var(--terracotta);color:var(--terracotta-dk)}
+.project-filter-row{background:var(--cream-deep);border:1px solid var(--border-dk);border-radius:8px;padding:14px;margin-bottom:18px;display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+.project-filter-row label{font-size:12px;font-weight:bold;color:var(--teal);white-space:nowrap}
+.project-filter-row select{flex:1;min-width:220px;max-width:340px;background:var(--offwhite);border:1px solid var(--border-dk);padding:7px 10px;border-radius:5px;font-size:13px;font-family:Georgia,serif;cursor:pointer}
+.project-filter-row select:focus{outline:none;border-color:var(--terracotta)}
+.data-table-wrap{background:#fff;border:1px solid var(--border-dk);border-radius:8px;overflow:hidden;margin-bottom:10px}
+.data-table-wrap table{width:100%;border-collapse:collapse;font-size:12px}
+.data-table-wrap th{background:var(--teal);color:#fff;padding:8px 10px;text-align:left;font-weight:normal;text-transform:uppercase;letter-spacing:.5px;font-size:10px;border-right:1px solid var(--sea);white-space:nowrap}
+.data-table-wrap th:last-child{border-right:none}
+.data-table-wrap td{padding:6px 8px;border-bottom:1px solid var(--border);border-right:1px solid var(--border);vertical-align:middle}
+.data-table-wrap td:last-child{border-right:none}
+.data-table-wrap tr:last-child td{border-bottom:none}
+.data-table-wrap input,.data-table-wrap select,.data-table-wrap textarea{width:100%;border:1px solid var(--border);padding:5px 7px;border-radius:3px;font-family:Georgia,serif;font-size:11px;background:#fff;color:var(--ink)}
+.data-table-wrap input:focus,.data-table-wrap select:focus{outline:none;border-color:var(--teal)}
+.data-table-wrap input[type="checkbox"]{width:auto;cursor:pointer}
+.tbl-del{background:transparent;border:none;color:var(--terracotta);cursor:pointer;font-size:13px;padding:2px 6px}
+.tbl-del:hover{color:var(--terracotta-dk)}
+.tbl-actions{display:flex;justify-content:flex-end;margin-top:8px}
+
+/* ── EE machine collapsible ── */
+.ee-card{background:#fff;border:1px solid var(--border-dk);border-radius:10px;margin-bottom:10px;overflow:hidden}
+.ee-banner{background:var(--sea);color:#fff;padding:10px 14px;display:flex;align-items:center;gap:10px;cursor:pointer;flex-wrap:wrap}
+.ee-banner:hover{background:#155A5C}
+.ee-banner .ee-chev{font-size:13px;transition:transform .2s;flex-shrink:0}
+.ee-banner.collapsed .ee-chev{transform:rotate(-90deg)}
+.ee-banner select,.ee-banner input[type="number"]{background:rgba(255,255,255,.15);color:#fff;border:1px solid rgba(255,255,255,.3);border-radius:5px;padding:4px 8px;font-size:12px;font-family:Georgia,serif}
+.ee-banner select option,.ee-banner input[type="number"]::placeholder{color:var(--ink)}
+.ee-banner select:focus,.ee-banner input[type="number"]:focus{outline:none;background:rgba(255,255,255,.25)}
+.ee-banner label{display:flex;align-items:center;gap:6px;font-size:11px;color:rgba(255,255,255,.9);cursor:pointer;white-space:nowrap}
+.ee-banner .impl-chip{padding:2px 8px;border-radius:10px;font-size:10px;font-weight:bold;background:rgba(255,255,255,.2);border:1px solid rgba(255,255,255,.3)}
+.ee-body{padding:14px;background:var(--offwhite)}
+.ee-body.collapsed{display:none}
+.ee-fetched{background:var(--cream-deep);border:1px solid var(--border);border-radius:6px;padding:12px;font-size:12px}
+.ee-fetched .ef-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px 16px;margin-top:8px}
+.ef-item{display:flex;flex-direction:column;gap:2px}
+.ef-item .ef-label{font-size:10px;text-transform:uppercase;letter-spacing:.5px;color:var(--ink-faint);font-weight:bold}
+.ef-item .ef-val{font-size:12px;color:var(--ink);font-weight:bold}
+
+/* ── Total card ── */
+.total-card{background:linear-gradient(135deg,var(--teal),var(--sea));color:#fff;padding:14px 18px;border-radius:10px;margin-top:14px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px}
+.total-card .tc-label{font-size:11px;opacity:.85;text-transform:uppercase;letter-spacing:.5px}
+.total-card .tc-val{font-size:22px;font-weight:bold;font-family:Georgia,serif}
+
+/* ── Summary cards ── */
+.sum-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:14px}
+@media(max-width:760px){.sum-grid{grid-template-columns:1fr}}
+.sum-card{background:#fff;border:1px solid var(--border-dk);border-radius:10px;padding:14px}
+.sum-card h3{font-size:11px;text-transform:uppercase;letter-spacing:1px;color:var(--teal);margin-bottom:8px;font-weight:bold;padding-bottom:6px;border-bottom:1px solid var(--border-dk)}
+.sum-stat{display:flex;justify-content:space-between;align-items:center;padding:5px 0;font-size:12px;border-bottom:1px solid #F0E9D6;gap:8px}
+.sum-stat:last-child{border-bottom:none}
+.sum-stat .sl{color:var(--ink-soft);font-size:11px}
+.sum-stat .sv{font-weight:bold;color:var(--ink);text-align:right}
+.sum-stat .sv.big{color:var(--teal);font-size:14px}
+.sum-stat .sv.flag{color:var(--terracotta-dk)}
+.sum-stat .sv.none{color:var(--ink-faint);font-style:italic;font-weight:normal}
+
+/* ── Log tables ── */
+.log-table{background:#fff;border:1px solid var(--border-dk);border-radius:8px;overflow:hidden}
+.log-table table{width:100%;border-collapse:collapse;font-size:12px}
+.log-table th{background:var(--teal);color:#fff;padding:8px;text-align:left;font-weight:normal;text-transform:uppercase;letter-spacing:.5px;font-size:10px;border-right:1px solid var(--sea)}
+.log-table th:last-child{border-right:none}
+.log-table td{padding:8px;border-bottom:1px solid var(--border);border-right:1px solid var(--border)}
+.log-table td:last-child{border-right:none}
+.log-table tr:last-child td{border-bottom:none}
+.log-table input,.log-table select,.log-table textarea{width:100%;border:1px solid var(--border);padding:5px 8px;border-radius:3px;font-family:Georgia,serif;font-size:11px;background:#fff}
+.log-table textarea{resize:vertical;min-height:28px}
+.log-table input:focus,.log-table select:focus,.log-table textarea:focus{outline:none;border-color:var(--teal)}
+.row-del{background:transparent;border:none;color:var(--terracotta);cursor:pointer;font-size:14px;padding:2px 5px}
+.row-del:hover{color:var(--terracotta-dk)}
+.tbl-act{display:flex;justify-content:flex-end;margin-top:8px}
+
+/* ── Resource tiles ── */
+.res-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+@media(max-width:760px){.res-grid{grid-template-columns:1fr}}
+.res-tile{background:#fff;border:1px solid var(--border-dk);border-radius:8px;padding:14px}
+.res-tile h4{font-size:13px;color:var(--teal);font-weight:bold;margin-bottom:4px}
+.res-tile p{font-size:11px;color:var(--ink-soft);line-height:1.5}
+.res-tile a{display:inline-block;margin-top:6px;font-size:11px;color:var(--terracotta);text-decoration:none;font-weight:bold}
+.res-tile a:hover{color:var(--terracotta-dk);text-decoration:underline}
+
+.hidden{display:none!important}
+
+/* ── RM-style summary additions ── */
+.sm-section{background:var(--cream-deep);padding:16px;border-radius:10px;margin-bottom:16px;border:1px solid var(--border)}
+.sm-section-title{font-size:13px;text-transform:uppercase;letter-spacing:1.5px;color:var(--teal);margin-bottom:12px;padding-bottom:8px;border-bottom:1px solid var(--border-dk);font-weight:bold}
+.sm-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.sm-card{background:#fff;border:1px solid var(--border);border-radius:10px;padding:14px}
+.sm-card h3{font-size:11px;text-transform:uppercase;letter-spacing:1px;color:var(--teal);margin-bottom:10px;padding-bottom:6px;border-bottom:1px solid var(--border);font-weight:bold}
+.sm-row{display:flex;justify-content:space-between;padding:5px 0;font-size:12px;border-bottom:1px solid #f0e9d6;gap:8px}
+.sm-row:last-child{border-bottom:none}
+.sm-lbl{color:var(--ink-soft);flex-shrink:0}
+.sm-val{font-weight:bold;color:var(--ink);text-align:right}
+.sm-val.green{color:var(--good-ink)}
+.sm-val.amber{color:#7A3B22}
+.sm-val.red{color:#8B2A0F}
+.sm-val.blue{color:var(--info-ink)}
+.sm-flags{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+.sm-flag{background:#fff;border:1px solid var(--border);border-radius:8px;padding:12px}
+.sm-flag-icon{width:30px;height:30px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:14px;margin-bottom:8px}
+.sm-flag-count{font-size:20px;font-weight:bold;color:var(--ink)}
+.sm-flag-label{font-size:10px;color:var(--ink-soft);text-transform:uppercase;letter-spacing:0.5px;margin-top:4px}
+table.ov-tbl{width:100%;border-collapse:collapse;background:var(--offwhite);border-radius:6px;overflow:hidden;border:1px solid var(--border-dk);font-size:11px}
+table.ov-tbl th{background:var(--teal);color:#fff;padding:9px 8px;text-align:left;font-weight:normal;text-transform:uppercase;letter-spacing:0.5px;font-size:10px;border-right:1px solid var(--sea)}
+table.ov-tbl th:last-child{border-right:none}
+table.ov-tbl th.th-req{background:var(--sea)}
+table.ov-tbl td{padding:8px;border-bottom:1px solid var(--border);border-right:1px solid var(--border);vertical-align:top}
+table.ov-tbl td:last-child{border-right:none}
+table.ov-tbl tr:last-child td{border-bottom:none}
+table.ov-tbl tr.row-be td{border-left:4px solid #1A6B6D}
+table.ov-tbl tr.row-ee td{border-left:4px solid #7A4F1B}
+table.ov-tbl tr.row-ce td{border-left:4px solid #3F6B3A}
+table.ov-tbl tr.row-flagged td{background:#FFF8E1}
+
+/* ── Implementation Status — single banner with child log table ── */
+.impl-banner-card{background:#fff;border:1px solid var(--terracotta);border-radius:10px;margin-bottom:10px;overflow:hidden}
+.impl-banner{background:var(--terracotta);color:#fff;padding:12px 16px;display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+.impl-banner .ib-title{font-size:11px;text-transform:uppercase;letter-spacing:1px;font-weight:bold;opacity:.9;margin-right:auto}
+.impl-banner input[type="number"],.impl-banner input[type="text"],.impl-banner select{background:rgba(255,255,255,.15);color:#fff;border:1px solid rgba(255,255,255,.3);border-radius:5px;padding:5px 10px;font-size:12px;font-family:Georgia,serif}
+.impl-banner select option{color:var(--ink)}
+.impl-banner input::placeholder{color:rgba(255,255,255,.7)}
+.impl-banner input:focus,.impl-banner select:focus{outline:none;background:rgba(255,255,255,.25)}
+.impl-banner label{display:flex;align-items:center;gap:6px;font-size:11px;color:rgba(255,255,255,.95);white-space:nowrap}
+.impl-body{padding:14px 16px;background:var(--offwhite)}
+.impl-body .impl-log-title{font-size:11px;text-transform:uppercase;letter-spacing:1px;color:var(--terracotta-dk);font-weight:bold;margin-bottom:8px}
+.impl-body .impl-add-wrap{display:flex;justify-content:flex-end;margin-top:8px}
+/* ─────────── TRACKER tab ─────────── */
+.trk-section-block { margin-bottom: 18px; }
+.trk-section-banner {
+  background: var(--teal); color: #fff; padding: 12px 18px;
+  border-radius: 10px 10px 0 0;
+  display: flex; align-items: center; gap: 12px;
+  cursor: pointer; user-select: none;
+  font-family: Georgia, serif;
+}
+.trk-section-banner:hover { background: var(--sea); }
+.trk-chev { font-size: 13px; transition: transform .2s; }
+.trk-section-block.collapsed .trk-chev { transform: rotate(-90deg); }
+.trk-section-block.collapsed .trk-section-body { display: none; }
+.trk-sb-roman { font-style: italic; opacity: .7; font-size: 13px; }
+.trk-sb-title { font-size: 13px; font-weight: bold; text-transform: uppercase; letter-spacing: 1.2px; }
+.trk-sb-spacer { flex: 1; }
+.trk-sb-meta { font-size: 11px; opacity: .85; font-style: italic; }
+.trk-section-body {
+  background: var(--cream);
+  border: 1px solid var(--border-dk);
+  border-top: none;
+  border-radius: 0 0 10px 10px;
+  padding: 16px;
+}
+.trk-formula-note {
+  font-size: 11px; color: var(--ink-soft); font-style: italic;
+  margin: 0 0 14px; line-height: 1.5;
+  background: var(--offwhite); padding: 9px 12px; border-radius: 6px;
+  border-left: 3px solid var(--teal);
+}
+
+/* Tranche cards */
+.tranche-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+}
+.tranche-card {
+  background: #fff;
+  border: 1px solid var(--border-dk);
+  border-left: 4px solid var(--teal);
+  border-radius: 8px;
+  padding: 12px 14px;
+}
+.tranche-card.t-mbma   { border-left-color: #1A6B6D; }
+.tranche-card.t-user   { border-left-color: #3F6B3A; }
+.tranche-card.t-selco  { border-left-color: #7A4F1B; }
+.tranche-card.t-lifcom { border-left-color: #C26849; }
+.tranche-head {
+  display: flex; justify-content: space-between; align-items: baseline;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 8px;
+}
+.tranche-name { font-size: 12px; font-weight: bold; color: var(--ink); text-transform: uppercase; letter-spacing: 0.8px; }
+.tranche-total { font-size: 11px; color: var(--ink-soft); }
+.tranche-total span { font-weight: bold; color: var(--teal); }
+.tranche-rows { display: flex; flex-direction: column; gap: 4px; }
+.tranche-row {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 4px 0;
+  font-size: 12px;
+}
+.tranche-row .tr-label { color: var(--ink-soft); }
+.tranche-row .tr-val { font-weight: bold; color: var(--ink); font-variant-numeric: tabular-nums; }
+.tranche-row.tr-remainder {
+  margin-top: 4px;
+  padding-top: 6px;
+  border-top: 1px dashed var(--border-dk);
+}
+.tranche-row.tr-remainder .tr-label { font-style: italic; }
+.tranche-row.tr-remainder .tr-val { color: var(--terracotta-dk); }
+
+.tranche-gap {
+  margin-top: 12px;
+  padding: 10px 14px;
+  background: var(--terracotta-sft);
+  border: 1px solid var(--terracotta);
+  border-radius: 8px;
+  font-size: 12px;
+  color: var(--terracotta-dk);
+}
+
+/* Vendor table */
+.trk-subsection { margin-bottom: 18px; }
+.trk-subsection-title {
+  font-size: 12px; text-transform: uppercase; letter-spacing: 1px;
+  color: var(--teal); font-weight: bold; margin-bottom: 10px;
+}
+table.data-table {
+  width: 100%; border-collapse: collapse;
+  background: var(--offwhite);
+  border: 1px solid var(--border-dk); border-radius: 6px; overflow: hidden;
+  font-size: 12px; font-family: Georgia, serif;
+}
+table.data-table th {
+  background: var(--teal); color: #fff;
+  padding: 9px 10px; text-align: left;
+  font-weight: normal; text-transform: uppercase; letter-spacing: 0.5px;
+  font-size: 10.5px; border-right: 1px solid var(--sea);
+}
+table.data-table th:last-child { border-right: none; }
+table.data-table td {
+  padding: 7px 10px;
+  border-bottom: 1px solid var(--border);
+  border-right: 1px solid var(--border);
+  vertical-align: middle;
+}
+table.data-table td:last-child { border-right: none; }
+table.data-table tr:last-child td { border-bottom: none; }
+table.data-table .num-col {
+  width: 42px; text-align: center;
+  color: var(--ink-soft);
+  font-size: 11px; font-weight: bold;
+}
+table.data-table input,
+table.data-table select,
+table.data-table textarea {
+  width: 100%;
+  border: 1px solid var(--border);
+  padding: 5px 7px;
+  border-radius: 3px;
+  font-family: Georgia, serif;
+  font-size: 12px;
+  background: #fff;
+  color: var(--ink);
+}
+table.data-table input:focus,
+table.data-table select:focus { outline: none; border-color: var(--teal); }
+table.data-table input.num { text-align: right; font-variant-numeric: tabular-nums; }
+
+.table-actions {
+  display: flex; justify-content: space-between; align-items: center;
+  margin-top: 10px;
+  gap: 10px;
+}
+.subtotal-pill {
+  background: var(--cream-deep);
+  border: 1px solid var(--border-dk);
+  padding: 5px 12px;
+  border-radius: 14px;
+  font-size: 11px;
+  color: var(--ink-soft);
+}
+.subtotal-pill strong { color: var(--teal); }
+.add-row-btn {
+  padding: 7px 16px;
+  background: var(--offwhite);
+  border: 1px dashed var(--border-dk);
+  border-radius: 6px;
+  cursor: pointer;
+  color: var(--teal);
+  font-family: Georgia, serif;
+  font-size: 12px;
+}
+.add-row-btn:hover { background: var(--cream-deep); border-color: var(--teal); border-style: solid; }
+.row-delete {
+  background: transparent; border: none;
+  color: var(--terracotta); cursor: pointer;
+  font-size: 14px; padding: 2px 6px;
+}
+.row-delete:hover { color: var(--terracotta-dk); }
+
+/* Inline invoice upload */
+.inv-attach {
+  display: flex; align-items: center; gap: 6px; flex-wrap: wrap;
+}
+.inv-att-btn {
+  display: inline-block;
+  padding: 4px 8px;
+  background: var(--cream-deep);
+  border: 1px solid var(--border-dk);
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 10.5px;
+  color: var(--teal);
+}
+.inv-att-btn:hover { background: var(--cream); }
+.inv-att-btn input[type="file"] { display: none; }
+.inv-att-view {
+  padding: 4px 8px;
+  background: var(--offwhite);
+  border: 1px solid var(--border-dk);
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 10.5px;
+  color: var(--ink);
+}
+.inv-att-view:disabled { color: var(--ink-faint); cursor: not-allowed; }
+.inv-att-name {
+  font-size: 10px;
+  color: var(--ink-soft);
+  font-style: italic;
+  max-width: 100px;
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+}
+
+/* Balance card */
+.balance-card {
+  background: var(--teal); color: #fff;
+  border-radius: 10px;
+  padding: 18px 22px;
+  margin-top: 6px;
+}
+.balance-grid {
+  display: grid; grid-template-columns: 1fr 1fr 1.2fr;
+  gap: 20px;
+}
+.balance-cell { padding: 0 4px; }
+.balance-cell + .balance-cell { border-left: 1px solid rgba(255,255,255,.18); padding-left: 20px; }
+.balance-cell .bc-lbl {
+  font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase;
+  opacity: 0.75; margin-bottom: 6px;
+}
+.balance-cell .bc-val {
+  font-size: 24px; font-family: Georgia, serif; font-weight: bold;
+  letter-spacing: 0.5px; font-variant-numeric: tabular-nums;
+}
+.balance-cell .bc-sub {
+  font-size: 11px; opacity: 0.7; font-style: italic; margin-top: 4px;
+}
+.balance-cell--final .bc-val { color: #FFD580; }
+
+/* Task Log section */
+.task-section {
+  background: var(--cream-deep);
+  padding: 16px;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+}
+.task-section-title {
+  font-size: 13px; text-transform: uppercase; letter-spacing: 1.5px;
+  color: var(--teal);
+  margin-bottom: 12px; padding-bottom: 8px;
+  border-bottom: 1px solid var(--border-dk);
+  font-weight: bold;
+  display: flex; justify-content: space-between; align-items: center;
+}
+.task-section-title .ts-roman {
+  color: var(--terracotta); font-style: italic; margin-right: 8px;
+}
+.task-section-title .ts-count {
+  font-size: 11px; color: var(--ink-faint);
+  letter-spacing: normal; text-transform: none;
+  font-weight: normal; font-style: italic;
+}
+.task-section .table-actions {
+  justify-content: flex-end;
+}
+
+</style>
+</head>
+<body>
+<div class="page">
+<div class="header">
+  <h1>Infrastructure</h1>
+  <div class="crumb">PRIME Rural · Project Setup</div>
+</div>
+<div class="card">
+<div class="tab-bar">
+  <div class="tab active" onclick="showTab('summary',this)">Summary</div>
+  <div class="tab" onclick="showTab('be',this)">Built-Environment</div>
+  <div class="tab" onclick="showTab('ee',this)">Machines</div>
+  <div class="tab" onclick="showTab('ce',this)">Solar</div>
+  <div class="tab" onclick="showTab('loan',this)">Financial Model</div>
+  <div class="tab" onclick="showTab('tracker',this)">Tracker</div>
+  <div class="tab" onclick="showTab('tasklog',this)">Task Log</div>
+  <div class="tab" onclick="showTab('resources',this)">Resources</div>
+</div>
+<div class="content">
+
+<div class="ent-chip">
+  <div class="ent-avatar">EN</div>
+  <span style="color:var(--ink-soft);font-style:italic">Auto-fetched from profile</span>
+</div>
+
+<!-- ═══════════════════════════════ SUMMARY ═══════════════════════════════ -->
+<div id="summary" class="panel">
+
+  <!-- ① Component-wise Overview -->
+  <div class="sm-section">
+    <div class="sm-section-title">Component-wise Overview</div>
+    <p style="font-size:11px;color:var(--ink-soft);font-style:italic;margin-bottom:10px">One row per infrastructure component — cost, funding allocation, intervention type, and implementation status. Costs reflect the current Financial Model calculation type (Estimation / Final).</p>
+    <div style="overflow-x:auto">
+    <table class="ov-tbl">
+      <thead>
+        <tr>
+          <th style="width:130px">Component</th>
+          <th>Detail</th>
+          <th style="width:130px">Cost</th>
+          <th style="width:200px">Tranche Allocation</th>
+          <th class="th-req" style="width:160px">Intervention Type</th>
+          <th class="th-req" style="width:160px">Implementation Status</th>
+        </tr>
+      </thead>
+      <tbody id="infraOverviewBody">
+        <tr><td colspan="6" style="text-align:center;color:var(--ink-faint);font-style:italic;padding:14px">Auto-populated from BE / EE / CE tabs and Financial Model</td></tr>
+      </tbody>
+    </table>
+    </div>
+  </div>
+
+  <!-- ② Aggregates — 4-card 2×2 grid -->
+  <div class="sm-section">
+    <div class="sm-section-title">Aggregates</div>
+    <div class="sm-grid">
+
+      <div class="sm-card">
+        <h3>Infrastructure Costs</h3>
+        <div class="sm-row"><span class="sm-lbl">Built Environment (BE)</span><span class="sm-val blue" id="s-be-cost">₹ 0.00</span></div>
+        <div class="sm-row"><span class="sm-lbl">Machines — EE</span><span class="sm-val blue" id="s-ee-cost">₹ 0.00</span></div>
+        <div class="sm-row"><span class="sm-lbl">Solar — CE</span><span class="sm-val blue" id="s-ce-cost">₹ 0.00</span></div>
+        <div class="sm-row" style="border-top:1px solid var(--border-dk);margin-top:4px;padding-top:6px"><span class="sm-lbl" style="font-weight:bold">Total</span><span class="sm-val" id="s-total-cost" style="color:var(--teal);font-size:14px">₹ 0.00</span></div>
+      </div>
+
+      <div class="sm-card">
+        <h3>Funding Split</h3>
+        <div class="sm-row"><span class="sm-lbl">Active Slab / Model</span><span class="sm-val" id="sum-slab">—</span></div>
+        <div class="sm-row"><span class="sm-lbl">SELCO Foundation</span><span class="sm-val green" id="sum-selco">₹ 0.00</span></div>
+        <div class="sm-row"><span class="sm-lbl">MBMA</span><span class="sm-val" id="sum-mbma">₹ 0.00</span></div>
+        <div class="sm-row"><span class="sm-lbl">LIFCOM</span><span class="sm-val amber" id="sum-lifcom">₹ 0.00</span></div>
+        <div class="sm-row"><span class="sm-lbl">User Contribution</span><span class="sm-val" id="sum-user">₹ 0.00</span></div>
+        <div class="sm-row"><span class="sm-lbl">EMI (5-year LIFCOM)</span><span class="sm-val" id="sum-emi5">₹ 0.00 / mo</span></div>
+        <div class="sm-row"><span class="sm-lbl">EMI (3-year LIFCOM)</span><span class="sm-val" id="sum-emi3">₹ 0.00 / mo</span></div>
+      </div>
+
+      <div class="sm-card">
+        <h3>Interventions</h3>
+        <div class="sm-row"><span class="sm-lbl">BE Intervention</span><span class="sm-val amber" id="s-be-int">Not flagged</span></div>
+        <div class="sm-row"><span class="sm-lbl">EE Machines in Pipeline</span><span class="sm-val" id="s-ee-count">0</span></div>
+        <div class="sm-row"><span class="sm-lbl">CE Intervention</span><span class="sm-val amber" id="s-ce-int">Not flagged</span></div>
+        <div class="sm-row"><span class="sm-lbl">Rent / Unit</span><span class="sm-val" id="s-be-rentunit">₹ 0.00</span></div>
+        <div class="sm-row"><span class="sm-lbl">Electricity / Unit</span><span class="sm-val" id="s-ce-elecunit">₹ 0.00</span></div>
+      </div>
+
+      <div class="sm-card">
+        <h3>Disbursement &amp; Tracker</h3>
+        <div class="sm-row"><span class="sm-lbl">Total Disbursed</span><span class="sm-val green" id="sum-disbursed">₹ 0.00</span></div>
+        <div class="sm-row"><span class="sm-lbl">Paid — Machines &amp; Solar</span><span class="sm-val" id="sum-paid-ms">₹ 0.00</span></div>
+        <div class="sm-row"><span class="sm-lbl">Paid — Built Environment</span><span class="sm-val" id="sum-paid-be">₹ 0.00</span></div>
+        <div class="sm-row"><span class="sm-lbl">Total Paid to Vendors</span><span class="sm-val blue" id="sum-paid-total">₹ 0.00</span></div>
+        <div class="sm-row"><span class="sm-lbl">Balance with Entrepreneur</span><span class="sm-val amber" id="sum-balance">₹ 0.00</span></div>
+        <div class="sm-row"><span class="sm-lbl">Vendor Payments Logged</span><span class="sm-val" id="sum-vendor-count">0</span></div>
+        <div class="sm-row"><span class="sm-lbl">Tasks Logged</span><span class="sm-val" id="sum-task-count">0</span></div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ③ Intervention Flags -->
+  <div class="sm-section">
+    <div class="sm-section-title">Intervention Flags</div>
+    <div class="sm-flags">
+      <div class="sm-flag"><div class="sm-flag-icon" style="background:#EDF6EA;color:#1A6B6D">🏗</div><div class="sm-flag-count" id="flag-be">No</div><div class="sm-flag-label">BE Intervention</div></div>
+      <div class="sm-flag"><div class="sm-flag-icon" style="background:#F5E2D6;color:#7A4F1B">⚙</div><div class="sm-flag-count" id="flag-ee">0</div><div class="sm-flag-label">EE Machines</div></div>
+      <div class="sm-flag"><div class="sm-flag-icon" style="background:#E3EFDF;color:#3F6B3A">☀</div><div class="sm-flag-count" id="flag-ce">No</div><div class="sm-flag-label">CE Intervention</div></div>
+      <div class="sm-flag"><div class="sm-flag-icon" style="background:var(--info-bg);color:var(--info-ink)">₹</div><div class="sm-flag-count" id="flag-total" style="font-size:14px">₹ 0</div><div class="sm-flag-label">Total Cost</div></div>
+    </div>
+  </div>
+
+</div>
+</div>
+
+<!-- ═══════════════════════════════ BE TAB ═══════════════════════════════ -->
+<div id="be" class="panel hidden">
+  <div class="section-caption">Assess the workspace, land, and construction needs for Built Environment intervention.</div>
+
+  <!-- Section I — Need Assessment -->
+  <div class="section-block">
+    <div class="section-head"><span class="sh-label"><span class="sh-roman">I.</span>Need Assessment</span></div>
+
+    <!-- Water -->
+    <div class="subsection">
+      <div class="subsection-title">Water</div>
+      <div class="field-row">
+        <div class="field-label">Water Supply</div>
+        <select class="field-val" id="be-water">
+          <option value="">— Select —</option>
+          <option>Own source</option><option>Locality source</option>
+          <option>PHE</option><option>Buys water</option>
+        </select>
+      </div>
+      <div class="field-row">
+        <div class="field-label">Monthly expenses on water (₹)</div>
+        <input type="number" class="field-val" id="be-water-exp" placeholder="0.00" step="0.01">
+      </div>
+      <div class="field-row">
+        <div class="field-label">Practice Rainwater Harvesting?</div>
+        <div class="yn-row" data-yn="be-rwh">
+          <label><input type="radio" name="be-rwh" value="Yes" onchange="ynSelect(this)"><span>Yes</span></label>
+          <label><input type="radio" name="be-rwh" value="No" onchange="ynSelect(this)"><span>No</span></label>
+        </div>
+      </div>
+      <div class="field-row">
+        <div class="field-label">Willing to practice Rainwater Harvesting?</div>
+        <div class="yn-row" data-yn="be-rwh-willing">
+          <label><input type="radio" name="be-rwh-willing" value="Yes" onchange="ynSelect(this)"><span>Yes</span></label>
+          <label><input type="radio" name="be-rwh-willing" value="No" onchange="ynSelect(this)"><span>No</span></label>
+        </div>
+      </div>
+    </div>
+
+    <!-- Rent -->
+    <div class="subsection">
+      <div class="subsection-title">Rent</div>
+      <div class="field-row">
+        <div class="field-label">Where does the entrepreneur work?</div>
+        <select class="field-val" id="be-work-location">
+          <option value="">— Select —</option>
+          <option>Home</option>
+          <option>Separate Workspace</option>
+        </select>
+      </div>
+      <div class="field-row">
+        <div class="field-label">Where is this space situated?</div>
+        <select class="field-val" id="be-space-situated">
+          <option value="">— Select —</option>
+          <option>In the house</option><option>Outside the house within premises</option>
+          <option>Within town / village</option><option>In the farm</option>
+          <option>Commercial complex</option><option>Market</option><option>Others</option>
+        </select>
+      </div>
+      <div class="field-row">
+        <div class="field-label">What is the condition of the Workspace?</div>
+        <select class="field-val" id="be-workspace-condition">
+          <option value="">— Select —</option>
+          <option>Dilapidated</option>
+          <option>Poor</option>
+          <option>Average</option>
+          <option>Good</option>
+          <option>Very Good</option>
+        </select>
+      </div>
+      <div class="field-row">
+        <div class="field-label">Rent per Month (₹)</div>
+        <input type="number" class="field-val" id="be-rent-month" placeholder="0.00" step="0.01" oninput="calcRentPerUnit()">
+      </div>
+      <div class="field-row">
+        <div class="field-label">Units Produced per Month</div>
+        <input type="number" class="field-val" id="units-per-month" placeholder="0" step="1" oninput="onUnitsChange()">
+        <div class="int-note">Auto-fetched from Product Profile → Production Capacity (or manual entry)</div>
+      </div>
+      <div class="field-row">
+        <div class="field-label">Rent per Unit (auto-calc)</div>
+        <input type="text" class="field-val derived" id="be-rent-unit" readonly value="₹ 0.00">
+        <div class="int-note">Feeds into Unit Pricing → Workspace Cost</div>
+      </div>
+    </div>
+
+    <!-- Land -->
+    <div class="subsection">
+      <div class="subsection-title">Land</div>
+      <div class="field-row">
+        <div class="field-label">Land tenureship of existing workspace</div>
+        <select class="field-val" id="be-tenure-exist"></select>
+      </div>
+      <div class="field-row">
+        <div class="field-label">Land tenureship of proposed workspace</div>
+        <select class="field-val" id="be-tenure-prop" onchange="checkTenure()"></select>
+      </div>
+      <div class="field-row" id="be-owner-row" style="display:none">
+        <div class="field-label">If assigned/owned: who owns property?</div>
+        <select class="field-val">
+          <option value="">— Select —</option>
+          <option>Self</option><option>Family</option><option>Relatives</option><option>Others</option>
+        </select>
+      </div>
+      <div class="field-row">
+        <div class="field-label">Type of soil condition</div>
+        <select class="field-val">
+          <option value="">— Select —</option>
+          <option>Filled land</option><option>Rocky</option><option>Others</option>
+        </select>
+      </div>
+      <div class="field-row">
+        <div class="field-label">Upload Land Document</div>
+        <div class="upload-wrap" id="be-landdoc-wrap">
+          <label class="ul-btn">⬆ Upload<input type="file" accept=".pdf,.jpg,.jpeg,.png" onchange="handleUpload('be-landdoc',this)"></label>
+          <button class="view-btn" id="be-landdoc-view" disabled onclick="viewFile('be-landdoc')">View</button>
+        </div>
+      </div>
+      <div class="field-row">
+        <div class="field-label">Upload Rough Sketch of Site Layout with Dimension</div>
+        <div class="upload-wrap" id="be-sketch-wrap">
+          <label class="ul-btn">⬆ Upload<input type="file" accept=".pdf,.jpg,.jpeg,.png" onchange="handleUpload('be-sketch',this)"></label>
+          <button class="view-btn" id="be-sketch-view" disabled onclick="viewFile('be-sketch')">View</button>
+        </div>
+      </div>
+    </div>
+  </div><!-- /Section I -->
+
+  <!-- Section II — Intervention Need -->
+  <div class="section-block">
+    <div class="section-head"><span class="sh-label"><span class="sh-roman">II.</span>Intervention Need</span></div>
+    <div class="int-block">
+      <div class="int-block-title">⚠ Intervention Decision</div>
+      <div class="field-row">
+        <div class="field-label" style="font-weight:bold;color:var(--ink)">Need BE Intervention?</div>
+        <label class="toggle">
+          <input type="checkbox" id="be-int-flag" onchange="onBEIntToggle()">
+          <span class="sl"></span>
+        </label>
+      </div>
+      <div id="be-int-detail" style="display:none">
+        <div class="field-row" style="margin-top:10px">
+          <div class="field-label">Type of Intervention</div>
+          <select class="field-val" id="be-int-type" onchange="onBETypeChange();refreshSummary()">
+            <option value="">— Select —</option>
+            <option>Renovation</option><option>Extension</option><option>New</option>
+          </select>
+        </div>
+        <div class="field-row" style="align-items:flex-start">
+          <div class="field-label" style="padding-top:6px">Justify <span class="req">*</span></div>
+          <textarea class="field-val" id="be-int-justify" placeholder="Reason for BE intervention..."></textarea>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Section III — Estimation -->
+  <div class="section-block">
+    <div class="section-head"><span class="sh-label"><span class="sh-roman">III.</span>Estimation</span></div>
+    <div class="subsection">
+      <div class="field-row">
+        <div class="field-label">Upload Rough Sketch of Requirement</div>
+        <div class="upload-wrap" id="be-req-sketch-wrap">
+          <label class="ul-btn">⬆ Upload<input type="file" accept=".pdf,.jpg,.jpeg,.png" onchange="handleUpload('be-req-sketch',this)"></label>
+          <button class="view-btn" id="be-req-sketch-view" disabled onclick="viewFile('be-req-sketch')">View</button>
+        </div>
+      </div>
+      <div class="field-row" style="align-items:flex-start">
+        <div class="field-label" style="padding-top:6px">Elaborate</div>
+        <textarea class="field-val" placeholder="Describe the construction requirement in detail..."></textarea>
+      </div>
+      <div class="two-up">
+        <div class="field-row">
+          <div class="field-label">Hill Name</div>
+          <select class="field-val" id="be-hill" onchange="onBETypologyChange()">
+            <option value="">— Select —</option>
+            <option>Khasi Hills</option><option>Jaintia Hills</option><option>Garo Hills</option>
+          </select>
+        </div>
+        <div class="field-row">
+          <div class="field-label">Building Typology</div>
+          <select class="field-val" id="be-typology" onchange="onBETypologyChange()">
+            <option value="">— Select —</option>
+            <option>RCC frame: PPGI sheets and steel truss</option>
+            <option>RCC frame: Ground Floor Institutional/Public</option>
+            <option>RCC frame: First Floor Institutional/Public</option>
+            <option>Kiosks</option>
+          </select>
+        </div>
+      </div>
+      <!-- MSOR-based auto-calc fields (hidden when typology is non-MSOR like Kiosks) -->
+      <div id="be-msor-fields">
+        <div class="field-row">
+          <div class="field-label">Plinth Rate / SQM — MSOR 2016 (₹)</div>
+          <input type="text" class="field-val derived" id="be-plinth-rate" readonly placeholder="Auto-calculated from Hill + Typology">
+        </div>
+        <div class="two-up">
+          <div class="field-row">
+            <div class="field-label">Possible Plinth Area (SQM)</div>
+            <input type="number" class="field-val" id="be-sqm" placeholder="0.00" step="0.01" oninput="onSqmChange()">
+          </div>
+          <div class="field-row">
+            <div class="field-label">Possible Plinth Area (SQF)</div>
+            <input type="number" class="field-val" id="be-sqf" placeholder="0.00" step="0.01" oninput="onSqfChange()">
+          </div>
+        </div>
+      </div>
+      <!-- Auto-calculated cost callout (shown when MSOR typology) -->
+      <div class="cost-callout" id="be-cost-callout">
+        <div><div class="cc-label">Estimated Built Environment Cost</div><div class="cc-val" id="be-est-cost">₹ 0.00</div></div>
+        <div style="font-size:11px;opacity:.85;text-align:right">Plinth Rate × Plinth Area (SQM)<br><span id="be-rate-formula" style="font-size:10px;opacity:.7">—</span></div>
+      </div>
+      <!-- Manual entry block (shown when typology is non-MSOR e.g. Kiosks) -->
+      <div class="field-row" id="be-manual-cost-row" style="display:none;margin-top:10px">
+        <div class="field-label">Estimated Built Environment Cost (₹)</div>
+        <input type="number" class="field-val" id="be-est-cost-manual" placeholder="0.00" step="0.01" oninput="onManualBECost()">
+        <div class="int-note">Manual entry — MSOR rate matrix does not apply to this typology</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Section IV — Implementation Status -->
+  <div class="section-block impl-section">
+    <div class="section-head">
+      <span class="sh-label"><span class="sh-roman">IV.</span>Implementation Status</span>
+    </div>
+
+    <!-- Single banner: one-time Implementation Status + Final DPR BE Cost -->
+    <div class="impl-banner-card">
+      <div class="impl-banner">
+        <span class="ib-title">Built-Environment</span>
+        <label>Implementation Status:
+          <select id="be-impl-status" onchange="updateBEImplSummary()" style="min-width:180px">
+            <option value="">— Select —</option>
+            <option>Pending Design</option><option>Design Revision</option>
+            <option>On hold</option><option>Design confirmed</option>
+            <option>Construction started</option><option>Construction complete</option>
+          </select>
+        </label>
+        <label>Final DPR Built Environment Cost (₹):
+          <input type="number" id="be-final-cost" placeholder="0.00" step="0.01" style="width:140px" oninput="updateFinancial()">
+        </label>
+      </div>
+      <div class="impl-body">
+        <div class="impl-log-title">Design / Drawing Log</div>
+        <div class="data-table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th style="width:34px">#</th>
+                <th style="min-width:120px">Date</th>
+                <th style="min-width:180px">Architecture Drawings</th>
+                <th>Feedback</th>
+                <th style="width:30px"></th>
+              </tr>
+            </thead>
+            <tbody id="be-impl-log-body"></tbody>
+          </table>
+        </div>
+        <div class="impl-add-wrap"><button class="btn btn-primary btn-sm" onclick="addBEImplLogRow()">+ Add Row</button></div>
+      </div>
+    </div>
+
+    <div class="subsection" style="margin-top:14px">
+      <div class="subsection-title">NOC from Entrepreneur</div>
+      <div class="field-row">
+        <div class="field-label">Upload NOC</div>
+        <div class="upload-wrap" id="be-noc-wrap">
+          <label class="ul-btn">⬆ Upload<input type="file" accept=".pdf,.jpg,.jpeg,.png" onchange="handleUpload('be-noc',this)"></label>
+          <button class="view-btn" id="be-noc-view" disabled onclick="viewFile('be-noc')">View</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div><!-- /BE -->
+
+<!-- ═══════════════════════════════ EE TAB (Machines) ═══════════════════════════════ -->
+<div id="ee" class="panel hidden">
+  <div class="section-caption">All machinery flagged in the Machinery Module's <strong>Required</strong> tab auto-populates here. Each row tracks SELCO pricing and procurement status.</div>
+
+  <!-- Section I — Required Machines (auto-populated) -->
+  <div class="section-block">
+    <div class="section-head">
+      <span class="sh-label"><span class="sh-roman">I.</span>Required Machines</span>
+      <div class="int-note">Auto-populated from Machinery Module → Required tab</div>
+    </div>
+    <div id="ee-machines-container"></div>
+    <div style="text-align:center;color:var(--ink-faint);font-style:italic;font-size:12px;padding:16px;background:var(--cream-deep);border:1px dashed var(--border-dk);border-radius:8px;margin-bottom:10px" id="ee-empty">No machines yet. Click "+ Add Required Machine" to simulate fetching from the Machinery Module.</div>
+    <div class="tbl-act"><button class="btn btn-primary" onclick="addEEMachine()">+ Add Required Machine</button></div>
+
+    <div class="total-card" style="margin-top:16px">
+      <div><div class="tc-label">Total Estimated EE Cost (sum of confirmed SELCO prices)</div><div class="tc-val" id="ee-total-cost">₹ 0.00</div></div>
+    </div>
+  </div>
+
+  <!-- Section II — Implementation Status -->
+  <div class="section-block impl-section">
+    <div class="section-head"><span class="sh-label"><span class="sh-roman">II.</span>Implementation Status</span></div>
+
+    <!-- Single banner: one-time Implementation Status + Final EE Quotation Total -->
+    <div class="impl-banner-card">
+      <div class="impl-banner">
+        <span class="ib-title">Machines (EE)</span>
+        <label>Implementation Status:
+          <select id="ee-impl-status" onchange="updateEEImplSummary()" style="min-width:200px">
+            <option value="">— Select —</option>
+            <option>Pending</option><option>Revision</option>
+            <option>On hold</option><option>Quotation confirmed</option><option>Order delivered</option>
+          </select>
+        </label>
+        <label>Final EE Quotation Total (₹):
+          <input type="number" id="ee-final-cost" placeholder="0.00" step="0.01" style="width:140px" oninput="updateFinancial()">
+        </label>
+      </div>
+      <div class="impl-body">
+        <div class="impl-log-title">Quotation Log</div>
+        <div class="data-table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th style="width:34px">#</th>
+                <th style="min-width:120px">Date</th>
+                <th style="min-width:180px">Quotation</th>
+                <th>Feedback</th>
+                <th style="width:30px"></th>
+              </tr>
+            </thead>
+            <tbody id="ee-impl-log-body"></tbody>
+          </table>
+        </div>
+        <div class="impl-add-wrap"><button class="btn btn-primary btn-sm" onclick="addEEImplLogRow()">+ Add Row</button></div>
+      </div>
+    </div>
+  </div>
+</div><!-- /EE -->
+
+<!-- ═══════════════════════════════ CE TAB ═══════════════════════════════ -->
+<div id="ce" class="panel hidden">
+  <div class="section-caption">Clean energy assessment — electricity unit cost, solarization decisions, and CE implementation tracking.</div>
+
+  <!-- Section I — Need Assessment -->
+  <div class="section-block">
+    <div class="section-head"><span class="sh-label"><span class="sh-roman">I.</span>Need Assessment</span></div>
+    <div class="subsection">
+      <div class="field-row">
+        <div class="field-label">Electricity per Month (₹)</div>
+        <input type="number" class="field-val" id="ce-elec-month" placeholder="0.00" step="0.01" oninput="calcElecPerUnit()">
+      </div>
+      <div class="field-row">
+        <div class="field-label">Units Produced per Month</div>
+        <input type="text" class="field-val derived" id="ce-units-mirror" readonly placeholder="(synced from BE)">
+        <div class="int-note">Synced with the Units Produced field in BE</div>
+      </div>
+      <div class="field-row">
+        <div class="field-label">Electricity per Unit (auto-calc)</div>
+        <input type="text" class="field-val derived" id="ce-elec-unit" readonly value="₹ 0.00">
+        <div class="int-note">Feeds into Unit Pricing → Electricity Cost</div>
+      </div>
+      <div class="field-row">
+        <div class="field-label">Voltage &amp; Phase Configuration</div>
+        <select class="field-val">
+          <option value="">— Select —</option>
+          <option>Phase I</option><option>Phase III</option>
+        </select>
+      </div>
+    </div>
+  </div>
+
+  <!-- Section II — Intervention Need -->
+  <div class="section-block">
+    <div class="section-head"><span class="sh-label"><span class="sh-roman">II.</span>Intervention Need</span></div>
+    <div class="int-block">
+      <div class="int-block-title">⚠ Intervention Decision</div>
+      <div class="field-row">
+        <div class="field-label" style="font-weight:bold;color:var(--ink)">Need CE Intervention?</div>
+        <label class="toggle">
+          <input type="checkbox" id="ce-int-flag" onchange="onCEIntToggle()">
+          <span class="sl"></span>
+        </label>
+      </div>
+      <div id="ce-int-detail" style="display:none">
+        <div class="field-row" style="margin-top:10px">
+          <div class="field-label">Type of Intervention</div>
+          <select class="field-val" id="ce-int-type" onchange="refreshSummary()">
+            <option value="">— Select —</option>
+            <option>Only lighting/fans/exhaust</option>
+            <option>Lighting + solar machines</option>
+            <option>Lighting + manual equipment + solar machines</option>
+            <option>Lighting + manual equipment</option>
+          </select>
+        </div>
+        <div class="field-row" style="align-items:flex-start">
+          <div class="field-label" style="padding-top:6px">Justify <span class="req">*</span></div>
+          <textarea class="field-val" placeholder="Reason for CE intervention..."></textarea>
+        </div>
+      </div>
+    </div>
+
+    <!-- Machines considered for Solarization — merged Existing + Required -->
+    <div class="subsection" style="margin-top:14px">
+      <div class="subsection-title">
+        Machines considered for Solarization
+        <div class="int-note">Dropdown lists all machines from the Machinery Module (Existing + Required). Required/Existing column auto-fetches.</div>
+      </div>
+      <div class="data-table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th style="width:34px">#</th>
+              <th style="min-width:200px">Machine</th>
+              <th style="width:120px">Required / Existing</th>
+              <th style="width:110px;text-align:center">Confirmed by Ground Team</th>
+              <th style="width:110px;text-align:center">Approved by SELCO</th>
+              <th style="min-width:110px">Solar Capacity</th>
+              <th style="min-width:110px">Solar Cost (₹)</th>
+              <th style="width:30px"></th>
+            </tr>
+          </thead>
+          <tbody id="ce-solar-body"></tbody>
+        </table>
+      </div>
+      <div class="tbl-act"><button class="btn btn-primary btn-sm" onclick="addCESolarRow()">+ Add Machine for Solarization</button></div>
+    </div>
+
+    <!-- Total Estimated CE Cost card -->
+    <div class="total-card" style="margin-top:14px">
+      <div><div class="tc-label">Total Estimated CE Cost (sum of Solar Cost)</div><div class="tc-val" id="ce-total-cost">₹ 0.00</div></div>
+    </div>
+  </div>
+
+  <!-- Section III — Implementation Status -->
+  <div class="section-block impl-section">
+    <div class="section-head"><span class="sh-label"><span class="sh-roman">III.</span>Implementation Status</span></div>
+
+    <!-- Single banner: one-time Implementation Status + Final CE Quotation Total -->
+    <div class="impl-banner-card">
+      <div class="impl-banner">
+        <span class="ib-title">Solar (CE)</span>
+        <label>Implementation Status:
+          <select id="ce-impl-status" onchange="updateCEImplSummary()" style="min-width:200px">
+            <option value="">— Select —</option>
+            <option>Pending</option><option>Revision</option>
+            <option>On hold</option><option>Quotation confirmed</option><option>Order delivered</option>
+            <option>Installation started</option><option>Installation complete</option>
+          </select>
+        </label>
+        <label>Final CE Quotation Total (₹):
+          <input type="number" id="ce-final-cost" placeholder="0.00" step="0.01" style="width:140px" oninput="updateFinancial()">
+        </label>
+      </div>
+      <div class="impl-body">
+        <div class="impl-log-title">BOM / Quotation Log</div>
+        <div class="data-table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th style="width:34px">#</th>
+                <th style="min-width:120px">Date</th>
+                <th style="min-width:180px">BOM</th>
+                <th>Feedback</th>
+                <th style="width:30px"></th>
+              </tr>
+            </thead>
+            <tbody id="ce-impl-log-body"></tbody>
+          </table>
+        </div>
+        <div class="impl-add-wrap"><button class="btn btn-primary btn-sm" onclick="addCEImplLogRow()">+ Add Row</button></div>
+      </div>
+    </div>
+  </div>
+</div><!-- /CE -->
+
+<!-- ═══════════════════════════ FINANCIAL MODEL ═══════════════════════════ -->
+<div id="loan" class="panel hidden">
+  <div class="section-caption">Select the project type to apply the correct funding model. Costs are pulled live from BE / EE / CE tabs.</div>
+
+  <!-- ── Project filter ── -->
+  <div class="project-filter-row">
+    <label>Financial Model Breakup</label>
+    <select id="fm-project" onchange="onProjectChange()">
+      <option value="">— Select Project —</option>
+      <option value="prime">PRIME SELCO Infra-Support</option>
+      <option value="innovation">Innovation</option>
+      <option value="scale">Scale</option>
+    </select>
+    <span id="fm-project-badge" style="display:none;padding:3px 10px;border-radius:12px;font-size:11px;font-weight:bold;background:var(--teal);color:#fff"></span>
+
+    <label style="margin-left:auto">Type of Calculation</label>
+    <select id="fm-calc-type" onchange="onCalcTypeChange()" style="flex:0 0 auto;min-width:140px;max-width:160px">
+      <option value="estimation">Estimation</option>
+      <option value="final">Final</option>
+    </select>
+    <span id="fm-calc-badge" style="padding:3px 10px;border-radius:12px;font-size:11px;font-weight:bold;background:var(--sea);color:#fff">Estimation</span>
+  </div>
+
+  <!-- Calc-type explanation note -->
+  <div class="int-note" id="fm-calc-note" style="margin-bottom:14px">
+    <span id="fm-calc-note-text"><strong>Estimation mode</strong> — costs are pulled from BE Estimation, EE Required SELCO prices, and CE Solar Costs. Use during DPR design.</span>
+  </div>
+
+  <!-- ── Cost summary strip (always visible) ── -->
+  <div class="cost-callout" style="margin-bottom:18px">
+    <div><div class="cc-label">BE Cost</div><div class="cc-val" id="loan-be-cost">₹ 0.00</div></div>
+    <div><div class="cc-label">EE Cost</div><div class="cc-val" id="loan-ee-cost">₹ 0.00</div></div>
+    <div><div class="cc-label">CE Cost</div><div class="cc-val" id="loan-ce-cost">₹ 0.00</div></div>
+    <div><div class="cc-label">Total Infrastructure Cost</div><div class="cc-val" id="loan-total" style="font-size:22px">₹ 0.00</div></div>
+  </div>
+
+  <!-- ── PRIME SELCO: Slab reference + status (hidden for Innovation/Scale) ── -->
+  <div id="fm-slab-section">
+    <div style="font-size:11px;text-transform:uppercase;letter-spacing:1px;color:var(--teal);font-weight:bold;margin-bottom:8px">Funding Slab Reference</div>
+    <div class="slab-strip">
+      <div class="slab-card" id="slab-A">
+        <div class="slab-name">Slab A</div>
+        <div class="slab-range">Total Cost &lt; ₹5,00,000</div>
+        <div class="slab-pcts">
+          <div>SELCO</div><div style="text-align:right;font-weight:bold">50%</div>
+          <div>MBMA</div><div style="text-align:right;font-weight:bold">30%</div>
+          <div>LIFCOM</div><div style="text-align:right;font-weight:bold">15%</div>
+          <div>User</div><div style="text-align:right;font-weight:bold">5%</div>
+        </div>
+      </div>
+      <div class="slab-card" id="slab-B">
+        <div class="slab-name">Slab B</div>
+        <div class="slab-range">Total Cost &lt; ₹10,00,000</div>
+        <div class="slab-pcts">
+          <div>SELCO</div><div style="text-align:right;font-weight:bold">30%</div>
+          <div>MBMA</div><div style="text-align:right;font-weight:bold">40%</div>
+          <div>LIFCOM</div><div style="text-align:right;font-weight:bold">25%</div>
+          <div>User</div><div style="text-align:right;font-weight:bold">5%</div>
+        </div>
+      </div>
+      <div class="slab-card" id="slab-C">
+        <div class="slab-name">Slab C</div>
+        <div class="slab-range">Total Cost &lt; ₹25,00,000</div>
+        <div class="slab-pcts">
+          <div>SELCO</div><div style="text-align:right;font-weight:bold">20%</div>
+          <div>MBMA</div><div style="text-align:right;font-weight:bold">50%</div>
+          <div>LIFCOM</div><div style="text-align:right;font-weight:bold">25%</div>
+          <div>User</div><div style="text-align:right;font-weight:bold">5%</div>
+        </div>
+      </div>
+    </div>
+    <div id="slab-status" style="background:var(--cream-deep);border:1px solid var(--border);border-radius:8px;padding:10px 14px;margin-bottom:14px;font-size:12px;color:var(--ink)">
+      <span style="color:var(--ink-soft);font-style:italic">No slab triggered — enter component costs in BE / EE / CE tabs.</span>
+    </div>
+  </div>
+
+  <!-- ── Editable % instruction (Innovation / Scale only) ── -->
+  <div id="fm-editable-note" class="int-note" style="display:none;margin-bottom:14px">
+    Enter the percentage share for each funder. Amounts are calculated automatically. Total must equal 100%.
+  </div>
+
+  <!-- ── Funding Allocation heading ── -->
+  <div style="font-size:11px;text-transform:uppercase;letter-spacing:1px;color:var(--teal);font-weight:bold;margin-bottom:8px">Funding Allocation</div>
+
+  <!-- ── Funding cards grid ── -->
+  <div class="funding-grid" id="fm-funding-grid">
+
+    <!-- SELCO -->
+    <div class="funding-card f-selco">
+      <div class="fc-name">
+        <span>SELCO Foundation</span>
+        <!-- PRIME: static pct label -->
+        <span class="fc-pct fc-static" id="fc-selco-pct">0%</span>
+        <!-- Innovation/Scale: editable pct input -->
+        <span class="fc-editable" style="display:none;align-items:center;gap:4px">
+          <input type="number" class="fc-pct-input" id="fc-selco-pct-in" min="0" max="100" step="0.1" placeholder="0" oninput="onPctInput()">
+          <span class="fc-pct-label">%</span>
+        </span>
+      </div>
+      <div class="fc-amount" id="fc-selco-amount">₹ 0.00</div>
+    </div>
+
+    <!-- MBMA -->
+    <div class="funding-card f-mbma">
+      <div class="fc-name">
+        <span>MBMA</span>
+        <span class="fc-pct fc-static" id="fc-mbma-pct">0%</span>
+        <span class="fc-editable" style="display:none;align-items:center;gap:4px">
+          <input type="number" class="fc-pct-input" id="fc-mbma-pct-in" min="0" max="100" step="0.1" placeholder="0" oninput="onPctInput()">
+          <span class="fc-pct-label">%</span>
+        </span>
+      </div>
+      <div class="fc-amount" id="fc-mbma-amount">₹ 0.00</div>
+    </div>
+
+    <!-- LIFCOM -->
+    <div class="funding-card f-lifcom">
+      <div class="fc-name">
+        <span>LIFCOM (Loan)</span>
+        <span class="fc-pct fc-static" id="fc-lifcom-pct">0%</span>
+        <span class="fc-editable" style="display:none;align-items:center;gap:4px">
+          <input type="number" class="fc-pct-input" id="fc-lifcom-pct-in" min="0" max="100" step="0.1" placeholder="0" oninput="onPctInput()">
+          <span class="fc-pct-label">%</span>
+        </span>
+      </div>
+      <div class="fc-amount" id="fc-lifcom-amount">₹ 0.00</div>
+    </div>
+
+    <!-- User Contribution -->
+    <div class="funding-card f-user">
+      <div class="fc-name">
+        <span>User Contribution</span>
+        <span class="fc-pct fc-static" id="fc-user-pct">0%</span>
+        <span class="fc-editable" style="display:none;align-items:center;gap:4px">
+          <input type="number" class="fc-pct-input" id="fc-user-pct-in" min="0" max="100" step="0.1" placeholder="0" oninput="onPctInput()">
+          <span class="fc-pct-label">%</span>
+        </span>
+      </div>
+      <div class="fc-amount" id="fc-user-amount">₹ 0.00</div>
+    </div>
+
+    <!-- Others (always shown) -->
+    <div class="funding-card" style="border-left-color:var(--ink-soft)">
+      <div class="fc-name" style="gap:6px;flex-wrap:wrap">
+        <input type="text" class="fc-name-input" id="fc-others-name" placeholder="Other funder name..." oninput="onPctInput()">
+        <span class="fc-pct fc-static" id="fc-others-pct" style="display:none">0%</span>
+        <span class="fc-editable" style="display:none;align-items:center;gap:4px">
+          <input type="number" class="fc-pct-input" id="fc-others-pct-in" min="0" max="100" step="0.1" placeholder="0" oninput="onPctInput()">
+          <span class="fc-pct-label">%</span>
+        </span>
+      </div>
+      <div class="fc-amount" id="fc-others-amount">₹ 0.00</div>
+      <div style="font-size:10px;color:var(--ink-faint);margin-top:4px;font-style:italic" id="fc-others-hint">Enter funder name and percentage above</div>
+    </div>
+
+  </div><!-- /funding-grid -->
+
+  <!-- ── % validation strip (Innovation / Scale only) ── -->
+  <div id="fm-pct-check" class="pct-validation warn" style="display:none">
+    <span id="fm-pct-total">Total: 0%</span>
+    <span id="fm-pct-msg">— allocations must sum to 100%</span>
+  </div>
+
+  <!-- ── EMI Calculator (PRIME SELCO only) ── -->
+  <div id="fm-emi-section">
+    <div style="font-size:11px;text-transform:uppercase;letter-spacing:1px;color:var(--teal);font-weight:bold;margin-bottom:8px;margin-top:18px">LIFCOM Loan EMI Calculator</div>
+    <div class="emi-grid">
+      <div class="emi-card">
+        <div class="emi-tenure">5-Year LIFCOM EMI</div>
+        <div class="emi-amount" id="emi-5">₹ 0.00 / month</div>
+        <div class="emi-formula">LIFCOM Amount ÷ (5 × 12 months)</div>
+      </div>
+      <div class="emi-card">
+        <div class="emi-tenure">3-Year LIFCOM EMI</div>
+        <div class="emi-amount" id="emi-3">₹ 0.00 / month</div>
+        <div class="emi-formula">LIFCOM Amount ÷ (3 × 12 months)</div>
+      </div>
+    </div>
+    <div class="int-note" style="display:inline-flex;margin-top:10px">EMI is a flat division — does not include interest. For finalised loan agreements, refer to the LIFCOM partner's formal sanction letter.</div>
+  </div>
+
+</div><!-- /loan panel -->
+
+<!-- ═══════════════════════════════ TASK ═══════════════════════════════ -->
+<!-- ═══════════════════════════════ TRACKER ═══════════════════════════════ -->
+<div id="tracker" class="panel hidden">
+  <div class="section-caption">Disbursement tracking — Section I shows tranche allocation per cost head (cascading priority: MBMA → USER → SELCO → LIFCOM); Section II logs vendor payments.</div>
+
+  <!-- ── Section I — Tranche Allocations (teal collapsible banner) ── -->
+  <div class="trk-section-block">
+    <div class="trk-section-banner" onclick="toggleTrkSection('trk-tranche')">
+      <span class="trk-chev" id="trk-tranche-chev">▾</span>
+      <span class="trk-sb-roman">I.</span>
+      <span class="trk-sb-title">Tranche Allocations</span>
+      <span class="trk-sb-spacer"></span>
+      <span class="trk-sb-meta">Auto-computed from Financial Model</span>
+    </div>
+    <div class="trk-section-body" id="trk-tranche-body">
+
+      <p class="trk-formula-note">Cascading allocation logic: MBMA fills first (BE → EE → CE), then USER fills the remainder, then SELCO, then LIFCOM. Each tranche disburses to a cost head only up to whatever is still unallocated.</p>
+
+      <div class="tranche-grid">
+        <!-- MBMA -->
+        <div class="tranche-card t-mbma">
+          <div class="tranche-head">
+            <div class="tranche-name">MBMA Tranche</div>
+            <div class="tranche-total">Total: <span id="trk-mbma-total">₹ 0.00</span></div>
+          </div>
+          <div class="tranche-rows">
+            <div class="tranche-row"><span class="tr-label">MBMA → BE Cost</span><span class="tr-val" id="alloc_mbma_be">₹ 0.00</span></div>
+            <div class="tranche-row"><span class="tr-label">MBMA → EE Cost</span><span class="tr-val" id="alloc_mbma_ee">₹ 0.00</span></div>
+            <div class="tranche-row"><span class="tr-label">MBMA → CE Cost</span><span class="tr-val" id="alloc_mbma_ce">₹ 0.00</span></div>
+            <div class="tranche-row tr-remainder"><span class="tr-label">Unallocated</span><span class="tr-val" id="alloc_mbma_remainder">₹ 0.00</span></div>
+          </div>
+        </div>
+
+        <!-- USER -->
+        <div class="tranche-card t-user">
+          <div class="tranche-head">
+            <div class="tranche-name">USER Tranche</div>
+            <div class="tranche-total">Total: <span id="trk-user-total">₹ 0.00</span></div>
+          </div>
+          <div class="tranche-rows">
+            <div class="tranche-row"><span class="tr-label">USER → BE Cost</span><span class="tr-val" id="alloc_user_be">₹ 0.00</span></div>
+            <div class="tranche-row"><span class="tr-label">USER → EE Cost</span><span class="tr-val" id="alloc_user_ee">₹ 0.00</span></div>
+            <div class="tranche-row"><span class="tr-label">USER → CE Cost</span><span class="tr-val" id="alloc_user_ce">₹ 0.00</span></div>
+            <div class="tranche-row tr-remainder"><span class="tr-label">Unallocated</span><span class="tr-val" id="alloc_user_remainder">₹ 0.00</span></div>
+          </div>
+        </div>
+
+        <!-- SELCO -->
+        <div class="tranche-card t-selco">
+          <div class="tranche-head">
+            <div class="tranche-name">SELCO Tranche</div>
+            <div class="tranche-total">Total: <span id="trk-selco-total">₹ 0.00</span></div>
+          </div>
+          <div class="tranche-rows">
+            <div class="tranche-row"><span class="tr-label">SELCO → BE Cost</span><span class="tr-val" id="alloc_selco_be">₹ 0.00</span></div>
+            <div class="tranche-row"><span class="tr-label">SELCO → EE Cost</span><span class="tr-val" id="alloc_selco_ee">₹ 0.00</span></div>
+            <div class="tranche-row"><span class="tr-label">SELCO → CE Cost</span><span class="tr-val" id="alloc_selco_ce">₹ 0.00</span></div>
+            <div class="tranche-row tr-remainder"><span class="tr-label">Unallocated</span><span class="tr-val" id="alloc_selco_remainder">₹ 0.00</span></div>
+          </div>
+        </div>
+
+        <!-- LIFCOM -->
+        <div class="tranche-card t-lifcom">
+          <div class="tranche-head">
+            <div class="tranche-name">LIFCOM Tranche</div>
+            <div class="tranche-total">Total: <span id="trk-lifcom-total">₹ 0.00</span></div>
+          </div>
+          <div class="tranche-rows">
+            <div class="tranche-row"><span class="tr-label">LIFCOM → BE Cost</span><span class="tr-val" id="alloc_lifcom_be">₹ 0.00</span></div>
+            <div class="tranche-row"><span class="tr-label">LIFCOM → EE Cost</span><span class="tr-val" id="alloc_lifcom_ee">₹ 0.00</span></div>
+            <div class="tranche-row"><span class="tr-label">LIFCOM → CE Cost</span><span class="tr-val" id="alloc_lifcom_ce">₹ 0.00</span></div>
+            <div class="tranche-row tr-remainder"><span class="tr-label">Unallocated</span><span class="tr-val" id="alloc_lifcom_remainder">₹ 0.00</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Unfunded-gap warning -->
+      <div class="tranche-gap" id="trk-gap-warn" style="display:none">
+        <strong>⚠ Funding gap:</strong> <span id="trk-gap-msg"></span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Section II — Vendor Payment Tracker ── -->
+  <div class="trk-section-block">
+    <div class="trk-section-banner" onclick="toggleTrkSection('trk-vendor')">
+      <span class="trk-chev" id="trk-vendor-chev">▾</span>
+      <span class="trk-sb-roman">II.</span>
+      <span class="trk-sb-title">Vendor Payment Tracker</span>
+      <span class="trk-sb-spacer"></span>
+      <span class="trk-sb-meta">Log every payment made to a vendor</span>
+    </div>
+    <div class="trk-section-body" id="trk-vendor-body">
+
+      <!-- Sub-section I — Machines & Solar -->
+      <div class="trk-subsection">
+        <div class="trk-subsection-title">Sub-section I — Machines &amp; Solar</div>
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th class="num-col">No.</th>
+              <th style="width:130px">Purpose</th>
+              <th>Paid To</th>
+              <th style="width:140px">Amount (₹)</th>
+              <th style="width:160px">Invoice</th>
+              <th>Comment</th>
+              <th style="width:32px"></th>
+            </tr>
+          </thead>
+          <tbody id="vendor-ms-body"></tbody>
+        </table>
+        <div class="table-actions">
+          <span class="subtotal-pill">Sub-total: <strong id="vendor-ms-total">₹ 0.00</strong></span>
+          <button class="add-row-btn" onclick="addVendorMSRow()">+ Add Row</button>
+        </div>
+      </div>
+
+      <!-- Sub-section II — Built Environment -->
+      <div class="trk-subsection">
+        <div class="trk-subsection-title">Sub-section II — Built Environment</div>
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th class="num-col">No.</th>
+              <th>Purpose</th>
+              <th>Paid To</th>
+              <th style="width:140px">Amount (₹)</th>
+              <th style="width:160px">Invoice</th>
+              <th>Comment</th>
+              <th style="width:32px"></th>
+            </tr>
+          </thead>
+          <tbody id="vendor-be-body"></tbody>
+        </table>
+        <div class="table-actions">
+          <span class="subtotal-pill">Sub-total: <strong id="vendor-be-total">₹ 0.00</strong></span>
+          <button class="add-row-btn" onclick="addVendorBERow()">+ Add Row</button>
+        </div>
+      </div>
+
+      <!-- Balance card -->
+      <div class="balance-card">
+        <div class="balance-grid">
+          <div class="balance-cell">
+            <div class="bc-lbl">Total Disbursed</div>
+            <div class="bc-val" id="bal-disbursed">₹ 0.00</div>
+            <div class="bc-sub">MBMA + USER + SELCO + LIFCOM allocated</div>
+          </div>
+          <div class="balance-cell">
+            <div class="bc-lbl">Total Paid to Vendors</div>
+            <div class="bc-val" id="bal-paid">₹ 0.00</div>
+            <div class="bc-sub">Machines &amp; Solar + Built Environment</div>
+          </div>
+          <div class="balance-cell balance-cell--final">
+            <div class="bc-lbl">Balance with Entrepreneur</div>
+            <div class="bc-val" id="bal-remaining">₹ 0.00</div>
+            <div class="bc-sub">Disbursed − Paid</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════ TASK LOG ═══════════════════════════════ -->
+<div id="tasklog" class="panel hidden">
+  <div class="task-section">
+    <div class="task-section-title">
+      <span><span class="ts-roman">I.</span>Task Log — Infrastructure</span>
+      <span class="ts-count"><span id="task-count">0</span> entries</span>
+    </div>
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th class="num-col">No.</th>
+          <th style="width:130px">Date</th>
+          <th>Task Name</th>
+          <th>Notes / Outcome</th>
+          <th style="width:160px">Attachment</th>
+          <th style="width:32px"></th>
+        </tr>
+      </thead>
+      <tbody id="task-body"></tbody>
+    </table>
+    <div class="table-actions">
+      <button class="add-row-btn" onclick="addTaskRow()">+ Add Task</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════ RESOURCES ═══════════════════════════════ -->
+<div id="resources" class="panel hidden">
+  <div class="section-caption">Reference materials for BE / EE / CE assessment and funding.</div>
+  <div class="res-grid">
+    <div class="res-tile"><h4>MSOR 2016 Plinth Rate Schedule</h4><p>Hill-wise plinth rates for BE costing.</p><a href="#" onclick="event.preventDefault()">Open schedule ↗</a></div>
+    <div class="res-tile"><h4>Site Layout Sketch Template</h4><p>Standard sketch template for Extension / New / Renovation.</p><a href="#" onclick="event.preventDefault()">Download ↗</a></div>
+    <div class="res-tile"><h4>SELCO Solar Sizing Calculator</h4><p>Solar capacity (kWp) sizing tool based on connected loads.</p><a href="#" onclick="event.preventDefault()">Open calculator ↗</a></div>
+    <div class="res-tile"><h4>RWH Guidelines</h4><p>Meghalaya-specific rainwater harvesting design guidelines.</p><a href="#" onclick="event.preventDefault()">Open ↗</a></div>
+    <div class="res-tile"><h4>LIFCOM Loan Application</h4><p>Standard LIFCOM loan application template with checklist.</p><a href="#" onclick="event.preventDefault()">Download ↗</a></div>
+    <div class="res-tile"><h4>EE Equipment List</h4><p>Empanelled BEE-rated energy-efficient machinery suppliers.</p><a href="#" onclick="event.preventDefault()">Open list ↗</a></div>
+  </div>
+</div>
+
+</div><!-- /content -->
+</div><!-- /card -->
+</div><!-- /page -->
+
+<script>
+// ── MSOR 2016 Plinth Rate Matrix ──────────────────────────────────────────
+const MSOR = {
+  'Khasi Hills':   { 'RCC frame: PPGI sheets and steel truss':25701, 'RCC frame: Ground Floor Institutional/Public':26165, 'RCC frame: First Floor Institutional/Public':18554 },
+  'Jaintia Hills': { 'RCC frame: PPGI sheets and steel truss':26279, 'RCC frame: Ground Floor Institutional/Public':26754, 'RCC frame: First Floor Institutional/Public':27146 },
+  'Garo Hills':    { 'RCC frame: PPGI sheets and steel truss':26665, 'RCC frame: Ground Floor Institutional/Public':18971, 'RCC frame: First Floor Institutional/Public':19250 }
+};
+const SQM2SQF = 10.7639;
+
+const SLABS = [
+  { id:'A', max:500000,  selco:0.50, mbma:0.30, lifcom:0.15, user:0.05 },
+  { id:'B', max:1000000, selco:0.30, mbma:0.40, lifcom:0.25, user:0.05 },
+  { id:'C', max:2500000, selco:0.20, mbma:0.50, lifcom:0.25, user:0.05 }
+];
+
+// Placeholder Machinery Master lists (pending real data wiring from Machinery Module)
+// In production, these will auto-populate from the Machinery Module's Required and Existing tabs.
+const MACHINERY_REQUIRED_MASTER = [
+  '— Select from Machinery Module (Required) —',
+  'Turmeric Grinding Machine (EE Pending)',
+  'Double Barrel Drum Dryer (EE Pending)',
+  'Solar Dehydrator — 50kg/batch (EE Pending)',
+  'Sealing Machine — Impulse 12" (EE Pending)',
+  'PPGI Rooftop Fan — 3-phase (EE Pending)',
+];
+
+// Combined list of ALL machines (Existing + Required) for CE solarization dropdown.
+// Each entry tags source so Required/Existing column auto-fetches.
+const MACHINERY_ALL_FOR_SOLAR = [
+  { name:'— Select Machine —', source:'' },
+  { name:'Mixer Grinder 2HP',                    source:'Existing' },
+  { name:'Drying Unit — Electric',               source:'Existing' },
+  { name:'Refrigeration Unit',                   source:'Existing' },
+  { name:'Turmeric Grinding Machine',            source:'Required' },
+  { name:'Double Barrel Drum Dryer',             source:'Required' },
+  { name:'Solar Dehydrator — 50kg/batch',        source:'Required' },
+  { name:'Sealing Machine — Impulse 12"',        source:'Required' },
+  { name:'PPGI Rooftop Fan — 3-phase',           source:'Required' },
+];
+
+const TENURE_OPTS = ['Assigned Community Land','Own Land purchased','Own Land inheritance','Govt. long leased land','Govt. rental','Rental / leased (private)','Others'];
+
+let eeCounter = 0, beImplCounter = 0, eeImplCounter = 0, ceSolarCounter = 0, ceImplCounter = 0, taskCounter = 0, lbCounter = 0;
+
+// ── Init ─────────────────────────────────────────────────────────────────
+window.addEventListener('DOMContentLoaded', () => {
+  populateTenure();
+  refreshSummary();
+  updateFinancial();
+});
+
+function populateTenure(){
+  ['be-tenure-exist','be-tenure-prop'].forEach(id => {
+    const s = document.getElementById(id);
+    if(!s) return;
+    s.innerHTML = '<option value="">— Select —</option>' + TENURE_OPTS.map(t => `<option>${t}</option>`).join('');
+  });
+}
+
+// ── Tab switch ───────────────────────────────────────────────────────────
+function showTab(id, el){
+  document.querySelectorAll('.panel').forEach(p => p.classList.add('hidden'));
+  document.getElementById(id).classList.remove('hidden');
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  el.classList.add('active');
+  if(id === 'summary') refreshSummary();
+  if(id === 'loan') refreshLoan();
+  if(id === 'tracker'){
+    if(typeof refreshLoan === 'function') refreshLoan();  // ensure funder amounts are up-to-date
+    if(typeof refreshTrancheAllocations === 'function') refreshTrancheAllocations();
+    if(typeof refreshVendorTotals === 'function') refreshVendorTotals();
+  }
+}
+
+// ── Yes/No segmented ─────────────────────────────────────────────────────
+function ynSelect(input){
+  const wrap = input.closest('.yn-row');
+  wrap?.querySelectorAll('label').forEach(l => l.classList.toggle('sel', l.querySelector('input') === input));
+}
+
+// ── File upload helpers ──────────────────────────────────────────────────
+function handleUpload(scope, input){
+  const wrap = document.getElementById(`${scope}-wrap`);
+  const file = input.files?.[0];
+  if(!file || !wrap) return;
+  wrap.querySelector('.file-pill')?.remove();
+  const pill = document.createElement('span');
+  pill.className = 'file-pill';
+  pill.innerHTML = `📎 <span class="fn" title="${file.name}">${file.name}</span><span class="fx" onclick="removeFile('${scope}')">×</span>`;
+  pill.dataset.url = URL.createObjectURL(file);
+  wrap.appendChild(pill);
+  const vb = document.getElementById(`${scope}-view`);
+  if(vb) vb.removeAttribute('disabled');
+}
+function viewFile(scope){
+  const wrap = document.getElementById(`${scope}-wrap`);
+  const url = wrap?.querySelector('.file-pill')?.dataset.url;
+  if(url) window.open(url,'_blank');
+}
+function removeFile(scope){
+  const wrap = document.getElementById(`${scope}-wrap`);
+  wrap?.querySelector('.file-pill')?.remove();
+  const vb = document.getElementById(`${scope}-view`);
+  if(vb) vb.setAttribute('disabled','');
+  const fi = wrap?.querySelector('input[type="file"]');
+  if(fi) fi.value = '';
+}
+
+// ── Table upload cell helpers ─────────────────────────────────────────────
+function handleCellUpload(btnEl, input){
+  const cell = btnEl.closest('td');
+  const file = input.files?.[0];
+  if(!file || !cell) return;
+  cell.querySelector('.file-pill')?.remove();
+  const pill = document.createElement('span');
+  pill.className = 'file-pill';
+  pill.innerHTML = `📎 <span class="fn">${file.name}</span><span class="fx" onclick="this.parentElement.remove()">×</span>`;
+  pill.dataset.url = URL.createObjectURL(file);
+  cell.appendChild(pill);
+  cell.querySelector('.view-btn')?.removeAttribute('disabled');
+}
+function viewCellFile(vbEl){
+  const url = vbEl.closest('td')?.querySelector('.file-pill')?.dataset.url;
+  if(url) window.open(url,'_blank');
+}
+
+// ── BE cost calculation (typology-aware) ─────────────────────────────────
+// MSOR typologies use auto-calc (Plinth Rate × SQM).
+// Non-MSOR typologies (e.g. Kiosks) hide MSOR fields and use manual entry.
+const MSOR_TYPOLOGIES = [
+  'RCC frame: PPGI sheets and steel truss',
+  'RCC frame: Ground Floor Institutional/Public',
+  'RCC frame: First Floor Institutional/Public'
+];
+
+function isMSORTypology(typ){ return MSOR_TYPOLOGIES.includes(typ); }
+
+function onBETypologyChange(){
+  const typ = document.getElementById('be-typology')?.value || '';
+  const isMSOR = isMSORTypology(typ);
+  const msorFields = document.getElementById('be-msor-fields');
+  const autoCallout = document.getElementById('be-cost-callout');
+  const manualRow = document.getElementById('be-manual-cost-row');
+
+  if(isMSOR || !typ){
+    // MSOR mode (or no selection yet): show plinth rate + SQM + SQF + auto callout
+    if(msorFields) msorFields.style.display = 'block';
+    if(autoCallout) autoCallout.style.display = 'flex';
+    if(manualRow) manualRow.style.display = 'none';
+    calcBECost();
+  } else {
+    // Non-MSOR mode (Kiosks, etc): hide MSOR fields + auto callout, show manual entry
+    if(msorFields) msorFields.style.display = 'none';
+    if(autoCallout) autoCallout.style.display = 'none';
+    if(manualRow) manualRow.style.display = 'flex';
+    refreshSummary();
+    updateFinancial();
+  }
+}
+
+function calcBECost(){
+  const hill = document.getElementById('be-hill')?.value;
+  const typ  = document.getElementById('be-typology')?.value;
+  if(!isMSORTypology(typ)) return; // manual mode handles itself
+  const rate = (hill && typ && MSOR[hill]?.[typ]) ? MSOR[hill][typ] : 0;
+  const rateEl = document.getElementById('be-plinth-rate');
+  if(rateEl) rateEl.value = rate ? `₹ ${rate.toLocaleString('en-IN')}.00` : '';
+
+  const sqm = parseFloat(document.getElementById('be-sqm')?.value) || 0;
+  const cost = rate * sqm;
+  document.getElementById('be-est-cost').textContent = `₹ ${cost.toLocaleString('en-IN', {minimumFractionDigits:2})}`;
+  document.getElementById('be-rate-formula').textContent = rate && sqm ? `₹${rate.toLocaleString('en-IN')} × ${sqm} SQM` : '';
+  refreshSummary();
+  updateFinancial();
+}
+function onSqmChange(){
+  const sqm = parseFloat(document.getElementById('be-sqm')?.value);
+  if(!isNaN(sqm)) document.getElementById('be-sqf').value = (sqm * SQM2SQF).toFixed(2);
+  calcBECost();
+}
+function onSqfChange(){
+  const sqf = parseFloat(document.getElementById('be-sqf')?.value);
+  if(!isNaN(sqf)) document.getElementById('be-sqm').value = (sqf / SQM2SQF).toFixed(2);
+  calcBECost();
+}
+function onManualBECost(){
+  // For non-MSOR typologies — manual entry feeds straight through.
+  refreshSummary();
+  updateFinancial();
+}
+
+// ── Rent / Unit ──────────────────────────────────────────────────────────
+function calcRentPerUnit(){
+  const rent  = parseFloat(document.getElementById('be-rent-month')?.value) || 0;
+  const units = parseFloat(document.getElementById('units-per-month')?.value) || 0;
+  const ru = units > 0 ? (rent/units) : 0;
+  document.getElementById('be-rent-unit').value = `₹ ${ru.toFixed(2)}`;
+  refreshSummary();
+}
+function onUnitsChange(){
+  const v = document.getElementById('units-per-month')?.value || '';
+  const m = document.getElementById('ce-units-mirror');
+  if(m) m.value = v ? `${v} units` : '';
+  calcRentPerUnit();
+  calcElecPerUnit();
+}
+
+// ── Electricity / Unit ───────────────────────────────────────────────────
+function calcElecPerUnit(){
+  const elec  = parseFloat(document.getElementById('ce-elec-month')?.value) || 0;
+  const units = parseFloat(document.getElementById('units-per-month')?.value) || 0;
+  const eu = units > 0 ? (elec/units) : 0;
+  document.getElementById('ce-elec-unit').value = `₹ ${eu.toFixed(2)}`;
+  refreshSummary();
+}
+
+// ── BE Intervention toggles ──────────────────────────────────────────────
+function onBEIntToggle(){
+  const on = document.getElementById('be-int-flag')?.checked;
+  document.getElementById('be-int-detail').style.display = on ? 'block' : 'none';
+  refreshSummary();
+}
+function onBETypeChange(){
+  // could show/hide sketch conditionally — left open for future wiring
+}
+function checkTenure(){
+  const t = document.getElementById('be-tenure-prop')?.value;
+  const show = ['Assigned Community Land','Own Land purchased','Own Land inheritance'].includes(t);
+  document.getElementById('be-owner-row').style.display = show ? 'flex' : 'none';
+}
+
+// ── CE Intervention toggle ───────────────────────────────────────────────
+function onCEIntToggle(){
+  const on = document.getElementById('ce-int-flag')?.checked;
+  document.getElementById('ce-int-detail').style.display = on ? 'block' : 'none';
+  refreshSummary();
+}
+
+// ── BE Implementation Status (single banner + child log table) ──────────
+function addBEImplLogRow(){
+  beImplCounter++;
+  const rid = `bei${beImplCounter}`;
+  const tbody = document.getElementById('be-impl-log-body');
+  const tr = document.createElement('tr');
+  tr.id = rid;
+  const today = new Date().toISOString().split('T')[0];
+  tr.innerHTML = `
+    <td style="text-align:center;color:var(--ink-faint);font-size:10px"></td>
+    <td><input type="date" value="${today}"></td>
+    <td>
+      <div class="upload-wrap" style="flex-direction:row;gap:4px">
+        <label class="ul-btn" style="font-size:10px">⬆ Upload<input type="file" accept=".pdf,.jpg,.png" onchange="handleCellUpload(this.parentElement,this)"></label>
+        <button class="view-btn" style="font-size:10px" disabled onclick="viewCellFile(this)">View</button>
+      </div>
+    </td>
+    <td><input type="text" placeholder="Notes / feedback..."></td>
+    <td><button class="tbl-del" onclick="document.getElementById('${rid}').remove();renumberBEImplLog()">✕</button></td>
+  `;
+  tbody.appendChild(tr);
+  renumberBEImplLog();
+}
+function renumberBEImplLog(){
+  document.querySelectorAll('#be-impl-log-body tr').forEach((tr,i) => {
+    const cell = tr.querySelector('td:first-child');
+    if(cell) cell.textContent = String(i+1).padStart(2,'0');
+  });
+}
+function updateBEImplSummary(){
+  const status = document.getElementById('be-impl-status')?.value || '—';
+  document.getElementById('s-be-impl').textContent = status;
+}
+// Final BE cost — read directly from the banner input (used in Financial Model 'Final' mode)
+function getBEFinalCost(){
+  return parseFloat(document.getElementById('be-final-cost')?.value) || 0;
+}
+
+// ── EE Machine rows ──────────────────────────────────────────────────────
+function addEEMachine(){
+  eeCounter++;
+  const mid = `eem${eeCounter}`;
+  const container = document.getElementById('ee-machines-container');
+  document.getElementById('ee-empty').style.display = 'none';
+
+  const card = document.createElement('div');
+  card.className = 'ee-card';
+  card.id = mid;
+  card.innerHTML = `
+    <div class="ee-banner" onclick="toggleEECard(event,'${mid}')">
+      <span class="ee-chev">▾</span>
+      <select style="flex:1;min-width:220px" onclick="event.stopPropagation()" onchange="onEEMachineSelect('${mid}')">
+        ${MACHINERY_REQUIRED_MASTER.map(m => `<option>${m}</option>`).join('')}
+      </select>
+      <label onclick="event.stopPropagation()">
+        ₹ SELCO price:
+        <input type="number" style="width:110px" placeholder="0" step="0.01" oninput="calcEETotal()">
+      </label>
+      <select style="min-width:140px" onclick="event.stopPropagation()" onchange="updateEEImplSummary()">
+        <option value="">— Status —</option>
+        <option>Pending</option><option>Implemented</option>
+      </select>
+      <button class="btn btn-sm" style="background:rgba(255,255,255,.2);color:#fff;border-color:rgba(255,255,255,.3)" onclick="event.stopPropagation();removeEEMachine('${mid}')">✕</button>
+    </div>
+    <div class="ee-body" id="${mid}-body">
+      <div class="ee-fetched" id="${mid}-fetched">
+        <div style="font-size:11px;color:var(--ink-soft);font-style:italic">Select a machine above to auto-fetch its details from the Machinery Module.</div>
+      </div>
+    </div>
+  `;
+  container.appendChild(card);
+  calcEETotal();
+}
+
+function toggleEECard(e, mid){
+  if(e.target.closest('select,input,button')) return;
+  const banner = e.currentTarget;
+  const body = document.getElementById(`${mid}-body`);
+  if(!body) return;
+  const col = body.classList.toggle('collapsed');
+  banner.classList.toggle('collapsed', col);
+}
+
+function onEEMachineSelect(mid){
+  const card = document.getElementById(mid);
+  const sel = card?.querySelector('.ee-banner select');
+  const machine = sel?.value;
+  const fetchedEl = document.getElementById(`${mid}-fetched`);
+  if(!fetchedEl) return;
+
+  if(!machine || machine.startsWith('—')){
+    fetchedEl.innerHTML = '<div style="font-size:11px;color:var(--ink-soft);font-style:italic">Select a machine above to auto-fetch its details from the Machinery Module.</div>';
+    return;
+  }
+
+  // Placeholder fetched data (real wiring will query Machinery Module DocType)
+  fetchedEl.innerHTML = `
+    <div style="font-size:11px;font-weight:bold;color:var(--teal);margin-bottom:6px">↻ Fetched from Machinery Module — ${machine}</div>
+    <div class="ef-grid">
+      <div class="ef-item"><span class="ef-label">Product</span><span class="ef-val" id="${mid}-product">—</span></div>
+      <div class="ef-item"><span class="ef-label">Purpose</span><span class="ef-val">Processing</span></div>
+      <div class="ef-item"><span class="ef-label">Cost of Machine (₹)</span><span class="ef-val" id="${mid}-cost">₹ 0.00</span></div>
+      <div class="ef-item"><span class="ef-label">Condition</span><span class="ef-val">—</span></div>
+      <div class="ef-item"><span class="ef-label">Procurement Status</span><span class="ef-val">EE Procurement - Selected</span></div>
+      <div class="ef-item"><span class="ef-label">Days of Usage / Month</span><span class="ef-val">—</span></div>
+      <div class="ef-item"><span class="ef-label">Hours of Usage / Day</span><span class="ef-val">—</span></div>
+      <div class="ef-item"><span class="ef-label">Current Usage Capacity / hr</span><span class="ef-val">—</span></div>
+      <div class="ef-item"><span class="ef-label">Monthly Output</span><span class="ef-val">0 units</span></div>
+      <div class="ef-item"><span class="ef-label">Depreciation Rate</span><span class="ef-val">—</span></div>
+      <div class="ef-item"><span class="ef-label">Monthly Depreciation</span><span class="ef-val">₹ 0</span></div>
+      <div class="ef-item"><span class="ef-label">Depreciation / Unit</span><span class="ef-val">₹ 0.00 / unit</span></div>
+    </div>
+    <div style="font-size:10px;color:var(--ink-faint);margin-top:8px;font-style:italic">Fields are read-only here — edit in the Machinery Module.</div>
+  `;
+}
+
+function removeEEMachine(mid){
+  document.getElementById(mid)?.remove();
+  const c = document.getElementById('ee-machines-container');
+  if(c && !c.querySelector('.ee-card')) document.getElementById('ee-empty').style.display = 'block';
+  calcEETotal();
+}
+
+function calcEETotal(){
+  let total = 0;
+  document.querySelectorAll('.ee-banner').forEach(b => {
+    const price = parseFloat(b.querySelector('input[type="number"]')?.value) || 0;
+    total += price;
+  });
+  document.getElementById('ee-total-cost').textContent = `₹ ${total.toLocaleString('en-IN',{minimumFractionDigits:2})}`;
+  // summary + financial
+  document.getElementById('s-ee-cost').textContent = `₹ ${total.toFixed(2)}`;
+  const count = document.querySelectorAll('.ee-card').length;
+  document.getElementById('s-ee-count').textContent = count;
+  updateFinancial();
+}
+function updateEEImplSummary(){
+  const status = document.getElementById('ee-impl-status')?.value || '—';
+  document.getElementById('s-ee-impl').textContent = status;
+}
+
+// ── EE Implementation Status (single banner + child log table) ──────────
+function addEEImplLogRow(){
+  eeImplCounter++;
+  const rid = `eei${eeImplCounter}`;
+  const tbody = document.getElementById('ee-impl-log-body');
+  const tr = document.createElement('tr');
+  tr.id = rid;
+  const today = new Date().toISOString().split('T')[0];
+  tr.innerHTML = `
+    <td style="text-align:center;color:var(--ink-faint);font-size:10px"></td>
+    <td><input type="date" value="${today}"></td>
+    <td>
+      <div class="upload-wrap" style="flex-direction:row;gap:4px">
+        <label class="ul-btn" style="font-size:10px">⬆ Upload<input type="file" onchange="handleCellUpload(this.parentElement,this)"></label>
+        <button class="view-btn" style="font-size:10px" disabled onclick="viewCellFile(this)">View</button>
+      </div>
+    </td>
+    <td><input type="text" placeholder="Notes / feedback..."></td>
+    <td><button class="tbl-del" onclick="document.getElementById('${rid}').remove();renumberEEImplLog()">✕</button></td>
+  `;
+  tbody.appendChild(tr);
+  renumberEEImplLog();
+}
+function renumberEEImplLog(){
+  document.querySelectorAll('#ee-impl-log-body tr').forEach((tr,i) => {
+    const cell = tr.querySelector('td:first-child');
+    if(cell) cell.textContent = String(i+1).padStart(2,'0');
+  });
+}
+// Final EE cost — read directly from the banner input (used in Financial Model 'Final' mode)
+function getEEFinalCost(){
+  return parseFloat(document.getElementById('ee-final-cost')?.value) || 0;
+}
+
+// ── CE Solarization (merged Existing + Required, with auto-fetched source column) ────
+function addCESolarRow(){
+  ceSolarCounter++;
+  const rid = `cesol${ceSolarCounter}`;
+  const tbody = document.getElementById('ce-solar-body');
+  const tr = document.createElement('tr');
+  tr.id = rid;
+  // Build options with data-source attribute so we can auto-fetch the Required/Existing tag
+  const opts = MACHINERY_ALL_FOR_SOLAR
+    .map(m => `<option value="${m.name}" data-source="${m.source}">${m.name}</option>`)
+    .join('');
+  tr.innerHTML = `
+    <td style="text-align:center;color:var(--ink-faint);font-size:10px"></td>
+    <td><select onchange="onCEMachineSelect(this,'${rid}')">${opts}</select></td>
+    <td><span class="ce-src-tag" id="${rid}-src" style="font-size:11px;color:var(--ink-faint);font-style:italic">—</span></td>
+    <td style="text-align:center"><input type="checkbox"></td>
+    <td style="text-align:center"><input type="checkbox"></td>
+    <td><input type="text" placeholder="e.g., 1.5 kWp" oninput="calcCETotal()"></td>
+    <td><input type="number" placeholder="0.00" step="0.01" oninput="calcCETotal()"></td>
+    <td><button class="tbl-del" onclick="document.getElementById('${rid}').remove();renumberCESolar();calcCETotal()">✕</button></td>
+  `;
+  tbody.appendChild(tr);
+  renumberCESolar();
+}
+function onCEMachineSelect(selEl, rid){
+  const opt = selEl.options[selEl.selectedIndex];
+  const source = opt?.dataset?.source || '';
+  const tag = document.getElementById(`${rid}-src`);
+  if(!tag) return;
+  if(source){
+    tag.textContent = source;
+    tag.style.color = source === 'Required' ? 'var(--terracotta-dk)' : 'var(--teal)';
+    tag.style.fontStyle = 'normal';
+    tag.style.fontWeight = 'bold';
+  } else {
+    tag.textContent = '—';
+    tag.style.color = 'var(--ink-faint)';
+    tag.style.fontStyle = 'italic';
+    tag.style.fontWeight = 'normal';
+  }
+}
+function renumberCESolar(){
+  document.querySelectorAll('#ce-solar-body tr').forEach((tr,i) => {
+    const cell = tr.querySelector('td:first-child');
+    if(cell) cell.textContent = String(i+1).padStart(2,'0');
+  });
+}
+function calcCETotal(){
+  let total = 0;
+  document.querySelectorAll('#ce-solar-body tr').forEach(tr => {
+    total += parseFloat(tr.querySelector('input[type="number"]')?.value) || 0;
+  });
+  const totalEl = document.getElementById('ce-total-cost');
+  if(totalEl) totalEl.textContent = `₹ ${total.toLocaleString('en-IN',{minimumFractionDigits:2})}`;
+  document.getElementById('s-ce-cost').textContent = `₹ ${total.toFixed(2)}`;
+  updateFinancial();
+}
+
+// ── CE Implementation Status (single banner + child log table) ──────────
+function addCEImplLogRow(){
+  ceImplCounter++;
+  const rid = `cei${ceImplCounter}`;
+  const tbody = document.getElementById('ce-impl-log-body');
+  const tr = document.createElement('tr');
+  tr.id = rid;
+  const today = new Date().toISOString().split('T')[0];
+  tr.innerHTML = `
+    <td style="text-align:center;color:var(--ink-faint);font-size:10px"></td>
+    <td><input type="date" value="${today}"></td>
+    <td>
+      <div class="upload-wrap" style="flex-direction:row;gap:4px">
+        <label class="ul-btn" style="font-size:10px">⬆ Upload BOM<input type="file" onchange="handleCellUpload(this.parentElement,this)"></label>
+        <button class="view-btn" style="font-size:10px" disabled onclick="viewCellFile(this)">View</button>
+      </div>
+    </td>
+    <td><input type="text" placeholder="Notes / feedback..."></td>
+    <td><button class="tbl-del" onclick="document.getElementById('${rid}').remove();renumberCEImplLog()">✕</button></td>
+  `;
+  tbody.appendChild(tr);
+  renumberCEImplLog();
+}
+function renumberCEImplLog(){
+  document.querySelectorAll('#ce-impl-log-body tr').forEach((tr,i) => {
+    const cell = tr.querySelector('td:first-child');
+    if(cell) cell.textContent = String(i+1).padStart(2,'0');
+  });
+}
+function updateCEImplSummary(){
+  const status = document.getElementById('ce-impl-status')?.value || '—';
+  document.getElementById('s-ce-impl').textContent = status;
+}
+// Final CE cost — read directly from the banner input (used in Financial Model 'Final' mode)
+function getCEFinalCost(){
+  return parseFloat(document.getElementById('ce-final-cost')?.value) || 0;
+}
+
+// ── Summary refresh ──────────────────────────────────────────────────────
+function refreshSummary(){
+  const set = (id, v) => { const el = document.getElementById(id); if(el) el.textContent = v; };
+  const fmt = v => `₹ ${v.toLocaleString('en-IN', {minimumFractionDigits:2, maximumFractionDigits:2})}`;
+
+  // ── Pull live costs ──────────────────────────────────────────
+  const costs   = getInfraCosts();
+  const beCost  = costs.be;
+  const eeCost  = costs.ee;
+  const ceCost  = costs.ce;
+  const total   = beCost + eeCost + ceCost;
+
+  // ── Flags / intervention state ───────────────────────────────
+  const beFlag  = document.getElementById('be-int-flag')?.checked;
+  const ceFlag  = document.getElementById('ce-int-flag')?.checked;
+  const beType  = document.getElementById('be-int-type')?.value || '';
+  const ceType  = document.getElementById('ce-int-type')?.value || '';
+  const beImpl  = document.getElementById('be-impl-status')?.value || '';
+  const eeImpl  = document.getElementById('ee-impl-status')?.value || '';
+  const ceImpl  = document.getElementById('ce-impl-status')?.value || '';
+  const eeCount = document.querySelectorAll('.ee-card').length;
+
+  // ── Funding amounts (read from Financial Model DOM) ──────────
+  const readAmt = id => parseFloat((document.getElementById(id)?.textContent||'0').replace(/[^\d.-]/g,''))||0;
+  const selcoAmt  = readAmt('fc-selco-amount');
+  const mbmaAmt   = readAmt('fc-mbma-amount');
+  const lifcomAmt = readAmt('fc-lifcom-amount');
+  const userAmt   = readAmt('fc-user-amount');
+
+  // ── Tranche allocation per component ─────────────────────────
+  const readAlloc = id => document.getElementById(id)?.textContent?.trim() || '₹ 0.00';
+  const nonZeroVal = id => (parseFloat((document.getElementById(id)?.textContent||'0').replace(/[^\d.-]/g,'')) > 0);
+  const FUNDERS = [
+    { name:'MBMA',   key:'mbma',   color:'#1A6B6D' },
+    { name:'User',   key:'user',   color:'#3F6B3A' },
+    { name:'SELCO',  key:'selco',  color:'#7A4F1B' },
+    { name:'LIFCOM', key:'lifcom', color:'#C26849' },
+  ];
+  const trancheCell = comp => {
+    const rows = FUNDERS.filter(f => nonZeroVal(`alloc_${f.key}_${comp}`));
+    if(!rows.length) return '<span style="color:var(--ink-faint);font-size:11px">Set project in Financial Model</span>';
+    return rows.map(f =>
+      `<div style="display:flex;justify-content:space-between;font-size:11px;line-height:1.8;gap:10px">` +
+      `<span style="color:${f.color};font-weight:bold">${f.name}</span>` +
+      `<span style="font-variant-numeric:tabular-nums">${readAlloc(`alloc_${f.key}_${comp}`)}</span>` +
+      `</div>`
+    ).join('');
+  };
+
+  // ── Helper badges ────────────────────────────────────────────
+  const IMPL_ST = {
+    'Pending Design':       'background:var(--cream-deep);color:var(--ink-soft)',
+    'Design Revision':      'background:var(--fair-bg,#FBE9DF);color:#7A3B22',
+    'On hold':              'background:var(--fair-bg,#FBE9DF);color:#7A3B22',
+    'Design confirmed':     'background:var(--good-bg);color:var(--good-ink)',
+    'Pending':              'background:var(--cream-deep);color:var(--ink-soft)',
+    'Revision':             'background:var(--fair-bg,#FBE9DF);color:#7A3B22',
+    'Quotation confirmed':  'background:var(--good-bg);color:var(--good-ink)',
+    'Order delivered':      'background:var(--good-bg);color:var(--good-ink)',
+    'Construction started': 'background:var(--info-bg);color:var(--info-ink)',
+    'Construction complete':'background:var(--good-bg);color:var(--good-ink)',
+    'Installation started': 'background:var(--info-bg);color:var(--info-ink)',
+    'Installation complete':'background:var(--good-bg);color:var(--good-ink)',
+  };
+  const implBadge = v => {
+    if(!v) return '<span style="color:var(--ink-faint)">—</span>';
+    const st = IMPL_ST[v] || 'background:var(--cream-deep);color:var(--ink-soft)';
+    return `<span style="display:inline-block;padding:3px 9px;border-radius:12px;font-size:10px;font-weight:bold;${st}">${v}</span>`;
+  };
+  const intBadge = (label, color) => label
+    ? `<span style="display:inline-block;padding:2px 8px;border-radius:10px;font-size:10px;font-weight:bold;background:var(--fair-bg,#FBE9DF);color:${color||'#7A3B22'}">↻ ${label}</span>`
+    : '<span style="color:var(--ink-faint)">—</span>';
+
+  // ── EE machine list ──────────────────────────────────────────
+  const eeMachines = [];
+  document.querySelectorAll('.ee-banner').forEach(b => {
+    const sel = b.querySelector('select');
+    if(sel?.value) eeMachines.push(sel.value);
+  });
+
+  // ── CE solarised machines ─────────────────────────────────────
+  const ceMachines = [];
+  document.querySelectorAll('#ce-solar-body tr').forEach(tr => {
+    const sel = tr.querySelector('select');
+    if(sel?.value) ceMachines.push(sel.value);
+  });
+
+  // ── Build overview table ─────────────────────────────────────
+  const rows = [
+    {
+      cls:     'row-be' + (beFlag ? ' row-flagged' : ''),
+      label:   '<span style="font-weight:bold;color:#1A6B6D">Built Environment</span><div style="font-size:10px;color:var(--ink-faint);margin-top:2px">BE</div>',
+      detail:  beFlag && beType ? beType : (beFlag ? '<em style="color:var(--ink-faint)">Intervention flagged — type not selected</em>' : '<span style="color:var(--ink-faint)">No intervention</span>'),
+      cost:    fmt(beCost),
+      tranche: trancheCell('be'),
+      intType: beFlag ? intBadge(beType || 'BE Intervention') : '<span style="color:var(--ink-faint)">—</span>',
+      impl:    implBadge(beImpl),
+    },
+    {
+      cls:     'row-ee',
+      label:   '<span style="font-weight:bold;color:#7A4F1B">Energy-Efficient Machines</span><div style="font-size:10px;color:var(--ink-faint);margin-top:2px">EE</div>',
+      detail:  eeMachines.length
+        ? eeMachines.map(m => `<div style="font-size:11px;line-height:1.7">⚙ ${m}</div>`).join('')
+        : '<span style="color:var(--ink-faint)">No machines added yet</span>',
+      cost:    fmt(eeCost),
+      tranche: trancheCell('ee'),
+      intType: eeCount > 0 ? intBadge(`${eeCount} Machine${eeCount>1?'s':''}`, '#7A4F1B') : '<span style="color:var(--ink-faint)">—</span>',
+      impl:    implBadge(eeImpl),
+    },
+    {
+      cls:     'row-ce' + (ceFlag ? ' row-flagged' : ''),
+      label:   '<span style="font-weight:bold;color:#3F6B3A">Clean Energy · Solar</span><div style="font-size:10px;color:var(--ink-faint);margin-top:2px">CE</div>',
+      detail:  ceMachines.length
+        ? ceMachines.map(m => `<div style="font-size:11px;line-height:1.7">☀ ${m}</div>`).join('')
+        : (ceFlag ? '<em style="color:var(--ink-faint)">CE flagged — add machines for solarization in CE tab</em>' : '<span style="color:var(--ink-faint)">No intervention</span>'),
+      cost:    fmt(ceCost),
+      tranche: trancheCell('ce'),
+      intType: ceFlag ? intBadge(ceType ? ceType.split(' ').slice(0,3).join(' ')+'…' : 'CE Intervention', '#3F6B3A') : '<span style="color:var(--ink-faint)">—</span>',
+      impl:    implBadge(ceImpl),
+    },
+  ];
+
+  const tbody = document.getElementById('infraOverviewBody');
+  if(tbody) tbody.innerHTML = rows.map(r => `
+    <tr class="${r.cls}">
+      <td>${r.label}</td>
+      <td>${r.detail}</td>
+      <td style="font-weight:bold;color:var(--teal);font-size:12px">${r.cost}</td>
+      <td>${r.tranche}</td>
+      <td style="background:#FDF3EE">${r.intType}</td>
+      <td style="background:#EDF6EA">${r.impl}</td>
+    </tr>`).join('');
+
+  // ── Aggregate cards ──────────────────────────────────────────
+  set('s-be-cost',    fmt(beCost));
+  set('s-ee-cost',    fmt(eeCost));
+  set('s-ce-cost',    fmt(ceCost));
+  set('s-total-cost', fmt(total));
+
+  const beFlagEl = document.getElementById('s-be-int');
+  if(beFlagEl){ beFlagEl.textContent = beFlag ? 'Flagged' : 'Not flagged'; beFlagEl.className = 'sm-val' + (beFlag ? ' amber' : ''); }
+  const ceFlagEl = document.getElementById('s-ce-int');
+  if(ceFlagEl){ ceFlagEl.textContent = ceFlag ? 'Flagged' : 'Not flagged'; ceFlagEl.className = 'sm-val' + (ceFlag ? ' amber' : ''); }
+  set('s-ee-count',   eeCount);
+  set('s-be-rentunit', document.getElementById('be-rent-unit')?.value || '₹ 0.00');
+  set('s-ce-elecunit', document.getElementById('ce-elec-unit')?.value || '₹ 0.00');
+
+  // ── Flags ─────────────────────────────────────────────────────
+  set('flag-be', beFlag ? 'Yes' : 'No');
+  set('flag-ee', eeCount);
+  set('flag-ce', ceFlag ? 'Yes' : 'No');
+  const flagTotalEl = document.getElementById('flag-total');
+  if(flagTotalEl) flagTotalEl.textContent = total >= 100000 ? `₹${(total/100000).toFixed(1)}L` : fmt(total);
+
+  // ── Impl status (Remarks) ─────────────────────────────────────
+  set('s-be-impl', beImpl || '—');
+  set('s-ee-impl', eeImpl || '—');
+  set('s-ce-impl', ceImpl || '—');
+
+  // ── Disbursement & Vendor Tracker ─────────────────────────────
+  if(typeof refreshLoan === 'function') refreshLoan();
+  if(typeof refreshTrancheAllocations === 'function') refreshTrancheAllocations();
+  if(typeof refreshVendorTotals === 'function') refreshVendorTotals();
+
+  const readINR = id => (document.getElementById(id)?.textContent || '₹ 0.00');
+  const setSum  = (id, v) => { const el = document.getElementById(id); if(el) el.textContent = v; };
+  setSum('sum-disbursed',  readINR('bal-disbursed'));
+  setSum('sum-paid-ms',    readINR('vendor-ms-total'));
+  setSum('sum-paid-be',    readINR('vendor-be-total'));
+  setSum('sum-paid-total', readINR('bal-paid'));
+  setSum('sum-balance',    readINR('bal-remaining'));
+
+  const vendorRows = document.querySelectorAll('#vendor-ms-body tr').length
+                   + document.querySelectorAll('#vendor-be-body tr').length;
+  setSum('sum-vendor-count', String(vendorRows));
+  setSum('sum-task-count',   String(document.querySelectorAll('#task-body tr').length));
+}
+
+function calcBERaw(){
+  // Estimation BE cost.
+  // For MSOR typology: rate × SQM. For non-MSOR (e.g. Kiosks): the manual-entry field.
+  const typ = document.getElementById('be-typology')?.value || '';
+  if(isMSORTypology(typ)){
+    const hill = document.getElementById('be-hill')?.value;
+    const rate = (hill && typ && MSOR[hill]?.[typ]) ? MSOR[hill][typ] : 0;
+    const sqm  = parseFloat(document.getElementById('be-sqm')?.value) || 0;
+    return rate * sqm;
+  } else {
+    return parseFloat(document.getElementById('be-est-cost-manual')?.value) || 0;
+  }
+}
+
+function calcEERaw(){
+  let ee = 0;
+  document.querySelectorAll('.ee-banner input[type="number"]').forEach(i => ee += parseFloat(i.value)||0);
+  return ee;
+}
+
+function calcCERaw(){
+  let ce = 0;
+  document.querySelectorAll('#ce-solar-body input[type="number"]').forEach(i => ce += parseFloat(i.value)||0);
+  return ce;
+}
+
+// Type of Calculation router — Estimation vs Final
+function getInfraCosts(){
+  const calcType = document.getElementById('fm-calc-type')?.value || 'estimation';
+  if(calcType === 'final'){
+    return {
+      be: getBEFinalCost(),
+      ee: getEEFinalCost(),
+      ce: getCEFinalCost(),
+      mode: 'final'
+    };
+  }
+  return {
+    be: calcBERaw(),
+    ee: calcEERaw(),
+    ce: calcCERaw(),
+    mode: 'estimation'
+  };
+}
+
+function updateFinancial(){
+  refreshLoan();
+}
+
+// Calc-type switch handler
+function onCalcTypeChange(){
+  const ct = document.getElementById('fm-calc-type')?.value || 'estimation';
+  const badge = document.getElementById('fm-calc-badge');
+  const noteText = document.getElementById('fm-calc-note-text');
+  if(ct === 'final'){
+    if(badge){ badge.textContent = 'Final'; badge.style.background = 'var(--terracotta)'; }
+    if(noteText) noteText.innerHTML = '<strong>Final mode</strong> — costs are pulled from the latest Final DPR/Quotation Total values in each Implementation Status banner (BE, EE, CE).';
+  } else {
+    if(badge){ badge.textContent = 'Estimation'; badge.style.background = 'var(--sea)'; }
+    if(noteText) noteText.innerHTML = '<strong>Estimation mode</strong> — costs are pulled from BE Estimation, EE Required SELCO prices, and CE Solar Costs. Use during DPR design.';
+  }
+  refreshLoan();
+}
+
+// ── Financial Model — project switch, editable %, slab ───────────────────
+
+function onProjectChange(){
+  const mode = document.getElementById('fm-project')?.value || '';
+  const el = id => document.getElementById(id);
+
+  // Badge
+  const badge = el('fm-project-badge');
+  const labels = { prime:'PRIME SELCO', innovation:'Innovation', scale:'Scale' };
+  if(mode && badge){
+    badge.textContent = labels[mode] || mode;
+    badge.style.display = 'inline-flex';
+  } else if(badge){
+    badge.style.display = 'none';
+  }
+
+  const isPrime = (mode === 'prime');
+  const isEditable = (mode === 'innovation' || mode === 'scale');
+
+  // Show/hide slab section + EMI (PRIME only)
+  const slabSec = el('fm-slab-section');
+  const emiSec  = el('fm-emi-section');
+  if(slabSec) slabSec.style.display = isPrime ? 'block' : 'none';
+  if(emiSec)  emiSec.style.display  = isPrime ? 'block' : 'none';
+
+  // Editable note
+  const editNote = el('fm-editable-note');
+  if(editNote) editNote.style.display = isEditable ? 'inline-flex' : 'none';
+
+  // Toggle static pct labels vs editable inputs for SELCO/MBMA/LIFCOM/User
+  ['selco','mbma','lifcom','user'].forEach(key => {
+    const staticEl   = el(`fc-${key}-pct`);
+    const editableEl = el(`fc-${key}-pct`)?.parentElement.querySelector('.fc-editable');
+    // target via class
+    const card = el(`fc-${key}-amount`)?.closest('.funding-card');
+    if(!card) return;
+    const staticSpan   = card.querySelector('.fc-static');
+    const editableSpan = card.querySelector('.fc-editable');
+    if(staticSpan)   staticSpan.style.display   = (isPrime || !mode) ? 'inline-flex' : 'none';
+    if(editableSpan) editableSpan.style.display  = isEditable ? 'inline-flex' : 'none';
+  });
+
+  // Others card: show static pct in PRIME, editable in Innovation/Scale
+  const othersStatic   = el('fc-others-pct');
+  const othersEditable = el('fc-others-pct-in')?.parentElement;
+  if(othersStatic)   othersStatic.style.display   = isPrime ? 'inline-flex' : 'none';
+  if(othersEditable) othersEditable.style.display  = isEditable ? 'inline-flex' : 'none';
+
+  // Pct validation strip: only shown in editable modes
+  const pctCheck = el('fm-pct-check');
+  if(pctCheck) pctCheck.style.display = isEditable ? 'flex' : 'none';
+
+  // Reset editable inputs when switching to PRIME (avoid stale values)
+  if(isPrime){
+    ['selco','mbma','lifcom','user','others'].forEach(k => {
+      const inp = el(`fc-${k}-pct-in`);
+      if(inp) inp.value = '';
+    });
+  }
+
+  refreshLoan();
+}
+
+function onPctInput(){
+  refreshLoan();
+}
+
+function refreshLoan(){
+  const mode = document.getElementById('fm-project')?.value || '';
+  const costs = getInfraCosts();
+  const be = costs.be, ee = costs.ee, ce = costs.ce;
+  const total = be + ee + ce;
+
+  const el = id => document.getElementById(id);
+  if(el('loan-be-cost'))  el('loan-be-cost').textContent  = `₹ ${be.toFixed(2)}`;
+  if(el('loan-ee-cost'))  el('loan-ee-cost').textContent  = `₹ ${ee.toFixed(2)}`;
+  if(el('loan-ce-cost'))  el('loan-ce-cost').textContent  = `₹ ${ce.toFixed(2)}`;
+  if(el('loan-total'))    el('loan-total').textContent    = `₹ ${total.toFixed(2)}`;
+
+  let lifcomAmount = 0;
+  let selcoAmt = 0, mbmaAmt = 0, userAmt = 0, othersAmt = 0;
+
+  // ── PRIME SELCO: slab logic ───────────────────────────────────────────
+  if(mode === 'prime'){
+    let activeSlab = null;
+    if(total > 0){
+      if(total < 500000)       activeSlab = SLABS[0];
+      else if(total < 1000000) activeSlab = SLABS[1];
+      else if(total < 2500000) activeSlab = SLABS[2];
+    }
+    ['A','B','C'].forEach(id => {
+      const card = el(`slab-${id}`);
+      if(card) card.classList.toggle('active', activeSlab?.id === id);
+    });
+    const statusEl = el('slab-status');
+    if(statusEl){
+      if(total === 0)
+        statusEl.innerHTML = '<span style="color:var(--ink-soft);font-style:italic">No slab triggered — enter component costs in BE / EE / CE tabs.</span>';
+      else if(activeSlab)
+        statusEl.innerHTML = `<strong style="color:var(--teal)">Slab ${activeSlab.id} active</strong> · Total ₹${total.toLocaleString('en-IN')} falls within the ₹${activeSlab.max.toLocaleString('en-IN')} limit.`;
+      else
+        statusEl.innerHTML = `<strong style="color:var(--terracotta-dk)">Out of policy</strong> · Total ₹${total.toLocaleString('en-IN')} exceeds the ₹25,00,000 limit. Manual override may be needed.`;
+    }
+    const split = activeSlab || { selco:0, mbma:0, lifcom:0, user:0 };
+    selcoAmt  = total * split.selco;
+    mbmaAmt   = total * split.mbma;
+    lifcomAmount = total * split.lifcom;
+    userAmt   = total * split.user;
+    othersAmt = 0;
+
+    // Set static pct labels
+    const spct = (key, pct) => {
+      const sp = el(`fc-${key}-pct`);
+      if(sp) sp.textContent = `${(pct*100).toFixed(0)}%`;
+    };
+    spct('selco', split.selco);
+    spct('mbma',  split.mbma);
+    spct('lifcom', split.lifcom);
+    spct('user',  split.user);
+    const othPct = el('fc-others-pct');
+    if(othPct) othPct.textContent = '0%';
+
+  // ── Innovation / Scale: editable % ────────────────────────────────────
+  } else if(mode === 'innovation' || mode === 'scale'){
+    const getPct = key => (parseFloat(el(`fc-${key}-pct-in`)?.value) || 0) / 100;
+    const selcoPct  = getPct('selco');
+    const mbmaPct   = getPct('mbma');
+    const lifcomPct = getPct('lifcom');
+    const userPct   = getPct('user');
+    const othersPct = getPct('others');
+
+    selcoAmt     = total * selcoPct;
+    mbmaAmt      = total * mbmaPct;
+    lifcomAmount = total * lifcomPct;
+    userAmt      = total * userPct;
+    othersAmt    = total * othersPct;
+
+    // Validation strip
+    const sumPct = selcoPct + mbmaPct + lifcomPct + userPct + othersPct;
+    const pctCheck = el('fm-pct-check');
+    const pctTotalEl = el('fm-pct-total');
+    const pctMsgEl = el('fm-pct-msg');
+    if(pctCheck && pctTotalEl && pctMsgEl){
+      const pctDisplay = (sumPct * 100).toFixed(1);
+      pctTotalEl.textContent = `Total: ${pctDisplay}%`;
+      const ok = Math.abs(sumPct - 1) < 0.001;
+      pctMsgEl.textContent = ok ? '✓ Allocations sum to 100%' : `— must equal 100% (${(100 - sumPct*100).toFixed(1)}% remaining)`;
+      pctCheck.className = `pct-validation ${ok ? 'ok' : 'warn'}`;
+    }
+
+  } else {
+    // No project selected — clear amounts
+    ['selco','mbma','lifcom','user','others'].forEach(k => {
+      const a = el(`fc-${k}-amount`);
+      if(a) a.textContent = '₹ 0.00';
+    });
+    return;
+  }
+
+  // Write amounts to cards
+  if(el('fc-selco-amount'))  el('fc-selco-amount').textContent  = `₹ ${selcoAmt.toFixed(2)}`;
+  if(el('fc-mbma-amount'))   el('fc-mbma-amount').textContent   = `₹ ${mbmaAmt.toFixed(2)}`;
+  if(el('fc-lifcom-amount')) el('fc-lifcom-amount').textContent = `₹ ${lifcomAmount.toFixed(2)}`;
+  if(el('fc-user-amount'))   el('fc-user-amount').textContent   = `₹ ${userAmt.toFixed(2)}`;
+  if(el('fc-others-amount')) el('fc-others-amount').textContent = `₹ ${othersAmt.toFixed(2)}`;
+
+  // Others hint
+  const othersName = el('fc-others-name')?.value?.trim();
+  const othersHint = el('fc-others-hint');
+  if(othersHint) othersHint.style.display = othersName ? 'none' : 'block';
+
+  // EMI (PRIME only, LIFCOM amount drives it)
+  if(mode === 'prime'){
+    const emi5El = el('emi-5'); const emi3El = el('emi-3');
+    if(emi5El) emi5El.textContent = `₹ ${(lifcomAmount/60).toFixed(2)} / month`;
+    if(emi3El) emi3El.textContent = `₹ ${(lifcomAmount/36).toFixed(2)} / month`;
+  }
+
+  // Push to Summary tab
+  const el2 = id => document.getElementById(id);
+  if(el2('sum-slab'))   el2('sum-slab').textContent   = mode === 'prime' ? (document.querySelector('.slab-card.active .slab-name')?.textContent || '—') : (mode ? `${mode.charAt(0).toUpperCase()+mode.slice(1)} (custom)` : '—');
+  if(el2('sum-selco'))  el2('sum-selco').textContent  = `₹ ${selcoAmt.toFixed(2)}`;
+  if(el2('sum-mbma'))   el2('sum-mbma').textContent   = `₹ ${mbmaAmt.toFixed(2)}`;
+  if(el2('sum-lifcom')) el2('sum-lifcom').textContent = `₹ ${lifcomAmount.toFixed(2)}`;
+  if(el2('sum-user'))   el2('sum-user').textContent   = `₹ ${userAmt.toFixed(2)}`;
+  if(el2('sum-emi5'))   el2('sum-emi5').textContent   = mode === 'prime' ? `₹ ${(lifcomAmount/60).toFixed(2)} / mo` : 'N/A';
+  if(el2('sum-emi3'))   el2('sum-emi3').textContent   = mode === 'prime' ? `₹ ${(lifcomAmount/36).toFixed(2)} / mo` : 'N/A';
+
+  // Cascade to Tracker tab — recompute tranche allocations + balance card
+  if(typeof refreshTrancheAllocations === 'function') refreshTrancheAllocations();
+}
+
+// ── Task ─────────────────────────────────────────────────────────────────
+// ═══════════════════════════════════════════════════════════════════════
+//  TRACKER tab — tranche allocation + vendor payment + balance card
+// ═══════════════════════════════════════════════════════════════════════
+
+// Collapsible section toggle (Tracker)
+function toggleTrkSection(id){
+  const banner = document.querySelector(`#${id}-body`)?.parentElement;
+  if(banner) banner.classList.toggle('collapsed');
+}
+
+// Read total contribution of each funder from the Financial Model.
+// The Financial Model writes ₹-formatted strings into #fc-{funder}-amount on every refresh.
+function readFunderContribution(funder){
+  const el = document.getElementById(`fc-${funder}-amount`);
+  if(!el) return 0;
+  const v = parseFloat(el.textContent.replace(/[^\d.-]/g, '')) || 0;
+  return v;
+}
+
+// ── Tranche cascading allocator ─────────────────────────────────────────
+// Cascade order: MBMA → USER → SELCO → LIFCOM
+// Within each tranche: BE → EE → CE (BE filled first, then EE, then CE)
+// Each tranche-cost cell = min(remaining tranche funds, remaining cost still unallocated)
+function refreshTrancheAllocations(){
+  const costs = (typeof getInfraCosts === 'function')
+    ? getInfraCosts()
+    : { be: 0, ee: 0, ce: 0 };
+  const be = costs.be || 0, ee = costs.ee || 0, ce = costs.ce || 0;
+
+  const mbmaTotal   = readFunderContribution('mbma');
+  const userTotal   = readFunderContribution('user');
+  const selcoTotal  = readFunderContribution('selco');
+  const lifcomTotal = readFunderContribution('lifcom');
+
+  // Helper: allocate a tranche across BE, EE, CE in sequence
+  // remainingCost = how much of each cost is still unallocated coming in
+  // returns { be, ee, ce, leftover } — the contributions made
+  function allocate(trancheTotal, remainingBE, remainingEE, remainingCE){
+    let funds = trancheTotal;
+    const beContrib = (remainingBE === 0) ? 0 : Math.min(funds, remainingBE);
+    funds -= beContrib;
+    const eeContrib = (remainingEE === 0) ? 0 : Math.min(funds, remainingEE);
+    funds -= eeContrib;
+    const ceContrib = (remainingCE === 0) ? 0 : Math.min(funds, remainingCE);
+    funds -= ceContrib;
+    return { be: beContrib, ee: eeContrib, ce: ceContrib, leftover: funds };
+  }
+
+  // Sequential cascade — each tranche sees the costs reduced by what prior tranches paid
+  const mbma   = allocate(mbmaTotal,   be,                              ee,                              ce);
+  const user   = allocate(userTotal,   be - mbma.be,                    ee - mbma.ee,                    ce - mbma.ce);
+  const selco  = allocate(selcoTotal,  be - mbma.be - user.be,          ee - mbma.ee - user.ee,          ce - mbma.ce - user.ce);
+  const lifcom = allocate(lifcomTotal, be - mbma.be - user.be - selco.be,
+                                       ee - mbma.ee - user.ee - selco.ee,
+                                       ce - mbma.ce - user.ce - selco.ce);
+
+  // Write the 12 allocation cells
+  const fmt = v => `₹ ${v.toLocaleString('en-IN', {minimumFractionDigits:2, maximumFractionDigits:2})}`;
+  const set = (id, v) => { const el = document.getElementById(id); if(el) el.textContent = fmt(v); };
+  set('alloc_mbma_be',  mbma.be);  set('alloc_mbma_ee',  mbma.ee);  set('alloc_mbma_ce',  mbma.ce);
+  set('alloc_user_be',  user.be);  set('alloc_user_ee',  user.ee);  set('alloc_user_ce',  user.ce);
+  set('alloc_selco_be', selco.be); set('alloc_selco_ee', selco.ee); set('alloc_selco_ce', selco.ce);
+  set('alloc_lifcom_be',lifcom.be);set('alloc_lifcom_ee',lifcom.ee);set('alloc_lifcom_ce',lifcom.ce);
+
+  // Tranche totals + remainders
+  set('alloc_mbma_remainder',   mbma.leftover);
+  set('alloc_user_remainder',   user.leftover);
+  set('alloc_selco_remainder',  selco.leftover);
+  set('alloc_lifcom_remainder', lifcom.leftover);
+  set('trk-mbma-total',   mbmaTotal);
+  set('trk-user-total',   userTotal);
+  set('trk-selco-total',  selcoTotal);
+  set('trk-lifcom-total', lifcomTotal);
+
+  // Gap warning if costs aren't fully covered
+  const beShort = be - (mbma.be + user.be + selco.be + lifcom.be);
+  const eeShort = ee - (mbma.ee + user.ee + selco.ee + lifcom.ee);
+  const ceShort = ce - (mbma.ce + user.ce + selco.ce + lifcom.ce);
+  const gapEl = document.getElementById('trk-gap-warn');
+  const gapMsg = document.getElementById('trk-gap-msg');
+  const totalShort = beShort + eeShort + ceShort;
+  if(gapEl && gapMsg){
+    if(totalShort > 0.01){
+      const parts = [];
+      if(beShort > 0.01) parts.push(`BE ${fmt(beShort)}`);
+      if(eeShort > 0.01) parts.push(`EE ${fmt(eeShort)}`);
+      if(ceShort > 0.01) parts.push(`CE ${fmt(ceShort)}`);
+      gapMsg.textContent = `Total tranche contributions don't fully cover costs. Unfunded: ${parts.join(', ')}.`;
+      gapEl.style.display = 'block';
+    } else {
+      gapEl.style.display = 'none';
+    }
+  }
+
+  // Cascade to balance card
+  refreshBalanceCard();
+}
+
+// ── Vendor Payment Tracker — Machines & Solar ────────────────────────────
+let vendorMSCounter = 0;
+function addVendorMSRow(){
+  vendorMSCounter++;
+  const rid = `vms${vendorMSCounter}`;
+  const tbody = document.getElementById('vendor-ms-body');
+  const tr = document.createElement('tr');
+  tr.id = rid;
+  tr.innerHTML = `
+    <td class="num-col"></td>
+    <td>
+      <select onchange="refreshVendorTotals()">
+        <option value="">— Select —</option>
+        <option value="Machine">Machine</option>
+        <option value="Solar">Solar</option>
+      </select>
+    </td>
+    <td><input type="text" placeholder="Vendor name"></td>
+    <td><input type="number" class="num" placeholder="0.00" step="0.01" oninput="refreshVendorTotals()"></td>
+    <td>
+      <div class="inv-attach">
+        <label class="inv-att-btn">⬆ Upload<input type="file" onchange="onVendorUpload(this, '${rid}')"></label>
+        <button class="inv-att-view" disabled onclick="onVendorView('${rid}')">View</button>
+        <span class="inv-att-name" id="${rid}-name"></span>
+      </div>
+    </td>
+    <td><input type="text" placeholder="Comment"></td>
+    <td><button class="row-delete" onclick="document.getElementById('${rid}').remove();renumberVendorMS();refreshVendorTotals()">✕</button></td>
+  `;
+  tbody.appendChild(tr);
+  renumberVendorMS();
+}
+function renumberVendorMS(){
+  document.querySelectorAll('#vendor-ms-body tr').forEach((tr, i) => {
+    const c = tr.querySelector('td:first-child');
+    if(c) c.textContent = String(i+1).padStart(2,'0');
+  });
+}
+
+// ── Vendor Payment Tracker — Built Environment ───────────────────────────
+let vendorBECounter = 0;
+function addVendorBERow(){
+  vendorBECounter++;
+  const rid = `vbe${vendorBECounter}`;
+  const tbody = document.getElementById('vendor-be-body');
+  const tr = document.createElement('tr');
+  tr.id = rid;
+  tr.innerHTML = `
+    <td class="num-col"></td>
+    <td><input type="text" placeholder="Purpose"></td>
+    <td><input type="text" placeholder="Vendor name"></td>
+    <td><input type="number" class="num" placeholder="0.00" step="0.01" oninput="refreshVendorTotals()"></td>
+    <td>
+      <div class="inv-attach">
+        <label class="inv-att-btn">⬆ Upload<input type="file" onchange="onVendorUpload(this, '${rid}')"></label>
+        <button class="inv-att-view" disabled onclick="onVendorView('${rid}')">View</button>
+        <span class="inv-att-name" id="${rid}-name"></span>
+      </div>
+    </td>
+    <td><input type="text" placeholder="Comment"></td>
+    <td><button class="row-delete" onclick="document.getElementById('${rid}').remove();renumberVendorBE();refreshVendorTotals()">✕</button></td>
+  `;
+  tbody.appendChild(tr);
+  renumberVendorBE();
+}
+function renumberVendorBE(){
+  document.querySelectorAll('#vendor-be-body tr').forEach((tr, i) => {
+    const c = tr.querySelector('td:first-child');
+    if(c) c.textContent = String(i+1).padStart(2,'0');
+  });
+}
+
+function onVendorUpload(input, rid){
+  const file = input.files && input.files[0];
+  if(!file) return;
+  const nameEl = document.getElementById(`${rid}-name`);
+  if(nameEl) nameEl.textContent = file.name;
+  const viewBtn = input.closest('.inv-attach')?.querySelector('.inv-att-view');
+  if(viewBtn) viewBtn.disabled = false;
+}
+function onVendorView(rid){
+  const nameEl = document.getElementById(`${rid}-name`);
+  if(nameEl?.textContent) alert(`File: ${nameEl.textContent}\n(View handler — wire to backend later)`);
+}
+
+function refreshVendorTotals(){
+  const sumBody = (bodyId) => {
+    let t = 0;
+    document.querySelectorAll(`#${bodyId} input[type="number"]`).forEach(i => {
+      t += parseFloat(i.value) || 0;
+    });
+    return t;
+  };
+  const msTotal = sumBody('vendor-ms-body');
+  const beTotal = sumBody('vendor-be-body');
+  const fmt = v => `₹ ${v.toLocaleString('en-IN', {minimumFractionDigits:2, maximumFractionDigits:2})}`;
+  const set = (id, v) => { const el = document.getElementById(id); if(el) el.textContent = fmt(v); };
+  set('vendor-ms-total', msTotal);
+  set('vendor-be-total', beTotal);
+  refreshBalanceCard();
+}
+
+// ── Balance card (Disbursed − Paid) ───────────────────────────────────────
+function refreshBalanceCard(){
+  // Total disbursed = sum of all 12 tranche → cost allocations
+  // = tranche totals MINUS each tranche's unallocated leftover
+  // We can just read all 12 cells.
+  const cells = ['alloc_mbma_be','alloc_mbma_ee','alloc_mbma_ce',
+                 'alloc_user_be','alloc_user_ee','alloc_user_ce',
+                 'alloc_selco_be','alloc_selco_ee','alloc_selco_ce',
+                 'alloc_lifcom_be','alloc_lifcom_ee','alloc_lifcom_ce'];
+  let disbursed = 0;
+  cells.forEach(id => {
+    const v = parseFloat((document.getElementById(id)?.textContent || '').replace(/[^\d.-]/g,'')) || 0;
+    disbursed += v;
+  });
+
+  let paid = 0;
+  document.querySelectorAll('#vendor-ms-body input[type="number"],#vendor-be-body input[type="number"]').forEach(i => {
+    paid += parseFloat(i.value) || 0;
+  });
+
+  const remaining = disbursed - paid;
+  const fmt = v => `₹ ${v.toLocaleString('en-IN', {minimumFractionDigits:2, maximumFractionDigits:2})}`;
+  const set = (id, v) => { const el = document.getElementById(id); if(el) el.textContent = fmt(v); };
+  set('bal-disbursed', disbursed);
+  set('bal-paid', paid);
+  set('bal-remaining', remaining);
+}
+
+// ═══════════════════════════════════════════════════════════════════════
+//  TASK LOG tab
+// ═══════════════════════════════════════════════════════════════════════
+const INFRA_TASKS = [
+  '01 — Awareness on the Importance of Infrastructure',
+  '02 — Awareness on PRIME SELCO Infra Support',
+  '03 — Eligibility check completed',
+  '04 — Site Assessment for BE',
+  '05 — Site Assessment for EE',
+  '06 — Site Assessment for CE',
+  '07 — BE design Coordination',
+  '08 — EE design Coordination',
+  '09 — CE design Coordination',
+  '10 — NOC and compliance documents collected',
+  '11 — DPR approval and sign from Entrepreneur',
+  '12 — DPR submitted to Office',
+  '13 — Vendor coordination',
+  '14 — Quality check / site inspection',
+  '15 — If others, specify',
+];
+
+let taskLogCounter = 0;
+function addTaskRow(){
+  taskLogCounter++;
+  const rid = `tl${taskLogCounter}`;
+  const today = new Date().toISOString().split('T')[0];
+  const tbody = document.getElementById('task-body');
+  const tr = document.createElement('tr');
+  tr.id = rid;
+  tr.innerHTML = `
+    <td class="num-col"></td>
+    <td><input type="date" value="${today}"></td>
+    <td>
+      <select style="min-width:280px">
+        <option value="">— Select Task —</option>
+        ${INFRA_TASKS.map(t => `<option value="${t}">${t}</option>`).join('')}
+      </select>
+    </td>
+    <td><input type="text" placeholder="Notes / Outcome"></td>
+    <td>
+      <div class="inv-attach">
+        <label class="inv-att-btn">⬆ Upload<input type="file" onchange="onTaskUpload(this, '${rid}')"></label>
+        <button class="inv-att-view" disabled onclick="onTaskView('${rid}')">View</button>
+        <span class="inv-att-name" id="${rid}-name"></span>
+      </div>
+    </td>
+    <td><button class="row-delete" onclick="document.getElementById('${rid}').remove();renumberTasks();refreshTaskCount()">✕</button></td>
+  `;
+  tbody.appendChild(tr);
+  renumberTasks();
+  refreshTaskCount();
+}
+function renumberTasks(){
+  document.querySelectorAll('#task-body tr').forEach((tr, i) => {
+    const c = tr.querySelector('td:first-child');
+    if(c) c.textContent = String(i+1).padStart(2,'0');
+  });
+}
+function refreshTaskCount(){
+  const el = document.getElementById('task-count');
+  if(el) el.textContent = document.querySelectorAll('#task-body tr').length;
+}
+function onTaskUpload(input, rid){
+  const file = input.files && input.files[0];
+  if(!file) return;
+  const nameEl = document.getElementById(`${rid}-name`);
+  if(nameEl) nameEl.textContent = file.name;
+  const viewBtn = input.closest('.inv-attach')?.querySelector('.inv-att-view');
+  if(viewBtn) viewBtn.disabled = false;
+}
+function onTaskView(rid){
+  const nameEl = document.getElementById(`${rid}-name`);
+  if(nameEl?.textContent) alert(`File: ${nameEl.textContent}\n(View handler — wire to backend later)`);
+}
+
+// Initial render: one task row already visible
+document.addEventListener('DOMContentLoaded', () => {
+  if(typeof addTaskRow === 'function') addTaskRow();
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,1327 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Capacity Building Module · PRIME Rural</title>
+<style>
+:root {
+  --teal:#0E4D4E; --sea:#1A6B6D; --terracotta:#C26849; --terracotta-dk:#A85738;
+  --terracotta-sft:#F5E2D6;
+  --cream:#FBF5E5; --cream-deep:#F4ECD3; --offwhite:#FDFAF0;
+  --ink:#2A2520; --ink-soft:#6B6359; --ink-faint:#9C9384;
+  --border:#E8DFC9; --border-dk:#D6CDB6;
+  --good-bg:#E3EFDF; --good-ink:#3F6B3A;
+  --fair-bg:#FBE9DF; --fair-ink:#7A3B22;
+  --poor-bg:#F5D6CC; --poor-ink:#8B2A0F;
+  --highlight:#FFF8E1;
+  --blue-bg:#D6E3EE; --blue-ink:#2C5A82;
+  --purple-bg:#E0D6EE; --purple-ink:#5A3F82;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:Georgia,serif;background:var(--cream);color:var(--ink);line-height:1.4}
+.page{max-width:1200px;margin:0 auto;padding:24px}
+.header{background:var(--teal);color:#fff;padding:16px 20px;border-radius:12px 12px 0 0;display:flex;justify-content:space-between;align-items:center}
+.header h1{font-size:18px;font-weight:normal;letter-spacing:0.5px}
+.header .crumb{font-size:11px;opacity:0.75;text-transform:uppercase;letter-spacing:1px}
+.card{background:var(--cream);border:1px solid var(--border-dk);border-top:none;border-radius:0 0 12px 12px}
+.tab-bar{display:flex;background:var(--cream-deep);border-bottom:1px solid var(--border-dk);overflow-x:auto}
+.tab{padding:12px 18px;cursor:pointer;font-size:12px;text-transform:uppercase;letter-spacing:1px;color:var(--ink-soft);border-right:1px solid var(--border);white-space:nowrap}
+.tab.active{background:var(--teal);color:#fff}
+.tab:hover:not(.active){background:#EADFC0}
+.content{padding:22px}
+.hidden{display:none !important}
+.entrepreneur-chip{display:inline-flex;align-items:center;gap:10px;background:#fff;border:1px solid var(--border-dk);padding:6px 14px;border-radius:20px;font-size:12px;margin-bottom:18px}
+.ent-avatar{width:24px;height:24px;background:var(--teal);color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:bold}
+
+/* Buttons */
+.btn{padding:5px 12px;border-radius:20px;border:1px solid var(--border-dk);background:#fff;cursor:pointer;font-size:11px;color:var(--ink);font-family:Georgia,serif}
+.btn:hover{background:var(--cream-deep)}
+.btn-primary{background:var(--teal);color:#fff;border-color:var(--teal)}
+.btn-primary:hover{background:var(--sea)}
+.tab-actions{display:flex;justify-content:flex-end;gap:8px;margin-bottom:14px}
+
+/* Sections */
+.section{background:var(--cream-deep);padding:16px;border-radius:10px;margin-bottom:16px;border:1px solid var(--border)}
+.section-title{font-size:13px;text-transform:uppercase;letter-spacing:1.5px;color:var(--teal);margin-bottom:14px;padding-bottom:8px;border-bottom:1px solid var(--border-dk);font-weight:bold;display:flex;justify-content:space-between;align-items:center}
+.section-title-roman{color:var(--terracotta);font-style:italic;margin-right:6px}
+.section-note{font-size:11px;color:var(--ink-soft);font-style:italic;margin:-8px 0 14px}
+
+/* Fields */
+.field-row{display:flex;gap:16px;margin-bottom:12px;flex-wrap:wrap}
+.field-half{flex:1;min-width:200px}
+.field-third{flex:1;min-width:150px}
+.field-full{width:100%;flex:none}
+.field-label{font-size:12px;color:var(--ink-soft);margin-bottom:5px}
+.field-val{width:100%;background:var(--offwhite);border:1px solid var(--border-dk);padding:7px 10px;border-radius:5px;font-size:12px;font-family:Georgia,serif;color:var(--ink)}
+.field-val:focus{outline:none;border-color:var(--teal)}
+textarea.field-val{resize:vertical;min-height:70px}
+select.field-val{cursor:pointer}
+
+/* Pills */
+.pill-group{display:flex;flex-wrap:wrap;gap:6px;margin-top:4px}
+.pill{padding:4px 12px;border-radius:20px;border:1px solid var(--border-dk);background:#fff;cursor:pointer;font-size:11px;color:var(--ink-soft);font-family:Georgia,serif;user-select:none;transition:all 0.12s}
+.pill:hover{background:var(--cream-deep)}
+.pill.selected{background:var(--teal);color:#fff;border-color:var(--teal)}
+
+/* Assessment grid */
+.assess-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:14px}
+.assess-card{background:#fff;border:1px solid var(--border);border-radius:8px;padding:14px}
+.assess-card-title{font-size:11px;font-weight:bold;color:var(--ink);margin-bottom:4px}
+.assess-card-sub{font-size:10px;color:var(--ink-faint);font-style:italic;margin-bottom:8px}
+
+/* Badges */
+.skill-type-badge{display:inline-flex;padding:3px 10px;border-radius:14px;font-size:10px;font-weight:bold}
+.skill-soft{background:var(--purple-bg);color:var(--purple-ink)}
+.skill-tech{background:var(--blue-bg);color:var(--blue-ink)}
+.badge{display:inline-flex;padding:2px 9px;border-radius:14px;font-size:10px;font-weight:bold}
+.badge-critical{background:var(--poor-bg);color:var(--poor-ink)}
+.badge-high{background:var(--fair-bg);color:var(--fair-ink)}
+.badge-medium{background:var(--highlight);color:var(--terracotta-dk)}
+.badge-low{background:var(--cream-deep);color:var(--ink-soft)}
+
+/* Training blocks — same pattern as Machinery/Raw Material */
+.machine-block{background:#fff;border:1px solid var(--border-dk);border-radius:10px;margin-bottom:14px;overflow:hidden}
+.machine-block-head{background:var(--sea);color:#fff;padding:10px 14px;display:flex;justify-content:space-between;align-items:center;cursor:pointer;user-select:none;font-size:13px;flex-wrap:wrap;gap:8px}
+.machine-block-head:hover{background:var(--teal)}
+.machine-block-head .mb-name{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.chevron{font-size:12px;transition:transform 0.2s}
+.machine-block.collapsed .chevron{transform:rotate(-90deg)}
+.machine-block.collapsed .mb-body{display:none}
+.mb-body{padding:14px}
+.mb-remove{background:transparent;border:1px solid rgba(255,255,255,0.4);color:#fff;padding:3px 10px;border-radius:14px;cursor:pointer;font-size:11px;font-family:Georgia,serif}
+.mb-remove:hover{background:var(--terracotta);border-color:var(--terracotta)}
+
+/* Subsections */
+.subsection{background:var(--cream-deep);padding:12px;border-radius:8px;margin-bottom:10px;border:1px solid var(--border)}
+.subsection-title{font-size:11px;text-transform:uppercase;letter-spacing:1px;color:var(--teal);margin-bottom:10px;font-weight:bold}
+
+/* Intervention flags */
+.intervention-flags{background:var(--terracotta-sft);border:1px solid var(--terracotta);border-radius:8px;padding:12px;margin-top:10px}
+.intervention-flags-title{font-size:11px;text-transform:uppercase;letter-spacing:1px;color:var(--terracotta-dk);margin-bottom:10px;font-weight:bold}
+.intervention-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.intervention-cell{background:#fff;border:1px solid var(--border);border-radius:6px;padding:10px}
+.intervention-toggle-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+.intervention-toggle-row .label{font-size:11px;font-weight:bold;color:var(--ink)}
+.flag-note{font-size:10px;color:var(--ink-faint);font-style:italic;margin-bottom:6px}
+.flag-note.active{color:var(--terracotta-dk);font-weight:bold;font-style:normal}
+.intervention-cell textarea{width:100%;border:1px solid var(--border);padding:5px 6px;border-radius:3px;font-family:Georgia,serif;font-size:11px;background:var(--offwhite);resize:vertical;min-height:40px}
+
+/* Toggle */
+.toggle{width:36px;height:18px;border-radius:20px;background:#ccc;display:inline-block;cursor:pointer;position:relative;flex-shrink:0;vertical-align:middle}
+.toggle::after{content:'';width:14px;height:14px;background:#fff;border-radius:50%;position:absolute;top:2px;left:2px;transition:left 0.2s}
+.toggle.on{background:var(--teal)}
+.toggle.on::after{left:20px}
+
+/* Required opt-rows */
+.opt-row{background:#fff;border:1px solid var(--border-dk);border-radius:10px;margin-bottom:12px;overflow:hidden}
+.opt-row-head{background:var(--cream-deep);padding:12px 16px;display:grid;gap:12px;align-items:start;border-bottom:1px solid var(--border-dk)}
+.opt-readonly-label{font-size:10px;color:var(--ink-soft);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:3px}
+.opt-readonly-val{font-size:12px;font-weight:bold;color:var(--teal)}
+.int-type{display:inline-flex;align-items:center;gap:5px;padding:3px 10px;border-radius:14px;font-size:10px;font-weight:bold}
+.int-retraining{background:var(--terracotta-sft);color:var(--terracotta-dk)}
+.int-new{background:var(--blue-bg);color:var(--blue-ink)}
+
+/* Post-training box */
+.post-box{background:var(--cream-deep);border:1px solid var(--border-dk);border-radius:8px;padding:14px}
+.post-box-title{font-size:11px;font-weight:bold;text-transform:uppercase;letter-spacing:1px;color:var(--teal);margin-bottom:12px}
+
+/* Summary */
+.summary-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px}
+.summary-card{background:#fff;border:1px solid var(--border);border-radius:10px;padding:14px}
+.summary-card.full{grid-column:1/-1}
+.summary-card h3{font-size:11px;text-transform:uppercase;letter-spacing:1px;color:var(--teal);margin-bottom:10px;padding-bottom:6px;border-bottom:1px solid var(--border)}
+.metric-row{display:flex;justify-content:space-between;padding:5px 0;font-size:12px;border-bottom:1px solid #f0e9d6}
+.metric-row:last-child{border-bottom:none}
+.metric-label{color:var(--ink-soft)}
+.metric-value{font-weight:bold;color:var(--ink)}
+.metric-value.green{color:var(--good-ink)}
+.metric-value.amber{color:var(--terracotta-dk)}
+.metric-value.red{color:var(--poor-ink)}
+.picture-strip{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;background:var(--teal);padding:14px;border-radius:10px;color:#fff;margin-top:10px}
+.ps-cell{padding:6px 4px}
+.ps-label{font-size:10px;text-transform:uppercase;letter-spacing:0.8px;opacity:0.7;margin-bottom:4px}
+.ps-val{font-size:18px;font-weight:bold}
+.ps-val.amber{color:#FFD580}
+
+/* Flags */
+.flags-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+.flag-card{background:#fff;border:1px solid var(--border);border-radius:8px;padding:12px}
+.flag-icon{width:30px;height:30px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:14px;margin-bottom:8px}
+.flag-icon.amber{background:var(--terracotta-sft);color:var(--terracotta-dk)}
+.flag-icon.red{background:#F5D6CC;color:#8B2A0F}
+.flag-icon.blue{background:#D6E3EE;color:#2C5A82}
+.flag-icon.green{background:var(--good-bg);color:var(--good-ink)}
+.flag-count{font-size:20px;font-weight:bold;color:var(--ink)}
+.flag-label{font-size:10px;color:var(--ink-soft);text-transform:uppercase;letter-spacing:0.5px;margin-top:4px}
+
+/* Scorecard */
+.scorecard{background:#fff;border:1px solid var(--border);border-radius:10px;padding:16px;margin-bottom:16px}
+.scorecard h3{font-size:11px;text-transform:uppercase;letter-spacing:1px;color:var(--teal);margin-bottom:14px;padding-bottom:6px;border-bottom:1px solid var(--border)}
+.sc-row{display:grid;grid-template-columns:2fr 80px 80px 80px 80px 30px;gap:8px;align-items:center;padding:7px 0;border-bottom:1px solid var(--border)}
+.sc-row:last-child{border-bottom:none}
+.sc-header{font-size:10px;text-transform:uppercase;letter-spacing:0.5px;color:var(--ink-soft);font-weight:normal;padding-bottom:8px}
+.sc-select{width:100%;border:1px solid var(--border-dk);padding:4px 5px;border-radius:4px;font-family:Georgia,serif;font-size:11px;background:var(--offwhite)}
+.sc-select:focus{outline:none;border-color:var(--teal)}
+.sc-delta{text-align:center;font-weight:bold;font-size:12px}
+
+/* Tables */
+table.data-table{width:100%;border-collapse:collapse;background:var(--offwhite);border-radius:6px;overflow:hidden;border:1px solid var(--border-dk);font-size:11px}
+table.data-table th{background:var(--teal);color:#fff;padding:9px 8px;text-align:left;font-weight:normal;text-transform:uppercase;letter-spacing:0.5px;font-size:10px;border-right:1px solid var(--sea);white-space:nowrap}
+table.data-table th:last-child{border-right:none}
+table.data-table td{padding:7px 8px;border-bottom:1px solid var(--border);border-right:1px solid var(--border);vertical-align:middle}
+table.data-table td:last-child{border-right:none}
+table.data-table tr:last-child td{border-bottom:none}
+table.data-table input,table.data-table select{width:100%;border:1px solid var(--border);padding:5px 6px;border-radius:3px;font-family:Georgia,serif;font-size:11px;background:#fff}
+table.data-table input:focus,table.data-table select:focus{outline:none;border-color:var(--teal)}
+table.data-table .num-col{width:36px;text-align:center;color:var(--ink-soft)}
+.table-actions{display:flex;justify-content:flex-end;margin-top:10px}
+.row-delete{background:transparent;border:none;color:var(--terracotta);cursor:pointer;font-size:14px;padding:2px 6px}
+.row-delete:hover{color:var(--terracotta-dk)}
+
+/* Total bar */
+.total-bar{background:var(--teal);color:#fff;padding:14px 18px;border-radius:10px;margin-top:14px}
+.total-bar-title{font-size:11px;text-transform:uppercase;letter-spacing:1px;opacity:0.7;margin-bottom:10px}
+.total-grid{display:grid;gap:14px}
+.total-cell .total-label{font-size:10px;opacity:0.6;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:3px}
+.total-cell .total-value{font-weight:bold;font-size:14px}
+.total-cell .total-value.amber{color:#FFD580;font-size:11px}
+
+/* Star ratings */
+.star-rating{display:flex;gap:4px;cursor:pointer}
+.star-rating .star{font-size:22px;color:var(--border-dk);transition:color 0.1s;user-select:none}
+.star-rating .star.on{color:#F5A623}
+.star-rating .star:hover,.star-rating .star:hover ~ .star{color:var(--border-dk)}
+.star-rating:hover .star{color:#F5A623}
+.star-rating .star:hover ~ .star{color:var(--border-dk) !important}
+.star-val{font-size:11px;color:var(--ink-soft);margin-top:4px;font-style:italic;min-height:16px}
+
+.add-row-bar{text-align:center;padding:14px;background:var(--cream-deep);border:1px dashed var(--border-dk);border-radius:10px;margin-top:4px}
+</style>
+</head>
+<body>
+
+<div class="page">
+<div class="header">
+  <h1>Capacity Building Module</h1>
+  <div class="crumb">PRIME Rural · DF Capacity Building</div>
+</div>
+<div class="card">
+
+<div class="tab-bar">
+  <div class="tab active" onclick="showTab('summary',this)">Summary</div>
+  <div class="tab" onclick="showTab('past',this)">Past Trainings</div>
+  <div class="tab" onclick="showTab('required',this)">Required Trainings</div>
+  <div class="tab" onclick="showTab('tasks',this)">Tasks</div>
+  <div class="tab" onclick="showTab('resources',this)">Resources</div>
+  <div class="tab" onclick="showTab('logbook',this)">Log Book</div>
+</div>
+
+<div class="content">
+
+<div class="entrepreneur-chip">
+  <div class="ent-avatar">EN</div>
+  <span style="color:var(--ink-soft);font-style:italic">Auto-fetched from profile</span>
+</div>
+
+<!-- ================================================================
+     SUMMARY
+================================================================ -->
+<div id="summary" class="panel">
+
+  <!-- ① TRAINING-WISE OVERVIEW -->
+  <div class="section">
+    <div class="section-title">Training-wise Overview</div>
+    <p style="font-size:11px;color:var(--ink-soft);font-style:italic;margin-bottom:10px">One row per training. Auto-populated from Past Trainings and Required Trainings tabs.</p>
+    <div style="overflow-x:auto">
+    <table class="data-table" style="min-width:900px">
+      <thead>
+        <tr>
+          <th>Training Name</th>
+          <th>Skill Type</th>
+          <th>Skill Area</th>
+          <th style="background:var(--sea)">Intervention Type</th>
+          <th style="background:var(--sea)">Gap Severity</th>
+          <th style="background:#3F6B3A">Implementation Status</th>
+        </tr>
+      </thead>
+      <tbody id="summaryTrainingTable">
+        <tr><td colspan="6" style="text-align:center;color:var(--ink-faint);font-style:italic;padding:14px">Auto-populated from Past Trainings and Required Trainings tabs</td></tr>
+      </tbody>
+    </table>
+    </div>
+  </div>
+
+  <!-- ② AGGREGATES -->
+  <div class="section">
+    <div class="section-title">Aggregates</div>
+    <div class="summary-grid" style="grid-template-columns:repeat(4,1fr)">
+
+      <div class="summary-card">
+        <h3>Past Trainings</h3>
+        <div class="metric-row"><span class="metric-label">Total Recorded</span><span class="metric-value" id="sm-past-total">0</span></div>
+        <div class="metric-row"><span class="metric-label">Soft Skill</span><span class="metric-value" id="sm-past-soft">0</span></div>
+        <div class="metric-row"><span class="metric-label">Technical Skill</span><span class="metric-value" id="sm-past-tech">0</span></div>
+        <div class="metric-row"><span class="metric-label">Fully Completed</span><span class="metric-value green" id="sm-past-completed">0</span></div>
+        <div class="metric-row"><span class="metric-label">Re-training Flagged</span><span class="metric-value amber" id="sm-past-flagged">0</span></div>
+      </div>
+
+      <div class="summary-card">
+        <h3>Required Trainings</h3>
+        <div class="metric-row"><span class="metric-label">Total Identified</span><span class="metric-value" id="sm-req-total">0</span></div>
+        <div class="metric-row"><span class="metric-label">Re-training</span><span class="metric-value" id="sm-req-retrain">0</span></div>
+        <div class="metric-row"><span class="metric-label">New Trainings</span><span class="metric-value" id="sm-req-new">0</span></div>
+        <div class="metric-row"><span class="metric-label">Critical / High Gap</span><span class="metric-value red" id="sm-req-critical">0</span></div>
+        <div class="metric-row"><span class="metric-label">Completed</span><span class="metric-value green" id="sm-req-completed">0</span></div>
+      </div>
+
+      <div class="summary-card">
+        <h3>Capacity Picture</h3>
+        <div class="metric-row"><span class="metric-label">Total Trainings</span><span class="metric-value" id="sm-cap-total">0</span></div>
+        <div class="metric-row"><span class="metric-label">Skill Areas Covered</span><span class="metric-value" id="sm-cap-skills">0</span></div>
+        <div class="metric-row"><span class="metric-label">Gaps Remaining</span><span class="metric-value amber" id="sm-cap-gaps">0</span></div>
+        <div class="metric-row"><span class="metric-label">Interventions Completed</span><span class="metric-value green" id="sm-cap-done">0</span></div>
+      </div>
+
+      <div class="summary-card">
+        <h3>Status</h3>
+        <div class="metric-row"><span class="metric-label">Completed</span><span class="metric-value green" id="sm-status-done">0</span></div>
+        <div class="metric-row"><span class="metric-label">Planned / Scheduled</span><span class="metric-value" id="sm-status-planned">0</span></div>
+        <div class="metric-row"><span class="metric-label">Identified</span><span class="metric-value" id="sm-status-identified">0</span></div>
+        <div class="metric-row"><span class="metric-label">Pending</span><span class="metric-value amber" id="sm-status-pending">0</span></div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ③ INTERVENTION FLAGS -->
+  <div class="section">
+    <div class="section-title">Intervention Flags</div>
+    <div class="flags-grid">
+      <div class="flag-card"><div class="flag-icon amber">↻</div><div class="flag-count" id="sm-flag-retrain">0</div><div class="flag-label">Re-training Needed</div></div>
+      <div class="flag-card"><div class="flag-icon red">!</div><div class="flag-count" id="sm-flag-critical">0</div><div class="flag-label">Critical Gap</div></div>
+      <div class="flag-card"><div class="flag-icon blue">+</div><div class="flag-count" id="sm-flag-new">0</div><div class="flag-label">New Training Added</div></div>
+      <div class="flag-card"><div class="flag-icon green">✓</div><div class="flag-count" id="sm-flag-done">0</div><div class="flag-label">Interventions Completed</div></div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ================================================================
+     PAST TRAININGS
+================================================================ -->
+<div id="past" class="panel hidden">
+
+  <div class="tab-actions">
+    <button class="btn btn-primary" onclick="addPastTraining()">+ Add Row</button>
+  </div>
+
+  <div id="pastTrainingList"></div>
+
+  <div class="add-row-bar">
+    <button class="btn btn-primary" onclick="addPastTraining()">+ Add Past Training</button>
+  </div>
+
+  <div class="total-bar" style="margin-top:18px">
+    <div class="total-bar-title">Past Trainings — Summary</div>
+    <div class="total-grid" style="grid-template-columns:repeat(5,1fr)">
+      <div class="total-cell"><div class="total-label">Total</div><div class="total-value" id="past-tot">0</div></div>
+      <div class="total-cell"><div class="total-label">Soft Skill</div><div class="total-value" id="past-soft">0</div></div>
+      <div class="total-cell"><div class="total-label">Product Technical</div><div class="total-value" id="past-tech">0</div></div>
+      <div class="total-cell"><div class="total-label">Fully Completed</div><div class="total-value" id="past-completed">0</div></div>
+      <div class="total-cell"><div class="total-label">Intervention Flagged</div><div class="total-value amber" id="past-flagged">0</div></div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ================================================================
+     REQUIRED TRAININGS
+================================================================ -->
+<div id="required" class="panel hidden">
+
+  <div class="section">
+    <div class="section-title"><span><span class="section-title-roman">I.</span>Re-training Interventions</span></div>
+    <p style="font-size:12px;color:var(--ink-soft);margin-bottom:12px;font-style:italic">Auto-populated from Past Trainings when re-training is flagged.</p>
+    <div id="retrainingList">
+      <div class="empty-msg" style="text-align:center;color:var(--ink-faint);font-style:italic;padding:20px;background:#fff;border:1px dashed var(--border-dk);border-radius:8px">No re-training interventions flagged yet — toggle the flag in Past Trainings to populate this section.</div>
+    </div>
+    <div class="add-row-bar">
+      <button class="btn" onclick="addRetrainingRow()">+ Add Re-training Row</button>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title"><span><span class="section-title-roman">II.</span>New Required Trainings</span></div>
+    <p style="font-size:12px;color:var(--ink-soft);margin-bottom:12px;font-style:italic">Standalone new trainings identified — not linked to past records.</p>
+    <div id="newTrainingList"></div>
+    <div class="add-row-bar">
+      <button class="btn btn-primary" onclick="addNewTrainingRow()">+ Add New Required Training</button>
+    </div>
+  </div>
+
+  <div class="total-bar" style="margin-top:4px">
+    <div class="total-bar-title">Required Trainings — Summary</div>
+    <div class="total-grid" style="grid-template-columns:repeat(5,1fr)">
+      <div class="total-cell"><div class="total-label">Re-training</div><div class="total-value" id="req-tot-retrain">0</div></div>
+      <div class="total-cell"><div class="total-label">New Trainings</div><div class="total-value" id="req-tot-new">0</div></div>
+      <div class="total-cell"><div class="total-label">Critical / High Gap</div><div class="total-value" id="req-tot-critical">0</div></div>
+      <div class="total-cell"><div class="total-label">Completed</div><div class="total-value" id="req-tot-completed">0</div></div>
+      <div class="total-cell"><div class="total-label">Auto-fetches to</div><div class="total-value amber">Details Scorecard</div></div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ================================================================
+     TASKS
+================================================================ -->
+<div id="tasks" class="panel hidden">
+  <div class="section">
+    <div class="section-title">Tasks Log</div>
+    <table class="data-table">
+      <thead><tr>
+        <th style="width:4%">No.</th>
+        <th style="width:28%">Task Name</th>
+        <th style="width:12%">Actual Start</th>
+        <th style="width:12%">Completion Date</th>
+        <th style="width:11%">Status</th>
+        <th style="width:19%">Description</th>
+        <th style="width:9%">Comment</th>
+        <th style="width:5%"></th>
+      </tr></thead>
+      <tbody id="tasksBody"></tbody>
+    </table>
+    <div class="table-actions">
+      <button class="btn btn-primary" onclick="addTaskRow()">+ Add Row</button>
+    </div>
+  </div>
+</div>
+
+<!-- ================================================================
+     RESOURCES
+================================================================ -->
+<div id="resources" class="panel hidden">
+  <div class="section">
+    <div class="section-title">Reference Materials</div>
+    <table class="data-table" id="resourcesTable">
+      <thead><tr>
+        <th style="width:28%">Resource Title</th>
+        <th style="width:18%">Category</th>
+        <th style="width:12%">Type</th>
+        <th style="width:30%">Notes</th>
+        <th style="width:7%">File</th>
+        <th style="width:5%"></th>
+      </tr></thead>
+      <tbody>
+        <tr>
+          <td><input type="text" placeholder="Resource title"></td>
+          <td><select><option>— Select —</option><option>Training Material</option><option>Curriculum</option><option>Assessment Tool</option><option>Certificate</option><option>Reference Guide</option></select></td>
+          <td><select><option>— Select —</option><option>Document</option><option>Video</option><option>Link</option><option>Contact</option></select></td>
+          <td><input type="text" placeholder="Notes"></td>
+          <td><button class="btn" style="padding:3px 8px;font-size:10px">Upload</button></td>
+          <td><button class="row-delete" onclick="deleteRow(this)">✕</button></td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="table-actions">
+      <button class="btn btn-primary" onclick="addRow('resourcesTable')">+ Add Resource</button>
+    </div>
+  </div>
+</div>
+
+<!-- ================================================================
+     LOG BOOK
+================================================================ -->
+<div id="logbook" class="panel hidden">
+  <div class="section">
+    <div class="section-title">Log Book</div>
+    <p style="font-size:12px;color:var(--ink-soft);margin-bottom:12px;font-style:italic">Add your task logs here</p>
+    <table class="data-table">
+      <thead><tr>
+        <th style="width:4%">No.</th>
+        <th style="width:14%">FE Associate</th>
+        <th style="width:12%">Log Date</th>
+        <th style="width:18%">Entrepreneur Name</th>
+        <th style="width:22%">Diagnostic Framework</th>
+        <th style="width:20%">Task Name</th>
+        <th style="width:5%">Photo</th>
+        <th style="width:5%"></th>
+      </tr></thead>
+      <tbody id="logBookBody">
+        <tr>
+          <td class="num-col">01</td>
+          <td><input type="text" placeholder="FE Associate"></td>
+          <td><input type="date"></td>
+          <td><input type="text" placeholder="Entrepreneur name"></td>
+          <td><input type="text" placeholder="DF Capacity Building"></td>
+          <td><input type="text" placeholder="Task name"></td>
+          <td><button class="btn" style="padding:3px 8px;font-size:10px">Upload</button></td>
+          <td><button class="row-delete" onclick="deleteRow(this)">✕</button></td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="table-actions">
+      <button class="btn btn-primary" onclick="addLogRow()">+ Add Row</button>
+    </div>
+  </div>
+</div>
+
+</div></div></div>
+
+<script>
+// ===== TAB =====
+function showTab(id,el){
+  document.querySelectorAll('.panel').forEach(p=>p.classList.add('hidden'));
+  document.getElementById(id).classList.remove('hidden');
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  el.classList.add('active');
+  if(id==='summary') refreshSummary();
+}
+
+// ===== STAR RATINGS =====
+const STAR_LABELS = ['','No Exposure','Beginner','Developing','Proficient','Expert'];
+function setStars(el){
+  const group = el.closest('.star-rating');
+  const val = parseInt(el.dataset.val);
+  group.dataset.value = val;
+  group.querySelectorAll('.star').forEach(s => {
+    s.classList.toggle('on', parseInt(s.dataset.val) <= val);
+  });
+  // show label if exists
+  let lbl = group.nextElementSibling;
+  if(lbl && lbl.classList.contains('star-val')) lbl.textContent = STAR_LABELS[val] || '';
+}
+
+// ===== PILLS =====
+function selectPill(el){
+  el.closest('.pill-group').querySelectorAll('.pill').forEach(p=>p.classList.remove('selected'));
+  el.classList.add('selected');
+}
+
+// ===== STATE =====
+let pastCounter=0, retrainCounter=0, newTrainCounter=0, taskCounter=0;
+
+// ===== DATA =====
+const SOFT_AREAS=['Communication','Leadership','Customer Interaction','Confidence Building','Financial Discipline','Team Coordination','Entrepreneurial Mindset','Decision Making'];
+const TECH_AREAS=['Product Making','Recipe Standardisation','Product Consistency','Food Preparation','Craft Technique','Finishing Technique','Production Workflow','Product Innovation','Material Handling','Quality Management'];
+const SKILL_LEVELS=['No Exposure','Beginner','Intermediate','Advanced'];
+const GAP_OPTS=['— Select —','Critical','High','Medium','Low'];
+const IMPL_OPTS=['— Select —','Identified','Planned','Scheduled','Ongoing','Completed','Follow-up Pending'];
+const INTERVENTION_OPTS=['— Select —','Training','Demonstration','Mentoring','Exposure Visit','Apprenticeship','Refresher'];
+const ASSIGNED_OPTS=['— Select —','Fellow','DC','Core Team','External Trainer'];
+const FORMAT_OPTS=['— Select —','Classroom / Workshop','On-site Demonstration','Exposure Visit','One-on-one Mentoring','Group Training','Online / Self-paced'];
+
+const DIAG_AREAS=[
+  {group:'Production',     items:['Machinery','Manufacturing','Raw Material']},
+  {group:'Market & Sales', items:['Marketing','Pricing','Customer & Sales']},
+  {group:'Business Operations', items:['Accounts & Finance','Logistics','Infrastructure']},
+  {group:'Product',        items:['Product Development','Packaging','Quality']},
+  {group:'Cross-cutting',  items:['Cross-cutting — Multiple Modules']},
+  {group:'General',        items:['General CB — No Specific Module']},
+];
+
+function diagAreaSelect(id,onch){
+  const opts=DIAG_AREAS.map(g=>`<optgroup label="${g.group}">${g.items.map(i=>`<option>${i}</option>`).join('')}</optgroup>`).join('');
+  return `<select class="field-val" id="${id}" ${onch?`onchange="${onch}"`:''}><option value="">— Select —</option>${opts}</select>`;
+}
+
+function diagBadgeHTML(val){
+  if(!val||val==='— Select —') return '';
+  const color =
+    ['Machinery','Manufacturing','Raw Material'].includes(val)
+      ? 'background:#D6E3EE;color:#2C5A82'
+    : ['Marketing','Pricing','Customer & Sales'].includes(val)
+      ? 'background:#E0D6EE;color:#5A3F82'
+    : ['Accounts & Finance','Logistics','Infrastructure'].includes(val)
+      ? 'background:var(--fair-bg);color:var(--fair-ink)'
+    : ['Product Development','Packaging','Quality'].includes(val)
+      ? 'background:var(--good-bg);color:var(--good-ink)'
+    : 'background:var(--highlight);color:var(--terracotta-dk)';
+  return `<span style="display:inline-flex;padding:3px 10px;border-radius:14px;font-size:10px;font-weight:bold;${color}">${val}</span>`;
+}
+
+function skillAreaSelect(id){
+  const softOpts = SOFT_AREAS.map(a=>`<option value="${a}">${a}</option>`).join('');
+  const techOpts = TECH_AREAS.map(a=>`<option value="${a}">${a}</option>`).join('');
+  return `<div style="position:relative">
+    <select class="field-val skill-area-select" id="${id}" multiple size="5"
+      style="width:100%;padding:4px 6px;min-height:90px;border:1px solid var(--border-dk);border-radius:5px;font-size:11px;font-family:Georgia,serif;background:var(--offwhite)">
+      <optgroup class="soft-group" label="── Soft Skills ──">${softOpts}</optgroup>
+      <optgroup class="tech-group" label="── Technical Skills ──">${techOpts}</optgroup>
+    </select>
+    <div style="font-size:10px;color:var(--ink-faint);margin-top:3px;font-style:italic">Hold Ctrl / Cmd to select multiple</div>
+  </div>`;
+}
+
+function filterSkillArea(typeVal, areaSelectId){
+  const sel = document.getElementById(areaSelectId);
+  if(!sel) return;
+  const softGrp = sel.querySelector('.soft-group');
+  const techGrp = sel.querySelector('.tech-group');
+  if(!softGrp || !techGrp) return;
+  if(typeVal === 'Soft Skill'){
+    softGrp.style.display = '';
+    techGrp.style.display = 'none';
+    techGrp.querySelectorAll('option').forEach(o => o.selected = false);
+  } else if(typeVal === 'Technical Skill'){
+    softGrp.style.display = 'none';
+    techGrp.style.display = '';
+    softGrp.querySelectorAll('option').forEach(o => o.selected = false);
+  } else {
+    softGrp.style.display = '';
+    techGrp.style.display = '';
+  }
+}
+
+function filterSkillArea(typeSelectId, areaSelectId){
+  const type = document.getElementById(typeSelectId)?.value || '';
+  const sel  = document.getElementById(areaSelectId);
+  if(!sel) return;
+  const softGrp = sel.querySelector('.soft-group');
+  const techGrp = sel.querySelector('.tech-group');
+  if(!softGrp || !techGrp) return;
+  if(type === 'Soft Skill'){
+    softGrp.style.display = '';
+    techGrp.style.display = 'none';
+    // deselect tech options
+    techGrp.querySelectorAll('option').forEach(o => o.selected = false);
+  } else if(type === 'Technical Skill'){
+    softGrp.style.display = 'none';
+    techGrp.style.display = '';
+    softGrp.querySelectorAll('option').forEach(o => o.selected = false);
+  } else {
+    softGrp.style.display = '';
+    techGrp.style.display = '';
+  }
+}
+function mkSelect(id,opts,onch){
+  return `<select class="field-val" id="${id}" ${onch?`onchange="${onch}"`:''}>${opts.map(o=>`<option>${o}</option>`).join('')}</select>`;
+}
+function levelSelect(id){
+  return `<select class="field-val" id="${id}"><option>— Select —</option>${SKILL_LEVELS.map(l=>`<option>${l}</option>`).join('')}</select>`;
+}
+
+// ===== POST-TRAINING HTML (shared) =====
+function postTrainingHTML(id){
+  return `
+  <div class="post-box" style="margin:0 14px 14px">
+    <div class="post-box-title">⟳ Post-Training Assessment</div>
+
+    <!-- Post-training legend -->
+    <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:8px;background:rgba(14,77,78,0.08);border-radius:8px;padding:10px;margin-bottom:14px">
+      <div style="text-align:center"><div style="font-size:16px;color:#F5A623">★<span style="color:var(--border-dk)">★★★★</span></div><div style="font-size:10px;color:var(--ink-soft)">1 — None</div></div>
+      <div style="text-align:center"><div style="font-size:16px;color:#F5A623">★★<span style="color:var(--border-dk)">★★★</span></div><div style="font-size:10px;color:var(--ink-soft)">2 — Minimal</div></div>
+      <div style="text-align:center"><div style="font-size:16px;color:#F5A623">★★★<span style="color:var(--border-dk)">★★</span></div><div style="font-size:10px;color:var(--ink-soft)">3 — Moderate</div></div>
+      <div style="text-align:center"><div style="font-size:16px;color:#F5A623">★★★★<span style="color:var(--border-dk)">★</span></div><div style="font-size:10px;color:var(--ink-soft)">4 — Good</div></div>
+      <div style="text-align:center"><div style="font-size:16px;color:#F5A623">★★★★★</div><div style="font-size:10px;color:var(--ink-soft)">5 — Excellent</div></div>
+    </div>
+
+    <!-- Star rating rows -->
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:14px">
+      <div class="assess-card">
+        <div class="assess-card-title" style="font-size:11px;margin-bottom:6px">Skill Improvement</div>
+        <div class="star-rating" data-key="${id}-skill-imp">
+          <span class="star" onclick="setStars(this)" data-val="1">★</span><span class="star" onclick="setStars(this)" data-val="2">★</span><span class="star" onclick="setStars(this)" data-val="3">★</span><span class="star" onclick="setStars(this)" data-val="4">★</span><span class="star" onclick="setStars(this)" data-val="5">★</span>
+        </div>
+        <div class="star-val"></div>
+      </div>
+      <div class="assess-card">
+        <div class="assess-card-title" style="font-size:11px;margin-bottom:6px">Confidence Improvement</div>
+        <div class="star-rating" data-key="${id}-conf-imp">
+          <span class="star" onclick="setStars(this)" data-val="1">★</span><span class="star" onclick="setStars(this)" data-val="2">★</span><span class="star" onclick="setStars(this)" data-val="3">★</span><span class="star" onclick="setStars(this)" data-val="4">★</span><span class="star" onclick="setStars(this)" data-val="5">★</span>
+        </div>
+        <div class="star-val"></div>
+      </div>
+      <div class="assess-card">
+        <div class="assess-card-title" style="font-size:11px;margin-bottom:6px">Production Improvement</div>
+        <div class="star-rating" data-key="${id}-prod-imp">
+          <span class="star" onclick="setStars(this)" data-val="1">★</span><span class="star" onclick="setStars(this)" data-val="2">★</span><span class="star" onclick="setStars(this)" data-val="3">★</span><span class="star" onclick="setStars(this)" data-val="4">★</span><span class="star" onclick="setStars(this)" data-val="5">★</span>
+        </div>
+        <div class="star-val"></div>
+      </div>
+      <div class="assess-card">
+        <div class="assess-card-title" style="font-size:11px;margin-bottom:6px">Working Independently</div>
+        <div class="star-rating" data-key="${id}-independent">
+          <span class="star" onclick="setStars(this)" data-val="1">★</span><span class="star" onclick="setStars(this)" data-val="2">★</span><span class="star" onclick="setStars(this)" data-val="3">★</span><span class="star" onclick="setStars(this)" data-val="4">★</span><span class="star" onclick="setStars(this)" data-val="5">★</span>
+        </div>
+        <div class="star-val"></div>
+      </div>
+      <div class="assess-card">
+        <div class="assess-card-title" style="font-size:11px;margin-bottom:6px">Ability to Train Others</div>
+        <div class="star-rating" data-key="${id}-train-others">
+          <span class="star" onclick="setStars(this)" data-val="1">★</span><span class="star" onclick="setStars(this)" data-val="2">★</span><span class="star" onclick="setStars(this)" data-val="3">★</span><span class="star" onclick="setStars(this)" data-val="4">★</span><span class="star" onclick="setStars(this)" data-val="5">★</span>
+        </div>
+        <div class="star-val"></div>
+      </div>
+      <div class="assess-card">
+        <div class="assess-card-title" style="font-size:11px;margin-bottom:6px">Further Support Needed</div>
+        <div class="star-rating" data-key="${id}-further">
+          <span class="star" onclick="setStars(this)" data-val="1">★</span><span class="star" onclick="setStars(this)" data-val="2">★</span><span class="star" onclick="setStars(this)" data-val="3">★</span><span class="star" onclick="setStars(this)" data-val="4">★</span><span class="star" onclick="setStars(this)" data-val="5">★</span>
+        </div>
+        <div class="star-val"></div>
+      </div>
+    </div>
+
+    <!-- Text fields -->
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px">
+      <div><div class="field-label" style="font-size:11px;color:var(--ink-soft);margin-bottom:4px">Entrepreneur Feedback</div>
+        <textarea style="width:100%;border:1px solid var(--border-dk);padding:6px 8px;border-radius:4px;font-family:Georgia,serif;font-size:11px;background:#fff;resize:vertical;min-height:60px" placeholder="Entrepreneur's own feedback after the training..."></textarea>
+      </div>
+      <div><div class="field-label" style="font-size:11px;color:var(--ink-soft);margin-bottom:4px">Trainer / Facilitator Feedback</div>
+        <textarea style="width:100%;border:1px solid var(--border-dk);padding:6px 8px;border-radius:4px;font-family:Georgia,serif;font-size:11px;background:#fff;resize:vertical;min-height:60px" placeholder="Trainer's observations and remarks..."></textarea>
+      </div>
+      <div><div class="field-label" style="font-size:11px;color:var(--ink-soft);margin-bottom:4px">Field Team Observation</div>
+        <textarea style="width:100%;border:1px solid var(--border-dk);padding:6px 8px;border-radius:4px;font-family:Georgia,serif;font-size:11px;background:#fff;resize:vertical;min-height:60px" placeholder="What the field team observed post-training..."></textarea>
+      </div>
+      <div><div class="field-label" style="font-size:11px;color:var(--ink-soft);margin-bottom:4px">Learning Outcome</div>
+        <textarea style="width:100%;border:1px solid var(--border-dk);padding:6px 8px;border-radius:4px;font-family:Georgia,serif;font-size:11px;background:#fff;resize:vertical;min-height:60px" placeholder="Key skills or knowledge actually gained..."></textarea>
+      </div>
+      <div><div class="field-label" style="font-size:11px;color:var(--ink-soft);margin-bottom:4px">Follow-up Actions</div>
+        <textarea style="width:100%;border:1px solid var(--border-dk);padding:6px 8px;border-radius:4px;font-family:Georgia,serif;font-size:11px;background:#fff;resize:vertical;min-height:60px" placeholder="Next steps or follow-up required..."></textarea>
+      </div>
+      <div><div class="field-label" style="font-size:11px;color:var(--ink-soft);margin-bottom:4px">Assessment Date</div>
+        <input type="date" style="width:100%;border:1px solid var(--border-dk);padding:6px 8px;border-radius:4px;font-family:Georgia,serif;font-size:11px;background:#fff">
+      </div>
+    </div>
+  </div>`;
+}
+
+// ===== PAST TRAININGS =====
+function addPastTraining(){
+  pastCounter++;
+  const pid=`past${pastCounter}`;
+  const el=document.createElement('div');
+  el.className='machine-block'; el.id=pid;
+  el.innerHTML=renderPast(pid, pastCounter);
+  document.getElementById('pastTrainingList').appendChild(el);
+  refreshPastTotals();
+  refreshSummary();
+}
+
+function renderPast(pid, idx){
+  return `
+  <div class="machine-block-head" onclick="toggleBlock('${pid}')">
+    <div class="mb-name">
+      <span class="chevron">▾</span>
+      <span style="opacity:0.8">Row ${idx} ·</span>
+      <input type="text" id="${pid}-name" placeholder="Training Name"
+        style="background:rgba(255,255,255,0.15);border:1px solid rgba(255,255,255,0.3);color:#fff;padding:3px 8px;border-radius:4px;font-family:Georgia,serif;font-size:13px;width:220px"
+        onclick="event.stopPropagation()" oninput="syncPastName('${pid}')">
+      <span id="${pid}-tbadge"></span>
+      <span id="${pid}-dbadge"></span>
+    </div>
+    <button class="mb-remove" onclick="event.stopPropagation();removePast('${pid}')">Remove</button>
+  </div>
+  <div class="mb-body">
+
+    <div class="subsection">
+      <div class="subsection-title"><span style="color:var(--terracotta);font-style:italic;margin-right:6px">I.</span>Training Details</div>
+      <div class="field-row">
+        <div class="field-third"><div class="field-label">Training Name</div>
+          <input type="text" class="field-val" id="${pid}-nameBody" placeholder="Training name" oninput="syncPastName('${pid}')">
+        </div>
+        <div class="field-third"><div class="field-label">Skill Type *</div>
+          <select class="field-val" id="${pid}-skillType" onchange="updatePastBadge('${pid}');filterSkillArea(this.value,'${pid}-skillArea');refreshPastTotals()">
+            <option value="">— Select —</option>
+            <option value="Soft Skill">Soft Skill</option>
+            <option value="Technical Skill">Technical Skill</option>
+          </select>
+        </div>
+      </div>
+      <div class="field-row">
+        <div class="field-third"><div class="field-label">Skill Area *</div>${skillAreaSelect(pid+'-skillArea')}</div>
+        <div class="field-third"><div class="field-label">Provider / Trainer</div><input type="text" class="field-val" placeholder="Provider or trainer name"></div>
+        <div class="field-third"><div class="field-label">Training Format</div>${mkSelect(pid+'-format', FORMAT_OPTS)}</div>
+      </div>
+      <div class="field-row">
+        <div class="field-third"><div class="field-label">Location</div><input type="text" class="field-val" placeholder="Venue or location"></div>
+      <div class="field-row">
+        <div class="field-third"><div class="field-label">Start Date</div><input type="date" class="field-val"></div>
+        <div class="field-third"><div class="field-label">End Date</div><input type="date" class="field-val"></div>
+        <div class="field-third"><div class="field-label">Completion Status *</div>
+          <select class="field-val" id="${pid}-completion" onchange="refreshPastTotals()">
+            <option>— Select —</option><option>Completed</option><option>Partial</option><option>Ongoing</option><option>Dropped</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <div class="subsection">
+      <div class="subsection-title"><span style="color:var(--terracotta);font-style:italic;margin-right:6px">II.</span>Skill Retention & Application</div>
+      <div class="field-row">
+        <div class="field-third"><div class="field-label">Skill Retention</div>
+          <select class="field-val" id="${pid}-retention" onchange="refreshPastTotals()">
+            <option>— Select —</option><option>Cannot Apply</option><option>Applies with Support</option><option>Independent</option><option>Can Train Others</option>
+          </select>
+        </div>
+        <div class="field-third"><div class="field-label">Applied in Enterprise?</div>
+          <select class="field-val" id="${pid}-applied" onchange="refreshPastTotals()">
+            <option>— Select —</option><option>Yes</option><option>Partial</option><option>No</option>
+          </select>
+        </div>
+        <div class="field-third"><div class="field-label">Behaviour Change Observed?</div>
+          <select class="field-val">
+            <option>— Select —</option>
+            <option>Yes — Significant</option>
+            <option>Yes — Minor</option>
+            <option>No Change</option>
+            <option>Too Early to Tell</option>
+          </select>
+        </div>
+      </div>
+      <div class="field-row">
+        <div class="field-third"><div class="field-label">Improvement Seen</div>
+          <select class="field-val">
+            <option>— Select —</option>
+            <option>Confidence Improved</option>
+            <option>Product Consistency Improved</option>
+            <option>Production Speed Improved</option>
+            <option>Customer Interaction Improved</option>
+            <option>Entrepreneurial Behaviour Improved</option>
+            <option>Multiple Improvements</option>
+          </select>
+        </div>
+        <div class="field-third"><div class="field-label">Time Since Training</div>
+          <select class="field-val">
+            <option>— Select —</option>
+            <option>Less than 1 month</option>
+            <option>1–3 months</option>
+            <option>3–6 months</option>
+            <option>More than 6 months</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <div class="subsection">
+      <div class="subsection-title"><span style="color:var(--terracotta);font-style:italic;margin-right:6px">III.</span>Remarks</div>
+      <div class="field-row">
+        <div class="field-third"><div class="field-label">Entrepreneur Feedback</div><textarea class="field-val" placeholder="Entrepreneur's own feedback on this training..."></textarea></div>
+        <div class="field-third"><div class="field-label">Trainer Feedback</div><textarea class="field-val" placeholder="Trainer's remarks..."></textarea></div>
+        <div class="field-third"><div class="field-label">Field Team Observation</div><textarea class="field-val" placeholder="What the field team observed..."></textarea></div>
+      </div>
+    </div>
+
+    <div class="intervention-flags">
+      <div class="intervention-flags-title">⚠ Intervention Need</div>
+      <div class="intervention-grid">
+        <div class="intervention-cell">
+          <div class="intervention-toggle-row">
+            <span class="label">Re-training needed for this skill?</span>
+            <span class="toggle" id="${pid}-retrainToggle" onclick="toggleRetrainFlag(this,'${pid}')"></span>
+          </div>
+          <div class="flag-note" id="${pid}-retrainNote">Not flagged</div>
+          <textarea id="${pid}-retrainJustify" placeholder="Why is re-training needed?..." oninput="syncBridge('${pid}')"></textarea>
+        </div>
+        <div class="intervention-cell">
+          <div style="font-size:11px;color:var(--ink-faint);font-style:italic;padding-top:4px;line-height:1.6">
+            When flagged, this training appears in<br>
+            <strong style="color:var(--terracotta-dk);font-style:normal">Required Trainings → Section I</strong><br>
+            pre-filled with skill area and justification.
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>`;
+}
+
+function syncPastName(pid){
+  const v=document.getElementById(`${pid}-nameBody`)?.value||'';
+  const h=document.getElementById(`${pid}-name`);
+  if(h&&h.value!==v) h.value=v;
+  syncBridgeNames(pid);
+}
+
+function updatePastBadge(pid){
+  const v=document.getElementById(`${pid}-skillType`)?.value||'';
+  const b=document.getElementById(`${pid}-tbadge`);
+  if(!b) return;
+  b.innerHTML=v==='Soft Skill'?'<span class="skill-type-badge skill-soft">Soft Skill</span>'
+    :v==='Product Technical Skill'?'<span class="skill-type-badge skill-tech">Technical</span>':'';
+}
+
+function updateDiagBadge(pid, type){
+  const selId = type==='past' ? `${pid}-diagArea` : `${pid}-diagAreaReq`;
+  const val=document.getElementById(selId)?.value||'';
+  const b=document.getElementById(`${pid}-dbadge`);
+  if(b) b.innerHTML=diagBadgeHTML(val);
+}
+
+function syncBridgeNames(pid){
+  const name=document.getElementById(`${pid}-nameBody`)?.value||document.getElementById(`${pid}-name`)?.value||'—';
+  const area=document.getElementById(`${pid}-skillArea`)?.value||'—';
+  document.querySelectorAll(`[data-bridge-source="${pid}"] .bridge-name`).forEach(el=>el.textContent=name||'—');
+  document.querySelectorAll(`[data-bridge-source="${pid}"] .bridge-area`).forEach(el=>el.textContent=area||'—');
+}
+
+function refreshPastTotals(){
+  const blocks=document.querySelectorAll('#pastTrainingList .machine-block');
+  let total=blocks.length, soft=0, tech=0, completed=0, flagged=0;
+  blocks.forEach(b=>{
+    const type=document.getElementById(`${b.id}-skillType`)?.value||'';
+    const comp=document.getElementById(`${b.id}-completion`)?.value||'';
+    if(type==='Soft Skill') soft++;
+    if(type==='Technical Skill') tech++;
+    if(comp==='Completed') completed++;
+    if(document.getElementById(`${b.id}-retrainToggle`)?.classList.contains('on')) flagged++;
+  });
+  setText('past-tot',total); setText('past-soft',soft); setText('past-tech',tech);
+  setText('past-completed',completed); setText('past-flagged',flagged);
+  
+  refreshSummary();
+}
+
+// ===== BRIDGE =====
+function toggleRetrainFlag(el,pid){
+  el.classList.toggle('on');
+  const note=document.getElementById(`${pid}-retrainNote`);
+  if(el.classList.contains('on')){
+    note.textContent='↻ Flagged → Details in Required Tab';
+    note.classList.add('active');
+    if(!document.querySelector(`[data-bridge-source="${pid}"]`)) addRetrainingRow(pid);
+  } else {
+    note.textContent='Not flagged';
+    note.classList.remove('active');
+    document.querySelector(`[data-bridge-source="${pid}"]`)?.remove();
+    refreshEmptyMessages();
+  }
+  refreshPastTotals();
+  refreshReqTotals();
+  
+}
+
+function syncBridge(pid){
+  const justify=document.getElementById(`${pid}-retrainJustify`)?.value||'';
+  const target=document.querySelector(`[data-bridge-source="${pid}"] .bridge-justify`);
+  if(target&&target.value!==justify) target.value=justify;
+}
+
+// ===== REQUIRED — SECTION I =====
+function addRetrainingRow(bridgePid){
+  const list=document.getElementById('retrainingList');
+  list.querySelector('.empty-msg')?.remove();
+  retrainCounter++;
+  const rid=`retrain${retrainCounter}`;
+  const div=document.createElement('div');
+  div.className='opt-row'; div.id=rid;
+  if(bridgePid){ div.setAttribute('data-bridge-source',bridgePid); div.setAttribute('data-bridge-type','retrain'); }
+
+  const name=bridgePid?(document.getElementById(`${bridgePid}-nameBody`)?.value||document.getElementById(`${bridgePid}-name`)?.value||'—'):'';
+  const area=bridgePid?(document.getElementById(`${bridgePid}-skillArea`)?.value||'—'):'';
+  const justify=bridgePid?(document.getElementById(`${bridgePid}-retrainJustify`)?.value||''):'';
+
+  div.innerHTML=`
+    <div class="opt-row-head" style="grid-template-columns:1.5fr 1.5fr 2fr auto">
+      <div><div class="opt-readonly-label">Past Training</div><div class="opt-readonly-val bridge-name">${name||'—'}</div></div>
+      <div><div class="opt-readonly-label">Skill Area</div><div class="opt-readonly-val bridge-area">${area||'—'}</div></div>
+      <div>
+        <div class="opt-readonly-label">Justification (from Past Trainings)</div>
+        <textarea class="field-val bridge-justify" style="width:100%;min-height:36px" placeholder="Why re-training is needed">${justify}</textarea>
+      </div>
+      <span class="int-type int-retraining">↻ Re-training</span>
+    </div>
+    <div style="padding:14px;display:grid;grid-template-columns:repeat(3,1fr);gap:12px">
+      <div><div class="opt-readonly-label">Skill Type</div>
+        <select class="field-val req-skill-type" onchange="filterSkillArea(this.id, this.closest('.opt-row').querySelector('.skill-area-select').id)" id="${rid}-skillTypeReq"><option>— Select —</option><option>Soft Skill</option><option>Technical Skill</option></select>
+      </div>
+      <div><div class="opt-readonly-label">Skill Area</div>${skillAreaSelect(rid+'-skillArea')}</div>
+      <div><div class="opt-readonly-label">Gap Severity</div>
+        <select class="field-val" id="${rid}-gap" onchange="refreshReqTotals()">
+          ${GAP_OPTS.map(o=>`<option>${o}</option>`).join('')}
+        </select>
+      </div>
+      <div><div class="opt-readonly-label">Current Level</div>${levelSelect(rid+'-currLevel')}</div>
+      <div><div class="opt-readonly-label">Required Level</div>${levelSelect(rid+'-reqLevel')}</div>
+      <div><div class="opt-readonly-label">Problem Observed</div>
+        <textarea class="field-val" style="min-height:44px" placeholder="Specific problem — e.g., inconsistent output, difficulty repeating recipe..."></textarea>
+      </div>
+      <div><div class="opt-readonly-label">Intervention Type</div>${mkSelect(rid+'-intervention',INTERVENTION_OPTS)}</div>
+      <div><div class="opt-readonly-label">Suggested Provider / Resource</div>
+        <input type="text" class="field-val" placeholder="Who can deliver this training?">
+      </div>
+      <div><div class="opt-readonly-label">Assigned To</div>${mkSelect(rid+'-assigned',ASSIGNED_OPTS)}</div>
+      <div style="grid-column:span 3"><div class="opt-readonly-label">Expected Outcome</div>
+        <textarea class="field-val" style="min-height:44px" placeholder="e.g., entrepreneur independently prepares product, improved consistency..."></textarea>
+      </div>
+    </div>
+    <div style="margin:0 14px 14px;background:var(--terracotta-sft);border:1px solid var(--terracotta);border-radius:8px;padding:12px">
+      <div style="font-size:11px;font-weight:bold;text-transform:uppercase;letter-spacing:1px;color:var(--terracotta-dk);margin-bottom:10px">Implementation Status</div>
+      <div class="field-row" style="margin-bottom:8px">
+        <div class="field-half"><div class="field-label">Status</div>
+          <select class="field-val retrain-status" onchange="refreshReqTotals()">
+            ${IMPL_OPTS.map(o=>`<option>${o}</option>`).join('')}
+          </select>
+        </div>
+        <div class="field-half"><div class="field-label">Scheduled Date</div><input type="date" class="field-val"></div>
+      </div>
+      <div class="field-row" style="margin-bottom:0">
+        <div class="field-full"><div class="field-label">Implementation Notes</div>
+          <textarea class="field-val" style="min-height:40px" placeholder="Notes on scheduling, logistics, or dependencies..."></textarea>
+        </div>
+      </div>
+    </div>
+    ${postTrainingHTML(rid)}
+    <div style="padding:0 14px 14px;text-align:right">
+      <button class="btn" onclick="removeRetrainingRow('${rid}')" style="color:var(--terracotta)">Remove</button>
+    </div>`;
+  list.appendChild(div);
+  refreshReqTotals();
+}
+
+function removeRetrainingRow(rid){
+  if(confirm('Remove this row?')){
+    const row=document.getElementById(rid);
+    const bridgePid=row.getAttribute('data-bridge-source');
+    row.remove();
+    if(bridgePid){
+      const toggle=document.getElementById(`${bridgePid}-retrainToggle`);
+      if(toggle?.classList.contains('on')){
+        toggle.classList.remove('on');
+        const n=document.getElementById(`${bridgePid}-retrainNote`);
+        if(n){n.textContent='Not flagged';n.classList.remove('active');}
+      }
+    }
+    refreshEmptyMessages();
+    refreshReqTotals();
+    
+  }
+}
+
+// ===== REQUIRED — SECTION II =====
+function addNewTrainingRow(){
+  newTrainCounter++;
+  const nid=`newtrain${newTrainCounter}`;
+  const list=document.getElementById('newTrainingList');
+  const div=document.createElement('div');
+  div.className='opt-row'; div.id=nid;
+
+  div.innerHTML=`
+    <div class="opt-row-head" style="grid-template-columns:2fr 1fr auto">
+      <div>
+        <div class="opt-readonly-label">Training Name</div>
+        <input type="text" class="opt-readonly-val" placeholder="Training name" style="background:transparent;border:none;border-bottom:1px solid var(--border-dk);width:100%;font-family:Georgia,serif;font-size:12px;font-weight:bold;color:var(--teal);padding:2px 0;outline:none">
+      </div>
+      <div>
+        <div class="opt-readonly-label">Skill Type</div>
+        <select class="field-val" style="font-size:11px;padding:4px 6px" onchange="filterSkillArea(this.value,'${nid}-skillArea')">
+          <option>— Select —</option><option>Soft Skill</option><option>Technical Skill</option>
+        </select>
+      </div>
+      <span class="int-type int-new">+ New Training</span>
+    </div>
+    <div style="padding:14px;display:grid;grid-template-columns:repeat(3,1fr);gap:12px">
+      <div><div class="opt-readonly-label">Skill Area</div>${skillAreaSelect(nid+'-skillArea')}</div>
+      <div><div class="opt-readonly-label">Gap Severity</div>
+        <select class="field-val" id="${nid}-gap" onchange="refreshReqTotals()">
+          ${GAP_OPTS.map(o=>`<option>${o}</option>`).join('')}
+        </select>
+      </div>
+      <div><div class="opt-readonly-label">Current Level</div>${levelSelect(nid+'-currLevel')}</div>
+      <div><div class="opt-readonly-label">Required Level</div>${levelSelect(nid+'-reqLevel')}</div>
+      <div><div class="opt-readonly-label">Problem Observed</div>
+        <textarea class="field-val" style="min-height:44px" placeholder="Specific problem — e.g., low confidence while selling, slow production workflow..."></textarea>
+      </div>
+      <div><div class="opt-readonly-label">Intervention Type</div>${mkSelect(nid+'-intervention',INTERVENTION_OPTS)}</div>
+      <div><div class="opt-readonly-label">Suggested Provider / Resource</div>
+        <input type="text" class="field-val" placeholder="Who can deliver this training?">
+      </div>
+      <div><div class="opt-readonly-label">Assigned To</div>${mkSelect(nid+'-assigned',ASSIGNED_OPTS)}</div>
+      <div style="grid-column:span 3"><div class="opt-readonly-label">Expected Outcome</div>
+        <textarea class="field-val" style="min-height:44px" placeholder="e.g., entrepreneur trains SHG members independently, improved communication confidence..."></textarea>
+      </div>
+    </div>
+    <div style="margin:0 14px 14px;background:var(--terracotta-sft);border:1px solid var(--terracotta);border-radius:8px;padding:12px">
+      <div style="font-size:11px;font-weight:bold;text-transform:uppercase;letter-spacing:1px;color:var(--terracotta-dk);margin-bottom:10px">Implementation Status</div>
+      <div class="field-row" style="margin-bottom:8px">
+        <div class="field-half"><div class="field-label">Status</div>
+          <select class="field-val new-status" onchange="refreshReqTotals()">
+            ${IMPL_OPTS.map(o=>`<option>${o}</option>`).join('')}
+          </select>
+        </div>
+        <div class="field-half"><div class="field-label">Scheduled Date</div><input type="date" class="field-val"></div>
+      </div>
+      <div class="field-row" style="margin-bottom:0">
+        <div class="field-full"><div class="field-label">Implementation Notes</div>
+          <textarea class="field-val" style="min-height:40px" placeholder="Notes on scheduling, logistics, or dependencies..."></textarea>
+        </div>
+      </div>
+    </div>
+    ${postTrainingHTML(nid)}
+    <div style="padding:0 14px 14px;text-align:right">
+      <button class="btn" onclick="removeNewTrainingRow('${nid}')" style="color:var(--terracotta)">Remove</button>
+    </div>`;
+  list.appendChild(div);
+  refreshReqTotals();
+  
+}
+
+function removeNewTrainingRow(nid){
+  if(confirm('Remove this row?')){
+    document.getElementById(nid).remove();
+    refreshReqTotals();
+    
+  }
+}
+
+// ===== EMPTY MESSAGES =====
+function refreshEmptyMessages(){
+  const list=document.getElementById('retrainingList');
+  if(list&&!list.children.length){
+    list.innerHTML='<div class="empty-msg" style="text-align:center;color:var(--ink-faint);font-style:italic;padding:20px;background:#fff;border:1px dashed var(--border-dk);border-radius:8px">No re-training interventions flagged yet — toggle the flag in Past Trainings to populate this section.</div>';
+  }
+}
+
+// ===== REQUIRED TOTALS =====
+function refreshReqTotals(){
+  const rr=document.querySelectorAll('#retrainingList .opt-row');
+  const nr=document.querySelectorAll('#newTrainingList .opt-row');
+  let critical=0, planned=0, completed=0;
+  rr.forEach(r=>{
+    const g=document.getElementById(`${r.id}-gap`)?.value||'';
+    const s=r.querySelector('.retrain-status')?.value||'';
+    if(g==='Critical'||g==='High') critical++;
+    if(s==='Planned'||s==='Scheduled') planned++;
+    if(s==='Completed') completed++;
+  });
+  nr.forEach(r=>{
+    const g=document.getElementById(`${r.id}-gap`)?.value||'';
+    const s=r.querySelector('.new-status')?.value||'';
+    if(g==='Critical'||g==='High') critical++;
+    if(s==='Planned'||s==='Scheduled') planned++;
+    if(s==='Completed') completed++;
+  });
+  setText('req-tot-retrain',rr.length); setText('req-tot-new',nr.length);
+  setText('req-tot-critical',critical); setText('req-tot-completed',completed);
+  
+  refreshSummary();
+}
+
+// ===== TOGGLE / REMOVE PAST =====
+function toggleBlock(id){ document.getElementById(id).classList.toggle('collapsed'); }
+
+function removePast(pid){
+  if(confirm('Remove this training?')){
+    document.querySelectorAll(`[data-bridge-source="${pid}"]`).forEach(el=>el.remove());
+    document.getElementById(pid).remove();
+    refreshEmptyMessages();
+    refreshPastTotals();
+    refreshReqTotals();
+    
+    refreshSummary();
+  }
+}
+
+// ===== DIAG AREA BREAKDOWN =====
+// ===== SUMMARY REFRESH =====
+function refreshSummary(){
+  const pb = document.querySelectorAll('#pastTrainingList .machine-block');
+  const rr = document.querySelectorAll('#retrainingList .opt-row');
+  const nr = document.querySelectorAll('#newTrainingList .opt-row');
+
+  // ── Overview table ──
+  const tbody = document.getElementById('summaryTrainingTable');
+  let html = '';
+
+  // Past training rows
+  pb.forEach(b => {
+    const name     = document.getElementById(`${b.id}-nameBody`)?.value || document.getElementById(`${b.id}-name`)?.value || '—';
+    const type     = document.getElementById(`${b.id}-skillType`)?.value || '—';
+    const skillArea= Array.from(document.getElementById(`${b.id}-skillArea`)?.selectedOptions || []).map(o=>o.value).filter(Boolean).join(', ') || '—';
+    const reflagged= document.getElementById(`${b.id}-retrainToggle`)?.classList.contains('on');
+
+    const typeBadge = type === 'Soft Skill'
+      ? `<span style="display:inline-flex;padding:3px 9px;border-radius:14px;font-size:10px;font-weight:bold;background:var(--purple-bg);color:var(--purple-ink)">${type}</span>`
+      : type !== '—'
+        ? `<span style="display:inline-flex;padding:3px 9px;border-radius:14px;font-size:10px;font-weight:bold;background:var(--blue-bg);color:var(--blue-ink)">${type}</span>`
+        : '—';
+
+    html += `<tr>
+      <td><strong>${name}</strong></td>
+      <td>${typeBadge}</td>
+      <td style="font-size:11px">${skillArea}</td>
+      <td style="color:var(--ink-faint)">—</td>
+      <td style="color:var(--ink-faint)">—</td>
+      <td style="color:var(--ink-faint)">—</td>
+    </tr>`;
+  });
+
+  // Re-training rows
+  rr.forEach(r => {
+    const name   = r.querySelector('.bridge-name')?.textContent || '—';
+    const gap    = document.getElementById(`${r.id}-gap`)?.value || '—';
+    const status = r.querySelector('.retrain-status')?.value || '—';
+    const gapCls = gap === 'Critical' ? 'background:var(--poor-bg);color:var(--poor-ink)'
+                 : gap === 'High'     ? 'background:var(--fair-bg);color:var(--fair-ink)'
+                 : gap === 'Medium'   ? 'background:var(--highlight);color:var(--terracotta-dk)'
+                 : 'background:var(--cream-deep);color:var(--ink-soft)';
+    const stCls  = status === 'Completed' ? 'background:var(--good-bg);color:var(--good-ink)'
+                 : status === 'Planned' || status === 'Scheduled' ? 'background:var(--blue-bg);color:var(--blue-ink)'
+                 : 'background:var(--cream-deep);color:var(--ink-soft)';
+    html += `<tr style="background:var(--highlight)">
+      <td><strong>${name}</strong></td>
+      <td colspan="2" style="color:var(--ink-faint);font-style:italic">← from Past Trainings</td>
+      <td><span style="display:inline-flex;padding:3px 9px;border-radius:14px;font-size:10px;font-weight:bold;background:var(--terracotta-sft);color:var(--terracotta-dk)">↻ Re-training</span></td>
+      <td>${gap && gap !== '— Select —' ? `<span style="display:inline-flex;padding:3px 9px;border-radius:14px;font-size:10px;font-weight:bold;${gapCls}">${gap}</span>` : '<span style="color:var(--ink-faint)">—</span>'}</td>
+      <td>${status && status !== '— Select —' ? `<span style="display:inline-flex;padding:3px 9px;border-radius:14px;font-size:10px;font-weight:bold;${stCls}">${status}</span>` : '<span style="color:var(--ink-faint)">—</span>'}</td>
+    </tr>`;
+  });
+
+  // New training rows
+  nr.forEach(r => {
+    const nameEl = r.querySelector('.opt-row-head input[type="text"]');
+    const name   = nameEl?.value || '—';
+    const gap    = document.getElementById(`${r.id}-gap`)?.value || '—';
+    const status = r.querySelector('.new-status')?.value || '—';
+    const gapCls = gap === 'Critical' ? 'background:var(--poor-bg);color:var(--poor-ink)'
+                 : gap === 'High'     ? 'background:var(--fair-bg);color:var(--fair-ink)'
+                 : gap === 'Medium'   ? 'background:var(--highlight);color:var(--terracotta-dk)'
+                 : 'background:var(--cream-deep);color:var(--ink-soft)';
+    const stCls  = status === 'Completed' ? 'background:var(--good-bg);color:var(--good-ink)'
+                 : status === 'Planned' || status === 'Scheduled' ? 'background:var(--blue-bg);color:var(--blue-ink)'
+                 : 'background:var(--cream-deep);color:var(--ink-soft)';
+    html += `<tr style="background:#EDF6EA">
+      <td><strong>${name}</strong></td>
+      <td colspan="2" style="color:var(--ink-faint);font-style:italic">New Required Training</td>
+      <td style="color:var(--ink-faint)">—</td>
+      <td><span style="display:inline-flex;padding:3px 9px;border-radius:14px;font-size:10px;font-weight:bold;background:var(--blue-bg);color:var(--blue-ink)">+ New Training</span></td>
+      <td>${gap && gap !== '— Select —' ? `<span style="display:inline-flex;padding:3px 9px;border-radius:14px;font-size:10px;font-weight:bold;${gapCls}">${gap}</span>` : '<span style="color:var(--ink-faint)">—</span>'}</td>
+      <td>${status && status !== '— Select —' ? `<span style="display:inline-flex;padding:3px 9px;border-radius:14px;font-size:10px;font-weight:bold;${stCls}">${status}</span>` : '<span style="color:var(--ink-faint)">—</span>'}</td>
+    </tr>`;
+  });
+
+  tbody.innerHTML = (pb.length === 0 && rr.length === 0 && nr.length === 0)
+    ? '<tr><td colspan="6" style="text-align:center;color:var(--ink-faint);font-style:italic;padding:14px">Auto-populated from Past Trainings and Required Trainings tabs</td></tr>'
+    : html;
+
+  // ── Aggregates ──
+  let pTotal = pb.length, pSoft = 0, pTech = 0, pComp = 0, pFlagged = 0;
+  const skillAreas = new Set();
+  pb.forEach(b => {
+    const type = document.getElementById(`${b.id}-skillType`)?.value || '';
+    const comp = document.getElementById(`${b.id}-completion`)?.value || '';
+    const area = document.getElementById(`${b.id}-skillArea`)?.value || '';
+    if(type === 'Soft Skill') pSoft++;
+    if(type === 'Technical Skill') pTech++;
+    if(comp === 'Completed') pComp++;
+    if(document.getElementById(`${b.id}-retrainToggle`)?.classList.contains('on')) pFlagged++;
+    if(area) skillAreas.add(area);
+  });
+
+  let rCrit = 0, rPlan = 0, rDone = 0, rIdent = 0, rPend = 0;
+  [...rr, ...nr].forEach(r => {
+    const g = document.getElementById(`${r.id}-gap`)?.value || '';
+    const s = r.querySelector('.retrain-status,.new-status')?.value || '';
+    const area = document.getElementById(`${r.id}-skillArea`)?.value || '';
+    if(g === 'Critical' || g === 'High') rCrit++;
+    if(s === 'Planned' || s === 'Scheduled') rPlan++;
+    if(s === 'Completed') rDone++;
+    if(s === 'Identified') rIdent++;
+    if(!s || s === '— Select —') rPend++;
+    if(area) skillAreas.add(area);
+  });
+
+  const rTotal = rr.length + nr.length;
+
+  const st = id => { const el = document.getElementById(id); if(el) el.textContent = arguments[1]; };
+  document.getElementById('sm-past-total')     && (document.getElementById('sm-past-total').textContent     = pTotal);
+  document.getElementById('sm-past-soft')      && (document.getElementById('sm-past-soft').textContent      = pSoft);
+  document.getElementById('sm-past-tech')      && (document.getElementById('sm-past-tech').textContent      = pTech);
+  document.getElementById('sm-past-completed') && (document.getElementById('sm-past-completed').textContent = pComp);
+  document.getElementById('sm-past-flagged')   && (document.getElementById('sm-past-flagged').textContent   = pFlagged);
+  document.getElementById('sm-req-total')      && (document.getElementById('sm-req-total').textContent      = rTotal);
+  document.getElementById('sm-req-retrain')    && (document.getElementById('sm-req-retrain').textContent    = rr.length);
+  document.getElementById('sm-req-new')        && (document.getElementById('sm-req-new').textContent        = nr.length);
+  document.getElementById('sm-req-critical')   && (document.getElementById('sm-req-critical').textContent   = rCrit);
+  document.getElementById('sm-req-completed')  && (document.getElementById('sm-req-completed').textContent  = rDone);
+  document.getElementById('sm-cap-total')      && (document.getElementById('sm-cap-total').textContent      = pTotal + rTotal);
+  document.getElementById('sm-cap-skills')     && (document.getElementById('sm-cap-skills').textContent     = skillAreas.size);
+  document.getElementById('sm-cap-gaps')       && (document.getElementById('sm-cap-gaps').textContent       = Math.max(0, rTotal - rDone));
+  document.getElementById('sm-cap-done')       && (document.getElementById('sm-cap-done').textContent       = rDone);
+  document.getElementById('sm-status-done')    && (document.getElementById('sm-status-done').textContent    = rDone);
+  document.getElementById('sm-status-planned') && (document.getElementById('sm-status-planned').textContent = rPlan);
+  document.getElementById('sm-status-identified') && (document.getElementById('sm-status-identified').textContent = rIdent);
+  document.getElementById('sm-status-pending') && (document.getElementById('sm-status-pending').textContent = rPend);
+
+  // ── Flags ──
+  document.getElementById('sm-flag-retrain')  && (document.getElementById('sm-flag-retrain').textContent  = pFlagged);
+  document.getElementById('sm-flag-critical') && (document.getElementById('sm-flag-critical').textContent = rCrit);
+  document.getElementById('sm-flag-new')      && (document.getElementById('sm-flag-new').textContent      = nr.length);
+  document.getElementById('sm-flag-done')     && (document.getElementById('sm-flag-done').textContent     = rDone);
+}
+
+// ===== DETAILS REFRESH =====
+// ===== TASKS =====
+const TASK_SEEDS=[
+  ['Awareness and orientation on capacity building','03-04-2026','05-04-2026'],
+  ['Applied for scheme / training programme','06-04-2026','09-04-2026'],
+  ['Co-ordination with training provider','10-04-2026','12-04-2026'],
+  ['Received Registration / Confirmation','13-04-2026','18-04-2026'],
+  ['Conducted training / attended programme','19-04-2026','24-04-2026'],
+  ['Follow up on learning outcomes','25-04-2026','26-04-2026'],
+];
+function seedTasks(){
+  const tbody=document.getElementById('tasksBody');
+  tbody.innerHTML=TASK_SEEDS.map((t,i)=>{
+    const n=String(i+1).padStart(2,'0');
+    return `<tr><td class="num-col">${n}</td><td><input type="text" value="${t[0]}"></td>
+      <td><input type="text" value="${t[1]}"></td><td><input type="text" value="${t[2]}"></td>
+      <td><select><option>Pending</option><option>In Progress</option><option>Completed</option><option>Blocked</option></select></td>
+      <td><input type="text" placeholder="Description"></td>
+      <td><input type="text" placeholder="Comment"></td>
+      <td><button class="row-delete" onclick="deleteRow(this)">✕</button></td></tr>`;
+  }).join('');
+  taskCounter=TASK_SEEDS.length;
+}
+function addTaskRow(){
+  taskCounter++;
+  const tbody=document.getElementById('tasksBody');
+  const n=String(taskCounter).padStart(2,'0');
+  const tr=document.createElement('tr');
+  tr.innerHTML=`<td class="num-col">${n}</td><td><input type="text" placeholder="Task name"></td>
+    <td><input type="date"></td><td><input type="date"></td>
+    <td><select><option>Pending</option><option>In Progress</option><option>Completed</option><option>Blocked</option></select></td>
+    <td><input type="text" placeholder="Description"></td>
+    <td><input type="text" placeholder="Comment"></td>
+    <td><button class="row-delete" onclick="deleteRow(this)">✕</button></td>`;
+  tbody.appendChild(tr);
+}
+
+// ===== LOG BOOK =====
+function addLogRow(){
+  const tbody=document.getElementById('logBookBody');
+  const n=String(tbody.rows.length+1).padStart(2,'0');
+  const tr=document.createElement('tr');
+  tr.innerHTML=`<td class="num-col">${n}</td>
+    <td><input type="text" placeholder="FE Associate"></td><td><input type="date"></td>
+    <td><input type="text" placeholder="Entrepreneur name"></td>
+    <td><input type="text" placeholder="DF Capacity Building"></td>
+    <td><input type="text" placeholder="Task name"></td>
+    <td><button class="btn" style="padding:3px 8px;font-size:10px">Upload</button></td>
+    <td><button class="row-delete" onclick="deleteRow(this)">✕</button></td>`;
+  tbody.appendChild(tr);
+}
+
+// ===== GENERIC =====
+function addRow(tableId){
+  const tbody=document.querySelector('#'+tableId+' tbody');
+  const row=tbody.rows[0].cloneNode(true);
+  row.querySelectorAll('input').forEach(i=>{if(i.type!=='button')i.value='';});
+  row.querySelectorAll('select').forEach(s=>s.selectedIndex=0);
+  tbody.appendChild(row);
+}
+function deleteRow(btn){
+  const row=btn.closest('tr'),tbody=row.parentElement;
+  if(tbody.rows.length>1) row.remove();
+  else alert('At least one row is required.');
+}
+function setText(id,val){const el=document.getElementById(id);if(el)el.textContent=val;}
+
+window.addEventListener('DOMContentLoaded',()=>{
+  seedTasks();
+  refreshSummary();
+});
+</script>
+</body>
+</html>

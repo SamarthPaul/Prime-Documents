@@ -1,0 +1,1054 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Labels Module · PRIME Rural</title>
+<style>
+:root {
+  --teal:#0E4D4E; --sea:#1A6B6D; --terracotta:#C26849; --terracotta-dk:#A85738;
+  --cream:#FBF5E5; --cream-deep:#F4ECD3; --offwhite:#FDFAF0; --panel:#FFFFFF;
+  --ink:#2A2520; --ink-soft:#6B6359; --ink-faint:#9C9384;
+  --border:#E8DFC9; --border-dk:#D6CDB6;
+  --warn-bg:#FBE9DF; --warn-border:#E5B299; --warn-ink:#7A3B22;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:Georgia,serif;background:var(--cream);color:var(--ink);line-height:1.4}
+.page{max-width:1100px;margin:0 auto;padding:24px}
+
+.header{background:var(--teal);color:#fff;padding:16px 20px;border-radius:12px 12px 0 0;display:flex;justify-content:space-between;align-items:center}
+.header h1{font-size:18px;font-weight:normal;letter-spacing:0.5px}
+.header .crumb{font-size:11px;opacity:0.75;text-transform:uppercase;letter-spacing:1px}
+
+.card{background:var(--cream);border:1px solid var(--border-dk);border-top:none;border-radius:0 0 12px 12px}
+
+.tab-bar{display:flex;background:var(--cream-deep);border-bottom:1px solid var(--border-dk)}
+.tab{padding:12px 22px;cursor:pointer;font-size:12px;text-transform:uppercase;letter-spacing:1px;color:var(--ink-soft);border-right:1px solid var(--border)}
+.tab.active{background:var(--teal);color:#fff}
+.tab:hover:not(.active){background:#EADFC0}
+
+.content{padding:22px}
+
+.section{background:var(--cream-deep);padding:16px;border-radius:10px;margin-bottom:16px;border:1px solid var(--border)}
+.section-title{font-size:13px;text-transform:uppercase;letter-spacing:1.5px;color:var(--teal);margin-bottom:12px;padding-bottom:8px;border-bottom:1px solid var(--border-dk);font-weight:bold}
+.eyebrow{font-size:10px;text-transform:uppercase;color:var(--ink-soft);margin-bottom:8px;letter-spacing:1px}
+
+.field-row{display:flex;gap:12px;margin-bottom:10px;flex-wrap:wrap;align-items:center}
+.field-label{width:240px;font-size:12px;color:var(--ink-soft);padding-top:6px}
+.field-val{flex:1;background:#fff;border:1px solid var(--border-dk);padding:8px 10px;border-radius:6px;font-size:12px;min-width:200px}
+textarea.field-val{font-family:Georgia,serif;resize:vertical;min-height:60px;width:100%}
+select.field-val{cursor:pointer}
+
+.btn{padding:5px 12px;border-radius:20px;border:1px solid var(--border-dk);background:#fff;cursor:pointer;font-size:11px;color:var(--ink);font-family:Georgia,serif}
+.btn:hover{background:var(--cream-deep)}
+.btn-primary{background:var(--teal);color:#fff;border-color:var(--teal)}
+.btn-primary:hover{background:var(--sea)}
+.btn-accent{background:var(--terracotta);color:#fff;border-color:var(--terracotta)}
+.btn-accent:hover{background:var(--terracotta-dk)}
+.btn-ai{background:var(--terracotta);color:#fff;border-color:var(--terracotta);font-style:italic}
+
+.toggle{width:36px;height:18px;border-radius:20px;background:#ccc;display:inline-block;cursor:pointer;position:relative;flex-shrink:0}
+.toggle::after{content:'';width:14px;height:14px;background:#fff;border-radius:50%;position:absolute;top:2px;left:2px;transition:left 0.2s}
+.toggle.on{background:var(--terracotta)}
+.toggle.on::after{left:20px}
+
+.hidden{display:none !important}
+
+table.data-table{width:100%;border-collapse:collapse;background:#fff;border-radius:8px;overflow:hidden;border:1px solid var(--border-dk);font-size:11px}
+table.data-table th{background:var(--teal);color:#fff;padding:10px 8px;text-align:left;font-weight:normal;text-transform:uppercase;letter-spacing:0.5px;font-size:10px;border-right:1px solid var(--sea);white-space:nowrap}
+table.data-table th:last-child{border-right:none}
+table.data-table td{padding:8px;border-bottom:1px solid var(--border);border-right:1px solid var(--border);vertical-align:middle}
+table.data-table td:last-child{border-right:none}
+table.data-table tr:last-child td{border-bottom:none}
+table.data-table input[type=text],table.data-table input[type=number],table.data-table select,table.data-table textarea{width:100%;border:1px solid var(--border);padding:5px 6px;border-radius:4px;font-family:Georgia,serif;font-size:11px;background:var(--offwhite)}
+table.data-table input:focus,table.data-table select:focus,table.data-table textarea:focus{outline:none;border-color:var(--teal);background:#fff}
+
+.table-actions{display:flex;justify-content:flex-end;margin-top:10px;gap:8px}
+
+.upload-cell{display:flex;gap:4px;align-items:center;flex-wrap:nowrap}
+.upload-cell .btn{padding:3px 8px;font-size:10px}
+
+.alcohol-warning{background:var(--warn-bg);border:2px solid var(--warn-border);color:var(--warn-ink);padding:12px 14px;border-radius:8px;margin:12px 0;text-align:center;font-weight:bold;letter-spacing:1px;font-size:12px;text-transform:uppercase}
+
+.row-delete{background:transparent;border:none;color:var(--terracotta);cursor:pointer;font-size:14px;padding:2px 6px}
+.row-delete:hover{color:var(--terracotta-dk)}
+
+.dim-group{display:flex;gap:4px;align-items:center}
+.dim-group input{width:50px !important}
+
+.status-pill{display:inline-block;padding:3px 8px;border-radius:12px;font-size:10px;text-transform:uppercase;letter-spacing:0.5px}
+
+.checkbox-cell{text-align:center}
+.checkbox-cell input{width:16px;height:16px;cursor:pointer}
+
+.placeholder-tab{padding:40px;text-align:center;color:var(--ink-faint);font-style:italic;background:var(--cream-deep);border-radius:10px;border:1px dashed var(--border-dk)}
+
+/* ─── Section banners (teal = data/assessment, terracotta = status/implementation) ─── */
+.section-block{margin-bottom:18px}
+.section-banner{
+  background:var(--teal);color:#fff;
+  padding:12px 18px;border-radius:10px 10px 0 0;
+  display:flex;align-items:center;gap:12px;
+  font-family:Georgia,serif;
+}
+.section-banner.implementation{background:var(--terracotta)}
+.section-banner .sb-title{
+  font-size:13px;font-weight:bold;
+  text-transform:uppercase;letter-spacing:1.2px;
+}
+.section-banner .sb-spacer{flex:1}
+.section-banner .sb-meta{font-size:11px;opacity:0.85;font-style:italic}
+.section-body{
+  background:var(--cream-deep);
+  border:1px solid var(--border);
+  border-top:none;
+  border-radius:0 0 10px 10px;
+  padding:16px;
+}
+.section-body .section{
+  background:transparent;
+  border:none;
+  padding:0;
+  margin:0 0 16px;
+}
+.section-body .section:last-child{margin-bottom:0}
+.section-body .section .section-title{
+  font-size:12px;text-transform:uppercase;letter-spacing:1.2px;
+  color:var(--teal);margin-bottom:10px;padding-bottom:6px;
+  border-bottom:1px solid var(--border-dk);font-weight:bold;
+}
+
+/* Status dropdown chips filled with terracotta when chosen */
+.status-cell select{
+  background:var(--terracotta-sft, #F5E2D6) !important;
+  color:var(--terracotta-dk) !important;
+  border-color:var(--terracotta) !important;
+  font-weight:bold;
+}
+.status-cell select:focus{background:#fff !important;color:var(--ink) !important}
+
+/* Label Status table — terracotta header (overrides the global teal) */
+#labelStatusTable th{
+  background:var(--terracotta);
+  border-right-color:var(--terracotta-dk);
+}
+
+/* Task log section (Branding Identity style) */
+.task-section{background:var(--cream-deep);padding:16px;border-radius:10px;border:1px solid var(--border)}
+.task-section-title{
+  font-size:13px;text-transform:uppercase;letter-spacing:1.5px;
+  color:var(--teal);margin-bottom:12px;padding-bottom:8px;
+  border-bottom:1px solid var(--border-dk);font-weight:bold;
+  display:flex;justify-content:space-between;align-items:center;
+}
+.task-section-title .ts-roman{color:var(--terracotta);font-style:italic;margin-right:8px}
+.task-section-title .ts-count{
+  font-size:11px;color:var(--ink-faint);
+  letter-spacing:normal;text-transform:none;font-weight:normal;font-style:italic;
+}
+.num-col{text-align:center;color:var(--ink-soft);font-size:11px;font-weight:bold}
+
+/* ─── Summary — RM-style ─── */
+.summary-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px}
+.summary-card{background:#fff;border:1px solid var(--border);border-radius:10px;padding:14px}
+.summary-card h3{font-size:11px;text-transform:uppercase;letter-spacing:1px;color:var(--teal);margin-bottom:10px;padding-bottom:6px;border-bottom:1px solid var(--border);font-weight:bold}
+.metric-row{display:flex;justify-content:space-between;padding:5px 0;font-size:12px;border-bottom:1px solid #f0e9d6}
+.metric-row:last-child{border-bottom:none}
+.metric-label{color:var(--ink-soft)}
+.metric-value{font-weight:bold;color:var(--ink)}
+.metric-value.green{color:#3F6B3A}
+.metric-value.amber{color:var(--terracotta-dk)}
+.metric-value.red{color:#8B2A0F}
+.flags-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+.flag-card{background:#fff;border:1px solid var(--border);border-radius:8px;padding:12px;text-align:left}
+.flag-icon{width:30px;height:30px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:14px;margin-bottom:8px}
+.flag-icon.amber{background:var(--warn-bg);color:var(--warn-ink)}
+.flag-icon.green{background:#E3EFDF;color:#3F6B3A}
+.flag-icon.blue{background:#D6E3EE;color:#2C5A82}
+.flag-icon.teal{background:var(--cream-deep);color:var(--teal)}
+.flag-count{font-size:20px;font-weight:bold;color:var(--ink)}
+.flag-label{font-size:10px;color:var(--ink-soft);text-transform:uppercase;letter-spacing:0.5px;margin-top:4px}
+/* overview table */
+table.ov-tbl{width:100%;border-collapse:collapse;background:#fff;border-radius:6px;overflow:hidden;border:1px solid var(--border-dk);font-size:11px}
+table.ov-tbl th{background:var(--teal);color:#fff;padding:9px 8px;text-align:left;font-weight:normal;text-transform:uppercase;letter-spacing:0.5px;font-size:10px;border-right:1px solid var(--sea)}
+table.ov-tbl th:last-child{border-right:none}
+table.ov-tbl th.th-status{background:var(--terracotta-dk)}
+table.ov-tbl td{padding:7px 8px;border-bottom:1px solid var(--border);border-right:1px solid var(--border);vertical-align:middle}
+table.ov-tbl td:last-child{border-right:none}
+table.ov-tbl tr:last-child td{border-bottom:none}
+</style>
+</head>
+<body>
+
+<div class="page">
+<div class="header">
+  <h1>Labels Module</h1>
+  <div class="crumb">PRIME Rural · Marketing Tools</div>
+</div>
+<div class="card">
+
+<div class="tab-bar">
+  <div class="tab" onclick="showTab('summary',this)">Summary</div>
+  <div class="tab active" onclick="showTab('existing',this)">Existing</div>
+  <div class="tab" onclick="showTab('required',this)">Required</div>
+  <div class="tab" onclick="showTab('resources',this)">Resources</div>
+  <div class="tab" onclick="showTab('tasklog',this)">Task Log</div>
+</div>
+
+<div class="content">
+
+<!-- ============ SUMMARY TAB ============ -->
+<div id="summary" class="panel hidden">
+
+  <!-- ① VARIANT-WISE OVERVIEW -->
+  <div class="section">
+    <div class="section-title">Variant-wise Overview</div>
+    <p style="font-size:11px;color:var(--ink-soft);font-style:italic;margin-bottom:10px">One row per variant. Intervention Type shows the furthest draft raised. Implementation Status shows the latest draft's approval state.</p>
+    <div style="overflow-x:auto">
+    <table class="ov-tbl">
+      <thead>
+        <tr>
+          <th>Variant</th>
+          <th>New Label Needed</th>
+          <th>Label Dim.</th>
+          <th>Designer Name</th>
+          <th>Label Type</th>
+          <th>Intervention Type</th>
+          <th class="th-status">Implementation Status</th>
+          <th class="th-status">Approved</th>
+        </tr>
+      </thead>
+      <tbody id="sumOverviewBody">
+        <tr><td colspan="8" style="text-align:center;color:var(--ink-faint);font-style:italic;padding:14px">Auto-populated from Existing and Required tabs</td></tr>
+      </tbody>
+    </table>
+    </div>
+  </div>
+
+  <!-- ② AGGREGATES -->
+  <div class="section">
+    <div class="section-title">Aggregates</div>
+    <div class="summary-grid">
+
+      <div class="summary-card">
+        <h3>Existing</h3>
+        <div class="metric-row"><span class="metric-label">Total Variants</span><span class="metric-value" id="agg-ex-variants">0</span></div>
+        <div class="metric-row"><span class="metric-label">Need New Label</span><span class="metric-value amber" id="agg-ex-need">0</span></div>
+        <div class="metric-row"><span class="metric-label">No Change Needed</span><span class="metric-value" id="agg-ex-noneed">0</span></div>
+        <div class="metric-row"><span class="metric-label">Product Name</span><span class="metric-value" id="agg-product-name" style="font-size:11px;text-align:right;max-width:160px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">—</span></div>
+      </div>
+
+      <div class="summary-card">
+        <h3>Cost</h3>
+        <div class="metric-row"><span class="metric-label">Label Type</span><span class="metric-value" id="agg-label-type" style="font-size:11px">—</span></div>
+        <div class="metric-row"><span class="metric-label">Designer</span><span class="metric-value" id="agg-designer" style="font-size:11px">—</span></div>
+        <div class="metric-row"><span class="metric-label">Variants with Label Dim Set</span><span class="metric-value" id="agg-dim-count">0</span></div>
+      </div>
+
+      <div class="summary-card">
+        <h3>Interventions</h3>
+        <div class="metric-row"><span class="metric-label">Total Variants in Design</span><span class="metric-value" id="agg-int-total">0</span></div>
+        <div class="metric-row"><span class="metric-label">Draft 1 Raised</span><span class="metric-value" id="agg-int-d1">0</span></div>
+        <div class="metric-row"><span class="metric-label">Draft 2 Raised</span><span class="metric-value" id="agg-int-d2">0</span></div>
+        <div class="metric-row"><span class="metric-label">Draft 3 Raised</span><span class="metric-value" id="agg-int-d3">0</span></div>
+      </div>
+
+      <div class="summary-card">
+        <h3>Status</h3>
+        <div class="metric-row"><span class="metric-label">Approved by Entrepreneur</span><span class="metric-value green" id="agg-approved">0</span></div>
+        <div class="metric-row"><span class="metric-label">Under Review</span><span class="metric-value amber" id="agg-review">0</span></div>
+        <div class="metric-row"><span class="metric-label">Redo</span><span class="metric-value amber" id="agg-redo">0</span></div>
+        <div class="metric-row"><span class="metric-label">Pending</span><span class="metric-value" id="agg-pending">0</span></div>
+        <div class="metric-row"><span class="metric-label">Not Approved</span><span class="metric-value red" id="agg-notapproved">0</span></div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ③ INTERVENTION FLAGS -->
+  <div class="section">
+    <div class="section-title">Intervention Flags</div>
+    <div class="flags-grid">
+      <div class="flag-card"><div class="flag-icon amber">!</div><div class="flag-count" id="flag-need-new">0</div><div class="flag-label">Need New Label</div></div>
+      <div class="flag-card"><div class="flag-icon blue">✏</div><div class="flag-count" id="flag-in-design">0</div><div class="flag-label">In Design Process</div></div>
+      <div class="flag-card"><div class="flag-icon green">✓</div><div class="flag-count" id="flag-approved">0</div><div class="flag-label">Approved</div></div>
+      <div class="flag-card"><div class="flag-icon amber">↻</div><div class="flag-count" id="flag-redo">0</div><div class="flag-label">Redo / Not Approved</div></div>
+    </div>
+  </div>
+
+  <!-- ghost IDs for legacy JS -->
+  <span id="sum-labels-required" style="display:none"></span>
+  <span id="sum-variants"        style="display:none"></span>
+  <span id="sum-approved"        style="display:none"></span>
+  <span id="sumStatusBody"       style="display:none"></span>
+
+</div>
+
+<!-- ============ EXISTING TAB ============ -->
+<div id="existing" class="panel">
+
+  <div class="section">
+    <div class="section-title">Entrepreneur</div>
+    <div class="field-row">
+      <div class="field-label">Entrepreneur Name</div>
+      <div class="field-val" style="background:var(--offwhite);font-style:italic;color:var(--ink-soft)">Auto fetched from profile</div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Existing Label</div>
+    <table class="data-table" id="existingLabelTable">
+      <thead>
+        <tr>
+          <th style="width:25%">Variant</th>
+          <th style="width:25%">Upload Existing File</th>
+          <th style="width:15%">Need New Label?</th>
+          <th style="width:30%">Justify</th>
+          <th style="width:5%"></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><input type="text" placeholder="Enter variant"></td>
+          <td>
+            <div class="upload-cell">
+              <input type="file" class="hidden">
+              <button class="btn" onclick="this.previousElementSibling.click()">Upload</button>
+              <button class="btn">View ▷</button>
+            </div>
+          </td>
+          <td style="text-align:center"><span class="toggle" onclick="this.classList.toggle('on')"></span></td>
+          <td><input type="text" placeholder="Justification"></td>
+          <td><button class="row-delete" onclick="deleteRow(this)">✕</button></td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="table-actions">
+      <button class="btn btn-primary" onclick="addExistingLabelRow()">+ Add Row</button>
+    </div>
+  </div>
+
+</div>
+
+<!-- ============ REQUIRED TAB ============ -->
+<div id="required" class="panel hidden">
+
+  <!-- ─── Section I: Label Content (teal banner, with Variant Content as sub-section) ─── -->
+  <div class="section-block">
+    <div class="section-banner">
+      <span class="sb-title">Label Content</span>
+      <span class="sb-spacer"></span>
+      <span class="sb-meta">Product info + variants</span>
+    </div>
+    <div class="section-body">
+
+      <div class="section">
+        <div class="section-title">Master Content</div>
+
+        <div class="field-row">
+          <div class="field-label">Product Name</div>
+          <input type="text" class="field-val" placeholder="Enter product name" id="productNameMaster">
+        </div>
+
+        <div class="field-row">
+          <div class="field-label">Product Snapshot</div>
+          <textarea class="field-val" placeholder="Enter snapshot description"></textarea>
+        </div>
+
+        <div class="field-row">
+          <div class="field-label">Storyline Text for Label</div>
+          <textarea class="field-val" placeholder="Enter or generate via AI" id="storyline"></textarea>
+          <button class="btn btn-ai" onclick="alert('AI generation triggered')">✨ Generate with AI</button>
+        </div>
+
+        <div class="field-row">
+          <div class="field-label">Product Tagline</div>
+          <input type="text" class="field-val" placeholder="Enter tagline">
+        </div>
+
+        <div class="field-row">
+          <div class="field-label">Benefits of the Product</div>
+          <textarea class="field-val" placeholder="Enter benefits"></textarea>
+        </div>
+
+        <div class="field-row">
+          <div class="field-label">Ingredients / Material</div>
+          <textarea class="field-val" placeholder="Enter ingredients or materials"></textarea>
+        </div>
+
+        <div class="field-row">
+          <div class="field-label">Directions of Use</div>
+          <textarea class="field-val" placeholder="Enter directions"></textarea>
+        </div>
+
+        <div class="field-row">
+          <div class="field-label">Product Pictures</div>
+          <div class="field-val">
+            <div class="upload-cell">
+              <input type="file" multiple class="hidden">
+              <button class="btn" onclick="this.previousElementSibling.click()">Upload</button>
+              <button class="btn">View ▷</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="field-row">
+          <div class="field-label">Manufactured by</div>
+          <div class="field-val" style="display:flex;gap:8px;background:transparent;border:none;padding:0">
+            <input type="text" class="field-val" placeholder="Name" style="flex:2">
+            <input type="text" class="field-val" placeholder="FSSAI number" style="flex:1">
+          </div>
+        </div>
+
+        <div class="field-row">
+          <div class="field-label">Marketed by</div>
+          <div class="field-val" style="display:flex;gap:8px;background:transparent;border:none;padding:0">
+            <input type="text" class="field-val" placeholder="Name" style="flex:2">
+            <input type="text" class="field-val" placeholder="FSSAI number" style="flex:1">
+          </div>
+        </div>
+
+        <div class="field-row">
+          <div class="field-label">Wine / Alcohol Product?</div>
+          <div class="field-val" style="background:transparent;border:none;padding:0">
+            <span class="toggle" onclick="toggleAlcohol(this)"></span>
+          </div>
+        </div>
+
+        <div id="alcoholBlock" class="hidden">
+          <div class="alcohol-warning">
+            Consumption of alcohol is injurious to health<br>
+            Be safe — Don't drink and drive
+          </div>
+          <div class="field-row">
+            <div class="field-label">Alcohol Content (ABV)</div>
+            <input type="text" class="field-val" placeholder="e.g., 12% ABV">
+          </div>
+        </div>
+      </div>
+
+      <!-- Variant Content (nested as a section inside Label Content) -->
+      <div class="section">
+        <div class="section-title">Variant Content</div>
+        <div style="overflow-x:auto">
+        <table class="data-table" id="variantContentTable">
+          <thead>
+            <tr>
+              <th>Variant Name</th>
+              <th>Label Dim. (l×b)</th>
+              <th>Net Wt.</th>
+              <th>MFD</th>
+              <th>Best Before</th>
+              <th>MRP</th>
+              <th>Batch No.</th>
+              <th>Pkg Dimensions (L×B×H)</th>
+              <th>Volume</th>
+              <th>Packaging Photo</th>
+              <th>360° Video Link</th>
+              <th>DPP File</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>
+                <select class="variant-select">
+                  <option>Select variant</option>
+                  <option>Variant 1</option>
+                  <option>Variant 2</option>
+                </select>
+              </td>
+              <td>
+                <div class="dim-group">
+                  <input type="number" placeholder="l">×
+                  <input type="number" placeholder="b">
+                </div>
+              </td>
+              <td><input type="text" placeholder="g/ml"></td>
+              <td><input type="text" placeholder="DD/MM/YY"></td>
+              <td><input type="text" placeholder="DD/MM/YY"></td>
+              <td><input type="text" placeholder="₹"></td>
+              <td><input type="text" placeholder="Batch"></td>
+              <td>
+                <div class="dim-group">
+                  <input type="number" class="dim-l" placeholder="L" oninput="calcVolume(this)">×
+                  <input type="number" class="dim-b" placeholder="B" oninput="calcVolume(this)">×
+                  <input type="number" class="dim-h" placeholder="H" oninput="calcVolume(this)">
+                </div>
+              </td>
+              <td><input type="text" class="volume-cell" readonly placeholder="Auto"></td>
+              <td>
+                <div class="upload-cell">
+                  <input type="file" class="hidden">
+                  <button class="btn" onclick="this.previousElementSibling.click()">Upload</button>
+                  <button class="btn">View ▷</button>
+                </div>
+              </td>
+              <td>
+                <div class="upload-cell">
+                  <input type="file" class="hidden">
+                  <button class="btn" onclick="this.previousElementSibling.click()">Upload</button>
+                  <button class="btn">View ▷</button>
+                </div>
+              </td>
+              <td>
+                <div class="upload-cell">
+                  <input type="file" class="hidden">
+                  <button class="btn" onclick="this.previousElementSibling.click()">Upload</button>
+                  <button class="btn">View ▷</button>
+                </div>
+              </td>
+              <td><button class="row-delete" onclick="deleteRow(this)">✕</button></td>
+            </tr>
+          </tbody>
+        </table>
+        </div>
+        <div class="table-actions">
+          <button class="btn btn-primary" onclick="addVariantContentRow()">+ Add Row</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ─── Section II: Label Status (terracotta banner) ─── -->
+  <div class="section-block">
+    <div class="section-banner implementation">
+      <span class="sb-title">Label Status</span>
+      <span class="sb-spacer"></span>
+      <span class="sb-meta">Designer · Drafts · Approval</span>
+    </div>
+    <div class="section-body">
+
+      <div class="field-row">
+        <div class="field-label">Add Designer</div>
+        <select class="field-val">
+          <option>Select designer</option>
+          <option>Designer 1</option>
+          <option>Designer 2</option>
+          <option>Designer 3</option>
+        </select>
+      </div>
+
+      <div class="field-row">
+        <div class="field-label">Label Type</div>
+        <select class="field-val">
+          <option>Select label type</option>
+          <option>Sticker</option>
+          <option>Tag</option>
+          <option>Pouch Printing</option>
+        </select>
+      </div>
+
+      <div style="margin-top:16px;overflow-x:auto">
+      <table class="data-table" id="labelStatusTable">
+        <thead>
+          <tr>
+            <th>Variant Name</th>
+            <th>Draft 1</th>
+            <th>Status</th>
+            <th>Draft 2</th>
+            <th>Status</th>
+            <th>Draft 3</th>
+            <th>Status</th>
+            <th>Approved by Entrepreneur</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>
+              <select class="variant-select">
+                <option>Select variant</option>
+                <option>Variant 1</option>
+                <option>Variant 2</option>
+              </select>
+            </td>
+            <td>
+              <div class="upload-cell">
+                <input type="file" class="hidden">
+                <button class="btn" onclick="this.previousElementSibling.click()">Upload</button>
+                <button class="btn">View ▷</button>
+              </div>
+            </td>
+            <td class="status-cell">
+              <select>
+                <option>Pending</option>
+                <option>Under Review</option>
+                <option>Redo</option>
+                <option>Approved</option>
+                <option>Not Approved</option>
+              </select>
+            </td>
+            <td>
+              <div class="upload-cell">
+                <input type="file" class="hidden">
+                <button class="btn" onclick="this.previousElementSibling.click()">Upload</button>
+                <button class="btn">View ▷</button>
+              </div>
+            </td>
+            <td class="status-cell">
+              <select>
+                <option>Pending</option>
+                <option>Under Review</option>
+                <option>Redo</option>
+                <option>Approved</option>
+                <option>Not Approved</option>
+              </select>
+            </td>
+            <td>
+              <div class="upload-cell">
+                <input type="file" class="hidden">
+                <button class="btn" onclick="this.previousElementSibling.click()">Upload</button>
+                <button class="btn">View ▷</button>
+              </div>
+            </td>
+            <td class="status-cell">
+              <select>
+                <option>Pending</option>
+                <option>Under Review</option>
+                <option>Redo</option>
+                <option>Approved</option>
+                <option>Not Approved</option>
+              </select>
+            </td>
+            <td class="checkbox-cell"><input type="checkbox"></td>
+            <td><button class="row-delete" onclick="deleteRow(this)">✕</button></td>
+          </tr>
+        </tbody>
+      </table>
+      </div>
+      <div class="table-actions">
+        <button class="btn btn-primary" onclick="addLabelStatusRow()">+ Add Row</button>
+      </div>
+
+    </div>
+  </div>
+
+</div>
+
+<!-- ============ RESOURCES TAB ============ -->
+<div id="resources" class="panel hidden">
+  <div class="placeholder-tab">Resources view — reference materials, design assets, brand guidelines, and templates.</div>
+</div>
+
+<!-- ============ TASK LOG TAB ============ -->
+<div id="tasklog" class="panel hidden">
+  <div class="task-section">
+    <div class="task-section-title">
+      <span><span class="ts-roman">I.</span>Task Log — Labels</span>
+      <span class="ts-count"><span id="task-count">0</span> entries</span>
+    </div>
+    <table class="data-table" id="taskLogTable">
+      <thead>
+        <tr>
+          <th style="width:5%">No.</th>
+          <th style="width:13%">Date</th>
+          <th style="width:42%">Task Name</th>
+          <th style="width:30%">Notes / Outcome</th>
+          <th style="width:7%">Attachment</th>
+          <th style="width:3%"></th>
+        </tr>
+      </thead>
+      <tbody id="taskLogBody"></tbody>
+    </table>
+    <div class="table-actions">
+      <button class="btn btn-primary" onclick="addTaskRow()">+ Add Entry</button>
+    </div>
+  </div>
+</div>
+
+</div>
+</div>
+</div>
+
+<script>
+function showTab(id, el){
+  document.querySelectorAll('.panel').forEach(p => p.classList.add('hidden'));
+  document.getElementById(id).classList.remove('hidden');
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  el.classList.add('active');
+  if(id === 'summary') refreshSummary();
+}
+
+function toggleAlcohol(el){
+  el.classList.toggle('on');
+  document.getElementById('alcoholBlock').classList.toggle('hidden');
+}
+
+function deleteRow(btn){
+  const row = btn.closest('tr');
+  const tbody = row.parentElement;
+  if(tbody.rows.length > 1){
+    row.remove();
+  } else {
+    alert('At least one row is required.');
+  }
+}
+
+function calcVolume(el){
+  const row = el.closest('tr');
+  const l = parseFloat(row.querySelector('.dim-l').value) || 0;
+  const b = parseFloat(row.querySelector('.dim-b').value) || 0;
+  const h = parseFloat(row.querySelector('.dim-h').value) || 0;
+  const vol = l * b * h;
+  row.querySelector('.volume-cell').value = vol > 0 ? vol.toFixed(2) : '';
+}
+
+function addExistingLabelRow(){
+  const tbody = document.querySelector('#existingLabelTable tbody');
+  const row = tbody.rows[0].cloneNode(true);
+  row.querySelectorAll('input[type=text]').forEach(i => i.value = '');
+  row.querySelector('.toggle').classList.remove('on');
+  tbody.appendChild(row);
+}
+
+function addVariantContentRow(){
+  const tbody = document.querySelector('#variantContentTable tbody');
+  const row = tbody.rows[0].cloneNode(true);
+  row.querySelectorAll('input').forEach(i => { if(i.type !== 'file') i.value = ''; });
+  row.querySelectorAll('select').forEach(s => s.selectedIndex = 0);
+  row.querySelectorAll('.dim-l, .dim-b, .dim-h').forEach(i => {
+    i.oninput = function(){ calcVolume(this); };
+  });
+  tbody.appendChild(row);
+}
+
+function addLabelStatusRow(){
+  const tbody = document.querySelector('#labelStatusTable tbody');
+  const row = tbody.rows[0].cloneNode(true);
+  row.querySelectorAll('select').forEach(s => s.selectedIndex = 0);
+  row.querySelectorAll('input[type=checkbox]').forEach(c => c.checked = false);
+  tbody.appendChild(row);
+}
+
+// ============ TASK LOG ============
+const LABEL_TASKS = [
+  '01 — Awareness on Importance of Labels',
+  '02 — Data Collection for Label Creation',
+  '03 — Brainstorm and Sketch Label Ideas',
+  '04 — Designer briefing on Label',
+  '05 — Draft coordinations with Designer',
+  '06 — Label approved by Core Team',
+  '07 — Label approved by Entrepreneur',
+  '08 — Label Finalized',
+  '09 — Delivered Label Files to Entrepreneur',
+  '10 — Labels printed and collected by Entrepreneur locally',
+  '11 — Labels printed and delivered in PRIME office',
+  '12 — Labels printed and delivered to the Entrepreneur',
+  '13 — Follow up on Label usage and printing',
+  '14 — If others, specify in comments',
+];
+const LABEL_TASK_OPTIONS = LABEL_TASKS.map(t => `<option value="${t}">${t}</option>`).join('');
+let taskLogCounter = 0;
+
+function addTaskRow(){
+  taskLogCounter++;
+  const tbody = document.getElementById('taskLogBody');
+  const tr = document.createElement('tr');
+  tr.innerHTML = `
+    <td class="num-col">${String(taskLogCounter).padStart(2,'0')}</td>
+    <td><input type="date" style="width:100%"></td>
+    <td><select style="width:100%"><option value="">— Select Task —</option>${LABEL_TASK_OPTIONS}</select></td>
+    <td><input type="text" placeholder="Notes / Outcome" style="width:100%"></td>
+    <td><button class="btn" style="padding:3px 8px;font-size:10px">Upload</button></td>
+    <td><button class="row-delete" onclick="deleteTaskRow(this)">✕</button></td>
+  `;
+  tbody.appendChild(tr);
+  refreshTaskCount();
+}
+
+function deleteTaskRow(btn){
+  const tbody = btn.closest('tbody');
+  btn.closest('tr').remove();
+  tbody.querySelectorAll('tr').forEach((tr, i) => {
+    tr.querySelector('.num-col').textContent = String(i+1).padStart(2,'0');
+  });
+  taskLogCounter = tbody.rows.length;
+  refreshTaskCount();
+}
+
+function refreshTaskCount(){
+  const el = document.getElementById('task-count');
+  if(el) el.textContent = document.querySelectorAll('#taskLogBody tr').length;
+}
+
+// ============ SUMMARY REFRESH ============
+function refreshSummary(){
+  const s = (id,v) => { const el=document.getElementById(id); if(el) el.textContent=v; };
+
+  const existingRows = document.querySelectorAll('#existingLabelTable tbody tr');
+  const variantRows  = document.querySelectorAll('#variantContentTable tbody tr');
+  const statusRows   = document.querySelectorAll('#labelStatusTable tbody tr');
+
+  // ── Existing tab ──────────────────────────────────────────────
+  let exVariants=existingRows.length, needNew=0, noNeed=0;
+  // Build map: variant name → needs new label
+  const needNewMap = {};
+  existingRows.forEach(tr => {
+    const name = tr.querySelector('input[type=text]')?.value?.trim() || '';
+    const on   = tr.querySelector('.toggle')?.classList.contains('on');
+    if(on) needNew++; else noNeed++;
+    if(name) needNewMap[name] = on;
+  });
+
+  // ── Required — Variant Content: build map variant → { labelDim } ──
+  const variantDataMap = {};
+  variantRows.forEach(tr => {
+    const varName = tr.querySelector('.variant-select')?.value?.trim() || '';
+    const dimL    = tr.querySelector('input[placeholder="l"]')?.value?.trim() || '';
+    const dimB    = tr.querySelector('input[placeholder="b"]')?.value?.trim() || '';
+    const labelDim = (dimL && dimB) ? dimL + '×' + dimB : '—';
+    if(varName && varName !== 'Select variant') variantDataMap[varName] = { labelDim };
+  });
+
+  // Designer name — section-level field above Label Status table
+  const designerSel  = document.querySelector('#required .section-body select');
+  const designerName = (designerSel?.value && designerSel.value !== 'Select designer') ? designerSel.value : '—';
+
+  // ── Required — Label Type ─────────────────────────────────────
+  // Label Type is the second field-val select in the section-body of Label Status section
+  const labelTypeSel = document.querySelectorAll('#required .section-body select');
+  let labelType = '—';
+  labelTypeSel.forEach(sel => {
+    if([...sel.options].some(o => ['Sticker','Tag','Pouch Printing'].includes(o.value))){
+      const v = sel.value;
+      if(v && v !== 'Select label type') labelType = v;
+    }
+  });
+
+  // Product name
+  const productName = document.getElementById('productNameMaster')?.value?.trim() || '—';
+
+  // ── Required — Label Status: per row data ─────────────────────
+  let approved=0, underReview=0, redo=0, pending=0, notApproved=0;
+  let d1count=0, d2count=0, d3count=0;
+
+  statusRows.forEach(tr => {
+    const statSels = tr.querySelectorAll('.status-cell select');
+    const d1 = statSels[0]?.value || 'Pending';
+    const d2 = statSels[1]?.value || 'Pending';
+    const d3 = statSels[2]?.value || 'Pending';
+    const isApproved = tr.querySelector('input[type=checkbox]')?.checked;
+
+    // Count furthest draft reached (not Pending)
+    if     (d3 !== 'Pending') d3count++;
+    else if(d2 !== 'Pending') d2count++;
+    else if(d1 !== 'Pending') d1count++;
+
+    // Latest non-pending status
+    const latest = d3 !== 'Pending' ? d3 : d2 !== 'Pending' ? d2 : d1;
+
+    if(isApproved)               approved++;
+    if(latest === 'Under Review') underReview++;
+    if(latest === 'Redo')         redo++;
+    if(latest === 'Pending')      pending++;
+    if(latest === 'Not Approved') notApproved++;
+  });
+
+  // ── ① OVERVIEW TABLE ─────────────────────────────────────────
+  const tbody = document.getElementById('sumOverviewBody');
+  let html = '';
+
+  if(statusRows.length > 0){
+    statusRows.forEach(tr => {
+      const varName  = tr.querySelector('.variant-select')?.value?.trim() || '—';
+      const statSels = tr.querySelectorAll('.status-cell select');
+      const d1 = statSels[0]?.value || 'Pending';
+      const d2 = statSels[1]?.value || 'Pending';
+      const d3 = statSels[2]?.value || 'Pending';
+      const isApproved = tr.querySelector('input[type=checkbox]')?.checked;
+
+      const vdata     = variantDataMap[varName] || {};
+      const labelDim  = vdata.labelDim || '—';
+      const needIt = needNewMap[varName];
+      const needCell = needIt === true
+        ? '<span style="color:var(--terracotta-dk);font-weight:bold">Yes</span>'
+        : needIt === false ? '<span style="color:var(--ink-faint)">—</span>'
+        : '<span style="color:var(--ink-faint)">—</span>';
+
+      // Intervention Type — furthest draft reached
+      let intType = '<span style="color:var(--ink-faint)">—</span>';
+      if     (d3 !== 'Pending') intType = '<span style="display:inline-block;padding:2px 8px;border-radius:12px;font-size:10px;font-weight:bold;background:#D6E3EE;color:#2C5A82">✏ Draft 3</span>';
+      else if(d2 !== 'Pending') intType = '<span style="display:inline-block;padding:2px 8px;border-radius:12px;font-size:10px;font-weight:bold;background:var(--cream-deep);color:var(--teal)">✏ Draft 2</span>';
+      else if(d1 !== 'Pending') intType = '<span style="display:inline-block;padding:2px 8px;border-radius:12px;font-size:10px;font-weight:bold;background:var(--cream-deep);color:var(--ink-soft)">✏ Draft 1</span>';
+
+      // Implementation Status — latest non-pending
+      const latest     = d3 !== 'Pending' ? d3 : d2 !== 'Pending' ? d2 : d1;
+      const implStatus = statusPill(latest);
+
+      const approvedCell = isApproved
+        ? '<span style="color:#3F6B3A;font-weight:bold">✓ Yes</span>'
+        : '<span style="color:var(--ink-faint);font-style:italic">—</span>';
+
+      const displayName = (varName && varName !== 'Select variant')
+        ? `<strong>${varName}</strong>`
+        : '<em style="color:var(--ink-faint)">Not set</em>';
+
+      html += `<tr>
+        <td>${displayName}</td>
+        <td>${needCell}</td>
+        <td style="font-size:11px">${labelDim}</td>
+        <td style="font-size:11px">${designerName}</td>
+        <td style="font-size:11px">${labelType}</td>
+        <td>${intType}</td>
+        <td style="background:#FDF3EE">${implStatus}</td>
+        <td style="background:#EDF6EA">${approvedCell}</td>
+      </tr>`;
+    });
+  } else if(existingRows.length > 0){
+    // Fallback: show Existing tab rows if Required not yet filled
+    existingRows.forEach(tr => {
+      const name   = tr.querySelector('input[type=text]')?.value?.trim() || '—';
+      const on     = tr.querySelector('.toggle')?.classList.contains('on');
+      const needCell = on ? '<span style="color:var(--terracotta-dk);font-weight:bold">Yes</span>' : '—';
+      html += `<tr>
+        <td><strong>${name||'—'}</strong></td>
+        <td>${needCell}</td>
+        <td colspan="6" style="color:var(--ink-faint);font-style:italic">Complete Required tab to populate</td>
+      </tr>`;
+    });
+  }
+
+  tbody.innerHTML = html ||
+    '<tr><td colspan="8" style="text-align:center;color:var(--ink-faint);font-style:italic;padding:14px">Auto-populated from Existing and Required tabs</td></tr>';
+
+  // ── ② AGGREGATES ─────────────────────────────────────────────
+  s('agg-ex-variants',  exVariants);
+  s('agg-ex-need',      needNew);
+  s('agg-ex-noneed',    noNeed);
+  s('agg-product-name', productName);
+
+  const dimCount = Object.values(variantDataMap).filter(v => v.labelDim && v.labelDim !== '—').length;
+  s('agg-label-type', labelType);
+  s('agg-designer',   designerName);
+  s('agg-dim-count',  dimCount);
+
+  s('agg-int-total', statusRows.length);
+  s('agg-int-d1',    d1count);
+  s('agg-int-d2',    d2count);
+  s('agg-int-d3',    d3count);
+
+  s('agg-approved',    approved);
+  s('agg-review',      underReview);
+  s('agg-redo',        redo);
+  s('agg-pending',     pending);
+  s('agg-notapproved', notApproved);
+
+  // ── ③ FLAGS ──────────────────────────────────────────────────
+  s('flag-need-new',  needNew);
+  s('flag-in-design', statusRows.length);
+  s('flag-approved',  approved);
+  s('flag-redo',      redo + notApproved);
+
+  // Ghost IDs
+  s('sum-labels-required', needNew);
+  s('sum-variants',        variantRows.length);
+  s('sum-approved',        approved);
+}
+
+function statusPill(s){
+  if(!s || s==='—') return '<span style="color:var(--ink-faint);font-style:italic">—</span>';
+  const m = {
+    'Pending':      'background:var(--cream-deep);color:var(--ink-soft)',
+    'Under Review': 'background:#FFE9A8;color:#7A5A1B',
+    'Redo':         'background:#F5E2D6;color:var(--terracotta-dk)',
+    'Approved':     'background:#D9E8E5;color:var(--teal)',
+    'Not Approved': 'background:#F5D0C5;color:#7A2E15',
+  };
+  return `<span class="status-pill" style="${m[s]||m['Pending']}">${s}</span>`;
+}
+
+// ============ SEED + INIT ============
+window.addEventListener('DOMContentLoaded', () => {
+
+  // Product name
+  const pn = document.getElementById('productNameMaster');
+  if(pn) pn.value = 'Turmeric Handmade Soap';
+
+  // ── Existing tab ──────────────────────────────────────────────
+  const exTbody = document.querySelector('#existingLabelTable tbody');
+  if(exTbody){
+    const SEED_EX = [
+      { name:'100g — Natural',   on:true,  justify:'Old label missing FSSAI number' },
+      { name:'50g — Travel Pack',on:true,  justify:'Net weight not on existing label' },
+      { name:'Gift Box Set',     on:false, justify:'' },
+    ];
+    exTbody.innerHTML = '';
+    SEED_EX.forEach(item => {
+      const tr = document.createElement('tr');
+      tr.innerHTML = `
+        <td><input type="text" value="${item.name}"></td>
+        <td><div class="upload-cell"><input type="file" class="hidden">
+          <button class="btn" onclick="this.previousElementSibling.click()">Upload</button>
+          <button class="btn">View ▷</button></div></td>
+        <td style="text-align:center"><span class="toggle${item.on?' on':''}" onclick="this.classList.toggle('on');refreshSummary()"></span></td>
+        <td><input type="text" value="${item.justify}"></td>
+        <td><button class="row-delete" onclick="deleteRow(this)">✕</button></td>`;
+      exTbody.appendChild(tr);
+    });
+  }
+
+  // ── Required — Label Type ─────────────────────────────────────
+  document.querySelectorAll('#required .section-body select').forEach(sel => {
+    if([...sel.options].some(o => o.value==='Sticker')) sel.value = 'Sticker';
+  });
+
+  // ── Required — Variant Content ────────────────────────────────
+  // Seed by setting values on existing rows then cloning for extras
+  // (cloneNode fails on empty tbody, so we keep the first HTML row)
+  const SEED_VC = [
+    { name:'100g — Natural',   dimL:'8', dimB:'5' },
+    { name:'50g — Travel Pack',dimL:'6', dimB:'4' },
+    { name:'Gift Box Set',     dimL:'12',dimB:'8' },
+  ];
+  (function seedVC(){
+    const vcTbody = document.querySelector('#variantContentTable tbody');
+    if(!vcTbody) return;
+    SEED_VC.forEach((item, i) => {
+      let row = vcTbody.rows[i];
+      if(!row){ addVariantContentRow(); row = vcTbody.rows[vcTbody.rows.length-1]; }
+      const sel = row.querySelector('.variant-select');
+      if(sel){ const o=document.createElement('option'); o.value=item.name; o.textContent=item.name; sel.appendChild(o); sel.value=item.name; }
+      const lInput = row.querySelector('input[placeholder="l"]');
+      const bInput = row.querySelector('input[placeholder="b"]');
+      if(lInput) lInput.value=item.dimL;
+      if(bInput) bInput.value=item.dimB;
+    });
+  })();
+
+  // ── Required — Designer ───────────────────────────────────────
+  const dSel = document.querySelector('#required .section-body select');
+  if(dSel && [...dSel.options].some(o=>o.value==='Designer 1')) dSel.value='Designer 1';
+
+  // ── Required — Label Status ───────────────────────────────────
+  const SEED_LS = [
+    { name:'100g — Natural',   d1:'Approved', d2:'Approved', d3:'Under Review', approved:false },
+    { name:'50g — Travel Pack',d1:'Approved', d2:'Redo',     d3:'Pending',      approved:false },
+    { name:'Gift Box Set',     d1:'Approved', d2:'Approved', d3:'Approved',     approved:true  },
+  ];
+  (function seedLS(){
+    const lsTbody = document.querySelector('#labelStatusTable tbody');
+    if(!lsTbody) return;
+    SEED_LS.forEach((item, i) => {
+      let row = lsTbody.rows[i];
+      if(!row){ addLabelStatusRow(); row = lsTbody.rows[lsTbody.rows.length-1]; }
+      const sel = row.querySelector('.variant-select');
+      if(sel){ const o=document.createElement('option'); o.value=item.name; o.textContent=item.name; sel.appendChild(o); sel.value=item.name; }
+      const ss = row.querySelectorAll('.status-cell select');
+      if(ss[0]) ss[0].value=item.d1;
+      if(ss[1]) ss[1].value=item.d2;
+      if(ss[2]) ss[2].value=item.d3;
+      const cb = row.querySelector('input[type=checkbox]');
+      if(cb) cb.checked=item.approved;
+    });
+  })();
+
+  refreshSummary();
+  showTab('summary', document.querySelector('.tab'));
+});
+
+</script>
+
+</body>
+</html>

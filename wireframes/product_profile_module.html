@@ -1,0 +1,922 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Product Profile · PRIME Rural</title>
+<style>
+:root {
+  --teal:#0E4D4E; --sea:#1A6B6D; --terracotta:#C26849; --terracotta-dk:#A85738;
+  --terracotta-sft:#F5E2D6;
+  --cream:#FBF5E5; --cream-deep:#F4ECD3; --offwhite:#FDFAF0; --panel:#FFFFFF;
+  --ink:#2A2520; --ink-soft:#6B6359; --ink-faint:#9C9384;
+  --border:#E8DFC9; --border-dk:#D6CDB6;
+  --good-bg:#E3EFDF; --good-ink:#3F6B3A;
+  --highlight:#FFF8E1;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:Georgia,serif;background:var(--cream);color:var(--ink);line-height:1.4}
+.page{max-width:1200px;margin:0 auto;padding:24px}
+
+.header{background:var(--teal);color:#fff;padding:16px 20px;border-radius:12px 12px 0 0;display:flex;justify-content:space-between;align-items:center}
+.header h1{font-size:18px;font-weight:normal;letter-spacing:0.5px}
+.header .crumb{font-size:11px;opacity:0.75;text-transform:uppercase;letter-spacing:1px}
+
+.card{background:var(--cream);border:1px solid var(--border-dk);border-top:none;border-radius:0 0 12px 12px}
+
+.tab-bar{display:flex;background:var(--cream-deep);border-bottom:1px solid var(--border-dk);overflow-x:auto}
+.tab{padding:12px 22px;cursor:pointer;font-size:12px;text-transform:uppercase;letter-spacing:1px;color:var(--ink-soft);border-right:1px solid var(--border);white-space:nowrap}
+.tab.active{background:var(--teal);color:#fff}
+.tab:hover:not(.active){background:#EADFC0}
+
+.content{padding:22px}
+
+.entrepreneur-chip{display:inline-flex;align-items:center;gap:10px;background:#fff;border:1px solid var(--border-dk);padding:6px 14px;border-radius:20px;font-size:12px;margin-bottom:18px}
+.ent-avatar{width:24px;height:24px;background:var(--teal);color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:bold}
+
+.section{background:var(--cream-deep);padding:16px;border-radius:10px;margin-bottom:16px;border:1px solid var(--border)}
+.section-title{font-size:13px;text-transform:uppercase;letter-spacing:1.5px;color:var(--teal);margin-bottom:12px;padding-bottom:8px;border-bottom:1px solid var(--border-dk);font-weight:bold;display:flex;justify-content:space-between;align-items:center}
+.section-title-roman{color:var(--terracotta);margin-right:8px;font-style:italic}
+
+.field-row{display:flex;gap:12px;margin-bottom:10px;flex-wrap:wrap;align-items:center}
+.field-label{width:240px;font-size:12px;color:var(--ink-soft)}
+.field-val{flex:1;background:var(--offwhite);border:1px solid var(--border-dk);padding:6px 10px;border-radius:5px;font-size:12px;min-width:140px;font-family:Georgia,serif}
+.field-val[readonly],.field-val.auto{background:var(--cream-deep);color:var(--ink-soft);font-style:italic}
+textarea.field-val{font-family:Georgia,serif;resize:vertical;min-height:50px}
+select.field-val{cursor:pointer}
+
+.btn{padding:5px 12px;border-radius:20px;border:1px solid var(--border-dk);background:#fff;cursor:pointer;font-size:11px;color:var(--ink);font-family:Georgia,serif}
+.btn:hover{background:var(--cream-deep)}
+.btn-primary{background:var(--teal);color:#fff;border-color:var(--teal)}
+.btn-primary:hover{background:var(--sea)}
+
+table.data-table{width:100%;border-collapse:collapse;background:var(--offwhite);border-radius:6px;overflow:hidden;border:1px solid var(--border-dk);font-size:11px}
+table.data-table th{background:var(--teal);color:#fff;padding:9px 8px;text-align:left;font-weight:normal;text-transform:uppercase;letter-spacing:0.5px;font-size:10px;border-right:1px solid var(--sea);white-space:nowrap}
+table.data-table th:last-child{border-right:none}
+table.data-table td{padding:7px 8px;border-bottom:1px solid var(--border);border-right:1px solid var(--border);vertical-align:middle}
+table.data-table td:last-child{border-right:none}
+table.data-table tr:last-child td{border-bottom:none}
+table.data-table input,table.data-table select,table.data-table textarea{width:100%;border:1px solid var(--border);padding:5px 6px;border-radius:3px;font-family:Georgia,serif;font-size:11px;background:#fff}
+table.data-table input[readonly],table.data-table .auto-cell{background:var(--cream-deep);color:var(--ink-soft);font-style:italic}
+table.data-table input:focus,table.data-table select:focus{outline:none;border-color:var(--teal)}
+table.data-table .num-col{width:40px;text-align:center;color:var(--ink-soft)}
+
+.table-actions{display:flex;justify-content:space-between;align-items:center;margin-top:10px}
+.row-delete{background:transparent;border:none;color:var(--terracotta);cursor:pointer;font-size:14px;padding:2px 6px}
+.row-delete:hover{color:var(--terracotta-dk)}
+
+/* Available Months — checkbox table */
+.months-checkbox-table{width:100%;border-collapse:collapse;background:#fff;border-radius:8px;overflow:hidden;border:1px solid var(--border-dk);font-size:12px}
+.months-checkbox-table th{background:var(--teal);color:#fff;padding:9px;text-align:left;font-weight:normal;text-transform:uppercase;letter-spacing:0.5px;font-size:10px;border-right:1px solid var(--sea)}
+.months-checkbox-table th:last-child{border-right:none}
+.months-checkbox-table td{padding:8px 12px;border-bottom:1px solid var(--border);border-right:1px solid var(--border)}
+.months-checkbox-table td:last-child{border-right:none}
+.months-checkbox-table tr:last-child td{border-bottom:none}
+.months-checkbox-table .month-name{font-weight:bold;color:var(--teal);width:60%}
+.months-checkbox-table .month-state{text-align:center;width:20%;font-size:10px;text-transform:uppercase;letter-spacing:0.5px;font-weight:bold}
+.months-checkbox-table .month-state.true{color:var(--good-ink)}
+.months-checkbox-table .month-state.false{color:var(--ink-faint)}
+.months-checkbox-table .month-check{text-align:center;width:20%}
+.months-checkbox-table input[type=checkbox]{width:18px;height:18px;cursor:pointer;accent-color:var(--teal)}
+
+/* Boolean Jan-Dec grid (reusable) */
+.bool-month-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:6px;background:#fff;border:1px solid var(--border-dk);border-radius:6px;padding:8px}
+.bool-month-cell{padding:6px 8px;border:1px solid var(--border);border-radius:4px;font-size:11px;text-align:center;cursor:pointer;user-select:none;background:var(--offwhite);color:var(--ink-soft);font-weight:bold}
+.bool-month-cell:hover{border-color:var(--teal)}
+.bool-month-cell.on{background:var(--teal);color:#fff;border-color:var(--teal)}
+
+/* Process flow */
+.process-list{display:flex;flex-direction:column;gap:10px;margin-top:10px}
+.process-step{background:#fff;border:1px solid var(--border-dk);border-radius:8px;padding:14px;display:grid;grid-template-columns:50px 1fr auto;gap:12px;align-items:start;cursor:grab;position:relative}
+.process-step:active{cursor:grabbing}
+.process-step.dragging{opacity:0.4;border-style:dashed}
+.process-step.drag-over{border:2px dashed var(--terracotta);background:var(--terracotta-sft)}
+.process-step .step-num{background:var(--teal);color:#fff;width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:bold;font-size:13px}
+.process-step .step-body{display:grid;grid-template-columns:1fr 1fr 120px 120px 130px;gap:10px}
+.process-step .step-cell{font-size:11px}
+.process-step .step-label{font-size:10px;color:var(--ink-soft);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:3px}
+.process-step .step-cell input,.process-step .step-cell select{width:100%;border:1px solid var(--border);padding:5px 6px;border-radius:3px;font-family:Georgia,serif;font-size:11px;background:var(--offwhite)}
+.process-step .step-cell input:focus,.process-step .step-cell select:focus{outline:none;border-color:var(--teal);background:#fff}
+.process-step .step-actions{display:flex;flex-direction:column;gap:6px;align-items:end}
+.process-step .drag-handle{position:absolute;top:8px;right:8px;font-size:14px;color:var(--ink-faint);cursor:grab;user-select:none}
+
+/* Variants */
+.variants-table-wrap{overflow-x:auto}
+.dim-group{display:flex;gap:3px;align-items:center;font-size:11px}
+.dim-group input{width:42px !important;padding:4px !important;text-align:center}
+.dim-group select{width:60px !important;padding:4px !important}
+.dim-group .x{color:var(--ink-faint);font-size:10px;font-weight:bold}
+
+/* Tracker */
+.tracker-table{font-size:11px;width:100%;border-collapse:collapse}
+.tracker-table th{background:var(--teal);color:#fff;padding:8px 6px;text-align:center;font-weight:normal;text-transform:uppercase;letter-spacing:0.5px;font-size:10px;border-right:1px solid var(--sea);border-bottom:1px solid var(--sea);white-space:nowrap}
+.tracker-table th.variant-group{background:var(--sea);font-weight:bold;font-size:11px}
+.tracker-table th.variant-sub{background:var(--teal);font-weight:normal;font-size:9px;text-transform:none;letter-spacing:0;font-style:italic;opacity:0.85}
+.tracker-table th.terracotta-cell{background:var(--terracotta);color:#fff}
+.tracker-table .selling-price-row td{background:var(--cream-deep);font-weight:bold;color:var(--teal);text-align:center;font-size:11px}
+.tracker-table .selling-price-row .label-cell{background:var(--cream-deep);text-align:left;font-style:italic;color:var(--ink-soft)}
+.tracker-table td{padding:6px;border:1px solid var(--border);font-size:11px;text-align:right;background:#fff}
+.tracker-table td.month-cell{font-weight:bold;color:var(--teal);text-align:left;background:var(--offwhite);width:80px}
+.tracker-table td.qty-cell input{width:100%;border:1px solid var(--border);padding:4px;border-radius:3px;font-family:Georgia,serif;font-size:11px;text-align:right}
+.tracker-table td.price-cell{background:var(--cream-deep);color:var(--ink-soft);font-style:italic}
+.tracker-table td.revenue-cell{background:var(--highlight);color:var(--terracotta-dk);font-weight:bold}
+.tracker-table td.row-total{background:var(--terracotta-sft);color:var(--terracotta-dk);font-weight:bold}
+.tracker-table tr.annual-row td{background:var(--terracotta);color:#fff;font-weight:bold;border-top:2px solid var(--terracotta-dk)}
+.tracker-table tr.annual-row td.month-cell{background:var(--terracotta-dk);color:#fff}
+
+/* Image upload */
+.image-upload-cell{display:flex;align-items:center;gap:10px}
+.image-thumb{width:80px;height:80px;background:var(--cream-deep);border:1px solid var(--border-dk);border-radius:6px;display:flex;align-items:center;justify-content:center;color:var(--ink-faint);font-size:10px;text-align:center;padding:6px}
+.image-thumb-sm{width:50px;height:50px;background:var(--cream-deep);border:1px solid var(--border-dk);border-radius:4px;display:flex;align-items:center;justify-content:center;color:var(--ink-faint);font-size:9px;text-align:center;padding:3px}
+
+.ingredients-pill-list{display:flex;flex-wrap:wrap;gap:6px;padding:6px}
+.ingredient-pill{padding:3px 10px;background:var(--cream-deep);border:1px solid var(--border-dk);border-radius:14px;font-size:11px;color:var(--ink)}
+
+.add-row-bar{text-align:center;padding:14px;background:var(--cream-deep);border:1px dashed var(--border-dk);border-radius:10px;margin-top:10px}
+
+.empty-msg{text-align:center;color:var(--ink-faint);font-style:italic;padding:20px;background:#fff;border:1px dashed var(--border-dk);border-radius:8px}
+
+.field-hint{font-size:10px;color:var(--ink-faint);font-style:italic;margin-top:3px;padding-left:4px}
+
+.hidden{display:none !important}
+</style>
+</head>
+<body>
+
+<div class="page">
+<div class="header">
+  <h1>Product Profile</h1>
+  <div class="crumb">PRIME Rural · Product Framework</div>
+</div>
+<div class="card">
+
+<div class="tab-bar">
+  <div class="tab active" onclick="showTab('details',this)">Product Details</div>
+  <div class="tab" onclick="showTab('variants',this)">Product Variants</div>
+  <div class="tab" onclick="showTab('process',this)">Process Flow</div>
+  <div class="tab" onclick="showTab('capacity',this)">Production Capacity</div>
+</div>
+
+<div class="content">
+
+<div class="entrepreneur-chip">
+  <div class="ent-avatar">EN</div>
+  <span style="color:var(--ink-soft);font-style:italic">Auto-fetched from profile</span>
+</div>
+
+<!-- ============ PRODUCT DETAILS ============ -->
+<div id="details" class="panel">
+
+  <div class="section">
+    <div class="section-title"><span><span class="section-title-roman">I.</span>Product Identity</span></div>
+
+    <div class="field-row">
+      <div class="field-label">Product Status</div>
+      <select class="field-val" id="productStatus">
+        <option value="">— Select —</option>
+        <option>New</option>
+        <option>Existing</option>
+      </select>
+    </div>
+
+    <div class="field-row">
+      <div class="field-label">Sector</div>
+      <select class="field-val" id="sector">
+        <option value="">— Select —</option>
+        <option>Agro &amp; Allied</option>
+        <option>Food Processing</option>
+        <option>Handloom &amp; Handicraft</option>
+        <option>Wellness</option>
+        <option>Personal Care</option>
+        <option>Others</option>
+      </select>
+    </div>
+
+    <div class="field-row">
+      <div class="field-label">Business Basket</div>
+      <select class="field-val" id="businessBasket">
+        <option value="">— Select —</option>
+        <option>Pickles &amp; Preserves</option>
+        <option>Teas &amp; Beverages</option>
+        <option>Spices &amp; Herbs</option>
+        <option>Bakery &amp; Snacks</option>
+        <option>Earrings &amp; Jewellery</option>
+        <option>Home Decor</option>
+        <option>Mufflers &amp; Stoles</option>
+        <option>Others</option>
+      </select>
+    </div>
+
+    <div class="field-row">
+      <div class="field-label">Product Type</div>
+      <select class="field-val" id="productType">
+        <option value="">— Select —</option>
+        <option>Processed Food</option>
+        <option>Beverage</option>
+        <option>Handicraft</option>
+        <option>Handloom</option>
+        <option>Spices &amp; Herbs</option>
+        <option>Personal Care</option>
+        <option>Others</option>
+      </select>
+    </div>
+
+    <div class="field-row">
+      <div class="field-label">Product Name</div>
+      <div style="flex:1">
+        <input type="text" class="field-val" id="productName" placeholder="Begin typing for results" style="width:100%">
+        <div class="field-hint">Fetched from Product Master</div>
+      </div>
+    </div>
+
+    <div class="field-row">
+      <div class="field-label">Entrepreneur Name</div>
+      <input type="text" class="field-val" id="entrepreneurName" placeholder="Begin typing for results">
+    </div>
+
+    <div class="field-row" style="align-items:flex-start">
+      <div class="field-label" style="padding-top:6px">Product Snapshot</div>
+      <textarea class="field-val" id="productSnapshot" placeholder="Brief description of the product"></textarea>
+    </div>
+
+    <div class="field-row">
+      <div class="field-label">Product Image</div>
+      <div class="field-val" style="background:transparent;border:none;padding:0">
+        <div class="image-upload-cell">
+          <div class="image-thumb">No image</div>
+          <input type="file" class="hidden" id="productImage">
+          <button class="btn" onclick="document.getElementById('productImage').click()">📎 Attach</button>
+          <button class="btn">View ▷</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="field-row" style="align-items:flex-start">
+      <div class="field-label" style="padding-top:6px">Ingredients</div>
+      <div class="field-val auto" style="padding:0">
+        <div style="font-size:10px;color:var(--ink-faint);padding:6px 10px 0;font-style:italic">Fetched from Raw Material Framework</div>
+        <div class="ingredients-pill-list" id="ingredientsList">
+          <span class="ingredient-pill">Bamboo Shoot</span>
+          <span class="ingredient-pill">Oil</span>
+          <span class="ingredient-pill">Modi Masala</span>
+          <span class="ingredient-pill">Salt</span>
+          <span class="ingredient-pill">Chilli Powder</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="field-row" style="align-items:flex-start">
+      <div class="field-label" style="padding-top:6px">USP</div>
+      <textarea class="field-val" id="usp" placeholder="Unique selling proposition"></textarea>
+    </div>
+
+    <div class="field-row">
+      <div class="field-label">Shelf Life Tested</div>
+      <select class="field-val" id="shelfLifeTested">
+        <option value="">— Select —</option>
+        <option>Yes</option>
+        <option>No</option>
+      </select>
+    </div>
+
+    <div class="field-row">
+      <div class="field-label">Shelf Life Duration</div>
+      <input type="text" class="field-val" id="shelfLifeDuration" placeholder="e.g., 12 months">
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title"><span><span class="section-title-roman">II.</span>Available Months</span></div>
+    <p style="font-size:12px;color:var(--ink-soft);margin-bottom:12px;font-style:italic">Tick the months in which this product is available. These selections control which months appear in the Monthly Production Tracker.</p>
+    <table class="months-checkbox-table">
+      <thead>
+        <tr>
+          <th class="month-name">Month</th>
+          <th class="month-state" style="text-align:center">State</th>
+          <th class="month-check" style="text-align:center">Available?</th>
+        </tr>
+      </thead>
+      <tbody id="availableMonthsBody"></tbody>
+    </table>
+  </div>
+
+</div>
+
+<!-- ============ PROCESS FLOW ============ -->
+<div id="process" class="panel hidden">
+  <div class="section">
+    <div class="section-title"><span>Process &amp; Machinery Flow</span></div>
+    <p style="font-size:12px;color:var(--ink-soft);margin-bottom:12px;font-style:italic">Step by step production process — drag any card to reorder. Each step is linked to a machine from the Machinery module.</p>
+    <div class="process-list" id="processList"></div>
+    <div class="add-row-bar">
+      <button class="btn btn-primary" onclick="addProcessStep()">+ Add Step</button>
+    </div>
+  </div>
+</div>
+
+<!-- ============ PRODUCT VARIANTS ============ -->
+<div id="variants" class="panel hidden">
+  <div class="section">
+    <div class="section-title"><span>Product Variants</span></div>
+    <p style="font-size:12px;color:var(--ink-soft);margin-bottom:12px;font-style:italic">SKU is auto-generated from Variant Name + Sub Variant + Net Weight + Unit. Volume is auto-calculated from L × B × H. Retail Price is auto-fetched from the Pricing module.</p>
+    <div class="variants-table-wrap">
+      <table class="data-table" id="variantsTable">
+        <thead>
+          <tr>
+            <th class="num-col">No</th>
+            <th>SKU</th>
+            <th>Variant Status</th>
+            <th>Variant Name</th>
+            <th>Sub Variant</th>
+            <th>Net Weight</th>
+            <th>Unit</th>
+            <th>Dimensions (L × B × H)</th>
+            <th>Volume</th>
+            <th>Retail Price (₹)</th>
+            <th>Image</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody id="variantsBody"></tbody>
+      </table>
+    </div>
+    <div class="table-actions">
+      <span style="font-size:11px;color:var(--ink-soft);font-style:italic">SKU format: VARIANT-SUBVARIANT-WEIGHT-UNIT</span>
+      <button class="btn btn-primary" onclick="addVariantRow()">+ Add Variant</button>
+    </div>
+  </div>
+</div>
+
+<!-- ============ PRODUCTION CAPACITY ============ -->
+<div id="capacity" class="panel hidden">
+
+  <!-- SECTION I — Agricultural Context -->
+  <div class="section">
+    <div class="section-title"><span><span class="section-title-roman">I.</span>Agricultural &amp; Raw Material Context</span></div>
+
+    <div class="field-row">
+      <div class="field-label">Is it an Agri By-Product?</div>
+      <select class="field-val" id="agriByProduct" onchange="toggleAgriFields()">
+        <option value="">— Select —</option>
+        <option>Yes</option>
+        <option>No</option>
+      </select>
+    </div>
+
+    <div id="agriFields">
+      <div class="field-row">
+        <div class="field-label">Crop Being Grown</div>
+        <input type="text" class="field-val" placeholder="e.g., Lemongrass, Bamboo, Turmeric">
+      </div>
+      <div class="field-row">
+        <div class="field-label">Land Ownership</div>
+        <select class="field-val">
+          <option value="">— Select —</option>
+          <option>Own Land</option>
+          <option>Leased</option>
+          <option>Community / Collective</option>
+          <option>Sourced from Farmers</option>
+        </select>
+      </div>
+      <div class="field-row">
+        <div class="field-label">Area Covered (Acres)</div>
+        <input type="number" class="field-val" placeholder="e.g., 4" step="0.01">
+      </div>
+      <div class="field-row">
+        <div class="field-label">Production Capacity from Area / Season</div>
+        <input type="text" class="field-val" placeholder="e.g., 1,500">
+      </div>
+      <div class="field-row">
+        <div class="field-label">Production Unit</div>
+        <select class="field-val">
+          <option value="">— Select —</option>
+          <option>Kg</option>
+          <option>Tonnes</option>
+          <option>Litres</option>
+          <option>Pieces</option>
+          <option>Bundles</option>
+        </select>
+      </div>
+
+      <div class="field-row" style="align-items:flex-start">
+        <div class="field-label" style="padding-top:8px">Sowing Season</div>
+        <div style="flex:1" id="sowingSeasonGrid"></div>
+      </div>
+
+      <div class="field-row" style="align-items:flex-start">
+        <div class="field-label" style="padding-top:8px">Harvesting Season</div>
+        <div style="flex:1" id="harvestingSeasonGrid"></div>
+      </div>
+
+      <div class="field-row" style="align-items:flex-start">
+        <div class="field-label" style="padding-top:8px">Processing Season</div>
+        <div style="flex:1" id="processingSeasonGrid"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION II — Production Capacity (input fields, no table) -->
+  <div class="section">
+    <div class="section-title"><span><span class="section-title-roman">II.</span>Production Capacity</span></div>
+
+    <div class="field-row">
+      <div class="field-label">Existing Capacity / Month</div>
+      <input type="number" class="field-val" id="existingCapacity" placeholder="0">
+    </div>
+
+    <div class="field-row">
+      <div class="field-label">Aspiring Capacity / Month</div>
+      <input type="number" class="field-val" id="aspiringCapacity" placeholder="0">
+    </div>
+
+    <div class="field-row">
+      <div class="field-label">Units</div>
+      <div style="flex:1">
+        <select class="field-val" id="capacityUnit" style="width:100%">
+          <option value="">— Select —</option>
+          <option>Kg</option>
+          <option>g</option>
+          <option>Litres</option>
+          <option>ml</option>
+          <option>Pieces</option>
+          <option>Bottles</option>
+          <option>Pouches</option>
+          <option>Bundles</option>
+        </select>
+        <div class="field-hint">Fetched from Unit Master</div>
+      </div>
+    </div>
+
+    <div class="field-row">
+      <div class="field-label">Is Product Seasonal?</div>
+      <select class="field-val" id="isSeasonal" onchange="toggleSeasonalGrid()">
+        <option value="">— Select —</option>
+        <option>Yes</option>
+        <option>No</option>
+      </select>
+    </div>
+
+    <div class="field-row" id="seasonRow" style="align-items:flex-start;display:none">
+      <div class="field-label" style="padding-top:8px">Season</div>
+      <div style="flex:1" id="seasonGrid"></div>
+    </div>
+
+    <div class="field-row" style="align-items:flex-start">
+      <div class="field-label" style="padding-top:6px">Suggested Product Development</div>
+      <textarea class="field-val" id="suggestedDevelopment" placeholder="Suggested products to match market"></textarea>
+    </div>
+  </div>
+
+  <!-- SECTION III — Monthly Production Tracker -->
+  <div class="section">
+    <div class="section-title"><span><span class="section-title-roman">III.</span>Monthly Production Capacity Tracker</span></div>
+    <p style="font-size:12px;color:var(--ink-soft);margin-bottom:12px;font-style:italic">Months auto-populate from "Available Months" on the Product Details tab. Variants and selling prices auto-populate from the Product Variants tab.</p>
+    <div style="overflow-x:auto"><table class="tracker-table" id="trackerTable"></table></div>
+  </div>
+
+</div>
+
+</div>
+</div>
+</div>
+
+<script>
+// ============ CONSTANTS ============
+const MONTHS = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+const UNIT_MASTER = ['g','kg','ml','L','pcs','bundle']; // in production: from Unit Master
+const DIM_UNITS = ['mm','cm','m','in'];
+
+// State
+let stepCounter = 0;
+let variantCounter = 0;
+
+// ============ TAB SWITCHING ============
+function showTab(id, el){
+  document.querySelectorAll('.panel').forEach(p => p.classList.add('hidden'));
+  document.getElementById(id).classList.remove('hidden');
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  el.classList.add('active');
+  if(id === 'capacity') refreshTracker();
+}
+
+// ============ AVAILABLE MONTHS — checkbox table ============
+function renderAvailableMonths(){
+  document.getElementById('availableMonthsBody').innerHTML = MONTHS.map(m =>
+    `<tr data-month="${m}">
+      <td class="month-name">${m}</td>
+      <td class="month-state false" id="state-avail-${m}">FALSE</td>
+      <td class="month-check"><input type="checkbox" data-month="${m}" onchange="toggleAvailableMonth(this)"></td>
+    </tr>`
+  ).join('');
+}
+
+function toggleAvailableMonth(cb){
+  const m = cb.dataset.month;
+  const stateCell = document.getElementById(`state-avail-${m}`);
+  if(cb.checked){
+    stateCell.textContent = 'TRUE';
+    stateCell.classList.remove('false');
+    stateCell.classList.add('true');
+  } else {
+    stateCell.textContent = 'FALSE';
+    stateCell.classList.remove('true');
+    stateCell.classList.add('false');
+  }
+  refreshTracker();
+}
+
+function getAvailableMonths(){
+  return Array.from(document.querySelectorAll('#availableMonthsBody input[type=checkbox]:checked'))
+    .map(cb => cb.dataset.month);
+}
+
+// ============ BOOLEAN MONTH GRID — reusable ============
+function renderBoolMonthGrid(containerId){
+  const c = document.getElementById(containerId);
+  if(!c) return;
+  c.innerHTML = `<div class="bool-month-grid">
+    ${MONTHS.map(m => `<div class="bool-month-cell" data-month="${m}" onclick="this.classList.toggle('on')">${m}</div>`).join('')}
+  </div>`;
+}
+
+// ============ PROCESS FLOW ============
+function addProcessStep(seedDetail){
+  stepCounter++;
+  const sid = `step${stepCounter}`;
+  const list = document.getElementById('processList');
+  const div = document.createElement('div');
+  div.className = 'process-step';
+  div.id = sid;
+  div.draggable = true;
+
+  div.innerHTML = `
+    <div class="step-num"></div>
+    <div class="step-body">
+      <div class="step-cell">
+        <div class="step-label">Step Detail</div>
+        <input type="text" placeholder="Describe the step" value="${seedDetail || ''}">
+      </div>
+      <div class="step-cell">
+        <div class="step-label">Machine Used</div>
+        <input type="text" placeholder="Linked from Machinery module">
+        <div class="field-hint">Fetched from Machinery</div>
+      </div>
+      <div class="step-cell">
+        <div class="step-label">Machine Status</div>
+        <select>
+          <option value="">— Select —</option>
+          <option>Existing</option>
+          <option>Required</option>
+        </select>
+      </div>
+      <div class="step-cell">
+        <div class="step-label">Implemented?</div>
+        <select>
+          <option>— Select —</option>
+          <option>Yes</option>
+          <option>No</option>
+        </select>
+      </div>
+      <div class="step-cell">
+        <div class="step-label">Status</div>
+        <select>
+          <option>Pending</option>
+          <option>In Progress</option>
+          <option>Done</option>
+        </select>
+      </div>
+    </div>
+    <div class="step-actions">
+      <span class="drag-handle" title="Drag to reorder">⋮⋮</span>
+      <button class="btn" onclick="removeStep('${sid}')" style="color:var(--terracotta);font-size:10px;padding:3px 8px;margin-top:18px">Remove</button>
+    </div>
+  `;
+
+  div.addEventListener('dragstart', onDragStart);
+  div.addEventListener('dragend', onDragEnd);
+  div.addEventListener('dragover', onDragOver);
+  div.addEventListener('dragleave', onDragLeave);
+  div.addEventListener('drop', onDrop);
+
+  list.appendChild(div);
+  renumberSteps();
+}
+
+function removeStep(sid){
+  if(confirm('Remove this step?')){
+    document.getElementById(sid).remove();
+    renumberSteps();
+  }
+}
+
+function renumberSteps(){
+  Array.from(document.getElementById('processList').children).forEach((step, i) => {
+    const numEl = step.querySelector('.step-num');
+    if(numEl) numEl.textContent = String(i+1).padStart(2,'0');
+  });
+}
+
+let dragSrc = null;
+function onDragStart(e){ dragSrc = this; this.classList.add('dragging'); e.dataTransfer.effectAllowed = 'move'; }
+function onDragEnd(){ this.classList.remove('dragging'); document.querySelectorAll('.process-step.drag-over').forEach(el => el.classList.remove('drag-over')); }
+function onDragOver(e){ e.preventDefault(); e.dataTransfer.dropEffect = 'move'; if(this !== dragSrc) this.classList.add('drag-over'); return false; }
+function onDragLeave(){ this.classList.remove('drag-over'); }
+function onDrop(e){
+  e.stopPropagation();
+  if(dragSrc !== this){
+    const list = document.getElementById('processList');
+    const items = Array.from(list.children);
+    const srcIdx = items.indexOf(dragSrc);
+    const tgtIdx = items.indexOf(this);
+    if(srcIdx < tgtIdx) list.insertBefore(dragSrc, this.nextSibling);
+    else list.insertBefore(dragSrc, this);
+    renumberSteps();
+  }
+  return false;
+}
+
+function seedProcessSteps(){
+  [
+    'Ingredient Preparation — washing and sorting',
+    'Chopping — cutting to required size',
+    'Mixing with spices — combining all ingredients',
+    'Filling into jars — portioning into variants',
+    'Sealing & Pasteurization',
+    'Labelling & Packaging'
+  ].forEach(d => addProcessStep(d));
+}
+
+// ============ PRODUCT VARIANTS ============
+function addVariantRow(){
+  variantCounter++;
+  const vid = `var${variantCounter}`;
+  const tbody = document.getElementById('variantsBody');
+  const tr = document.createElement('tr');
+  tr.id = vid;
+
+  const unitOpts = UNIT_MASTER.map(u => `<option>${u}</option>`).join('');
+  const dimUnitOpts = DIM_UNITS.map(u => `<option>${u}</option>`).join('');
+
+  tr.innerHTML = `
+    <td class="num-col"></td>
+    <td><input type="text" class="auto-cell sku-cell" readonly placeholder="Auto"></td>
+    <td>
+      <select class="vstatus-cell">
+        <option value="">— Select —</option>
+        <option>Existing</option>
+        <option>New</option>
+      </select>
+    </td>
+    <td><input type="text" class="vname-cell" placeholder="Variant name" oninput="recalcVariant('${vid}')"></td>
+    <td><input type="text" class="subvar-cell" placeholder="Master · sub variant" oninput="recalcVariant('${vid}')"></td>
+    <td><input type="number" class="netweight-cell" placeholder="0" step="0.01" oninput="recalcVariant('${vid}')"></td>
+    <td>
+      <select class="unit-cell" onchange="recalcVariant('${vid}')">
+        <option value="">— Select —</option>
+        ${unitOpts}
+      </select>
+    </td>
+    <td>
+      <div class="dim-group">
+        <input type="number" class="dim-l" placeholder="L" oninput="recalcVolume('${vid}')">
+        <span class="x">×</span>
+        <input type="number" class="dim-b" placeholder="B" oninput="recalcVolume('${vid}')">
+        <span class="x">×</span>
+        <input type="number" class="dim-h" placeholder="H" oninput="recalcVolume('${vid}')">
+        <select class="dim-unit" onchange="recalcVolume('${vid}')">
+          ${dimUnitOpts}
+        </select>
+      </div>
+    </td>
+    <td><input type="text" class="auto-cell volume-cell" readonly placeholder="Auto"></td>
+    <td><input type="number" class="auto-cell retail-cell" readonly placeholder="Auto-fetched" oninput="refreshTracker()"></td>
+    <td>
+      <div style="display:flex;gap:4px;align-items:center">
+        <div class="image-thumb-sm">No img</div>
+        <input type="file" class="hidden">
+        <button class="btn" style="padding:2px 8px;font-size:10px" onclick="this.previousElementSibling.click()">📎</button>
+      </div>
+    </td>
+    <td><button class="row-delete" onclick="removeVariant('${vid}')">✕</button></td>
+  `;
+  tbody.appendChild(tr);
+  renumberVariants();
+  refreshTracker();
+}
+
+function removeVariant(vid){
+  document.getElementById(vid).remove();
+  renumberVariants();
+  refreshTracker();
+}
+
+function renumberVariants(){
+  Array.from(document.getElementById('variantsBody').children).forEach((tr, i) => {
+    const numEl = tr.querySelector('.num-col');
+    if(numEl) numEl.textContent = String(i+1).padStart(2,'0');
+  });
+}
+
+function recalcVariant(vid){
+  const row = document.getElementById(vid);
+  if(!row) return;
+  // SKU = Variant Name + Sub Variant + Net Weight + Unit
+  const vname = (row.querySelector('.vname-cell')?.value || '').trim();
+  const subvar = (row.querySelector('.subvar-cell')?.value || '').trim();
+  const weight = (row.querySelector('.netweight-cell')?.value || '').trim();
+  const unit = (row.querySelector('.unit-cell')?.value || '').trim();
+  const segments = [vname, subvar, weight, unit]
+    .filter(s => s.length > 0)
+    .map(s => s.replace(/\s+/g, '').toUpperCase());
+  row.querySelector('.sku-cell').value = segments.join('-');
+  refreshTracker();
+}
+
+function recalcVolume(vid){
+  const row = document.getElementById(vid);
+  if(!row) return;
+  const l = parseFloat(row.querySelector('.dim-l')?.value) || 0;
+  const b = parseFloat(row.querySelector('.dim-b')?.value) || 0;
+  const h = parseFloat(row.querySelector('.dim-h')?.value) || 0;
+  const dimUnit = row.querySelector('.dim-unit')?.value || '';
+  const v = l * b * h;
+  const out = row.querySelector('.volume-cell');
+  if(out) out.value = v > 0 ? `${v.toFixed(2)} ${dimUnit}³` : '';
+}
+
+function getVariants(){
+  const rows = document.querySelectorAll('#variantsBody tr');
+  const out = [];
+  rows.forEach((r, i) => {
+    const sku = r.querySelector('.sku-cell')?.value || `V${i+1}`;
+    const vname = r.querySelector('.vname-cell')?.value || '';
+    const subvar = r.querySelector('.subvar-cell')?.value || '';
+    const weight = r.querySelector('.netweight-cell')?.value || '';
+    const unit = r.querySelector('.unit-cell')?.value || '';
+    const retail = parseFloat(r.querySelector('.retail-cell')?.value) || 0;
+    out.push({
+      vid: r.id,
+      label: `V${i+1}`,
+      sku,
+      shortLabel: (weight && unit) ? `${weight}${unit}` : (vname || subvar || sku),
+      sellingPrice: retail
+    });
+  });
+  return out;
+}
+
+// ============ PRODUCTION TRACKER ============
+function refreshTracker(){
+  const months = getAvailableMonths(); // only selected months
+  const variants = getVariants();
+  const table = document.getElementById('trackerTable');
+  if(!table) return;
+
+  // Save existing entered quantities by month|vid key
+  const saved = {};
+  table.querySelectorAll('input.tracker-qty').forEach(inp => {
+    saved[inp.dataset.key] = inp.value;
+  });
+
+  if(variants.length === 0){
+    table.innerHTML = '<tbody><tr><td><div class="empty-msg">Add at least one variant in the Product Variants tab to populate the tracker.</div></td></tr></tbody>';
+    return;
+  }
+
+  if(months.length === 0){
+    table.innerHTML = '<tbody><tr><td><div class="empty-msg">Tick at least one month in "Available Months" on the Product Details tab to populate the tracker.</div></td></tr></tbody>';
+    return;
+  }
+
+  let html = '<thead>';
+
+  // Selling price strip
+  html += '<tr class="selling-price-row">';
+  html += '<td class="label-cell">Selling Price (per unit)</td>';
+  variants.forEach(v => {
+    html += `<td colspan="3">${v.sellingPrice > 0 ? '₹ ' + v.sellingPrice.toFixed(2) : '—'}</td>`;
+  });
+  html += '<td colspan="2" class="label-cell" style="background:var(--terracotta-sft);color:var(--terracotta-dk);font-weight:bold">Across all variants</td>';
+  html += '</tr>';
+
+  // Group header row
+  html += '<tr><th rowspan="2">Monthly Production Tracker</th>';
+  variants.forEach(v => {
+    html += `<th colspan="3" class="variant-group">${v.label} <span style="font-weight:normal;font-size:9px;opacity:0.85">${v.shortLabel}</span></th>`;
+  });
+  html += '<th rowspan="2" class="terracotta-cell">Total Monthly<br>Production</th>';
+  html += '<th rowspan="2" class="terracotta-cell">Total Monthly<br>Revenue</th>';
+  html += '</tr>';
+
+  // Sub headers
+  html += '<tr>';
+  variants.forEach(() => {
+    html += '<th class="variant-sub">qty</th><th class="variant-sub">selling price</th><th class="variant-sub">revenue</th>';
+  });
+  html += '</tr></thead>';
+
+  // Body — only available months
+  html += '<tbody>';
+  months.forEach(m => {
+    html += `<tr><td class="month-cell">${m.toUpperCase()}</td>`;
+    variants.forEach(v => {
+      const key = `${m}|${v.vid}`;
+      const val = saved[key] || '';
+      html += `<td class="qty-cell"><input type="number" class="tracker-qty" data-key="${key}" data-month="${m}" data-vid="${v.vid}" placeholder="0" value="${val}" oninput="recalcTracker()"></td>`;
+      html += `<td class="price-cell">${v.sellingPrice > 0 ? '₹' + v.sellingPrice.toFixed(2) : '—'}</td>`;
+      html += `<td class="revenue-cell" id="rev-${m}-${v.vid}">₹0.00</td>`;
+    });
+    html += `<td class="row-total" id="qty-total-${m}">0</td>`;
+    html += `<td class="row-total" id="rev-total-${m}">₹0.00</td>`;
+    html += '</tr>';
+  });
+
+  // Annual totals
+  html += '<tr class="annual-row"><td class="month-cell">ANNUAL</td>';
+  variants.forEach(v => {
+    html += `<td id="annual-qty-${v.vid}">0</td>`;
+    html += `<td>—</td>`;
+    html += `<td id="annual-rev-${v.vid}">₹0.00</td>`;
+  });
+  html += '<td id="annual-qty-grand">0</td>';
+  html += '<td id="annual-rev-grand">₹0.00</td>';
+  html += '</tr>';
+
+  html += '</tbody>';
+  table.innerHTML = html;
+  recalcTracker();
+}
+
+function recalcTracker(){
+  const months = getAvailableMonths();
+  const variants = getVariants();
+  if(variants.length === 0 || months.length === 0) return;
+
+  let grandQty = 0, grandRev = 0;
+  const variantTotals = {};
+  variants.forEach(v => { variantTotals[v.vid] = { qty:0, rev:0 }; });
+
+  months.forEach(m => {
+    let monthQty = 0, monthRev = 0;
+    variants.forEach(v => {
+      const inp = document.querySelector(`#trackerTable input.tracker-qty[data-key="${m}|${v.vid}"]`);
+      const q = parseFloat(inp?.value) || 0;
+      const rev = q * v.sellingPrice;
+      monthQty += q;
+      monthRev += rev;
+      variantTotals[v.vid].qty += q;
+      variantTotals[v.vid].rev += rev;
+      const revCell = document.getElementById(`rev-${m}-${v.vid}`);
+      if(revCell) revCell.textContent = `₹${rev.toFixed(2)}`;
+    });
+    grandQty += monthQty;
+    grandRev += monthRev;
+    const qtyTot = document.getElementById(`qty-total-${m}`);
+    const revTot = document.getElementById(`rev-total-${m}`);
+    if(qtyTot) qtyTot.textContent = monthQty.toLocaleString();
+    if(revTot) revTot.textContent = `₹${monthRev.toFixed(2)}`;
+  });
+
+  variants.forEach(v => {
+    const aq = document.getElementById(`annual-qty-${v.vid}`);
+    const ar = document.getElementById(`annual-rev-${v.vid}`);
+    if(aq) aq.textContent = variantTotals[v.vid].qty.toLocaleString();
+    if(ar) ar.textContent = `₹${variantTotals[v.vid].rev.toFixed(2)}`;
+  });
+  const aqg = document.getElementById('annual-qty-grand');
+  const arg = document.getElementById('annual-rev-grand');
+  if(aqg) aqg.textContent = grandQty.toLocaleString();
+  if(arg) arg.textContent = `₹${grandRev.toFixed(2)}`;
+}
+
+// ============ AGRI / SEASONAL TOGGLES ============
+function toggleAgriFields(){
+  const v = document.getElementById('agriByProduct')?.value;
+  const block = document.getElementById('agriFields');
+  if(v === 'No'){ block.style.opacity = '0.4'; block.style.pointerEvents = 'none'; }
+  else { block.style.opacity = '1'; block.style.pointerEvents = 'auto'; }
+}
+
+function toggleSeasonalGrid(){
+  const v = document.getElementById('isSeasonal')?.value;
+  const row = document.getElementById('seasonRow');
+  row.style.display = (v === 'Yes') ? 'flex' : 'none';
+}
+
+// ============ INIT ============
+window.addEventListener('DOMContentLoaded', () => {
+  renderAvailableMonths();
+  renderBoolMonthGrid('sowingSeasonGrid');
+  renderBoolMonthGrid('harvestingSeasonGrid');
+  renderBoolMonthGrid('processingSeasonGrid');
+  renderBoolMonthGrid('seasonGrid');
+  seedProcessSteps();
+  addVariantRow();
+  addVariantRow();
+  addVariantRow();
+  refreshTracker();
+});
+</script>
+
+</body>
+</html>

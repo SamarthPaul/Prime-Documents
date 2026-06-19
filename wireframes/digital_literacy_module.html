@@ -1,0 +1,1243 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Digital Literacy · PRIME Rural</title>
+<style>
+:root {
+  --teal:#0E4D4E; --sea:#1A6B6D; --terracotta:#C26849; --terracotta-dk:#A85738;
+  --terracotta-sft:#F5E2D6;
+  --cream:#FBF5E5; --cream-deep:#F4ECD3; --offwhite:#FDFAF0; --panel:#FFFFFF;
+  --ink:#2A2520; --ink-soft:#6B6359; --ink-faint:#9C9384;
+  --border:#E8DFC9; --border-dk:#D6CDB6;
+  --good-bg:#E3EFDF; --good-ink:#3F6B3A;
+  --fair-bg:#FBE9DF; --fair-ink:#7A3B22;
+  --poor-bg:#F5D6CC; --poor-ink:#8B2A0F;
+  --info-bg:#E1ECF7; --info-ink:#1F4A78;
+  --highlight:#FFF8E1;
+  --star:#D4A24A; --star-empty:#D6CDB6;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:Georgia,serif;background:var(--cream);color:var(--ink);line-height:1.4}
+.page{max-width:1200px;margin:0 auto;padding:24px}
+
+/* Header */
+.header{background:var(--teal);color:#fff;padding:16px 20px;border-radius:12px 12px 0 0;display:flex;justify-content:space-between;align-items:center}
+.header h1{font-size:18px;font-weight:normal;letter-spacing:0.5px}
+.header .crumb{font-size:11px;opacity:0.75;text-transform:uppercase;letter-spacing:1px}
+.card{background:var(--cream);border:1px solid var(--border-dk);border-top:none;border-radius:0 0 12px 12px}
+
+/* Tabs */
+.tab-bar{display:flex;background:var(--cream-deep);border-bottom:1px solid var(--border-dk);overflow-x:auto}
+.tab{padding:12px 22px;cursor:pointer;font-size:12px;text-transform:uppercase;letter-spacing:1px;color:var(--ink-soft);border-right:1px solid var(--border);white-space:nowrap}
+.tab.active{background:var(--teal);color:#fff}
+.tab:hover:not(.active){background:#EADFC0}
+.content{padding:22px}
+.hidden{display:none !important}
+
+/* Entrepreneur chip */
+.entrepreneur-chip{display:inline-flex;align-items:center;gap:10px;background:#fff;border:1px solid var(--border-dk);padding:6px 14px;border-radius:20px;font-size:12px;margin-bottom:18px}
+.ent-avatar{width:24px;height:24px;background:var(--teal);color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:bold}
+
+/* Section */
+.section{background:var(--cream-deep);padding:16px;border-radius:10px;margin-bottom:16px;border:1px solid var(--border)}
+.section-title{font-size:13px;text-transform:uppercase;letter-spacing:1.5px;color:var(--teal);margin-bottom:12px;padding-bottom:8px;border-bottom:1px solid var(--border-dk);font-weight:bold;display:flex;justify-content:space-between;align-items:center}
+.section-title-roman{color:var(--terracotta);margin-right:8px;font-style:italic}
+
+/* Field row */
+.field-row{display:flex;gap:12px;margin-bottom:10px;flex-wrap:wrap;align-items:flex-start}
+.field-label{width:280px;font-size:12px;color:var(--ink-soft);padding-top:6px}
+.field-val{flex:1;background:var(--offwhite);border:1px solid var(--border-dk);padding:6px 10px;border-radius:5px;font-size:12px;min-width:140px;font-family:Georgia,serif}
+textarea.field-val{font-family:Georgia,serif;resize:vertical;min-height:50px}
+select.field-val{cursor:pointer}
+
+/* Buttons */
+.btn{padding:5px 12px;border-radius:20px;border:1px solid var(--border-dk);background:#fff;cursor:pointer;font-size:11px;color:var(--ink);font-family:Georgia,serif}
+.btn:hover{background:var(--cream-deep)}
+.btn-primary{background:var(--teal);color:#fff;border-color:var(--teal)}
+.btn-primary:hover{background:var(--sea)}
+
+/* Checkbox group */
+.cb-group{display:flex;gap:10px;flex:1;flex-wrap:wrap;min-width:280px}
+.cb-row{display:inline-flex;align-items:center;gap:8px;font-size:12px;color:var(--ink);background:var(--offwhite);border:1px solid var(--border-dk);border-radius:5px;padding:8px 14px;cursor:pointer;min-width:130px}
+.cb-row input[type="checkbox"]{cursor:pointer;accent-color:var(--teal)}
+.cb-row:has(input:checked){background:var(--cream-deep);border-color:var(--teal)}
+
+/* Legend */
+.legend{background:#fff;border:1px solid var(--border-dk);border-radius:8px;padding:14px;margin-bottom:16px;display:grid;grid-template-columns:repeat(5,1fr);gap:8px}
+.legend-item{display:flex;flex-direction:column;gap:4px;align-items:flex-start;padding:8px;border-radius:6px;background:var(--cream-deep);border:1px solid var(--border)}
+.legend-stars{color:var(--star);font-size:13px;letter-spacing:1px}
+.legend-stars .empty{color:var(--star-empty)}
+.legend-text{font-size:10px;color:var(--ink);font-style:italic;line-height:1.3}
+
+/* Skill table */
+.skill-table{background:#fff;border:1px solid var(--border-dk);border-radius:8px;overflow:hidden}
+.skill-table table{width:100%;border-collapse:collapse;font-size:12px}
+.skill-table th{background:var(--teal);color:#fff;padding:8px;text-align:left;font-weight:normal;text-transform:uppercase;letter-spacing:0.5px;font-size:10px;border-right:1px solid var(--sea);white-space:nowrap}
+.skill-table th:last-child{border-right:none}
+.skill-table td{padding:8px;border-bottom:1px solid var(--border);border-right:1px solid var(--border);vertical-align:middle}
+.skill-table td:last-child{border-right:none}
+.skill-table tr:last-child td{border-bottom:none}
+.skill-table input,.skill-table select{width:100%;border:1px solid var(--border);padding:5px 8px;border-radius:3px;font-family:Georgia,serif;font-size:11px;background:#fff}
+.skill-table input:focus,.skill-table select:focus{outline:none;border-color:var(--teal)}
+.skill-table .num-col{width:36px;text-align:center;color:var(--ink-soft)}
+
+/* Stars */
+.stars-cell{display:flex;gap:2px;align-items:center}
+.star{cursor:pointer;font-size:18px;color:var(--star-empty);transition:color 0.1s;user-select:none;line-height:1}
+.star.filled{color:var(--star)}
+.star:hover,.star.hovered{color:var(--star)}
+.clear-stars{background:transparent;border:none;color:var(--ink-faint);cursor:pointer;font-size:12px;padding:2px 4px;margin-left:6px}
+.clear-stars:hover{color:var(--terracotta)}
+
+/* Toggle */
+.toggle{width:36px;height:18px;border-radius:20px;background:#ccc;display:inline-block;cursor:pointer;position:relative;flex-shrink:0;vertical-align:middle}
+.toggle::after{content:'';width:14px;height:14px;background:#fff;border-radius:50%;position:absolute;top:2px;left:2px;transition:left 0.2s}
+.toggle.on{background:var(--terracotta)}
+.toggle.on::after{left:20px}
+
+.row-delete{background:transparent;border:none;color:var(--terracotta);cursor:pointer;font-size:14px;padding:2px 6px}
+.row-delete:hover{color:var(--terracotta-dk)}
+.table-actions{display:flex;justify-content:space-between;align-items:center;margin-top:10px}
+
+/* Bridged marker */
+.bridged-pill{display:inline-block;padding:2px 6px;background:var(--terracotta-sft);color:var(--terracotta-dk);border:1px solid var(--terracotta);border-radius:8px;font-size:9px;font-style:italic;margin-left:6px}
+
+/* Machine block */
+.machine-block{background:#fff;border:1px solid var(--border-dk);border-radius:10px;margin-bottom:14px;overflow:hidden}
+.machine-block-head{background:var(--sea);color:#fff;padding:10px 14px;display:flex;justify-content:space-between;align-items:center;cursor:pointer;user-select:none;font-size:13px;flex-wrap:wrap;gap:8px}
+.machine-block-head:hover{background:var(--teal)}
+.machine-block-head .mb-name{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.chevron{font-size:12px;transition:transform 0.2s}
+.machine-block.collapsed .chevron{transform:rotate(-90deg)}
+.machine-block.collapsed .mb-body{display:none}
+.mb-body{padding:14px}
+.mb-remove{background:transparent;border:1px solid rgba(255,255,255,0.4);color:#fff;padding:3px 10px;border-radius:14px;cursor:pointer;font-size:11px;font-family:Georgia,serif}
+.mb-remove:hover{background:var(--terracotta);border-color:var(--terracotta)}
+
+/* Subsection */
+.subsection{background:var(--cream-deep);padding:12px;border-radius:8px;margin-bottom:10px;border:1px solid var(--border)}
+.subsection-title{font-size:11px;text-transform:uppercase;letter-spacing:1px;color:var(--teal);margin-bottom:10px;font-weight:bold;display:flex;justify-content:space-between;align-items:center}
+.subsection-title .sst-roman{color:var(--terracotta);font-style:italic;margin-right:6px}
+
+/* Avg strip */
+.avg-strip{background:linear-gradient(135deg,var(--teal),var(--sea));color:#fff;padding:14px 16px;border-radius:8px;margin-top:12px;display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px}
+.avg-cell{display:flex;flex-direction:column;gap:4px}
+.avg-label{font-size:10px;opacity:0.85;text-transform:uppercase;letter-spacing:0.5px}
+.avg-val{font-size:20px;font-weight:bold}
+.avg-stars{font-size:16px;color:#FFE3A8;letter-spacing:2px}
+.avg-stars .empty{color:rgba(255,255,255,0.3)}
+
+/* Implementation status block */
+.impl-block{background:var(--terracotta-sft);border:1px solid var(--terracotta);border-radius:8px;padding:12px;margin-top:10px}
+.impl-block-title{font-size:11px;text-transform:uppercase;letter-spacing:1px;color:var(--terracotta-dk);margin-bottom:10px;font-weight:bold}
+.impl-item{background:#fff;border:1px solid var(--border);border-radius:6px;padding:10px}
+.flag-note{font-size:10px;color:var(--ink-faint);font-style:italic;margin-top:4px}
+.flag-note.active{color:var(--terracotta-dk);font-weight:bold;font-style:normal}
+
+/* Intervention block */
+.intervention-block{background:var(--terracotta-sft);border:1px solid var(--terracotta);border-radius:8px;padding:12px;margin-top:10px}
+.intervention-block-title{font-size:11px;text-transform:uppercase;letter-spacing:1px;color:var(--terracotta-dk);margin-bottom:10px;font-weight:bold}
+
+/* Summary cards */
+.summary-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px}
+.summary-card{background:#fff;border:1px solid var(--border);border-radius:10px;padding:14px}
+.summary-card.full{grid-column:1/-1}
+.summary-card h3{font-size:11px;text-transform:uppercase;letter-spacing:1px;color:var(--teal);margin-bottom:10px;padding-bottom:6px;border-bottom:1px solid var(--border)}
+.metric-row{display:flex;justify-content:space-between;padding:5px 0;font-size:12px;border-bottom:1px solid #f0e9d6}
+.metric-row:last-child{border-bottom:none}
+.metric-label{color:var(--ink-soft)}
+.metric-value{font-weight:bold;color:var(--ink)}
+.metric-value.green{color:var(--good-ink)}
+.metric-value.amber{color:var(--terracotta-dk)}
+.metric-value.poor{color:var(--poor-ink)}
+
+/* Picture strip */
+.picture-strip{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;background:var(--teal);padding:14px;border-radius:10px;color:#fff;margin-top:10px}
+.picture-strip .ps-cell{padding:6px 4px}
+.picture-strip .ps-label{font-size:10px;text-transform:uppercase;letter-spacing:0.8px;opacity:0.7;margin-bottom:4px}
+.picture-strip .ps-val{font-size:18px;font-weight:bold}
+.picture-strip .ps-val.amber{color:#FFD580}
+
+/* Flag cards */
+.flags-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+.flag-card{background:#fff;border:1px solid var(--border);border-radius:8px;padding:12px}
+.flag-icon{width:30px;height:30px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:14px;margin-bottom:8px}
+.flag-icon.amber{background:var(--terracotta-sft);color:var(--terracotta-dk)}
+.flag-icon.red{background:#F5D6CC;color:#8B2A0F}
+.flag-icon.blue{background:#D6E3EE;color:#2C5A82}
+.flag-icon.green{background:var(--good-bg);color:var(--good-ink)}
+.flag-count{font-size:20px;font-weight:bold;color:var(--ink)}
+.flag-label{font-size:10px;color:var(--ink-soft);text-transform:uppercase;letter-spacing:0.5px;margin-top:4px}
+
+/* Status badges */
+.status-badge{display:inline-flex;align-items:center;gap:5px;padding:2px 9px;border-radius:14px;font-size:10px;font-weight:bold}
+.status-completed{background:var(--good-bg);color:var(--good-ink)}
+.status-progress{background:var(--fair-bg);color:var(--fair-ink)}
+.status-pending{background:var(--cream-deep);color:var(--ink-soft)}
+
+/* Access pills */
+.access-pill{display:inline-block;padding:2px 8px;border-radius:10px;font-size:10px;font-weight:bold;text-transform:uppercase;margin:0 2px}
+.access-pill.has{background:var(--good-bg);color:var(--good-ink)}
+.access-pill.missing{background:var(--poor-bg);color:var(--poor-ink)}
+
+/* Total bar */
+.total-bar{background:var(--teal);color:#fff;padding:14px 18px;border-radius:10px;margin-top:14px}
+.total-bar-title{font-size:11px;text-transform:uppercase;letter-spacing:1px;opacity:0.7;margin-bottom:10px}
+.total-grid{display:grid;gap:14px}
+.total-cell .total-label{font-size:10px;opacity:0.6;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:3px}
+.total-cell .total-value{font-weight:bold;font-size:14px}
+.total-cell .total-value.amber{color:#FFD580;font-size:11px}
+
+/* Required rows */
+.opt-row{background:#fff;border:1px solid var(--border-dk);border-radius:10px;margin-bottom:12px;overflow:hidden}
+.opt-row-head{background:var(--cream-deep);padding:12px 16px;display:grid;gap:12px;align-items:center;border-bottom:1px solid var(--border-dk)}
+.opt-readonly-label{font-size:10px;color:var(--ink-soft);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:3px}
+.opt-readonly-val{font-size:12px;font-weight:bold;color:var(--teal)}
+
+.add-row-bar{text-align:center;padding:14px;background:var(--cream-deep);border:1px dashed var(--border-dk);border-radius:10px;margin-top:10px}
+
+/* Resources */
+.resource-list{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+.resource-tile{background:#fff;border:1px solid var(--border-dk);border-radius:8px;padding:14px;display:flex;flex-direction:column;gap:6px}
+.resource-tile h4{font-size:13px;color:var(--teal);font-weight:bold}
+.resource-tile p{font-size:11px;color:var(--ink-soft);line-height:1.5}
+.resource-tile a{display:inline-block;margin-top:4px;font-size:11px;color:var(--terracotta);text-decoration:none;font-weight:bold}
+.resource-tile a:hover{color:var(--terracotta-dk);text-decoration:underline}
+
+/* Data table (task log, log book) */
+table.data-table{width:100%;border-collapse:collapse;background:var(--offwhite);border-radius:6px;overflow:hidden;border:1px solid var(--border-dk);font-size:11px}
+table.data-table th{background:var(--teal);color:#fff;padding:9px 8px;text-align:left;font-weight:normal;text-transform:uppercase;letter-spacing:0.5px;font-size:10px;border-right:1px solid var(--sea);white-space:nowrap}
+table.data-table th:last-child{border-right:none}
+table.data-table td{padding:7px 8px;border-bottom:1px solid var(--border);border-right:1px solid var(--border);vertical-align:middle}
+table.data-table td:last-child{border-right:none}
+table.data-table tr:last-child td{border-bottom:none}
+table.data-table input,table.data-table select,table.data-table textarea{width:100%;border:1px solid var(--border);padding:5px 6px;border-radius:3px;font-family:Georgia,serif;font-size:11px;background:#fff}
+table.data-table input:focus,table.data-table select:focus{outline:none;border-color:var(--teal)}
+table.data-table .num-col{width:40px;text-align:center;color:var(--ink-soft)}
+table.data-table textarea{resize:vertical;min-height:32px;font-family:Georgia,serif}
+
+/* ===== SUMMARY TAB (standard pattern) ===== */
+.me-snapshot{width:100%;border-collapse:collapse;font-size:12px;background:var(--offwhite);border-radius:6px;overflow:hidden;border:1px solid var(--border-dk)}
+.me-snapshot th{background:var(--teal);color:#fff;padding:8px 10px;text-align:left;font-weight:normal;text-transform:uppercase;letter-spacing:0.5px;font-size:10px}
+.me-snapshot th.delta-col{background:var(--terracotta)}
+.me-snapshot td{padding:9px 10px;border-bottom:1px solid var(--border)}
+.me-snapshot tr:last-child td{border-bottom:none}
+.me-snapshot td.me-item{font-weight:bold;color:var(--teal);width:30%}
+.me-snapshot td.me-pre,.me-snapshot td.me-post{width:23%;color:var(--ink)}
+.me-snapshot td.me-impl{width:24%;color:var(--terracotta-dk);font-weight:bold}
+.sum-agg-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px}
+.sum-agg-card{background:#fff;border:1px solid var(--border-dk);border-radius:8px;padding:14px}
+.sum-agg-card h4{font-size:11px;text-transform:uppercase;letter-spacing:1px;color:var(--teal);margin-bottom:10px;padding-bottom:6px;border-bottom:1px solid var(--border-dk);font-weight:bold}
+.sum-agg-row{display:flex;justify-content:space-between;padding:5px 0;font-size:12px;border-bottom:1px dashed var(--border)}
+.sum-agg-row:last-child{border-bottom:none}
+.sum-agg-row .sum-agg-label{color:var(--ink-soft)}
+.sum-agg-row .sum-agg-value{font-weight:bold;color:var(--ink)}
+.sum-agg-row .sum-agg-value.green{color:var(--good-ink)}
+.sum-agg-row .sum-agg-value.fair{color:var(--fair-ink)}
+.sum-agg-row .sum-agg-value.poor{color:var(--poor-ink)}
+.sum-flags-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+.sum-flag-card{background:#fff;border:1px solid var(--border);border-radius:8px;padding:12px;text-align:left}
+.sum-flag-icon{width:30px;height:30px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:14px;margin-bottom:8px;background:var(--terracotta-sft);color:var(--terracotta-dk)}
+.sum-flag-icon.amber{background:var(--fair-bg);color:var(--fair-ink)}
+.sum-flag-icon.blue{background:var(--info-bg);color:var(--info-ink)}
+.sum-flag-icon.green{background:var(--good-bg);color:var(--good-ink)}
+.sum-flag-count{font-size:20px;font-weight:bold;color:var(--ink)}
+.sum-flag-label{font-size:10px;color:var(--ink-soft);text-transform:uppercase;letter-spacing:0.5px;margin-top:4px}
+/* Improved/Decreased split card */
+.sum-flag-split{font-size:14px;line-height:1.4}
+.sum-flag-split .up{color:var(--good-ink);font-weight:bold}
+.sum-flag-split .down{color:var(--poor-ink, #8B2A0F);font-weight:bold}
+.sum-flag-split .sep{color:var(--ink-faint);margin:0 4px}
+/* ===== /SUMMARY TAB ===== */
+
+</style>
+</head>
+<body>
+
+<div class="page">
+<div class="header">
+  <div>
+    <div class="crumb">PRIME Rural · Capacity Building</div>
+    <h1>Digital Literacy</h1>
+  </div>
+</div>
+<div class="card">
+
+<div class="tab-bar">
+  <div class="tab active" onclick="showTab('summary',this)">Summary</div>
+  <div class="tab" onclick="showTab('existing',this)">Existing</div>
+  <div class="tab" onclick="showTab('required',this)">Required</div>
+  <div class="tab" onclick="showTab('resources',this)">Resources</div>
+  <div class="tab" onclick="showTab('tasklog',this)">Task Log</div>
+  <div class="tab" onclick="showTab('logbook',this)">Log Book</div>
+</div>
+
+<div class="content">
+<div class="entrepreneur-chip">
+  <div class="ent-avatar">EN</div>
+  <span style="color:var(--ink-soft);font-style:italic">Auto-fetched from profile</span>
+</div>
+
+<!-- ============ SUMMARY ============ -->
+<div id="summary" class="panel">
+
+  <!-- ① SKILL-WISE OVERVIEW -->
+  <div class="section">
+    <div class="section-title">Skill-wise Overview</div>
+    <p style="font-size:11px;color:var(--ink-soft);font-style:italic;margin-bottom:10px">One row per skill. Auto-populated from Existing and Required tabs.</p>
+    <div style="overflow-x:auto">
+    <table class="data-table" style="min-width:800px">
+      <thead>
+        <tr>
+          <th>Platform / Skill</th>
+          <th>Existing Level</th>
+          <th>Intervention Flagged</th>
+          <th style="background:var(--sea)">Target Level</th>
+          <th style="background:var(--sea)">Skill Change</th>
+          <th style="background:#3F6B3A">Implementation Status</th>
+        </tr>
+      </thead>
+      <tbody id="sm-skill-overview-body">
+        <tr><td colspan="6" style="text-align:center;color:var(--ink-faint);font-style:italic;padding:14px">Auto-populated from Existing and Required tabs</td></tr>
+      </tbody>
+    </table>
+    </div>
+  </div>
+
+  <!-- ② AGGREGATES -->
+  <div class="section">
+    <div class="section-title">Aggregates</div>
+    <div class="sum-agg-grid" style="grid-template-columns:repeat(4,1fr)">
+
+      <div class="sum-agg-card">
+        <h4>Existing</h4>
+        <div class="sum-agg-row"><span class="sum-agg-label">Devices Available</span><span class="sum-agg-value" id="agg-ex-devices">0 / 2</span></div>
+        <div class="sum-agg-row"><span class="sum-agg-label">Skills Rated</span><span class="sum-agg-value" id="agg-ex-rated">0</span></div>
+        <div class="sum-agg-row"><span class="sum-agg-label">Avg Skill Level</span><span class="sum-agg-value" id="agg-ex-avg">—</span></div>
+        <div class="sum-agg-row"><span class="sum-agg-label">Interventions Flagged</span><span class="sum-agg-value" id="agg-ex-flagged">0</span></div>
+      </div>
+
+      <div class="sum-agg-card">
+        <h4>Required</h4>
+        <div class="sum-agg-row"><span class="sum-agg-label">Devices Needed</span><span class="sum-agg-value" id="agg-rq-devices">0 / 2</span></div>
+        <div class="sum-agg-row"><span class="sum-agg-label">Target Skills Set</span><span class="sum-agg-value" id="agg-rq-rated">0</span></div>
+        <div class="sum-agg-row"><span class="sum-agg-label">Target Avg Level</span><span class="sum-agg-value" id="agg-rq-avg">—</span></div>
+        <div class="sum-agg-row"><span class="sum-agg-label">Bridged from Existing</span><span class="sum-agg-value" id="agg-rq-bridged">0</span></div>
+      </div>
+
+      <div class="sum-agg-card">
+        <h4>Skill Change</h4>
+        <div class="sum-agg-row"><span class="sum-agg-label">Improved</span><span class="sum-agg-value green" id="agg-improved">0</span></div>
+        <div class="sum-agg-row"><span class="sum-agg-label">Decreased</span><span class="sum-agg-value poor" id="agg-decreased">0</span></div>
+        <div class="sum-agg-row"><span class="sum-agg-label">No Change</span><span class="sum-agg-value" id="agg-nochange">0</span></div>
+        <div class="sum-agg-row"><span class="sum-agg-label">Device Gap</span><span class="sum-agg-value fair" id="agg-device-gap">0</span></div>
+      </div>
+
+      <div class="sum-agg-card">
+        <h4>Implementation Status</h4>
+        <div class="sum-agg-row"><span class="sum-agg-label">Completed</span><span class="sum-agg-value green" id="impl-done">0</span></div>
+        <div class="sum-agg-row"><span class="sum-agg-label">In Progress</span><span class="sum-agg-value fair" id="impl-progress">0</span></div>
+        <div class="sum-agg-row"><span class="sum-agg-label">Pending</span><span class="sum-agg-value" id="impl-pending">0</span></div>
+        <div class="sum-agg-row"><span class="sum-agg-label">Not Feasible</span><span class="sum-agg-value poor" id="impl-notfeasible">0</span></div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ③ INTERVENTION FLAGS -->
+  <div class="section">
+    <div class="section-title">Intervention Flags</div>
+    <div class="flags-grid">
+      <div class="flag-card"><div class="flag-icon amber">↻</div><div class="flag-count" id="flag-int-needed">0</div><div class="flag-label">Intervention Required</div></div>
+      <div class="flag-card"><div class="flag-icon green">✓</div><div class="flag-count" id="flag-trainings-done">0</div><div class="flag-label">Trainings Completed</div></div>
+      <div class="flag-card"><div class="flag-icon" style="background:var(--good-bg);color:var(--good-ink)">▲</div><div class="flag-count" id="flag-improved">0</div><div class="flag-label">Skills Improved</div></div>
+      <div class="flag-card"><div class="flag-icon red">!</div><div class="flag-count" id="flag-device-gap">0</div><div class="flag-label">Device Gap</div></div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ============ EXISTING ============ -->
+<div id="existing" class="panel hidden">
+
+  <!-- Section I: Baseline -->
+  <div class="section">
+    <div class="section-title"><span><span class="section-title-roman">I.</span>Access & Devices</span></div>
+    <p style="font-size:12px;color:var(--ink-soft);margin-bottom:12px;font-style:italic">Capture what the entrepreneur currently has access to.</p>
+    <div class="field-row">
+      <div class="field-label">Which access does the entrepreneur currently have?</div>
+      <div class="cb-group">
+        <label class="cb-row"><input type="checkbox" data-have="smartphone" onchange="refreshSummary()"><span>Smartphone</span></label>
+        <label class="cb-row"><input type="checkbox" data-have="laptop" onchange="refreshSummary()"><span>Laptop / Computer</span></label>
+        <label class="cb-row"><input type="checkbox" data-have="internet" onchange="refreshSummary()"><span>Internet</span></label>
+      </div>
+    </div>
+  </div>
+
+  <!-- Section II: Skill Assessment -->
+  <div class="section">
+    <div class="section-title"><span><span class="section-title-roman">II.</span>Skill Assessment</span></div>
+    <p style="font-size:12px;color:var(--ink-soft);margin-bottom:12px;font-style:italic">Rate the entrepreneur's current skill level on each platform. Flag a row to auto-create a matching Required entry.</p>
+    <div class="legend" id="legend-existing"></div>
+    <div class="skill-table">
+      <table>
+        <thead>
+          <tr>
+            <th class="num-col">#</th>
+            <th style="min-width:200px">Platform / Skill</th>
+            <th style="min-width:180px">Existing Skill Level</th>
+            <th style="min-width:140px">Intervention Required?</th>
+            <th>Justification</th>
+            <th style="width:30px"></th>
+          </tr>
+        </thead>
+        <tbody id="existing-skill-body"></tbody>
+      </table>
+    </div>
+    <div class="table-actions">
+      <span style="font-size:11px;color:var(--ink-soft);font-style:italic">Flag a row → auto-creates a matching entry in Required tab.</span>
+      <button class="btn btn-primary" onclick="addExistingSkillRow()">+ Add Skill Row</button>
+    </div>
+    <div class="avg-strip">
+      <div class="avg-cell"><span class="avg-label">Skills Rated</span><span class="avg-val" id="ex-rated-count">0</span></div>
+      <div class="avg-cell"><span class="avg-label">Average Skill Level</span><span class="avg-val" id="ex-avg-num">—</span></div>
+      <div class="avg-cell"><span class="avg-label">Average</span><span class="avg-stars" id="ex-avg-stars"><span class="empty">☆☆☆☆☆</span></span></div>
+    </div>
+  </div>
+
+  <div class="total-bar">
+    <div class="total-bar-title">⚙ Existing Digital Literacy — Total</div>
+    <div class="total-grid" style="grid-template-columns:repeat(4,1fr)">
+      <div class="total-cell"><div class="total-label">Skills Rated</div><div class="total-value" id="ex-tot-rated">0</div></div>
+      <div class="total-cell"><div class="total-label">Average Level</div><div class="total-value" id="ex-tot-avg">—</div></div>
+      <div class="total-cell"><div class="total-label">Interventions Flagged</div><div class="total-value" id="ex-tot-flags">0</div></div>
+      <div class="total-cell"><div class="total-label">Auto-fetches to</div><div class="total-value amber">Required Tab → Target Profile</div></div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ============ REQUIRED ============ -->
+<div id="required" class="panel hidden">
+
+  <!-- Section I: Target Baseline -->
+  <div class="section">
+    <div class="section-title"><span><span class="section-title-roman">I.</span>Access & Device Needs</span></div>
+    <p style="font-size:12px;color:var(--ink-soft);margin-bottom:14px;font-style:italic">Tick what needs to be provided or arranged, and set a status for each.</p>
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px">
+
+      <div style="background:#fff;border:1px solid var(--border-dk);border-radius:8px;padding:12px">
+        <div style="font-size:13px;font-weight:bold;color:var(--ink);margin-bottom:10px">📱 Smartphone</div>
+        <label style="display:flex;align-items:center;gap:8px;font-size:12px;color:var(--ink-soft);cursor:pointer;margin-bottom:8px">
+          <input type="checkbox" data-rq-need="smartphone" onchange="refreshSummary()" style="accent-color:var(--teal);width:14px;height:14px"> Needed
+        </label>
+        <select class="field-val" style="font-size:11px" onchange="refreshSummary()">
+          <option>Pending</option><option>In Progress</option><option>Completed</option><option>Not Feasible</option>
+        </select>
+      </div>
+
+      <div style="background:#fff;border:1px solid var(--border-dk);border-radius:8px;padding:12px">
+        <div style="font-size:13px;font-weight:bold;color:var(--ink);margin-bottom:10px">💻 Laptop / Computer</div>
+        <label style="display:flex;align-items:center;gap:8px;font-size:12px;color:var(--ink-soft);cursor:pointer;margin-bottom:8px">
+          <input type="checkbox" data-rq-need="laptop" onchange="refreshSummary()" style="accent-color:var(--teal);width:14px;height:14px"> Needed
+        </label>
+        <select class="field-val" style="font-size:11px" onchange="refreshSummary()">
+          <option>Pending</option><option>In Progress</option><option>Completed</option><option>Not Feasible</option>
+        </select>
+      </div>
+
+      <div style="background:#fff;border:1px solid var(--border-dk);border-radius:8px;padding:12px">
+        <div style="font-size:13px;font-weight:bold;color:var(--ink);margin-bottom:10px">🌐 Internet</div>
+        <label style="display:flex;align-items:center;gap:8px;font-size:12px;color:var(--ink-soft);cursor:pointer;margin-bottom:8px">
+          <input type="checkbox" data-rq-need="internet" onchange="refreshSummary()" style="accent-color:var(--teal);width:14px;height:14px"> Needed
+        </label>
+        <select class="field-val" style="font-size:11px" onchange="refreshSummary()">
+          <option>Pending</option><option>In Progress</option><option>Completed</option><option>Not Feasible</option>
+        </select>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Section II: Target Skill Assessment -->
+  <div class="section">
+    <div class="section-title"><span><span class="section-title-roman">II.</span>Target Skill Assessment</span></div>
+    <p style="font-size:12px;color:var(--ink-soft);margin-bottom:12px;font-style:italic">Set target skill levels and track implementation. Bridged rows from Existing tab arrive pre-populated.</p>
+    <div class="legend" id="legend-required"></div>
+    <div class="skill-table">
+      <table>
+        <thead>
+          <tr>
+            <th class="num-col">#</th>
+            <th style="min-width:200px">Platform / Skill</th>
+            <th style="min-width:180px">Target Skill Level</th>
+            <th style="min-width:160px">Implementation Status</th>
+            <th>Learnings / Notes</th>
+            <th style="width:30px"></th>
+          </tr>
+        </thead>
+        <tbody id="required-skill-body"></tbody>
+      </table>
+    </div>
+    <div class="table-actions">
+      <span></span>
+      <button class="btn btn-primary" onclick="addRequiredSkillRow(null)">+ Add Skill Row</button>
+    </div>
+    <div class="avg-strip">
+      <div class="avg-cell"><span class="avg-label">Skills Set</span><span class="avg-val" id="rq-rated-count">0</span></div>
+      <div class="avg-cell"><span class="avg-label">Target Average Level</span><span class="avg-val" id="rq-avg-num">—</span></div>
+      <div class="avg-cell"><span class="avg-label">Target</span><span class="avg-stars" id="rq-avg-stars"><span class="empty">☆☆☆☆☆</span></span></div>
+    </div>
+  </div>
+
+  <!-- Implementation Status (per row, in the table; global status below) -->
+  <div class="total-bar">
+    <div class="total-bar-title">⚙ Required Digital Literacy — Status Overview</div>
+    <div class="total-grid" style="grid-template-columns:repeat(5,1fr)">
+      <div class="total-cell"><div class="total-label">Skills Set</div><div class="total-value" id="rq-tot-rated">0</div></div>
+      <div class="total-cell"><div class="total-label">Target Average</div><div class="total-value" id="rq-tot-avg">—</div></div>
+      <div class="total-cell"><div class="total-label">Pending</div><div class="total-value" id="rq-tot-pending">0</div></div>
+      <div class="total-cell"><div class="total-label">In Progress</div><div class="total-value" id="rq-tot-progress">0</div></div>
+      <div class="total-cell"><div class="total-label">Completed</div><div class="total-value" id="rq-tot-completed">0</div></div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ============ RESOURCES ============ -->
+<div id="resources" class="panel hidden">
+  <div class="section">
+    <div class="section-title">Reference Materials & Training Guides</div>
+    <div class="resource-list">
+      <div class="resource-tile"><h4>WhatsApp for Business — Quick Start</h4><p>Setting up a Business profile, catalog, broadcast lists, and quick-reply templates.</p><a href="#" onclick="event.preventDefault()">Open guide ↗</a></div>
+      <div class="resource-tile"><h4>UPI Onboarding (PhonePe / GPay / BHIM)</h4><p>Step-by-step bank linking, UPI ID creation, and first payment walk-through.</p><a href="#" onclick="event.preventDefault()">Open guide ↗</a></div>
+      <div class="resource-tile"><h4>Generate &amp; Print UPI QR Code</h4><p>How to create a static UPI QR via BHIM / merchant QR portal, and print it on a simple A4 sticker.</p><a href="#" onclick="event.preventDefault()">Open guide ↗</a></div>
+      <div class="resource-tile"><h4>Smartphone Photography Basics</h4><p>Lighting, composition, and clean-background techniques for product photos using just a smartphone.</p><a href="#" onclick="event.preventDefault()">Open guide ↗</a></div>
+      <div class="resource-tile"><h4>Instagram Reels — First Post</h4><p>Recording, editing, captioning, and posting an Instagram Reel for a small business.</p><a href="#" onclick="event.preventDefault()">Open guide ↗</a></div>
+      <div class="resource-tile"><h4>Email Account Setup (Gmail)</h4><p>Creating a Gmail account, configuring on phone, and sending your first attachment.</p><a href="#" onclick="event.preventDefault()">Open guide ↗</a></div>
+    </div>
+  </div>
+</div>
+
+<!-- ============ TASK LOG ============ -->
+<div id="tasklog" class="panel hidden">
+  <div class="section">
+    <div class="section-title">Task Log — Digital Literacy Activities</div>
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th style="width:5%">No.</th>
+          <th style="width:35%">Task Name</th>
+          <th style="width:12%">Phase</th>
+          <th style="width:12%">Status</th>
+          <th style="width:15%">Owner</th>
+          <th style="width:11%">Due Date</th>
+          <th style="width:10%">Notes</th>
+        </tr>
+      </thead>
+      <tbody id="taskLogBody"></tbody>
+    </table>
+  </div>
+</div>
+
+<!-- ============ LOG BOOK ============ -->
+<div id="logbook" class="panel hidden">
+  <div class="section">
+    <div class="section-title">Log Book</div>
+    <p style="font-size:12px;color:var(--ink-soft);margin-bottom:12px;font-style:italic">Log every training session, hand-holding visit, or device set-up conducted.</p>
+    <table class="data-table" id="logBookTable">
+      <thead>
+        <tr>
+          <th style="width:12%">Date</th>
+          <th style="width:16%">Platform / Skill</th>
+          <th style="width:14%">Activity Type</th>
+          <th style="width:30%">Outcome / Notes</th>
+          <th style="width:13%">Done By</th>
+          <th style="width:10%">Evidence</th>
+          <th style="width:5%"></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><input type="date"></td>
+          <td><input type="text" placeholder="e.g., WhatsApp, UPI"></td>
+          <td>
+            <select>
+              <option>— Select —</option>
+              <option>Training Session</option>
+              <option>Device Setup</option>
+              <option>Hand-holding Visit</option>
+              <option>Assessment</option>
+              <option>Follow-up</option>
+              <option>Demo</option>
+            </select>
+          </td>
+          <td><input type="text" placeholder="What was done, what changed..."></td>
+          <td><input type="text" placeholder="Field officer name"></td>
+          <td><button class="btn" style="padding:3px 8px;font-size:10px">Upload</button></td>
+          <td><button class="row-delete" onclick="deleteRow(this)">✕</button></td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="table-actions">
+      <span></span>
+      <button class="btn btn-primary" onclick="addRow('logBookTable')">+ Add Entry</button>
+    </div>
+  </div>
+</div>
+
+</div>
+</div>
+</div>
+
+<script>
+// ============ CONSTANTS ============
+const PLATFORM_MASTER = [
+  'E-mail','WhatsApp','Instagram','MS-Office','Calls',
+  'UPI Account','UPI QR Code Creation','Printing UPI QR Code','Operating Mobile Camera'
+];
+const LEGEND = [
+  { stars:1, label:'No existing knowledge' },
+  { stars:2, label:'Beginner' },
+  { stars:3, label:'Basic' },
+  { stars:4, label:'Intermediate' },
+  { stars:5, label:'Proficient' }
+];
+const TASKS = [
+  ['Existing Device & Internet Access Assessed',     'Existing'],
+  ['Existing Skill Levels Rated',                    'Existing'],
+  ['Intervention Needs Identified & Flagged',        'Existing'],
+  ['Target Skill Levels Set',                        'Required'],
+  ['WhatsApp / Social Media Training Delivered',     'Required'],
+  ['UPI / Digital Payment Setup Done',               'Required'],
+  ['Smartphone Photography Training Done',           'Required'],
+  ['Email & Basic Office Skills Training Done',      'Required'],
+  ['Follow-up Assessment Completed',                 'Required'],
+  ['Skills Verified & Signed Off',                   'Required'],
+];
+
+// ============ STATE ============
+let existingRowCounter = 0;
+let requiredRowCounter = 0;
+
+// ============ TAB SWITCHING ============
+function showTab(id, el){
+  document.querySelectorAll('.panel').forEach(p => p.classList.add('hidden'));
+  document.getElementById(id).classList.remove('hidden');
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  el.classList.add('active');
+  if(id === 'summary') refreshSummary();
+}
+
+// ============ LEGEND ============
+function renderLegend(containerId){
+  const container = document.getElementById(containerId);
+  if(!container) return;
+  container.innerHTML = LEGEND.map(item => {
+    const stars = '★'.repeat(item.stars) + '<span class="empty">' + '☆'.repeat(5-item.stars) + '</span>';
+    return `<div class="legend-item"><span class="legend-stars">${stars}</span><span class="legend-text">${item.label}</span></div>`;
+  }).join('');
+}
+
+// ============ HELPERS ============
+function buildPlatformOpts(selected){
+  return '<option value="">— Select —</option>' +
+    PLATFORM_MASTER.map(p => `<option ${selected===p?'selected':''}>${p}</option>`).join('');
+}
+
+function paintStars(container, value){
+  container.querySelectorAll('.star').forEach(s => {
+    s.classList.toggle('filled', parseInt(s.dataset.value) <= value);
+  });
+  container.dataset.value = value;
+}
+
+function readStarValue(container){
+  return parseInt(container?.dataset.value) || 0;
+}
+
+function buildStarsHtml(scope, rid){
+  const stars = [1,2,3,4,5].map(n =>
+    `<span class="star" data-value="${n}" onclick="setRowRating('${scope}','${rid}',${n})" onmouseover="hoverStars(this)" onmouseout="unhoverStars(this)">★</span>`
+  ).join('');
+  return `<div class="stars-cell" id="${rid}-stars" data-value="0">${stars}<button class="clear-stars" onclick="clearRowRating('${scope}','${rid}')" title="Clear">✕</button></div>`;
+}
+
+function setRowRating(scope, rid, value){
+  const c = document.getElementById(`${rid}-stars`);
+  if(!c) return;
+  paintStars(c, value);
+  recalcAverage(scope);
+  recalcTotals();
+  refreshSummary();
+}
+
+function clearRowRating(scope, rid){
+  const c = document.getElementById(`${rid}-stars`);
+  if(!c) return;
+  paintStars(c, 0);
+  recalcAverage(scope);
+  recalcTotals();
+  refreshSummary();
+}
+
+function hoverStars(starEl){
+  const n = parseInt(starEl.dataset.value);
+  starEl.parentElement.querySelectorAll('.star').forEach(s => {
+    s.classList.toggle('hovered', parseInt(s.dataset.value) <= n);
+  });
+}
+function unhoverStars(starEl){
+  starEl.parentElement.querySelectorAll('.star.hovered').forEach(s => s.classList.remove('hovered'));
+}
+
+// ============ EXISTING SKILL ROW ============
+function addExistingSkillRow(){
+  existingRowCounter++;
+  const rid = `exr${existingRowCounter}`;
+  const tbody = document.getElementById('existing-skill-body');
+  const tr = document.createElement('tr');
+  tr.id = rid;
+  tr.innerHTML = `
+    <td class="num-col"></td>
+    <td><select class="ex-platform" onchange="onExistingPlatformChange('${rid}')">${buildPlatformOpts()}</select></td>
+    <td>${buildStarsHtml('existing', rid)}</td>
+    <td style="text-align:center">
+      <span class="toggle" id="${rid}-intToggle" onclick="toggleRowIntervention(this,'${rid}')"></span>
+      <div class="flag-note" id="${rid}-flagNote">Not flagged</div>
+    </td>
+    <td><input type="text" class="ex-justify" placeholder="Training need, gap noted, equipment unavailable..." oninput="onJustifyInput('${rid}')"></td>
+    <td><button class="row-delete" onclick="removeExistingSkillRow('${rid}')">✕</button></td>
+  `;
+  tbody.appendChild(tr);
+  renumberRows('existing-skill-body');
+}
+
+function removeExistingSkillRow(rid){
+  document.querySelector(`[data-bridge-source="bridge-${rid}"]`)?.remove();
+  document.getElementById(rid)?.remove();
+  renumberRows('existing-skill-body');
+  renumberRows('required-skill-body');
+  recalcAverage('existing');
+  recalcAverage('required');
+  recalcTotals();
+  refreshSummary();
+}
+
+function onExistingPlatformChange(rid){
+  const bridged = document.querySelector(`[data-bridge-source="bridge-${rid}"]`);
+  if(bridged){
+    const rqPlatform = bridged.querySelector('.rq-platform');
+    if(rqPlatform) rqPlatform.value = document.querySelector(`#${rid} .ex-platform`)?.value || '';
+  }
+}
+
+function onJustifyInput(rid){
+  const bridged = document.querySelector(`[data-bridge-source="bridge-${rid}"]`);
+  if(bridged){
+    const rqLearnings = bridged.querySelector('.rq-learnings');
+    if(rqLearnings) rqLearnings.value = document.querySelector(`#${rid} .ex-justify`)?.value || '';
+  }
+}
+
+function toggleRowIntervention(el, rid){
+  el.classList.toggle('on');
+  const note = document.getElementById(`${rid}-flagNote`);
+  if(el.classList.contains('on')){
+    note.textContent = '↑ Flagged → Required Tab';
+    note.classList.add('active');
+    bridgeToRequired(rid);
+  } else {
+    note.textContent = 'Not flagged';
+    note.classList.remove('active');
+    document.querySelector(`[data-bridge-source="bridge-${rid}"]`)?.remove();
+    renumberRows('required-skill-body');
+    recalcAverage('required');
+  }
+  recalcTotals();
+  refreshSummary();
+}
+
+// ============ BRIDGE → REQUIRED ============
+function bridgeToRequired(srcRid){
+  const bridgeKey = `bridge-${srcRid}`;
+  if(document.querySelector(`[data-bridge-source="${bridgeKey}"]`)) return;
+  addRequiredSkillRow({
+    bridgeKey,
+    platform: document.querySelector(`#${srcRid} .ex-platform`)?.value || '',
+    learnings: document.querySelector(`#${srcRid} .ex-justify`)?.value || ''
+  });
+}
+
+// ============ REQUIRED SKILL ROW ============
+function addRequiredSkillRow(prefill){
+  requiredRowCounter++;
+  const rid = `rqr${requiredRowCounter}`;
+  const tbody = document.getElementById('required-skill-body');
+  const tr = document.createElement('tr');
+  tr.id = rid;
+  if(prefill?.bridgeKey) tr.setAttribute('data-bridge-source', prefill.bridgeKey);
+  const isBridged = !!prefill?.bridgeKey;
+
+  tr.innerHTML = `
+    <td class="num-col"></td>
+    <td>
+      <select class="rq-platform" ${isBridged?'disabled title="Locked — sourced from Existing"':''}>
+        ${buildPlatformOpts(prefill?.platform||'')}
+      </select>
+      ${isBridged?'<span class="bridged-pill">↻ Bridged</span>':''}
+    </td>
+    <td>${buildStarsHtml('required', rid)}</td>
+    <td>
+      <select class="rq-impl" onchange="recalcTotals();refreshSummary()" style="width:100%;border:1px solid var(--border);padding:5px 8px;border-radius:3px;font-family:Georgia,serif;font-size:11px;background:#fff">
+        <option>Pending</option>
+        <option>In Progress</option>
+        <option>Completed</option>
+        <option>On Hold</option>
+        <option>Not Feasible</option>
+      </select>
+    </td>
+    <td><input type="text" class="rq-learnings" value="${(prefill?.learnings||'').replace(/"/g,'&quot;')}" placeholder="Key takeaways, training notes..."></td>
+    <td><button class="row-delete" onclick="removeRequiredSkillRow('${rid}')">✕</button></td>
+  `;
+  tbody.appendChild(tr);
+  renumberRows('required-skill-body');
+}
+
+function addImplStatusBlock(rid, platform, isBridged){
+  const section = document.querySelector('#required .section:last-of-type') || document.querySelector('#required .section');
+  // Append as opt-row after the skill table section
+  const container = document.getElementById('req-impl-list') || (() => {
+    let el = document.getElementById('req-impl-list');
+    if(!el){
+      el = document.createElement('div');
+      el.id = 'req-impl-list';
+      el.style.marginTop = '12px';
+      const sec = document.querySelector('#required .section:nth-of-type(2)');
+      if(sec) sec.appendChild(el);
+    }
+    return el;
+  })();
+
+  const div = document.createElement('div');
+  div.className = 'opt-row';
+  div.id = `impl-${rid}`;
+  div.setAttribute('data-impl-for', rid);
+
+  div.innerHTML = `
+    <div class="opt-row-head" style="grid-template-columns:1fr 1fr auto">
+      <div>
+        <div class="opt-readonly-label">Platform / Skill</div>
+        <div class="opt-readonly-val" id="impl-${rid}-platform">${platform||'—'}</div>
+      </div>
+      <div>
+        <div class="opt-readonly-label">Target Skill Level</div>
+        <div class="opt-readonly-val" id="impl-${rid}-level">Not rated</div>
+      </div>
+      ${isBridged ? '<span style="display:inline-flex;align-items:center;gap:5px;padding:3px 10px;border-radius:14px;font-size:10px;font-weight:bold;background:var(--terracotta-sft);color:var(--terracotta-dk)">↻ Bridged</span>' : '<span style="display:inline-flex;align-items:center;gap:5px;padding:3px 10px;border-radius:14px;font-size:10px;font-weight:bold;background:var(--good-bg);color:var(--good-ink)">+ New</span>'}
+    </div>
+    <div style="padding:14px">
+      <div style="background:var(--terracotta-sft);border:1px solid var(--terracotta);border-radius:8px;padding:12px">
+        <div style="font-size:11px;text-transform:uppercase;letter-spacing:1px;color:var(--terracotta-dk);font-weight:bold;margin-bottom:10px">Implementation Status</div>
+        <div class="field-row" style="margin-bottom:8px">
+          <div class="field-label">Implementation Status</div>
+          <select class="field-val rq-impl" onchange="recalcTotals();refreshSummary()">
+            <option>Pending</option>
+            <option>In Progress</option>
+            <option>Completed</option>
+            <option>On Hold</option>
+            <option>Not Feasible</option>
+          </select>
+        </div>
+        <div class="field-row" style="margin-bottom:0">
+          <div class="field-label">Implementation Notes</div>
+          <textarea class="field-val" placeholder="Notes on training, delivery, outcome..." style="min-height:40px"></textarea>
+        </div>
+      </div>
+    </div>`;
+  container.appendChild(div);
+}
+
+function removeRequiredSkillRow(rid){
+  const tr = document.getElementById(rid);
+  if(!tr) return;
+  const bridgeKey = tr.getAttribute('data-bridge-source');
+  if(bridgeKey){
+    const srcRid = bridgeKey.replace('bridge-','');
+    const toggle = document.getElementById(`${srcRid}-intToggle`);
+    if(toggle?.classList.contains('on')){
+      toggle.classList.remove('on');
+      const note = document.getElementById(`${srcRid}-flagNote`);
+      if(note){ note.textContent='Not flagged'; note.classList.remove('active'); }
+    }
+  }
+  tr.remove();
+  renumberRows('required-skill-body');
+  recalcAverage('required');
+  recalcTotals();
+  refreshSummary();
+}
+
+// Keep impl block platform label in sync when stars are set
+const origSetRowRating = setRowRating;
+
+// ============ AVERAGE RECALC ============
+function recalcAverage(scope){
+  const tbodyId = scope==='existing' ? 'existing-skill-body' : 'required-skill-body';
+  const tbody = document.getElementById(tbodyId);
+  if(!tbody) return;
+  const ratings = [];
+  tbody.querySelectorAll('.stars-cell').forEach(c => {
+    const v = readStarValue(c);
+    if(v > 0) ratings.push(v);
+  });
+  const prefix = scope==='existing' ? 'ex' : 'rq';
+  const count = ratings.length;
+  document.getElementById(`${prefix}-rated-count`).textContent = count;
+  if(count === 0){
+    document.getElementById(`${prefix}-avg-num`).textContent = '—';
+    document.getElementById(`${prefix}-avg-stars`).innerHTML = '<span class="empty">☆☆☆☆☆</span>';
+  } else {
+    const avg = ratings.reduce((a,b)=>a+b,0) / count;
+    document.getElementById(`${prefix}-avg-num`).textContent = avg.toFixed(2);
+    const filled = Math.round(avg);
+    document.getElementById(`${prefix}-avg-stars`).innerHTML =
+      '★'.repeat(filled) + '<span class="empty">' + '☆'.repeat(5-filled) + '</span>';
+  }
+
+  // Update impl level labels when required stars change
+  if(scope === 'required'){
+    tbody.querySelectorAll('tr').forEach(tr => {
+      const rid = tr.id;
+      const v = readStarValue(tr.querySelector('.stars-cell'));
+      const levelEl = document.getElementById(`impl-${rid}-level`);
+      if(levelEl){
+        const labels = {0:'Not rated',1:'No knowledge',2:'Beginner',3:'Basic',4:'Intermediate',5:'Proficient'};
+        levelEl.textContent = labels[v] || '—';
+        // Also sync platform
+        const platform = tr.querySelector('.rq-platform')?.value || '—';
+        const platEl = document.getElementById(`impl-${rid}-platform`);
+        if(platEl) platEl.textContent = platform;
+      }
+    });
+  }
+}
+
+function recalcTotals(){
+  // Existing totals
+  const exTbody = document.getElementById('existing-skill-body');
+  let exRated=0, exSum=0, exFlags=0;
+  exTbody?.querySelectorAll('tr').forEach(tr => {
+    const v = readStarValue(tr.querySelector('.stars-cell'));
+    if(v>0){ exRated++; exSum+=v; }
+    if(tr.querySelector('.toggle')?.classList.contains('on')) exFlags++;
+  });
+  document.getElementById('ex-tot-rated').textContent = exRated;
+  document.getElementById('ex-tot-avg').textContent   = exRated>0 ? (exSum/exRated).toFixed(2) : '—';
+  document.getElementById('ex-tot-flags').textContent = exFlags;
+
+  // Required totals
+  let rqRated=0, rqSum=0, rqPending=0, rqProgress=0, rqCompleted=0;
+  const rqTbody = document.getElementById('required-skill-body');
+  rqTbody?.querySelectorAll('tr').forEach(tr => {
+    const v = readStarValue(tr.querySelector('.stars-cell'));
+    if(v>0){ rqRated++; rqSum+=v; }
+    const impl = tr.querySelector('.rq-impl')?.value;
+    if(impl==='Pending') rqPending++;
+    else if(impl==='In Progress') rqProgress++;
+    else if(impl==='Completed') rqCompleted++;
+  });
+  document.getElementById('rq-tot-rated').textContent    = rqRated;
+  document.getElementById('rq-tot-avg').textContent      = rqRated>0 ? (rqSum/rqRated).toFixed(2) : '—';
+  document.getElementById('rq-tot-pending').textContent  = rqPending;
+  document.getElementById('rq-tot-progress').textContent = rqProgress;
+  document.getElementById('rq-tot-completed').textContent= rqCompleted;
+}
+
+function renumberRows(tbodyId){
+  const tbody = document.getElementById(tbodyId);
+  if(!tbody) return;
+  Array.from(tbody.children).forEach((tr, i) => {
+    const numEl = tr.querySelector('.num-col');
+    if(numEl) numEl.textContent = String(i+1).padStart(2,'0');
+  });
+}
+
+// ============ SUMMARY ============
+function refreshSummary(){
+  const setText = (id, v) => { const e = document.getElementById(id); if(e) e.textContent = v; };
+
+  // ===== Section I: Devices =====
+  // Existing devices = checked count of input[data-have]
+  // Required devices needed = checked count of input[data-rq-need]
+  // Implemented devices = Required devices needed where status select === 'Completed'
+  // Devices: smartphone + laptop only (internet is tracked separately)
+  const DEVICE_KEYS = ['smartphone', 'laptop'];
+  let exDevices = 0, rqDevices = 0, implDevices = 0, deviceGap = 0;
+  DEVICE_KEYS.forEach(k => {
+    const has  = !!document.querySelector(`input[data-have="${k}"]`)?.checked;
+    const need = !!document.querySelector(`input[data-rq-need="${k}"]`)?.checked;
+    if(has) exDevices++;
+    if(need) rqDevices++;
+    if(need){
+      const needCb = document.querySelector(`input[data-rq-need="${k}"]`);
+      const card = needCb?.closest('div');
+      const statusSel = card?.querySelector('select');
+      if(statusSel && statusSel.value === 'Completed') implDevices++;
+    }
+    if(need && !has){
+      const needCb = document.querySelector(`input[data-rq-need="${k}"]`);
+      const card = needCb?.closest('div');
+      const statusSel = card?.querySelector('select');
+      const status = statusSel?.value || 'Pending';
+      if(status !== 'Completed') deviceGap++;
+    }
+  });
+
+  // Internet: tracked as a separate Yes/No row
+  const internetHas  = !!document.querySelector('input[data-have="internet"]')?.checked;
+  const internetNeed = !!document.querySelector('input[data-rq-need="internet"]')?.checked;
+  let internetImpl = false;
+  if(internetNeed){
+    const needCb = document.querySelector('input[data-rq-need="internet"]');
+    const card = needCb?.closest('div');
+    const statusSel = card?.querySelector('select');
+    internetImpl = (statusSel?.value === 'Completed');
+  }
+  // Device Gap also catches internet (needed AND missing AND not Completed)
+  if(internetNeed && !internetHas){
+    const needCb = document.querySelector('input[data-rq-need="internet"]');
+    const card = needCb?.closest('div');
+    const statusSel = card?.querySelector('select');
+    const status = statusSel?.value || 'Pending';
+    if(status !== 'Completed') deviceGap++;
+  }
+
+  // ===== Section II: Skills =====
+  // Existing skill rows
+  const exRows = [...document.querySelectorAll('#existing-skill-body tr')];
+  const exSkillMetrics = exRows.map(tr => {
+    const rating = readStarValue(tr.querySelector('.stars-cell'));
+    const platform = tr.querySelector('.ex-platform')?.value || '';
+    const flagged = !!tr.querySelector('.toggle')?.classList.contains('on');
+    return { rid: tr.id, platform, rating, flagged };
+  });
+  const exRated = exSkillMetrics.filter(s => s.rating > 0);
+  const exFlagged = exSkillMetrics.filter(s => s.flagged);
+  const exAvg = exRated.length > 0 ? (exRated.reduce((a,s) => a + s.rating, 0) / exRated.length) : null;
+
+  // Required skill rows
+  const rqRows = [...document.querySelectorAll('#required-skill-body tr')];
+  const rqSkillMetrics = rqRows.map(tr => {
+    const rating = readStarValue(tr.querySelector('.stars-cell'));
+    const platform = tr.querySelector('.rq-platform')?.value || '';
+    const status = tr.querySelector('.rq-impl')?.value || 'Pending';
+    const bridgeSource = tr.getAttribute('data-bridge-source') || '';
+    const isBridged = !!bridgeSource;
+    return { rid: tr.id, platform, rating, status, bridgeSource, isBridged };
+  });
+  const rqRated = rqSkillMetrics.filter(s => s.rating > 0);
+  const rqBridged = rqSkillMetrics.filter(s => s.isBridged);
+  const rqAvg = rqRated.length > 0 ? (rqRated.reduce((a,s) => a + s.rating, 0) / rqRated.length) : null;
+
+  // Implementation Status counts (skills only — device status is shown elsewhere)
+  let implPending = 0, implProgress = 0, implDone = 0, implHold = 0, implNotFeasible = 0;
+  rqSkillMetrics.forEach(s => {
+    switch(s.status){
+      case 'Pending':      implPending++; break;
+      case 'In Progress':  implProgress++; break;
+      case 'Completed':    implDone++; break;
+      case 'On Hold':      implHold++; break;
+      case 'Not Feasible': implNotFeasible++; break;
+      default: implPending++; break;
+    }
+  });
+
+  // Implemented skill rows = rating > 0 AND status === Completed
+  const implRated = rqSkillMetrics.filter(s => s.rating > 0 && s.status === 'Completed');
+  const implAvg = implRated.length > 0 ? (implRated.reduce((a,s) => a + s.rating, 0) / implRated.length) : null;
+
+  // Implemented flagged-for-intervention = bridged AND status === Completed
+  const implFlagged = rqBridged.filter(s => s.status === 'Completed').length;
+
+  // Improved / Decreased: for each bridged Required row, compare to its source Existing rating.
+  // Only count when BOTH ratings are present.
+  let improved = 0, decreased = 0;
+  const exByRid = new Map(exSkillMetrics.map(s => [s.rid, s]));
+  rqBridged.forEach(rq => {
+    const srcRid = rq.bridgeSource.replace(/^bridge-/, '');
+    const ex = exByRid.get(srcRid);
+    if(!ex || ex.rating <= 0 || rq.rating <= 0) return;
+    if(rq.rating > ex.rating) improved++;
+    else if(rq.rating < ex.rating) decreased++;
+  });
+
+  // ===== Overview table =====
+  const smTbody = document.getElementById('sm-skill-overview-body');
+  if(smTbody){
+    // Build a map: exRid → bridged required row (if any)
+    const rqByExRid = new Map();
+    rqSkillMetrics.forEach(rq => {
+      if(rq.isBridged){
+        const srcRid = rq.bridgeSource.replace(/^bridge-/, '');
+        rqByExRid.set(srcRid, rq);
+      }
+    });
+
+    // Track which required rows are bridged (to avoid showing them again)
+    const bridgedRqRids = new Set(rqSkillMetrics.filter(r => r.isBridged).map(r => r.rid));
+
+    let html = '';
+
+    // One pass over existing rows — merged if flagged+bridged, standalone otherwise
+    exSkillMetrics.forEach(ex => {
+      const platform = ex.platform || '—';
+      const exStar   = ex.rating > 0 ? '★'.repeat(ex.rating) + '☆'.repeat(5-ex.rating) : '—';
+      const rq       = rqByExRid.get(ex.rid); // bridged required row, if exists
+
+      const flagBadge = ex.flagged
+        ? `<span style="display:inline-flex;padding:3px 9px;border-radius:14px;font-size:10px;font-weight:bold;background:var(--terracotta-sft);color:var(--terracotta-dk)">↻ Flagged</span>`
+        : `<span style="color:var(--ink-faint)">—</span>`;
+
+      if(ex.flagged && rq){
+        // Merged row — shows existing level AND target level
+        const rqStar = rq.rating > 0 ? '★'.repeat(rq.rating) + '☆'.repeat(5-rq.rating) : '—';
+        let change = '—', changeSt = 'color:var(--ink-faint)';
+        if(ex.rating > 0 && rq.rating > 0){
+          const diff = rq.rating - ex.rating;
+          if(diff > 0){ change = `▲ +${diff}`; changeSt = 'color:var(--good-ink);font-weight:bold'; }
+          else if(diff < 0){ change = `▼ ${diff}`; changeSt = 'color:var(--poor-ink);font-weight:bold'; }
+          else { change = '= No change'; changeSt = 'color:var(--ink-soft)'; }
+        }
+        const stCls = rq.status === 'Completed'   ? 'background:var(--good-bg);color:var(--good-ink)'
+                    : rq.status === 'In Progress'  ? 'background:var(--fair-bg);color:var(--fair-ink)'
+                    : rq.status === 'Not Feasible' ? 'background:var(--poor-bg);color:var(--poor-ink)'
+                    : 'background:var(--cream-deep);color:var(--ink-soft)';
+        html += `<tr style="background:var(--highlight)">
+          <td><strong>${platform}</strong></td>
+          <td style="color:var(--star);letter-spacing:1px;font-size:13px">${exStar}</td>
+          <td>${flagBadge}</td>
+          <td style="color:var(--star);letter-spacing:1px;font-size:13px">${rqStar}</td>
+          <td style="${changeSt}">${change}</td>
+          <td><span style="display:inline-flex;padding:3px 9px;border-radius:14px;font-size:10px;font-weight:bold;${stCls}">${rq.status}</span></td>
+        </tr>`;
+      } else {
+        // Unflagged existing row — no target level
+        html += `<tr>
+          <td><strong>${platform}</strong></td>
+          <td style="color:var(--star);letter-spacing:1px;font-size:13px">${exStar}</td>
+          <td>${flagBadge}</td>
+          <td style="color:var(--ink-faint)">—</td>
+          <td style="color:var(--ink-faint)">—</td>
+          <td style="color:var(--ink-faint)">—</td>
+        </tr>`;
+      }
+    });
+
+    // Required rows that are NOT bridged (standalone new required skills)
+    rqSkillMetrics.filter(rq => !rq.isBridged).forEach(rq => {
+      const platform = rq.platform || '—';
+      const rqStar   = rq.rating > 0 ? '★'.repeat(rq.rating) + '☆'.repeat(5-rq.rating) : '—';
+      const stCls    = rq.status === 'Completed'   ? 'background:var(--good-bg);color:var(--good-ink)'
+                     : rq.status === 'In Progress'  ? 'background:var(--fair-bg);color:var(--fair-ink)'
+                     : rq.status === 'Not Feasible' ? 'background:var(--poor-bg);color:var(--poor-ink)'
+                     : 'background:var(--cream-deep);color:var(--ink-soft)';
+      html += `<tr>
+        <td><strong>${platform}</strong></td>
+        <td style="color:var(--ink-faint)">—</td>
+        <td style="color:var(--ink-faint)">—</td>
+        <td style="color:var(--star);letter-spacing:1px;font-size:13px">${rqStar}</td>
+        <td style="color:var(--ink-faint)">—</td>
+        <td><span style="display:inline-flex;padding:3px 9px;border-radius:14px;font-size:10px;font-weight:bold;${stCls}">${rq.status}</span></td>
+      </tr>`;
+    });
+
+    smTbody.innerHTML = html || '<tr><td colspan="6" style="text-align:center;color:var(--ink-faint);font-style:italic;padding:14px">Auto-populated from Existing and Required tabs</td></tr>';
+  }
+
+  // ===== Aggregates writes =====
+  setText('agg-ex-devices', `${exDevices} / 2`);
+  setText('agg-ex-rated',   exRated.length);
+  setText('agg-ex-avg',     exAvg == null ? '—' : exAvg.toFixed(2));
+  setText('agg-ex-flagged', exFlagged.length);
+
+  setText('agg-rq-devices', `${rqDevices} / 2`);
+  setText('agg-rq-rated',   rqRated.length);
+  setText('agg-rq-avg',     rqAvg == null ? '—' : rqAvg.toFixed(2));
+  setText('agg-rq-bridged', rqBridged.length);
+
+  let noChange = 0;
+  rqBridged.forEach(rq => {
+    const srcRid = rq.bridgeSource.replace(/^bridge-/, '');
+    const ex = exSkillMetrics.find(s => s.rid === srcRid);
+    if(ex && ex.rating > 0 && rq.rating > 0 && rq.rating === ex.rating) noChange++;
+  });
+  setText('agg-improved',   improved);
+  setText('agg-decreased',  decreased);
+  setText('agg-nochange',   noChange);
+  setText('agg-device-gap', deviceGap);
+
+  setText('impl-done',        implDone);
+  setText('impl-progress',    implProgress);
+  setText('impl-pending',     implPending);
+  setText('impl-notfeasible', implNotFeasible);
+
+  // ===== Intervention Flags =====
+  const DONE_STATES = new Set(['Completed', 'Not Feasible']);
+  const rqByBridge = new Map(rqBridged.map(s => [s.bridgeSource, s]));
+  let intRequired = 0;
+  exFlagged.forEach(ex => {
+    const r = rqByBridge.get(`bridge-${ex.rid}`);
+    if(!r || !DONE_STATES.has(r.status)) intRequired++;
+  });
+  setText('flag-int-needed',     intRequired);
+  setText('flag-trainings-done', implDone);
+  setText('flag-improved',       improved);
+  setText('flag-device-gap',     deviceGap);
+}
+
+// ============ TASK LOG SEED ============
+function seedTaskLog(){
+  const tbody = document.getElementById('taskLogBody');
+  tbody.innerHTML = TASKS.map((t,i) => {
+    const num = String(i+1).padStart(2,'0');
+    const cls = t[1]==='Existing' ? 'status-pending' : 'status-progress';
+    return `<tr>
+      <td class="num-col">${num}</td>
+      <td>${t[0]}</td>
+      <td><span class="status-badge ${cls}">${t[1]}</span></td>
+      <td><select><option>Pending</option><option>In Progress</option><option>Completed</option><option>Blocked</option></select></td>
+      <td><input type="text" placeholder="Owner"></td>
+      <td><input type="date"></td>
+      <td><input type="text" placeholder="Notes"></td>
+    </tr>`;
+  }).join('');
+}
+
+// ============ GENERIC HELPERS ============
+function addRow(tableId){
+  const tbody = document.querySelector('#'+tableId+' tbody');
+  const row = tbody.rows[0].cloneNode(true);
+  row.querySelectorAll('input').forEach(i => { if(i.type!=='file') i.value=''; });
+  row.querySelectorAll('select').forEach(s => s.selectedIndex=0);
+  tbody.appendChild(row);
+}
+function deleteRow(btn){
+  const row=btn.closest('tr'), tbody=row.parentElement;
+  if(tbody.rows.length>1) row.remove();
+  else alert('At least one row is required.');
+}
+
+// ============ INIT ============
+window.addEventListener('DOMContentLoaded', () => {
+  renderLegend('legend-existing');
+  renderLegend('legend-required');
+  addExistingSkillRow();
+  seedTaskLog();
+  refreshSummary();
+});
+</script>
+</body>
+</html>

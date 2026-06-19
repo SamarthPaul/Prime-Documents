@@ -1,0 +1,774 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Product Prototyping · PRIME Rural</title>
+<style>
+:root {
+  --teal:#0E4D4E; --sea:#1A6B6D; --terracotta:#C26849; --terracotta-dk:#A85738;
+  --terracotta-sft:#F5E2D6;
+  --cream:#FBF5E5; --cream-deep:#F4ECD3; --offwhite:#FDFAF0; --panel:#FFFFFF;
+  --ink:#2A2520; --ink-soft:#6B6359; --ink-faint:#9C9384;
+  --border:#E8DFC9; --border-dk:#D6CDB6;
+  --good-bg:#E3EFDF; --good-ink:#3F6B3A;
+  --fair-bg:#FBE9DF; --fair-ink:#7A3B22;
+  --info-bg:#E1ECF7; --info-ink:#1F4A78;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:Georgia,serif;background:var(--cream);color:var(--ink);line-height:1.4}
+.page{max-width:1200px;margin:0 auto;padding:24px}
+
+.header{background:var(--teal);color:#fff;padding:16px 20px;border-radius:12px 12px 0 0;display:flex;justify-content:space-between;align-items:center}
+.header h1{font-size:18px;font-weight:normal;letter-spacing:0.5px}
+.header .crumb{font-size:11px;opacity:0.75;text-transform:uppercase;letter-spacing:1px}
+
+.card{background:var(--cream);border:1px solid var(--border-dk);border-top:none;border-radius:0 0 12px 12px}
+
+.content{padding:22px}
+
+.entrepreneur-chip{display:inline-flex;align-items:center;gap:10px;background:#fff;border:1px solid var(--border-dk);padding:6px 14px;border-radius:20px;font-size:12px;margin-bottom:18px}
+.ent-avatar{width:24px;height:24px;background:var(--teal);color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:bold}
+
+.section-caption{background:var(--cream-deep);border-left:3px solid var(--terracotta);padding:8px 12px;border-radius:0 6px 6px 0;font-size:12px;color:var(--ink-soft);font-style:italic;margin-bottom:14px}
+
+.btn{padding:5px 12px;border-radius:20px;border:1px solid var(--border-dk);background:#fff;cursor:pointer;font-size:11px;color:var(--ink);font-family:Georgia,serif}
+.btn:hover{background:var(--cream-deep)}
+.btn-primary{background:var(--teal);color:#fff;border-color:var(--teal)}
+.btn-primary:hover{background:var(--sea)}
+
+.add-row-bar{text-align:center;padding:14px;background:var(--cream-deep);border:1px dashed var(--border-dk);border-radius:10px;margin-top:10px}
+
+/* Product collapsible card */
+.product-block{background:#fff;border:1px solid var(--border-dk);border-radius:10px;margin-bottom:14px;overflow:hidden}
+.product-head{background:var(--sea);color:#fff;padding:10px 14px;display:flex;justify-content:space-between;align-items:center;cursor:pointer;user-select:none;font-size:13px;flex-wrap:wrap;gap:8px}
+.product-head:hover{background:var(--teal)}
+.product-head .ph-name{display:flex;align-items:center;gap:10px;flex-wrap:wrap;flex:1;min-width:0}
+.product-head select{background:rgba(255,255,255,0.15);border:1px solid rgba(255,255,255,0.3);color:#fff;padding:4px 10px;border-radius:4px;font-family:Georgia,serif;font-size:13px;cursor:pointer;min-width:200px}
+.product-head select option{color:var(--ink);background:#fff}
+.chevron{font-size:12px;transition:transform 0.2s}
+.product-block.collapsed .chevron{transform:rotate(-90deg)}
+.product-block.collapsed .ph-body{display:none}
+.ph-body{padding:14px}
+.ph-remove{background:transparent;border:1px solid rgba(255,255,255,0.4);color:#fff;padding:3px 10px;border-radius:14px;cursor:pointer;font-size:11px;font-family:Georgia,serif}
+.ph-remove:hover{background:var(--terracotta);border-color:var(--terracotta)}
+
+/* Implementation Status chip in banner */
+.status-chip{display:inline-block;padding:3px 9px;border-radius:12px;font-size:10px;font-weight:bold;letter-spacing:0.3px;text-transform:uppercase}
+.status-chip.ideating{background:var(--cream-deep);color:var(--ink-soft)}
+.status-chip.iteration{background:var(--fair-bg);color:var(--fair-ink)}
+.status-chip.pilot{background:var(--info-bg);color:var(--info-ink)}
+.status-chip.scale{background:var(--good-bg);color:var(--good-ink)}
+
+/* Subsection */
+.subsection{background:var(--cream-deep);padding:14px;border-radius:8px;margin-bottom:12px;border:1px solid var(--border)}
+.subsection-title{font-size:12px;text-transform:uppercase;letter-spacing:1.5px;color:var(--teal);margin-bottom:10px;padding-bottom:6px;border-bottom:1px solid var(--border-dk);font-weight:bold;display:flex;justify-content:space-between;align-items:center}
+
+.field-row{display:flex;gap:12px;margin-bottom:10px;flex-wrap:wrap;align-items:flex-start}
+.field-label{width:200px;font-size:12px;color:var(--ink-soft);padding-top:8px}
+.field-val{flex:1;background:var(--offwhite);border:1px solid var(--border-dk);padding:6px 10px;border-radius:5px;font-size:12px;min-width:200px;font-family:Georgia,serif}
+.field-val[disabled]{background:var(--cream-deep);color:var(--ink-faint);cursor:not-allowed}
+select.field-val{cursor:pointer}
+
+table.data-table{width:100%;border-collapse:collapse;background:var(--offwhite);border-radius:6px;overflow:hidden;border:1px solid var(--border-dk);font-size:11px}
+table.data-table th{background:var(--teal);color:#fff;padding:8px;text-align:left;font-weight:normal;text-transform:uppercase;letter-spacing:0.5px;font-size:10px;border-right:1px solid var(--sea);white-space:nowrap}
+table.data-table th:last-child{border-right:none}
+table.data-table td{padding:6px 7px;border-bottom:1px solid var(--border);border-right:1px solid var(--border);vertical-align:middle}
+table.data-table td:last-child{border-right:none}
+table.data-table tr:last-child td{border-bottom:none}
+table.data-table input,table.data-table select{width:100%;border:1px solid var(--border);padding:4px 6px;border-radius:3px;font-family:Georgia,serif;font-size:11px;background:#fff}
+table.data-table input:focus,table.data-table select:focus{outline:none;border-color:var(--teal)}
+table.data-table .num-col{width:36px;text-align:center;color:var(--ink-soft)}
+
+.row-delete{background:transparent;border:none;color:var(--terracotta);cursor:pointer;font-size:14px;padding:2px 6px}
+.row-delete:hover{color:var(--terracotta-dk)}
+
+.table-actions{display:flex;justify-content:space-between;align-items:center;margin-top:10px}
+
+/* Upload + view inside table cell */
+.upload-cell{display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+.upload-btn{display:inline-flex;align-items:center;gap:4px;padding:4px 10px;background:#fff;border:1px solid var(--border-dk);border-radius:4px;cursor:pointer;font-size:10px;color:var(--ink-soft);font-family:Georgia,serif}
+.upload-btn:hover{border-color:var(--teal);color:var(--teal);background:var(--cream-deep)}
+.upload-btn input[type="file"]{display:none}
+.view-btn{padding:4px 10px;background:transparent;border:1px solid var(--border-dk);border-radius:4px;cursor:pointer;font-size:10px;color:var(--ink-faint);font-family:Georgia,serif}
+.view-btn:not(:disabled){color:var(--teal);border-color:var(--teal)}
+.view-btn:not(:disabled):hover{background:var(--cream-deep)}
+.view-btn:disabled{cursor:not-allowed}
+.file-pill{display:inline-flex;align-items:center;gap:5px;padding:3px 8px;background:var(--cream-deep);border:1px solid var(--border-dk);border-radius:12px;font-size:10px;color:var(--ink);max-width:160px}
+.file-pill .file-name{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;flex:1}
+.file-pill .file-x{cursor:pointer;color:var(--terracotta);font-weight:bold;line-height:1}
+.file-pill .file-x:hover{color:var(--terracotta-dk)}
+
+.empty-table-note{font-size:10px;color:var(--ink-faint);font-style:italic}
+
+/* ─── Tab bar (shared pattern) ─── */
+.tab-bar{display:flex;background:var(--cream-deep);border-bottom:1px solid var(--border-dk)}
+.tab{padding:12px 22px;cursor:pointer;font-size:12px;text-transform:uppercase;letter-spacing:1px;color:var(--ink-soft);border-right:1px solid var(--border);font-family:Georgia,serif}
+.tab.active{background:var(--teal);color:#fff}
+.tab:hover:not(.active){background:#EADFC0}
+.panel.hidden{display:none}
+
+/* ─── Summary cards ─── */
+.sm-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px}
+.sm-card{background:#fff;border:1px solid var(--border);border-radius:10px;padding:14px}
+.sm-card h3{font-size:11px;text-transform:uppercase;letter-spacing:1px;color:var(--teal);margin-bottom:10px;padding-bottom:6px;border-bottom:1px solid var(--border);font-weight:bold}
+.sm-row{display:flex;justify-content:space-between;padding:5px 0;font-size:12px;border-bottom:1px solid #f0e9d6}
+.sm-row:last-child{border-bottom:none}
+.sm-lbl{color:var(--ink-soft)}
+.sm-val{font-weight:bold;color:var(--ink)}
+.sm-val.green{color:var(--good-ink)}
+.sm-val.amber{color:var(--fair-ink)}
+.sm-val.info{color:var(--info-ink)}
+.sm-flags{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+.sm-flag{background:#fff;border:1px solid var(--border);border-radius:8px;padding:12px}
+.sm-flag-icon{width:30px;height:30px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:14px;margin-bottom:8px}
+.sm-flag-count{font-size:20px;font-weight:bold;color:var(--ink)}
+.sm-flag-label{font-size:10px;color:var(--ink-soft);text-transform:uppercase;letter-spacing:0.5px;margin-top:4px}
+table.ov-tbl{width:100%;border-collapse:collapse;background:var(--offwhite);border-radius:6px;overflow:hidden;border:1px solid var(--border-dk);font-size:11px}
+table.ov-tbl th{background:var(--teal);color:#fff;padding:9px 8px;text-align:left;font-weight:normal;text-transform:uppercase;letter-spacing:0.5px;font-size:10px;border-right:1px solid var(--sea)}
+table.ov-tbl th:last-child{border-right:none}
+table.ov-tbl th.th-status{background:var(--terracotta-dk)}
+table.ov-tbl td{padding:7px 8px;border-bottom:1px solid var(--border);border-right:1px solid var(--border);vertical-align:middle}
+table.ov-tbl td:last-child{border-right:none}
+table.ov-tbl tr:last-child td{border-bottom:none}
+</style>
+</head>
+<body>
+
+<div class="page">
+<div class="header">
+  <h1>Product Prototyping</h1>
+  <div class="crumb">PRIME Rural · Product Development</div>
+</div>
+<div class="card">
+
+  <!-- Tab bar -->
+  <div class="tab-bar">
+    <div class="tab active" onclick="showTab('summary',this)">Summary</div>
+    <div class="tab" onclick="showTab('prototypes',this)">Prototypes</div>
+    <div class="tab" onclick="showTab('resources',this)">Resources</div>
+    <div class="tab" onclick="showTab('tasklog',this)">Task Log</div>
+  </div>
+
+  <!-- ══ SUMMARY PANEL ══ -->
+  <div id="summary" class="panel hidden" style="padding:22px">
+
+    <!-- ① Product-wise Overview -->
+    <div style="background:var(--cream-deep);padding:16px;border-radius:10px;margin-bottom:16px;border:1px solid var(--border)">
+      <div style="font-size:13px;text-transform:uppercase;letter-spacing:1.5px;color:var(--teal);margin-bottom:12px;padding-bottom:8px;border-bottom:1px solid var(--border-dk);font-weight:bold">Product-wise Overview</div>
+      <p style="font-size:11px;color:var(--ink-soft);font-style:italic;margin-bottom:10px">One row per product. Iterations = prototype versions logged.</p>
+      <div style="overflow-x:auto">
+        <table class="ov-tbl">
+          <thead>
+            <tr>
+              <th>Product</th>
+              <th>Prototype Type</th>
+              <th>Type Name</th>
+              <th>Iterations</th>
+              <th>Uploads</th>
+              <th class="th-status">Implementation Status</th>
+            </tr>
+          </thead>
+          <tbody id="sumOverviewBody">
+            <tr><td colspan="6" style="padding:14px;text-align:center;color:var(--ink-faint);font-style:italic">Auto-populated from Prototypes tab</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- ② Aggregates -->
+    <div style="background:var(--cream-deep);padding:16px;border-radius:10px;margin-bottom:16px;border:1px solid var(--border)">
+      <div style="font-size:13px;text-transform:uppercase;letter-spacing:1.5px;color:var(--teal);margin-bottom:12px;padding-bottom:8px;border-bottom:1px solid var(--border-dk);font-weight:bold">Aggregates</div>
+      <div class="sm-grid">
+
+        <div class="sm-card">
+          <h3>Products</h3>
+          <div class="sm-row"><span class="sm-lbl">Total Products</span><span class="sm-val" id="agg-total">0</span></div>
+          <div class="sm-row"><span class="sm-lbl">Packaging Prototypes</span><span class="sm-val" id="agg-packaging">0</span></div>
+          <div class="sm-row"><span class="sm-lbl">Product Prototypes</span><span class="sm-val" id="agg-product-type">0</span></div>
+        </div>
+
+        <div class="sm-card">
+          <h3>Iterations</h3>
+          <div class="sm-row"><span class="sm-lbl">Total Iterations Logged</span><span class="sm-val" id="agg-iterations">0</span></div>
+          <div class="sm-row"><span class="sm-lbl">Uploads Attached</span><span class="sm-val" id="agg-uploads">0</span></div>
+          <div class="sm-row"><span class="sm-lbl">Avg Iterations / Product</span><span class="sm-val" id="agg-avg-iter">—</span></div>
+        </div>
+
+        <div class="sm-card">
+          <h3>Progress</h3>
+          <div class="sm-row"><span class="sm-lbl">Ideating</span><span class="sm-val" id="agg-ideating">0</span></div>
+          <div class="sm-row"><span class="sm-lbl">Iteration</span><span class="sm-val amber" id="agg-iteration">0</span></div>
+          <div class="sm-row"><span class="sm-lbl">Pilot Implemented</span><span class="sm-val info" id="agg-pilot">0</span></div>
+          <div class="sm-row"><span class="sm-lbl">Scale Implementation</span><span class="sm-val green" id="agg-scale">0</span></div>
+        </div>
+
+        <div class="sm-card">
+          <h3>Intervention Status</h3>
+          <div class="sm-row"><span class="sm-lbl">Furthest Stage Reached</span><span class="sm-val" style="font-size:11px" id="agg-furthest">—</span></div>
+          <div class="sm-row"><span class="sm-lbl">Learnings Captured</span><span class="sm-val green" id="agg-learnings">0</span></div>
+          <div class="sm-row"><span class="sm-lbl">No Status Set</span><span class="sm-val" id="agg-nostatus">0</span></div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ③ Intervention Flags -->
+    <div style="background:var(--cream-deep);padding:16px;border-radius:10px;border:1px solid var(--border)">
+      <div style="font-size:13px;text-transform:uppercase;letter-spacing:1.5px;color:var(--teal);margin-bottom:12px;padding-bottom:8px;border-bottom:1px solid var(--border-dk);font-weight:bold">Intervention Flags</div>
+      <div class="sm-flags">
+        <div class="sm-flag"><div class="sm-flag-icon" style="background:var(--cream-deep);color:var(--ink-soft)">💡</div><div class="sm-flag-count" id="flag-ideating">0</div><div class="sm-flag-label">Ideating</div></div>
+        <div class="sm-flag"><div class="sm-flag-icon" style="background:var(--fair-bg);color:var(--fair-ink)">↻</div><div class="sm-flag-count" id="flag-iteration">0</div><div class="sm-flag-label">Iteration</div></div>
+        <div class="sm-flag"><div class="sm-flag-icon" style="background:var(--info-bg);color:var(--info-ink)">🧪</div><div class="sm-flag-count" id="flag-pilot">0</div><div class="sm-flag-label">Pilot Implemented</div></div>
+        <div class="sm-flag"><div class="sm-flag-icon" style="background:var(--good-bg);color:var(--good-ink)">✓</div><div class="sm-flag-count" id="flag-scale">0</div><div class="sm-flag-label">Scale Implementation</div></div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ══ PROTOTYPES PANEL ══ -->
+  <div id="prototypes" class="panel" style="padding:22px">
+
+    <div class="entrepreneur-chip">
+      <div class="ent-avatar">EN</div>
+      <span style="color:var(--ink-soft);font-style:italic">Auto-fetched from profile</span>
+    </div>
+
+    <div class="section-caption">Track prototyping iterations for each product — both packaging prototypes and product prototypes. Add a card per product, then log every prototype version inside its child table.</div>
+
+    <div id="prototypeProductList"></div>
+
+    <div class="add-row-bar">
+      <button class="btn btn-primary" onclick="addPrototypeProduct()">+ Add Product</button>
+    </div>
+
+  </div>
+
+  <!-- ══ RESOURCES PANEL ══ -->
+  <div id="resources" class="panel hidden" style="padding:22px">
+    <div style="background:var(--cream-deep);padding:16px;border-radius:10px;border:1px solid var(--border)">
+      <div style="font-size:13px;text-transform:uppercase;letter-spacing:1.5px;color:var(--teal);margin-bottom:12px;padding-bottom:8px;border-bottom:1px solid var(--border-dk);font-weight:bold">Reference Materials</div>
+      <table class="data-table" id="resourcesTable">
+        <thead>
+          <tr>
+            <th style="width:25%">Resource Title</th>
+            <th style="width:18%">Category</th>
+            <th style="width:12%">Type</th>
+            <th style="width:30%">Description / Notes</th>
+            <th style="width:10%">File</th>
+            <th style="width:5%"></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><input type="text" placeholder="Resource title"></td>
+            <td>
+              <select>
+                <option>— Select —</option>
+                <option>Packaging Supplier</option>
+                <option>Material Sample</option>
+                <option>Design Reference</option>
+                <option>Testing / Lab Report</option>
+                <option>Costing Sheet</option>
+                <option>Competitor Product</option>
+                <option>Govt. Scheme / Support</option>
+                <option>Other</option>
+              </select>
+            </td>
+            <td>
+              <select>
+                <option>— Select —</option>
+                <option>Contact</option>
+                <option>Reference</option>
+                <option>Quotation</option>
+                <option>Specification</option>
+                <option>Photo / Evidence</option>
+                <option>Report</option>
+              </select>
+            </td>
+            <td><input type="text" placeholder="Notes"></td>
+            <td>
+              <button class="btn" style="padding:3px 8px;font-size:10px">Upload</button>
+              <button class="btn" style="padding:3px 8px;font-size:10px">View ▷</button>
+            </td>
+            <td><button class="row-delete" onclick="deleteRow(this)">✕</button></td>
+          </tr>
+        </tbody>
+      </table>
+      <div style="display:flex;justify-content:flex-end;margin-top:10px">
+        <button class="btn btn-primary" onclick="addRow('resourcesTable')">+ Add Resource</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ TASK LOG PANEL ══ -->
+  <div id="tasklog" class="panel hidden" style="padding:22px">
+    <div style="background:var(--cream-deep);padding:16px;border-radius:10px;border:1px solid var(--border)">
+      <div style="font-size:13px;text-transform:uppercase;letter-spacing:1.5px;color:var(--teal);margin-bottom:12px;padding-bottom:8px;border-bottom:1px solid var(--border-dk);font-weight:bold;display:flex;justify-content:space-between;align-items:center">
+        <span>Task Log — Product Prototyping Activities</span>
+        <span style="font-size:11px;color:var(--ink-faint);text-transform:none;letter-spacing:normal;font-weight:normal;font-style:italic"><span id="task-count">0</span> entries</span>
+      </div>
+      <table class="data-table" id="taskLogTable">
+        <thead>
+          <tr>
+            <th style="width:5%">No.</th>
+            <th style="width:13%">Date</th>
+            <th style="width:42%">Task Name</th>
+            <th style="width:30%">Notes / Outcome</th>
+            <th style="width:7%">Attachment</th>
+            <th style="width:3%"></th>
+          </tr>
+        </thead>
+        <tbody id="taskLogBody"></tbody>
+      </table>
+      <div style="display:flex;justify-content:flex-end;margin-top:10px">
+        <button class="btn btn-primary" onclick="addTaskRow()">+ Add Entry</button>
+      </div>
+    </div>
+  </div>
+
+</div>
+</div>
+
+<script>
+// ============ MASTER DATA (placeholders — to be supplied by Harshit) ============
+const PRODUCT_MASTER = [
+  'Bamboo Shoot Pickle',
+  'Lemongrass Tea',
+  'Lakadong Turmeric',
+  'Eri Silk Muffler',
+  'Bamboo Earring',
+  'Local Honey',
+  'Jadoh Spice Mix'
+];
+
+const PACKING_MASTER = [
+  'Glass jar',
+  'Tin can',
+  'Kraft paper pouch',
+  'Standard plastic pouch',
+  'PET bottle',
+  'HDPE bottle',
+  'Aluminium foil pouch',
+  'Cardboard box',
+  'Cloth pouch',
+  'Vacuum-sealed',
+  'Gift hamper',
+  'Other'
+];
+
+const BUSINESS_BASKET_MASTER = [
+  'Food & Beverages',
+  'Spices & Herbs',
+  'Handloom & Textile',
+  'Handicraft & Bamboo',
+  'Personal Care & Wellness',
+  'Honey & Apiary',
+  'Dairy & Allied',
+  'Agro-processed Foods',
+  'Snacks & Ready-to-eat',
+  'Health Foods',
+  'Other'
+];
+
+// State
+let productCounter = 0;
+let rowCounter = 0;
+
+// ============ PRODUCT BLOCK ============
+function addPrototypeProduct(){
+  productCounter++;
+  const pid = `pp${productCounter}`;
+  const list = document.getElementById('prototypeProductList');
+  const block = document.createElement('div');
+  block.className = 'product-block';
+  block.id = pid;
+
+  const productOpts = PRODUCT_MASTER.map(p => `<option>${p}</option>`).join('');
+
+  block.innerHTML = `
+    <div class="product-head" onclick="togglePrototypeProduct('${pid}')">
+      <div class="ph-name" onclick="event.stopPropagation()">
+        <span class="chevron">▾</span>
+        <select id="${pid}-product">
+          <option value="">— Select Product —</option>
+          ${productOpts}
+        </select>
+        <select id="${pid}-implstatus" onchange="updateImplementationStatus('${pid}')">
+          <option value="">— Implementation Status —</option>
+          <option value="Ideating">Ideating</option>
+          <option value="Iteration">Iteration</option>
+          <option value="Pilot Implemented">Pilot Implemented</option>
+          <option value="Scale Implementation">Scale Implementation</option>
+        </select>
+        <span class="status-chip ideating" id="${pid}-implChip" style="display:none">Status</span>
+      </div>
+      <button class="ph-remove" onclick="event.stopPropagation();removePrototypeProduct('${pid}')">Remove</button>
+    </div>
+    <div class="ph-body">
+
+      <div class="subsection">
+        <div class="subsection-title">Prototype Configuration</div>
+        <div class="field-row">
+          <div class="field-label">Type of Prototyping</div>
+          <select class="field-val" id="${pid}-type" onchange="onTypeChange('${pid}')">
+            <option value="">— Select —</option>
+            <option value="packaging">Packaging</option>
+            <option value="product">Product</option>
+          </select>
+        </div>
+        <div class="field-row">
+          <div class="field-label">Prototyping Type Name</div>
+          <input type="text" class="field-val" id="${pid}-typename" placeholder="e.g., Kraft paper pouch, Food &amp; Beverages…">
+        </div>
+      </div>
+
+      <div class="subsection">
+        <div class="subsection-title">
+          <span>Prototype Iterations</span>
+          <button class="btn" onclick="addPrototypeRow('${pid}')" style="font-size:10px;padding:3px 10px">+ Add Iteration</button>
+        </div>
+        <div style="overflow-x:auto">
+          <table class="data-table" id="${pid}-table">
+            <thead>
+              <tr>
+                <th class="num-col">#</th>
+                <th style="min-width:140px">Prototype Version</th>
+                <th style="min-width:200px">Design Upload</th>
+                <th>Key Learnings</th>
+                <th style="width:30px"></th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </div>
+
+    </div>
+  `;
+  list.appendChild(block);
+
+  // Seed one iteration row so the table doesn't appear empty
+  addPrototypeRow(pid);
+}
+
+function removePrototypeProduct(pid){
+  if(confirm('Remove this product and all its prototype iterations?')){
+    document.getElementById(pid).remove();
+  }
+}
+
+function togglePrototypeProduct(pid){
+  document.getElementById(pid).classList.toggle('collapsed');
+}
+
+// ============ TYPE → TYPE NAME conditional dropdown ============
+function onTypeChange(pid){
+  const type = document.getElementById(`${pid}-type`)?.value;
+  const typenameInput = document.getElementById(`${pid}-typename`);
+  if(!typenameInput) return;
+  if(type === 'packaging')   typenameInput.placeholder = 'e.g., Kraft paper pouch, Glass jar, Tin can…';
+  else if(type === 'product') typenameInput.placeholder = 'e.g., Food & Beverages, Spices & Herbs…';
+  else                        typenameInput.placeholder = 'e.g., Kraft paper pouch, Food & Beverages…';
+}
+
+// ============ IMPLEMENTATION STATUS → chip ============
+function updateImplementationStatus(pid){
+  const status = document.getElementById(`${pid}-implstatus`)?.value;
+  const chip = document.getElementById(`${pid}-implChip`);
+  if(!chip) return;
+  chip.classList.remove('ideating','iteration','pilot','scale');
+  if(!status){
+    chip.style.display = 'none';
+    return;
+  }
+  chip.style.display = 'inline-block';
+  chip.textContent = status;
+  if(status === 'Ideating') chip.classList.add('ideating');
+  else if(status === 'Iteration') chip.classList.add('iteration');
+  else if(status === 'Pilot Implemented') chip.classList.add('pilot');
+  else if(status === 'Scale Implementation') chip.classList.add('scale');
+}
+
+// ============ PROTOTYPE ITERATION ROW ============
+function addPrototypeRow(pid){
+  rowCounter++;
+  const rid = `${pid}-r${rowCounter}`;
+  const tbody = document.querySelector(`#${pid}-table tbody`);
+  if(!tbody) return;
+  const tr = document.createElement('tr');
+  tr.id = rid;
+
+  tr.innerHTML = `
+    <td class="num-col"></td>
+    <td><input type="text" placeholder="e.g., v1, v2, Final"></td>
+    <td>
+      <div class="upload-cell" id="${rid}-uploadCell">
+        <label class="upload-btn">
+          ⬆ Upload
+          <input type="file" accept=".pdf,.jpg,.jpeg,.png,.svg,.ai,.psd" onchange="onPrototypeFileUpload('${rid}',this)">
+        </label>
+        <button class="view-btn" id="${rid}-viewBtn" disabled onclick="onPrototypeFileView('${rid}')">View</button>
+      </div>
+    </td>
+    <td><input type="text" placeholder="What worked? What didn't? What changed for next version?"></td>
+    <td><button class="row-delete" onclick="removePrototypeRow('${pid}','${rid}')">✕</button></td>
+  `;
+  tbody.appendChild(tr);
+  renumberPrototypeRows(pid);
+}
+
+function removePrototypeRow(pid, rid){
+  document.getElementById(rid).remove();
+  renumberPrototypeRows(pid);
+}
+
+function renumberPrototypeRows(pid){
+  const tbody = document.querySelector(`#${pid}-table tbody`);
+  if(!tbody) return;
+  Array.from(tbody.children).forEach((tr, i) => {
+    const numEl = tr.querySelector('.num-col');
+    if(numEl) numEl.textContent = String(i+1).padStart(2,'0');
+  });
+}
+
+// ============ FILE UPLOAD HANDLER ============
+function onPrototypeFileUpload(rid, input){
+  const cell = document.getElementById(`${rid}-uploadCell`);
+  const file = input.files?.[0];
+  if(!file) return;
+  const existingPill = cell.querySelector('.file-pill');
+  if(existingPill) existingPill.remove();
+  const pill = document.createElement('span');
+  pill.className = 'file-pill';
+  pill.innerHTML = `📎 <span class="file-name" title="${file.name}">${file.name}</span><span class="file-x" onclick="onPrototypeFileRemove('${rid}')">×</span>`;
+  pill.dataset.fileUrl = URL.createObjectURL(file);
+  cell.appendChild(pill);
+  const viewBtn = document.getElementById(`${rid}-viewBtn`);
+  if(viewBtn) viewBtn.disabled = false;
+}
+
+function onPrototypeFileView(rid){
+  const cell = document.getElementById(`${rid}-uploadCell`);
+  const pill = cell?.querySelector('.file-pill');
+  const url = pill?.dataset.fileUrl;
+  if(url) window.open(url, '_blank');
+}
+
+function onPrototypeFileRemove(rid){
+  const cell = document.getElementById(`${rid}-uploadCell`);
+  const pill = cell?.querySelector('.file-pill');
+  if(pill) pill.remove();
+  const viewBtn = document.getElementById(`${rid}-viewBtn`);
+  if(viewBtn) viewBtn.disabled = true;
+  const fileInput = cell?.querySelector('input[type="file"]');
+  if(fileInput) fileInput.value = '';
+}
+
+// ============ TAB SWITCHING ============
+function showTab(id, el){
+  document.querySelectorAll('.panel').forEach(p => p.classList.add('hidden'));
+  document.getElementById(id).classList.remove('hidden');
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  el.classList.add('active');
+  if(id === 'summary') refreshSummary();
+}
+
+// ============ SUMMARY ============
+function refreshSummary(){
+  const s = (id,v) => { const el=document.getElementById(id); if(el) el.textContent=v; };
+  const blocks = document.querySelectorAll('#prototypeProductList .product-block');
+  const STAGE_ORDER = ['Ideating','Iteration','Pilot Implemented','Scale Implementation'];
+
+  let total=0, packagingCount=0, productTypeCount=0, noStatus=0;
+  let ideating=0, iteration=0, pilot=0, scale=0, furthestIdx=-1;
+  let totalIter=0, totalUploads=0, totalLearnings=0;
+  let html = '';
+
+  blocks.forEach(b => {
+    const pid      = b.id;
+    const product  = document.getElementById(`${pid}-product`)?.value || '';
+    const type     = document.getElementById(`${pid}-type`)?.value || '';
+    const typename = document.getElementById(`${pid}-typename`)?.value?.trim() || '—';
+    const status   = document.getElementById(`${pid}-implstatus`)?.value || '';
+    if(!product) return;
+    total++;
+    if(type === 'packaging') packagingCount++; else if(type === 'product') productTypeCount++;
+    if(!status) noStatus++;
+    else {
+      if(status==='Ideating')              ideating++;
+      else if(status==='Iteration')        iteration++;
+      else if(status==='Pilot Implemented') pilot++;
+      else if(status==='Scale Implementation') scale++;
+      const idx = STAGE_ORDER.indexOf(status);
+      if(idx > furthestIdx) furthestIdx = idx;
+    }
+    const rows = document.querySelectorAll(`#${pid}-table tbody tr`);
+    const iterCount = rows.length;
+    totalIter += iterCount;
+    let rowUploads=0, rowLearnings=0;
+    rows.forEach(r => {
+      if(r.querySelector('.file-pill')) rowUploads++;
+      if(r.querySelectorAll('input[type=text]')[1]?.value?.trim()) rowLearnings++;
+    });
+    totalUploads += rowUploads; totalLearnings += rowLearnings;
+
+    const CHIP = {
+      'Ideating':             `background:var(--cream-deep);color:var(--ink-soft)`,
+      'Iteration':            `background:var(--fair-bg);color:var(--fair-ink)`,
+      'Pilot Implemented':    `background:var(--info-bg);color:var(--info-ink)`,
+      'Scale Implementation': `background:var(--good-bg);color:var(--good-ink)`,
+    };
+    const statusCell = status
+      ? `<span style="display:inline-block;padding:3px 9px;border-radius:12px;font-size:10px;font-weight:bold;text-transform:uppercase;${CHIP[status]||''}">${status}</span>`
+      : '<span style="color:var(--ink-faint);font-style:italic">—</span>';
+    const typeBadge = type
+      ? `<span style="display:inline-block;padding:2px 8px;border-radius:10px;font-size:10px;font-weight:bold;background:${type==='packaging'?'#D6E3EE':'var(--fair-bg)'};color:${type==='packaging'?'#2C5A82':'var(--fair-ink)'}">${type.charAt(0).toUpperCase()+type.slice(1)}</span>`
+      : '<span style="color:var(--ink-faint)">—</span>';
+
+    html += `<tr>
+      <td><strong>${product}</strong></td>
+      <td>${typeBadge}</td>
+      <td style="font-size:11px">${typename}</td>
+      <td style="text-align:center;font-weight:bold;color:var(--teal)">${iterCount}</td>
+      <td style="text-align:center">${rowUploads>0?`<span style="color:var(--good-ink);font-weight:bold">${rowUploads} 📎</span>`:'—'}</td>
+      <td style="background:#FDF3EE">${statusCell}</td>
+    </tr>`;
+  });
+
+  document.getElementById('sumOverviewBody').innerHTML = html ||
+    '<tr><td colspan="6" style="padding:14px;text-align:center;color:var(--ink-faint);font-style:italic">Auto-populated from Prototypes tab</td></tr>';
+
+  s('agg-total',       total);
+  s('agg-packaging',   packagingCount);
+  s('agg-product-type',productTypeCount);
+  s('agg-iterations',  totalIter);
+  s('agg-uploads',     totalUploads);
+  s('agg-avg-iter',    total>0 ? (totalIter/total).toFixed(1) : '—');
+  s('agg-ideating',    ideating);   s('agg-iteration', iteration);
+  s('agg-pilot',       pilot);      s('agg-scale',     scale);
+  s('agg-furthest',    furthestIdx>=0 ? STAGE_ORDER[furthestIdx] : '—');
+  s('agg-learnings',   totalLearnings);
+  s('agg-nostatus',    noStatus);
+  s('flag-ideating',   ideating);   s('flag-iteration', iteration);
+  s('flag-pilot',      pilot);      s('flag-scale',     scale);
+}
+
+// ============ INIT ============
+window.addEventListener('DOMContentLoaded', () => {
+  // Seed 3 products
+  addPrototypeProduct(); addPrototypeProduct(); addPrototypeProduct();
+
+  setTimeout(() => {
+    // pp1 — Bamboo Shoot Pickle · Packaging · Iteration
+    document.getElementById('pp1-product').value = 'Bamboo Shoot Pickle';
+    document.getElementById('pp1-type').value = 'packaging'; onTypeChange('pp1');
+    document.getElementById('pp1-typename').value = 'Kraft paper pouch';
+    document.getElementById('pp1-implstatus').value = 'Iteration'; updateImplementationStatus('pp1');
+    addPrototypeRow('pp1');
+    const r1 = document.querySelectorAll('#pp1-table tbody tr');
+    if(r1[0]){ r1[0].querySelectorAll('input[type=text]')[0].value='v1'; r1[0].querySelectorAll('input[type=text]')[1].value='Seal weak — switched to heat seal'; }
+    if(r1[1]){ r1[1].querySelectorAll('input[type=text]')[0].value='v2'; r1[1].querySelectorAll('input[type=text]')[1].value='Heat seal works but label area too small'; }
+
+    // pp2 — Lemongrass Tea · Product · Pilot Implemented
+    document.getElementById('pp2-product').value = 'Lemongrass Tea';
+    document.getElementById('pp2-type').value = 'product'; onTypeChange('pp2');
+    document.getElementById('pp2-typename').value = 'Food & Beverages';
+    document.getElementById('pp2-implstatus').value = 'Pilot Implemented'; updateImplementationStatus('pp2');
+    addPrototypeRow('pp2'); addPrototypeRow('pp2');
+    const r2 = document.querySelectorAll('#pp2-table tbody tr');
+    if(r2[0]){ r2[0].querySelectorAll('input[type=text]')[0].value='v1'; r2[0].querySelectorAll('input[type=text]')[1].value='Moisture retention issue'; }
+    if(r2[1]){ r2[1].querySelectorAll('input[type=text]')[0].value='v2'; r2[1].querySelectorAll('input[type=text]')[1].value='Added silica sachet — resolved'; }
+    if(r2[2]){ r2[2].querySelectorAll('input[type=text]')[0].value='v3 (Pilot)'; r2[2].querySelectorAll('input[type=text]')[1].value='Pilot batch dispatched to Shillong'; }
+
+    // pp3 — Eri Silk Muffler · Packaging · Ideating
+    document.getElementById('pp3-product').value = 'Eri Silk Muffler';
+    document.getElementById('pp3-type').value = 'packaging'; onTypeChange('pp3');
+    document.getElementById('pp3-typename').value = 'Gift hamper';
+    document.getElementById('pp3-implstatus').value = 'Ideating'; updateImplementationStatus('pp3');
+    const r3 = document.querySelectorAll('#pp3-table tbody tr');
+    if(r3[0]){ r3[0].querySelectorAll('input[type=text]')[0].value='v1 — concept'; r3[0].querySelectorAll('input[type=text]')[1].value='3 hamper concepts shortlisted'; }
+
+    // Open Summary tab
+    showTab('summary', document.querySelector('.tab'));
+  }, 50);
+});
+// ============ RESOURCES ============
+function addRow(tableId){
+  const tbody = document.querySelector('#'+tableId+' tbody');
+  const row = tbody.rows[0].cloneNode(true);
+  row.querySelectorAll('input').forEach(i => { if(i.type !== 'file') i.value = ''; });
+  row.querySelectorAll('select').forEach(s => s.selectedIndex = 0);
+  tbody.appendChild(row);
+}
+function deleteRow(btn){
+  const row = btn.closest('tr');
+  const tbody = row.parentElement;
+  if(tbody.rows.length > 1) row.remove();
+  else alert('At least one row is required.');
+}
+
+// ============ TASK LOG ============
+const PP_TASKS = [
+  '01 — Awareness on Importance of Product Prototyping',
+  '02 — Identify Products Requiring Prototyping',
+  '03 — Define Prototyping Type (Packaging / Product)',
+  '04 — Research Packaging Options / Business Basket',
+  '05 — Procure Prototype Sample / Material',
+  '06 — Create First Prototype (v1)',
+  '07 — Review Prototype with Entrepreneur',
+  '08 — Document Key Learnings from v1',
+  '09 — Create Revised Prototype (v2)',
+  '10 — Review Revised Prototype',
+  '11 — Document Key Learnings from v2',
+  '12 — Finalise Prototype Design',
+  '13 — Pilot Production Run',
+  '14 — Evaluate Pilot Outcome',
+  '15 — Approve for Scale Implementation',
+  '16 — Coordinate with Supplier / Vendor',
+  '17 — Update Prototype Records in CRM',
+  'If other, specify in comments',
+];
+const PP_TASK_OPTIONS = PP_TASKS.map(t => `<option value="${t}">${t}</option>`).join('');
+let taskLogCounter = 0;
+
+function addTaskRow(){
+  taskLogCounter++;
+  const tbody = document.getElementById('taskLogBody');
+  const tr = document.createElement('tr');
+  tr.innerHTML = `
+    <td class="num-col">${String(taskLogCounter).padStart(2,'0')}</td>
+    <td><input type="date" style="width:100%"></td>
+    <td>
+      <select style="width:100%">
+        <option value="">— Select Task —</option>
+        ${PP_TASK_OPTIONS}
+      </select>
+    </td>
+    <td><input type="text" placeholder="Notes / Outcome" style="width:100%"></td>
+    <td><button class="btn" style="padding:3px 8px;font-size:10px">Upload</button></td>
+    <td><button class="row-delete" onclick="deleteTaskRow(this)">✕</button></td>
+  `;
+  tbody.appendChild(tr);
+  refreshTaskCount();
+}
+
+function deleteTaskRow(btn){
+  const tbody = btn.closest('tbody');
+  btn.closest('tr').remove();
+  tbody.querySelectorAll('tr').forEach((tr, i) => {
+    tr.querySelector('.num-col').textContent = String(i+1).padStart(2,'0');
+  });
+  taskLogCounter = tbody.rows.length;
+  refreshTaskCount();
+}
+
+function refreshTaskCount(){
+  const el = document.getElementById('task-count');
+  if(el) el.textContent = document.querySelectorAll('#taskLogBody tr').length;
+}
+
+</script>
+
+</body>
+</html>

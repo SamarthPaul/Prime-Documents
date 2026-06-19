@@ -1,0 +1,2532 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=1200" />
+  <title>Financials · PRIME Rural</title>
+  <style>
+    /* ─── Monsoon Court tokens (mirrors apps/prime_rural/frontend/src/styles/tokens.css) ─── */
+    :root {
+      --font: Georgia, 'Times New Roman', serif;
+
+      --teal:           #0E4D4E;
+      --sea:            #1A6B6D;
+      --terracotta:     #C26849;
+      --terracotta-dk:  #A85738;
+      --terracotta-sft: #F5E2D6;
+
+      --cream:          #FBF5E5;
+      --cream-deep:     #F4ECD3;
+      --offwhite:       #FDFAF0;
+      --panel:          #FFFFFF;
+
+      --ink:            #2A2520;
+      --ink-soft:       #6B6359;
+      --ink-faint:      #9C9384;
+      --ink-disabled:   #BFB6A4;
+
+      --border:         #E8DFC9;
+      --border-soft:    #F0E9D6;
+      --border-dk:      #D6CDB6;
+      --border-focus:   #C26849;
+
+      --danger:         #9C3520;
+      --danger-sft:     #F5DCD2;
+      --success-sft:    #D9E8E5;
+      --info-sft:       #DCE8E8;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; }
+    body {
+      background: var(--cream);
+      color: var(--ink);
+      font-family: var(--font);
+      font-size: 14px;
+      line-height: 1.5;
+    }
+
+    .page { max-width: 1200px; margin: 0 auto; padding: 16px; }
+
+    /* ─── Hero bar ─── */
+    .hero-bar {
+      background: var(--teal);
+      color: var(--cream);
+      padding: 14px 20px;
+      border-radius: 12px 12px 0 0;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      gap: 12px;
+    }
+    .hero-bar .crumb {
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      opacity: 0.7;
+      margin-bottom: 4px;
+    }
+    .hero-bar h1 { font-size: 20px; font-weight: 400; margin: 0; }
+    .hero-bar .subtitle {
+      font-size: 12px;
+      opacity: 0.75;
+      margin-top: 2px;
+      font-style: italic;
+    }
+    .btn-ghost {
+      padding: 6px 16px;
+      border-radius: 20px;
+      border: 1px solid rgba(251,245,229,0.35);
+      background: transparent;
+      color: var(--cream);
+      font-family: var(--font);
+      font-size: 12px;
+      cursor: pointer;
+    }
+    .btn-cta {
+      padding: 6px 18px;
+      border-radius: 20px;
+      border: none;
+      background: var(--terracotta);
+      color: var(--cream);
+      font-family: var(--font);
+      font-size: 12px;
+      cursor: pointer;
+      margin-left: 8px;
+    }
+
+    /* ─── Card body ─── */
+    .card-body {
+      background: var(--cream);
+      border: 1px solid var(--border-dk);
+      border-top: none;
+      border-radius: 0 0 12px 12px;
+    }
+
+    /* ─── Tab strip ─── */
+    .tabs {
+      display: flex;
+      background: var(--cream-deep);
+      border-bottom: 1px solid var(--border-dk);
+      flex-wrap: wrap;
+    }
+    .tab {
+      padding: 11px 20px;
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      font-family: var(--font);
+      border: none;
+      border-right: 1px solid var(--border);
+      cursor: pointer;
+      background: transparent;
+      color: var(--ink-soft);
+      white-space: nowrap;
+      transition: background 150ms, color 150ms;
+    }
+    .tab:hover { background: #EADFC0; }
+    .tab.is-active { background: var(--teal); color: var(--cream); }
+
+    .content { padding: 20px; }
+    .tab-panel { display: none; flex-direction: column; gap: 16px; }
+    .tab-panel.is-active { display: flex; }
+
+    /* ─── Summary tiles (KPIs) ─── */
+    .kpi-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+    }
+    .kpi {
+      background: var(--offwhite);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 16px 18px;
+      position: relative;
+      overflow: hidden;
+    }
+    .kpi.kpi--accent {
+      background: var(--teal);
+      color: var(--cream);
+      border-color: var(--teal);
+    }
+    .kpi .lbl {
+      font-size: 10px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--ink-faint);
+      margin-bottom: 8px;
+    }
+    .kpi.kpi--accent .lbl { color: rgba(251,245,229,0.7); }
+    .kpi .val {
+      font-size: 26px;
+      color: var(--ink);
+      letter-spacing: 0.5px;
+    }
+    .kpi.kpi--accent .val { color: var(--cream); }
+    .kpi .sub {
+      font-size: 11px;
+      color: var(--ink-faint);
+      margin-top: 4px;
+    }
+    .kpi.kpi--accent .sub { color: rgba(251,245,229,0.7); }
+
+    /* ─── Generic card (mirrors CollapsibleCard) ─── */
+    .ccard {
+      background: var(--offwhite);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      overflow: hidden;
+    }
+    .ccard-head {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 14px 16px;
+      border-bottom: 1px solid var(--border);
+      background: var(--cream-deep);
+    }
+    .ccard-head .left { display: flex; align-items: center; gap: 8px; }
+    .ccard-head .ic { font-size: 16px; }
+    .ccard-head .title {
+      font-size: 12px; font-weight: 700;
+      text-transform: uppercase; letter-spacing: 0.12em;
+      color: var(--teal);
+    }
+    .ccard-head .right {
+      font-size: 11px;
+      color: var(--ink-faint);
+    }
+    .ccard-body { padding: 16px; }
+
+    /* ─── Field grid ─── */
+    .fgrid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px 24px;
+      margin: 0;
+    }
+    .fgrid--2 { grid-template-columns: repeat(2, 1fr); }
+    .fgrid--3 { grid-template-columns: repeat(3, 1fr); }
+    .field { min-width: 0; }
+    .field dt {
+      font-size: 10px; text-transform: uppercase;
+      letter-spacing: 0.1em; color: var(--ink-faint);
+      margin-bottom: 4px;
+    }
+    .field dd {
+      font-size: 14px; color: var(--ink); margin: 0;
+      word-break: break-word;
+    }
+    .field dd .inline-input,
+    .field dd input.inline-input {
+      width: 100%;
+      border: 1px solid transparent;
+      background: var(--cream-deep);
+      padding: 4px 8px;
+      border-radius: 4px;
+      font-family: var(--font);
+      font-size: 14px;
+      color: var(--ink);
+    }
+    .field dd input.inline-input:hover { border-color: var(--border); }
+    .field dd input.inline-input:focus { outline: none; background: var(--panel); border-color: var(--border-focus); }
+    .field dd input.inline-input.num { text-align: right; font-feature-settings: 'tnum'; }
+    .field--currency dd { font-feature-settings: 'tnum'; }
+
+    /* ─── Pills ─── */
+    .pill {
+      display: inline-flex; align-items: center;
+      padding: 3px 10px; border-radius: 20px;
+      background: var(--success-sft); color: var(--teal);
+      font-size: 11px;
+    }
+    .pill--warn { background: var(--terracotta-sft); color: var(--terracotta-dk); }
+    .pill--info { background: var(--info-sft); color: var(--teal); }
+    .pill--neutral { background: #F3F4F6; color: #374151; }
+    .pill--danger { background: var(--danger-sft); color: var(--danger); }
+
+    /* ─── Tables ─── */
+    .tbl {
+      width: 100%; border-collapse: collapse;
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      overflow: hidden;
+    }
+    .tbl th {
+      text-align: left;
+      font-size: 10px; letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 10px 14px;
+      background: var(--cream-deep);
+      color: var(--ink-soft);
+      border-bottom: 1px solid var(--border);
+      font-weight: 700;
+    }
+    .tbl td {
+      padding: 10px 14px; font-size: 13px;
+      border-bottom: 1px solid var(--border-soft);
+      vertical-align: top;
+    }
+    .tbl tr:last-child td { border-bottom: none; }
+    .tbl td.num { text-align: right; font-feature-settings: 'tnum'; }
+    .tbl tfoot td {
+      background: var(--cream-deep);
+      font-weight: 700;
+      border-top: 2px solid var(--border-dk);
+    }
+
+    /* ─── Two-up split layout (Summary tab) ─── */
+    .split-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+    .split-3 {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+    }
+
+    /* ─── Mini bar list (Investment breakdown / Loan summary inside Summary card) ─── */
+    .bar-list { display: flex; flex-direction: column; gap: 12px; }
+    .bar-row { display: grid; grid-template-columns: 1fr auto; align-items: center; gap: 8px; }
+    .bar-row .nm { font-size: 12px; color: var(--ink-soft); }
+    .bar-row .vl { font-size: 13px; color: var(--ink); font-feature-settings: 'tnum'; }
+    .bar-track {
+      grid-column: 1 / -1;
+      height: 8px;
+      background: var(--cream-deep);
+      border-radius: 4px;
+      overflow: hidden;
+    }
+    .bar-track > span { display: block; height: 100%; background: var(--teal); }
+    .bar-track.tc > span { background: var(--terracotta); }
+
+    /* ─── Trend chart (SVG) ─── */
+    .trend {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 16px;
+    }
+    .trend h3 {
+      margin: 0 0 12px;
+      font-size: 12px; font-weight: 700;
+      text-transform: uppercase; letter-spacing: 0.12em;
+      color: var(--teal);
+    }
+    .trend-legend {
+      display: flex; gap: 16px; font-size: 11px; color: var(--ink-soft);
+      margin-bottom: 8px;
+    }
+    .swatch {
+      display: inline-block; width: 10px; height: 10px;
+      border-radius: 2px; vertical-align: middle; margin-right: 4px;
+    }
+
+    /* ─── Section header inside card ─── */
+    .sec-head {
+      font-size: 11px; font-weight: 700;
+      text-transform: uppercase; letter-spacing: 0.12em;
+      color: var(--terracotta-dk);
+      margin: 18px 0 10px;
+      padding-bottom: 6px;
+      border-bottom: 1px dashed var(--border-dk);
+    }
+    .sec-head:first-child { margin-top: 0; }
+
+    /* ─── Drive resources placeholder ─── */
+    .drive-card {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 18px;
+    }
+    .drive-row {
+      display: grid;
+      grid-template-columns: 32px 1fr auto auto;
+      gap: 12px;
+      align-items: center;
+      padding: 10px 0;
+      border-bottom: 1px solid var(--border-soft);
+      font-size: 13px;
+    }
+    .drive-row:last-child { border-bottom: none; }
+    .drive-row .ic {
+      width: 32px; height: 32px;
+      background: var(--cream-deep);
+      border-radius: 6px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 14px;
+    }
+    .drive-row .nm { color: var(--ink); }
+    .drive-row .meta { color: var(--ink-faint); font-size: 11px; }
+    .add-resource {
+      margin-top: 12px;
+      padding: 10px 14px;
+      border: 1px dashed var(--border-dk);
+      border-radius: 8px;
+      color: var(--ink-soft);
+      font-size: 12px;
+      text-align: center;
+      font-style: italic;
+    }
+
+    /* ─── Note ─── */
+    .note {
+      padding: 10px 14px;
+      border-left: 3px solid var(--terracotta);
+      background: var(--terracotta-sft);
+      color: var(--terracotta-dk);
+      font-size: 12px;
+      border-radius: 0 6px 6px 0;
+    }
+    .note code {
+      background: var(--cream-deep);
+      padding: 1px 4px;
+      border-radius: 3px;
+      font-size: 11px;
+    }
+    /* ─────────── Business Model Calculator (namespaced under .bmc) ─────────── */
+    .bmc{font-family:Georgia,serif;color:var(--ink);line-height:1.45}
+    .bmc .bmc-legend{display:flex;gap:18px;flex-wrap:wrap;align-items:center;font-size:11px;font-style:italic;color:var(--ink-soft);margin-bottom:18px;padding:10px 14px;background:#fff;border:1px solid var(--border);border-radius:8px}
+    .bmc .bmc-legend .sw{display:inline-block;width:12px;height:12px;border-radius:3px;margin-right:6px;vertical-align:middle;border:1px solid var(--border)}
+    .bmc .bmc-legend .sw.autofetch{background:var(--cream-deep)}
+    .bmc .bmc-legend .sw.input{background:var(--panel)}
+    .bmc .bmc-legend .sw.calc{background:var(--terracotta-sft)}
+    .bmc .bmc-section{background:var(--cream-deep);padding:18px;border-radius:10px;margin-bottom:18px;border:1px solid var(--border)}
+    .bmc .bmc-section-title{font-size:13px;text-transform:uppercase;letter-spacing:1.5px;color:var(--teal);margin-bottom:14px;padding-bottom:8px;border-bottom:1px solid var(--border-dk);font-weight:bold;display:flex;justify-content:space-between;align-items:center;cursor:pointer;user-select:none}
+    .bmc .bmc-section-title:hover{color:var(--sea)}
+    .bmc .bmc-section-title .roman{color:var(--terracotta);font-style:italic;margin-right:8px}
+    .bmc .bmc-section-title .sec-chev{font-size:14px;color:var(--terracotta);transition:transform .2s}
+    .bmc .bmc-section.collapsed .bmc-section-title{margin-bottom:0;padding-bottom:0;border-bottom:none}
+    .bmc .bmc-section.collapsed .bmc-section-title .sec-chev{transform:rotate(-90deg)}
+    .bmc .bmc-section.collapsed .sec-body{display:none}
+    .bmc .sec-title-left{display:flex;align-items:center;gap:8px}
+
+    /* Loans table */
+    .bmc table.loans-table{width:100%;border-collapse:collapse;background:var(--offwhite);border-radius:8px;overflow:hidden;border:1px solid var(--border-dk);font-size:12px}
+    .bmc table.loans-table th{background:var(--teal);color:#fff;padding:10px 10px;text-align:left;font-weight:normal;text-transform:uppercase;letter-spacing:0.5px;font-size:10.5px;border-right:1px solid var(--sea);font-family:Georgia,serif}
+    .bmc table.loans-table th:last-child{border-right:none}
+    .bmc table.loans-table td{padding:9px 10px;border-bottom:1px solid var(--border);border-right:1px solid var(--border);vertical-align:middle}
+    .bmc table.loans-table td:last-child{border-right:none}
+    .bmc table.loans-table tr:last-child td{border-bottom:none}
+    .bmc table.loans-table .sr{width:30px;color:var(--ink-soft);text-align:center}
+    .bmc table.loans-table .note{font-size:11px;color:var(--ink-soft);font-style:italic;width:240px}
+    .bmc table.loans-table input[type="number"]{width:100%;border:1px solid var(--border);padding:6px 8px;border-radius:4px;font-family:Georgia,serif;font-size:12px;text-align:right}
+    .bmc table.loans-table input[type="number"]:focus{outline:none;border-color:var(--terracotta)}
+    .bmc table.loans-table .auto-cell input{background:var(--cream-deep);color:var(--ink-soft);font-style:italic}
+    .bmc table.loans-table .input-cell input{background:var(--panel);color:var(--ink)}
+    .bmc table.loans-table tr.total-row td{background:var(--terracotta-sft);font-weight:bold;color:var(--terracotta-dk);font-size:13px;border-top:2px solid var(--terracotta)}
+    .bmc table.loans-table tr.total-row input{background:var(--terracotta-sft);font-weight:bold;color:var(--terracotta-dk);font-size:13px;border:none;text-align:right;cursor:default}
+    .bmc .cb{width:20px;height:20px;cursor:pointer;accent-color:var(--terracotta)}
+    .bmc .cb-cell{text-align:center}
+
+    /* Revenue/expense table */
+    .bmc table.rev-table{width:100%;border-collapse:collapse;background:var(--offwhite);border-radius:8px;overflow:hidden;border:1px solid var(--border-dk);font-size:12px}
+    .bmc table.rev-table th{background:var(--teal);color:#fff;padding:10px;text-align:left;font-weight:normal;text-transform:uppercase;letter-spacing:0.5px;font-size:10.5px;border-right:1px solid var(--sea);font-family:Georgia,serif}
+    .bmc table.rev-table th:last-child{border-right:none}
+    .bmc table.rev-table td{padding:11px 10px;border-bottom:1px solid var(--border);border-right:1px solid var(--border);vertical-align:middle}
+    .bmc table.rev-table td:last-child{border-right:none}
+    .bmc table.rev-table tr:last-child td{border-bottom:none}
+    .bmc table.rev-table .sr{width:30px;color:var(--ink-soft);text-align:center}
+    .bmc table.rev-table .label{font-weight:bold;color:var(--ink);width:240px}
+    .bmc table.rev-table .note{font-size:11px;color:var(--ink-soft);font-style:italic;width:280px}
+    .bmc table.rev-table input[type="number"]{width:100%;border:1px solid var(--border);padding:7px 9px;border-radius:4px;font-family:Georgia,serif;font-size:12px;text-align:right}
+    .bmc table.rev-table input[type="number"]:focus{outline:none;border-color:var(--terracotta)}
+    .bmc table.rev-table .auto-cell input{background:var(--cream-deep);color:var(--ink-soft);font-style:italic}
+    .bmc table.rev-table .calc-cell input{background:var(--terracotta-sft);color:var(--terracotta-dk);font-weight:bold}
+    .bmc table.rev-table .input-cell input{background:var(--panel);color:var(--ink)}
+
+    /* Output table */
+    .bmc table.out-table{width:100%;border-collapse:collapse;background:var(--offwhite);border-radius:8px;overflow:hidden;border:1px solid var(--border-dk);font-size:12px}
+    .bmc table.out-table th{background:var(--teal);color:#fff;padding:10px;text-align:left;font-weight:normal;text-transform:uppercase;letter-spacing:0.5px;font-size:10.5px;border-right:1px solid var(--sea);font-family:Georgia,serif}
+    .bmc table.out-table th:last-child{border-right:none}
+    .bmc table.out-table td{padding:9px 10px;border-bottom:1px solid var(--border);border-right:1px solid var(--border);vertical-align:middle}
+    .bmc table.out-table td:last-child{border-right:none}
+    .bmc table.out-table tr:last-child td{border-bottom:none}
+    .bmc table.out-table .sr{width:40px;color:var(--ink-soft);text-align:center;font-weight:bold}
+    .bmc table.out-table .label{width:260px}
+    .bmc table.out-table .label.bold{font-weight:bold;color:var(--ink)}
+    .bmc table.out-table .val{text-align:right;font-variant-numeric:tabular-nums}
+    .bmc table.out-table .val.pre{color:var(--ink)}
+    .bmc table.out-table .val.post{color:var(--teal);font-weight:bold}
+    .bmc table.out-table .val.neg{color:var(--danger)}
+    .bmc table.out-table .comment{font-size:11px;font-style:italic;color:var(--ink-soft)}
+    .bmc table.out-table tr.highlight td{background:var(--terracotta-sft)}
+    .bmc table.out-table tr.highlight td.val{font-weight:bold;color:var(--terracotta-dk)}
+    .bmc .col-pre{background:rgba(232,223,201,.18)}
+    .bmc .col-post{background:rgba(243,232,202,.35)}
+
+    /* Capital card */
+    .bmc .capital-card{background:var(--offwhite);border:1px solid var(--border-dk);border-radius:8px;overflow:hidden}
+    .bmc .capital-card .cc-head{background:var(--teal);color:#fff;padding:10px 14px;font-weight:normal;text-transform:uppercase;letter-spacing:0.5px;font-size:11px;border-bottom:1px solid var(--sea);display:grid;grid-template-columns:1fr 160px;gap:10px}
+    .bmc .capital-card .cc-row{padding:9px 14px;border-bottom:1px solid var(--border);display:grid;grid-template-columns:1fr 160px;gap:10px;font-size:12px}
+    .bmc .capital-card .cc-row:last-child{border-bottom:none}
+    .bmc .capital-card .cc-row .val{text-align:right;font-variant-numeric:tabular-nums;color:var(--ink-soft);background:var(--cream-deep);padding:4px 8px;border-radius:4px;font-style:italic;font-weight:normal}
+    .bmc .capital-card .cc-row.bold .label{font-weight:bold}
+    .bmc .capital-card .cc-row.bold .val{color:var(--terracotta-dk);background:var(--terracotta-sft);font-weight:bold;font-style:normal}
+
+    /* Result hero */
+    .bmc .result-hero{background:var(--teal);color:#fff;padding:22px;border-radius:12px;margin-top:18px;display:grid;grid-template-columns:1fr 1fr;gap:24px}
+    .bmc .result-hero .rh-block{padding:0 8px}
+    .bmc .result-hero .rh-label{font-size:11px;text-transform:uppercase;letter-spacing:1.5px;opacity:.7;margin-bottom:8px}
+    .bmc .result-hero .rh-val{font-size:32px;font-weight:bold;letter-spacing:.5px}
+    .bmc .result-hero .rh-val.amber{color:#FFD580}
+    .bmc .result-hero .rh-sub{font-size:11px;opacity:.75;margin-top:6px;font-style:italic}
+    .bmc .result-hero .rh-block + .rh-block{border-left:1px solid rgba(255,255,255,.18)}
+
+    /* Status banner */
+    .bmc .status-banner{margin-top:14px;padding:14px 18px;border-radius:10px;font-size:13px;display:flex;align-items:center;gap:14px;border:1px solid}
+    .bmc .status-banner.good{background:var(--success-sft);border-color:var(--teal);color:var(--teal)}
+    .bmc .status-banner.warn{background:var(--terracotta-sft);border-color:var(--terracotta);color:var(--terracotta-dk)}
+    .bmc .status-banner.bad{background:var(--danger-sft);border-color:var(--danger);color:var(--danger)}
+    .bmc .status-banner .icon{font-size:24px}
+    .bmc .status-banner .label{font-weight:bold;text-transform:uppercase;letter-spacing:1px;font-size:11px;margin-bottom:3px}
+    .bmc .status-banner .msg{font-size:13px}
+
+    .bmc .help-card{background:#fff;border:1px solid var(--border);border-radius:8px;padding:14px 16px;margin-top:18px;font-size:11.5px;color:var(--ink-soft);line-height:1.6}
+    .bmc .help-card h4{font-size:11px;text-transform:uppercase;letter-spacing:1.2px;color:var(--teal);margin-bottom:8px;font-weight:bold}
+    .bmc .help-card ol{margin-left:18px}
+    .bmc .help-card ol li{margin-bottom:4px}
+    .bmc .help-card strong{color:var(--ink)}
+
+    .bmc .actions{display:flex;justify-content:flex-end;gap:10px;margin-top:8px}
+    .bmc .bmc-btn{padding:7px 16px;border-radius:18px;border:1px solid var(--border-dk);background:#fff;cursor:pointer;font-size:11px;color:var(--ink);font-family:Georgia,serif}
+    .bmc .bmc-btn:hover{background:var(--cream-deep)}
+    /* ─── Pre/Post KPI cards (Summary) ─── */
+    .prepost-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+      margin-bottom: 10px;
+    }
+    .prepost-grid--2 { grid-template-columns: repeat(2, 1fr); }
+    .prepost-card {
+      background: var(--cream);
+      border: 1px solid var(--border-dk);
+      border-radius: 10px;
+      padding: 14px;
+    }
+    .prepost-card--quant { background: var(--cream-deep); }
+    .pp-title {
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--teal);
+      margin-bottom: 10px;
+      line-height: 1.35;
+    }
+    .pp-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+    .pp-half {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 4px;
+    }
+    .pp-lbl {
+      font-size: 9px;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--ink-faint);
+    }
+    .pp-quant {
+      font-size: 13px;
+      color: var(--ink);
+      font-feature-settings: 'tnum';
+    }
+    .pp-quant--good { color: var(--teal); font-weight: 700; }
+    .pp-delta {
+      margin-top: 10px;
+      padding-top: 8px;
+      border-top: 1px dashed var(--border-dk);
+      font-size: 11px;
+      color: var(--ink-soft);
+      font-style: italic;
+    }
+
+    /* ─── Editable table inputs ─── */
+    .tbl input, .tbl select, .tbl textarea {
+      width: 100%;
+      border: 1px solid transparent;
+      background: transparent;
+      padding: 4px 6px;
+      border-radius: 4px;
+      font-family: var(--font);
+      font-size: 13px;
+      color: var(--ink);
+    }
+    .tbl input.num, .tbl input[type="number"] {
+      text-align: right;
+      font-feature-settings: 'tnum';
+    }
+    .tbl input:hover, .tbl select:hover, .tbl textarea:hover {
+      background: var(--cream-deep);
+    }
+    .tbl input:focus, .tbl select:focus, .tbl textarea:focus {
+      outline: none;
+      background: var(--panel);
+      border-color: var(--border-focus);
+    }
+    .tbl .row-del {
+      background: transparent;
+      border: none;
+      color: var(--terracotta);
+      cursor: pointer;
+      font-size: 14px;
+      padding: 2px 6px;
+    }
+    .tbl .row-del:hover { color: var(--terracotta-dk); }
+    .add-row-btn {
+      margin-top: 10px;
+      padding: 8px 16px;
+      background: var(--panel);
+      border: 1px dashed var(--border-dk);
+      border-radius: 6px;
+      cursor: pointer;
+      color: var(--teal);
+      font-family: var(--font);
+      font-size: 12px;
+    }
+    .add-row-btn:hover { background: var(--cream-deep); border-color: var(--teal); }
+
+    /* ─── Bookkeeping practice card (Financial Assessment opener) ─── */
+    .bk-questions { display: flex; flex-direction: column; gap: 14px; }
+    .bk-q {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+      align-items: center;
+      padding: 10px 0;
+      border-bottom: 1px dashed var(--border);
+    }
+    .bk-q:last-child { border-bottom: none; padding-bottom: 0; }
+    .bk-q-label {
+      font-size: 13px;
+      color: var(--ink);
+    }
+    .bk-q-label .num-pill {
+      display: inline-block;
+      background: var(--terracotta-sft);
+      color: var(--terracotta-dk);
+      padding: 2px 8px;
+      border-radius: 10px;
+      font-size: 10px;
+      font-weight: 700;
+      margin-right: 8px;
+    }
+    .bk-q select {
+      width: 100%;
+      padding: 8px 12px;
+      border: 1px solid var(--border-dk);
+      border-radius: 6px;
+      background: var(--panel);
+      font-family: var(--font);
+      font-size: 13px;
+      color: var(--ink);
+      cursor: pointer;
+    }
+    .bk-q select:focus { outline: none; border-color: var(--terracotta); }
+
+    /* Calculator: inline caption (replaces Notes column) */
+    .bmc .bmc-row-caption {
+      font-size: 11px;
+      color: var(--ink-soft);
+      font-style: italic;
+      padding: 6px 12px 10px 70px;
+      background: var(--offwhite);
+      border-bottom: 1px solid var(--border);
+    }
+    .bmc .bmc-row-caption:last-child { border-bottom: none; }
+    .bmc .fetched-hint {
+      display: inline-block;
+      font-size: 10px;
+      color: var(--teal);
+      background: var(--cream-deep);
+      padding: 2px 7px;
+      border-radius: 10px;
+      margin-left: 6px;
+      font-style: normal;
+    }
+
+    /* ─── Bookkeeping Growth Trajectory — simple cards ─── */
+    .traj-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14px;
+    }
+    .traj-card {
+      background: var(--cream-deep);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 14px 16px;
+    }
+    .traj-card--feature {
+      background: var(--cream);
+      border-color: var(--border-dk);
+    }
+    .traj-title {
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--teal);
+      margin-bottom: 14px;
+    }
+    .traj-pair {
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 12px;
+    }
+    .traj-side {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+    .traj-side:last-child { text-align: right; align-items: flex-end; }
+    .traj-lbl {
+      font-size: 9px;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--ink-faint);
+    }
+    .traj-val {
+      font-size: 14px;
+      color: var(--ink);
+      line-height: 1.3;
+      font-weight: 600;
+    }
+    .traj-arrow {
+      font-size: 18px;
+      color: var(--ink-faint);
+      font-family: Georgia, serif;
+    }
+    .traj-arrow.up    { color: var(--teal); font-weight: 700; }
+    .traj-arrow.down  { color: var(--terracotta); font-weight: 700; }
+    .traj-delta {
+      padding: 6px 10px;
+      border-radius: 14px;
+      font-size: 11px;
+      font-weight: 700;
+      text-align: center;
+      background: var(--panel);
+      color: var(--ink-faint);
+      border: 1px dashed var(--border-dk);
+    }
+    .traj-delta.up {
+      background: var(--good-bg, #D9E8E5);
+      color: var(--teal);
+      border-color: var(--teal);
+      border-style: solid;
+    }
+    .traj-delta.down {
+      background: var(--terracotta-sft);
+      color: var(--terracotta-dk);
+      border-color: var(--terracotta);
+      border-style: solid;
+    }
+    .traj-delta.same {
+      background: var(--cream-deep);
+      color: var(--ink-soft);
+      border-style: solid;
+    }
+
+    /* ─── Monthly Break-even (Summary, fetched from BMC) ─── */
+    .be-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+    }
+    .be-card {
+      background: var(--teal);
+      color: var(--cream);
+      border-radius: 12px;
+      padding: 20px 22px;
+    }
+    .be-card--units { background: var(--terracotta); }
+    .be-card .be-lbl {
+      font-size: 10px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: rgba(251,245,229,0.75);
+      margin-bottom: 10px;
+    }
+    .be-card .be-val {
+      font-size: 30px;
+      letter-spacing: 0.5px;
+      font-feature-settings: 'tnum';
+      margin-bottom: 6px;
+    }
+    .be-card .be-sub {
+      font-size: 11px;
+      color: rgba(251,245,229,0.7);
+      font-style: italic;
+    }
+  </style>
+  <style>
+    /* ─── Section banners — Existing > Intervention Need > Required > Implementation Status pattern ─── */
+    .section-block { margin-bottom: 20px; }
+    .section-banner {
+      background: var(--teal);
+      color: var(--cream);
+      padding: 12px 18px;
+      border-radius: 10px 10px 0 0;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-family: var(--font);
+    }
+    .section-banner.intervention { background: var(--terracotta); }
+    .section-banner .sb-roman {
+      font-style: italic;
+      font-size: 13px;
+      opacity: 0.7;
+    }
+    .section-banner .sb-title {
+      font-size: 13px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+    }
+    .section-banner .sb-spacer { flex: 1; }
+    .section-banner .sb-meta {
+      font-size: 11px;
+      opacity: 0.85;
+      font-style: italic;
+    }
+    .section-body {
+      background: transparent;
+      padding: 14px 0 0 0;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    /* ─── Intervention toggle row inside terracotta block ─── */
+    .intervention-toggle-card {
+      background: var(--terracotta-sft);
+      border: 1px solid var(--terracotta);
+      border-radius: 0 0 10px 10px;
+      padding: 16px 18px;
+    }
+    .intervention-toggle-row {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 14px;
+      align-items: center;
+      margin-bottom: 12px;
+    }
+    .intervention-toggle-row .label {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--terracotta-dk);
+    }
+    .toggle-switch {
+      position: relative;
+      width: 48px;
+      height: 24px;
+      background: var(--cream-deep);
+      border: 1px solid var(--border-dk);
+      border-radius: 12px;
+      cursor: pointer;
+      transition: background .2s;
+    }
+    .toggle-switch::after {
+      content: '';
+      position: absolute;
+      top: 2px;
+      left: 3px;
+      width: 18px;
+      height: 18px;
+      background: var(--panel);
+      border: 1px solid var(--border-dk);
+      border-radius: 50%;
+      transition: transform .2s;
+    }
+    .toggle-switch.on {
+      background: var(--terracotta);
+      border-color: var(--terracotta-dk);
+    }
+    .toggle-switch.on::after {
+      transform: translateX(22px);
+      border-color: var(--terracotta-dk);
+    }
+    .intervention-justify {
+      display: none;
+      margin-top: 10px;
+    }
+    .intervention-justify.show { display: block; }
+    .intervention-justify label {
+      display: block;
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--terracotta-dk);
+      margin-bottom: 6px;
+    }
+    .intervention-justify textarea {
+      width: 100%;
+      min-height: 60px;
+      padding: 8px 10px;
+      border: 1px solid var(--border-dk);
+      border-radius: 6px;
+      background: var(--panel);
+      font-family: var(--font);
+      font-size: 13px;
+      color: var(--ink);
+      resize: vertical;
+    }
+    .intervention-justify textarea:focus {
+      outline: none;
+      border-color: var(--terracotta);
+    }
+
+    /* ─── Task Log attachment cell (Upload | View | filename) ─── */
+    .task-attach {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+    .task-att-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 4px 9px;
+      border: 1px solid var(--border-dk);
+      border-radius: 4px;
+      background: var(--cream-deep);
+      color: var(--teal);
+      font-size: 10.5px;
+      font-weight: 700;
+      cursor: pointer;
+      white-space: nowrap;
+      font-family: var(--font);
+    }
+    .task-att-btn:hover { background: var(--cream); border-color: var(--teal); }
+    .task-att-btn input[type="file"] { display: none; }
+    .task-att-view {
+      padding: 4px 9px;
+      border: 1px solid var(--border-dk);
+      border-radius: 4px;
+      background: var(--panel);
+      color: var(--ink-soft);
+      font-size: 10.5px;
+      font-weight: 700;
+      cursor: pointer;
+      white-space: nowrap;
+      font-family: var(--font);
+    }
+    .task-att-view:enabled { color: var(--teal); }
+    .task-att-view:enabled:hover { background: var(--cream-deep); border-color: var(--teal); }
+    .task-att-view:disabled { opacity: 0.4; cursor: not-allowed; }
+    .task-att-name {
+      font-size: 10.5px;
+      color: var(--ink-soft);
+      font-style: italic;
+      max-width: 110px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    /* ─── Teal stat tiles (Growth tab averages) ─── */
+    .teal-stat-row { gap: 14px; }
+    .teal-stat {
+      background: var(--teal);
+      color: var(--cream);
+      border-radius: 12px;
+      padding: 20px 22px;
+    }
+    .teal-stat .ts-lbl {
+      font-size: 10px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: rgba(251,245,229,0.75);
+      margin-bottom: 10px;
+    }
+    .teal-stat .ts-val {
+      font-size: 32px;
+      letter-spacing: 0.5px;
+      font-feature-settings: 'tnum';
+      margin-bottom: 6px;
+    }
+    .teal-stat .ts-sub {
+      font-size: 11px;
+      color: rgba(251,245,229,0.7);
+      font-style: italic;
+    }
+
+    /* ─── Tasks panel — raw-material module style (teal table headers, cream-deep section) ─── */
+    .tasks-section {
+      background: var(--cream-deep);
+      padding: 16px;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+    }
+    .tasks-section-title {
+      font-size: 13px;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      color: var(--teal);
+      margin-bottom: 12px;
+      padding-bottom: 8px;
+      border-bottom: 1px solid var(--border-dk);
+      font-weight: bold;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .tasks-section-title .tst-roman {
+      color: var(--terracotta);
+      margin-right: 8px;
+      font-style: italic;
+    }
+    .tasks-section-title .tst-count {
+      font-size: 11px;
+      color: var(--ink-faint);
+      letter-spacing: normal;
+      text-transform: none;
+      font-weight: normal;
+      font-style: italic;
+    }
+    table.data-table {
+      width: 100%;
+      border-collapse: collapse;
+      background: var(--offwhite);
+      border-radius: 6px;
+      overflow: hidden;
+      border: 1px solid var(--border-dk);
+      font-size: 12px;
+    }
+    table.data-table th {
+      background: var(--teal);
+      color: #fff;
+      padding: 9px 8px;
+      text-align: left;
+      font-weight: normal;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      font-size: 10px;
+      border-right: 1px solid var(--sea);
+      white-space: nowrap;
+      font-family: var(--font);
+    }
+    table.data-table th:last-child { border-right: none; }
+    table.data-table td {
+      padding: 7px 8px;
+      border-bottom: 1px solid var(--border);
+      border-right: 1px solid var(--border);
+      vertical-align: middle;
+    }
+    table.data-table td:last-child { border-right: none; }
+    table.data-table tr:last-child td { border-bottom: none; }
+    table.data-table input,
+    table.data-table select,
+    table.data-table textarea {
+      width: 100%;
+      border: 1px solid var(--border);
+      padding: 5px 6px;
+      border-radius: 3px;
+      font-family: var(--font);
+      font-size: 12px;
+      background: #fff;
+      color: var(--ink);
+    }
+    table.data-table input:focus,
+    table.data-table select:focus { outline: none; border-color: var(--teal); }
+    table.data-table .num-col {
+      width: 40px;
+      text-align: center;
+      color: var(--ink-soft);
+      font-size: 11px;
+      font-weight: 700;
+    }
+    .tasks-section .table-actions {
+      display: flex;
+      justify-content: flex-end;
+      margin-top: 12px;
+    }
+    .tasks-section .row-delete {
+      background: transparent;
+      border: none;
+      color: var(--terracotta);
+      cursor: pointer;
+      font-size: 14px;
+      padding: 2px 6px;
+    }
+    .tasks-section .row-delete:hover { color: var(--terracotta-dk); }
+    .tasks-section .add-row-btn { margin-top: 0; }
+  </style>
+</head>
+<body>
+  <div class="page">
+
+    <!-- ─── Hero bar ─── -->
+    <div class="hero-bar">
+      <div>
+        <div class="crumb">PRIME Rural · Financials</div>
+        <h1>Financials</h1>
+        <div class="subtitle">Accounts · Financial Bookkeeping · Applicable to Entrepreneur</div>
+      </div>
+      <div>
+        <button class="btn-ghost" type="button">Back</button>
+        <button class="btn-cta" type="button">Save</button>
+      </div>
+    </div>
+
+    <div class="card-body">
+      <!-- ─── Tab strip ─── -->
+      <div class="tabs">
+        <button class="tab is-active" data-tab="summary">Summary</button>
+        <button class="tab" data-tab="financial-assessment">Financial Assessment</button>
+        <button class="tab" data-tab="growth">Growth</button>
+        <button class="tab" data-tab="calculator">Business Model Calculator</button>
+        <button class="tab" data-tab="tasks">Task Log</button>
+      </div>
+
+      <div class="content">
+
+        <!-- ─────────────── SUMMARY (virtual tab → DfFinancialsSummary.vue) ─────────────── -->
+        <div class="tab-panel is-active" data-tab="summary">
+
+          <div class="kpi-grid">
+            <div class="kpi kpi--accent">
+              <div class="lbl">Total Investment</div>
+              <div class="val">₹2,00,000</div>
+              <div class="sub">Across 2 sources</div>
+            </div>
+            <div class="kpi">
+              <div class="lbl">Avg Monthly Revenue</div>
+              <div class="val" id="kpi-avg-rev">₹37,500</div>
+              <div class="sub">All months on file</div>
+            </div>
+            <div class="kpi">
+              <div class="lbl">Avg Net Profit / Month</div>
+              <div class="val" id="kpi-avg-profit">₹13,800</div>
+              <div class="sub">After expenses &amp; EMI</div>
+            </div>
+            <div class="kpi">
+              <div class="lbl">Profit Margin</div>
+              <div class="val" id="kpi-margin">36.8%</div>
+              <div class="sub">On overall revenue</div>
+            </div>
+          </div>
+
+          <!-- ─── Bookkeeping Growth Trajectory moved to end of Summary ─── -->
+
+          <div class="split-2">
+            <!-- Investment & Loans -->
+            <div class="ccard">
+              <div class="ccard-head">
+                <div class="left"><span class="title">Investment &amp; Loans</span></div>
+                <div class="right">2 sources · 1 active loan</div>
+              </div>
+              <div class="ccard-body">
+
+                <div class="sec-head">Investment breakdown</div>
+                <div class="bar-list">
+                  <div class="bar-row">
+                    <span class="nm">Self-funded</span>
+                    <span class="vl">₹1,50,000</span>
+                    <div class="bar-track"><span style="width:75%"></span></div>
+                  </div>
+                  <div class="bar-row">
+                    <span class="nm">Family / Friends</span>
+                    <span class="vl">₹50,000</span>
+                    <div class="bar-track"><span style="width:25%"></span></div>
+                  </div>
+                </div>
+
+                <div class="sec-head">Loans</div>
+                <table class="tbl" style="border-radius:6px">
+                  <thead>
+                    <tr>
+                      <th>Source</th>
+                      <th class="num">Sanctioned</th>
+                      <th class="num">Outstanding</th>
+                      <th class="num">EMI</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>PMEGP — SBI Resubelpara</td>
+                      <td class="num">₹2,00,000</td>
+                      <td class="num">₹1,80,000</td>
+                      <td class="num">₹4,500</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            <!-- Revenue & Income -->
+            <div class="ccard">
+              <div class="ccard-head">
+                <div class="left"><span class="title">Revenue &amp; Income</span></div>
+                <div class="right">Per-month averages</div>
+              </div>
+              <div class="ccard-body">
+                <dl class="fgrid fgrid--2">
+                  <div class="field field--currency"><dt>Avg Monthly Business Revenue</dt><dd>₹35,000</dd></div>
+                  <div class="field field--currency"><dt>Avg Monthly Expenditure</dt><dd>₹22,000</dd></div>
+                  <div class="field field--currency"><dt>Average Additional Income</dt><dd>₹2,500</dd></div>
+                  <div class="field field--currency"><dt>Avg Overall Monthly Revenue</dt><dd>₹37,500</dd></div>
+                  <div class="field field--currency"><dt>Avg Net Profit / Month</dt><dd>₹13,800</dd></div>
+                  <div class="field"><dt>Business Status</dt><dd><span class="pill">Operational</span></dd></div>
+                </dl>
+              </div>
+            </div>
+          </div>
+
+          <!-- 6-month trend -->
+          <div class="trend">
+            <h3>Monthly Revenue &amp; Profit Trend</h3>
+            <div class="trend-legend">
+              <span><span class="swatch" style="background: var(--teal)"></span>Revenue</span>
+              <span><span class="swatch" style="background: var(--terracotta)"></span>Profit</span>
+              <span style="margin-left:auto;font-style:italic">Updates live from Growth tab edits</span>
+            </div>
+            <svg id="trend-svg" viewBox="0 0 720 240" width="100%" height="240" preserveAspectRatio="none" style="display:block"></svg>
+          </div>
+
+          <!-- ─── Bookkeeping Growth Trajectory (simple cards, end of Summary) ─── -->
+          <div class="ccard">
+            <div class="ccard-head">
+              <div class="left"><span class="title">Bookkeeping Growth Trajectory</span></div>
+              <div class="right">Pre vs Post intervention</div>
+            </div>
+            <div class="ccard-body">
+              <p style="font-size:12px;color:var(--ink-soft);margin:0 0 16px;font-style:italic">Quantitative measures sourced from Financial Assessment (Pre) and Growth tab (Post).</p>
+
+              <div class="traj-grid">
+                <!-- Bookkeeping Practice -->
+                <div class="traj-card">
+                  <div class="traj-title">Practices Bookkeeping</div>
+                  <div class="traj-pair">
+                    <div class="traj-side">
+                      <div class="traj-lbl">Pre</div>
+                      <div class="traj-val" id="traj-q1-pre">—</div>
+                    </div>
+                    <div class="traj-arrow" id="traj-q1-arrow">→</div>
+                    <div class="traj-side">
+                      <div class="traj-lbl">Post</div>
+                      <div class="traj-val" id="traj-q1-post">—</div>
+                    </div>
+                  </div>
+                  <div class="traj-delta" id="traj-q1-delta">Set values in Financial Assessment &amp; Growth</div>
+                </div>
+
+                <!-- Bookkeeping Level -->
+                <div class="traj-card traj-card--feature">
+                  <div class="traj-title">Bookkeeping Level</div>
+                  <div class="traj-pair">
+                    <div class="traj-side">
+                      <div class="traj-lbl">Pre</div>
+                      <div class="traj-val" id="traj-q2-pre">—</div>
+                    </div>
+                    <div class="traj-arrow" id="traj-q2-arrow">→</div>
+                    <div class="traj-side">
+                      <div class="traj-lbl">Post</div>
+                      <div class="traj-val" id="traj-q2-post">—</div>
+                    </div>
+                  </div>
+                  <div class="traj-delta" id="traj-q2-delta">Set values in Financial Assessment &amp; Growth</div>
+                </div>
+
+                <!-- Frequency -->
+                <div class="traj-card">
+                  <div class="traj-title">Maintenance Frequency</div>
+                  <div class="traj-pair">
+                    <div class="traj-side">
+                      <div class="traj-lbl">Pre</div>
+                      <div class="traj-val" id="traj-q3-pre">—</div>
+                    </div>
+                    <div class="traj-arrow" id="traj-q3-arrow">→</div>
+                    <div class="traj-side">
+                      <div class="traj-lbl">Post</div>
+                      <div class="traj-val" id="traj-q3-post">—</div>
+                    </div>
+                  </div>
+                  <div class="traj-delta" id="traj-q3-delta">Set values in Financial Assessment &amp; Growth</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- ─── Monthly Break-even (fetched from Business Model Calculator) ─── -->
+          <div class="ccard">
+            <div class="ccard-head">
+              <div class="left"><span class="title">Monthly Break-even</span></div>
+              <div class="right">From Business Model Calculator</div>
+            </div>
+            <div class="ccard-body">
+              <p style="font-size:12px;color:var(--ink-soft);margin:0 0 14px;font-style:italic">The level of monthly revenue and unit sales needed to cover total expenses plus EMI. Auto-fetched from the Calculator tab's Projected scenario.</p>
+              <div class="be-grid">
+                <div class="be-card be-card--rev">
+                  <div class="be-lbl">Monthly Break-even Revenue</div>
+                  <div class="be-val" id="sum-be-rev">—</div>
+                  <div class="be-sub">Projected target</div>
+                </div>
+                <div class="be-card be-card--units">
+                  <div class="be-lbl">Monthly Break-even Units</div>
+                  <div class="be-val" id="sum-be-units">—</div>
+                  <div class="be-sub">Units to sell to cover Expense + EMI</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ─────────────── FINANCIAL ASSESSMENT ─────────────── -->
+        <div class="tab-panel" data-tab="financial-assessment">
+
+          <div class="ccard">
+            <div class="ccard-head">
+              <div class="left"><span class="title">Details</span></div>
+            </div>
+            <div class="ccard-body">
+              <dl class="fgrid">
+                <div class="field"><dt>Enterprenur Name</dt><dd>Banshan Marak</dd></div>
+                <div class="field"><dt>Module</dt><dd>Accounts</dd></div>
+                <div class="field"><dt>Applicable To</dt><dd>Entrepreneur</dd></div>
+                <div class="field"><dt>Lifecycle</dt><dd><span class="pill">Active</span></dd></div>
+              </dl>
+            </div>
+          </div>
+
+          <!-- ─── Section I — Assessment ─── -->
+          <div class="section-block">
+            <div class="section-banner">
+              <span class="sb-roman">I.</span>
+              <span class="sb-title">Assessment</span>
+              <span class="sb-spacer"></span>
+              <span class="sb-meta">Baseline financial picture</span>
+            </div>
+            <div class="section-body">
+
+              <div class="ccard">
+                <div class="ccard-head">
+                  <div class="left"><span class="title">Investment Sources</span></div>
+                  <div class="right">Total: <span id="inv-total-head">₹2,00,000</span></div>
+                </div>
+                <div class="ccard-body">
+                  <table class="tbl" id="tbl-investments">
+                    <thead>
+                      <tr>
+                        <th style="width:30px">#</th>
+                        <th>Investment Source</th>
+                        <th>Other Source Name</th>
+                        <th>Source Name</th>
+                        <th class="num">Amount</th>
+                        <th style="width:30px"></th>
+                      </tr>
+                    </thead>
+                    <tbody id="inv-body"></tbody>
+                    <tfoot>
+                      <tr><td colspan="4">Total Investment Sources Amount</td><td class="num" id="inv-total-foot">₹0</td><td></td></tr>
+                    </tfoot>
+                  </table>
+                  <button class="add-row-btn" onclick="invAddRow()">+ Add Investment Source</button>
+                </div>
+              </div>
+
+              <div class="ccard">
+                <div class="ccard-head">
+                  <div class="left"><span class="title">Loan Details</span></div>
+                  <div class="right"><span id="loan-count">0</span> active loan(s)</div>
+                </div>
+                <div class="ccard-body">
+                  <table class="tbl" id="tbl-loans">
+                    <thead>
+                      <tr>
+                        <th style="width:30px">#</th>
+                        <th class="num">Loan Amount</th>
+                        <th class="num">Interest %</th>
+                        <th class="num">Outstanding</th>
+                        <th class="num">Term (mo)</th>
+                        <th>Start</th>
+                        <th>End</th>
+                        <th class="num">EMI</th>
+                        <th class="num">Loan %</th>
+                        <th>Loan/Scheme</th>
+                        <th style="width:30px"></th>
+                      </tr>
+                    </thead>
+                    <tbody id="loan-body"></tbody>
+                  </table>
+                  <button class="add-row-btn" onclick="loanAddRow()">+ Add Loan</button>
+                </div>
+              </div>
+
+              <div class="ccard">
+                <div class="ccard-head">
+                  <div class="left"><span class="title">Revenue &amp; Expenditure</span></div>
+                  <div class="right">Editable averages · feeds Calculator</div>
+                </div>
+                <div class="ccard-body">
+                  <dl class="fgrid fgrid--3">
+                    <div class="field field--currency"><dt>Avg Monthly Business Revenue</dt><dd><input type="number" id="re-rev" class="num inline-input" value="35000" oninput="recalcRevenueExpenditure()"></dd></div>
+                    <div class="field field--currency"><dt>Avg Monthly Expenditure</dt><dd><input type="number" id="re-exp" class="num inline-input" value="22000" oninput="recalcRevenueExpenditure()"></dd></div>
+                    <div class="field field--currency"><dt>Avg Additional Income</dt><dd><input type="number" id="re-addinc" class="num inline-input" value="2500" oninput="recalcRevenueExpenditure()"></dd></div>
+
+                    <div class="field field--currency"><dt>Avg Net Profit Per Month</dt><dd id="re-profit">₹0</dd></div>
+                    <div class="field"><dt>Additional Income Source</dt><dd><input type="text" id="re-addinc-src" class="inline-input" value="Family handloom dividends"></dd></div>
+                    <div class="field field--currency"><dt>Avg Overall Monthly Revenue</dt><dd id="re-overall">₹0</dd></div>
+
+                    <div class="field"><dt>Profit Margin</dt><dd id="re-margin">—</dd></div>
+                    <div class="field"><dt>Revenue Evidence</dt><dd>📎 revenue-apr-may-2026.pdf</dd></div>
+                    <div class="field"><dt>Business Status</dt><dd><span class="pill">Operational</span></dd></div>
+                  </dl>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+          <!-- ─── Section II — Bookkeeping Practice ─── -->
+          <div class="section-block">
+            <div class="section-banner">
+              <span class="sb-roman">II.</span>
+              <span class="sb-title">Bookkeeping Practice</span>
+              <span class="sb-spacer"></span>
+              <span class="sb-meta">Baseline assessment (Pre)</span>
+            </div>
+            <div class="section-body">
+
+              <div class="ccard">
+                <div class="ccard-head">
+                  <div class="left"><span class="title">Practice Baseline</span></div>
+                </div>
+                <div class="ccard-body">
+                  <div class="bk-questions">
+                    <div class="bk-q">
+                      <div class="bk-q-label"><span class="num-pill">Q1</span>Does the Entrepreneur practice Bookkeeping?</div>
+                      <select id="bk-q1" onchange="refreshTrajectory()">
+                        <option value="">— Select —</option>
+                        <option value="Yes">Yes</option>
+                        <option value="No">No</option>
+                      </select>
+                    </div>
+                    <div class="bk-q">
+                      <div class="bk-q-label"><span class="num-pill">Q2</span>What is the level of Entrepreneur's Bookkeeping practice?</div>
+                      <select id="bk-q2" onchange="refreshTrajectory()">
+                        <option value="">— Select —</option>
+                        <option value="Level 1 — None">Level 1 — None (no records kept)</option>
+                        <option value="Level 2 — Informal">Level 2 — Informal (mental notes, scattered slips)</option>
+                        <option value="Level 3 — Basic">Level 3 — Basic (handwritten cash book, uncategorised)</option>
+                        <option value="Level 4 — Structured">Level 4 — Structured (categorised ledger, monthly totals)</option>
+                        <option value="Level 5 — Digital">Level 5 — Digital (digital tool, categorised, regular)</option>
+                      </select>
+                    </div>
+                    <div class="bk-q">
+                      <div class="bk-q-label"><span class="num-pill">Q3</span>How often does he maintain his Bookkeeping?</div>
+                      <select id="bk-q3" onchange="refreshTrajectory()">
+                        <option value="">— Select —</option>
+                        <option value="Daily">Daily</option>
+                        <option value="Weekly">Weekly</option>
+                        <option value="Monthly">Monthly</option>
+                        <option value="Yearly">Yearly</option>
+                        <option value="Occasionally">Occasionally</option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Intervention Need (terracotta) -->
+              <div class="section-block" style="margin-bottom:0">
+                <div class="section-banner intervention">
+                  <span class="sb-roman">⚠</span>
+                  <span class="sb-title">Intervention Need</span>
+                  <span class="sb-spacer"></span>
+                  <span class="sb-meta">Flag if entrepreneur needs support</span>
+                </div>
+                <div class="intervention-toggle-card">
+                  <div class="intervention-toggle-row">
+                    <div class="label">Does the entrepreneur need Intervention in bookkeeping?</div>
+                    <div class="toggle-switch" id="bk-int-toggle" onclick="toggleBkIntervention()"></div>
+                  </div>
+                  <div class="intervention-justify" id="bk-int-justify">
+                    <label>Justify</label>
+                    <textarea id="bk-int-reason" placeholder="Why is the intervention needed? What gaps did the assessment surface?"></textarea>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+
+        <!-- ─────────────── GROWTH ─────────────── -->
+        <div class="tab-panel" data-tab="growth">
+
+          <!-- ─── Section I — Monthly Tracker ─── -->
+          <div class="section-block">
+            <div class="section-banner">
+              <span class="sb-roman">I.</span>
+              <span class="sb-title">Monthly Tracker</span>
+              <span class="sb-spacer"></span>
+              <span class="sb-meta">Performance over time</span>
+            </div>
+            <div class="section-body">
+
+              <div class="ccard">
+                <div class="ccard-head">
+                  <div class="left"><span class="title">Monthly Performance</span></div>
+                  <div class="right"><span id="growth-count">0</span> month(s) on file</div>
+                </div>
+                <div class="ccard-body">
+                  <table class="tbl" id="tbl-growth">
+                    <thead>
+                      <tr>
+                        <th style="width:30px">#</th>
+                        <th>Reporting Month</th>
+                        <th class="num">Revenue (₹)</th>
+                        <th class="num">Expenses (₹)</th>
+                        <th class="num">Profit (₹)</th>
+                        <th>Evidence</th>
+                        <th style="width:30px"></th>
+                      </tr>
+                    </thead>
+                    <tbody id="growth-body"></tbody>
+                    <tfoot>
+                      <tr>
+                        <td colspan="2">Totals</td>
+                        <td class="num" id="growth-tot-rev">₹0</td>
+                        <td class="num" id="growth-tot-exp">₹0</td>
+                        <td class="num" id="growth-tot-profit">₹0</td>
+                        <td>—</td>
+                        <td></td>
+                      </tr>
+                    </tfoot>
+                  </table>
+                  <button class="add-row-btn" onclick="growthAddRow()">+ Add Month</button>
+                </div>
+              </div>
+
+              <div class="split-3 teal-stat-row">
+                <div class="teal-stat">
+                  <div class="ts-lbl">Average Revenue</div>
+                  <div class="ts-val" id="growth-avg-rev">₹0</div>
+                  <div class="ts-sub">Mean across <span id="growth-avg-n">0</span> reporting month(s)</div>
+                </div>
+                <div class="teal-stat">
+                  <div class="ts-lbl">Average Expenditure</div>
+                  <div class="ts-val" id="growth-avg-exp">₹0</div>
+                  <div class="ts-sub">Avg Revenue − Avg Profit</div>
+                </div>
+                <div class="teal-stat">
+                  <div class="ts-lbl">Average Profit</div>
+                  <div class="ts-val" id="growth-avg-profit">₹0</div>
+                  <div class="ts-sub">Mean across <span id="growth-avg-n2">0</span> reporting month(s)</div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+          <!-- ─── Section II — Implementation Status ─── -->
+          <div class="section-block">
+            <div class="section-banner intervention">
+              <span class="sb-roman">II.</span>
+              <span class="sb-title">Implementation Status</span>
+              <span class="sb-spacer"></span>
+              <span class="sb-meta">Post-intervention reassessment</span>
+            </div>
+            <div class="section-body">
+
+              <div class="ccard">
+                <div class="ccard-head">
+                  <div class="left"><span class="title">Bookkeeping Practice — Post Intervention</span></div>
+                  <div class="right">Feeds Summary trajectory (Post)</div>
+                </div>
+                <div class="ccard-body">
+                  <p style="font-size:11px;color:var(--ink-soft);font-style:italic;margin:0 0 14px;line-height:1.5">These answers feed the Summary's Bookkeeping Growth Trajectory as the <strong>Post</strong> values. Compare against the Pre values captured in Financial Assessment.</p>
+                  <div class="bk-questions">
+                    <div class="bk-q">
+                      <div class="bk-q-label"><span class="num-pill" style="background:var(--teal);color:var(--cream)">Q1</span>Has the entrepreneur improved bookkeeping practice?</div>
+                      <select id="bk-post-q1" onchange="refreshTrajectory()">
+                        <option value="">— Select —</option>
+                        <option value="Yes">Yes</option>
+                        <option value="No">No</option>
+                      </select>
+                    </div>
+                    <div class="bk-q">
+                      <div class="bk-q-label"><span class="num-pill" style="background:var(--teal);color:var(--cream)">Q2</span>What is the level of Entrepreneur's Bookkeeping practice?</div>
+                      <select id="bk-post-q2" onchange="refreshTrajectory()">
+                        <option value="">— Select —</option>
+                        <option value="Level 1 — None">Level 1 — None (no records kept)</option>
+                        <option value="Level 2 — Informal">Level 2 — Informal (mental notes, scattered slips)</option>
+                        <option value="Level 3 — Basic">Level 3 — Basic (handwritten cash book, uncategorised)</option>
+                        <option value="Level 4 — Structured">Level 4 — Structured (categorised ledger, monthly totals)</option>
+                        <option value="Level 5 — Digital">Level 5 — Digital (digital tool, categorised, regular)</option>
+                      </select>
+                    </div>
+                    <div class="bk-q">
+                      <div class="bk-q-label"><span class="num-pill" style="background:var(--teal);color:var(--cream)">Q3</span>How often does he maintain his Bookkeeping?</div>
+                      <select id="bk-post-q3" onchange="refreshTrajectory()">
+                        <option value="">— Select —</option>
+                        <option value="Daily">Daily</option>
+                        <option value="Weekly">Weekly</option>
+                        <option value="Monthly">Monthly</option>
+                        <option value="Yearly">Yearly</option>
+                        <option value="Occasionally">Occasionally</option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+        </div>
+
+        <!-- ─────────────── BUSINESS MODEL CALCULATOR ─────────────── -->
+        <div class="tab-panel" data-tab="calculator">
+          <div class="bmc">
+
+            <div class="bmc-legend">
+              <span><span class="sw autofetch"></span>Auto-fetched (read-only)</span>
+              <span><span class="sw input"></span>Input field</span>
+              <span><span class="sw calc"></span>Auto-calculated</span>
+            </div>
+
+            <!-- Section I: Loans -->
+            <div class="bmc-section" id="sec-loans">
+              <div class="bmc-section-title" onclick="bmcToggleSection('sec-loans')">
+                <span class="sec-title-left"><span class="sec-chev">▾</span><span><span class="roman">I.</span>Loan Terms</span></span>
+              </div>
+              <div class="sec-body">
+                <p style="font-size:11px;color:var(--ink-soft);font-style:italic;margin:0 0 10px;line-height:1.5">Existing Loan 1 &amp; 2 are auto-fetched from Financial Assessment → Loan Details (first two loans). New Loan Amount is a manual input. Total Loan Amount = sum of all loans whose checkbox is on.</p>
+                <table class="loans-table">
+                  <thead>
+                    <tr>
+                      <th class="sr">#</th>
+                      <th>Loan/Scheme</th>
+                      <th style="width:140px">Amount (₹)</th>
+                      <th style="width:140px">Interest Rate<br><span style="font-weight:normal;font-style:italic;font-size:10px">(% p.a.)</span></th>
+                      <th style="width:140px">No. of Instalments<br><span style="font-weight:normal;font-style:italic;font-size:10px">(months)</span></th>
+                      <th style="width:140px">Loan Contribution<br><span style="font-weight:normal;font-style:italic;font-size:10px">(% of Total)</span></th>
+                      <th style="width:75px">Add to Total</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td class="sr">1</td>
+                      <td><strong id="l1-name">Existing Loan 1</strong><div style="font-size:10px;color:var(--ink-faint);font-style:italic">From Financial Assessment</div></td>
+                      <td class="auto-cell"><input type="number" id="l1-amt" value="400000" readonly></td>
+                      <td class="auto-cell"><input type="number" id="l1-rate" value="6" step="0.01" readonly></td>
+                      <td class="auto-cell"><input type="number" id="l1-inst" value="60" readonly></td>
+                      <td class="auto-cell"><input type="number" id="l1-contrib" value="" placeholder="—" readonly></td>
+                      <td class="cb-cell"><input type="checkbox" class="cb" id="l1-add" checked onchange="bmcRecalc()"></td>
+                    </tr>
+                    <tr>
+                      <td class="sr">2</td>
+                      <td><strong id="l2-name">Existing Loan 2</strong><div style="font-size:10px;color:var(--ink-faint);font-style:italic">From Financial Assessment</div></td>
+                      <td class="auto-cell"><input type="number" id="l2-amt" value="0" readonly></td>
+                      <td class="auto-cell"><input type="number" id="l2-rate" value="0" step="0.01" readonly></td>
+                      <td class="auto-cell"><input type="number" id="l2-inst" value="" placeholder="—" readonly></td>
+                      <td class="auto-cell"><input type="number" id="l2-contrib" value="" placeholder="—" readonly></td>
+                      <td class="cb-cell"><input type="checkbox" class="cb" id="l2-add" onchange="bmcRecalc()"></td>
+                    </tr>
+                    <tr>
+                      <td class="sr">3</td>
+                      <td><strong>New Loan Amount</strong><div style="font-size:10px;color:var(--ink-faint);font-style:italic">Manual entry</div></td>
+                      <td class="input-cell"><input type="number" id="l3-amt" placeholder="0" oninput="bmcRecalc()"></td>
+                      <td class="input-cell"><input type="number" id="l3-rate" placeholder="0" step="0.01" oninput="bmcRecalc()"></td>
+                      <td class="input-cell"><input type="number" id="l3-inst" placeholder="0" oninput="bmcRecalc()"></td>
+                      <td class="input-cell"><input type="number" id="l3-contrib" placeholder="0" oninput="bmcRecalc()"></td>
+                      <td class="cb-cell"><input type="checkbox" class="cb" id="l3-add" onchange="bmcRecalc()"></td>
+                    </tr>
+                    <tr class="total-row">
+                      <td class="sr"></td>
+                      <td><strong>Total Loan Amount (BE, EE, CE)</strong></td>
+                      <td><input type="number" id="loan-total" readonly></td>
+                      <td colspan="4" style="background:var(--terracotta-sft);color:var(--terracotta-dk);font-style:italic;font-size:11px">Sum of all loans, conditioned to the check box</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            <!-- Section II: Revenue & Expense -->
+            <div class="bmc-section" id="sec-rev">
+              <div class="bmc-section-title" onclick="bmcToggleSection('sec-rev')">
+                <span class="sec-title-left"><span class="sec-chev">▾</span><span><span class="roman">II.</span>Revenue &amp; Expense</span></span>
+              </div>
+              <div class="sec-body">
+                <p style="font-size:11px;color:var(--ink-soft);font-style:italic;margin:0 0 10px;line-height:1.5">The <strong>Existing</strong> column auto-fetches from Financial Assessment → Revenue &amp; Expenditure but stays editable — override here if needed. The <strong>Projected</strong> column is the entrepreneur's target for after intervention — enter manually. Weighted Avg Selling Price auto-calculates.</p>
+                <table class="rev-table">
+                  <thead>
+                    <tr>
+                      <th class="sr">#</th>
+                      <th>Particular</th>
+                      <th style="width:200px">Existing<br><span style="font-weight:normal;font-style:italic;font-size:10px">avg across months</span></th>
+                      <th style="width:200px">Projected<br><span style="font-weight:normal;font-style:italic;font-size:10px">entrepreneur target</span></th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td class="sr">1</td>
+                      <td class="label">Total Quantity (All Products — Monthly)</td>
+                      <td class="auto-cell"><input type="number" id="qty-pre" value="400" readonly></td>
+                      <td class="input-cell"><input type="number" id="qty-post" value="1500" oninput="bmcRecalc()"></td>
+                    </tr>
+                    <tr>
+                      <td colspan="4" style="font-size:11px;color:var(--ink-soft);font-style:italic;padding:4px 12px 8px 60px;background:var(--offwhite);border-bottom:1px solid var(--border)">Existing fetched from Production Capacity → 'Average Production unit per month'. Projected is a manual input.</td>
+                    </tr>
+                    <tr>
+                      <td class="sr">2</td>
+                      <td class="label">Weighted Avg Selling Price / Unit (₹)</td>
+                      <td class="calc-cell"><input type="number" id="price-pre" readonly></td>
+                      <td class="calc-cell"><input type="number" id="price-post" readonly></td>
+                    </tr>
+                    <tr>
+                      <td colspan="4" style="font-size:11px;color:var(--ink-soft);font-style:italic;padding:4px 12px 8px 60px;background:var(--offwhite);border-bottom:1px solid var(--border)">Auto-calculated: Revenue per month ÷ Total Quantity.</td>
+                    </tr>
+                    <tr>
+                      <td class="sr">3</td>
+                      <td class="label">Average Revenue per month (₹)</td>
+                      <td class="input-cell"><input type="number" id="rev-pre" value="36500" oninput="onCalcExistingEdit('rev')"></td>
+                      <td class="input-cell"><input type="number" id="rev-post" value="280000" oninput="bmcRecalc()"></td>
+                    </tr>
+                    <tr>
+                      <td colspan="4" style="font-size:11px;color:var(--ink-soft);font-style:italic;padding:4px 12px 8px 60px;background:var(--offwhite);border-bottom:1px solid var(--border)">Existing auto-fetched from Financial Assessment → Revenue &amp; Expenditure. Editable — override here if needed. <span id="rev-pre-overridden" style="display:none;color:var(--terracotta-dk);font-style:normal;font-weight:700">· Overridden</span></td>
+                    </tr>
+                    <tr>
+                      <td class="sr">4</td>
+                      <td class="label">Average Expense per month (₹)</td>
+                      <td class="input-cell"><input type="number" id="exp-pre" value="23000" oninput="onCalcExistingEdit('exp')"></td>
+                      <td class="input-cell"><input type="number" id="exp-post" value="50000" oninput="bmcRecalc()"></td>
+                    </tr>
+                    <tr>
+                      <td colspan="4" style="font-size:11px;color:var(--ink-soft);font-style:italic;padding:4px 12px 8px 60px;background:var(--offwhite)">Existing auto-fetched from Financial Assessment → Revenue &amp; Expenditure. Editable — override here if needed. <span id="exp-pre-overridden" style="display:none;color:var(--terracotta-dk);font-style:normal;font-weight:700">· Overridden</span></td>
+                    </tr>
+                  </tbody>
+                </table>
+                <div class="actions">
+                  <button class="bmc-btn" onclick="bmcResetAll()">Reset all fields</button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Section III: Monthly Break-even -->
+            <div class="bmc-section" id="sec-output">
+              <div class="bmc-section-title" onclick="bmcToggleSection('sec-output')">
+                <span class="sec-title-left"><span class="sec-chev">▾</span><span><span class="roman">III.</span>Monthly Break-even</span></span>
+                <span style="font-size:10px;font-style:italic;font-weight:normal;color:var(--ink-soft);text-transform:none;letter-spacing:0">Auto-calculated from Inputs</span>
+              </div>
+              <div class="sec-body">
+                <table class="out-table">
+                  <thead>
+                    <tr>
+                      <th class="sr">Sr.</th>
+                      <th>Particulars</th>
+                      <th class="val col-pre" style="width:140px">Existing</th>
+                      <th class="val col-post" style="width:140px">Projected</th>
+                      <th class="comment" style="width:240px">Comment</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr><td class="sr">1</td><td class="label bold">Operating Profit / (Loss) — Before EMI</td>
+                        <td class="val pre col-pre" id="o-op-pre">—</td>
+                        <td class="val post col-post" id="o-op-post">—</td>
+                        <td class="comment">Revenue minus expenses</td></tr>
+                    <tr><td class="sr">2</td><td class="label bold">EMI</td>
+                        <td class="val pre col-pre" id="o-emi-pre">—</td>
+                        <td class="val post col-post" id="o-emi-post">—</td>
+                        <td class="comment">Monthly debt repayment</td></tr>
+                    <tr><td class="sr">3</td><td class="label bold">Net Profit / (Loss)</td>
+                        <td class="val pre col-pre" id="o-np-pre">—</td>
+                        <td class="val post col-post" id="o-np-post">—</td>
+                        <td class="comment">After EMI</td></tr>
+                    <tr><td class="sr">4</td><td class="label">Variable cost per unit</td>
+                        <td class="val pre col-pre" id="o-vcpu-pre">—</td>
+                        <td class="val post col-post" id="o-vcpu-post">—</td>
+                        <td class="comment">Total expense ÷ quantity</td></tr>
+                    <tr><td class="sr">5</td><td class="label">Contribution per unit</td>
+                        <td class="val pre col-pre" id="o-cpu-pre">—</td>
+                        <td class="val post col-post" id="o-cpu-post">—</td>
+                        <td class="comment">Selling price − variable cost per unit</td></tr>
+                    <tr><td class="sr">6</td><td class="label">Monthly fixed costs incl. EMI</td>
+                        <td class="val pre col-pre" id="o-mfc-pre">—</td>
+                        <td class="val post col-post" id="o-mfc-post">—</td>
+                        <td class="comment">Treating Expense + EMI as monthly obligation</td></tr>
+                    <tr class="highlight"><td class="sr">7</td><td class="label bold">Revenue Break-even / Month (₹)</td>
+                        <td class="val col-pre" id="o-rbe-pre">—</td>
+                        <td class="val col-post" id="o-rbe-post">—</td>
+                        <td class="comment">Break-even revenue</td></tr>
+                    <tr class="highlight"><td class="sr">8</td><td class="label bold">Unit Break-even / Month (units)</td>
+                        <td class="val col-pre" id="o-ube-pre">—</td>
+                        <td class="val col-post" id="o-ube-post">—</td>
+                        <td class="comment">Break-even units</td></tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            <!-- Section IV: Capital Costs -->
+            <div class="bmc-section" id="sec-capital">
+              <div class="bmc-section-title" onclick="bmcToggleSection('sec-capital')">
+                <span class="sec-title-left"><span class="sec-chev">▾</span><span><span class="roman">IV.</span>Capital Costs</span></span>
+              </div>
+              <div class="sec-body">
+                <div class="capital-card">
+                  <div class="cc-head"><div>Capital Cost Line</div><div style="text-align:right">Amount (₹)</div></div>
+                  <div class="cc-row"><div class="label">Total Capital Cost</div><div class="val" id="cc-total">—</div></div>
+                  <div class="cc-row"><div class="label">Loan Amount Taken</div><div class="val" id="cc-loan">—</div></div>
+                  <div class="cc-row"><div class="label">Interest Rate (blended)</div><div class="val" id="cc-rate">—</div></div>
+                  <div class="cc-row"><div class="label">No. of Instalments (blended)</div><div class="val" id="cc-inst">—</div></div>
+                  <div class="cc-row bold"><div class="label">EMI per month</div><div class="val" id="cc-emi">—</div></div>
+                  <div class="cc-row bold"><div class="label">Total Loan Repayment incl. interest</div><div class="val" id="cc-repay">—</div></div>
+                </div>
+                <p style="margin-top:10px;font-size:10.5px;color:var(--ink-soft);font-style:italic;line-height:1.5">EMI uses standard amortisation: <strong>EMI = P × r × (1+r)<sup>n</sup> / ((1+r)<sup>n</sup> − 1)</strong>, where <em>r</em> = annual rate ÷ 1200 and <em>n</em> = instalments. When two or more loans are checked, a blended rate and blended tenure are shown (informational); EMI is computed per-loan and summed.</p>
+              </div>
+            </div>
+
+            <!-- Result hero -->
+            <div class="result-hero">
+              <div class="rh-block">
+                <div class="rh-label">Monthly Break-even Revenue</div>
+                <div class="rh-val" id="hero-rev">—</div>
+                <div class="rh-sub">Projected target</div>
+              </div>
+              <div class="rh-block">
+                <div class="rh-label">Monthly Break-even Units</div>
+                <div class="rh-val amber" id="hero-units">—</div>
+                <div class="rh-sub">Units to sell to cover Expense + EMI</div>
+              </div>
+            </div>
+
+            <!-- Status banner -->
+            <div class="status-banner" id="status-banner" style="display:none">
+              <div class="icon" id="status-icon">●</div>
+              <div>
+                <div class="label" id="status-label">—</div>
+                <div class="msg" id="status-msg">—</div>
+              </div>
+            </div>
+
+            <!-- Help -->
+            <div class="help-card">
+              <h4>How this calculator works</h4>
+              <ol>
+                <li><strong>Contribution per unit</strong> = Selling price per unit − Variable cost per unit. Variable cost per unit is derived as Total Expense ÷ Quantity.</li>
+                <li><strong>Monthly obligation</strong> = Total Expense + EMI.</li>
+                <li><strong>Break-even units</strong> = ⌈ Monthly obligation ÷ Contribution per unit ⌉.</li>
+                <li><strong>Break-even revenue</strong> = Break-even units × Selling price per unit.</li>
+                <li>If Contribution per unit is zero or negative, break-even is shown as <em>Not achievable</em> — selling more units would not cover monthly obligations.</li>
+              </ol>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- ─────────────── TASKS ─────────────── -->
+        <div class="tab-panel" data-tab="tasks">
+          <div class="tasks-section">
+            <div class="tasks-section-title">
+              <span><span class="tst-roman">I.</span>Task Log — Financials</span>
+              <span class="tst-count"><span id="task-count">0</span> entries</span>
+            </div>
+            <table class="data-table" id="tbl-tasks">
+              <thead>
+                <tr>
+                  <th class="num-col">No.</th>
+                  <th style="width:130px">Date</th>
+                  <th>Task Name</th>
+                  <th>Notes / Outcome</th>
+                  <th style="width:140px">Attachment</th>
+                  <th style="width:32px"></th>
+                </tr>
+              </thead>
+              <tbody id="task-body"></tbody>
+            </table>
+            <div class="table-actions">
+              <button class="add-row-btn" onclick="taskAddRow()">+ Add Entry</button>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // ═══════════════════════════════════════════════════════════════════════
+    //  FINANCIALS MODULE — full client-side engine
+    //  Cross-tab data flow:
+    //    Growth (monthly table)  ─► Summary (KPIs + trend chart)
+    //                            ─► Calculator (Existing column = 6-month avg)
+    //    Financial Assessment (Loans) ─► Calculator (Existing Loan 1, 2)
+    // ═══════════════════════════════════════════════════════════════════════
+
+    // ────────────────── State (in-memory; backend wires later) ──────────────
+    const STATE = {
+      investments: [
+        { source: 'Self-funded',   other: '', name: 'Personal savings',          amt: 150000 },
+        { source: 'Family/Friends', other: '', name: 'Mother — handloom unit',   amt: 50000 },
+      ],
+      loans: [
+        { amt:200000, rate:12, outstanding:180000, termMo:60, start:'2026-04-01', end:'2031-04-01', emi:4500, pct:100, scheme:'PMEGP — SBI' },
+      ],
+      growth: [
+        { month:'Dec 2025', rev:28000, exp:19000, evidence:'dec-2025.pdf' },
+        { month:'Jan 2026', rev:32000, exp:21000, evidence:'jan-2026.pdf' },
+        { month:'Feb 2026', rev:36000, exp:24000, evidence:'feb-2026.pdf' },
+        { month:'Mar 2026', rev:38000, exp:24000, evidence:'mar-2026.pdf' },
+        { month:'Apr 2026', rev:41000, exp:25000, evidence:'apr-2026.pdf' },
+        { month:'May 2026', rev:44000, exp:25000, evidence:'may-2026.pdf' },
+      ],
+      tasks: [
+        { date:'2026-03-10', task:'01 — Initial Financial Assessment',           notes:'',                                 attachment:'' },
+        { date:'2026-03-12', task:'04 — Bank Passbook Detail Collection',        notes:'SBI Resubelpara',                  attachment:'passbook.jpg' },
+        { date:'2026-03-20', task:'03 — Financial Data Recorded in CRM',         notes:'',                                 attachment:'' },
+        { date:'2026-04-05', task:'05 — Loan Details Documented',                notes:'',                                 attachment:'' },
+        { date:'2026-05-01', task:'09 — Monthly Performance Updated',            notes:'Awaiting bank statement',          attachment:'' },
+      ],
+    };
+
+    // The full bookkeeping/financials task dropdown
+    const TASK_OPTIONS = [
+      '01 — Initial Financial Assessment',
+      '02 — Awareness on Importance of Bookkeeping',
+      '03 — Financial Data Recorded in CRM',
+      '04 — Bank Passbook Detail Collection',
+      '05 — Loan Details Documented',
+      '06 — Bookkeeping Training Delivered',
+      '07 — Business & Home Money Separation Training',
+      '08 — Cash Book Follow Up',
+      '09 — Monthly Performance Updated',
+      '10 — Monthly P&L Review',
+      '11 — Assessed the Monthly Break-even through BMC',
+      '12 — Follow Up on Bookkeeping Practices',
+      '13 — Awareness on Digital Bookkeeping',
+      '14 — Digital Bookkeeping Training Delivered',
+      '15 — Investment Planning Session',
+      '16 — If others, specify',
+    ];
+
+    const INVESTMENT_SOURCES = ['Self-funded', 'Family/Friends', 'Friends', 'Bank Loan', 'Government Scheme', 'NGO', 'Other'];
+
+    // ───────────────────────── Helpers ──────────────────────────────────────
+    function num(id){ const v = parseFloat(document.getElementById(id)?.value); return isNaN(v) ? 0 : v; }
+    function fmtINR(v){
+      if(typeof v !== 'number' || !isFinite(v)) return '₹0';
+      return '₹' + Math.round(v).toLocaleString('en-IN');
+    }
+    function setText(id, v){ const el = document.getElementById(id); if(el) el.textContent = v; }
+    function escapeAttr(s){ return String(s||'').replace(/"/g, '&quot;'); }
+
+    // ───────────────────────── Investment Sources ───────────────────────────
+    function invRenderRow(idx, r){
+      const tr = document.createElement('tr');
+      const otherDisplay = (r.source === 'Other') ? '' : 'style="opacity:0.5;pointer-events:none"';
+      tr.innerHTML = `
+        <td>${idx+1}</td>
+        <td>
+          <select onchange="STATE.investments[${idx}].source=this.value; invRender();">
+            ${INVESTMENT_SOURCES.map(s => `<option value="${s}" ${s===r.source?'selected':''}>${s}</option>`).join('')}
+          </select>
+        </td>
+        <td><input type="text" ${otherDisplay} value="${escapeAttr(r.other)}" placeholder="${r.source==='Other'?'Specify':'—'}" oninput="STATE.investments[${idx}].other=this.value;"></td>
+        <td><input type="text" value="${escapeAttr(r.name)}" placeholder="e.g., Personal savings" oninput="STATE.investments[${idx}].name=this.value;"></td>
+        <td><input type="number" class="num" value="${r.amt||0}" oninput="STATE.investments[${idx}].amt=parseFloat(this.value)||0; invRecalcTotal();"></td>
+        <td><button class="row-del" onclick="invRemoveRow(${idx})" title="Remove row">✕</button></td>
+      `;
+      return tr;
+    }
+    function invRender(){
+      const tbody = document.getElementById('inv-body');
+      if(!tbody) return;
+      tbody.innerHTML = '';
+      STATE.investments.forEach((r, i) => tbody.appendChild(invRenderRow(i, r)));
+      invRecalcTotal();
+    }
+    function invRecalcTotal(){
+      const total = STATE.investments.reduce((s,r) => s + (r.amt||0), 0);
+      setText('inv-total-head', fmtINR(total));
+      setText('inv-total-foot', fmtINR(total));
+    }
+    function invAddRow(){
+      STATE.investments.push({ source:'Self-funded', other:'', name:'', amt:0 });
+      invRender();
+    }
+    function invRemoveRow(idx){
+      STATE.investments.splice(idx, 1);
+      invRender();
+    }
+
+    // ───────────────────────── Loan Details ─────────────────────────────────
+    function loanRenderRow(idx, r){
+      const tr = document.createElement('tr');
+      tr.innerHTML = `
+        <td>${idx+1}</td>
+        <td><input type="number" class="num" value="${r.amt||0}" oninput="STATE.loans[${idx}].amt=parseFloat(this.value)||0; loanSyncToCalculator();"></td>
+        <td><input type="number" class="num" value="${r.rate||0}" step="0.01" oninput="STATE.loans[${idx}].rate=parseFloat(this.value)||0; loanSyncToCalculator();"></td>
+        <td><input type="number" class="num" value="${r.outstanding||0}" oninput="STATE.loans[${idx}].outstanding=parseFloat(this.value)||0;"></td>
+        <td><input type="number" class="num" value="${r.termMo||0}" oninput="STATE.loans[${idx}].termMo=parseFloat(this.value)||0; loanSyncToCalculator();"></td>
+        <td><input type="date" value="${r.start||''}" oninput="STATE.loans[${idx}].start=this.value;"></td>
+        <td><input type="date" value="${r.end||''}" oninput="STATE.loans[${idx}].end=this.value;"></td>
+        <td><input type="number" class="num" value="${r.emi||0}" oninput="STATE.loans[${idx}].emi=parseFloat(this.value)||0;"></td>
+        <td><input type="number" class="num" value="${r.pct||0}" oninput="STATE.loans[${idx}].pct=parseFloat(this.value)||0;"></td>
+        <td><input type="text" value="${escapeAttr(r.scheme)}" placeholder="Scheme name" oninput="STATE.loans[${idx}].scheme=this.value; loanSyncToCalculator();"></td>
+        <td><button class="row-del" onclick="loanRemoveRow(${idx})" title="Remove row">✕</button></td>
+      `;
+      return tr;
+    }
+    function loanRender(){
+      const tbody = document.getElementById('loan-body');
+      if(!tbody) return;
+      tbody.innerHTML = '';
+      STATE.loans.forEach((r, i) => tbody.appendChild(loanRenderRow(i, r)));
+      setText('loan-count', STATE.loans.length);
+      loanSyncToCalculator();
+    }
+    function loanAddRow(){
+      STATE.loans.push({ amt:0, rate:0, outstanding:0, termMo:0, start:'', end:'', emi:0, pct:0, scheme:'' });
+      loanRender();
+    }
+    function loanRemoveRow(idx){
+      STATE.loans.splice(idx, 1);
+      loanRender();
+    }
+    // Push first two loans into Calculator's Existing Loan 1 & 2 fields (incl. scheme name)
+    function loanSyncToCalculator(){
+      const l1 = STATE.loans[0] || { amt:0, rate:0, termMo:0, scheme:'' };
+      const l2 = STATE.loans[1] || { amt:0, rate:0, termMo:0, scheme:'' };
+      const setVal = (id, v) => { const el = document.getElementById(id); if(el) el.value = (v || '') === '' ? '' : v; };
+      const setName = (id, scheme, fallback) => {
+        const el = document.getElementById(id);
+        if(el) el.textContent = (scheme && scheme.trim()) ? scheme : fallback;
+      };
+      setName('l1-name', l1.scheme, 'Existing Loan 1');
+      setName('l2-name', l2.scheme, 'Existing Loan 2');
+      setVal('l1-amt', l1.amt);
+      setVal('l1-rate', l1.rate);
+      setVal('l1-inst', l1.termMo);
+      setVal('l2-amt', l2.amt);
+      setVal('l2-rate', l2.rate);
+      setVal('l2-inst', l2.termMo);
+      bmcRecalc();
+    }
+
+    // ── Bookkeeping Intervention toggle (Financial Assessment → Section II)
+    function toggleBkIntervention(){
+      const tog = document.getElementById('bk-int-toggle');
+      const just = document.getElementById('bk-int-justify');
+      if(!tog || !just) return;
+      const on = tog.classList.toggle('on');
+      just.classList.toggle('show', on);
+    }
+
+    // ───────────────────────── Revenue & Expenditure ────────────────────────
+    // Source of truth for Calculator's Existing column (revenue + expense).
+    // User can override in the Calculator; override flag prevents this from clobbering.
+    const CALC_OVERRIDE = { rev: false, exp: false };
+    function onCalcExistingEdit(which){
+      CALC_OVERRIDE[which] = true;
+      const flag = document.getElementById(which + '-pre-overridden');
+      if(flag) flag.style.display = 'inline';
+      bmcRecalc();
+    }
+    function recalcRevenueExpenditure(){
+      const rev = num('re-rev');
+      const exp = num('re-exp');
+      const addInc = num('re-addinc');
+      const profit = rev - exp;
+      const overall = rev + addInc;
+      const margin = overall > 0 ? (profit / overall) * 100 : 0;
+      setText('re-profit', fmtINR(profit));
+      setText('re-overall', fmtINR(overall));
+      setText('re-margin', overall > 0 ? margin.toFixed(1) + '%' : '—');
+
+      // Push into Calculator's Existing column (unless user has overridden)
+      if(!CALC_OVERRIDE.rev){
+        const el = document.getElementById('rev-pre');
+        if(el) el.value = Math.round(rev);
+      }
+      if(!CALC_OVERRIDE.exp){
+        const el = document.getElementById('exp-pre');
+        if(el) el.value = Math.round(exp);
+      }
+      bmcRecalc();
+    }
+
+    // ───────────────────────── Growth (monthly perf) ────────────────────────
+    function growthRenderRow(idx, r){
+      const tr = document.createElement('tr');
+      const profit = (r.rev||0) - (r.exp||0);
+      tr.innerHTML = `
+        <td>${idx+1}</td>
+        <td><input type="text" value="${escapeAttr(r.month)}" placeholder="e.g., Jun 2026" oninput="STATE.growth[${idx}].month=this.value; growthRefresh();"></td>
+        <td><input type="number" class="num" value="${r.rev||0}" oninput="STATE.growth[${idx}].rev=parseFloat(this.value)||0; growthRefresh();"></td>
+        <td><input type="number" class="num" value="${r.exp||0}" oninput="STATE.growth[${idx}].exp=parseFloat(this.value)||0; growthRefresh();"></td>
+        <td class="num" id="growth-profit-${idx}">${fmtINR(profit)}</td>
+        <td><input type="text" value="${escapeAttr(r.evidence)}" placeholder="filename.pdf" oninput="STATE.growth[${idx}].evidence=this.value;"></td>
+        <td><button class="row-del" onclick="growthRemoveRow(${idx})" title="Remove row">✕</button></td>
+      `;
+      return tr;
+    }
+    function growthRender(){
+      const tbody = document.getElementById('growth-body');
+      if(!tbody) return;
+      tbody.innerHTML = '';
+      STATE.growth.forEach((r, i) => tbody.appendChild(growthRenderRow(i, r)));
+      setText('growth-count', STATE.growth.length);
+      growthRefresh();
+    }
+    function growthRefresh(){
+      // Recompute per-row profit cells
+      STATE.growth.forEach((r, i) => {
+        const cell = document.getElementById(`growth-profit-${i}`);
+        if(cell) cell.textContent = fmtINR((r.rev||0) - (r.exp||0));
+      });
+      // Totals + averages
+      const totals = STATE.growth.reduce((s, r) => {
+        s.rev += r.rev || 0;
+        s.exp += r.exp || 0;
+        return s;
+      }, { rev:0, exp:0 });
+      totals.profit = totals.rev - totals.exp;
+      setText('growth-tot-rev', fmtINR(totals.rev));
+      setText('growth-tot-exp', fmtINR(totals.exp));
+      setText('growth-tot-profit', fmtINR(totals.profit));
+
+      // Average over ALL months on file (could be 2, 3, 6, however many)
+      const all = STATE.growth;
+      const n = all.length;
+      const avgRev = n ? all.reduce((s,r) => s + (r.rev||0), 0) / n : 0;
+      const avgExp = n ? all.reduce((s,r) => s + (r.exp||0), 0) / n : 0;
+      const avgProfit = avgRev - avgExp;
+      setText('growth-avg-rev', fmtINR(avgRev));
+      setText('growth-avg-exp', fmtINR(avgExp));
+      setText('growth-avg-profit', fmtINR(avgProfit));
+      setText('growth-avg-n', n);
+      setText('growth-avg-n2', n);
+
+      // Note: Calculator's Existing column is now sourced from Financial Assessment
+      // (Revenue & Expenditure card), NOT from Growth averages.
+      // Growth averages still drive the Summary KPI tiles + trend chart.
+
+      // Summary KPI tiles
+      setText('kpi-avg-rev', fmtINR(avgRev));
+      setText('kpi-avg-profit', fmtINR(avgProfit));
+      setText('kpi-margin', avgRev > 0 ? ((avgProfit/avgRev)*100).toFixed(1) + '%' : '—');
+
+      // Trend chart redraw
+      renderTrendChart();
+    }
+    function growthAddRow(){
+      STATE.growth.push({ month:'', rev:0, exp:0, evidence:'' });
+      growthRender();
+    }
+    function growthRemoveRow(idx){
+      STATE.growth.splice(idx, 1);
+      growthRender();
+    }
+
+    // ───────────────────────── Trend Chart (SVG, redrawn on edit) ──────────
+    function renderTrendChart(){
+      const svg = document.getElementById('trend-svg');
+      if(!svg) return;
+      const rows = STATE.growth;
+      if(rows.length === 0){
+        svg.innerHTML = `<text x="360" y="120" text-anchor="middle" font-family="Georgia,serif" font-size="13" fill="#9C9384" font-style="italic">Add months in the Growth tab to plot the trend</text>`;
+        return;
+      }
+      // Layout: 720×240 viewbox. Left axis area 50px. Chart area 50..710 = 660px wide. Top pad 20, bottom pad 40.
+      const W = 720, H = 240, leftPad = 50, rightPad = 10, topPad = 20, bottomPad = 40;
+      const chartW = W - leftPad - rightPad;
+      const chartH = H - topPad - bottomPad;
+      const n = rows.length;
+      const groupW = chartW / n;
+      const barW = Math.max(8, Math.min(30, groupW * 0.35));
+      const gap = groupW * 0.06;
+      const maxVal = Math.max(...rows.map(r => Math.max(r.rev||0, (r.rev||0) - (r.exp||0))), 1);
+      const niceMax = niceCeil(maxVal);
+
+      const yTicks = 5;
+      let parts = [];
+      // Y grid
+      parts.push('<g stroke="#E8DFC9" stroke-dasharray="2 4">');
+      for(let t=0; t<=yTicks; t++){
+        const y = topPad + (chartH * t / yTicks);
+        parts.push(`<line x1="${leftPad}" x2="${W-rightPad}" y1="${y}" y2="${y}"/>`);
+      }
+      parts.push('</g>');
+      // Y labels
+      parts.push('<g font-family="Georgia,serif" font-size="10" fill="#9C9384">');
+      for(let t=0; t<=yTicks; t++){
+        const y = topPad + (chartH * (yTicks-t) / yTicks);
+        const v = (niceMax * t) / yTicks;
+        parts.push(`<text x="0" y="${y+4}">${fmtShortINR(v)}</text>`);
+      }
+      parts.push('</g>');
+      // Bars + month labels
+      rows.forEach((r, i) => {
+        const groupX = leftPad + i * groupW;
+        const revBarX = groupX + groupW/2 - barW - gap/2;
+        const proBarX = groupX + groupW/2 + gap/2;
+        const revBarH = chartH * ((r.rev||0) / niceMax);
+        const profit = (r.rev||0) - (r.exp||0);
+        const proBarH = chartH * Math.max(0, profit) / niceMax;
+        parts.push(`<rect x="${revBarX}" y="${topPad + chartH - revBarH}" width="${barW}" height="${revBarH}" fill="#0E4D4E"/>`);
+        parts.push(`<rect x="${proBarX}" y="${topPad + chartH - proBarH}" width="${barW}" height="${proBarH}" fill="#C26849"/>`);
+        const labelX = groupX + groupW/2;
+        const labelY = topPad + chartH + 16;
+        const shortMonth = (r.month || '').split(' ')[0] || `M${i+1}`;
+        parts.push(`<text x="${labelX}" y="${labelY}" font-family="Georgia,serif" font-size="11" fill="#6B6359" text-anchor="middle">${shortMonth}</text>`);
+      });
+      svg.innerHTML = parts.join('');
+    }
+    function niceCeil(v){
+      // Round up to a "nice" tick value: 1, 2, 5 × 10^k
+      if(v <= 0) return 1;
+      const exp = Math.floor(Math.log10(v));
+      const base = Math.pow(10, exp);
+      const norm = v / base;
+      let nice;
+      if(norm <= 1) nice = 1;
+      else if(norm <= 2) nice = 2;
+      else if(norm <= 5) nice = 5;
+      else nice = 10;
+      return nice * base;
+    }
+    function fmtShortINR(v){
+      if(v >= 100000) return '₹' + (v/100000).toFixed(1) + 'L';
+      if(v >= 1000) return '₹' + (v/1000).toFixed(0) + 'k';
+      return '₹' + Math.round(v);
+    }
+
+    // ───────────────────────── Tasks ─────────────────────────────────────────
+    function taskRenderRow(idx, r){
+      const tr = document.createElement('tr');
+      tr.innerHTML = `
+        <td class="num-col">${String(idx+1).padStart(2,'0')}</td>
+        <td><input type="date" value="${r.date||''}" oninput="STATE.tasks[${idx}].date=this.value;"></td>
+        <td>
+          <select onchange="STATE.tasks[${idx}].task=this.value;" style="min-width:240px">
+            <option value="">— Select Task —</option>
+            ${TASK_OPTIONS.map(t => `<option value="${escapeAttr(t)}" ${t===r.task?'selected':''}>${t}</option>`).join('')}
+          </select>
+        </td>
+        <td><input type="text" value="${escapeAttr(r.notes)}" placeholder="Notes / Outcome" oninput="STATE.tasks[${idx}].notes=this.value;"></td>
+        <td>
+          <div class="task-attach">
+            <label class="task-att-btn">
+              ⬆ Upload
+              <input type="file" onchange="taskUpload(${idx}, this)">
+            </label>
+            <button class="task-att-view" ${r.attachment ? '' : 'disabled'} onclick="taskView(${idx})">View</button>
+            ${r.attachment ? `<span class="task-att-name" title="${escapeAttr(r.attachment)}">${escapeAttr(r.attachment)}</span>` : ''}
+          </div>
+        </td>
+        <td><button class="row-delete" onclick="taskRemoveRow(${idx})" title="Remove row">✕</button></td>
+      `;
+      return tr;
+    }
+    function taskRender(){
+      const tbody = document.getElementById('task-body');
+      if(!tbody) return;
+      tbody.innerHTML = '';
+      STATE.tasks.forEach((r, i) => tbody.appendChild(taskRenderRow(i, r)));
+      taskRefreshHeader();
+    }
+    function taskRefreshHeader(){
+      setText('task-count', STATE.tasks.length);
+    }
+    function taskAddRow(){
+      STATE.tasks.push({ date:'', task:'', notes:'', attachment:'' });
+      taskRender();
+    }
+    function taskRemoveRow(idx){
+      STATE.tasks.splice(idx, 1);
+      taskRender();
+    }
+    function taskUpload(idx, input){
+      const file = input.files && input.files[0];
+      if(!file) return;
+      STATE.tasks[idx].attachment = file.name;
+      taskRender();
+    }
+    function taskView(idx){
+      const att = STATE.tasks[idx]?.attachment;
+      if(att) alert('Attachment: ' + att + '\n\n(In the live module this opens the file viewer.)');
+    }
+
+    // ───────────────────────── Bookkeeping Growth Trajectory ────────────────
+    // Renders the consolidated journey graph (SVG) + milestone strip.
+    // Pre data comes from Financial Assessment Q1/Q2/Q3. Post data comes from Growth Q1/Q2/Q3.
+    // Milestones map to Task Log items by task-number prefix.
+    const LEVEL_TO_INT = {
+      'Level 1 — None': 1,
+      'Level 2 — Informal': 2,
+      'Level 3 — Basic': 3,
+      'Level 4 — Structured': 4,
+      'Level 5 — Digital': 5,
+    };
+    const LEVEL_SHORT = ['', 'None', 'Informal', 'Basic', 'Structured', 'Digital'];
+    const FREQ_ORDER = ['Yearly','Occasionally','Monthly','Weekly','Daily'];
+
+    function refreshTrajectory(){
+      // Pre values come from Financial Assessment Q1/Q2/Q3
+      // Post values come from Growth tab Q1/Q2/Q3
+      const preQ1  = document.getElementById('bk-q1')?.value || '';
+      const postQ1 = document.getElementById('bk-post-q1')?.value || '';
+      const preLvlStr  = document.getElementById('bk-q2')?.value || '';
+      const postLvlStr = document.getElementById('bk-post-q2')?.value || '';
+      const preFreq    = document.getElementById('bk-q3')?.value || '';
+      const postFreq   = document.getElementById('bk-post-q3')?.value || '';
+      const preLvl  = LEVEL_TO_INT[preLvlStr]  || 0;
+      const postLvl = LEVEL_TO_INT[postLvlStr] || 0;
+      const preFreqIdx  = FREQ_ORDER.indexOf(preFreq);
+      const postFreqIdx = FREQ_ORDER.indexOf(postFreq);
+
+      // ── Card 1: Practices Bookkeeping (binary)
+      paintCard(1, {
+        preLabel:  preQ1  || '—',
+        postLabel: postQ1 || '—',
+        delta: yesNoDelta(preQ1, postQ1),
+      });
+
+      // ── Card 2: Bookkeeping Level (1..5 with +n levels delta)
+      const lvlDelta = (preLvl && postLvl) ? postLvl - preLvl : null;
+      paintCard(2, {
+        preLabel:  preLvl  ? `Level ${preLvl} — ${LEVEL_SHORT[preLvl]}`  : '—',
+        postLabel: postLvl ? `Level ${postLvl} — ${LEVEL_SHORT[postLvl]}` : '—',
+        delta: lvlDelta === null ? null :
+               lvlDelta > 0  ? { dir:'up',   text:`+${lvlDelta} level${lvlDelta>1?'s':''}` } :
+               lvlDelta < 0  ? { dir:'down', text:`${lvlDelta} level${lvlDelta<-1?'s':''}` } :
+                               { dir:'same', text:'No change' },
+      });
+
+      // ── Card 3: Frequency (Yearly < Occasionally < Monthly < Weekly < Daily)
+      const freqDelta = (preFreqIdx >= 0 && postFreqIdx >= 0) ? postFreqIdx - preFreqIdx : null;
+      paintCard(3, {
+        preLabel:  preFreq  || '—',
+        postLabel: postFreq || '—',
+        delta: freqDelta === null ? null :
+               freqDelta > 0  ? { dir:'up',   text:'More frequent' } :
+               freqDelta < 0  ? { dir:'down', text:'Less frequent' } :
+                                { dir:'same', text:'Same frequency' },
+      });
+    }
+
+    function paintCard(n, data){
+      const setText = (id, v) => { const el = document.getElementById(id); if(el) el.textContent = v; };
+      setText(`traj-q${n}-pre`,  data.preLabel);
+      setText(`traj-q${n}-post`, data.postLabel);
+
+      const arrow = document.getElementById(`traj-q${n}-arrow`);
+      const delta = document.getElementById(`traj-q${n}-delta`);
+      if(!arrow || !delta) return;
+
+      arrow.classList.remove('up','down');
+      delta.classList.remove('up','down','same');
+
+      if(!data.delta){
+        arrow.textContent = '→';
+        delta.textContent = 'Set values in Financial Assessment & Growth';
+        return;
+      }
+      delta.classList.add(data.delta.dir);
+      delta.textContent = data.delta.text;
+      if(data.delta.dir === 'up')   { arrow.textContent = '↗'; arrow.classList.add('up'); }
+      else if(data.delta.dir === 'down') { arrow.textContent = '↘'; arrow.classList.add('down'); }
+      else                          { arrow.textContent = '→'; }
+    }
+
+    function yesNoDelta(pre, post){
+      if(!pre || !post) return null;
+      if(pre === 'No'  && post === 'Yes') return { dir:'up',   text:'Started practicing' };
+      if(pre === 'Yes' && post === 'No' ) return { dir:'down', text:'Stopped practicing' };
+      if(pre === 'Yes' && post === 'Yes') return { dir:'same', text:'Continues to practice' };
+      return { dir:'same', text:'No practice yet' };
+    }
+
+        // ═══════════════ Business Model Calculator engine ═══════════════════════
+    function bmcToggleSection(id){
+      const el = document.getElementById(id);
+      if(el) el.classList.toggle('collapsed');
+    }
+    function bmcNum(id){ const v = parseFloat(document.getElementById(id)?.value); return isNaN(v) ? 0 : v; }
+    function bmcFmtINR(v){
+      if(typeof v !== 'number' || !isFinite(v)) return '—';
+      return '₹ ' + Math.round(v).toLocaleString('en-IN');
+    }
+    function bmcFmt2(v){
+      if(typeof v !== 'number' || !isFinite(v)) return '—';
+      return '₹ ' + v.toLocaleString('en-IN', {minimumFractionDigits:2, maximumFractionDigits:2});
+    }
+    function bmcSetText(id, v){ const el = document.getElementById(id); if(el) el.textContent = v; }
+    function bmcSetNeg(id, v){
+      const el = document.getElementById(id);
+      if(!el) return;
+      el.classList.toggle('neg', typeof v === 'number' && v < 0);
+    }
+    function bmcSetVal(id, v){
+      const el = document.getElementById(id);
+      if(el) el.value = (typeof v === 'number' && isFinite(v)) ? v.toFixed(2) : '';
+    }
+    function bmcCalcEMI(P, rateAnnualPct, n){
+      if(!P || !n) return 0;
+      const r = rateAnnualPct / 1200;
+      if(r === 0) return P / n;
+      return P * r * Math.pow(1 + r, n) / (Math.pow(1 + r, n) - 1);
+    }
+    function bmcRecalc(){
+      // Loans
+      const loans = [1,2,3].map(i => ({
+        amt: bmcNum(`l${i}-amt`),
+        rate: bmcNum(`l${i}-rate`),
+        inst: bmcNum(`l${i}-inst`),
+        contrib: bmcNum(`l${i}-contrib`),
+        add: document.getElementById(`l${i}-add`)?.checked,
+      }));
+      const included = loans.filter(l => l.add && l.amt > 0);
+      const loanTotal = included.reduce((s, l) => s + l.amt, 0);
+      const lt = document.getElementById('loan-total');
+      if(lt) lt.value = loanTotal ? loanTotal.toFixed(0) : '';
+
+      let totalEMI = 0, weightedRate = 0, weightedInst = 0, emiBase = 0;
+      included.forEach(l => {
+        if(l.inst > 0){
+          totalEMI += bmcCalcEMI(l.amt, l.rate, l.inst);
+          weightedRate += l.rate * l.amt;
+          weightedInst += l.inst * l.amt;
+          emiBase += l.amt;
+        }
+      });
+      const blendedRate = emiBase > 0 ? weightedRate / emiBase : 0;
+      const blendedInst = emiBase > 0 ? Math.round(weightedInst / emiBase) : 0;
+      const totalRepay = totalEMI && blendedInst ? totalEMI * blendedInst : 0;
+
+      const qtyPre = bmcNum('qty-pre'), qtyPost = bmcNum('qty-post');
+      const revPre = bmcNum('rev-pre'), revPost = bmcNum('rev-post');
+      const expPre = bmcNum('exp-pre'), expPost = bmcNum('exp-post');
+      const pricePre = qtyPre > 0 ? revPre / qtyPre : 0;
+      const pricePost = qtyPost > 0 ? revPost / qtyPost : 0;
+      bmcSetVal('price-pre', pricePre);
+      bmcSetVal('price-post', pricePost);
+
+      const opPre = revPre - expPre, opPost = revPost - expPost;
+      bmcSetText('o-op-pre', bmcFmtINR(opPre));   bmcSetNeg('o-op-pre', opPre);
+      bmcSetText('o-op-post', bmcFmtINR(opPost)); bmcSetNeg('o-op-post', opPost);
+      bmcSetText('o-emi-pre', bmcFmtINR(totalEMI));
+      bmcSetText('o-emi-post', bmcFmtINR(totalEMI));
+      const npPre = opPre - totalEMI, npPost = opPost - totalEMI;
+      bmcSetText('o-np-pre', bmcFmtINR(npPre));   bmcSetNeg('o-np-pre', npPre);
+      bmcSetText('o-np-post', bmcFmtINR(npPost)); bmcSetNeg('o-np-post', npPost);
+
+      const vcpuPre = qtyPre > 0 ? expPre / qtyPre : 0;
+      const vcpuPost = qtyPost > 0 ? expPost / qtyPost : 0;
+      bmcSetText('o-vcpu-pre', vcpuPre ? bmcFmt2(vcpuPre) : '—');
+      bmcSetText('o-vcpu-post', vcpuPost ? bmcFmt2(vcpuPost) : '—');
+      const cpuPre = pricePre - vcpuPre, cpuPost = pricePost - vcpuPost;
+      bmcSetText('o-cpu-pre', cpuPre ? bmcFmt2(cpuPre) : '—');   bmcSetNeg('o-cpu-pre', cpuPre);
+      bmcSetText('o-cpu-post', cpuPost ? bmcFmt2(cpuPost) : '—'); bmcSetNeg('o-cpu-post', cpuPost);
+      const mfcPre = expPre + totalEMI, mfcPost = expPost + totalEMI;
+      bmcSetText('o-mfc-pre', bmcFmtINR(mfcPre));
+      bmcSetText('o-mfc-post', bmcFmtINR(mfcPost));
+
+      const ubePre = cpuPre > 0 ? Math.ceil(mfcPre / cpuPre) : null;
+      const ubePost = cpuPost > 0 ? Math.ceil(mfcPost / cpuPost) : null;
+      const rbePre = ubePre != null ? ubePre * pricePre : null;
+      const rbePost = ubePost != null ? ubePost * pricePost : null;
+      bmcSetText('o-ube-pre', ubePre != null ? ubePre.toLocaleString('en-IN') + ' units' : 'Not achievable');
+      bmcSetText('o-ube-post', ubePost != null ? ubePost.toLocaleString('en-IN') + ' units' : 'Not achievable');
+      bmcSetText('o-rbe-pre', rbePre != null ? bmcFmtINR(rbePre) : 'Not achievable');
+      bmcSetText('o-rbe-post', rbePost != null ? bmcFmtINR(rbePost) : 'Not achievable');
+
+      bmcSetText('cc-total', loanTotal ? bmcFmtINR(loanTotal) : '—');
+      bmcSetText('cc-loan', loanTotal ? bmcFmtINR(loanTotal) : '—');
+      bmcSetText('cc-rate', blendedRate ? blendedRate.toFixed(2) + ' %' : '—');
+      bmcSetText('cc-inst', blendedInst ? blendedInst + ' months' : '—');
+      bmcSetText('cc-emi', totalEMI ? bmcFmtINR(totalEMI) : '—');
+      bmcSetText('cc-repay', totalRepay ? bmcFmtINR(totalRepay) : '—');
+
+      bmcSetText('hero-rev', rbePost != null ? bmcFmtINR(rbePost) : 'Not achievable');
+      bmcSetText('hero-units', ubePost != null ? ubePost.toLocaleString('en-IN') : 'Not achievable');
+
+      // Mirror into Summary tab's Monthly Break-even card
+      bmcSetText('sum-be-rev',   rbePost != null ? bmcFmtINR(rbePost) : 'Not achievable');
+      bmcSetText('sum-be-units', ubePost != null ? ubePost.toLocaleString('en-IN') + ' units' : 'Not achievable');
+
+      const banner = document.getElementById('status-banner');
+      const icon = document.getElementById('status-icon');
+      const label = document.getElementById('status-label');
+      const msg = document.getElementById('status-msg');
+      if(!banner) return;
+      banner.style.display = 'flex';
+      banner.classList.remove('good','warn','bad');
+      if(cpuPost <= 0){
+        banner.classList.add('bad');
+        icon.textContent = '⚠';
+        label.textContent = 'Not achievable';
+        msg.textContent = 'At projected numbers, every unit sold loses money — selling price per unit is at or below variable cost per unit. Re-examine pricing or cost structure.';
+      } else if(qtyPost >= ubePost){
+        banner.classList.add('good');
+        icon.textContent = '✓';
+        label.textContent = 'At or above break-even';
+        msg.textContent = `Projected quantity (${qtyPost.toLocaleString('en-IN')} units) meets the break-even target (${ubePost.toLocaleString('en-IN')} units). The business covers expenses and EMI.`;
+      } else {
+        banner.classList.add('warn');
+        icon.textContent = '↑';
+        label.textContent = 'Below break-even';
+        const gap = ubePost - qtyPost;
+        msg.textContent = `Need ${gap.toLocaleString('en-IN')} additional units / month to reach break-even (${ubePost.toLocaleString('en-IN')} units target vs ${qtyPost.toLocaleString('en-IN')} planned).`;
+      }
+    }
+    function bmcResetAll(){
+      if(!confirm('Reset all editable fields in the Calculator?')) return;
+      // Reset only the Projected column + checkboxes + new loan
+      ['qty-post','rev-post','exp-post','l3-amt','l3-rate','l3-inst','l3-contrib'].forEach(id => {
+        const el = document.getElementById(id); if(el) el.value = '';
+      });
+      ['l1-add','l2-add','l3-add'].forEach(id => {
+        const el = document.getElementById(id); if(el) el.checked = false;
+      });
+      bmcRecalc();
+    }
+
+    // ═══════════════ Tab switcher ═══════════════════════════════════════════
+    document.querySelectorAll('.tabs .tab').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const target = btn.getAttribute('data-tab');
+        document.querySelectorAll('.tabs .tab').forEach((t) => t.classList.remove('is-active'));
+        document.querySelectorAll('.tab-panel').forEach((p) => p.classList.remove('is-active'));
+        btn.classList.add('is-active');
+        const panel = document.querySelector('.tab-panel[data-tab="' + target + '"]');
+        if (panel) panel.classList.add('is-active');
+        if (target === 'calculator') bmcRecalc();
+        if (target === 'summary') { renderTrendChart(); refreshTrajectory(); bmcRecalc(); }
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      });
+    });
+
+    // ═══════════════ Initial paint ══════════════════════════════════════════
+    invRender();
+    loanRender();
+    growthRender();
+    taskRender();
+    recalcRevenueExpenditure();
+    renderTrendChart();
+    refreshTrajectory();
+    bmcRecalc();
+  </script>
+</body>
+</html>
