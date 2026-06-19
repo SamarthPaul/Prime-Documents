@@ -81,7 +81,7 @@
 <div class="wf-head">
   <button class="wf-btn wf-sidetoggle" id="sideToggle">&#9776; Modules</button>
   <h1>Wireframes</h1>
-  <span class="sub">All 28 client module mockups &mdash; click any module to view it inline, then compare against the portal.</span>
+  <span class="sub">All 28 framework mockups, grouped by module as on the portal &mdash; click any framework to view it inline, then compare against the build.</span>
   <input type="search" class="wf-search" id="wfSearch" placeholder="Search modules&hellip;" autocomplete="off">
 </div>
 
@@ -104,44 +104,61 @@
 
 <script>
 (function () {
+  // Module -> Framework structure mirrors the portal & BRD "Module & Framework Map".
+  // Order and names match the BRD tree exactly. The 13th module (Entrepreneur
+  // Progress Report) is a standalone report with no framework mockup, so it is omitted.
   var WIREFRAMES = [
-    { cat: 'Product Development', items: [
-      { f: 'product_profile_module.html',         l: 'Product Profile' },
-      { f: 'product_prototyping_module.html',     l: 'Product Prototyping' },
-      { f: 'product_standardization_module.html', l: 'Product Standardization' },
-      { f: 'product_testing_module.html',         l: 'Product Testing' },
-      { f: 'product_packaging_module.html',       l: 'Product Packaging' },
-      { f: 'product_compliance_module.html',      l: 'Product Compliance' },
-      { f: 'quality_control_module.html',         l: 'Quality Control' },
-      { f: 'raw_material_module.html',            l: 'Raw Material' }
+    { cat: 'Product', items: [
+      { f: 'product_profile_module.html',         l: 'Product Profile' }
     ]},
-    { cat: 'Branding & Marketing', items: [
-      { f: 'branding_identity_module.html',       l: 'Branding & Identity' },
+    { cat: 'Accounts', items: [
+      { f: 'financials_module.html',              l: 'Financials' }
+    ]},
+    { cat: 'Manufacturing', items: [
+      { f: 'raw_material_module.html',            l: 'Raw Materials' },
+      { f: 'machinery_module.html',               l: 'Machinery' },
+      { f: 'human_resource_module.html',          l: 'Human Resource' }
+    ]},
+    { cat: 'Infrastructure', items: [
+      { f: 'infrastructure_module.html',          l: 'Infrastructure' }
+    ]},
+    { cat: 'Marketing Tools', items: [
+      { f: 'branding_identity_module.html',       l: 'Branding Identity' },
       { f: 'labels_module.html',                  l: 'Labels' },
-      { f: 'brochures_module.html',               l: 'Brochures' },
-      { f: 'promotions_module.html',              l: 'Promotions' },
-      { f: 'pitch_deck_module.html',              l: 'Pitch Deck' },
-      { f: 'market_research_module.html',         l: 'Market Research' },
-      { f: 'market_linkage_module.html',          l: 'Market Linkage' },
-      { f: 'customer_analysis_module.html',       l: 'Customer Analysis' }
+      { f: 'brochures_module.html',               l: 'Brochure' }
     ]},
-    { cat: 'Business & Finance', items: [
-      { f: 'business_plan_canvas_module.html',    l: 'Business Plan Canvas' },
-      { f: 'business_registration_module.html',   l: 'Business Registration' },
-      { f: 'financials_module.html',              l: 'Financials' },
-      { f: 'unit_pricing_module.html',            l: 'Unit Pricing' },
+    { cat: 'Pricing', items: [
+      { f: 'unit_pricing_module.html',            l: 'Unit Pricing' }
+    ]},
+    { cat: 'Market', items: [
+      { f: 'market_research_module.html',         l: 'Market Research' },
+      { f: 'customer_analysis_module.html',       l: 'Customer Analysis' },
+      { f: 'market_linkage_module.html',          l: 'Market Linkage' },
+      { f: 'promotions_module.html',              l: 'Promotions' }
+    ]},
+    { cat: 'Product Development', items: [
+      { f: 'product_prototyping_module.html',     l: 'Product Prototyping' },
+      { f: 'product_testing_module.html',         l: 'Product Testing' },
+      { f: 'product_standardization_module.html', l: 'Product Standardization' },
+      { f: 'quality_control_module.html',         l: 'Quality Control' },
+      { f: 'product_packaging_module.html',       l: 'Product Packaging' }
+    ]},
+    { cat: 'Skilling', items: [
+      { f: 'digital_literacy_module.html',        l: 'Digital Literacy' },
+      { f: 'capacity_building_module.html',       l: 'Capacity Building' },
+      { f: 'business_plan_canvas_module.html',    l: 'Business Plan Canvas' }
+    ]},
+    { cat: 'Logistics', items: [
+      { f: 'logistics_packing_module.html',       l: 'Logistic Packing' },
+      { f: 'logistics_service_module.html',       l: 'Logistic Service' }
+    ]},
+    { cat: 'Funding', items: [
+      { f: 'pitch_deck_module.html',              l: 'Pitch Deck' },
       { f: 'schemes_funding_module.html',         l: 'Schemes & Funding' }
     ]},
-    { cat: 'Operations', items: [
-      { f: 'infrastructure_module.html',          l: 'Infrastructure' },
-      { f: 'machinery_module.html',               l: 'Machinery' },
-      { f: 'logistics_packing_module.html',       l: 'Logistics – Packing' },
-      { f: 'logistics_service_module.html',       l: 'Logistics – Service' }
-    ]},
-    { cat: 'People & Capacity', items: [
-      { f: 'human_resource_module.html',          l: 'Human Resource' },
-      { f: 'capacity_building_module.html',       l: 'Capacity Building' },
-      { f: 'digital_literacy_module.html',        l: 'Digital Literacy' }
+    { cat: 'Legal Compliance', items: [
+      { f: 'product_compliance_module.html',      l: 'Product Compliance' },
+      { f: 'business_registration_module.html',   l: 'Business Registration' }
     ]}
   ];
   var BASE = 'wireframes/';
