@@ -65,6 +65,59 @@
   .wf-frame-wrap { flex: 1; min-height: 0; position: relative; }
   iframe#wfFrame { border: 0; width: 100%; height: 100%; display: block; background: #fff; }
 
+  /* View tabs (Wireframe | QA) */
+  .wf-viewtabs { display: flex; gap: 4px; margin-left: 18px; }
+  .wf-vtab {
+    font-family: var(--font); font-size: 12px; font-weight: 600; cursor: pointer;
+    padding: 6px 12px; border: 1px solid var(--border); border-radius: 7px;
+    background: #fff; color: var(--text-secondary);
+  }
+  .wf-vtab.active { background: var(--prime-green); color: #fff; border-color: var(--prime-green); }
+  .wf-vtab-badge {
+    display: none; margin-left: 5px; padding: 1px 7px; border-radius: 9px;
+    font-size: 10px; font-weight: 700; background: var(--red); color: #fff;
+  }
+  .wf-vtab-badge.show { display: inline-block; }
+  .wf-vtab-badge.pending { background: var(--amber); }
+
+  /* QA matrix */
+  .wf-qa-wrap { flex: 1; min-height: 0; overflow: auto; background: var(--bg); padding: 16px; }
+  .qa-head { background: var(--card); border: 1px solid var(--border); border-radius: 10px; padding: 14px 16px; margin-bottom: 14px; }
+  .qa-head h2 { font-size: 15px; margin: 0 0 4px; color: var(--prime-green); }
+  .qa-head .qa-meta { font-size: 12px; color: var(--text-secondary); }
+  .qa-note { font-size: 12px; color: var(--text); background: #fff8e1; border: 1px solid #f0e0a8; border-radius: 8px; padding: 10px 12px; margin-top: 10px; }
+  .qa-legend { display: flex; gap: 14px; flex-wrap: wrap; margin-top: 10px; font-size: 11px; color: var(--text-secondary); }
+  .qa-counts { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 10px; }
+  .qa-pill { font-size: 12px; font-weight: 700; padding: 4px 12px; border-radius: 16px; }
+  .qa-pill.gap { background: #fde2e2; color: #b42318; }
+  .qa-pill.pend { background: #fef3d0; color: #9a6700; }
+  .qa-pill.ok { background: var(--prime-green-light); color: var(--prime-green); }
+  .qa-pill.total { background: #eef1f5; color: var(--text-secondary); }
+
+  .qa-table-wrap { overflow-x: auto; background: var(--card); border: 1px solid var(--border); border-radius: 10px; }
+  table.qa-table { border-collapse: collapse; width: 100%; min-width: 1100px; font-size: 12px; }
+  table.qa-table th { background: var(--prime-green); color: #fff; text-align: left; padding: 8px 10px; font-size: 11px; font-weight: 600; position: sticky; top: 0; white-space: nowrap; }
+  table.qa-table td { padding: 8px 10px; border-bottom: 1px solid var(--border); vertical-align: top; }
+  table.qa-table tr:hover td { background: #fafbfc; }
+  .qa-secrow td { background: #eef1f5 !important; font-weight: 700; color: var(--text); font-size: 11px; text-transform: uppercase; letter-spacing: .4px; }
+  .qa-el { font-weight: 600; color: var(--text); }
+  .qa-ty { font-size: 10px; color: var(--text-secondary); text-transform: uppercase; letter-spacing: .3px; }
+  .qa-rule { color: var(--text-secondary); font-size: 11px; max-width: 320px; }
+  .qa-cell { text-align: center; font-weight: 700; white-space: nowrap; }
+  .qa-Y { color: var(--prime-green); }
+  .qa-N { color: var(--red); }
+  .qa-q { color: var(--amber); }
+  .qa-dash { color: var(--border); }
+  .qa-verdict { font-weight: 700; font-size: 11px; padding: 2px 8px; border-radius: 6px; white-space: nowrap; }
+  .qa-verdict.gap { background: #fde2e2; color: #b42318; }
+  .qa-verdict.pend { background: #fef3d0; color: #9a6700; }
+  .qa-verdict.ok { background: var(--prime-green-light); color: var(--prime-green); }
+  .qa-sev { font-size: 10px; font-weight: 700; text-transform: uppercase; }
+  .qa-sev.blocker { color: #b42318; }
+  .qa-sev.serious { color: #c2410c; }
+  .qa-sev.minor { color: var(--text-secondary); }
+  .qa-empty { padding: 40px; text-align: center; color: var(--text-secondary); font-size: 14px; }
+
   /* Mobile sidebar toggle */
   .wf-sidetoggle { display: none; }
   @media (max-width: 760px) {
@@ -77,6 +130,7 @@
 </head>
 <body>
 <script src="nav.js"></script>
+<script src="qa-data.js"></script>
 
 <div class="wf-head">
   <button class="wf-btn wf-sidetoggle" id="sideToggle">&#9776; Modules</button>
@@ -93,12 +147,17 @@
         <div class="name" id="wfName">&mdash;</div>
         <div class="path" id="wfPath"></div>
       </div>
+      <div class="wf-viewtabs">
+        <button class="wf-vtab active" id="vtabWf" data-view="wf">Wireframe</button>
+        <button class="wf-vtab" id="vtabQa" data-view="qa">QA vs Portal <span class="wf-vtab-badge" id="qaBadge"></span></button>
+      </div>
       <div class="spacer"></div>
       <a class="wf-btn wf-btn-primary" id="wfOpen" href="#" target="_blank" rel="noopener">&#8599; Open in new tab</a>
     </div>
-    <div class="wf-frame-wrap">
+    <div class="wf-frame-wrap" id="wfView">
       <iframe id="wfFrame" title="Wireframe preview"></iframe>
     </div>
+    <div class="wf-qa-wrap hidden" id="qaView"></div>
   </main>
 </div>
 
@@ -197,6 +256,96 @@
   empty.textContent = 'No modules match your search.';
   side.appendChild(empty);
 
+  var qaView = document.getElementById('qaView');
+  var wfView = document.getElementById('wfView');
+  var vtabWf = document.getElementById('vtabWf');
+  var vtabQa = document.getElementById('vtabQa');
+  var qaBadge = document.getElementById('qaBadge');
+  var QA = window.QA_DATA || {};
+
+  function esc(s) { return String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;'); }
+
+  // present/value/functional cell glyphs
+  function cell(val) {
+    if (val === 'Y') return '<td class="qa-cell qa-Y">✓</td>';
+    if (val === 'N') return '<td class="qa-cell qa-N">✗</td>';
+    if (val === '-') return '<td class="qa-cell qa-dash">—</td>';
+    return '<td class="qa-cell qa-q">?</td>';
+  }
+  function rowVerdict(r) {
+    if (r.p === 'N' || r.v === 'N' || r.fn === 'N') return 'gap';
+    if (r.p === '?' || r.v === '?' || r.fn === '?') return 'pend';
+    return 'ok';
+  }
+
+  function renderQA(file) {
+    var d = QA[file];
+    if (!d) {
+      qaBadge.className = 'wf-vtab-badge';
+      qaView.innerHTML = '<div class="qa-empty">No QA comparison has been run for this framework yet.<br>The wireframe-vs-portal audit is being rolled out framework by framework.</div>';
+      return;
+    }
+    var gaps = 0, pend = 0, ok = 0;
+    d.rows.forEach(function (r) { var v = rowVerdict(r); if (v === 'gap') gaps++; else if (v === 'pend') pend++; else ok++; });
+
+    // badge on the tab: gaps (red) take priority, else pending (amber)
+    if (gaps > 0) { qaBadge.textContent = gaps; qaBadge.className = 'wf-vtab-badge show'; }
+    else if (pend > 0) { qaBadge.textContent = pend; qaBadge.className = 'wf-vtab-badge show pending'; }
+    else { qaBadge.textContent = ok; qaBadge.className = 'wf-vtab-badge show'; qaBadge.style.background = 'var(--prime-green)'; }
+
+    var html = '<div class="qa-head">'
+      + '<h2>' + esc(d.framework) + ' &mdash; Wireframe vs Portal</h2>'
+      + '<div class="qa-meta">Module: <strong>' + esc(d.module) + '</strong> &middot; Portal: ' + esc(d.portalPath)
+      + (d.checkedOn ? ' &middot; Verified on staging: ' + esc(d.checkedOn) : ' &middot; <em>staging verification pending</em>') + '</div>'
+      + '<div class="qa-counts">'
+      + '<span class="qa-pill total">' + d.rows.length + ' checkpoints</span>'
+      + '<span class="qa-pill gap">' + gaps + ' gap' + (gaps === 1 ? '' : 's') + '</span>'
+      + '<span class="qa-pill pend">' + pend + ' to verify</span>'
+      + '<span class="qa-pill ok">' + ok + ' OK</span>'
+      + '</div>'
+      + (d.note ? '<div class="qa-note">' + esc(d.note) + '</div>' : '')
+      + '<div class="qa-legend"><span>Columns: <strong>P</strong> = present &middot; <strong>V</strong> = shows values/options &middot; <strong>F</strong> = clickable/functional</span>'
+      + '<span>✓ yes &middot; ✗ no (gap) &middot; ? to verify &middot; — n/a</span></div>'
+      + '</div>';
+
+    html += '<div class="qa-table-wrap"><table class="qa-table"><thead><tr>'
+      + '<th>Element</th><th>Where / trigger</th><th>P</th><th>V</th><th>F</th>'
+      + '<th>Front-end rule (HTML + BRD)</th><th>Back-end rule (BRD)</th><th>Verdict</th><th>Notes</th>'
+      + '</tr></thead><tbody>';
+
+    var lastKey = null;
+    d.rows.forEach(function (r) {
+      var key = r.t + ' › ' + r.s;
+      if (key !== lastKey) {
+        html += '<tr class="qa-secrow"><td colspan="9">' + esc(key) + '</td></tr>';
+        lastKey = key;
+      }
+      var v = rowVerdict(r);
+      var vlabel = v === 'gap' ? 'GAP' : v === 'pend' ? 'TO VERIFY' : 'OK';
+      html += '<tr>'
+        + '<td><div class="qa-el">' + esc(r.e) + '</div><div class="qa-ty">' + esc(r.ty || '') + (r.sev ? ' &middot; <span class="qa-sev ' + r.sev + '">' + r.sev + '</span>' : '') + '</div></td>'
+        + '<td class="qa-rule">' + esc(r.w || '') + '</td>'
+        + cell(r.p) + cell(r.v) + cell(r.fn)
+        + '<td class="qa-rule">' + esc(r.fe || '') + '</td>'
+        + '<td class="qa-rule">' + esc(r.be || '') + '</td>'
+        + '<td><span class="qa-verdict ' + v + '">' + vlabel + '</span></td>'
+        + '<td class="qa-rule">' + esc(r.n || '') + '</td>'
+        + '</tr>';
+    });
+    html += '</tbody></table></div>';
+    qaView.innerHTML = html;
+  }
+
+  function setView(view) {
+    var qa = view === 'qa';
+    qaView.classList.toggle('hidden', !qa);
+    wfView.classList.toggle('hidden', qa);
+    vtabQa.classList.toggle('active', qa);
+    vtabWf.classList.toggle('active', !qa);
+  }
+  vtabWf.addEventListener('click', function () { setView('wf'); });
+  vtabQa.addEventListener('click', function () { setView('qa'); });
+
   function show(file) {
     var rec = byFile[file];
     if (!rec) { file = firstFile; rec = byFile[file]; }
@@ -207,6 +356,8 @@
     Object.keys(byFile).forEach(function (f) { byFile[f].el.classList.remove('active'); });
     rec.el.classList.add('active');
     document.getElementById('wfSide').classList.remove('open');
+    renderQA(file);
+    setView('wf');
   }
 
   // Sidebar clicks update the hash; hashchange drives the view
