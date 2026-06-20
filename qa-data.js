@@ -278,6 +278,31 @@ window.QA_DATA = {
       { t:'Resources', s:'Reference Materials', e:'Resources table + Add Resource', ty:'table', w:'Resources tab', p:'Y', v:'?', fn:'?', sev:'minor', fe:'dropdowns + upload', be:'Resources child table', n:'Tab present; CRUD to verify.' },
       { t:'Log Book', s:'Activities', e:'Log table (wireframe Task Log)', ty:'table', w:'Log Book tab', p:'Y', v:'?', fn:'?', sev:'minor', fe:'task + date + notes', be:'log child table', n:'Tab present; to verify (attachment cf Bug 94).' }
     ]
+  },
+
+  /* ============================================================
+   * BROCHURE  (Marketing Tools module)  — VERIFIED ON STAGING 20-Jun-2026
+   * Portal: Diagnostics > Marketing Tools > Brochure (DF Marketing Brochure)
+   * Wireframe: from-client/brochures_module.html (939 lines)
+   * Driven as CT-IT on MBR-EP-00026-00001 (fixture EP-00026).
+   * RESULT: faithful (+richer) — NO bugs. Completes the Marketing Tools module.
+   * ============================================================ */
+  'brochures_module.html': {
+    framework: 'Brochure',
+    module: 'Marketing Tools',
+    portalPath: 'Diagnostics › Marketing Tools › Brochure  (DF Marketing Brochure)',
+    checkedOn: '20-Jun-2026 (CT-IT, MBR-EP-00026-00001)',
+    status: 'done',
+    note: 'CLEAN — faithful to the wireframe, no bugs. Content (Brochure Setup + Status) lives in the Required tab. Brochure Setup: Title, Type (Single Product/Multi-Product Catalogue/Tri-fold/Bi-fold/Single-page Flyer), Tagline, About/Storyline (AI-assisted), Contact/Email/Address, Market Scope, Product Listings (+ Add Product, product picker works). Brochure Status: Assigned Designer (read-only for FA), Print Format (A4/A5/DL/Custom), Page Count, Draft upload, Status workflow. All filled + persisted (incl. 1 product listing). Build is RICHER than the wireframe: supports a 3-draft review cycle (draft_1/2/3_status, each Pending → Under Review → Redo → Approved).',
+    rows: [
+      { t:'Shell', s:'Tabs', e:'Tab bar (wireframe: Summary | Existing | Required | Resources | Task Log)', ty:'tabs', w:'Top', p:'Y', v:'-', fn:'Y', sev:'minor', fe:'tabs', be:'standard pattern', n:'Build: Summary | Details | Existing | Required | Resources | Log Book.' },
+      { t:'Existing', s:'Existing Brochure', e:'Upload Existing File + "Need New" flag (per the wireframe Existing tab)', ty:'fields+upload', w:'Existing tab', p:'Y', v:'?', fn:'?', sev:'minor', fe:'flag new-brochure need', be:'existing child table', n:'Existing tab present (upload + flag); deep fill deferred — content is in Required.' },
+      { t:'Required', s:'Brochure Setup', e:'Title, Brochure Type, Tagline/Headline, About/Storyline (AI), Contact, Email, Address, Market Scope', ty:'fields', w:'Required tab', p:'Y', v:'Y', fn:'Y', sev:'', fe:'all content fields', be:'persist', n:'VERIFIED filled + persisted (Title, Type=Multi-Product Catalogue, Tagline, Storyline, Contact/Email/Address).' },
+      { t:'Required', s:'Product Listings', e:'"+ Add Product" → product-listing rows (product picker)', ty:'table', w:'Required tab', p:'Y', v:'Y', fn:'Y', sev:'', fe:'add product listings', be:'products child table', n:'VERIFIED: added Orange Jam; products child table = 1, persisted.' },
+      { t:'Required', s:'Brochure Status', e:'Assigned Designer (RO for FA), Print Format (A4/A5/DL/Custom), Page Count, Draft upload, Status workflow', ty:'fields+upload', w:'Required tab', p:'Y', v:'Y', fn:'Y', sev:'', fe:'design review status', be:'draft_*_status', n:'VERIFIED: Status set Under Review, persisted (draft_1_status). Build RICHER: 3-draft cycle (draft_1/2/3, each Pending/Under Review/Redo/Approved).' },
+      { t:'Resources', s:'Reference Materials', e:'Resources table + Add Resource', ty:'table', w:'Resources tab', p:'Y', v:'?', fn:'?', sev:'minor', fe:'dropdowns + upload', be:'Resources child table', n:'Tab present; CRUD to verify.' },
+      { t:'Log Book', s:'Activities', e:'Log table (wireframe Task Log)', ty:'table', w:'Log Book tab', p:'Y', v:'?', fn:'?', sev:'minor', fe:'task + date + notes', be:'log child table', n:'Tab present; to verify (attachment cf Bug 94).' }
+    ]
   }
 
 };
