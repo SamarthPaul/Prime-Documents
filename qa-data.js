@@ -770,6 +770,39 @@ window.QA_DATA = {
       { t:'Resources', s:'Reference Materials', e:'Resources table + Add Resource', ty:'table', w:'Resources tab', p:'Y', v:'?', fn:'?', sev:'minor', fe:'rows + upload', be:'Resources child table', n:'Tab present; CRUD to verify.' },
       { t:'Log Book', s:'Activities', e:'Log table (wireframe Task)', ty:'table', w:'Log Book tab', p:'Y', v:'?', fn:'?', sev:'minor', fe:'task + date + notes', be:'log child table', n:'Tab present; to verify.' }
     ]
+  },
+
+  /* ============================================================
+   * PITCH DECK  (Funding module)
+   * Portal path: Diagnostics > Funding > Pitch Deck  (doctype: DF Pitch Deck)
+   * Wireframe: from-client/pitch_deck_module.html (944 lines, fully read)
+   * ============================================================ */
+  'pitch_deck_module.html': {
+    framework: 'Pitch Deck',
+    module: 'Funding',
+    portalPath: 'Diagnostics › Funding › Pitch Deck  (DF Pitch Deck)',
+    checkedOn: '20-Jun-2026 (CT-IT, PD-EP-00026-00001)',
+    status: 'done',
+    note: 'Driven end-to-end on staging (PD-EP-00026-00001) — CLEAN, no new bugs. Tabs Summary/Details/Existing/Required/Resources/Log Book. NOTABLE: unlike Standardization (Bug 106) & Packaging (Bug 111), Pitch Deck HAS a REAL file-upload control (input[type=file] accept .pdf/.ppt/.pptx + Upload button + View) for the deck — no Systemic #2 issue. Existing: Pitch Video Link + Justification PERSIST (existing_pitch_video_link, intervention_justification); intervention toggle present. Required: full slide Assessment grid (Problem/Solution/Market/Team/Financials slides) + Implementation Status (Pending/In Progress/Implemented/Not Feasible). CAVEAT: the deck file UPLOAD persistence is UNVERIFIED — programmatic setFiles on the hidden input did not register a filename (likely an automation artifact, not a confirmed defect) → flagged for MANUAL verification, not filed as a bug.',
+    rows: [
+      // ---- SHELL ----
+      { t:'Shell', s:'Tabs', e:'Tab bar (wireframe: Summary | Existing | Required | Resources | Task Log | Log Book)', ty:'tabs', w:'Top of framework', p:'Y', v:'-', fn:'Y', sev:'', fe:'tabs', be:'standard pattern', n:'Build: Summary | Details | Existing | Required | Resources | Log Book. All present.' },
+      { t:'Shell', s:'Header', e:'Entrepreneur auto-bound; district/block', ty:'display', w:'Above tabs', p:'Y', v:'Y', fn:'Y', sev:'', fe:'EP auto-bound', be:'per-EP record', n:'EP Dakini Marak bound; saved PD-EP-00026-00001.' },
+
+      // ---- EXISTING ----
+      { t:'Existing', s:'Upload Pitch Deck', e:'File upload (.pdf/.ppt/.pptx) + Upload button + View + replace', ty:'upload', w:'Existing § I', p:'Y', v:'?', fn:'?', sev:'minor', fe:'real file upload (CRUD)', be:'deck file field', n:'Control PRESENT (1 input[type=file] + Upload) — contrast Std Bug 106 / PKG Bug 111 which had NONE. BUT upload persistence unverified: programmatic setFiles showed "No file" + no deck field saved → likely automation artifact; MANUAL-VERIFY (capture/view/replace/delete).' },
+      { t:'Existing', s:'Pitch Video Link', e:'Video link URL', ty:'text', w:'Existing § I', p:'Y', v:'Y', fn:'Y', sev:'', fe:'url', be:'existing_pitch_video_link', n:'VERIFIED persists (https://youtube.com/...).' },
+      { t:'Existing', s:'Last Updated', e:'Last Updated date', ty:'date', w:'Existing § I', p:'Y', v:'Y', fn:'Y', sev:'', fe:'date', be:'persist', n:'Present (required_last_updated stamped).' },
+      { t:'Existing', s:'Intervention Need', e:'"Does Entrepreneur need a Pitch Deck?" toggle + Justify', ty:'toggle+text', w:'Existing § II', p:'Y', v:'Y', fn:'Y', sev:'', fe:'toggle bridges + justify', be:'intervention_need + justification', n:'Justify PERSISTS. Toggle present (my automated toggle click didn\'t register intervention_need=1 — targeting artifact among 4 toggles, not a bug).' },
+
+      // ---- REQUIRED ----
+      { t:'Required', s:'Slide Assessment', e:'Slide grid — primary pitch slides (Problem, Solution, Market, Team, Financials, …)', ty:'grid', w:'Required § I', p:'Y', v:'Y', fn:'?', sev:'', fe:'per-slide assessment', be:'slide child/fields', n:'Grid present with the standard slides (Problem/Solution/Market/Team/Financials). Per-slide fill persistence spot-only.' },
+      { t:'Required', s:'Implementation Status', e:'Status (Pending/In Progress/Implemented/Not Feasible)', ty:'select', w:'Required § II', p:'Y', v:'Y', fn:'Y', sev:'', fe:'status select', be:'implementation_status', n:'Options present + match backend.' },
+
+      // ---- RES / LOG ----
+      { t:'Resources', s:'Reference Materials', e:'Resources table + Add Resource', ty:'table', w:'Resources tab', p:'Y', v:'?', fn:'?', sev:'minor', fe:'rows + upload', be:'Resources child table', n:'Tab present; CRUD to verify.' },
+      { t:'Log Book', s:'Activities', e:'Log table (wireframe Task Log)', ty:'table', w:'Log Book tab', p:'Y', v:'?', fn:'?', sev:'minor', fe:'task + date + notes', be:'log child table', n:'Tab present; to verify.' }
+    ]
   }
 
 };
