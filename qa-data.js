@@ -700,6 +700,42 @@ window.QA_DATA = {
       { t:'Resources', s:'Reference Materials', e:'Resources table + Add Resource', ty:'table', w:'Resources tab', p:'Y', v:'?', fn:'?', sev:'minor', fe:'rows + upload', be:'Resources child table', n:'Tab present; CRUD to verify.' },
       { t:'Log Book', s:'Activities', e:'Log table (wireframe Task Log)', ty:'table', w:'Log Book tab', p:'Y', v:'?', fn:'?', sev:'minor', fe:'task + date + notes', be:'log child table', n:'Tab present; to verify.' }
     ]
+  },
+
+  /* ============================================================
+   * LOGISTIC SERVICE  (Logistics module)
+   * Portal path: Diagnostics > Logistics > Logistic Service  (doctype: DF Logistic Service)
+   * Wireframe: from-client/logistics_service_module.html (1279 lines, fully read)
+   * ============================================================ */
+  'logistics_service_module.html': {
+    framework: 'Logistic Service',
+    module: 'Logistics',
+    portalPath: 'Diagnostics › Logistics › Logistic Service  (DF Logistic Service)',
+    checkedOn: '20-Jun-2026 (CT-IT, LS-EP-00026-00001)',
+    status: 'done',
+    note: 'Driven end-to-end on staging (LS-EP-00026-00001). Tabs: Summary | Details | Existing | Required | Resources | Log Book. CORE (routes) CLEAN: "+ Add Logistics Route" + "+ Add Leg" (From/To/Mode/Time/Cost) drive fully; route cost calc = sum of legs WORKS + PERSISTS (route total_cost_per_trip ₹3,500 = leg ₹3,500; leg mode "Truck"). HEADLINE — Bug 115 (P2): the wireframe "Assessment" tab (Road & Access Conditions: Road Connectivity / Nearest Highway / Rail / Courier Hub / Last Mile Access / Main Logistics Issue / Seasonal Disruption / General Notes + Services Available Nearby) is NOT rendered on ANY tab, EVEN THOUGH all the backend fields exist (road_connectivity, nearest_highway, nearest_rail_station, nearest_courier_hub, last_mile_access, main_logistics_issue, seasonal_disruption, general_notes + services_available child) → orphaned, capturable only via API. NOT the S26 legacy-tab case (these are live current fields). SEED: leg Mode master "DF Module Transport Means" was EMPTY → seeded 8 transport modes as CT-IT.',
+    rows: [
+      // ---- SHELL ----
+      { t:'Shell', s:'Tabs', e:'Tab bar (wireframe: Summary | Assessment | Existing | Required | Resources | Task Log | Log Book)', ty:'tabs', w:'Top of framework', p:'N', v:'-', fn:'N', sev:'serious', fe:'wireframe has an Assessment tab', be:'standard pattern', n:'Build: Summary | Details | Existing | Required | Resources | Log Book — the "Assessment" tab is MISSING (Bug 115). Other tabs present.' },
+      { t:'Shell', s:'Header', e:'Entrepreneur auto-bound; district/block', ty:'display', w:'Above tabs', p:'Y', v:'Y', fn:'Y', sev:'', fe:'EP auto-bound', be:'per-EP record', n:'EP Dakini Marak bound; saved LS-EP-00026-00001.' },
+
+      // ---- ASSESSMENT (missing) ----
+      { t:'Assessment', s:'Road & Access Conditions', e:'Road Connectivity, Nearest Highway/Rail/Courier, Last Mile Access, Main Logistics Issue, Seasonal Disruption, General Notes', ty:'fields', w:'Assessment tab', p:'N', v:'N', fn:'N', sev:'serious', fe:'wireframe Assessment tab', be:'ALL fields exist in DF Logistic Service (orphaned)', n:'Bug 115: not rendered on ANY tab (checked Summary/Details/Existing/Required/Resources). Backend HAS road_connectivity/nearest_highway/nearest_rail_station/nearest_courier_hub/last_mile_access/main_logistics_issue/seasonal_disruption/general_notes → orphaned, API-only.' },
+      { t:'Assessment', s:'Services Available Nearby', e:'Nearby logistics services list', ty:'table', w:'Assessment tab', p:'N', v:'N', fn:'N', sev:'serious', fe:'wireframe section', be:'services_available child exists (orphaned)', n:'Bug 115: unrendered; backend child table services_available exists.' },
+
+      // ---- EXISTING (routes) ----
+      { t:'Existing', s:'List', e:'"+ Add Logistics Route" → route block ("+ Add Leg" per leg)', ty:'button', w:'Existing tab', p:'Y', v:'-', fn:'Y', sev:'', fe:'adds route + legs', be:'routes / route_legs child', n:'Verified. NOTE: "Save the document once before adding..." gate (extra save round-trip; minor UX, same as Logistic Packing).' },
+      { t:'Existing', s:'Route block', e:'Route name, Route Type, Direction, Pain Points (Delay Frequency), observations', ty:'fields', w:'route block', p:'Y', v:'Y', fn:'Y', sev:'', fe:'route head + selects', be:'persist', n:'Route name "Tura → Guwahati dispatch" persisted; Route Type/Direction/Delay-Frequency selects present.' },
+      { t:'Existing', s:'Leg rows', e:'From, To, Mode of Transport (picker), Time, Cost', ty:'fields', w:'route block', p:'Y', v:'Y', fn:'Y', sev:'', fe:'leg row fields', be:'route_legs child', n:'Verified: leg Tura→Guwahati, mode "Truck", time "6 hrs", cost 3500 persist. Mode master "DF Module Transport Means" was EMPTY → seeded 8 modes.' },
+      { t:'Existing', s:'Route cost calc', e:'Route total = sum of leg costs', ty:'calc', w:'route block', p:'Y', v:'Y', fn:'Y', sev:'', fe:'auto-sum legs', be:'total_cost_per_trip; feeds Unit Pricing', n:'VERIFIED computes & PERSISTS server-side: 1 leg ₹3,500 → route total_cost_per_trip=3500. NOT the Bug-86 class.' },
+      { t:'Existing', s:'Intervention toggle', e:'Flag a route → auto-create Upgrade on Required tab', ty:'toggle', w:'route block', p:'Y', v:'-', fn:'?', sev:'minor', fe:'bridges to Required', be:'bridge', n:'Mechanism present (per wireframe). Bridge drive deferred; to verify.' },
+
+      // ---- REQUIRED / SUMMARY / RES / LOG ----
+      { t:'Required', s:'Service Upgrades + New Services', e:'I. Service Upgrades ("+ Add Upgrade") + II. New Logistics Services ("+ Add New Service")', ty:'button+table', w:'Required tab', p:'Y', v:'?', fn:'?', sev:'minor', fe:'upgrades + new services', be:'required child tables', n:'Tab present; drive deferred. To verify.' },
+      { t:'Summary', s:'Aggregates', e:'Service-wise overview + aggregates + intervention flags', ty:'metrics', w:'Summary tab', p:'Y', v:'?', fn:'-', sev:'minor', fe:'rollup', be:'derived', n:'Tab present; rollups to verify.' },
+      { t:'Resources', s:'Reference Materials', e:'Resources table + Add Resource', ty:'table', w:'Resources tab', p:'Y', v:'?', fn:'?', sev:'minor', fe:'rows + upload', be:'Resources child table', n:'Tab present; CRUD to verify.' },
+      { t:'Log Book', s:'Activities', e:'Log table (wireframe Task Log)', ty:'table', w:'Log Book tab', p:'Y', v:'?', fn:'?', sev:'minor', fe:'task + date + notes', be:'log child table', n:'Tab present; to verify.' }
+    ]
   }
 
 };
