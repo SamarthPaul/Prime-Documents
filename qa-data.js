@@ -212,24 +212,6 @@ window.QA_DATA = {
   },
 
   /* ============================================================
-   * INFRASTRUCTURE  (Infrastructure module)  — BLOCKED 20-Jun-2026
-   * Portal: Diagnostics > Infrastructure (DF Infrastructure)
-   * Wireframe: from-client/infrastructure_module.html (2760 lines)
-   * ============================================================ */
-  'infrastructure_module.html': {
-    framework: 'Infrastructure',
-    module: 'Infrastructure',
-    portalPath: 'Diagnostics › Infrastructure  (DF Infrastructure)',
-    checkedOn: '20-Jun-2026 — ACCESSIBLE (re-QA pending); correct doctype = DF Infrastructure BE EE CE',
-    status: 'verifying',
-    note: 'NOT blocked — earlier "blocked" was a TESTER ERROR (wrong doctype name). The real doctype is "DF Infrastructure BE EE CE" (sidebar link /d/DF Infrastructure BE EE CE); CT-IT meta/get_count = 200 (4 records). Bug 104 RETRACTED. Full UI QA pending (re-drive). Wireframe is rich: tabs Summary | Built-Environment | Machines | Solar | Financial Model | Tracker | Task Log | Resources; Financial Model has LIFCOM funding split + LIFCOM EMI Calculator (3yr=÷36, 5yr=÷60 flat) + tranches/vendor payment — re-verify LIFCOM EMI vs prior Bug 83/INFRA-004 when driven.',
-    rows: [
-      { t:'Shell', s:'Access', e:'Open Infrastructure framework as Core Team IT (doctype DF Infrastructure BE EE CE)', ty:'access', w:'Diagnostics › Infrastructure', p:'Y', v:'Y', fn:'Y', sev:'', fe:'BRD PR-OV-004: CT-IT Full CRUD', be:'role permission allows read meta+list+CRUD', n:'ACCESSIBLE (meta/count 200, 4 records). Bug 104 was a false finding (wrong doctype name) — retracted.' },
-      { t:'(pending)', s:'Built-Environment / Machines / Solar / Financial Model / Tracker', e:'Full wireframe comparison (Land/Rent/Water/NOC; LIFCOM funding split + EMI calculator; tranches; vendor payment)', ty:'section', w:'all tabs', p:'?', v:'?', fn:'?', sev:'', fe:'per wireframe', be:'BRD', n:'Re-QA pending (now accessible). Drive end-to-end; re-check LIFCOM EMI vs prior Bug 83.' }
-    ]
-  },
-
-  /* ============================================================
    * BRANDING IDENTITY  (Marketing Tools module)  — VERIFIED ON STAGING 20-Jun-2026
    * Portal: Diagnostics > Marketing Tools > Branding Identity (DF Branding Identity)
    * Wireframe: from-client/branding_identity_module.html (967 lines)
@@ -899,6 +881,34 @@ window.QA_DATA = {
       { t:'Variants', s:'Product Variants', e:'Variants table (Add variant)', ty:'table', w:'Product Variants tab', p:'Y', v:'?', fn:'?', sev:'minor', fe:'variant rows', be:'variants child', n:'Tab present (recall S15 Bug-0248: variant-uniqueness not enforced — re-verify). Drive deferred.' },
       { t:'Process Flow', s:'Process & Machinery Flow', e:'Process/machinery step flow', ty:'flow', w:'Process Flow tab', p:'Y', v:'?', fn:'?', sev:'minor', fe:'process steps', be:'process child', n:'Tab present; drive deferred.' },
       { t:'Capacity', s:'Production Capacity + Monthly tracker', e:'Agri & Raw Material context, Production Capacity, Monthly Production Capacity Tracker', ty:'table+fields', w:'Production Capacity tab', p:'Y', v:'?', fn:'?', sev:'minor', fe:'capacity + monthly tracker', be:'capacity fields/child', n:'Tab present (Production Capacity + Monthly Production tables, 24 inputs). Calc/tracker drive deferred.' }
+    ]
+  },
+
+  /* ============================================================
+   * INFRASTRUCTURE  (standalone — BE/EE/CE + SELCO financial model)
+   * Portal path: Diagnostics > Infrastructure  (doctype: DF Infrastructure BE EE CE)
+   * Wireframe: from-client/infrastructure_module.html (2760 lines, fully read)
+   * ============================================================ */
+  'infrastructure_module.html': {
+    framework: 'Infrastructure',
+    module: 'Infrastructure',
+    portalPath: 'Diagnostics › Infrastructure  (DF Infrastructure BE EE CE)',
+    checkedOn: '20-Jun-2026 (CT-IT, INF-EP-00026-00001)',
+    status: 'done',
+    note: 'Driven on staging (INF-EP-00026-00001). CT-IT ACCESS OK — old Bug 104 ("CT-IT 403") was a tester error on the wrong doctype name (real = DF Infrastructure BE EE CE); already retracted. All 8 tabs render. BE + CE DPR cost fields persist (final_dpr_cost_be=₹10L, final_dpr_cost_ce=₹6L). Financial Model: FUNDING SLAB REFERENCE present & correct (Slab A<5L 50/30/15/5, Slab B<10L 30/40/25/5, Slab C<25L 20/50/25/5) and LIFCOM EMI CALCULATOR present (5yr ÷60, 3yr ÷36 flat). HEADLINE — Bug 119 (P2): "RE COST" (drives funding split + LIFCOM amount + EMI) stays ₹0 even with CE/DPR cost saved + project selected — it derives from solar-machine BOM rows (ce_solar_machines, empty) and the Machines/Solar tabs expose NO add-control for CT-IT. So funding allocation + LIFCOM EMI compute 0 → Financial Model not drivable end-to-end via UI; EMI math (÷60/÷36) NOT verifiable live (formula text correct). Needs dev confirmation of the BOM entry path.',
+    rows: [
+      { t:'Shell', s:'Access', e:'CT-IT can open Infrastructure', ty:'access', w:'Form', p:'Y', v:'Y', fn:'Y', sev:'', fe:'CT-IT Full CRUD (BRD PR-OV-004)', be:'DF Infrastructure BE EE CE', n:'WORKS — old Bug 104 (CT-IT 403) was a wrong-doctype-name tester error; retracted. Form opens, EP binds, saves (INF-EP-00026-00001).' },
+      { t:'Shell', s:'Tabs', e:'Tab bar (Summary | Built-Environment | Machines | Solar | Financial Model | Tracker | Task Log | Resources)', ty:'tabs', w:'Top', p:'Y', v:'-', fn:'Y', sev:'', fe:'8 tabs', be:'standard pattern', n:'Build: Summary | Details | Built-Environment | Machines | Solar | Financial Model | Tracker | Resources | Log Book. All present.' },
+      { t:'Built-Environment', s:'BE cost', e:'Water/Rent/Land + Final DPR BE Cost', ty:'fields', w:'BE tab', p:'Y', v:'Y', fn:'Y', sev:'', fe:'BE cost fields', be:'final_dpr_cost_be', n:'Final DPR BE Cost ₹10L persisted. Water/Rent/Land/plinth-area present.' },
+      { t:'Solar', s:'CE cost + solar BOM', e:'Electricity/month + Final DPR CE Cost + solar machine BOM (feeds RE COST)', ty:'fields', w:'Solar tab', p:'Y', v:'N', fn:'N', sev:'serious', fe:'solar BOM line items', be:'final_dpr_cost_ce + ce_solar_machines', n:'Bug 119: Final DPR CE Cost ₹6L persisted, but NO add-control for the solar-machine BOM rows RE COST aggregates (ce_solar_machines empty) → RE COST=0.' },
+      { t:'Financial Model', s:'Project select', e:'Project selector gates funding model', ty:'select', w:'Financial Model', p:'Y', v:'Y', fn:'Y', sev:'', fe:'project drives slab', be:'project', n:'PRIME SELCO Infra-Support / Innovation / Scale; selecting reveals slab + EMI.' },
+      { t:'Financial Model', s:'Funding Slab Reference', e:'Slab A/B/C SELCO/MBMA/LIFCOM/User % by RE COST band', ty:'reference', w:'Financial Model', p:'Y', v:'Y', fn:'-', sev:'', fe:'cost-band → split %', be:'slab logic', n:'PRESENT & CORRECT: A<5L 50/30/15/5; B<10L 30/40/25/5; C<25L 20/50/25/5.' },
+      { t:'Financial Model', s:'RE COST → Funding Allocation', e:'RE COST drives SELCO/MBMA/LIFCOM/User ₹', ty:'calc', w:'Financial Model', p:'Y', v:'N', fn:'N', sev:'serious', fe:'allocate RE COST by slab %', be:'derived', n:'Bug 119: RE COST stays ₹0 (no solar BOM input reachable) → allocations ₹0. Funding split cannot be exercised via UI.' },
+      { t:'Financial Model', s:'LIFCOM EMI Calculator', e:'5-Year EMI = LIFCOM÷60, 3-Year = LIFCOM÷36 (flat)', ty:'calc', w:'Financial Model', p:'Y', v:'N', fn:'?', sev:'serious', fe:'flat EMI division', be:'derived', n:'Bug 119 / old Bug 83: calculator PRESENT with correct ÷60/÷36 flat formula text, but LIFCOM amount=0 (RE COST=0) so EMI ₹0 — math NOT verifiable live until RE COST populates.' },
+      { t:'Tracker', s:'Cascading tranche allocation', e:'MBMA→USER→SELCO→LIFCOM cascade + vendor payments', ty:'table', w:'Tracker tab', p:'Y', v:'?', fn:'?', sev:'minor', fe:'cascading disbursement', be:'tranche child', n:'Tab present; cascade drive blocked behind RE COST=0 (Bug 119).' },
+      { t:'Summary', s:'Overview + Aggregates', e:'Component overview + aggregates (EMI 5yr/3yr) + intervention flags', ty:'metrics', w:'Summary tab', p:'Y', v:'?', fn:'-', sev:'minor', fe:'rollup', be:'derived', n:'Tab present; EMI rollups depend on RE COST (Bug 119).' },
+      { t:'Resources', s:'Reference Materials', e:'Resources table + Add Resource', ty:'table', w:'Resources tab', p:'Y', v:'?', fn:'?', sev:'minor', fe:'rows + upload', be:'Resources child table', n:'Tab present; CRUD to verify.' },
+      { t:'Log Book', s:'Activities', e:'Log table (wireframe Task Log)', ty:'table', w:'Log Book tab', p:'Y', v:'?', fn:'?', sev:'minor', fe:'task + date + notes', be:'log child table', n:'Tab present; to verify.' }
     ]
   }
 
