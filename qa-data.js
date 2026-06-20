@@ -492,6 +492,42 @@ window.QA_DATA = {
       { t:'Resources', s:'Reference Materials', e:'Resources table + Add Resource (incl. File column)', ty:'table', w:'Resources tab', p:'Y', v:'?', fn:'?', sev:'minor', fe:'rows + upload', be:'Resources child table', n:'Tab present; CRUD to verify.' },
       { t:'Log Book', s:'Activities', e:'Log table (wireframe Task Log)', ty:'table', w:'Log Book tab', p:'Y', v:'?', fn:'?', sev:'minor', fe:'task + date + notes', be:'log child table', n:'Tab present; to verify.' }
     ]
+  },
+
+  /* ============================================================
+   * QUALITY CONTROL  (Product Development module)
+   * Portal path: Diagnostics > Product Development > Quality Control  (doctype: DF Quality Control)
+   * Wireframe: from-client/quality_control_module.html (807 lines, fully read)
+   * ============================================================ */
+  'quality_control_module.html': {
+    framework: 'Quality Control',
+    module: 'Product Development',
+    portalPath: 'Diagnostics › Product Development › Quality Control  (DF Quality Control)',
+    checkedOn: '20-Jun-2026 (CT-IT, QC-EP-00026-00001)',
+    status: 'done',
+    note: 'Driven end-to-end on staging (QC-EP-00026-00001). Tabs: Summary | Details | Existing | Post Implementation | Resources | Log Book — "Post Implementation" IS the wireframe\'s "Optimized"/target tab (renamed, NOT missing). HEADLINE — FW-QC-001 RE-CONFIRMED in a sharper form (Bug 109, BLOCKER): the Rating & Required-Target dropdowns are 4-level ("…4. Fully implemented") but the BACKEND Select is the correct 5-level ("…4. Mostly implemented","5. Fully implemented"); picking the UI top option "4. Fully implemented" → 417, whole save rejected, checklist row lost. So "Fully implemented" can never save and "Mostly implemented" can never be recorded; the on-screen 0/33/66/100 legend contradicts the backend 5-level scoring. GOOD: the score IS computed & PERSISTS server-side (rating 2 → existing_qc_score=40=2/5, category "Below Average") — NOT the Bug-86 class; Gap auto-derives ("+1"). Bug 110 (P3): canonical 23-practice checklist not seeded/enforced — master has only 8 reworded items, free-add → assessments not comparable across EPs.',
+    rows: [
+      // ---- SHELL ----
+      { t:'Shell', s:'Tabs', e:'Tab bar (wireframe: Summary | Existing | Optimized | Resources | Task Log)', ty:'tabs', w:'Top of framework', p:'Y', v:'-', fn:'Y', sev:'minor', fe:'tabs', be:'standard pattern', n:'Build: Summary | Details | Existing | Post Implementation | Resources | Log Book. "Post Implementation" = wireframe "Optimized" (target profile) — present & works (+ Add Item, Required Target). NOT a missing tab.' },
+      { t:'Shell', s:'Header', e:'Entrepreneur auto-bound; district/block', ty:'display', w:'Above tabs', p:'Y', v:'Y', fn:'Y', sev:'', fe:'EP auto-bound', be:'per-EP record', n:'EP Dakini Marak bound; saved as QC-EP-00026-00001.' },
+
+      // ---- EXISTING TAB (assessment) ----
+      { t:'Existing', s:'Assessment model', e:'Fixed 23 QC practices, each rated 1–5 (5-star scale); avg + distribution', ty:'rating-set', w:'Existing tab', p:'N', v:'N', fn:'N', sev:'serious', fe:'wireframe = fixed 23 practices, tappable 5-star (1-5) per practice', be:'per-practice rating', n:'Build replaces fixed-23-star with FREE-ADD items + 4-level dropdown (no stars). See Bug 109 (scale) + Bug 110 (the 23 not seeded). UX regression: dropdown vs large tappable stars for low-literacy/touch field users.' },
+      { t:'Existing', s:'List', e:'"+ Add Item" → adds a checklist row', ty:'button', w:'Existing tab', p:'Y', v:'-', fn:'Y', sev:'', fe:'adds row', be:'qc_checklist_internal_existing child', n:'Verified.' },
+      { t:'Existing', s:'Checklist item', e:'Checklist item picker (canonical 23 practices)', ty:'picker', w:'Existing row', p:'Y', v:'N', fn:'Y', sev:'minor', fe:'should list the standardised 23 practices', be:'links checklist master', n:'Bug 110: master has only 8 reworded items (e.g. "Raw material quality check before use" vs wireframe "Raw material inspection before use"); most of the 23 absent; free-add not standardised. Picker works; search OK.' },
+      { t:'Existing', s:'Rating', e:'Rating per practice (wireframe 5-star 1–5)', ty:'select', w:'Existing row', p:'Y', v:'N', fn:'N', sev:'blocker', fe:'5 levels (…Mostly impl.=4, Fully impl.=5)', be:'5-level Select (correct)', n:'Bug 109: UI is 4-level ("1.Not aware","2.Aware not impl","3.Partially","4.Fully implemented") — "Mostly implemented" dropped, "Fully implemented" mislabeled level 4. UI "4. Fully implemented" → 417 (backend wants "5. Fully implemented"), whole save lost. UI levels 1-3 save.' },
+      { t:'Existing', s:'Required Target', e:'Required/target rating per practice', ty:'select', w:'Existing row', p:'Y', v:'N', fn:'N', sev:'blocker', fe:'5-level target', be:'5-level Select (correct)', n:'Bug 109 (same defect): UI 4-level vs backend 5-level; "4. Fully implemented" rejected → 417 (this is the exact value the toast flagged). Gap auto-derives correctly when both are valid levels (Rating 2 vs Target 3 → Gap "+1").' },
+      { t:'Existing', s:'Score (server-side)', e:'QC compliance score + category', ty:'calc', w:'row + header', p:'Y', v:'N', fn:'Y', sev:'serious', fe:'wireframe star-sum (max 115 = 23×5)', be:'server-side compliance score', n:'Score COMPUTES & PERSISTS server-side (GOOD, unlike Bug 86): 1 item rated "2" → existing_qc_score=qc_compliance_score=40 (=2/5), score_category="Below Average". BUT on-screen legend uses 4-level 0/33/66/100 (Bug 109) which contradicts the 5-level backend; and wireframe model is /115 star-sum.' },
+      { t:'Existing', s:'Row meta', e:'Category, Description, Priority, Status', ty:'fields', w:'Existing row', p:'Y', v:'Y', fn:'Y', sev:'minor', fe:'category/desc free text; priority Low/Med/High; status', be:'persist', n:'Persist on valid save (category, status="In Progress" stored). Status options match backend (Pending/In Progress/Completed/On Hold/Not Feasible).' },
+
+      // ---- POST IMPLEMENTATION (Optimized / target) ----
+      { t:'Post Impl', s:'Target profile', e:'"+ Add Item" + Required Target / optimized ratings', ty:'rating-set', w:'Post Implementation tab', p:'Y', v:'?', fn:'?', sev:'minor', fe:'set post-intervention target ratings', be:'table_qc_internal_optimized child', n:'Tab present with + Add Item + target concept (= wireframe Optimized). Same 4-vs-5 level dropdown defect (Bug 109) applies. Full drive deferred behind the rating fix.' },
+
+      // ---- SUMMARY / RESOURCES / LOG BOOK ----
+      { t:'Summary', s:'Aggregates', e:'Avg rating, target profile, interventions, rating distribution; gap-coloured table', ty:'metrics', w:'Summary tab', p:'Y', v:'?', fn:'-', sev:'minor', fe:'auto-rollup from Existing+target', be:'derived', n:'Tab present; rollups driven by the (blocked-at-level-4) ratings — re-verify after Bug 109 fix.' },
+      { t:'Resources', s:'Reference Materials', e:'Resources table + SOP Word template + Add Resource', ty:'table', w:'Resources tab', p:'Y', v:'?', fn:'?', sev:'minor', fe:'rows + template + upload', be:'Resources child table', n:'Tab present; CRUD to verify.' },
+      { t:'Log Book', s:'Activities', e:'Log table (wireframe Task Log)', ty:'table', w:'Log Book tab', p:'Y', v:'?', fn:'?', sev:'minor', fe:'task + date + notes', be:'log child table', n:'Tab present; to verify.' }
+    ]
   }
 
 };
