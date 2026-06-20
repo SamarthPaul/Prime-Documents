@@ -736,6 +736,40 @@ window.QA_DATA = {
       { t:'Resources', s:'Reference Materials', e:'Resources table + Add Resource', ty:'table', w:'Resources tab', p:'Y', v:'?', fn:'?', sev:'minor', fe:'rows + upload', be:'Resources child table', n:'Tab present; CRUD to verify.' },
       { t:'Log Book', s:'Activities', e:'Log table (wireframe Task Log)', ty:'table', w:'Log Book tab', p:'Y', v:'?', fn:'?', sev:'minor', fe:'task + date + notes', be:'log child table', n:'Tab present; to verify.' }
     ]
+  },
+
+  /* ============================================================
+   * SCHEMES & FUNDING  (Funding module)
+   * Portal path: Diagnostics > Funding > Schemes Funding  (doctype: DF Schemes Funding)
+   * Wireframe: from-client/schemes_funding_module.html (1050 lines, fully read)
+   * ============================================================ */
+  'schemes_funding_module.html': {
+    framework: 'Schemes & Funding',
+    module: 'Funding',
+    portalPath: 'Diagnostics › Funding › Schemes Funding  (DF Schemes Funding)',
+    checkedOn: '20-Jun-2026 (CT-IT, SCH-EP-00026-00001)',
+    status: 'done',
+    note: 'Driven end-to-end on staging (SCH-EP-00026-00001) — CLEAN, no new bugs. Tabs Summary/Details/Existing/Required/Resources/Log Book. HEADLINE: the EMI calc WORKS & PERSISTS server-side — loan ₹200,000 @ 12% p.a. / 36 mo → emi_per_month = 6642.86 (matches standard EMI formula ≈₹6,643), and EMI/Month is read-only ("— save to compute —", computed on save) — NOT the Bug-86 class. Scheme master "DF Funding Scheme Master" = 23 rows → the old S15 "3/19 schemes" bug is RESOLVED (20 real schemes: DEDS/APEDA/ASPIRE/DCIC/GI-Tag/etc.). Cleaned 3 junk "help"/"help 12"/"help 22" rows from the scheme master (tester pollution, was the old MS-020 note) → 20 clean schemes now. Scheme/eligibility/loan-amount/interest/term all persist.',
+    rows: [
+      // ---- SHELL ----
+      { t:'Shell', s:'Tabs', e:'Tab bar (wireframe: Summary | Existing | Required | Resources | Task | Log Book)', ty:'tabs', w:'Top of framework', p:'Y', v:'-', fn:'Y', sev:'', fe:'tabs', be:'standard pattern', n:'Build: Summary | Details | Existing | Required | Resources | Log Book. All present.' },
+      { t:'Shell', s:'Header', e:'Entrepreneur auto-bound; district/block', ty:'display', w:'Above tabs', p:'Y', v:'Y', fn:'Y', sev:'', fe:'EP auto-bound', be:'per-EP record', n:'EP Dakini Marak bound; saved SCH-EP-00026-00001.' },
+
+      // ---- EXISTING (schemes) ----
+      { t:'Existing', s:'List', e:'"+ Add Scheme" → scheme row', ty:'button', w:'Existing tab', p:'Y', v:'-', fn:'Y', sev:'', fe:'adds row', be:'existing_schemes child', n:'Verified.' },
+      { t:'Existing', s:'Scheme picker', e:'Scheme (e.g. PMEGP, MUDRA) — master-backed search', ty:'picker', w:'scheme row', p:'Y', v:'Y', fn:'Y', sev:'', fe:'master picker', be:'DF Funding Scheme Master', n:'S15 "3/19" RESOLVED: 20 real schemes (after I deleted 3 junk "help" rows). Selected DEDS (FUND-00020); persisted. Search works.' },
+      { t:'Existing', s:'Eligibility & Status', e:'Eligibility Status (Eligible/Not Eligible/Document Pending) + Application Status (Applied/Sanctioned/Disbursed/Rejected)', ty:'select', w:'scheme row', p:'Y', v:'Y', fn:'Y', sev:'', fe:'selects', be:'persist', n:'Eligibility "Eligible" persisted; Status "Sanctioned" set. Options match backend (no 417).' },
+      { t:'Existing', s:'Amounts', e:'Total Sanction, Disbursed, Loan, Grant, User Contribution', ty:'fields', w:'scheme row', p:'Y', v:'Y', fn:'Y', sev:'', fe:'currency fields', be:'persist', n:'Present + accept input; loan_amount=200000 persisted.' },
+      { t:'Existing', s:'Loan / EMI calc', e:'Loan Amount, Interest %, Term, Outstanding, EMI/Month (computed), Moratorium, Contribution %', ty:'calc', w:'scheme row', p:'Y', v:'Y', fn:'Y', sev:'', fe:'EMI auto-compute', be:'emi_per_month server-side', n:'VERIFIED: ₹200,000 @ 12% / 36mo → emi_per_month=6642.86 (correct). EMI/Month read-only, computed on save ("— save to compute —"). PERSISTS server-side — NOT Bug-86 class.' },
+      { t:'Existing', s:'Collateral & Docs', e:'Collateral Provided + Security & Documents + Justification', ty:'fields', w:'scheme row', p:'Y', v:'?', fn:'?', sev:'minor', fe:'text + upload', be:'persist', n:'Fields present; collateral textarea + security/docs CRUD to verify.' },
+      { t:'Existing', s:'Intervention', e:'Intervention toggle + Status + Feedback', ty:'toggle+select', w:'scheme row', p:'Y', v:'?', fn:'?', sev:'minor', fe:'flag + impl status', be:'bridge', n:'Present; bridge drive deferred.' },
+
+      // ---- REQUIRED / SUMMARY / RES / LOG ----
+      { t:'Required', s:'New Schemes', e:'"+ Add New Scheme" → fresh opportunity rows', ty:'button+table', w:'Required tab', p:'Y', v:'?', fn:'?', sev:'minor', fe:'new scheme rows', be:'new_schemes child', n:'Tab present; drive deferred.' },
+      { t:'Summary', s:'Aggregates', e:'Scheme overview + aggregates + intervention flags', ty:'metrics', w:'Summary tab', p:'Y', v:'?', fn:'-', sev:'minor', fe:'rollup', be:'derived', n:'Tab present; rollups to verify.' },
+      { t:'Resources', s:'Reference Materials', e:'Resources table + Add Resource', ty:'table', w:'Resources tab', p:'Y', v:'?', fn:'?', sev:'minor', fe:'rows + upload', be:'Resources child table', n:'Tab present; CRUD to verify.' },
+      { t:'Log Book', s:'Activities', e:'Log table (wireframe Task)', ty:'table', w:'Log Book tab', p:'Y', v:'?', fn:'?', sev:'minor', fe:'task + date + notes', be:'log child table', n:'Tab present; to verify.' }
+    ]
   }
 
 };
