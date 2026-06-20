@@ -562,6 +562,44 @@ window.QA_DATA = {
       { t:'Resources', s:'Reference Materials', e:'Resources table + Add Resource (Upload column)', ty:'table', w:'Resources tab', p:'Y', v:'?', fn:'?', sev:'minor', fe:'rows + upload', be:'Resources child table', n:'Tab present; CRUD to verify.' },
       { t:'Log Book', s:'Activities', e:'Log table (wireframe Task Log)', ty:'table', w:'Log Book tab', p:'Y', v:'?', fn:'?', sev:'minor', fe:'task + date + notes', be:'log child table', n:'Tab present; to verify.' }
     ]
+  },
+
+  /* ============================================================
+   * DIGITAL LITERACY  (Skilling module)
+   * Portal path: Diagnostics > Skilling > Digital Literacy  (doctype: DF Digital Literacy)
+   * Wireframe: from-client/digital_literacy_module.html (1243 lines, fully read)
+   * ============================================================ */
+  'digital_literacy_module.html': {
+    framework: 'Digital Literacy',
+    module: 'Skilling',
+    portalPath: 'Diagnostics › Skilling › Digital Literacy  (DF Digital Literacy)',
+    checkedOn: '20-Jun-2026 (CT-IT, DL-EP-00026-00001)',
+    status: 'done',
+    note: 'Driven end-to-end on staging (DL-EP-00026-00001) — MOSTLY CLEAN, 1 minor deviation. Tabs Summary/Details/Existing/Required/Resources/Log Book all present (Task Log→Log Book). Access & Devices = 3 checkboxes (Smartphone/Laptop/Internet); multi-select WORKS + persists server-side (existing_has_smartphone=1, laptop=0, internet=1). Skill row uses a REAL 5-STAR widget (unlike QC\'s dropdown); 3-star click persisted existing_level=3. Justification persists. Intervention-Flagged toggle BRIDGES correctly to a Required row (bridge_ref set). Required: 5-star Target Level + Implementation Status persist (target_level=5, status "In Progress"). Only Bug 112 (P3): Platform/Skill is FREE-TEXT vs the wireframe curated dropdown → loses standardisation/comparability (same theme as QC Bug 110).',
+    rows: [
+      // ---- SHELL ----
+      { t:'Shell', s:'Tabs', e:'Tab bar (wireframe: Summary | Existing | Required | Resources | Task Log | Log Book)', ty:'tabs', w:'Top of framework', p:'Y', v:'-', fn:'Y', sev:'', fe:'tabs', be:'standard pattern', n:'Build: Summary | Details | Existing | Required | Resources | Log Book. All present.' },
+      { t:'Shell', s:'Header', e:'Entrepreneur auto-bound; district/block', ty:'display', w:'Above tabs', p:'Y', v:'Y', fn:'Y', sev:'', fe:'EP auto-bound', be:'per-EP record', n:'EP Dakini Marak bound; saved DL-EP-00026-00001.' },
+
+      // ---- EXISTING ----
+      { t:'Existing', s:'Access & Devices', e:'Checkboxes: Smartphone, Laptop/Computer, Internet', ty:'checkboxes', w:'Existing § I', p:'Y', v:'Y', fn:'Y', sev:'', fe:'multi-checkbox', be:'existing_has_smartphone/laptop/internet', n:'VERIFIED multi-select: ticked Smartphone+Internet → persisted smartphone=1, laptop=0, internet=1.' },
+      { t:'Existing', s:'List', e:'"+ Add Skill" → adds a skill row', ty:'button', w:'Existing § II', p:'Y', v:'-', fn:'Y', sev:'', fe:'adds row', be:'existing_skills child', n:'Verified.' },
+      { t:'Existing', s:'Platform / Skill', e:'Platform picker (wireframe curated dropdown)', ty:'select', w:'skill row', p:'Y', v:'N', fn:'Y', sev:'minor', fe:'wireframe = curated platform <select>', be:'platform (free text)', n:'Bug 112: portal is a free-text input ("e.g. WhatsApp, UPI, Google Maps") → no standardisation/comparability. Works but unconstrained.' },
+      { t:'Existing', s:'Existing Skill Level', e:'5-star skill rating per platform', ty:'rating', w:'skill row', p:'Y', v:'Y', fn:'Y', sev:'', fe:'wireframe 5-star (1-5)', be:'existing_level integer', n:'VERIFIED real 5-star widget (NOT a dropdown — contrast QC). 3-star click → existing_level=3 persisted. No option-mismatch issue.' },
+      { t:'Existing', s:'Intervention?', e:'Intervention-Flagged toggle → auto-creates Required entry', ty:'toggle', w:'skill row', p:'Y', v:'-', fn:'Y', sev:'', fe:'toggle bridges to Required', be:'intervention_required + bridge', n:'VERIFIED end-to-end: toggle ON → required_skills row auto-created (bridge_ref="47q5b0qcki"), platform+existing_level+justification carried over.' },
+      { t:'Existing', s:'Justification', e:'Justification text per flagged skill', ty:'text', w:'skill row', p:'Y', v:'Y', fn:'Y', sev:'', fe:'free text', be:'persist', n:'Persists.' },
+      { t:'Existing', s:'Aggregates', e:'Skills Rated count + Average Skill Level', ty:'metrics', w:'Existing footer', p:'Y', v:'?', fn:'-', sev:'minor', fe:'auto avg', be:'derived', n:'Present; deep value check spot-only.' },
+
+      // ---- REQUIRED ----
+      { t:'Required', s:'List', e:'"+ Add Skill Row" + bridged rows pre-populated', ty:'button+table', w:'Required tab', p:'Y', v:'Y', fn:'Y', sev:'', fe:'bridged rows arrive; target + status', be:'required_skills child', n:'Bridged row present + editable.' },
+      { t:'Required', s:'Target Skill Level', e:'5-star target rating', ty:'rating', w:'Required row', p:'Y', v:'Y', fn:'Y', sev:'', fe:'5-star target', be:'target_level integer', n:'VERIFIED: 5-star click → target_level=5 persisted.' },
+      { t:'Required', s:'Implementation Status', e:'Status (Pending/In Progress/Completed/Not Feasible)', ty:'select', w:'Required row', p:'Y', v:'Y', fn:'Y', sev:'', fe:'status select', be:'implementation_status', n:'VERIFIED: "In Progress" persisted. Options match backend (no 417).' },
+      { t:'Required', s:'Learnings / Notes + Impl Notes', e:'Learnings/Notes per skill + Implementation Notes', ty:'text', w:'Required row', p:'Y', v:'?', fn:'?', sev:'minor', fe:'free text', be:'learnings', n:'Fields present; persistence spot-only.' },
+
+      // ---- RES / LOG ----
+      { t:'Resources', s:'Reference Materials', e:'Resource tiles/table + Add Resource', ty:'table', w:'Resources tab', p:'Y', v:'?', fn:'?', sev:'minor', fe:'rows/tiles + upload', be:'Resources child table', n:'Tab present; CRUD to verify.' },
+      { t:'Log Book', s:'Activities', e:'Log table (wireframe Task Log)', ty:'table', w:'Log Book tab', p:'Y', v:'?', fn:'?', sev:'minor', fe:'task + date + notes', be:'log child table', n:'Tab present; to verify.' }
+    ]
   }
 
 };
