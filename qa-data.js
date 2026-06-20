@@ -425,6 +425,30 @@ window.QA_DATA = {
       { t:'Resources', s:'Reference Materials', e:'Resources table + Add Resource', ty:'table', w:'Resources tab', p:'Y', v:'?', fn:'?', sev:'minor', fe:'dropdowns + upload', be:'Resources child table', n:'Tab present; CRUD to verify.' },
       { t:'Log Book', s:'Activities', e:'Log table (wireframe Task Log)', ty:'table', w:'Log Book tab', p:'Y', v:'?', fn:'?', sev:'minor', fe:'task + date + notes', be:'log child table', n:'Tab present; to verify (attachment cf Bug 94).' }
     ]
+  },
+
+  /* ============================================================
+   * PRODUCT TESTING  (Product Development module)  — VERIFIED ON STAGING 20-Jun-2026
+   * Portal: Diagnostics > Product Development > Testing (DF Product Testing)
+   * Wireframe: from-client/product_testing_module.html (1039 lines)
+   * Driven as CT-IT on PT-EP-00026-00001 (fixture EP-00026).
+   * RESULT: faithful — NO bugs. Date-chain validation now WORKS (prior FW-TEST-001 RESOLVED).
+   * ============================================================ */
+  'product_testing_module.html': {
+    framework: 'Product Testing',
+    module: 'Product Development',
+    portalPath: 'Diagnostics › Product Development › Testing  (DF Product Testing)',
+    checkedOn: '20-Jun-2026 (CT-IT, PT-EP-00026-00001)',
+    status: 'done',
+    note: 'CLEAN — faithful, no bugs. Existing tab "+ Add Test" → test row: Product, Test Type, Purpose, Lab/Lab Name, the 3-date chain (Office deposit → Lab deposit → Result), Consent Letter Signed (+ reason if not), Upload Consent Letter, Testing Report upload, Retesting Flagged, Approved by Core Team, Implementation Status. KEY: the DATE-CHAIN VALIDATION NOW WORKS — out-of-order dates (Lab 05-10 before Office 05-20) were REJECTED on save with a clear message; valid order saved fine. This RESOLVES the prior FW-TEST-001 finding ("date-chain not validated"). Mandatory Product enforced too.',
+    rows: [
+      { t:'Shell', s:'Tabs', e:'Tab bar (wireframe: Summary | Existing | Required | Resources | Task Log)', ty:'tabs', w:'Top', p:'Y', v:'-', fn:'Y', sev:'minor', fe:'tabs', be:'standard pattern', n:'Build: Summary | Details | Existing | Required | Resources | Log Book.' },
+      { t:'Existing', s:'Test row', e:'"+ Add Test" → Product, Test Type, Purpose, Lab Name, dates, Consent Letter Signed (+reason), uploads, Retesting Flagged, Approved by Core Team, Implementation Status', ty:'fields+upload', w:'Existing tab', p:'Y', v:'Y', fn:'Y', sev:'', fe:'full test record', be:'product_testing_existing child table', n:'VERIFIED filled + persisted (Orange Jam / Shillong Food Lab / valid dates) → product_testing_existing=1.' },
+      { t:'Existing', s:'Date-chain validation', e:'Office deposit ≤ Lab deposit ≤ Result date', ty:'validation', w:'Existing test row', p:'Y', v:'Y', fn:'Y', sev:'', fe:'reject out-of-order dates', be:'server validation', n:'VERIFIED: out-of-order (Lab 2026-05-10 before Office 2026-05-20) REJECTED — "Date of Sample Deposit to Lab cannot be earlier than Date of Sample Deposit to Office." Prior FW-TEST-001 (date-chain not validated) is RESOLVED.' },
+      { t:'Existing', s:'Mandatory + uploads', e:'Product Name mandatory; Consent Letter + Testing Report uploads; Approved by Core Team', ty:'fields+upload', w:'Existing test row', p:'Y', v:'Y', fn:'?', sev:'minor', fe:'mandatory product; file uploads; core approval', be:'persist', n:'Mandatory Product enforced (blocked save). Upload CRUD + consent-conditional reason sampled — to verify.' },
+      { t:'Resources', s:'Reference Materials', e:'Resources table + Add Resource', ty:'table', w:'Resources tab', p:'Y', v:'?', fn:'?', sev:'minor', fe:'dropdowns + upload', be:'Resources child table', n:'Tab present; CRUD to verify.' },
+      { t:'Log Book', s:'Activities', e:'Log table (wireframe Task Log)', ty:'table', w:'Log Book tab', p:'Y', v:'?', fn:'?', sev:'minor', fe:'task + date + notes', be:'log child table', n:'Tab present; to verify (attachment cf Bug 94).' }
+    ]
   }
 
 };
