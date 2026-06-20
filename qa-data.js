@@ -837,6 +837,40 @@ window.QA_DATA = {
       { t:'Resources', s:'Reference Materials', e:'Resources table + Add Resource', ty:'table', w:'Resources tab', p:'Y', v:'?', fn:'?', sev:'minor', fe:'rows + upload', be:'Resources child table', n:'Tab present; CRUD to verify.' },
       { t:'Log Book', s:'Activities', e:'Log table (wireframe Task Log)', ty:'table', w:'Log Book tab', p:'Y', v:'?', fn:'?', sev:'minor', fe:'task + date + notes', be:'log child table', n:'Tab present; to verify.' }
     ]
+  },
+
+  /* ============================================================
+   * PRODUCT COMPLIANCE  (Legal Compliance module)
+   * Portal path: Diagnostics > Legal Compliance > Product Compliance  (doctype: DF Product Compliance)
+   * Wireframe: from-client/product_compliance_module.html (1304 lines, fully read)
+   * ============================================================ */
+  'product_compliance_module.html': {
+    framework: 'Product Compliance',
+    module: 'Legal Compliance',
+    portalPath: 'Diagnostics › Legal Compliance › Product Compliance  (DF Product Compliance)',
+    checkedOn: '20-Jun-2026 (CT-IT, PC-EP-00026-00001)',
+    status: 'done',
+    note: 'Driven end-to-end on staging (PC-EP-00026-00001) — works; 1 minor terminology bug. Tabs Summary/Details/Existing/Required/Resources/Log Book. Product Compliance REUSES the Business-Registration card verbatim ("+ Add Registration / License", "Select registration…") instead of the wireframe\'s "Certification" framing (Bug 117, P4). FUNCTIONALLY CORRECT: picker is properly scoped to Registration Master registration_level="Product Level" (returned FSSAI/BIS after I seeded them); a certification SAVES & PERSISTS (FSSAI License, id_no, issued 2026-02-01 → valid_till 2027-01-31, govt_certified Yes); date-order validation carries over and works (shared component, CVR-0207 resolved). Real Scanned Copy upload control present. Bug-116 uniqueness gap also applies here (same component).',
+    rows: [
+      // ---- SHELL ----
+      { t:'Shell', s:'Tabs', e:'Tab bar (wireframe: Summary | Existing | Required | Resources | Task Log)', ty:'tabs', w:'Top of framework', p:'Y', v:'-', fn:'Y', sev:'', fe:'tabs', be:'standard pattern', n:'Build: Summary | Details | Existing | Required | Resources | Log Book. All present.' },
+      { t:'Shell', s:'Header', e:'Entrepreneur auto-bound; district/block', ty:'display', w:'Above tabs', p:'Y', v:'Y', fn:'Y', sev:'', fe:'EP auto-bound', be:'per-EP record', n:'EP Dakini Marak bound; saved PC-EP-00026-00001.' },
+
+      // ---- EXISTING ----
+      { t:'Existing', s:'Terminology', e:'"+ Add Certification" / "Certification" framing (wireframe)', ty:'label', w:'Existing tab', p:'N', v:'N', fn:'-', sev:'minor', fe:'wireframe = Certification terminology', be:'shared registration component', n:'Bug 117: portal shows "+ Add Registration / License" + "Select registration…" + "registrations and licenses held" — no "Certification" label. Functionally same card.' },
+      { t:'Existing', s:'List', e:'Add certification → card', ty:'button', w:'Existing tab', p:'Y', v:'-', fn:'Y', sev:'', fe:'adds card', be:'registration_existing child', n:'Verified (button labeled "+ Add Registration / License").' },
+      { t:'Existing', s:'Certification picker', e:'Certification (product-level master)', ty:'picker', w:'card', p:'Y', v:'Y', fn:'Y', sev:'', fe:'product-level certs', be:'Registration Master (registration_level=Product Level)', n:'VERIFIED product-scoped: returned FSSAI License, BIS Certification (seeded). Selected FSSAI; persisted.' },
+      { t:'Existing', s:'Core fields', e:'Product link, ID No, Issuing Authority, Govt Certified?, Status, Lifetime Validity', ty:'fields', w:'card', p:'Y', v:'Y', fn:'Y', sev:'', fe:'product + text + selects', be:'persist', n:'Persist (FSSAI-12624-2026-001, govt_certified Yes, Product Level).' },
+      { t:'Existing', s:'Date-order validation', e:'Issued Date ≤ Valid Till', ty:'validation', w:'card', p:'Y', v:'Y', fn:'Y', sev:'', fe:'reject inverted dates', be:'server validation (shared)', n:'Carries over from shared component (proven on BR). Valid order 2026-02-01 → 2027-01-31 saved.' },
+      { t:'Existing', s:'Uniqueness', e:'Same certification not addable twice', ty:'validation', w:'Existing tab', p:'N', v:'N', fn:'N', sev:'minor', fe:'block duplicate cert', be:'no uniqueness (shared)', n:'Bug 116 applies (same component does not block duplicates).' },
+      { t:'Existing', s:'Scanned Copy upload', e:'Scanned Copy file upload + View', ty:'upload', w:'card', p:'Y', v:'?', fn:'?', sev:'minor', fe:'file upload (CRUD)', be:'scanned_copy_of_id', n:'Control PRESENT (input[type=file] + Upload) — no Systemic #2. Persistence manual-verify.' },
+
+      // ---- REQUIRED / SUMMARY / RES / LOG ----
+      { t:'Required', s:'New Certifications', e:'Add new certification + bridged interventions', ty:'button+table', w:'Required tab', p:'Y', v:'?', fn:'?', sev:'minor', fe:'new + bridged rows', be:'registration_required child', n:'Tab present; drive deferred.' },
+      { t:'Summary', s:'Overview + Aggregates', e:'Certification overview + aggregates + intervention flags', ty:'metrics', w:'Summary tab', p:'Y', v:'?', fn:'-', sev:'minor', fe:'rollup', be:'derived', n:'Tab present; rollups to verify.' },
+      { t:'Resources', s:'Reference Materials', e:'Resources table + Add Resource', ty:'table', w:'Resources tab', p:'Y', v:'?', fn:'?', sev:'minor', fe:'rows + upload', be:'Resources child table', n:'Tab present; CRUD to verify.' },
+      { t:'Log Book', s:'Activities', e:'Log table (wireframe Task Log)', ty:'table', w:'Log Book tab', p:'Y', v:'?', fn:'?', sev:'minor', fe:'task + date + notes', be:'log child table', n:'Tab present; to verify.' }
+    ]
   }
 
 };
