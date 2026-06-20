@@ -803,6 +803,40 @@ window.QA_DATA = {
       { t:'Resources', s:'Reference Materials', e:'Resources table + Add Resource', ty:'table', w:'Resources tab', p:'Y', v:'?', fn:'?', sev:'minor', fe:'rows + upload', be:'Resources child table', n:'Tab present; CRUD to verify.' },
       { t:'Log Book', s:'Activities', e:'Log table (wireframe Task Log)', ty:'table', w:'Log Book tab', p:'Y', v:'?', fn:'?', sev:'minor', fe:'task + date + notes', be:'log child table', n:'Tab present; to verify.' }
     ]
+  },
+
+  /* ============================================================
+   * BUSINESS REGISTRATION  (Legal Compliance module)
+   * Portal path: Diagnostics > Legal Compliance > Business Registration  (doctype: DF Business Registration)
+   * Wireframe: from-client/business_registration_module.html (1214 lines, fully read)
+   * ============================================================ */
+  'business_registration_module.html': {
+    framework: 'Business Registration',
+    module: 'Legal Compliance',
+    portalPath: 'Diagnostics › Legal Compliance › Business Registration  (DF Business Registration)',
+    checkedOn: '20-Jun-2026 (CT-IT, BR-EP-00026-00001)',
+    status: 'done',
+    note: 'Driven end-to-end on staging (BR-EP-00026-00001). Tabs Summary/Details/Existing/Required/Resources/Log Book. Registration card fills & PERSISTS (GST Registration, ID No, Govt Certified, Status, dates). HEADLINE GOOD — CVR-0207 date-order validation RESOLVED: an inverted Issued/Valid-Till pair was REJECTED with a clear message ("Valid Till (2026-01-01) must be after Issued Date (2026-06-01)"); valid order saved fine. (verify-before-file mattered — the native-setter first attempt saved null dates, a false "passed"; real keystrokes triggered the validation.) Bug 116 (P3): registration UNIQUENESS NOT enforced — two "GST Registration" rows saved on one EP (CVR-0206 still open). Has a REAL Scanned Copy upload control (no Systemic #2). SEED: Registration Master was junk (10/12 no level, only junk "rytf" at Entrepreneur Level) → seeded 5 entrepreneur + 3 product registrations; deleted "rytf".',
+    rows: [
+      // ---- SHELL ----
+      { t:'Shell', s:'Tabs', e:'Tab bar (wireframe: Summary | Existing | Required | Resources | Task Log)', ty:'tabs', w:'Top of framework', p:'Y', v:'-', fn:'Y', sev:'', fe:'tabs', be:'standard pattern', n:'Build: Summary | Details | Existing | Required | Resources | Log Book. All present.' },
+      { t:'Shell', s:'Header', e:'Entrepreneur auto-bound; district/block', ty:'display', w:'Above tabs', p:'Y', v:'Y', fn:'Y', sev:'', fe:'EP auto-bound', be:'per-EP record', n:'EP Dakini Marak bound; saved BR-EP-00026-00001.' },
+
+      // ---- EXISTING ----
+      { t:'Existing', s:'List', e:'"+ Add Registration / License" → registration card', ty:'button', w:'Existing tab', p:'Y', v:'-', fn:'Y', sev:'', fe:'adds card', be:'registration_existing child', n:'Verified.' },
+      { t:'Existing', s:'Registration picker', e:'Registration / License (master, entrepreneur-level filtered)', ty:'picker', w:'registration card', p:'Y', v:'Y', fn:'Y', sev:'minor', fe:'master-backed', be:'Registration Master (registration_level=Entrepreneur)', n:'Master was JUNK (10/12 no level, only junk "rytf" at Entrepreneur Level) → seeded GST/Udyam/PAN/Trade License/Shop&Estab; deleted "rytf". Selected GST; persisted. Issuing Authority did NOT auto-fill from master (minor).' },
+      { t:'Existing', s:'Core fields', e:'ID No, Issuing Authority, Govt Certified?, Status, Lifetime Validity', ty:'fields', w:'registration card', p:'Y', v:'Y', fn:'Y', sev:'', fe:'text + selects', be:'persist', n:'Persist (id_no, govt_certified=Yes, status, lifetime_validity). Status = Received/Not yet Received/Rejected; options match backend.' },
+      { t:'Existing', s:'Date-order validation', e:'Issued Date ≤ Valid Till', ty:'validation', w:'registration card', p:'Y', v:'Y', fn:'Y', sev:'', fe:'reject inverted dates', be:'server validation', n:'VERIFIED RESOLVED (was CVR-0207): inverted (Valid 2026-01-01 before Issued 2026-06-01) REJECTED — "Valid Till must be after Issued Date." Valid order (2026-01-15 → 2031-01-14) saved.' },
+      { t:'Existing', s:'Uniqueness', e:'Same registration not addable twice per EP', ty:'validation', w:'Existing tab', p:'N', v:'N', fn:'N', sev:'minor', fe:'block duplicate registration', be:'no uniqueness constraint', n:'Bug 116 (CVR-0206 still open): two "GST Registration" rows saved on one EP — duplicates not blocked. (I deduped the fixture after.)' },
+      { t:'Existing', s:'Scanned Copy upload', e:'Scanned Copy file upload + View + replace/delete', ty:'upload', w:'registration card', p:'Y', v:'?', fn:'?', sev:'minor', fe:'file upload (CRUD)', be:'scanned_copy_of_id', n:'Control PRESENT (1 input[type=file] + Upload) — no Systemic #2 here. Upload persistence spot-only / manual-verify.' },
+      { t:'Existing', s:'Intervention', e:'Per-card Intervention toggle + Type + Justification → mirrors to Required', ty:'toggle', w:'registration card', p:'Y', v:'-', fn:'?', sev:'minor', fe:'bridges to Required', be:'intervention_need/bridge', n:'Present (banner: "mirrors to Required tab on save"). Bridge drive deferred.' },
+
+      // ---- REQUIRED / SUMMARY / RES / LOG ----
+      { t:'Required', s:'New Registrations', e:'"+ Add New Registration" + bridged interventions (Phase field)', ty:'button+table', w:'Required tab', p:'Y', v:'?', fn:'?', sev:'minor', fe:'new + bridged rows', be:'registration_required child', n:'Tab present; drive deferred.' },
+      { t:'Summary', s:'Overview + Aggregates', e:'Registration overview table + aggregates + intervention flags', ty:'metrics', w:'Summary tab', p:'Y', v:'?', fn:'-', sev:'minor', fe:'rollup', be:'derived', n:'Tab present; rollups to verify (note: duplicate rows would double-count — Bug 116).' },
+      { t:'Resources', s:'Reference Materials', e:'Resources table + Add Resource', ty:'table', w:'Resources tab', p:'Y', v:'?', fn:'?', sev:'minor', fe:'rows + upload', be:'Resources child table', n:'Tab present; CRUD to verify.' },
+      { t:'Log Book', s:'Activities', e:'Log table (wireframe Task Log)', ty:'table', w:'Log Book tab', p:'Y', v:'?', fn:'?', sev:'minor', fe:'task + date + notes', be:'log child table', n:'Tab present; to verify.' }
+    ]
   }
 
 };
