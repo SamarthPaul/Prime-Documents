@@ -910,6 +910,33 @@ window.QA_DATA = {
       { t:'Resources', s:'Reference Materials', e:'Resources table + Add Resource', ty:'table', w:'Resources tab', p:'Y', v:'?', fn:'?', sev:'minor', fe:'rows + upload', be:'Resources child table', n:'Tab present; CRUD to verify.' },
       { t:'Log Book', s:'Activities', e:'Log table (wireframe Task Log)', ty:'table', w:'Log Book tab', p:'Y', v:'?', fn:'?', sev:'minor', fe:'task + date + notes', be:'log child table', n:'Tab present; to verify.' }
     ]
+  },
+
+  /* ============================================================
+   * UNIT PRICING  (standalone — consumes all frameworks' cost outputs)  — DONE LAST per PM
+   * Portal path: Diagnostics > Unit Pricing  (doctype: DF Unit Pricing)
+   * Wireframe: from-client/unit_pricing_module.html (1223 lines, fully read)
+   * ============================================================ */
+  'unit_pricing_module.html': {
+    framework: 'Unit Pricing',
+    module: 'Unit Pricing',
+    portalPath: 'Diagnostics › Unit Pricing  (DF Unit Pricing)',
+    checkedOn: '21-Jun-2026 (CT-IT, UP-EP-00026-00001)',
+    status: 'done',
+    note: 'Driven on staging (UP-EP-00026-00001, product PRD-2026-00011) — the integration framework, done LAST. Tabs Summary/Details/Existing/Required(Optimized)/Resources/Log Book. 7 cost heads (Raw Materials, Human Resource, Packaging, Transportation, Machine Depreciation, Gas, Others) + Pricing Strategy (Cost-Plus/Competitor/Value-based, on+off channel). KEY GOOD: the cross-framework AUTO-FETCH WORKS — "⟳ Refresh from sources" pulled the source rates for the product (toast "RM 0 · HR 1 · Pkg 1 · Mach 0"; persisted hr_lines rate=500, pkg_lines rate=12; RM/Mach 0 = legitimately none for this product). HEADLINE — Bug 120 (P2): the cost-per-unit ROLL-UP is broken — with HR+Pkg cost lines fetched and Total Units Produced=1000 saved, every subtotal + total_input_cost + cost_per_unit still = 0 (verified server-side), so the landed cost/unit and the entire Pricing Strategy compute off ₹0. Same family as Bug 86 but it nullifies the LAST framework end-to-end.',
+    rows: [
+      { t:'Shell', s:'Tabs', e:'Tab bar (wireframe: Summary | Existing | Optimized | Resources | Task Log)', ty:'tabs', w:'Top', p:'Y', v:'-', fn:'Y', sev:'', fe:'tabs', be:'standard pattern', n:'Build: Summary | Details | Existing | Required(Optimized) | Resources | Log Book. All present.' },
+      { t:'Shell', s:'Header', e:'Entrepreneur auto-bound', ty:'display', w:'Above tabs', p:'Y', v:'Y', fn:'Y', sev:'', fe:'EP auto-bound', be:'per-EP record', n:'EP Dakini Marak bound; saved UP-EP-00026-00001.' },
+      { t:'Existing', s:'List', e:'"+ Add Product" → product cost block', ty:'button', w:'Existing tab', p:'Y', v:'-', fn:'Y', sev:'', fe:'adds product block', be:'existing_product_blocks child', n:'Verified; product PRD-2026-00011 block persisted.' },
+      { t:'Existing', s:'Auto-fetch from frameworks', e:'"⟳ Refresh from sources" pulls RM/HR/Packaging/Machinery costs for the product', ty:'integration', w:'product block', p:'Y', v:'Y', fn:'Y', sev:'', fe:'auto-fetch cost lines from other frameworks', be:'rm_lines/hr_lines/pkg_lines/mach_lines', n:'WORKS: toast "RM 0 · HR 1 · Pkg 1 · Mach 0"; persisted hr_lines (Hired Worker Skilled, rate 500) + pkg_lines (Plastic Packaging, rate 12). RM/Mach 0 legitimate for this product. This is the key cross-framework integration — it functions.' },
+      { t:'Existing', s:'Cost heads', e:'Raw Materials, Human Resource, Packaging, Transportation, Machine Depreciation, Gas, Others', ty:'fields', w:'product block', p:'Y', v:'Y', fn:'Y', sev:'', fe:'7 cost heads + manual inputs (gas/rent/transport/units)', be:'subtotals', n:'All 7 heads present; HR/Pkg auto-populated; gas/rent/transport/units manual. Inputs accept values.' },
+      { t:'Existing', s:'Cost-per-unit roll-up', e:'Subtotals → total input cost → ÷ units → Cost per Unit', ty:'calc', w:'product block', p:'Y', v:'N', fn:'N', sev:'serious', fe:'aggregate lines → cost/unit (server-side)', be:'rm/hr/pkg/...subtotal + total_input_cost + cost_per_unit', n:'Bug 120: BROKEN — with hr rate 500 + pkg rate 12 + total_units_produced=1000 saved, ALL subtotals + total_input_cost + cost_per_unit stay ₹0 (API-verified). Auto-fetch brings rates but the roll-up never computes. Same family as Bug 86; nullifies Unit Pricing end-to-end.' },
+      { t:'Existing', s:'Pricing Strategy', e:'Cost-Plus / Competitor / Value-based → selling & retail price (on+off channel)', ty:'calc', w:'product block', p:'Y', v:'N', fn:'N', sev:'serious', fe:'markup/margin → price from cost/unit', be:'cp/cb/vb fields', n:'Present (full schema) but computes off cost_per_unit=0 (Bug 120) → all prices ₹0. Re-verify after the roll-up fix.' },
+      { t:'Summary', s:'SKU-wise Overview + Aggregates', e:'Per-product price overview + aggregates + intervention flags', ty:'metrics', w:'Summary tab', p:'Y', v:'?', fn:'-', sev:'minor', fe:'rollup from blocks', be:'derived', n:'Tab present; depends on cost_per_unit (Bug 120).' },
+      { t:'Optimized', s:'Optimized pricing', e:'Optimized-tab cost/price per matching SKU', ty:'table', w:'Required/Optimized tab', p:'Y', v:'?', fn:'?', sev:'minor', fe:'optimized cost vs existing', be:'required_product_blocks', n:'Tab present; drive deferred (blocked behind Bug 120 roll-up).' },
+      { t:'Resources', s:'Reference Materials', e:'Resources table + Add Resource', ty:'table', w:'Resources tab', p:'Y', v:'?', fn:'?', sev:'minor', fe:'rows + upload', be:'Resources child table', n:'Tab present; CRUD to verify.' },
+      { t:'Log Book', s:'Activities', e:'Log table (wireframe Task Log)', ty:'table', w:'Log Book tab', p:'Y', v:'?', fn:'?', sev:'minor', fe:'task + date + notes', be:'log child table', n:'Tab present; to verify.' }
+    ]
   }
 
 };
