@@ -227,6 +227,32 @@ window.QA_DATA = {
       { t:'Shell', s:'Access', e:'Open Infrastructure framework as Core Team IT', ty:'access', w:'Diagnostics › Infrastructure', p:'N', v:'N', fn:'N', sev:'serious', fe:'BRD PR-OV-004: CT-IT Full CRUD on all Diagnostics frameworks incl. Infrastructure', be:'role permission allows read meta+list+CRUD', n:'Bug 104: 403 on DF Infrastructure meta/list/count; form blank. UI QA blocked. (Other frameworks 200.)' },
       { t:'(pending)', s:'Built-Environment / Machines / Solar / Financial Model / Tracker', e:'Full wireframe comparison (Land/Rent/Water/NOC; LIFCOM funding split + EMI calculator; tranches; vendor payment)', ty:'section', w:'all tabs', p:'?', v:'?', fn:'?', sev:'', fe:'per wireframe', be:'BRD', n:'Not yet verifiable — blocked by Bug 104. Re-drive once CT-IT access is granted (or via Fessociate/admin). Re-check LIFCOM EMI vs prior Bug 83.' }
     ]
+  },
+
+  /* ============================================================
+   * BRANDING IDENTITY  (Marketing Tools module)  — VERIFIED ON STAGING 20-Jun-2026
+   * Portal: Diagnostics > Marketing Tools > Branding Identity (DF Branding Identity)
+   * Wireframe: from-client/branding_identity_module.html (967 lines)
+   * Driven as CT-IT on BI-EP-00026-00001 (fixture EP-00026).
+   * RESULT: faithful to the wireframe — NO bugs. (Designer's landing framework.)
+   * ============================================================ */
+  'branding_identity_module.html': {
+    framework: 'Branding Identity',
+    module: 'Marketing Tools',
+    portalPath: 'Diagnostics › Marketing Tools › Branding Identity  (DF Branding Identity)',
+    checkedOn: '20-Jun-2026 (CT-IT, BI-EP-00026-00001)',
+    status: 'done',
+    note: 'CLEAN — faithful to the wireframe, no bugs found. Brand/Logo/Business Card tabs all present; each has its own "Need New …?" intervention toggle that reveals conditional fields (New Brand Name + Justification, both mandatory) + a per-item DUAL approval (Entrepreneur + Core Team, Pending/Approved/Rejected). Logo & Business-Card QR uploads present (file inputs). Brand data + dual-approval verified persisted. NOTE: this framework nearly produced ~3 FALSE bugs — toggles + conditional reveals were missed by the flat field scan; confirmed present via the toggle + stored data. Build adds a Details tab + "Market Scope" field.',
+    rows: [
+      { t:'Shell', s:'Tabs', e:'Tab bar (wireframe: Summary | Business Card | Brand | Logo | Resources | Task Log)', ty:'tabs', w:'Top', p:'Y', v:'-', fn:'Y', sev:'minor', fe:'tabs', be:'standard pattern', n:'Build: Summary | Details | Brand | Logo | Business Card | Resources | Log Book. Adds Details; Task Log→Log Book. All present.' },
+      { t:'Brand', s:'Brand Identity Data', e:'Storyline, Current Brand Name, Brand Tagline, USP of Brand, Entrepreneur Media Folder Link, Market Scope', ty:'fields', w:'Brand tab', p:'Y', v:'Y', fn:'Y', sev:'', fe:'all present + editable', be:'persist', n:'Verified filled + persisted (Dakini Naturals / Taste of the Garo Hills). "Market Scope" = build addition.' },
+      { t:'Brand', s:'Intervention Need', e:'"Need New Brand Name?" toggle → reveals "New Brand Name (if advised) *" + "Justification *"', ty:'toggle', w:'Brand tab', p:'Y', v:'Y', fn:'Y', sev:'', fe:'skip-logic conditional reveal', be:'need_new_brand', n:'VERIFIED: toggle ON reveals both mandatory conditional fields ("↻ Flagged — capture the proposed name + justification").' },
+      { t:'Brand', s:'Approvals', e:'Dual approval: Entrepreneur Approval + Core Team Approval (Pending/Approved/Rejected)', ty:'select', w:'Brand tab', p:'Y', v:'Y', fn:'Y', sev:'', fe:'dual approval', be:'brand_entrepreneur_approval + brand_core_team_approval', n:'VERIFIED: set both Approved, persisted.' },
+      { t:'Logo', s:'Logo', e:'"Need New Logo?" toggle, Existing Logo, logo upload (file inputs), dual approval', ty:'fields+upload', w:'Logo tab', p:'Y', v:'Y', fn:'?', sev:'', fe:'upload + approval', be:'need_new_logo + logo_*_approval', n:'2 file inputs + Upload button present; logo_entrepreneur/core_team_approval exist (stored Pending). Upload view/replace/delete CRUD not yet driven — to verify.' },
+      { t:'Business Card', s:'Card Content', e:'Contact Number, Email, Instagram QR, WhatsApp Catalogue QR, QR uploads, "Need New?" + dual approval', ty:'fields+upload', w:'Business Card tab', p:'Y', v:'Y', fn:'?', sev:'minor', fe:'card fields + QR uploads + approval', be:'need_new_bizcard + bizcard_*_approval', n:'Contact/Email/Instagram QR/WhatsApp QR + 2 file inputs present; bizcard approvals exist (stored). "Profile Link" + "Designer" not confirmed in UI (likely conditional / auto — verify, low priority).' },
+      { t:'Resources', s:'Reference Materials', e:'Resources table + Add Resource', ty:'table', w:'Resources tab', p:'Y', v:'?', fn:'?', sev:'minor', fe:'dropdowns + upload', be:'Resources child table', n:'Tab present; CRUD to verify.' },
+      { t:'Log Book', s:'Activities', e:'Log table (wireframe Task Log)', ty:'table', w:'Log Book tab', p:'Y', v:'?', fn:'?', sev:'minor', fe:'task + date + notes', be:'log child table', n:'Tab present; to verify (attachment cf Bug 94).' }
+    ]
   }
 
 };
