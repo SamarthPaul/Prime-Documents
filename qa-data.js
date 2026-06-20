@@ -666,6 +666,40 @@ window.QA_DATA = {
       { t:'Resources', s:'Reference Materials', e:'Resources table + Add Resource', ty:'table', w:'Resources tab', p:'Y', v:'?', fn:'?', sev:'minor', fe:'rows + upload', be:'Resources child table', n:'Tab present; CRUD to verify.' },
       { t:'Log Book', s:'Activities', e:'Log table (wireframe Task Log)', ty:'table', w:'Log Book tab', p:'Y', v:'?', fn:'?', sev:'minor', fe:'task + date + notes', be:'log child table', n:'Tab present; to verify.' }
     ]
+  },
+
+  /* ============================================================
+   * LOGISTIC PACKING  (Logistics module)
+   * Portal path: Diagnostics > Logistics > Logistic Packing  (doctype: DF Logistic Packing)
+   * Wireframe: from-client/logistics_packing_module.html (1704 lines, fully read)
+   * ============================================================ */
+  'logistics_packing_module.html': {
+    framework: 'Logistic Packing',
+    module: 'Logistics',
+    portalPath: 'Diagnostics › Logistics › Logistic Packing  (DF Logistic Packing)',
+    checkedOn: '20-Jun-2026 (CT-IT, LP-EP-00026-00001)',
+    status: 'done',
+    note: 'Driven end-to-end on staging (LP-EP-00026-00001, product Bamboo Shoot Pickle PRD-00011) — CLEAN, no new bugs. Tabs Summary/Details/Existing/Required/Resources/Log Book all present. HEADLINE: BUG 84 RESOLVED — both masters now SEEDED: Logistic Packing Type (8: Bamboo Basket/Cardboard Box/Jute Bag/Net Bag/Plastic Crate/Poly Bag/Tin Container/Wooden Crate) + Logistic Packing Material (5: Cane/Cardboard/Foam/Paper/Plastic). Packing item row fully fills & PERSISTS (packing_type "Cardboard Box", material "Cardboard", purchase_source "Local Market", price 8, damage_observed "Minor", dim_unit cm). Monthly Shipment grid AUTO-POPULATES the transposed table (column "Cardboard Box · @ ₹8.00/unit", 12 month qty cells + Month Total) — much cleaner than Packaging\'s "+ Add Month" (no phantom-row bug here). Minor UX note: a "Save the document once before adding packing" gate forces an extra save round-trip (add product → save → + Add Row) vs the wireframe\'s fill-then-save-once — mild friction on flaky networks (not filed).',
+    rows: [
+      // ---- SHELL ----
+      { t:'Shell', s:'Tabs', e:'Tab bar (wireframe: Summary | Existing | Required | Resources | Task Log | Log Book)', ty:'tabs', w:'Top of framework', p:'Y', v:'-', fn:'Y', sev:'', fe:'tabs', be:'standard pattern', n:'Build: Summary | Details | Existing | Required | Resources | Log Book. All present.' },
+      { t:'Shell', s:'Header', e:'Entrepreneur auto-bound; district/block', ty:'display', w:'Above tabs', p:'Y', v:'Y', fn:'Y', sev:'', fe:'EP auto-bound', be:'per-EP record', n:'EP Dakini Marak bound; saved LP-EP-00026-00001.' },
+
+      // ---- EXISTING ----
+      { t:'Existing', s:'List', e:'"+ Add Product" → packing card (then "+ Add Row" per packing item)', ty:'button', w:'Existing tab', p:'Y', v:'-', fn:'Y', sev:'', fe:'adds product card + packing rows', be:'lp_products / lp_items child', n:'Verified. NOTE: "Save the document once before adding packing" gate — must save the card before "+ Add Row" reveals packing fields (extra save round-trip; minor UX).' },
+      { t:'Existing', s:'Product', e:'Product picker (+ SKU optional)', ty:'picker', w:'packing card', p:'Y', v:'Y', fn:'Y', sev:'', fe:'product picker', be:'links Product', n:'Verified (PRD-2026-00011).' },
+      { t:'Existing', s:'Packing Type', e:'Packing Type picker', ty:'picker', w:'packing item', p:'Y', v:'Y', fn:'Y', sev:'', fe:'master-backed', be:'Logistic Packing Type', n:'BUG 84 RESOLVED: master seeded (8 types). Selected "Cardboard Box"; persisted.' },
+      { t:'Existing', s:'Material', e:'Material picker', ty:'picker', w:'packing item', p:'Y', v:'Y', fn:'Y', sev:'', fe:'master-backed', be:'Logistic Packing Material', n:'BUG 84 RESOLVED: master seeded (5 materials). Selected "Cardboard"; persisted.' },
+      { t:'Existing', s:'Specs', e:'Dimensions L/B/H + unit, Procurement Source, Price/Unit, Damage Risk, Properties/observations', ty:'fields', w:'packing item', p:'Y', v:'Y', fn:'Y', sev:'', fe:'dims + selects + price', be:'persist', n:'Verified: source "Local Market", price 8, damage "Minor", dim_unit cm all persist. Damage Risk = None/Minor/Moderate/Severe.' },
+      { t:'Existing', s:'Intervention toggle', e:'Toggle "Intervention Needed?" → auto-creates Replacement on Required tab', ty:'toggle', w:'packing item', p:'Y', v:'-', fn:'?', sev:'minor', fe:'bridges to Required', be:'bridge', n:'Toggle present (per the "auto-create a Replacement entry" hint). Bridge drive deferred; mechanism matches RM/DL pattern.' },
+      { t:'Existing', s:'Monthly Shipment grid', e:'Section II — transposed Monthly Shipment Quantities (months × packing types), auto-populated', ty:'table', w:'Existing § II', p:'Y', v:'Y', fn:'Y', sev:'', fe:'12-month grid, auto columns from packing items, Month Total', be:'monthly child', n:'VERIFIED auto-populates: column "Cardboard Box · @ ₹8.00/unit", 12 qty cells + Month Total. Fixed 12-month grid (no "+ Add Month" → no phantom-row bug, unlike Packaging Bug 85).' },
+
+      // ---- REQUIRED / SUMMARY / RES / LOG ----
+      { t:'Required', s:'Interventions', e:'I. Packing Interventions + II. New Logistics Packing + III. Monthly Shipment Required', ty:'button+table', w:'Required tab', p:'Y', v:'?', fn:'?', sev:'minor', fe:'bridged interventions + new packing + monthly required', be:'required child tables', n:'Tab present; bridge/drive deferred. To verify.' },
+      { t:'Summary', s:'Aggregates', e:'Packing-wise overview + aggregates + intervention flags; "Auto-fetches to Unit Pricing"', ty:'metrics', w:'Summary tab', p:'Y', v:'?', fn:'-', sev:'minor', fe:'rollup + Unit Pricing feed', be:'derived', n:'Tab present; Unit Pricing cross-feed to verify at Unit Pricing stage.' },
+      { t:'Resources', s:'Reference Materials', e:'Resources table + Add Resource', ty:'table', w:'Resources tab', p:'Y', v:'?', fn:'?', sev:'minor', fe:'rows + upload', be:'Resources child table', n:'Tab present; CRUD to verify.' },
+      { t:'Log Book', s:'Activities', e:'Log table (wireframe Task Log)', ty:'table', w:'Log Book tab', p:'Y', v:'?', fn:'?', sev:'minor', fe:'task + date + notes', be:'log child table', n:'Tab present; to verify.' }
+    ]
   }
 
 };
