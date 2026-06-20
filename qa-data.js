@@ -449,6 +449,49 @@ window.QA_DATA = {
       { t:'Resources', s:'Reference Materials', e:'Resources table + Add Resource', ty:'table', w:'Resources tab', p:'Y', v:'?', fn:'?', sev:'minor', fe:'dropdowns + upload', be:'Resources child table', n:'Tab present; CRUD to verify.' },
       { t:'Log Book', s:'Activities', e:'Log table (wireframe Task Log)', ty:'table', w:'Log Book tab', p:'Y', v:'?', fn:'?', sev:'minor', fe:'task + date + notes', be:'log child table', n:'Tab present; to verify (attachment cf Bug 94).' }
     ]
+  },
+
+  /* ============================================================
+   * STANDARDIZATION  (Product Development module)
+   * Portal path: Diagnostics > Product Development > Standardization  (doctype: DF Standardization)
+   * Wireframe: from-client/product_standardization_module.html (1084 lines, fully read)
+   * ============================================================ */
+  'product_standardization_module.html': {
+    framework: 'Standardization',
+    module: 'Product Development',
+    portalPath: 'Diagnostics › Product Development › Standardization  (DF Standardization)',
+    checkedOn: '20-Jun-2026 (CT-IT, STD-EP-00026-00001)',
+    status: 'done',
+    note: 'Driven end-to-end on staging (STD-EP-00026-00001, products Bamboo Shoot Pickle PRD-00011/00012). Tabs: Summary, Details, Existing, Required, Resources, Log Book — all present. Existing row (Product, Sector, Type, SOP link, External URL, Developed By, Version) saves & persists on real keystrokes (the earlier null saves were a native-setter automation artifact, NOT a bug). Required row (Product, Type, Collaborating Partner, Assessment Remarks, Partner Assigned, Status, dates, Final SOP) saves ONLY when Status="Completed". HEADLINE: Bug 105 (BLOCKER) Required Status dropdown options mismatch backend → "In-Progress"/"Dropped" fail the whole save (417). Also: Bug 106 Upload SOP file control missing (URL only), Bug 107 "Is being followed?" Yes/No+reason missing, Bug 108 Product Sector free-text editable & not auto-fetched. Seeded the empty Standardization Type master with 4 real values (Recipe/Process/Packaging/Quality Standardisation).',
+    rows: [
+      // ---- SHELL ----
+      { t:'Shell', s:'Tabs', e:'Tab bar (wireframe: Summary | Existing | Required | Resources | Task Log)', ty:'tabs', w:'Top of framework', p:'Y', v:'-', fn:'Y', sev:'', fe:'tabs', be:'standard pattern', n:'Build: Summary | Details | Existing | Required | Resources | Log Book. All present + switch fine.' },
+      { t:'Shell', s:'Header', e:'Entrepreneur auto-bound "Auto-fetched from profile"; district/block', ty:'display', w:'Above tabs', p:'Y', v:'Y', fn:'Y', sev:'', fe:'EP auto-bound', be:'per-EP record', n:'EP Dakini Marak bound; district/block persisted on save.' },
+
+      // ---- EXISTING TAB ----
+      { t:'Existing', s:'List', e:'"+ Add Existing Standard" → adds standardisation row', ty:'button', w:'Existing tab', p:'Y', v:'-', fn:'Y', sev:'', fe:'adds row', be:'std_entries child (phase=Existing)', n:'Verified.' },
+      { t:'Existing', s:'Identity', e:'Product * (product picker)', ty:'picker', w:'Existing row', p:'Y', v:'Y', fn:'Y', sev:'', fe:'product picker', be:'links Product', n:'Picker lists EP products (PRD-00011/00012). Selected + persisted.' },
+      { t:'Existing', s:'Identity', e:'Product Sector (wireframe: read-only, auto-fetched from product)', ty:'text', w:'Existing row', p:'Y', v:'N', fn:'N', sev:'minor', fe:'wireframe = readonly "Auto-fetched when product is selected"', be:'derive from product', n:'Bug 108: free-text editable (readOnly=false), does NOT auto-fetch on product select — stays blank, typed manually.' },
+      { t:'Existing', s:'Identity', e:'Type of Standardization (master picker)', ty:'picker', w:'Existing row', p:'Y', v:'Y', fn:'Y', sev:'', fe:'master-backed picker', be:'Standardization Type master', n:'Master had ONLY junk ("abcd"/"abcdddd"); seeded 4 real types. No inline-create in picker (had to seed via API/Masters). Then selected Recipe Standardisation; persisted.' },
+      { t:'Existing', s:'SOP', e:'Upload SOP file control (file picker .pdf/.doc/.img + View + Replace + Delete)', ty:'upload', w:'Existing row', p:'N', v:'N', fn:'N', sev:'serious', fe:'wireframe file input w/ pill+View+remove (full CRUD)', be:'attach SOP to CRM', n:'Bug 106: NO file input anywhere (0 input[type=file]). Only free-text URL fields — no capture/view/replace/delete.' },
+      { t:'Existing', s:'SOP', e:'SOP / Recipe Link + External SOP URL (free text)', ty:'text', w:'Existing row', p:'Y', v:'Y', fn:'Y', sev:'', fe:'URL fields', be:'persist', n:'Both persist on real keystrokes (recipe_sop_link + sop_url). Earlier null was native-setter artifact, re-tested = OK.' },
+      { t:'Existing', s:'Authoring', e:'Developed By + Version', ty:'text', w:'Existing row', p:'Y', v:'Y', fn:'Y', sev:'', fe:'free text', be:'persist', n:'Persist (developed_by="MBMA Food Lab", version="v1.0").' },
+      { t:'Existing', s:'Follow-up', e:'"Is the standardisation being followed?" Yes/No radio + conditional "Why not followed?" textarea', ty:'radio+text', w:'Existing row', p:'N', v:'N', fn:'N', sev:'serious', fe:'wireframe Yes/No radio + conditional reason; feeds Summary "Being Followed" counts', be:'reasons_not_followed (field exists, no UI)', n:'Bug 107: NO control (0 radios). Backend reasons_not_followed unreachable; Summary "Being Followed (Yes)/(No)" counters can never populate.' },
+
+      // ---- REQUIRED TAB ----
+      { t:'Required', s:'List', e:'"+ Add Required Standardization" → adds required-standardisation row', ty:'button', w:'Required tab', p:'Y', v:'-', fn:'Y', sev:'', fe:'adds row', be:'std_entries child (phase=Required)', n:'Verified.' },
+      { t:'Required', s:'Identity', e:'Product * + Type Required (pickers)', ty:'picker', w:'Required row', p:'Y', v:'Y', fn:'Y', sev:'', fe:'pickers', be:'links', n:'Both selected (PRD-00011, Process Standardisation) + persisted.' },
+      { t:'Required', s:'Identity', e:'Product Sector (read-only auto-fetch)', ty:'text', w:'Required row', p:'Y', v:'N', fn:'N', sev:'minor', fe:'wireframe readonly auto-fetch', be:'derive from product', n:'Bug 108 (same defect on Required row): free-text editable, no auto-fetch.' },
+      { t:'Required', s:'Detail', e:'Collaborating Partner, Assessment Remarks (textarea), Partner Assigned, Final SOP / Output Link', ty:'fields', w:'Required row', p:'Y', v:'Y', fn:'Y', sev:'', fe:'free text + textarea + URL', be:'persist', n:'All persist on real keystrokes (collaborating_partner, assessment_remarks, partner_assigned, final_sop_link).' },
+      { t:'Required', s:'Status', e:'Status dropdown (Implementation Status)', ty:'select', w:'Required row', p:'Y', v:'N', fn:'N', sev:'blocker', fe:'wireframe status select', be:'Standardization Entry.status Select', n:'Bug 105 (BLOCKER): UI offers "In-Progress"/"Completed"/"Dropped" but backend Select = ""/"Pending"/"In Progress"/"Completed"/"On Hold"/"Not Feasible". "In-Progress" (hyphen) & "Dropped" → 417 ValidationError, WHOLE save rejected, row lost. Only "Completed" saves. Confirmed via network trace + reload.' },
+      { t:'Required', s:'Dates', e:'Date Started + Date Completed', ty:'date', w:'Required row', p:'Y', v:'?', fn:'?', sev:'minor', fe:'date inputs', be:'persist; chain order', n:'Inputs present. Date persistence + out-of-order validation not isolated (blocked behind Bug 105 save failure during run) — to re-verify once status fix lands.' },
+      { t:'Required', s:'Approval', e:'Approved by Core Team (+ Completed/In Progress/Dropped indicators)', ty:'control', w:'Required row', p:'Y', v:'?', fn:'?', sev:'minor', fe:'core-team approval', be:'approval_by_core_team', n:'Label/indicators present; approval toggle persistence to verify.' },
+
+      // ---- SUMMARY / RESOURCES / LOG BOOK ----
+      { t:'Summary', s:'Aggregates', e:'Standard counts incl. "Being Followed (Yes)/(No)"', ty:'metrics', w:'Summary tab', p:'Y', v:'N', fn:'-', sev:'serious', fe:'aggregate counts', be:'derived', n:'Tab present but "Being Followed" counters are dead — depend on the missing control (Bug 107).' },
+      { t:'Resources', s:'Reference Materials', e:'Resources table + Add Resource (incl. File column)', ty:'table', w:'Resources tab', p:'Y', v:'?', fn:'?', sev:'minor', fe:'rows + upload', be:'Resources child table', n:'Tab present; CRUD to verify.' },
+      { t:'Log Book', s:'Activities', e:'Log table (wireframe Task Log)', ty:'table', w:'Log Book tab', p:'Y', v:'?', fn:'?', sev:'minor', fe:'task + date + notes', be:'log child table', n:'Tab present; to verify.' }
+    ]
   }
 
 };
