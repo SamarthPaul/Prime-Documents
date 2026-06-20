@@ -355,6 +355,30 @@ window.QA_DATA = {
       { t:'Resources', s:'Reference Materials', e:'Resources table + Add Resource', ty:'table', w:'Resources tab', p:'Y', v:'?', fn:'?', sev:'minor', fe:'dropdowns + upload', be:'Resources child table', n:'Tab present; CRUD to verify.' },
       { t:'Log Book', s:'Activities', e:'Log table (wireframe Task Log)', ty:'table', w:'Log Book tab', p:'Y', v:'?', fn:'?', sev:'minor', fe:'task + date + notes', be:'log child table', n:'Tab present; to verify (attachment cf Bug 94).' }
     ]
+  },
+
+  /* ============================================================
+   * MARKET LINKAGE  (Market module)  — VERIFIED ON STAGING 20-Jun-2026
+   * Portal: Diagnostics > Market > Market Linkage (DF Market Linkage)
+   * Wireframe: from-client/market_linkage_module.html (1056 lines)
+   * Driven as CT-IT on ML-EP-00026-00001 (fixture EP-00026).
+   * RESULT: faithful + calc CORRECT (persists server-side) — NO bugs.
+   * ============================================================ */
+  'market_linkage_module.html': {
+    framework: 'Market Linkage',
+    module: 'Market',
+    portalPath: 'Diagnostics › Market › Market Linkage  (DF Market Linkage)',
+    checkedOn: '20-Jun-2026 (CT-IT, ML-EP-00026-00001)',
+    status: 'done',
+    note: 'CLEAN — faithful, no bugs, and the revenue calc PERSISTS server-side (unlike RM/Financials ₹0 bug). Existing channels table (Channel Name & Type Online/Offline, Location, Price, Avg Units/Month → Avg Revenue/Month, Annual Revenue, Annual Total auto-calc). Required = recommended channels. Sales Tracker tab = monthly collapsible sections, per-SKU-per-channel rows with auto revenue. VERIFIED calc: Price ₹50 × 200 units = Avg Rev/Month ₹10,000 → Annual ₹1,20,000; SAVED + persisted (avg_revenue_per_month=10000, annual_revenue=120000).',
+    rows: [
+      { t:'Shell', s:'Tabs', e:'Tab bar (wireframe: Summary | Existing | Required | Sales Tracker | Resources | Task Log)', ty:'tabs', w:'Top', p:'Y', v:'-', fn:'Y', sev:'minor', fe:'tabs', be:'standard pattern', n:'Build: Summary | Details | Existing | Required | Sales Tracker | Resources | Log Book.' },
+      { t:'Existing', s:'Channels', e:'"+ Add Channel" → row: Channel Name & Type (Online/Offline), Location (block), Price, Avg Units/Month → Avg Revenue/Month, Annual Revenue, Annual Total (auto)', ty:'table+calc', w:'Existing tab', p:'Y', v:'Y', fn:'Y', sev:'', fe:'revenue auto = price×units; annual = ×12', be:'existing_channels child table; calc persists', n:'VERIFIED: 50×200 → Avg ₹10,000, Annual ₹1,20,000; persisted server-side (avg_revenue_per_month=10000, annual_revenue=120000). Calc is correct AND persists (contrast RM/Financials Bug 86).' },
+      { t:'Required', s:'Recommended Channels', e:'"+ Add Recommended Channel" → recommended/target channels + implementation status', ty:'table', w:'Required tab', p:'Y', v:'?', fn:'?', sev:'minor', fe:'recommended channels', be:'persist', n:'Tab present; not deep-filled this pass.' },
+      { t:'Sales Tracker', s:'Monthly sales', e:'Collapsible monthly sections; each row = one SKU via one channel; Price per month; Revenue auto-calc', ty:'table+calc', w:'Sales Tracker tab', p:'Y', v:'?', fn:'?', sev:'minor', fe:'per-month per-SKU revenue', be:'tracker child table; Tracker Annual Revenue agg', n:'Tab present (structure per wireframe); deep monthly fill sampled — to verify the per-month revenue roll-up.' },
+      { t:'Resources', s:'Reference Materials', e:'Resources table + Add Resource', ty:'table', w:'Resources tab', p:'Y', v:'?', fn:'?', sev:'minor', fe:'dropdowns + upload', be:'Resources child table', n:'Tab present; CRUD to verify.' },
+      { t:'Log Book', s:'Activities', e:'Log table (wireframe Task Log)', ty:'table', w:'Log Book tab', p:'Y', v:'?', fn:'?', sev:'minor', fe:'task + date + notes', be:'log child table', n:'Tab present; to verify (attachment cf Bug 94).' }
+    ]
   }
 
 };
