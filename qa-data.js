@@ -871,6 +871,35 @@ window.QA_DATA = {
       { t:'Resources', s:'Reference Materials', e:'Resources table + Add Resource', ty:'table', w:'Resources tab', p:'Y', v:'?', fn:'?', sev:'minor', fe:'rows + upload', be:'Resources child table', n:'Tab present; CRUD to verify.' },
       { t:'Log Book', s:'Activities', e:'Log table (wireframe Task Log)', ty:'table', w:'Log Book tab', p:'Y', v:'?', fn:'?', sev:'minor', fe:'task + date + notes', be:'log child table', n:'Tab present; to verify.' }
     ]
+  },
+
+  /* ============================================================
+   * PRODUCT PROFILE  (standalone — the Product master)
+   * Portal path: Products → a Product  (doctype: Product, NOT "DF Product Profile" which 403s)
+   * Wireframe: from-client/product_profile_module.html (922 lines, fully read)
+   * ============================================================ */
+  'product_profile_module.html': {
+    framework: 'Product Profile',
+    module: 'Product',
+    portalPath: 'Products › <a Product>  (doctype: Product)',
+    checkedOn: '20-Jun-2026 (CT-IT, Product PRD-2026-00011)',
+    status: 'done',
+    note: 'Inspected on staging (Product PRD-2026-00011 = Bamboo Shoot Pickle / Dakini Marak). 4 tabs: Product Details | Product Variants | Process Flow | Production Capacity. Form is WELL-BUILT — all Product Details fields present & populated (Status, Sector "Food Processing", Business Basket "Pickle", Product Type "Fruit & Vegetable Pickle", Product Master "Bamboo Shoot Pickle", auto display-name "Dakini Bamboo Shoot Pickle", Snapshot, Image, Ingredients, USP, Shelf Life, Available Months, EP link). HEADLINE — Bug 118 (P2): the Sector→Business Basket→Product Type CASCADE IS BROKEN — Business Basket + Product Type pickers send get_list filters:[] (no parent filter), so with Sector="Food Processing" the basket list still shows Bangalore Silk/Blacksmith/Brick Making etc.; no reactive de-select on Sector change either. Confirms + extends old S15 "Sector→Basket cascade broken". Product Type master also polluted with basket-like names. Production Capacity tab has Production Capacity + Monthly Production tracker tables.',
+    rows: [
+      // ---- SHELL ----
+      { t:'Shell', s:'Tabs', e:'Tab bar (wireframe: Product Details | Product Variants | Process Flow | Production Capacity)', ty:'tabs', w:'Top of form', p:'Y', v:'-', fn:'Y', sev:'', fe:'4 tabs', be:'Product doctype', n:'All 4 present + switch fine.' },
+
+      // ---- PRODUCT DETAILS ----
+      { t:'Details', s:'Product Identity', e:'Status, Product Name/Master, Entrepreneur, Snapshot, Image, Ingredients, USP, Shelf Life Tested', ty:'fields', w:'Product Details § I', p:'Y', v:'Y', fn:'Y', sev:'', fe:'pickers + text + selects + image', be:'persist', n:'All present & populated on PRD-2026-00011. Product Master picker → auto display-name "Dakini Bamboo Shoot Pickle". Status=New Product Developed; Shelf Life Tested = Days/Weeks/Months/Years.' },
+      { t:'Details', s:'Sector', e:'Sector picker', ty:'picker', w:'Product Details § I', p:'Y', v:'Y', fn:'Y', sev:'', fe:'sector master', be:'Sector', n:'Value "Food Processing" — but see Bug 118: it does NOT filter the child Basket/Type pickers.' },
+      { t:'Details', s:'Sector→Basket→Type cascade', e:'Business Basket filtered by Sector; Product Type filtered by Basket; reactive de-select on parent change', ty:'cascade', w:'Product Details § I', p:'Y', v:'N', fn:'N', sev:'serious', fe:'parent-child filtered cascade + reactive clear', be:'link filters', n:'Bug 118 (P2): BROKEN — Basket + Type get_list both filters:[] (flat lists, all sectors\' baskets shown e.g. Bangalore Silk under Food Processing); no reactive de-select. Product Type master polluted with basket names. Confirms+extends S15.' },
+      { t:'Details', s:'Available Months', e:'Available Months multi-select', ty:'multiselect', w:'Product Details § II', p:'Y', v:'?', fn:'?', sev:'minor', fe:'month multi', be:'persist', n:'Section present; multi-select CRUD spot-only.' },
+
+      // ---- OTHER TABS ----
+      { t:'Variants', s:'Product Variants', e:'Variants table (Add variant)', ty:'table', w:'Product Variants tab', p:'Y', v:'?', fn:'?', sev:'minor', fe:'variant rows', be:'variants child', n:'Tab present (recall S15 Bug-0248: variant-uniqueness not enforced — re-verify). Drive deferred.' },
+      { t:'Process Flow', s:'Process & Machinery Flow', e:'Process/machinery step flow', ty:'flow', w:'Process Flow tab', p:'Y', v:'?', fn:'?', sev:'minor', fe:'process steps', be:'process child', n:'Tab present; drive deferred.' },
+      { t:'Capacity', s:'Production Capacity + Monthly tracker', e:'Agri & Raw Material context, Production Capacity, Monthly Production Capacity Tracker', ty:'table+fields', w:'Production Capacity tab', p:'Y', v:'?', fn:'?', sev:'minor', fe:'capacity + monthly tracker', be:'capacity fields/child', n:'Tab present (Production Capacity + Monthly Production tables, 24 inputs). Calc/tracker drive deferred.' }
+    ]
   }
 
 };
