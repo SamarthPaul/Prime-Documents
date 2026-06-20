@@ -303,6 +303,34 @@ window.QA_DATA = {
       { t:'Resources', s:'Reference Materials', e:'Resources table + Add Resource', ty:'table', w:'Resources tab', p:'Y', v:'?', fn:'?', sev:'minor', fe:'dropdowns + upload', be:'Resources child table', n:'Tab present; CRUD to verify.' },
       { t:'Log Book', s:'Activities', e:'Log table (wireframe Task Log)', ty:'table', w:'Log Book tab', p:'Y', v:'?', fn:'?', sev:'minor', fe:'task + date + notes', be:'log child table', n:'Tab present; to verify (attachment cf Bug 94).' }
     ]
+  },
+
+  /* ============================================================
+   * MARKET RESEARCH  (Market module)  — VERIFIED ON STAGING 20-Jun-2026
+   * Portal: Diagnostics > Market > Market Research (DF Market Research)
+   * Wireframe: from-client/market_research_module.html (1114 lines)
+   * Driven as CT-IT on DF-MR-EP-00026-00001 (fixture EP-00026).
+   * RESULT: structurally complete + faithful — NO bugs. (Large research framework; structural + representative-persistence verified, deep per-row fills sampled.)
+   * ============================================================ */
+  'market_research_module.html': {
+    framework: 'Market Research',
+    module: 'Market',
+    portalPath: 'Diagnostics › Market › Market Research  (DF Market Research)',
+    checkedOn: '20-Jun-2026 (CT-IT, DF-MR-EP-00026-00001)',
+    status: 'done',
+    note: 'Large research framework — structurally complete & faithful, no bugs found. Two data tabs: (1) Market Research = Market Landscape (I.a Product Scope auto-fetched; I.b Global, I.c India, I.d Meghalaya/NE — Market Size USD/INR, CAGR, Key Brands, Key Selling Locations) + II. Channel Research + III. Key Brands Research + IV. Respondent/Consumer Survey (each "+ Add"). (2) Competitive Pricing = Competitor Analysis (Local/State/National) with OFFLINE + ONLINE channel pricing tables + SWOT. Sub-table CRUD verified persisting (added an Offline competitor row → competitors_offline=1 saved). Depth note: structural + representative-persistence verified; the many sub-tables (channels/brands/respondents/online rows/SWOT detail/landscape numerics) are present but not each individually filled — sampled.',
+    rows: [
+      { t:'Shell', s:'Tabs', e:'Tab bar (wireframe: Summary | Market Research | Competitive Pricing Assessment | Resources | Task Log)', ty:'tabs', w:'Top', p:'Y', v:'-', fn:'Y', sev:'minor', fe:'tabs', be:'standard pattern', n:'Build: Summary | Details | Market Research | Competitive Pricing | Resources | Log Book. NB the breadcrumb "Market Research" link goes to the doctype LIST — distinct from the in-form tab.' },
+      { t:'Market Research', s:'I. Market Landscape', e:'I.a Product Scope (auto-fetched), I.b Global (Market Size USD, Key Brands, Key Exporting Countries), I.c India (Market Size INR), I.d Meghalaya/NE (Key Selling Locations, CAGR)', ty:'fields', w:'Market Research tab', p:'Y', v:'Y', fn:'?', sev:'', fe:'market landscape inputs', be:'persist', n:'All sections present; numeric fields not each filled — sampled.' },
+      { t:'Market Research', s:'II. Channel Research', e:'Channel rows ("+ Add Channel") — selling channels/platforms', ty:'table', w:'Market Research tab', p:'Y', v:'?', fn:'?', sev:'minor', fe:'add channel rows', be:'channels child table', n:'+ Add Channel present; row fill sampled (not driven this pass).' },
+      { t:'Market Research', s:'III. Key Brands Research', e:'Brand rows ("+ Add Brand") — competitor brands, USP, etc.', ty:'table', w:'Market Research tab', p:'Y', v:'?', fn:'?', sev:'minor', fe:'add brand rows', be:'brands child table', n:'+ Add Brand present.' },
+      { t:'Market Research', s:'IV. Respondent / Consumer Survey', e:'Respondent rows ("+ Add Respondent") — Age Group/Gender/Occupation/District/Used product?/Purchase Frequency', ty:'table', w:'Market Research tab', p:'Y', v:'?', fn:'?', sev:'minor', fe:'add respondent rows', be:'respondents child table', n:'+ Add Respondent present.' },
+      { t:'Competitive Pricing', s:'Competitor Analysis', e:'Local / State / National market sub-sections', ty:'section', w:'Competitive Pricing tab', p:'Y', v:'Y', fn:'-', sev:'', fe:'3 market levels', be:'', n:'Present (I. Local, II. State, III. National).' },
+      { t:'Competitive Pricing', s:'Offline + Online channels', e:'OFFLINE CHANNELS + ONLINE CHANNELS pricing tables (Brand/Competitor, Outlet/Channel, Price, etc.); "+ Add Offline Row" / "+ Add Online Row"', ty:'table', w:'Competitive Pricing tab', p:'Y', v:'Y', fn:'Y', sev:'', fe:'offline + online competitor pricing', be:'competitors_offline / competitors_online child tables', n:'VERIFIED: added + filled an offline row (Naga Pickles / Tura Bazaar Store / ₹180) → competitors_offline=1 persisted.' },
+      { t:'Competitive Pricing', s:'SWOT', e:'SWOT analysis (Strength/Weakness/Opportunity/Threat)', ty:'section', w:'Competitive Pricing tab', p:'Y', v:'?', fn:'?', sev:'minor', fe:'SWOT', be:'persist', n:'SWOT section present on this tab (was a prior "deferred" item — now confirmed present); detail fill sampled.' },
+      { t:'Resources', s:'Reference Materials', e:'Resources table + Add Resource', ty:'table', w:'Resources tab', p:'Y', v:'?', fn:'?', sev:'minor', fe:'dropdowns + upload', be:'Resources child table', n:'Tab present; CRUD to verify.' },
+      { t:'Log Book', s:'Activities', e:'Log table (wireframe Task Log)', ty:'table', w:'Log Book tab', p:'Y', v:'?', fn:'?', sev:'minor', fe:'task + date + notes', be:'log child table', n:'Tab present; to verify (attachment cf Bug 94).' }
+    ]
   }
 
 };
