@@ -220,12 +220,12 @@ window.QA_DATA = {
     framework: 'Infrastructure',
     module: 'Infrastructure',
     portalPath: 'Diagnostics › Infrastructure  (DF Infrastructure)',
-    checkedOn: '20-Jun-2026 — BLOCKED (CT-IT permission)',
-    status: 'blocked',
-    note: 'BLOCKED: Core Team IT gets 403 PermissionError on DF Infrastructure (meta/list/count) — the form renders BLANK (Bug 104, P2). All other frameworks return 200 for CT-IT, so Infrastructure specifically denies the admin role, contradicting BRD PR-OV-004. Could not drive the UI (admin token rotated/dead; SELCO cannot create the record). UI QA pending a permission fix or a Fessociate/admin session. Wireframe is rich: tabs Summary | Built-Environment | Machines | Solar | Financial Model | Tracker | Task Log | Resources; Financial Model has LIFCOM funding split + LIFCOM EMI Calculator (3yr=÷36, 5yr=÷60 flat) + tranches/vendor payment — prior Bug 83/INFRA-004 said portal had split but no EMI; re-verify once accessible.',
+    checkedOn: '20-Jun-2026 — ACCESSIBLE (re-QA pending); correct doctype = DF Infrastructure BE EE CE',
+    status: 'verifying',
+    note: 'NOT blocked — earlier "blocked" was a TESTER ERROR (wrong doctype name). The real doctype is "DF Infrastructure BE EE CE" (sidebar link /d/DF Infrastructure BE EE CE); CT-IT meta/get_count = 200 (4 records). Bug 104 RETRACTED. Full UI QA pending (re-drive). Wireframe is rich: tabs Summary | Built-Environment | Machines | Solar | Financial Model | Tracker | Task Log | Resources; Financial Model has LIFCOM funding split + LIFCOM EMI Calculator (3yr=÷36, 5yr=÷60 flat) + tranches/vendor payment — re-verify LIFCOM EMI vs prior Bug 83/INFRA-004 when driven.',
     rows: [
-      { t:'Shell', s:'Access', e:'Open Infrastructure framework as Core Team IT', ty:'access', w:'Diagnostics › Infrastructure', p:'N', v:'N', fn:'N', sev:'serious', fe:'BRD PR-OV-004: CT-IT Full CRUD on all Diagnostics frameworks incl. Infrastructure', be:'role permission allows read meta+list+CRUD', n:'Bug 104: 403 on DF Infrastructure meta/list/count; form blank. UI QA blocked. (Other frameworks 200.)' },
-      { t:'(pending)', s:'Built-Environment / Machines / Solar / Financial Model / Tracker', e:'Full wireframe comparison (Land/Rent/Water/NOC; LIFCOM funding split + EMI calculator; tranches; vendor payment)', ty:'section', w:'all tabs', p:'?', v:'?', fn:'?', sev:'', fe:'per wireframe', be:'BRD', n:'Not yet verifiable — blocked by Bug 104. Re-drive once CT-IT access is granted (or via Fessociate/admin). Re-check LIFCOM EMI vs prior Bug 83.' }
+      { t:'Shell', s:'Access', e:'Open Infrastructure framework as Core Team IT (doctype DF Infrastructure BE EE CE)', ty:'access', w:'Diagnostics › Infrastructure', p:'Y', v:'Y', fn:'Y', sev:'', fe:'BRD PR-OV-004: CT-IT Full CRUD', be:'role permission allows read meta+list+CRUD', n:'ACCESSIBLE (meta/count 200, 4 records). Bug 104 was a false finding (wrong doctype name) — retracted.' },
+      { t:'(pending)', s:'Built-Environment / Machines / Solar / Financial Model / Tracker', e:'Full wireframe comparison (Land/Rent/Water/NOC; LIFCOM funding split + EMI calculator; tranches; vendor payment)', ty:'section', w:'all tabs', p:'?', v:'?', fn:'?', sev:'', fe:'per wireframe', be:'BRD', n:'Re-QA pending (now accessible). Drive end-to-end; re-check LIFCOM EMI vs prior Bug 83.' }
     ]
   },
 
@@ -376,6 +376,29 @@ window.QA_DATA = {
       { t:'Existing', s:'Channels', e:'"+ Add Channel" → row: Channel Name & Type (Online/Offline), Location (block), Price, Avg Units/Month → Avg Revenue/Month, Annual Revenue, Annual Total (auto)', ty:'table+calc', w:'Existing tab', p:'Y', v:'Y', fn:'Y', sev:'', fe:'revenue auto = price×units; annual = ×12', be:'existing_channels child table; calc persists', n:'VERIFIED: 50×200 → Avg ₹10,000, Annual ₹1,20,000; persisted server-side (avg_revenue_per_month=10000, annual_revenue=120000). Calc is correct AND persists (contrast RM/Financials Bug 86).' },
       { t:'Required', s:'Recommended Channels', e:'"+ Add Recommended Channel" → recommended/target channels + implementation status', ty:'table', w:'Required tab', p:'Y', v:'?', fn:'?', sev:'minor', fe:'recommended channels', be:'persist', n:'Tab present; not deep-filled this pass.' },
       { t:'Sales Tracker', s:'Monthly sales', e:'Collapsible monthly sections; each row = one SKU via one channel; Price per month; Revenue auto-calc', ty:'table+calc', w:'Sales Tracker tab', p:'Y', v:'?', fn:'?', sev:'minor', fe:'per-month per-SKU revenue', be:'tracker child table; Tracker Annual Revenue agg', n:'Tab present (structure per wireframe); deep monthly fill sampled — to verify the per-month revenue roll-up.' },
+      { t:'Resources', s:'Reference Materials', e:'Resources table + Add Resource', ty:'table', w:'Resources tab', p:'Y', v:'?', fn:'?', sev:'minor', fe:'dropdowns + upload', be:'Resources child table', n:'Tab present; CRUD to verify.' },
+      { t:'Log Book', s:'Activities', e:'Log table (wireframe Task Log)', ty:'table', w:'Log Book tab', p:'Y', v:'?', fn:'?', sev:'minor', fe:'task + date + notes', be:'log child table', n:'Tab present; to verify (attachment cf Bug 94).' }
+    ]
+  },
+
+  /* ============================================================
+   * PROMOTIONS  (Market/Marketing module)  — VERIFIED ON STAGING 20-Jun-2026
+   * Portal: Diagnostics > Marketing > Promotions (DF Promotional Marketing)
+   * Wireframe: from-client/promotions_module.html (722 lines)
+   * Driven as CT-IT on PRM-EP-00026-00001 (fixture EP-00026).
+   * RESULT: faithful — NO bugs. (Doctype name is "DF Promotional Marketing".)
+   * ============================================================ */
+  'promotions_module.html': {
+    framework: 'Promotions',
+    module: 'Market',
+    portalPath: 'Diagnostics › Marketing › Promotions  (DF Promotional Marketing)',
+    checkedOn: '20-Jun-2026 (CT-IT, PRM-EP-00026-00001)',
+    status: 'done',
+    note: 'CLEAN — faithful, no bugs. Content/list framework (no calc). Existing tab "+ Add Promotion" → row: Promotion Name, Type (Offline/Online), Handled by, Frequency (Daily/Weekly/Monthly/Yearly), Notes (reach/spend free text). Required = recommended promotions. Row persisted (existing_promotions=1). NB doctype is "DF Promotional Marketing" (non-obvious name; under the Marketing menu group). No cost-per-reach calc (the wireframe "Reach, spend" is a free-text notes field).',
+    rows: [
+      { t:'Shell', s:'Tabs', e:'Tab bar (wireframe: Summary | Existing | Required | Resources | Task Log)', ty:'tabs', w:'Top', p:'Y', v:'-', fn:'Y', sev:'minor', fe:'tabs', be:'standard pattern', n:'Build: Summary | Details | Existing | Required | Resources | Log Book.' },
+      { t:'Existing', s:'Promotions', e:'"+ Add Promotion" → row: Promotion Name, Type (Offline/Online), Handled by, Frequency, Notes', ty:'table', w:'Existing tab', p:'Y', v:'Y', fn:'Y', sev:'', fe:'list current promotions', be:'existing_promotions child table', n:'VERIFIED filled + persisted (Facebook page posts / Online / Self / Weekly) → existing_promotions=1.' },
+      { t:'Required', s:'Recommended Promotions', e:'"+ Add Recommended" → suggested promotions + intervention status', ty:'table', w:'Required tab', p:'Y', v:'?', fn:'?', sev:'minor', fe:'recommended promotions', be:'persist', n:'Tab present; not deep-filled this pass.' },
       { t:'Resources', s:'Reference Materials', e:'Resources table + Add Resource', ty:'table', w:'Resources tab', p:'Y', v:'?', fn:'?', sev:'minor', fe:'dropdowns + upload', be:'Resources child table', n:'Tab present; CRUD to verify.' },
       { t:'Log Book', s:'Activities', e:'Log table (wireframe Task Log)', ty:'table', w:'Log Book tab', p:'Y', v:'?', fn:'?', sev:'minor', fe:'task + date + notes', be:'log child table', n:'Tab present; to verify (attachment cf Bug 94).' }
     ]
