@@ -253,6 +253,31 @@ window.QA_DATA = {
       { t:'Resources', s:'Reference Materials', e:'Resources table + Add Resource', ty:'table', w:'Resources tab', p:'Y', v:'?', fn:'?', sev:'minor', fe:'dropdowns + upload', be:'Resources child table', n:'Tab present; CRUD to verify.' },
       { t:'Log Book', s:'Activities', e:'Log table (wireframe Task Log)', ty:'table', w:'Log Book tab', p:'Y', v:'?', fn:'?', sev:'minor', fe:'task + date + notes', be:'log child table', n:'Tab present; to verify (attachment cf Bug 94).' }
     ]
+  },
+
+  /* ============================================================
+   * LABELS  (Marketing Tools module)  — VERIFIED ON STAGING 20-Jun-2026
+   * Portal: Diagnostics > Marketing Tools > Labels (DF Marketing Label)
+   * Wireframe: from-client/labels_module.html (1054 lines)
+   * Driven as CT-IT on LBL-EP-00026-00001 (fixture EP-00026).
+   * RESULT: faithful to the wireframe — NO bugs. Alcohol skip-logic + statutory warning work.
+   * ============================================================ */
+  'labels_module.html': {
+    framework: 'Labels',
+    module: 'Marketing Tools',
+    portalPath: 'Diagnostics › Marketing Tools › Labels  (DF Marketing Label)',
+    checkedOn: '20-Jun-2026 (CT-IT, LBL-EP-00026-00001)',
+    status: 'done',
+    note: 'CLEAN — faithful to the wireframe, no bugs. Existing tab = per-variant rows (Variant/SKU picker + Upload Existing File + "Need New Label?" flag). The rich Label Content lives in the Required tab (Master Content: Product Name/Snapshot/Storyline/Tagline/Ingredients/Benefits/Directions/Manufactured by/Label Type/Product Pictures + Variant Content + Label Status). KEY skip-logic VERIFIED: "Wine / Alcohol Product?" toggle ON → reveals Alcohol Content (ABV) + the statutory warning "CONSUMPTION OF ALCOHOL IS INJURIOUS TO HEALTH / DON\'T DRINK AND DRIVE" (in-form — an improvement over the wireframe). Validation fires (Variant + Justification required). To-verify: full Variant Content fill needs product variants/SKUs (fixture products have none yet) — fixture-completeness, not a portal gap.',
+    rows: [
+      { t:'Shell', s:'Tabs', e:'Tab bar (wireframe: Summary | Existing | Required | Resources | Task Log)', ty:'tabs', w:'Top', p:'Y', v:'-', fn:'Y', sev:'minor', fe:'tabs', be:'standard pattern', n:'Build: Summary | Details | Existing | Required | Resources | Log Book. Adds Details; Task Log→Log Book.' },
+      { t:'Existing', s:'Existing Label', e:'"+ Add Variant" → per-variant row: Variant (SKU) picker, Upload Existing File, "Need New Label?" toggle', ty:'fields+upload', w:'Existing tab', p:'Y', v:'Y', fn:'Y', sev:'', fe:'flag new-label need', be:'existing-variant child table', n:'Verified: row adds; SKU picker present (no SKUs because fixture products have no variants). Validation: Variant + Justification required on save.' },
+      { t:'Required', s:'Master Content', e:'Product Name, Product Snapshot, Storyline Text, Product Tagline, Ingredients/Material, Benefits, Directions of Use, Manufactured by, Marketed by, Label Type, Product Pictures (upload)', ty:'fields+upload', w:'Required tab', p:'Y', v:'Y', fn:'?', sev:'', fe:'full label content', be:'persist', n:'All present in Required (the new-label design workspace). Per-field fill to spot-check.' },
+      { t:'Required', s:'Wine/Alcohol skip-logic', e:'"Wine / Alcohol Product?" toggle → reveals Alcohol Content (ABV) + statutory warning', ty:'toggle', w:'Required tab', p:'Y', v:'Y', fn:'Y', sev:'', fe:'conditional reveal + fixed statutory warning', be:'', n:'VERIFIED: toggle ON reveals ABV + "CONSUMPTION OF ALCOHOL IS INJURIOUS TO HEALTH / DON\'T DRINK AND DRIVE" (in-form, improvement vs wireframe). Matches FW-LBL-001.' },
+      { t:'Required', s:'Variant Content + Label Status', e:'Variant Content (+ Add Variant), Label Status (Designer assignment / status)', ty:'section', w:'Required tab', p:'Y', v:'?', fn:'?', sev:'minor', fe:'per-variant label content', be:'persist', n:'Sections present; full Variant Content fill needs product variants/SKUs (fixture lacks them) — to verify once a product has variants.' },
+      { t:'Resources', s:'Reference Materials', e:'Resources table + Add Resource', ty:'table', w:'Resources tab', p:'Y', v:'?', fn:'?', sev:'minor', fe:'dropdowns + upload', be:'Resources child table', n:'Tab present; CRUD to verify.' },
+      { t:'Log Book', s:'Activities', e:'Log table (wireframe Task Log)', ty:'table', w:'Log Book tab', p:'Y', v:'?', fn:'?', sev:'minor', fe:'task + date + notes', be:'log child table', n:'Tab present; to verify (attachment cf Bug 94).' }
+    ]
   }
 
 };
