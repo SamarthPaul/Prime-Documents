@@ -178,6 +178,37 @@ window.QA_DATA = {
       { t:'Resources', s:'Reference Materials', e:'Resources table + Add Resource', ty:'table', w:'Resources tab', p:'Y', v:'?', fn:'?', sev:'minor', fe:'dropdowns + upload', be:'Resources child table', n:'Tab present; CRUD to verify.' },
       { t:'Log Book', s:'Activities', e:'Log table (wireframe Task Log)', ty:'table', w:'Log Book tab', p:'Y', v:'?', fn:'?', sev:'minor', fe:'task dropdown + date + notes', be:'log child table', n:'Tab present; likely mirrors Financials Log Book (no attachment, cf Bug 94) — to verify.' }
     ]
+  },
+
+  /* ============================================================
+   * HUMAN RESOURCE  (Manufacturing module)  — VERIFIED ON STAGING 20-Jun-2026
+   * Portal: Diagnostics > Manufacturing > Human Resource (DF Human Resource)
+   * Wireframe: from-client/human_resource_module.html (1543 lines, parsed)
+   * Driven as CT-IT on HR-EP-00026-00001 (fixture EP-00026).
+   * ============================================================ */
+  'human_resource_module.html': {
+    framework: 'Human Resource',
+    module: 'Manufacturing',
+    portalPath: 'Diagnostics › Manufacturing › Human Resource  (DF Human Resource)',
+    checkedOn: '20-Jun-2026 (CT-IT, HR-EP-00026-00001)',
+    status: 'done',
+    note: 'Driven end-to-end on staging. Monthly Labour Cost calc verified (₹39,000 = 3×₹500×26). GoM compliance LOGIC works when a threshold is supplied (wage 400 vs min 480 → "✗ No" + warning), BUT the GoM minimum wage is NOT auto-derived from Skill Level → stored 0 → saved gom_compliant = trivially TRUE (Bug 102, P2, safeguard defeated). "Avg Hours/Day" input missing → labour rate assumes 8h (Bug 103).',
+    rows: [
+      { t:'Shell', s:'Tabs', e:'Tab bar (wireframe: Summary | Existing | Required | Resources | Task Log)', ty:'tabs', w:'Top', p:'Y', v:'-', fn:'Y', sev:'minor', fe:'5 tabs', be:'standard pattern', n:'Build: Summary | Details | Existing | Required | Resources | Log Book (adds Details; Task Log→Log Book).' },
+      { t:'Summary', s:'Overview + Aggregates + Flags', e:'Worker-wise Overview, Aggregates (incl GoM Compliant/Non-Compliant), Intervention Flags', ty:'table+metrics', w:'Summary tab', p:'Y', v:'?', fn:'-', sev:'minor', fe:'auto-populated', be:'derived', n:'Tab present; deep cross-check deferred.' },
+      { t:'Existing', s:'List', e:'"+ Add Worker Category" → collapsible worker block; Existing totals bar', ty:'button', w:'Existing tab', p:'Y', v:'-', fn:'Y', sev:'', fe:'add block', be:'worker child table', n:'Verified.' },
+      { t:'Existing', s:'Worker fields', e:'Worker Category * (Self/Unpaid Family/Paid Family/Hired), Skill Level * (4), Employment Nature * (5), No. of Male, No. of Female, Total Workers (auto)', ty:'fields', w:'block', p:'Y', v:'Y', fn:'Y', sev:'', fe:'all present', be:'persist', n:'Verified: Total Workers auto = 3 (2M+1F).' },
+      { t:'Existing', s:'Wage', e:'Wage Type * (Per Day/Per Month/Per Hour), Wage Rate *, Avg Working Days / Month', ty:'fields', w:'block', p:'Y', v:'Y', fn:'Y', sev:'', fe:'feed labour cost', be:'persist', n:'Verified.' },
+      { t:'Existing', s:'Avg Hours / Day', e:'Avg Hours / Day input', ty:'number', w:'block', p:'N', v:'-', fn:'-', sev:'minor', fe:'wireframe has Avg Hours/Day', be:'avg_hours_per_day field exists (default 8)', n:'Bug 103: input MISSING from UI; labour rate/hr assumes fixed 8h.' },
+      { t:'Existing', s:'Calc — Labour Cost', e:'Monthly Labour Cost, Labour Rate / hr', ty:'calc', w:'block', p:'Y', v:'Y', fn:'Y', sev:'', fe:'PerDay: wage×days×count', be:'persist', n:'Verified: ₹39,000 = 3×₹500×26; Rate/hr ₹50 (assumes 8h, see Bug 103).' },
+      { t:'Existing', s:'GoM Minimum Wage', e:'GoM Minimum Wage (threshold by Skill Level)', ty:'number', w:'block', p:'Y', v:'N', fn:'N', sev:'serious', fe:'wireframe AUTO-derives from skill (Unskilled360/Semi410/Skilled480/Highly550)', be:'should auto-set + persist', n:'Bug 102: manual field, NOT auto-derived from skill; stays 0; manual entry did not persist (stored 0).' },
+      { t:'Existing', s:'GoM Compliant?', e:'GoM Compliant? verdict + below-minimum warning', ty:'calc', w:'block', p:'Y', v:'N', fn:'N', sev:'serious', fe:'flag non-compliant when wage < GoM min for skill', be:'persist real verdict', n:'Bug 102: logic works WHEN threshold supplied (400 vs 480 → "✗ No" + warning), but with auto-threshold 0 the saved gom_compliant = TRUE trivially → false compliant. Safeguard defeated.' },
+      { t:'Existing', s:'V. Intervention Need', e:'"Labour intervention needed?" toggle (bridge to Required)', ty:'toggle', w:'block', p:'Y', v:'-', fn:'?', sev:'minor', fe:'flag → Required bridge', be:'bridge', n:'Toggle present; bridge to verify (cf RM bridge works).' },
+      { t:'Existing', s:'Totals', e:'All Existing — Total: Worker count, Monthly Labour Cost, GoM Compliant (x/y), "Auto-fetches to Existing Unit Pricing"', ty:'calc', w:'Existing footer', p:'Y', v:'?', fn:'-', sev:'minor', fe:'roll-up', be:'CROSS-FRAMEWORK feed to Unit Pricing', n:'Bar present.' },
+      { t:'Required', s:'Required tab', e:'New Labour Category (+ Add), Labour Intervention rows (bridged), Optimised totals', ty:'section', w:'Required tab', p:'Y', v:'?', fn:'?', sev:'minor', fe:'new category + intervention rows', be:'feeds Optimised Unit Pricing', n:'Tab present; not yet driven.' },
+      { t:'Resources', s:'Reference Materials', e:'Resources table + Add Resource', ty:'table', w:'Resources tab', p:'Y', v:'?', fn:'?', sev:'minor', fe:'dropdowns + upload', be:'Resources child table', n:'Tab present; CRUD to verify.' },
+      { t:'Log Book', s:'Activities', e:'Log table (wireframe Task Log)', ty:'table', w:'Log Book tab', p:'Y', v:'?', fn:'?', sev:'minor', fe:'task dropdown + date + notes', be:'log child table', n:'Tab present; likely mirrors Financials Log Book (no attachment) — to verify.' }
+    ]
   }
 
 };
