@@ -636,6 +636,36 @@ window.QA_DATA = {
       { t:'Resources', s:'Reference Materials', e:'Resources table + Add Resource', ty:'table', w:'Resources tab', p:'Y', v:'?', fn:'?', sev:'minor', fe:'rows + upload', be:'Resources child table', n:'Tab present; CRUD to verify.' },
       { t:'Log Book', s:'Activities', e:'Log table (wireframe Task Log)', ty:'table', w:'Log Book tab', p:'Y', v:'?', fn:'?', sev:'minor', fe:'task + date + notes', be:'log child table', n:'Tab present; to verify.' }
     ]
+  },
+
+  /* ============================================================
+   * BUSINESS PLAN CANVAS  (Skilling module — standalone individual framework)
+   * Portal path: Diagnostics > Skilling > Business Plan Canvas  (doctype: DF Business Plan Canvas)
+   * Wireframe: from-client/business_plan_canvas_module.html (796 lines, fully read)
+   * ============================================================ */
+  'business_plan_canvas_module.html': {
+    framework: 'Business Plan Canvas',
+    module: 'Skilling',
+    portalPath: 'Diagnostics › Skilling › Business Plan Canvas  (DF Business Plan Canvas)',
+    checkedOn: '20-Jun-2026 (CT-IT, BPC-EP-00026-00001)',
+    status: 'done',
+    note: 'Driven end-to-end on staging (BPC-EP-00026-00001) — CORE CLEAN, 1 minor bug. Portal tabs: Details | Canvas | Canvas Details | Resources | Log Book (note: "Business Plan Canvas" in the bar is the page heading/breadcrumb, NOT a tab — clicking it navigates to the list). The 9-block BMC grid lives in "Canvas Details" (editable) with a read-only visual view in "Canvas". ALL 9 BMC blocks (Key Partners, Key Activities, Key Resources, Value Propositions, Customer Relationships, Channels, Customer Segments, Cost Structure, Revenue Streams) present, fill, and PERSIST server-side. Bug 114 (P3, only finding): NO Summary view — the wireframe Canvas Completion %, content-preview table, aggregates, and intervention-flags summary are absent (no completion metric anywhere). Finishes the Skilling module.',
+    rows: [
+      // ---- SHELL ----
+      { t:'Shell', s:'Tabs', e:'Tab bar (wireframe: Summary | Business Plan Canvas | Resources | Task Log)', ty:'tabs', w:'Top of framework', p:'Y', v:'-', fn:'Y', sev:'minor', fe:'tabs', be:'standard pattern', n:'Build: Details | Canvas | Canvas Details | Resources | Log Book. Canvas grid split into Canvas (view) + Canvas Details (edit). No Summary tab (see Bug 114).' },
+      { t:'Shell', s:'Header', e:'Entrepreneur auto-bound; district/block', ty:'display', w:'Above tabs', p:'Y', v:'Y', fn:'Y', sev:'', fe:'EP auto-bound', be:'per-EP record', n:'EP Dakini Marak bound; saved BPC-EP-00026-00001.' },
+
+      // ---- CANVAS (9 blocks) ----
+      { t:'Canvas', s:'9-block BMC grid', e:'Key Partners, Key Activities, Key Resources, Value Propositions, Customer Relationships, Channels, Customer Segments, Cost Structure, Revenue Streams', ty:'textareas', w:'Canvas Details tab', p:'Y', v:'Y', fn:'Y', sev:'', fe:'9 BMC block textareas', be:'9 backend fields', n:'VERIFIED: all 9 present, filled with real content, PERSIST server-side (key_partners…revenue_streams all stored). Clean.' },
+      { t:'Canvas', s:'Visual view', e:'Read-only canvas display', ty:'display', w:'Canvas tab', p:'Y', v:'Y', fn:'Y', sev:'', fe:'visual grid', be:'reads same 9 fields', n:'"Canvas" tab renders the filled blocks read-only (Bamboo/Garo/WhatsApp content shown).' },
+
+      // ---- SUMMARY (missing) ----
+      { t:'Summary', s:'Canvas Completion + preview + flags', e:'Canvas Completion %, Content Preview table, Aggregates (3 financial/strategic blocks), Intervention Flags', ty:'metrics', w:'Summary tab', p:'N', v:'N', fn:'N', sev:'minor', fe:'wireframe Summary tab', be:'derivable from the 9 blocks', n:'Bug 114: NO Summary tab; no Canvas Completion % anywhere; no content-preview/aggregates/intervention-flags. Data is all present (derivable) — just not surfaced.' },
+
+      // ---- RES / LOG ----
+      { t:'Resources', s:'Reference Materials', e:'Resources table + Add Resource', ty:'table', w:'Resources tab', p:'Y', v:'?', fn:'?', sev:'minor', fe:'rows + upload', be:'Resources child table', n:'Tab present; CRUD to verify.' },
+      { t:'Log Book', s:'Activities', e:'Log table (wireframe Task Log)', ty:'table', w:'Log Book tab', p:'Y', v:'?', fn:'?', sev:'minor', fe:'task + date + notes', be:'log child table', n:'Tab present; to verify.' }
+    ]
   }
 
 };
