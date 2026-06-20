@@ -331,6 +331,30 @@ window.QA_DATA = {
       { t:'Resources', s:'Reference Materials', e:'Resources table + Add Resource', ty:'table', w:'Resources tab', p:'Y', v:'?', fn:'?', sev:'minor', fe:'dropdowns + upload', be:'Resources child table', n:'Tab present; CRUD to verify.' },
       { t:'Log Book', s:'Activities', e:'Log table (wireframe Task Log)', ty:'table', w:'Log Book tab', p:'Y', v:'?', fn:'?', sev:'minor', fe:'task + date + notes', be:'log child table', n:'Tab present; to verify (attachment cf Bug 94).' }
     ]
+  },
+
+  /* ============================================================
+   * CUSTOMER ANALYSIS  (Market module)  — VERIFIED ON STAGING 20-Jun-2026
+   * Portal: Diagnostics > Market > Customer Analysis (DF Customer Analysis)
+   * Wireframe: from-client/customer_analysis_module.html (973 lines)
+   * Driven as CT-IT on CA-EP-00026-00001 (fixture EP-00026).
+   * RESULT: faithful — NO bugs. Per-product customer segmentation.
+   * ============================================================ */
+  'customer_analysis_module.html': {
+    framework: 'Customer Analysis',
+    module: 'Market',
+    portalPath: 'Diagnostics › Market › Customer Analysis  (DF Customer Analysis)',
+    checkedOn: '20-Jun-2026 (CT-IT, CA-EP-00026-00001)',
+    status: 'done',
+    note: 'CLEAN — faithful, no bugs. Per-product customer segmentation: Existing tab "+ Add Product" reveals the full segmentation block for that product. All wireframe fields present (Age Group, Gender, Income Bracket, Occupation, Location Type, Primary/Secondary Target Segment, Primary Geography, Key Cities, Buying Motivation, Purchase Behaviour, Usage Rate, Loyalty Status, Market Readiness, Values & Lifestyle). Product block persists (existing_product_blocks=1). Required tab = target/aspiring segments. No calc in this framework.',
+    rows: [
+      { t:'Shell', s:'Tabs', e:'Tab bar (wireframe: Summary | Existing | Required | Resources | Task Log)', ty:'tabs', w:'Top', p:'Y', v:'-', fn:'Y', sev:'minor', fe:'tabs', be:'standard pattern', n:'Build: Summary | Details | Existing | Required | Log Book | Resources.' },
+      { t:'Existing', s:'Per-product segmentation', e:'"+ Add Product" → product picker + full customer segmentation block', ty:'fields', w:'Existing tab', p:'Y', v:'Y', fn:'Y', sev:'', fe:'each product holds its own segmentation', be:'existing_product_blocks child table', n:'VERIFIED: + Add Product reveals all segmentation fields; selected Bamboo Shoot Pickle → existing_product_blocks=1 persisted.' },
+      { t:'Existing', s:'Segmentation fields', e:'Age Group, Gender, Income Bracket, Occupation, Location Type, Primary/Secondary Target Segment, Primary Geography, Key Cities, Buying Motivation, Purchase Behaviour, Usage Rate, Loyalty Status, Market Readiness, Values & Lifestyle', ty:'fields', w:'Existing product block', p:'Y', v:'Y', fn:'?', sev:'', fe:'full segmentation per wireframe', be:'persist', n:'All present after adding a product; per-field fill sampled.' },
+      { t:'Required', s:'Target segments', e:'Target / aspiring customer segments per product', ty:'section', w:'Required tab', p:'Y', v:'?', fn:'?', sev:'minor', fe:'desired segment definition', be:'persist', n:'Tab present; not deep-filled this pass.' },
+      { t:'Resources', s:'Reference Materials', e:'Resources table + Add Resource', ty:'table', w:'Resources tab', p:'Y', v:'?', fn:'?', sev:'minor', fe:'dropdowns + upload', be:'Resources child table', n:'Tab present; CRUD to verify.' },
+      { t:'Log Book', s:'Activities', e:'Log table (wireframe Task Log)', ty:'table', w:'Log Book tab', p:'Y', v:'?', fn:'?', sev:'minor', fe:'task + date + notes', be:'log child table', n:'Tab present; to verify (attachment cf Bug 94).' }
+    ]
   }
 
 };
