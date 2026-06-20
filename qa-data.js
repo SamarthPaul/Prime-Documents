@@ -600,6 +600,42 @@ window.QA_DATA = {
       { t:'Resources', s:'Reference Materials', e:'Resource tiles/table + Add Resource', ty:'table', w:'Resources tab', p:'Y', v:'?', fn:'?', sev:'minor', fe:'rows/tiles + upload', be:'Resources child table', n:'Tab present; CRUD to verify.' },
       { t:'Log Book', s:'Activities', e:'Log table (wireframe Task Log)', ty:'table', w:'Log Book tab', p:'Y', v:'?', fn:'?', sev:'minor', fe:'task + date + notes', be:'log child table', n:'Tab present; to verify.' }
     ]
+  },
+
+  /* ============================================================
+   * CAPACITY BUILDING  (Skilling module)
+   * Portal path: Diagnostics > Skilling > Capacity Building  (doctype: DF Capacity Building)
+   * Wireframe: from-client/capacity_building_module.html (1327 lines, fully read)
+   * ============================================================ */
+  'capacity_building_module.html': {
+    framework: 'Capacity Building',
+    module: 'Skilling',
+    portalPath: 'Diagnostics › Skilling › Capacity Building  (DF Capacity Building)',
+    checkedOn: '20-Jun-2026 (CT-IT, CB-EP-00026-00001)',
+    status: 'done',
+    note: 'Driven end-to-end on staging (CB-EP-00026-00001). Tabs Summary/Details/Past Trainings/Required Trainings/Resources/Log Book — wireframe "Tasks" tab absent (consistent with the known Tasks-workspace removal, NOT a bug). Past Training card SAVES & PERSISTS (training link, provider, location, dates, financial source "Govt Sponsored", completion "Completed", impact, feedback, learning outcome — all stored). HEADLINE — Bug 113 (P2): the Past Training form is significantly SIMPLIFIED vs the wireframe — the entire structured "Skill Retention & Application" block (Skill Retention / Applied in Enterprise? / Behaviour Change Observed? / Improvement Seen / Time Since Training) and most of the multi-source Feedback block (Trainer Feedback / Field Team Observation / Follow-up Actions / Assessment Date) + Training Format are ABSENT from BOTH UI and backend child → training effectiveness can only be recorded as prose, not structured/reportable M&E data. (Skill Type/Area appear moved to the training master = acceptable derive.) SEED: "Capacity Building Training Master" was EMPTY (picker returned nothing) → seeded 3 trainings as CT-IT. Minor: Required Trainings collapses the wireframe\'s 2 sections (Re-training + New Required) into one "+ Add Required Training".',
+    rows: [
+      // ---- SHELL ----
+      { t:'Shell', s:'Tabs', e:'Tab bar (wireframe: Summary | Past Trainings | Required Trainings | Tasks | Resources | Log Book)', ty:'tabs', w:'Top of framework', p:'Y', v:'-', fn:'Y', sev:'minor', fe:'tabs', be:'standard pattern', n:'Build: Summary | Details | Past Trainings | Required Trainings | Resources | Log Book. "Tasks" tab absent = known Tasks-workspace removal (NOT a bug).' },
+      { t:'Shell', s:'Header', e:'Entrepreneur auto-bound; district/block', ty:'display', w:'Above tabs', p:'Y', v:'Y', fn:'Y', sev:'', fe:'EP auto-bound', be:'per-EP record', n:'EP Dakini Marak bound; saved CB-EP-00026-00001.' },
+
+      // ---- PAST TRAININGS ----
+      { t:'Past', s:'List', e:'"+ Add Training" → adds a past-training card', ty:'button', w:'Past Trainings tab', p:'Y', v:'-', fn:'Y', sev:'', fe:'adds card', be:'past_trainings child', n:'Verified; card added + persisted.' },
+      { t:'Past', s:'Training (picker)', e:'Training Name / picker (auto-fills objective)', ty:'picker', w:'training card', p:'Y', v:'Y', fn:'Y', sev:'', fe:'wireframe = free text + Skill Type/Area selects', be:'links Capacity Building Training Master', n:'Build uses a Training-master picker (improvement); MASTER WAS EMPTY → seeded 3 (Food Safety/Digital Marketing/Bookkeeping). Selecting auto-fills Training Objective. Skill Type/Area live on the master (training_category/level).' },
+      { t:'Past', s:'I. Training Details', e:'Provider, Location, Start/End Date, Completion Status, Funding/Financial Source', ty:'fields', w:'training card', p:'Y', v:'Y', fn:'Y', sev:'', fe:'text + dates + selects', be:'persist', n:'All persist (NIFTEM-K, Tura, 10-12 Mar, Completed, Govt Sponsored). Completion + Funding select options save fine (no 417).' },
+      { t:'Past', s:'I. Training Format', e:'Training Format (Online/Offline/Hybrid)', ty:'select', w:'training card', p:'N', v:'N', fn:'N', sev:'minor', fe:'wireframe Training Format select', be:'absent in past_trainings child', n:'Bug 113: Training Format absent (master has training_mode but per-record format gone).' },
+      { t:'Past', s:'II. Skill Retention & Application', e:'Skill Retention, Applied in Enterprise?, Behaviour Change Observed?, Improvement Seen, Time Since Training', ty:'selects', w:'training card', p:'N', v:'N', fn:'N', sev:'serious', fe:'wireframe structured M&E selects', be:'ABSENT from past_trainings child', n:'Bug 113 (headline): entire structured block missing UI + backend → behaviour-change/skill-applied/retention cannot be captured/reported. Replaced by free-text Impact of Training + a rating.' },
+      { t:'Past', s:'III. Feedback', e:'Entrepreneur Feedback, Trainer/Facilitator Feedback, Field Team Observation, Learning Outcome, Follow-up Actions, Assessment Date', ty:'fields', w:'training card', p:'N', v:'N', fn:'N', sev:'serious', fe:'wireframe 6 feedback fields', be:'only entrepreneur_feedback + learning_outcome exist', n:'Bug 113: Trainer Feedback, Field Team Observation, Follow-up Actions, Assessment Date ABSENT (UI + backend). Only Entrepreneur Feedback + Learning Outcome present (both persist).' },
+      { t:'Past', s:'Impact', e:'Impact of Training + impact rating', ty:'text+rating', w:'training card', p:'Y', v:'Y', fn:'Y', sev:'', fe:'(build addition)', be:'impact_of_training + rating_impact', n:'Impact free-text persists; rating_impact field exists (partial substitute for the lost structured block).' },
+
+      // ---- REQUIRED TRAININGS ----
+      { t:'Required', s:'List', e:'Re-training Interventions + New Required Trainings (wireframe 2 sections)', ty:'button+table', w:'Required Trainings tab', p:'Y', v:'?', fn:'?', sev:'minor', fe:'wireframe = I. Re-training + II. New Required (2 add buttons)', be:'required child table', n:'Build collapses to ONE "+ Add Required Training" list (minor). Drive deferred; to verify.' },
+
+      // ---- SUMMARY / RES / LOG ----
+      { t:'Summary', s:'Aggregates', e:'Training-wise overview + aggregates + intervention flags', ty:'metrics', w:'Summary tab', p:'Y', v:'?', fn:'-', sev:'minor', fe:'rollup', be:'derived', n:'Tab present; rollups to verify.' },
+      { t:'Resources', s:'Reference Materials', e:'Resources table + Add Resource', ty:'table', w:'Resources tab', p:'Y', v:'?', fn:'?', sev:'minor', fe:'rows + upload', be:'Resources child table', n:'Tab present; CRUD to verify.' },
+      { t:'Log Book', s:'Activities', e:'Log table (wireframe Task Log)', ty:'table', w:'Log Book tab', p:'Y', v:'?', fn:'?', sev:'minor', fe:'task + date + notes', be:'log child table', n:'Tab present; to verify.' }
+    ]
   }
 
 };
