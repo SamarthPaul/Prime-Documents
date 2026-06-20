@@ -528,6 +528,40 @@ window.QA_DATA = {
       { t:'Resources', s:'Reference Materials', e:'Resources table + SOP Word template + Add Resource', ty:'table', w:'Resources tab', p:'Y', v:'?', fn:'?', sev:'minor', fe:'rows + template + upload', be:'Resources child table', n:'Tab present; CRUD to verify.' },
       { t:'Log Book', s:'Activities', e:'Log table (wireframe Task Log)', ty:'table', w:'Log Book tab', p:'Y', v:'?', fn:'?', sev:'minor', fe:'task + date + notes', be:'log child table', n:'Tab present; to verify.' }
     ]
+  },
+
+  /* ============================================================
+   * PRODUCT PACKAGING  (Product Development module)
+   * Portal path: Diagnostics > Product Development > Product Packaging  (doctype: DF Packaging)
+   * Wireframe: from-client/product_packaging_module.html (1703 lines, fully read)
+   * ============================================================ */
+  'product_packaging_module.html': {
+    framework: 'Product Packaging',
+    module: 'Product Development',
+    portalPath: 'Diagnostics › Product Development › Product Packaging  (DF Packaging)',
+    checkedOn: '20-Jun-2026 (CT-IT, PKG-EP-00026-00001)',
+    status: 'done',
+    note: 'Driven end-to-end on staging (PKG-EP-00026-00001, product Bamboo Shoot Pickle PRD-00011, type Plastic Packaging). Tabs Summary/Details/Existing/Required/Requirement Tracker/Resources/Log Book all present (Task Log→Log Book rename). HEADLINE — Bug 85 RE-TESTED & REFRAMED (still valid, P2): "+ Add Month" is NOT a dead no-op — it adds a month row every click, but the row only RENDERS once a Product+Packaging Type are selected; with none selected (the PM screenshot state) rows are added INVISIBLY (table still says "No monthly orders yet"), no feedback, button not disabled → repeated clicks save phantom zero-cost rows (data pollution; 2 such rows persisted, I cleaned them). GOOD: with prereqs set, the month row renders; Qty 100 × Price 12 auto-computed Total ₹1,200 and PERSISTED server-side (total_order_cost=1200) — calc is fine, NOT the Bug-86 class. Bug 111 (P3): "Picture of Packaging" is an "Image URL" text field, not the wireframe Upload button (no file capture/CRUD — same class as Bug 106). Printing fields (Supports Printing / Pouch Printing Required) ARE present (avoided a false-miss). Note: packaging-type master is thin (1 item "Plastic Packaging").',
+    rows: [
+      // ---- SHELL ----
+      { t:'Shell', s:'Tabs', e:'Tab bar (wireframe: Summary | Existing | Required | Requirement Tracker | Resources | Task Log | Log Book)', ty:'tabs', w:'Top of framework', p:'Y', v:'-', fn:'Y', sev:'', fe:'tabs', be:'standard pattern', n:'Build: Summary | Details | Existing | Required | Requirement Tracker | Resources | Log Book. All present; Task Log→Log Book rename.' },
+      { t:'Shell', s:'Header', e:'Entrepreneur auto-bound; district/block', ty:'display', w:'Above tabs', p:'Y', v:'Y', fn:'Y', sev:'', fe:'EP auto-bound', be:'per-EP record', n:'EP Dakini Marak bound; saved PKG-EP-00026-00001.' },
+
+      // ---- EXISTING: packaging card ----
+      { t:'Existing', s:'List', e:'"+ Add Packaging" → adds a packaging card', ty:'button', w:'Existing tab', p:'Y', v:'-', fn:'Y', sev:'', fe:'adds card', be:'packaging_info_existing child', n:'Verified; card added + persisted.' },
+      { t:'Existing', s:'Card fields', e:'Product, Product SKU, Type of Packaging, Material, Dimensions, Capacity, Unit, Purchase Source, Price per Unit, Procurement Status', ty:'fields', w:'packaging card', p:'Y', v:'Y', fn:'Y', sev:'', fe:'pickers + text + Yes/No', be:'persist', n:'Verified: product picker, Type (Plastic Packaging) + Price 12 persisted; SKU/Material/Dimensions/Capacity/Unit/Source present.' },
+      { t:'Existing', s:'Printing fields', e:'Supports Printing? / Pouch Printing Required', ty:'control', w:'packaging card', p:'Y', v:'?', fn:'?', sev:'minor', fe:'printing flags', be:'packaging_supports_printing / pouch_printing_required', n:'Present in form (text confirmed) — avoided a false-miss. Exact control + persistence to spot-verify.' },
+      { t:'Existing', s:'Picture upload', e:'Picture of Packaging — Upload (file capture/view/replace/delete)', ty:'upload', w:'packaging card', p:'N', v:'N', fn:'N', sev:'minor', fe:'wireframe = Upload button (file)', be:'picture_of_packaging', n:'Bug 111: portal is an "Image URL" text field — 0 file inputs, no Upload, no CRUD. Same class as Bug 106.' },
+      { t:'Existing', s:'Monthly schedule', e:'"+ Add Month" → month row (Month, Qty, Price/Unit, Total, Status)', ty:'button+table', w:'packaging card § Monthly', p:'Y', v:'Y', fn:'N', sev:'serious', fe:'append editable month row; Total auto = Qty×Price', be:'monthly_ordered_quantity_existing child', n:'Bug 85 (reframed): adds rows but only RENDER once Product+Type set; invisible phantom zero-rows + no feedback/disabled when not → data pollution (2 junk rows saved, cleaned). With prereqs: works.' },
+      { t:'Existing', s:'Monthly Total (calc)', e:'Per-month Total = Qty × Price/Unit', ty:'calc', w:'month row', p:'Y', v:'Y', fn:'Y', sev:'', fe:'auto Qty×Price', be:'total_order_cost; feeds annual cost → Unit Pricing', n:'VERIFIED computes & PERSISTS server-side: Qty 100 × Price 12 → Total ₹1,200, total_order_cost=1200 stored. NOT the Bug-86 class.' },
+
+      // ---- REQUIRED / TRACKER / SUMMARY / RES / LOG ----
+      { t:'Required', s:'Interventions', e:'"+ Add Packaging Intervention" / "+ Add New Packaging" (bridge from Existing flags) + monthly required', ty:'button+table', w:'Required tab', p:'Y', v:'?', fn:'?', sev:'minor', fe:'auto-populate from Existing intervention flags; new packaging; monthly required', be:'required child tables', n:'Tab present; intervention bridge + monthly-required drive deferred (after Bug 85 fix). To verify.' },
+      { t:'Tracker', s:'Requirement Tracker', e:'Transposed monthly required overview', ty:'table', w:'Requirement Tracker tab', p:'Y', v:'?', fn:'?', sev:'minor', fe:'months × required types', be:'derived', n:'Tab present; to verify.' },
+      { t:'Summary', s:'Aggregates', e:'Total products/items/annual cost + "Auto-fetches to Unit Pricing → Packaging"', ty:'metrics', w:'Summary tab', p:'Y', v:'?', fn:'-', sev:'minor', fe:'rollup + Unit Pricing feed', be:'derived', n:'Tab present; cross-feed to Unit Pricing to verify at Unit Pricing stage.' },
+      { t:'Resources', s:'Reference Materials', e:'Resources table + Add Resource (Upload column)', ty:'table', w:'Resources tab', p:'Y', v:'?', fn:'?', sev:'minor', fe:'rows + upload', be:'Resources child table', n:'Tab present; CRUD to verify.' },
+      { t:'Log Book', s:'Activities', e:'Log table (wireframe Task Log)', ty:'table', w:'Log Book tab', p:'Y', v:'?', fn:'?', sev:'minor', fe:'task + date + notes', be:'log child table', n:'Tab present; to verify.' }
+    ]
   }
 
 };
