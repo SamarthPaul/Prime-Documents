@@ -89,6 +89,73 @@ window.QA_DATA = {
       // ---- TASK LOG TAB ----
       { t:'Task Log', s:'Activities', e:'Table: No., Date, Task Name (dropdown — 16 preset RM tasks + "If other"), Notes/Outcome, Attachment (Upload), delete, "+ Add Entry"', ty:'table', w:'Task Log tab', p:'?', v:'?', fn:'?', sev:'serious', fe:'Task Name dropdown must list the 16 RM tasks; date picker; attachment', be:'BRD: NB Task tab said removed in favour of Activity Logger — reconcile whether a per-framework Task Log persists', n:'confirm presence vs BRD "Task tab removed" decision' }
     ]
+  },
+
+  /* ============================================================
+   * FINANCIALS  (Accounts module)  — VERIFIED ON STAGING 20-Jun-2026
+   * Portal path: Diagnostics > Accounts > Financial Bookkeeping (DF Financials)
+   * Wireframe: from-client/financials_module.html (2533 lines, fully read)
+   * Driven end-to-end as Core Team IT on FIN-EP-00026-00001 (fixture EP-00026).
+   * Verdict legend: p=present, v=shows values/options, fn=clickable/functional.
+   * ============================================================ */
+  'financials_module.html': {
+    framework: 'Financials',
+    module: 'Accounts',
+    portalPath: 'Diagnostics › Accounts › Financial Bookkeeping  (DF Financials)',
+    checkedOn: '20-Jun-2026 (CT-IT, FIN-EP-00026-00001)',
+    status: 'done',
+    note: 'Largely faithful to the wireframe — every tab present and the cross-tab data flow (Financial Assessment Pre + Growth Post → Summary trajectory; BMC → Summary break-even) works. Build ADDS a Details tab + Resources tab + Hours/Activity-Type on the log (enhancements). Gaps are modest: no Revenue Evidence attachment, Log Book has no per-row attachment, Investment Source option-set diverges, and 3 functional bugs (89/90/91).',
+    rows: [
+      // ---- SHELL / TABS ----
+      { t:'Shell', s:'Tabs', e:'Tab bar', ty:'tabs', w:'Top of framework', p:'Y', v:'-', fn:'Y', sev:'minor',
+        fe:'Wireframe: Summary | Financial Assessment | Growth | Business Model Calculator | Task Log', be:'BRD standard pattern', n:'Build has Summary | Details | Financial Assessment | Growth | Business Model Calculator | Resources | Log Book. Build ADDS Details + Resources tabs; "Task Log"→"Log Book" rename. All present + switch fine.' },
+      { t:'Shell', s:'Header', e:'Entrepreneur chip "Auto-fetched from profile" + Save/Back', ty:'display', w:'Above tabs', p:'Y', v:'Y', fn:'Y', sev:'', fe:'EP auto-bound', be:'per-EP record', n:'' },
+
+      // ---- SUMMARY TAB (all verified rendering with live cross-tab data) ----
+      { t:'Summary', s:'KPI tiles', e:'4 KPIs: Total Investment, Avg Monthly Revenue, Avg Net Profit/Month, Profit Margin', ty:'metrics', w:'Summary tab', p:'Y', v:'Y', fn:'-', sev:'', fe:'auto-computed', be:'roll-up from Growth + Financial Assessment', n:'Verified ₹1,50,000 / ₹38,500 / ₹15,500 / 40% — correct.' },
+      { t:'Summary', s:'Investment & Loans', e:'Investment breakdown bar list + Loans table (Source/Sanctioned/Outstanding/EMI)', ty:'table', w:'Summary tab', p:'Y', v:'Y', fn:'-', sev:'', fe:'from Financial Assessment', be:'derived', n:'Self-funded ₹50k + Bank Loan ₹1L bars; loan row ₹1L/₹80k/₹4,707.' },
+      { t:'Summary', s:'Revenue & Income', e:'6 fields: Avg Monthly Business Revenue, Avg Monthly Expenditure, Average Additional Income, Avg Overall Monthly Revenue, Avg Net Profit/Month, Business Status', ty:'metrics', w:'Summary tab', p:'Y', v:'Y', fn:'-', sev:'', fe:'per-month averages', be:'derived', n:'' },
+      { t:'Summary', s:'Trend chart', e:'Monthly Revenue & Profit Trend (SVG bar chart, Revenue + Profit)', ty:'chart', w:'Summary tab', p:'Y', v:'Y', fn:'-', sev:'minor', fe:'updates live from Growth edits', be:'from Growth monthly rows', n:'Renders (Apr bar shown). Only 1 month on file in fixture.' },
+      { t:'Summary', s:'Bookkeeping Growth Trajectory', e:'3 cards Pre→Post: Practices Bookkeeping, Bookkeeping Level, Maintenance Frequency + delta badges', ty:'metrics', w:'Summary tab', p:'Y', v:'Y', fn:'-', sev:'', fe:'Pre from Financial Assessment, Post from Growth', be:'cross-tab', n:'VERIFIED cross-tab: Yes→Yes, Level 2→4 "+2 levels", Occasionally→Monthly "Improved by 2 steps". Excellent.' },
+      { t:'Summary', s:'Monthly Break-even', e:'2 cards: Break-even Revenue, Break-even Units (from BMC Projected)', ty:'metrics', w:'Summary tab', p:'Y', v:'Y', fn:'-', sev:'', fe:'auto-fetched from Calculator', be:'from BMC', n:'VERIFIED ₹11,000 / 33 units, matches BMC.' },
+
+      // ---- DETAILS TAB (build addition; wireframe had this as a card in Financial Assessment) ----
+      { t:'Details', s:'Details', e:'Enterprenur Name, Module, Applicable To, Lifecycle (+ build adds Pre/Post Intervention Notes)', ty:'fields', w:'Details tab (build) / FA card (wireframe)', p:'Y', v:'Y', fn:'Y', sev:'minor', fe:'wireframe: 4 read fields in a Details card', be:'EP context', n:'Build adds Pre/Post Intervention Notes (enhancement). NB Lifecycle: set "New" but displayed "Pending Update" — likely auto-managed, to confirm.' },
+
+      // ---- FINANCIAL ASSESSMENT TAB ----
+      { t:'Financial Assessment', s:'I. Investment Sources', e:'Table + "+ Add Investment Source"; cols #, Investment Source, Other Source Name, Source Name, Amount, delete; Total foot', ty:'table', w:'FA › Section I', p:'Y', v:'Y', fn:'Y', sev:'', fe:'add/remove rows; total sums', be:'investment_sources child table; total_investment_sources', n:'Verified: 2 rows persisted, total ₹1.5L server-side.' },
+      { t:'Financial Assessment', s:'I. Investment Sources', e:'Investment Source dropdown OPTIONS', ty:'select', w:'FA › Section I', p:'Y', v:'N', fn:'Y', sev:'minor', fe:'Wireframe options: Self-funded, Family/Friends, Friends, Bank Loan, Government Scheme, NGO, Other', be:'BRD master', n:'DIVERGENCE → Bug 92: portal = Self-funded, Family/Friends, Angel, VC, Bank Loan, Govt Grants, PMEGP, Other. Wireframe "Friends", "Government Scheme", "NGO" MISSING; portal adds Angel/VC. Reconcile vs BRD.' },
+      { t:'Financial Assessment', s:'I. Investment Sources', e:'Running total updates live as rows added', ty:'calc', w:'FA › Section I', p:'Y', v:'N', fn:'N', sev:'minor', fe:'total should sum all rows live', be:'correct on save', n:'Bug 89: total ignored 2nd row until save (showed ₹50k for ₹50k+₹1L).' },
+      { t:'Financial Assessment', s:'I. Loan Details', e:'Table + "+ Add Loan"; cols #, Loan Amount, Interest %, Outstanding, Term, Start, End, EMI, Loan %, Loan/Scheme', ty:'table', w:'FA › Section I', p:'Y', v:'Y', fn:'Y', sev:'', fe:'add/remove; feeds BMC Existing Loan 1/2', be:'loan_details child table', n:'Verified: 1 loan persisted incl. dates + contribution %.' },
+      { t:'Financial Assessment', s:'I. Revenue & Expenditure', e:'Inputs: Avg Monthly Business Revenue, Avg Monthly Expenditure, Avg Additional Income; calc: Net Profit, Overall Revenue, Profit Margin; Business Status', ty:'fields+calc', w:'FA › Section I', p:'Y', v:'Y', fn:'Y', sev:'', fe:'calc live', be:'feeds BMC + Summary', n:'Verified calc: Net ₹15,500, Overall ₹38,500, Margin 40% — correct & live.' },
+      { t:'Financial Assessment', s:'I. Revenue & Expenditure', e:'Additional Income Source (text)', ty:'text', w:'FA › Section I', p:'Y', v:'-', fn:'N', sev:'serious', fe:'qualifies the Additional Income amount', be:'persist on save', n:'Bug 90: does NOT persist on save (silent data loss); also cleared by Business Status re-render.' },
+      { t:'Financial Assessment', s:'I. Revenue & Expenditure', e:'Revenue Evidence (file attachment)', ty:'upload', w:'FA › Section I', p:'N', v:'N', fn:'N', sev:'minor', fe:'wireframe shows an attached file (📎 revenue-*.pdf)', be:'attach proof of revenue', n:'Bug 93: portal shows "— none" with NO upload control (0 file inputs on tab) — cannot attach revenue evidence.' },
+      { t:'Financial Assessment', s:'II. Bookkeeping Practice', e:'Q1 Practices? (Yes/No), Q2 Level (1–5), Q3 Frequency (Daily…Occasionally)', ty:'select', w:'FA › Section II', p:'Y', v:'Y', fn:'Y', sev:'', fe:'3 selects; feed Summary Pre trajectory', be:'persist', n:'Verified persisted (Yes / Level 2 / Occasionally).' },
+      { t:'Financial Assessment', s:'II. Intervention Need', e:'Toggle "Does the entrepreneur need Intervention in bookkeeping?" + Justify textarea (skip-logic reveal)', ty:'toggle+text', w:'FA › Section II', p:'Y', v:'-', fn:'?', sev:'minor', fe:'toggle reveals justify textarea', be:'bk_intervention_needed + reason', n:'Present; toggle/justify reveal not yet driven — to verify.' },
+
+      // ---- GROWTH TAB ----
+      { t:'Growth', s:'I. Monthly Tracker', e:'Monthly Performance table (#, Reporting Month, Revenue, Expenses, Profit, Evidence) + "+ Add Month"; Totals foot', ty:'table', w:'Growth › Section I', p:'Y', v:'Y', fn:'Y', sev:'', fe:'add months; profit auto; totals', be:'financials_monthly child table', n:'Verified: row persists, profit 16000 server-computed. NB monthly date must fall in cohort window (rejected otherwise — fixed the bad cohort).' },
+      { t:'Growth', s:'I. Monthly Tracker', e:'3 teal stats: Average Revenue, Average Expenditure, Average Profit', ty:'metrics', w:'Growth › Section I', p:'Y', v:'Y', fn:'-', sev:'', fe:'mean across months', be:'derived', n:'' },
+      { t:'Growth', s:'II. Implementation Status', e:'Bookkeeping Post-Intervention Q1/Q2/Q3 (feed Summary Post trajectory)', ty:'select', w:'Growth › Section II', p:'Y', v:'Y', fn:'Y', sev:'', fe:'3 selects', be:'bk_*_post; feed Summary', n:'Verified persisted (Yes / Level 4 / Monthly).' },
+
+      // ---- BUSINESS MODEL CALCULATOR TAB ----
+      { t:'BMC', s:'Legend', e:'Auto-fetched / Input / Auto-calculated legend', ty:'display', w:'BMC top', p:'Y', v:'-', fn:'-', sev:'', fe:'colour key', be:'', n:'' },
+      { t:'BMC', s:'I. Loan Terms', e:'Loans table: Existing Loan 1 & 2 (auto from FA) + New Loan (manual); Amount/Interest/Instalments/Contribution + Add-to-Total checkbox; Total Loan Amount', ty:'table', w:'BMC › Section I', p:'Y', v:'Y', fn:'Y', sev:'', fe:'auto-fetch loans; checkbox-conditioned total', be:'bmc_* loan fields', n:'Verified: Existing Loan 1 auto-fetched ₹1L/12%/24mo; Total ₹1L; checkbox works.' },
+      { t:'BMC', s:'II. Revenue & Expense', e:'Total Quantity (pre/post), Weighted Avg Selling Price (calc), Avg Revenue/month (pre/post), Avg Expense/month (pre/post)', ty:'fields+calc', w:'BMC › Section II', p:'Y', v:'Y', fn:'Y', sev:'', fe:'pre auto-fetch + editable; post manual; price auto', be:'persist + calc', n:'Verified: Weighted Avg Selling Price Existing ₹365 (=36500/100), Projected ₹333.33 (=50000/150).' },
+      { t:'BMC', s:'III. Monthly Break-even', e:'Output table (8 rows: Operating Profit, EMI, Net Profit, Variable cost/unit, Contribution/unit, Monthly fixed costs, Revenue BE, Unit BE) — Existing/Projected + Comment', ty:'calc', w:'BMC › Section III', p:'Y', v:'Y', fn:'-', sev:'', fe:'all auto-calculated', be:'bmc breakeven fields', n:'Verified stored: existing 35u/₹12,775, projected 33u/₹11,000.' },
+      { t:'BMC', s:'IV. Capital Costs', e:'Capital card: Total Capital Cost, Loan Amount Taken, Interest Rate (blended), No. of Instalments (blended), EMI/month, Total Loan Repayment', ty:'calc', w:'BMC › Section IV', p:'Y', v:'Y', fn:'-', sev:'minor', fe:'amortisation EMI', be:'bmc_blended_emi etc.', n:'Blended EMI 4707 stored; full card render to spot-check visually.' },
+      { t:'BMC', s:'Result hero + status + help', e:'Result hero (BE Revenue + Units), status banner, help card', ty:'display', w:'BMC bottom', p:'Y', v:'Y', fn:'-', sev:'minor', fe:'hero echoes break-even', be:'', n:'Hero present; status banner/help to spot-check.' },
+
+      // ---- RESOURCES TAB (build addition — not in wireframe) ----
+      { t:'Resources', s:'Reference Materials', e:'Resources tab (build addition; wireframe has no Resources tab for Financials)', ty:'table', w:'Resources tab', p:'Y', v:'?', fn:'?', sev:'minor', fe:'n/a (not in wireframe)', be:'BRD standard Resources pattern', n:'Build enhancement; not yet driven — to verify CRUD.' },
+
+      // ---- LOG BOOK TAB (wireframe "Task Log") ----
+      { t:'Log Book', s:'Activities', e:'Log table + "+ Add Row"; Task Name dropdown', ty:'table', w:'Log Book tab', p:'Y', v:'Y', fn:'Y', sev:'', fe:'wireframe Task Log: No., Date, Task Name (16 preset), Notes/Outcome, Attachment, +Add Entry', be:'log child table', n:'Build cols: Log Date, Hours, Task Name (link to DF Module Step Master = Financials steps), Activity Type, Comments. Verified entry persisted. Build ADDS Hours + Activity Type (enhancement).' },
+      { t:'Log Book', s:'Activities', e:'Per-row Attachment (Upload / View / filename)', ty:'upload', w:'Log Book tab', p:'N', v:'N', fn:'N', sev:'minor', fe:'wireframe Task Log has Upload + View + filename per row', be:'attach evidence to a task entry', n:'Bug 94: Log Book has NO attachment column/control — cannot attach evidence to a financials log entry.' },
+
+      // ---- CROSS-CUTTING ----
+      { t:'Cross-cutting', s:'Overview framework %', e:'Entrepreneur Overview "Diagnostic Framework Status" Financials % rises with Log Book activity', ty:'metric', w:'EP Overview', p:'Y', v:'N', fn:'N', sev:'minor', fe:'% should rise as activities logged', be:'progress recompute', n:'Bug 91: stays 0% after full framework fill + complete Log Book entry. Confirm exact %-driver with dev/BRD.' }
+    ]
   }
 
 };
