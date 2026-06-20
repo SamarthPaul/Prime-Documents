@@ -402,6 +402,29 @@ window.QA_DATA = {
       { t:'Resources', s:'Reference Materials', e:'Resources table + Add Resource', ty:'table', w:'Resources tab', p:'Y', v:'?', fn:'?', sev:'minor', fe:'dropdowns + upload', be:'Resources child table', n:'Tab present; CRUD to verify.' },
       { t:'Log Book', s:'Activities', e:'Log table (wireframe Task Log)', ty:'table', w:'Log Book tab', p:'Y', v:'?', fn:'?', sev:'minor', fe:'task + date + notes', be:'log child table', n:'Tab present; to verify (attachment cf Bug 94).' }
     ]
+  },
+
+  /* ============================================================
+   * PRODUCT PROTOTYPING  (Product Development module)  — VERIFIED ON STAGING 20-Jun-2026
+   * Portal: Diagnostics > Product Development > Prototyping (DF Product Prototyping)
+   * Wireframe: from-client/product_prototyping_module.html (774 lines)
+   * Driven as CT-IT on DF-PROTO-EP-00026-00001 (fixture EP-00026).
+   * RESULT: faithful — NO bugs. Nested Product → Iteration persists.
+   * ============================================================ */
+  'product_prototyping_module.html': {
+    framework: 'Product Prototyping',
+    module: 'Product Development',
+    portalPath: 'Diagnostics › Product Development › Prototyping  (DF Product Prototyping)',
+    checkedOn: '20-Jun-2026 (CT-IT, DF-PROTO-EP-00026-00001)',
+    status: 'done',
+    note: 'CLEAN — faithful, no bugs. Nested: Prototypes tab "+ Add Product" → per-product block (product picker, Prototype Type / Type of Prototyping, Version, Key Learnings, Design Upload, Implementation Status) → "+ Add Iteration" (nested iteration rows). Verified persistence of BOTH levels (prototyping_products=1, prototyping_iterations=1) — resolves prior PROTO-001 "3 levels deep, deferred". Content/nested framework, no calc.',
+    rows: [
+      { t:'Shell', s:'Tabs', e:'Tab bar (wireframe: Summary | Prototypes | Resources | Task Log)', ty:'tabs', w:'Top', p:'Y', v:'-', fn:'Y', sev:'minor', fe:'tabs', be:'standard pattern', n:'Build: Summary | Details | Prototypes | Resources | Log Book.' },
+      { t:'Prototypes', s:'Per-product prototype', e:'"+ Add Product" → product picker, Prototype Type/Type of Prototyping, Version, Key Learnings, Design Upload, Implementation Status', ty:'fields+upload', w:'Prototypes tab', p:'Y', v:'Y', fn:'Y', sev:'', fe:'per-product prototype block', be:'prototyping_products child table', n:'VERIFIED: added product (Orange Jam) → prototyping_products=1 persisted. Design Upload present.' },
+      { t:'Prototypes', s:'Iterations', e:'"+ Add Iteration" → nested iteration rows (version/notes/uploads per iteration)', ty:'table', w:'Prototypes tab', p:'Y', v:'Y', fn:'Y', sev:'', fe:'nested iterations under a prototype', be:'prototyping_iterations child table', n:'VERIFIED: added iteration → prototyping_iterations=1 persisted (nested level works).' },
+      { t:'Resources', s:'Reference Materials', e:'Resources table + Add Resource', ty:'table', w:'Resources tab', p:'Y', v:'?', fn:'?', sev:'minor', fe:'dropdowns + upload', be:'Resources child table', n:'Tab present; CRUD to verify.' },
+      { t:'Log Book', s:'Activities', e:'Log table (wireframe Task Log)', ty:'table', w:'Log Book tab', p:'Y', v:'?', fn:'?', sev:'minor', fe:'task + date + notes', be:'log child table', n:'Tab present; to verify (attachment cf Bug 94).' }
+    ]
   }
 
 };
