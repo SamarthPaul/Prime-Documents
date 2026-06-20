@@ -141,6 +141,43 @@ window.QA_DATA = {
       // ---- CROSS-CUTTING ----
       { t:'Cross-cutting', s:'Overview framework %', e:'Entrepreneur Overview "Diagnostic Framework Status" Financials % rises with Log Book activity', ty:'metric', w:'EP Overview', p:'Y', v:'N', fn:'N', sev:'minor', fe:'% should rise as activities logged', be:'progress recompute', n:'Bug 91: stays 0% after full framework fill + complete Log Book entry. Confirm exact %-driver with dev/BRD.' }
     ]
+  },
+
+  /* ============================================================
+   * MACHINERY  (Manufacturing module)  — VERIFIED ON STAGING 20-Jun-2026
+   * Portal: Diagnostics > Manufacturing > Machinery (DF Machinery)
+   * Wireframe: from-client/machinery_module.html (1364 lines, fully parsed)
+   * Driven as CT-IT on MACH-EP-00026-00001 (fixture EP-00026).
+   * ============================================================ */
+  'machinery_module.html': {
+    framework: 'Machinery',
+    module: 'Manufacturing',
+    portalPath: 'Diagnostics › Manufacturing › Machinery  (DF Machinery)',
+    checkedOn: '20-Jun-2026 (CT-IT, MACH-EP-00026-00001)',
+    status: 'done',
+    note: 'Driven end-to-end on staging. KEY: the portal uses STRAIGHT-LINE depreciation with Salvage + Useful Life (BRD model) — NOT the wireframe\'s condition-based model. Old "no salvage" finding is RESOLVED. Straight-line calc verified correct (Dep ₹375/mo, Dep/Unit ₹0.23). Skip-logic flag toggles present (Solarization/Servicing/Capacity Upgrade). Gaps filed: 99 (dep-model divergence + Machinery Condition absent), 100 (mandatory Name not enforced), 101 (Product + Reference fields missing).',
+    rows: [
+      { t:'Shell', s:'Tabs', e:'Tab bar (wireframe: Summary | Existing | Required | Resources | Task Log)', ty:'tabs', w:'Top', p:'Y', v:'-', fn:'Y', sev:'minor', fe:'5 tabs', be:'standard pattern', n:'Build: Summary | Details | Existing | Required | Resources | Log Book (adds Details; Task Log→Log Book). Summary appears after save.' },
+      // SUMMARY
+      { t:'Summary', s:'Overview + Aggregates + Flags', e:'Machine-wise Overview table, Aggregates, Intervention Flags', ty:'table+metrics', w:'Summary tab', p:'Y', v:'?', fn:'-', sev:'minor', fe:'auto-populated', be:'derived', n:'Tab present; deep value cross-check deferred (filled 1 machine).' },
+      // EXISTING — block fields
+      { t:'Existing', s:'List', e:'"+ Add Machine" → collapsible machine block; Existing totals bar', ty:'button', w:'Existing tab', p:'Y', v:'-', fn:'Y', sev:'', fe:'add block', be:'machine child table', n:'Verified.' },
+      { t:'Existing', s:'I. Classification', e:'Name of Machinery/Tool * (machine-master picker), Process Flow No., Purpose, Critical/Non-Critical', ty:'fields', w:'block', p:'Y', v:'Y', fn:'Y', sev:'', fe:'wireframe Name was free text; build uses a picker', be:'links to machine master', n:'Picker verified (MACH-00009). Name is mandatory but NOT enforced → Bug 100.' },
+      { t:'Existing', s:'I. Classification', e:'Product (link the machine to a product)', ty:'picker', w:'block', p:'N', v:'-', fn:'-', sev:'minor', fe:'wireframe Classification has a Product field', be:'', n:'Bug 101: no per-machine Product field on portal (confirm vs BRD — machine may serve many products).' },
+      { t:'Existing', s:'I. Classification', e:'If Critical, provide reason', ty:'text', w:'block', p:'?', v:'-', fn:'?', sev:'minor', fe:'conditional on Critical', be:'', n:'Likely a conditional reveal (only when Critical chosen) — to verify, not yet driven.' },
+      { t:'Existing', s:'II. Technical & Power', e:'Power/Phase Needed, No. of Machinery/Tool *, Wattage/Load (W), Total Power Load (calc), Main Usage Time', ty:'fields', w:'block', p:'Y', v:'Y', fn:'Y', sev:'', fe:'specs', be:'', n:'Total Power Load = build addition. Present.' },
+      { t:'Existing', s:'III. Operational Capacity', e:'Days/Month, Hours/Day, Current Capacity/hr, Max Capacity/hr → Monthly Output, Capacity Utilization, Capacity Gap', ty:'fields+calc', w:'block', p:'Y', v:'Y', fn:'Y', sev:'', fe:'output = days×hrs×cap', be:'derived', n:'Verified: 20×8×10 = 1,600/mo; Utilization 66.7% (10/15); persists.' },
+      { t:'Existing', s:'IV. Financial & Maintenance', e:'Cost of Machine *, Salvage/Residual Value, Brand/Series, Age, Useful Life, Remaining Life (calc), Servicing Required, Monthly Upkeep', ty:'fields+calc', w:'block', p:'Y', v:'Y', fn:'Y', sev:'', fe:'BRD straight-line inputs', be:'persist', n:'Build ADDS Salvage + Useful Life + Remaining Life (BRD). Remaining Life 8.0 verified.' },
+      { t:'Existing', s:'IV. Depreciation', e:'Depreciation Rate, Monthly Depreciation, Depreciation/Unit', ty:'calc', w:'block', p:'Y', v:'Y', fn:'Y', sev:'minor', fe:'WIREFRAME: condition-based (Good/Fair/Poor 10/20/30%); PORTAL: straight-line (cost−salvage)/life', be:'BRD: straight-line', n:'Bug 99: MODEL DIVERGENCE. Portal straight-line verified correct (9%/yr, ₹375/mo, ₹0.23/unit) + matches BRD; old "no salvage" RESOLVED. Wireframe "Machinery Condition" field absent.' },
+      { t:'Existing', s:'IV. Machinery Condition', e:'Machinery Condition (Good/Fair/Poor) — wireframe depreciation driver', ty:'select', w:'block', p:'N', v:'N', fn:'-', sev:'minor', fe:'wireframe field', be:'replaced by straight-line model', n:'Bug 99: absent on portal (portal uses straight-line instead).' },
+      { t:'Existing', s:'IV. Reference', e:'Reference (current cost / condition)', ty:'text', w:'block', p:'N', v:'-', fn:'-', sev:'minor', fe:'wireframe field', be:'', n:'Bug 101: missing on portal.' },
+      { t:'Existing', s:'V. Intervention Need', e:'Flag toggles: Solarization Needed?, Servicing Intervention Needed?, Capacity Upgrade Needed? (bridge to Required)', ty:'toggle', w:'block', p:'Y', v:'-', fn:'?', sev:'minor', fe:'wireframe had inline Intervention Details (Issue/Description, Intervention Cost, New Electricity Cost); portal uses flag toggles → Required', be:'bridge to Required', n:'Toggles present (model differs from wireframe inline fields). Bridge + detail fields to verify in Required (cf RM bridge works).' },
+      { t:'Existing', s:'Totals', e:'All Existing Machines — Total: Machine Count, Total Investment, Total Depreciation/Unit, "Auto-fetches to Existing Unit Pricing → Machinery Depreciation/Unit"', ty:'calc', w:'Existing footer', p:'Y', v:'Y', fn:'-', sev:'minor', fe:'roll-up', be:'CROSS-FRAMEWORK feed to Unit Pricing', n:'Present (Machine Count 1, Total Investment ₹50k).' },
+      // REQUIRED / RESOURCES / LOG BOOK
+      { t:'Required', s:'Required tab', e:'New Machinery (+ Add New Machine), intervention rows bridged from Existing flags, Optimised totals', ty:'section', w:'Required tab', p:'Y', v:'?', fn:'?', sev:'minor', fe:'New Machine block + bridged intervention rows', be:'feeds Optimised Unit Pricing', n:'Tab present; not yet driven — verify New Machine entry + bridged intervention-detail fields (Issue/Description, Intervention Cost, New Electricity Cost) land here.' },
+      { t:'Resources', s:'Reference Materials', e:'Resources table + Add Resource', ty:'table', w:'Resources tab', p:'Y', v:'?', fn:'?', sev:'minor', fe:'dropdowns + upload', be:'Resources child table', n:'Tab present; CRUD to verify.' },
+      { t:'Log Book', s:'Activities', e:'Log table (wireframe Task Log)', ty:'table', w:'Log Book tab', p:'Y', v:'?', fn:'?', sev:'minor', fe:'task dropdown + date + notes', be:'log child table', n:'Tab present; likely mirrors Financials Log Book (no attachment, cf Bug 94) — to verify.' }
+    ]
   }
 
 };
