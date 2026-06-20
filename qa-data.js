@@ -209,6 +209,24 @@ window.QA_DATA = {
       { t:'Resources', s:'Reference Materials', e:'Resources table + Add Resource', ty:'table', w:'Resources tab', p:'Y', v:'?', fn:'?', sev:'minor', fe:'dropdowns + upload', be:'Resources child table', n:'Tab present; CRUD to verify.' },
       { t:'Log Book', s:'Activities', e:'Log table (wireframe Task Log)', ty:'table', w:'Log Book tab', p:'Y', v:'?', fn:'?', sev:'minor', fe:'task dropdown + date + notes', be:'log child table', n:'Tab present; likely mirrors Financials Log Book (no attachment) — to verify.' }
     ]
+  },
+
+  /* ============================================================
+   * INFRASTRUCTURE  (Infrastructure module)  — BLOCKED 20-Jun-2026
+   * Portal: Diagnostics > Infrastructure (DF Infrastructure)
+   * Wireframe: from-client/infrastructure_module.html (2760 lines)
+   * ============================================================ */
+  'infrastructure_module.html': {
+    framework: 'Infrastructure',
+    module: 'Infrastructure',
+    portalPath: 'Diagnostics › Infrastructure  (DF Infrastructure)',
+    checkedOn: '20-Jun-2026 — BLOCKED (CT-IT permission)',
+    status: 'blocked',
+    note: 'BLOCKED: Core Team IT gets 403 PermissionError on DF Infrastructure (meta/list/count) — the form renders BLANK (Bug 104, P2). All other frameworks return 200 for CT-IT, so Infrastructure specifically denies the admin role, contradicting BRD PR-OV-004. Could not drive the UI (admin token rotated/dead; SELCO cannot create the record). UI QA pending a permission fix or a Fessociate/admin session. Wireframe is rich: tabs Summary | Built-Environment | Machines | Solar | Financial Model | Tracker | Task Log | Resources; Financial Model has LIFCOM funding split + LIFCOM EMI Calculator (3yr=÷36, 5yr=÷60 flat) + tranches/vendor payment — prior Bug 83/INFRA-004 said portal had split but no EMI; re-verify once accessible.',
+    rows: [
+      { t:'Shell', s:'Access', e:'Open Infrastructure framework as Core Team IT', ty:'access', w:'Diagnostics › Infrastructure', p:'N', v:'N', fn:'N', sev:'serious', fe:'BRD PR-OV-004: CT-IT Full CRUD on all Diagnostics frameworks incl. Infrastructure', be:'role permission allows read meta+list+CRUD', n:'Bug 104: 403 on DF Infrastructure meta/list/count; form blank. UI QA blocked. (Other frameworks 200.)' },
+      { t:'(pending)', s:'Built-Environment / Machines / Solar / Financial Model / Tracker', e:'Full wireframe comparison (Land/Rent/Water/NOC; LIFCOM funding split + EMI calculator; tranches; vendor payment)', ty:'section', w:'all tabs', p:'?', v:'?', fn:'?', sev:'', fe:'per wireframe', be:'BRD', n:'Not yet verifiable — blocked by Bug 104. Re-drive once CT-IT access is granted (or via Fessociate/admin). Re-check LIFCOM EMI vs prior Bug 83.' }
+    ]
   }
 
 };
